@@ -1,0 +1,34 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 'android-L'
+    buildToolsVersion "20.0.0"
+    defaultConfig {
+        applicationId "com.handybook.handybook"
+        minSdkVersion 15
+        targetSdkVersion 'L'
+        versionCode 1
+        versionName "0.1"
+    }
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:support-v4:21.0.+"
+    compile 'com.jakewharton:butterknife:5.1.+'
+    compile 'com.squareup.dagger:dagger:1.2.+'
+    compile 'net.simonvt.menudrawer:menudrawer:3.0.+'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+}

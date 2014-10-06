@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_blue">
+
+    <View
+        android:id="@+id/logo"
+        android:layout_width="132dp"
+        android:layout_height="96dp"
+        android:layout_margin="48dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/category_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/logo"
+        android:background="@android:color/white" />
+
+</RelativeLayout>

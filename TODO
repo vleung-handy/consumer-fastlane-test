@@ -1,0 +1,30 @@
+- disable landscape
+- create themes and styles for reuse
+- get app icons from at proper sizes
+- get spin icon at proper sizes
+- get hex color values
+- add crashlytics
+
+- mixpanel events
+- ignore unnecessary files from git
+- review UI/UX on different device sizes an API versions
+- run LINT
+- run performance test, memory analyzers, etc
+- testing
+
+
+- design & update for Android L
+- review design on all device types in both orientation
+- figure out how to make translucent status bar like ios
+
+
+
+
+
+#KEEP TODOs that make sense on every project here to build Android checklist#
+- remote bug & crash logger (crashlytics, etc)
+- ignore unnecessary files from git
+- review UI/UX on different device sizes an API versions
+- run LINT
+- run performance test, memory analyzers, etc
+- testing
