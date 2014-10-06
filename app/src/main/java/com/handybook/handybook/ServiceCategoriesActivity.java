@@ -7,4 +7,9 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity {
     protected final Fragment createFragment() {
         return ServiceCategoriesFragment.newInstance();
     }
+
+    @Override
+    protected String getNavItemTitle() {
+        return getString(R.string.home);
+    }
 }

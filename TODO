@@ -1,9 +1,13 @@
-- disable landscape
+- help page
+- login flow
+- account flow
+
 - create themes and styles for reuse
 - get app icons from at proper sizes
 - get spin icon at proper sizes
 - get hex color values
 - add crashlytics
+- disable landscape
 
 - mixpanel events
 - ignore unnecessary files from git

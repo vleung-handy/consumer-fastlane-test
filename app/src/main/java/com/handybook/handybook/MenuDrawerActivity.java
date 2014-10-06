@@ -9,27 +9,21 @@ import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
 
 abstract class MenuDrawerActivity extends Activity {
-    static final String EXTRA_NAV_CHANGE = "com.handybook.handybook.NAV_CHANGE";
     private static final String STATE_MENU_DRAWER = "MENU_DRAWER";
-
     private MenuDrawer menuDrawer;
-    private boolean closeForNavChange;
 
     protected abstract Fragment createFragment();
+    protected abstract String getNavItemTitle();
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT,
                 MenuDrawer.MENU_DRAG_WINDOW);
         menuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
         menuDrawer.setDropShadowSize(1);
         menuDrawer.setContentView(R.layout.activity_menu_drawer);
         menuDrawer.setMenuView(R.layout.activity_menu_nav);
-
-        if (savedInstanceState == null && (closeForNavChange = getIntent().getBooleanExtra(EXTRA_NAV_CHANGE, false)))
-            menuDrawer.openMenu(false);
 
         final FragmentManager fm = getFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
@@ -39,19 +33,12 @@ abstract class MenuDrawerActivity extends Activity {
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
 
-        fragment = fm.findFragmentById(R.id.nav_fragment_container);
-        if (fragment == null) {
-            fragment = NavigationFragment.newInstance();
-            fm.beginTransaction().add(R.id.nav_fragment_container, fragment).commit();
-        }
-    }
+        NavigationFragment navFragment
+                = (NavigationFragment)fm.findFragmentById(R.id.nav_fragment_container);
 
-    @Override
-    protected final void onStart() {
-        super.onStart();
-        if (closeForNavChange) {
-            menuDrawer.closeMenu();
-            closeForNavChange = false;
+        if (navFragment == null) {
+            navFragment = NavigationFragment.newInstance(getNavItemTitle());
+            fm.beginTransaction().add(R.id.nav_fragment_container, navFragment).commit();
         }
     }
 
@@ -75,5 +62,9 @@ abstract class MenuDrawerActivity extends Activity {
             return;
         }
         super.onBackPressed();
+    }
+
+    public MenuDrawer getMenuDrawer() {
+        return menuDrawer;
     }
 }

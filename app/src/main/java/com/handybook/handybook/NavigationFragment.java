@@ -1,46 +1,100 @@
 package com.handybook.handybook;
 
 import android.app.ListFragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import net.simonvt.menudrawer.MenuDrawer;
+
+import java.util.ArrayList;
 
 public final class NavigationFragment extends ListFragment {
+    static final String ARG_SELECTED_ITEM = "com.handybook.handybook.ARG_SELECTED_ITEM";
 
-    static NavigationFragment newInstance() {
-        return new NavigationFragment();
+    private final ArrayList<String> items = new ArrayList<String>();
+    private String selectedItem;
+    private MenuDrawer menuDrawer;
+
+    static NavigationFragment newInstance(String selectedItem) {
+        final Bundle args = new Bundle();
+        args.putString(ARG_SELECTED_ITEM, selectedItem);
+
+        final NavigationFragment fragment = new NavigationFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle args;
+        if ((args = getArguments()) != null) {
+            selectedItem = args.getString(ARG_SELECTED_ITEM);
+        }
     }
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container,
                                    Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_navigation, container, false);
+        loadNavItems();
         return view;
     }
 
     @Override
     public final void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getListView().setAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, getNavItems()));
+
+        MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+        menuDrawer = activity.getMenuDrawer();
+
+        getListView().setAdapter(new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_1, items));
     }
 
     @Override
     public final void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-        intent.putExtra(MenuDrawerActivity.EXTRA_NAV_CHANGE, true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        getActivity().overridePendingTransition(0, 0);
+        final TextView textView = (TextView)v;
+        final String item = textView.getText().toString();
+
+        if (item.equals(getString(R.string.home))
+                && !(getString(R.string.home).equals(selectedItem))) {
+
+        }
+        else if (item.equals(getString(R.string.help))
+                && !(getString(R.string.help).equals(selectedItem))) {
+
+        }
+        else if (item.equals(getString(R.string.promotions))
+                && !(getString(R.string.promotions).equals(selectedItem))) {
+
+        }
+        else if (item.equals(getString(R.string.log_in))
+                && !(getString(R.string.log_in).equals(selectedItem))) {
+
+        }
+        else menuDrawer.closeMenu();
+
+//        final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+//        intent.putExtra(MenuDrawerActivity.EXTRA_NAV_CHANGE, true);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+//        getActivity().overridePendingTransition(0, 0);
     }
 
-    private final String[] getNavItems() {
-        return new String[]{"Navigation 1", "Navigation 1", "Navigation 1"};
+    private void loadNavItems() {
+        items.clear();
+        items.add(getString(R.string.home));
+        items.add(getString(R.string.help));
+        items.add(getString(R.string.promotions));
+        items.add(getString(R.string.log_in));
     }
 }
