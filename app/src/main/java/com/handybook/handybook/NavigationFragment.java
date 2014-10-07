@@ -1,6 +1,8 @@
 package com.handybook.handybook;
 
+import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +69,7 @@ public final class NavigationFragment extends ListFragment {
 
         if (item.equals(getString(R.string.home))
                 && !(getString(R.string.home).equals(selectedItem))) {
-
+            navigateToActivity(ServiceCategoriesActivity.class);
         }
         else if (item.equals(getString(R.string.help))
                 && !(getString(R.string.help).equals(selectedItem))) {
@@ -79,15 +81,9 @@ public final class NavigationFragment extends ListFragment {
         }
         else if (item.equals(getString(R.string.log_in))
                 && !(getString(R.string.log_in).equals(selectedItem))) {
-
+            navigateToActivity(LoginActivity.class);
         }
         else menuDrawer.closeMenu();
-
-//        final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-//        intent.putExtra(MenuDrawerActivity.EXTRA_NAV_CHANGE, true);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
-//        getActivity().overridePendingTransition(0, 0);
     }
 
     private void loadNavItems() {
@@ -96,5 +92,14 @@ public final class NavigationFragment extends ListFragment {
         items.add(getString(R.string.help));
         items.add(getString(R.string.promotions));
         items.add(getString(R.string.log_in));
+    }
+
+    private void navigateToActivity(Class<? extends Activity> clazz) {
+        final Intent intent = new Intent(getActivity(), clazz);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(LoginActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
+        startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
+        getActivity().finish();
     }
 }

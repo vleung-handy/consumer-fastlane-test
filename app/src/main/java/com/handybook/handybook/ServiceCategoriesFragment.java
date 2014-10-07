@@ -53,10 +53,4 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
         return view;
     }
-
-    @Override
-    public final void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-    }
 }

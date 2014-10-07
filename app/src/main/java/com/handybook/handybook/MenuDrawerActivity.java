@@ -10,7 +10,10 @@ import net.simonvt.menudrawer.Position;
 
 abstract class MenuDrawerActivity extends Activity {
     private static final String STATE_MENU_DRAWER = "MENU_DRAWER";
+    protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
+
     private MenuDrawer menuDrawer;
+    private boolean showNavForTransition;
 
     protected abstract Fragment createFragment();
     protected abstract String getNavItemTitle();
@@ -39,6 +42,20 @@ abstract class MenuDrawerActivity extends Activity {
         if (navFragment == null) {
             navFragment = NavigationFragment.newInstance(getNavItemTitle());
             fm.beginTransaction().add(R.id.nav_fragment_container, navFragment).commit();
+        }
+
+        if (savedInstanceState == null && (showNavForTransition
+                = getIntent().getBooleanExtra(EXTRA_SHOW_NAV_FOR_TRANSITION, false))) {
+            menuDrawer.openMenu(false);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (showNavForTransition) {
+            menuDrawer.closeMenu();
+            showNavForTransition = false;
         }
     }
 

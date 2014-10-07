@@ -2,14 +2,14 @@ package com.handybook.handybook;
 
 import android.app.Fragment;
 
-public final class ServiceCategoriesActivity extends MenuDrawerActivity {
+public class LoginActivity extends MenuDrawerActivity {
     @Override
     protected final Fragment createFragment() {
-        return ServiceCategoriesFragment.newInstance();
+        return LoginActivityFragment.newInstance();
     }
 
     @Override
     protected final String getNavItemTitle() {
-        return getString(R.string.home);
+        return getString(R.string.log_in);
     }
 }
