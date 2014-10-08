@@ -23,14 +23,14 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
     }
 
     @Override
-    public final void onCreate(Bundle savedInstanceState) {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         services = dataManager.getServices();
     }
 
     @Override
-    public final View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                   Bundle savedInstanceState) {
+    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                                   final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.inject(this, view);
 

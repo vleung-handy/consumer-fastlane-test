@@ -2,16 +2,18 @@
 - login flow
 - account flow
 
-- create themes and styles for reuse
+- add 'm' notations
+- create additional themes and styles for reuse (width, height, etc groupings)
 - get app icons from at proper sizes
 - get spin icon at proper sizes
-- get hex color values
+- get hex color values, fonts, font sizes, etc (styles)
 - add crashlytics
 - disable landscape
 
 - mixpanel events
 - ignore unnecessary files from git
 - review UI/UX on different device sizes an API versions
+- refactor layouts to use styles
 - run LINT
 - run performance test, memory analyzers, etc
 - testing

@@ -22,7 +22,7 @@ public final class NavigationFragment extends ListFragment {
     private String selectedItem;
     private MenuDrawer menuDrawer;
 
-    static NavigationFragment newInstance(String selectedItem) {
+    static NavigationFragment newInstance(final String selectedItem) {
         final Bundle args = new Bundle();
         args.putString(ARG_SELECTED_ITEM, selectedItem);
 
@@ -32,28 +32,28 @@ public final class NavigationFragment extends ListFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadNavItems();
 
-        Bundle args;
+        final Bundle args;
         if ((args = getArguments()) != null) {
             selectedItem = args.getString(ARG_SELECTED_ITEM);
         }
     }
 
     @Override
-    public final View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                   Bundle savedInstanceState) {
+    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                                   final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_navigation, container, false);
-        loadNavItems();
         return view;
     }
 
     @Override
-    public final void onActivityCreated(Bundle savedInstanceState) {
+    public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+        final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
         menuDrawer = activity.getMenuDrawer();
 
         getListView().setAdapter(new ArrayAdapter<>(getActivity(),
@@ -61,7 +61,7 @@ public final class NavigationFragment extends ListFragment {
     }
 
     @Override
-    public final void onListItemClick(ListView l, View v, int position, long id) {
+    public final void onListItemClick(final ListView l, final View v, final int position, final long id) {
         super.onListItemClick(l, v, position, id);
 
         final TextView textView = (TextView)v;
@@ -94,7 +94,7 @@ public final class NavigationFragment extends ListFragment {
         items.add(getString(R.string.log_in));
     }
 
-    private void navigateToActivity(Class<? extends Activity> clazz) {
+    private void navigateToActivity(final Class<? extends Activity> clazz) {
         final Intent intent = new Intent(getActivity(), clazz);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(LoginActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);

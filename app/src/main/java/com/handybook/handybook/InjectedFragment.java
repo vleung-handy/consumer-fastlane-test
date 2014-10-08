@@ -6,8 +6,9 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 
 public class InjectedFragment extends Fragment {
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication)getActivity().getApplication()).inject(this);
     }

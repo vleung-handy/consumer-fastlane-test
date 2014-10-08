@@ -19,7 +19,7 @@ abstract class MenuDrawerActivity extends Activity {
     protected abstract String getNavItemTitle();
 
     @Override
-    protected final void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT,
                 MenuDrawer.MENU_DRAG_WINDOW);
@@ -51,7 +51,7 @@ abstract class MenuDrawerActivity extends Activity {
     }
 
     @Override
-    protected void onStart() {
+    protected final void onStart() {
         super.onStart();
         if (showNavForTransition) {
             menuDrawer.closeMenu();
@@ -60,13 +60,13 @@ abstract class MenuDrawerActivity extends Activity {
     }
 
     @Override
-    protected final void onRestoreInstanceState(Bundle inState) {
+    protected final void onRestoreInstanceState(final Bundle inState) {
         super.onRestoreInstanceState(inState);
         menuDrawer.restoreState(inState.getParcelable(STATE_MENU_DRAWER));
     }
 
     @Override
-    protected final void onSaveInstanceState(Bundle outState) {
+    protected final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(STATE_MENU_DRAWER, menuDrawer.saveState());
     }
