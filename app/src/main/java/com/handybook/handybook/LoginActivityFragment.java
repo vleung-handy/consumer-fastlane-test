@@ -5,6 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.github.johnpersano.supertoasts.SuperActivityToast;
+import com.github.johnpersano.supertoasts.SuperToast;
+
+import java.util.HashMap;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -16,6 +24,9 @@ public final class LoginActivityFragment extends InjectedFragment {
     @InjectView(R.id.login_button) Button loginButton;
     @InjectView(R.id.email_text) EmailInputTextView emailText;
     @InjectView(R.id.password_text) PasswordInputTextView passwordText;
+    @Inject DataManager dataManager;
+    @Inject DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject UserManager userManager;
 
     static LoginActivityFragment newInstance() {
         return new LoginActivityFragment();
@@ -27,11 +38,39 @@ public final class LoginActivityFragment extends InjectedFragment {
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.inject(this, view);
 
+        //TODO resotre spinner on orientation change
+        //TODO add transparent layout to diable while spiinig
+        //TODO replace old toast with new toast
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validateFields()) {
-                    //TODO submit to server
+                    final SuperActivityToast toast =
+                            new SuperActivityToast(getActivity(), SuperToast.Type.PROGRESS);
+                    toast.setText(getString(R.string.loading));
+                    toast.setIndeterminate(true);
+                    toast.setProgressIndeterminate(true);
+                    toast.show();
+
+                    dataManager.authUser(emailText.getText().toString(),
+                            passwordText.getText().toString(), new DataManager.Callback<User>() {
+                        @Override
+                        public void onSuccess(final User user) {
+                            //TODO save data and finish flow (go to bookings page)
+                            userManager.setCurrentUser(user);
+                            toast.dismiss();
+                        }
+
+                        @Override
+                        public void onError(final DataManager.DataManagerError error) {
+                            toast.dismiss();
+                            final HashMap<String, InputTextField> inputMap = new HashMap<>();
+                            inputMap.put("password", passwordText);
+                            inputMap.put("email", emailText);
+                            dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
+                        }
+                    });
                 }
             }
         });

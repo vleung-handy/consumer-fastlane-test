@@ -1,14 +1,15 @@
 package com.handybook.handybook;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
+import com.newrelic.agent.android.NewRelic;
+
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
 
-abstract class MenuDrawerActivity extends Activity {
+abstract class MenuDrawerActivity extends BaseActivity {
     private static final String STATE_MENU_DRAWER = "MENU_DRAWER";
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
 
@@ -21,6 +22,7 @@ abstract class MenuDrawerActivity extends Activity {
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT,
                 MenuDrawer.MENU_DRAG_WINDOW);
         menuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
@@ -81,7 +83,7 @@ abstract class MenuDrawerActivity extends Activity {
         super.onBackPressed();
     }
 
-    public MenuDrawer getMenuDrawer() {
+    public final MenuDrawer getMenuDrawer() {
         return menuDrawer;
     }
 }

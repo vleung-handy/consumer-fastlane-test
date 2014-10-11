@@ -1,7 +1,17 @@
+- find out how to secure app secrets (i.e. config.properites)
+- fix new relic not woring
+- env switcher
+- set network timeouts to 10 sec
+- load userdata seperately and store to device afer auth call
+- post meta data for all api requests (http://stackoverflow.com/questions/17580223/is-there-a-way-to-set-a-base-request-parameter-to-be-included-in-every-request-m)
 - help page
 - login flow
 - account flow
+- clear any stored data when switching envs
 
+
+- verify if properties files can not be viewed and are secured, otherwise need to encrypt? or load at runtime?
+- refactor duplicate frag/act code to use helper classes via interface composition like data manager error handler
 - add 'm' notations
 - create additional themes and styles for reuse (width, height, etc groupings)
 - get app icons from at proper sizes
@@ -10,27 +20,19 @@
 - add crashlytics
 - disable landscape
 
+
+- add new relic for both product flavors
 - mixpanel events
 - ignore unnecessary files from git
 - review UI/UX on different device sizes an API versions
+- refactor out any duplicate code
 - refactor layouts to use styles
 - run LINT
 - run performance test, memory analyzers, etc
 - testing
+- verify security using an apk analyser / decompiler
 
 
 - design & update for Android L
 - review design on all device types in both orientation
 - figure out how to make translucent status bar like ios
-
-
-
-
-
-#KEEP TODOs that make sense on every project here to build Android checklist#
-- remote bug & crash logger (crashlytics, etc)
-- ignore unnecessary files from git
-- review UI/UX on different device sizes an API versions
-- run LINT
-- run performance test, memory analyzers, etc
-- testing

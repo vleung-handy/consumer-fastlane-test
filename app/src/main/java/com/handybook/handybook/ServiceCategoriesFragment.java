@@ -36,10 +36,11 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
         for (String category : services) {
             final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
+
             categoryView.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, 0, 1));
-            categoryView.setText(category);
 
+            categoryView.setText(category);
             categoryView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -47,10 +48,8 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                     startActivity(intent);
                 }
             });
-
             categoryLayout.addView(categoryView, 0);
         }
-
         return view;
     }
 }

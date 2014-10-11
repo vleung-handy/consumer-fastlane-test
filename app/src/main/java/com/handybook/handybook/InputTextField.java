@@ -14,20 +14,20 @@ abstract class InputTextField extends EditText {
 
     public InputTextField(final Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public InputTextField(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
     public InputTextField (final Context context, final AttributeSet attrs, final  int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
+        init();
     }
 
-    private void init(Context context) {
+    private void init() {
         this.setFreezesText(true);
         this.addTextChangedListener(new TextWatcher() {
             @Override

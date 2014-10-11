@@ -5,8 +5,11 @@ import android.app.Application;
 import dagger.ObjectGraph;
 
 public final class BaseApplication extends Application {
-    private final ObjectGraph graph = ObjectGraph.create(new ApplicationModule());
-    final void inject(Object object) {
+    static final String FLAVOR_PROD = "prod";
+    static final String FLAVOR_STAGE = "stage";
+
+    private final ObjectGraph graph = ObjectGraph.create(new ApplicationModule(this));
+    final void inject(final Object object) {
         graph.inject(object);
     }
 }
