@@ -1,7 +1,9 @@
 package com.handybook.handybook;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.newrelic.agent.android.NewRelic;
@@ -83,7 +85,16 @@ abstract class MenuDrawerActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-    public final MenuDrawer getMenuDrawer() {
+    final MenuDrawer getMenuDrawer() {
         return menuDrawer;
+    }
+
+    final void navigateToActivity(final Class<? extends Activity> clazz) {
+        final Intent intent = new Intent(this, clazz);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
+        startActivity(intent);
+        this.overridePendingTransition(0, 0);
+        this.finish();
     }
 }

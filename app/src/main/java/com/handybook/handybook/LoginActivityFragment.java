@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.github.johnpersano.supertoasts.SuperActivityToast;
 import com.github.johnpersano.supertoasts.SuperToast;
 
+import net.simonvt.menudrawer.MenuDrawer;
+
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -57,9 +59,25 @@ public final class LoginActivityFragment extends InjectedFragment {
                             passwordText.getText().toString(), new DataManager.Callback<User>() {
                         @Override
                         public void onSuccess(final User user) {
-                            //TODO save data and finish flow (go to bookings page)
                             userManager.setCurrentUser(user);
                             toast.dismiss();
+
+                            final MenuDrawerActivity activty = (MenuDrawerActivity)getActivity();
+                            final MenuDrawer menuDrawer = activty.getMenuDrawer();
+                            menuDrawer.setOnDrawerStateChangeListener(new MenuDrawer.OnDrawerStateChangeListener() {
+                                @Override
+                                public void onDrawerStateChange(final int oldState, final int newState) {
+                                    if (newState == MenuDrawer.STATE_OPEN) {
+                                        activty.navigateToActivity(ServiceCategoriesActivity.class);
+                                        menuDrawer.setOnDrawerStateChangeListener(null);
+                                    }
+                                }
+
+                                @Override
+                                public void onDrawerSlide(float openRatio, int offsetPixels) {
+                                }
+                            });
+                            activty.getMenuDrawer().openMenu(true);
                         }
 
                         @Override

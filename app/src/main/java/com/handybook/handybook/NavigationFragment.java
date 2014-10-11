@@ -66,10 +66,11 @@ public final class NavigationFragment extends ListFragment {
 
         final TextView textView = (TextView)v;
         final String item = textView.getText().toString();
+        final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
 
         if (item.equals(getString(R.string.home))
                 && !(getString(R.string.home).equals(selectedItem))) {
-            navigateToActivity(ServiceCategoriesActivity.class);
+            activity.navigateToActivity(ServiceCategoriesActivity.class);
         }
         else if (item.equals(getString(R.string.help))
                 && !(getString(R.string.help).equals(selectedItem))) {
@@ -81,7 +82,7 @@ public final class NavigationFragment extends ListFragment {
         }
         else if (item.equals(getString(R.string.log_in))
                 && !(getString(R.string.log_in).equals(selectedItem))) {
-            navigateToActivity(LoginActivity.class);
+            activity.navigateToActivity(LoginActivity.class);
         }
         else menuDrawer.closeMenu();
     }
@@ -92,14 +93,5 @@ public final class NavigationFragment extends ListFragment {
         items.add(getString(R.string.help));
         items.add(getString(R.string.promotions));
         items.add(getString(R.string.log_in));
-    }
-
-    private void navigateToActivity(final Class<? extends Activity> clazz) {
-        final Intent intent = new Intent(getActivity(), clazz);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(LoginActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
-        startActivity(intent);
-        getActivity().overridePendingTransition(0, 0);
-        getActivity().finish();
     }
 }
