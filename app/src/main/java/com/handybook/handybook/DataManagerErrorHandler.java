@@ -1,6 +1,5 @@
 package com.handybook.handybook;
 
-import android.app.Activity;
 import android.content.Context;
 
 import java.util.Map;

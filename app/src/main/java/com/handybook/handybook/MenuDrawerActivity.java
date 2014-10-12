@@ -6,8 +6,6 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.newrelic.agent.android.NewRelic;
-
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
 

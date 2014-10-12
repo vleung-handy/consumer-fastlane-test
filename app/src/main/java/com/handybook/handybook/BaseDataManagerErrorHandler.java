@@ -1,12 +1,8 @@
 package com.handybook.handybook;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
-
-import com.github.johnpersano.supertoasts.SuperActivityToast;
-import com.github.johnpersano.supertoasts.SuperToast;
 
 import java.util.Map;
 
