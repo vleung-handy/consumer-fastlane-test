@@ -22,6 +22,13 @@
             android:layout_below="@id/email_text"
             style="@style/EditText.Password" />
 
+        <Button
+            android:id="@+id/forgot_button"
+            android:layout_below="@id/password_text"
+            android:layout_centerHorizontal="true"
+            android:text="@string/forgot_password"
+            style="@style/TextButton.SmallFont" />
+
     </RelativeLayout>
 
 </RelativeLayout>

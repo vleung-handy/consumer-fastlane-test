@@ -44,4 +44,8 @@ final class BaseDataManagerErrorHandler implements DataManagerErrorHandler {
         toast.setText(message);
         toast.show();
     }
+
+    public final void handleError(final Context context, final DataManager.DataManagerError error) {
+        handleError(context, error, null);
+    }
 }

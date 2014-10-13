@@ -5,5 +5,7 @@
     <color name="handy_bg">#EAEAEA</color>
     <color name="white">#FFFFFF</color>
     <color name="white_pressed">#E1E1E1</color>
+    <color name="black">#434343</color>
+    <color name="black_pressed">#B1B1B1</color>
     <color name="error_red">#F95855</color>
 </resources>

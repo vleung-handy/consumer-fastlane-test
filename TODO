@@ -1,13 +1,14 @@
-- set network timeouts to 10 sec
-- fix new relic not woring
-- find out how to secure app secrets (i.e. config.properites)
+- figure out how to proxy with charles again
 - env switcher
+- fix new relic not working
+- find out how to secure app secrets (i.e. config.properites)
 - load userdata seperately and store to device afer auth call
 - post meta data for all api requests (http://stackoverflow.com/questions/17580223/is-there-a-way-to-set-a-base-request-parameter-to-be-included-in-every-request-m)
 - help page
 - login flow
 - account flow
 - clear any stored data when switching envs
+- set network timeouts to 10 sec (try by using okhttp client)
 
 
 - verify if properties files can not be viewed and are secured, otherwise need to encrypt? or load at runtime?

@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -57,6 +58,17 @@ public final class BaseDataManager extends DataManager {
                 user.setAuthToken(response.optString("auth_token"));
                 user.setId(response.optString("id"));
                 cb.onSuccess(user);
+            }
+        });
+    }
+
+    @Override
+    public final void requestPasswordReset(final String email, final Callback<String> cb) {
+        service.requestPasswordReset(email, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(JSONObject response) {
+                final JSONArray array = response.optJSONArray("messages");
+                cb.onSuccess(array != null && array.length() > 0 ? array.optString(0) : null);
             }
         });
     }

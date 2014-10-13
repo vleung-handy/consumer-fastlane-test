@@ -16,6 +16,8 @@ abstract class DataManager {
 
     abstract void authUser(String email, String password, Callback<User> cb);
 
+    abstract void requestPasswordReset(String email, Callback<String> cb);
+
     static interface Callback<T> {
         void onSuccess(T response);
         void onError(DataManagerError error);
