@@ -53,11 +53,19 @@ public final class BaseDataManager extends DataManager {
     public final void authUser(final String email, final String password, final Callback<User> cb) {
         service.createUserSession(email, password, new HandyRetrofitCallback(cb) {
             @Override
-            public final void success(final JSONObject response) {
-                final User user = new User();
-                user.setAuthToken(response.optString("auth_token"));
-                user.setId(response.optString("id"));
-                cb.onSuccess(user);
+            void success(final JSONObject response) {
+                handleCreateSessionResponse(response, cb);
+            }
+        });
+    }
+
+    @Override
+    public final void authFBUser(final String fbid, final String accessToken, final String email,
+                                 final String firstName, String lastName, final Callback<User> cb) {
+        service.createUserSessionFB(fbid, accessToken, email, firstName, lastName, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                handleCreateSessionResponse(response, cb);
             }
         });
     }
@@ -71,5 +79,12 @@ public final class BaseDataManager extends DataManager {
                 cb.onSuccess(array != null && array.length() > 0 ? array.optString(0) : null);
             }
         });
+    }
+
+    private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb) {
+        final User user = new User();
+        user.setAuthToken(response.optString("auth_token"));
+        user.setId(response.optString("id"));
+        cb.onSuccess(user);
     }
 }

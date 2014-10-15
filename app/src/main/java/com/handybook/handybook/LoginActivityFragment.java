@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,6 +10,15 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.facebook.FacebookAuthorizationException;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
@@ -24,12 +34,16 @@ public final class LoginActivityFragment extends InjectedFragment {
     private static final String STATE_PASSWORD_HIGHLIGHT = "PASSWORD_HIGHLIGHT";
 
     private ProgressDialog progressDialog;
-    private Toast forgotToast;
+    private Toast toast;
+    private UiLifecycleHelper uiHelper;
+    private boolean handleFBSessionUpdates = false;
 
     @InjectView(R.id.login_button) Button loginButton;
     @InjectView(R.id.forgot_button) Button forgotButton;
     @InjectView(R.id.email_text) EmailInputTextView emailText;
     @InjectView(R.id.password_text) PasswordInputTextView passwordText;
+    @InjectView(R.id.fb_button) LoginButton fbButton;
+
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
     @Inject UserManager userManager;
@@ -39,18 +53,28 @@ public final class LoginActivityFragment extends InjectedFragment {
     }
 
     @Override
+    public final void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        uiHelper = new UiLifecycleHelper(getActivity(), statusCallback);
+        uiHelper.onCreate(savedInstanceState);
+    }
+
+    @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.inject(this, view);
+
+        fbButton.setFragment(this);
+        fbButton.setReadPermissions("email");
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setDelay(500);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.loading));
 
-        forgotToast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        forgotToast.setGravity(Gravity.CENTER, 0, 0);
+        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
 
         return view;
     }
@@ -72,10 +96,37 @@ public final class LoginActivityFragment extends InjectedFragment {
     }
 
     @Override
+    public final void onResume() {
+        super.onResume();
+        uiHelper.onResume();
+        handleFBSessionUpdates = true;
+    }
+
+    @Override
+    public final void onPause() {
+        super.onPause();
+        uiHelper.onPause();
+        handleFBSessionUpdates = false;
+    }
+
+    @Override
+    public final void onDestroy() {
+        super.onDestroy();
+        uiHelper.onDestroy();
+    }
+
+    @Override
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
+        uiHelper.onSaveInstanceState(outState);
         outState.putBoolean(STATE_EMAIL_HIGHLIGHT, emailText.isHighlighted());
         outState.putBoolean(STATE_PASSWORD_HIGHLIGHT, passwordText.isHighlighted());
+    }
+
+    @Override
+    public final void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        uiHelper.onActivityResult(requestCode, resultCode, data);
     }
 
     private boolean validateFields() {
@@ -107,42 +158,7 @@ public final class LoginActivityFragment extends InjectedFragment {
                 progressDialog.show();
 
                 dataManager.authUser(emailText.getText().toString(),
-                    passwordText.getText().toString(), new DataManager.Callback<User>() {
-                        @Override
-                        public void onSuccess(final User user) {
-                            userManager.setCurrentUser(user);
-                            progressDialog.dismiss();
-                            enableInputs();
-
-                            final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
-                            final MenuDrawer menuDrawer = activity.getMenuDrawer();
-                            menuDrawer.setOnDrawerStateChangeListener(new MenuDrawer.OnDrawerStateChangeListener() {
-                                @Override
-                                public void onDrawerStateChange(final int oldState, final int newState) {
-                                    if (newState == MenuDrawer.STATE_OPEN) {
-                                        activity.navigateToActivity(ServiceCategoriesActivity.class);
-                                        menuDrawer.setOnDrawerStateChangeListener(null);
-                                    }
-                                }
-
-                                @Override
-                                public void onDrawerSlide(float openRatio, int offsetPixels) {
-                                }
-                            });
-                            activity.getMenuDrawer().openMenu(true);
-                        }
-
-                        @Override
-                        public void onError(final DataManager.DataManagerError error) {
-                            progressDialog.dismiss();
-                            enableInputs();
-
-                            final HashMap<String, InputTextField> inputMap = new HashMap<>();
-                            inputMap.put("password", passwordText);
-                            inputMap.put("email", emailText);
-                            dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
-                        }
-                    });
+                    passwordText.getText().toString(), userCallback);
             }
         }
     };
@@ -160,8 +176,8 @@ public final class LoginActivityFragment extends InjectedFragment {
                         progressDialog.dismiss();
                         enableInputs();
 
-                        forgotToast.setText(response);
-                        forgotToast.show();
+                        toast.setText(response);
+                        toast.show();
                     }
 
                     @Override
@@ -172,6 +188,81 @@ public final class LoginActivityFragment extends InjectedFragment {
                     }
                 });
             }
+        }
+    };
+
+    private final Session.StatusCallback statusCallback = new Session.StatusCallback() {
+        @Override
+        public void call(final Session session, final SessionState state, final Exception exception) {
+            if (!handleFBSessionUpdates) return;
+
+            if (exception instanceof FacebookAuthorizationException) {
+                toast.setText(R.string.default_error_string);
+                toast.show();
+            }
+            else if (session != null && session.isOpened()) {
+                final Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
+                    @Override
+                    public void onCompleted(final GraphUser user, final Response response) {
+                        if (response.getError() != null || (user != null && user.asMap().get("email") == null)) {
+                            toast.setText(R.string.default_error_string);
+                            toast.show();
+                            session.closeAndClearTokenInformation();
+                        }
+                        else {
+                            dataManager.authFBUser(user.getId(), session.getAccessToken(),
+                                    user.asMap().get("email").toString(),  user.getFirstName(),
+                                    user.getLastName(), userCallback);
+                        }
+                    }
+                });
+                Request.executeBatchAsync(request);
+                //TODO match view to iOS
+                //TODO bug, if user cancels fb login, unable to click fb login button again
+            }
+        }
+    };
+
+    private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>() {
+        @Override
+        public void onSuccess(final User user) {
+            userManager.setCurrentUser(user);
+            progressDialog.dismiss();
+            enableInputs();
+
+            Session session = Session.getActiveSession();
+            if (session != null) session.closeAndClearTokenInformation();
+
+            final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+            final MenuDrawer menuDrawer = activity.getMenuDrawer();
+            menuDrawer.setOnDrawerStateChangeListener(new MenuDrawer.OnDrawerStateChangeListener() {
+                @Override
+                public void onDrawerStateChange(final int oldState, final int newState) {
+                    if (newState == MenuDrawer.STATE_OPEN) {
+                        activity.navigateToActivity(ServiceCategoriesActivity.class);
+                        menuDrawer.setOnDrawerStateChangeListener(null);
+                    }
+                }
+
+                @Override
+                public void onDrawerSlide(float openRatio, int offsetPixels) {
+                }
+            });
+            activity.getMenuDrawer().openMenu(true);
+        }
+
+        @Override
+        public void onError(final DataManager.DataManagerError error) {
+            progressDialog.dismiss();
+            enableInputs();
+
+            Session session = Session.getActiveSession();
+            if (session != null) session.closeAndClearTokenInformation();
+
+            final HashMap<String, InputTextField> inputMap = new HashMap<>();
+            inputMap.put("password", passwordText);
+            inputMap.put("email", emailText);
+            dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
         }
     };
 }

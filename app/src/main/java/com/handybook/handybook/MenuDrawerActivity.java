@@ -1,10 +1,10 @@
 package com.handybook.handybook;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
@@ -30,7 +30,7 @@ abstract class MenuDrawerActivity extends BaseActivity {
         menuDrawer.setContentView(R.layout.activity_menu_drawer);
         menuDrawer.setMenuView(R.layout.activity_menu_nav);
 
-        final FragmentManager fm = getFragmentManager();
+        final FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {

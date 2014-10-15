@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Handybook</string>
+    <string name="app_name">Handy</string>
     <string name="home">Home</string>
     <string name="help">Help</string>
     <string name="promotions">Promotions</string>
@@ -10,4 +10,6 @@
     <string name="default_error_string">"Sorry, something went wrong. Please try again."</string>
     <string name="loading">Loading...</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="facebook_app_id">365796390249413</string>
+    <string name="or">or</string>
 </resources>

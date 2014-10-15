@@ -1,11 +1,10 @@
 package com.handybook.handybook;
 
-import android.app.Fragment;
 import android.os.Bundle;
 
 import butterknife.ButterKnife;
 
-public class InjectedFragment extends Fragment {
+public class InjectedFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {

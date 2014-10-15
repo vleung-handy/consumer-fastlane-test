@@ -13,8 +13,24 @@
         android:layout_above="@id/login_button"
         style="@style/ContentLayout.NoBottom">
 
+        <com.facebook.widget.LoginButton
+            android:id="@+id/fb_button"
+            style="@style/FacebookButton" />
+
+        <TextView
+            android:id="@+id/or_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fb_button"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/or"
+            style="@style/TextView" />
+
         <com.handybook.handybook.EmailInputTextView
             android:id="@+id/email_text"
+            android:layout_below="@id/or_text"
             style="@style/EditText.Email" />
 
         <com.handybook.handybook.PasswordInputTextView

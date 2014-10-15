@@ -1,6 +1,6 @@
 package com.handybook.handybook;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 public final class ServiceCategoriesActivity extends MenuDrawerActivity {
     @Override
