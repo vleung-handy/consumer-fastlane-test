@@ -128,7 +128,6 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
                                               final int requestCode, final View view) {
         if (requestCode == 1) {
             userManager.setCurrentUser(null);
-            menuDrawer.closeMenu();
         }
     }
 
@@ -141,8 +140,13 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
         loadNavItems();
         BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
         adapter.notifyDataSetChanged();
-    }
 
+        if (!event.isLoggedIn()) {
+            final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+            activity.navigateToActivity(ServiceCategoriesActivity.class);
+        }
+    }
+    
     private void loadNavItems() {
         final boolean userLoggedIn = userManager.getCurrentUser() != null;
 
