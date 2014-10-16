@@ -16,4 +16,5 @@
     <string name="share">Share</string>
     <string name="my_bookings">My Bookings</string>
     <string name="profile">Profile</string>
+    <string name="want_to_log_out">Are you sure you want to log out?</string>
 </resources>

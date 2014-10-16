@@ -6,6 +6,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.otto.Bus;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -15,12 +16,14 @@ import javax.inject.Inject;
 
 public final class UserManager implements Observer {
     private final Context context;
+    private final Bus bus;
     private User user;
     private final SecurePreferences securePrefs;
 
     @Inject
-    UserManager(final Context context) {
+    UserManager(final Context context, final Bus bus) {
         this.context = context;
+        this.bus = bus;
 
         final Properties configs = PropertiesReader.getProperties(context, "config.properties");
         securePrefs = new SecurePreferences(context, null,
@@ -40,6 +43,7 @@ public final class UserManager implements Observer {
             if (user != null) user.deleteObserver(this);
             user = null;
             securePrefs.put("USER_OBJ", null);
+            bus.post(new UserLoggedInEvent(false));
             return;
         }
 
@@ -57,8 +61,10 @@ public final class UserManager implements Observer {
             public boolean shouldSkipClass(final Class<?> clazz) {
                 return clazz.equals(Observer.class);
             }
-        }).create();
+        }).registerTypeAdapter(User.class, new User.UserSerializer()).create();
+
         securePrefs.put("USER_OBJ", gson.toJson(user));
+        bus.post(new UserLoggedInEvent(true));
     }
 
     @Override
@@ -66,3 +72,4 @@ public final class UserManager implements Observer {
         if (observable instanceof User) setCurrentUser((User)observable);
     }
 }
+

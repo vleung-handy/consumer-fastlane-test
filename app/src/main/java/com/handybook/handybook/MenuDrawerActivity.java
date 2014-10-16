@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.View;
+
+import com.simplealertdialog.SimpleAlertDialog;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
 
-abstract class MenuDrawerActivity extends BaseActivity {
+abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDialog.OnClickListener {
     private static final String STATE_MENU_DRAWER = "MENU_DRAWER";
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
 
@@ -94,5 +97,23 @@ abstract class MenuDrawerActivity extends BaseActivity {
         startActivity(intent);
         this.overridePendingTransition(0, 0);
         this.finish();
+    }
+
+    @Override
+    public final void onDialogPositiveButtonClicked(final SimpleAlertDialog dialog,
+                                              final int requestCode, final View view) {
+        final FragmentManager fm = getSupportFragmentManager();
+        final NavigationFragment navFragment
+                = (NavigationFragment)fm.findFragmentById(R.id.nav_fragment_container);
+        if (requestCode == 1) navFragment.onDialogPositiveButtonClicked(dialog, requestCode, view);
+    }
+
+    @Override
+    public final void onDialogNegativeButtonClicked(final SimpleAlertDialog dialog,
+                                              final int requestCode, final View view) {
+        final FragmentManager fm = getSupportFragmentManager();
+        final NavigationFragment navFragment
+                = (NavigationFragment)fm.findFragmentById(R.id.nav_fragment_container);
+        if (requestCode == 1) navFragment.onDialogNegativeButtonClicked(dialog, requestCode, view);
     }
 }

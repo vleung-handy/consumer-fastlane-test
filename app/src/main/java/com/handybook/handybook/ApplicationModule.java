@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Base64;
 
+import com.squareup.otto.Bus;
+
 import java.util.Properties;
 
 import javax.inject.Singleton;
@@ -65,5 +67,9 @@ final class ApplicationModule {
 
     @Provides final DataManagerErrorHandler provideDataManagerErrorHandler() {
         return new BaseDataManagerErrorHandler();
+    }
+
+    @Provides @Singleton final Bus provideBus() {
+        return new Bus();
     }
 }

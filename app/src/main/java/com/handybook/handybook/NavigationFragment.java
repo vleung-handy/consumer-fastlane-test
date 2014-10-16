@@ -6,9 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.simplealertdialog.SimpleAlertDialog;
+import com.simplealertdialog.SimpleAlertDialogFragment;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
@@ -16,7 +22,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public final class NavigationFragment extends ListFragment {
+public final class NavigationFragment extends ListFragment implements SimpleAlertDialog.OnClickListener {
     static final String ARG_SELECTED_ITEM = "com.handybook.handybook.ARG_SELECTED_ITEM";
 
     private final ArrayList<String> items = new ArrayList<String>();
@@ -24,6 +30,7 @@ public final class NavigationFragment extends ListFragment {
     private MenuDrawer menuDrawer;
 
     @Inject UserManager userManager;
+    @Inject Bus bus;
 
     static NavigationFragment newInstance(final String selectedItem) {
         final Bundle args = new Bundle();
@@ -58,6 +65,13 @@ public final class NavigationFragment extends ListFragment {
     public final void onResume() {
         super.onResume();
         loadNavItems();
+        bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.unregister(this);
     }
 
     @Override
@@ -95,7 +109,35 @@ public final class NavigationFragment extends ListFragment {
                 && !(getString(R.string.log_in).equals(selectedItem))) {
             activity.navigateToActivity(LoginActivity.class);
         }
+        else if (item.equals(getString(R.string.log_out))) {
+            new SimpleAlertDialogFragment.Builder()
+                    .setMessage(getString(R.string.want_to_log_out))
+                    .setPositiveButton(R.string.log_out)
+                    .setNegativeButton(android.R.string.cancel)
+                    .setRequestCode(1)
+                    .create().show(getActivity().getFragmentManager(), "dialog");
+        }
         else menuDrawer.closeMenu();
+    }
+
+    @Override
+    public final void onDialogPositiveButtonClicked(final SimpleAlertDialog dialog,
+                                              final int requestCode, final View view) {
+        if (requestCode == 1) {
+            userManager.setCurrentUser(null);
+            menuDrawer.closeMenu();
+        }
+    }
+
+    @Override
+    public final void onDialogNegativeButtonClicked(final SimpleAlertDialog dialog,
+                                              final int requestCode, final View view) {}
+
+    @Subscribe
+    public final void userAuthUpdated(final UserLoggedInEvent event) {
+        loadNavItems();
+        BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
+        adapter.notifyDataSetChanged();
     }
 
     private void loadNavItems() {

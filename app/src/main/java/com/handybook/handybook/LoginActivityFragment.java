@@ -226,6 +226,7 @@ public final class LoginActivityFragment extends InjectedFragment {
                 });
                 Request.executeBatchAsync(request);
                 //TODO match view to iOS
+                //TODO create own facebook login button to avoid replay calls after crash and state change
             }
         }
     };

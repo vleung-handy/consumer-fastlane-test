@@ -19,9 +19,15 @@
 # Butterknife
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
--keepnames class * { @butterknife.InjectView *;}
+-keepnames class * { @butterknife.InjectView *; }
 
 # Dagger
 -dontwarn dagger.internal.codegen.**
 -keep class * extends dagger.internal.Binding
 -keep class * extends dagger.internal.ModuleAdapter
+
+#Otto
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}
