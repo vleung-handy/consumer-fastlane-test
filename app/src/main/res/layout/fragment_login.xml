@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/fb_button"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="@string/or"
             style="@style/TextView" />

@@ -55,6 +55,7 @@ public final class LoginActivityFragment extends InjectedFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         uiHelper = new UiLifecycleHelper(getActivity(), statusCallback);
         uiHelper.onCreate(savedInstanceState);
     }
@@ -204,7 +205,14 @@ public final class LoginActivityFragment extends InjectedFragment {
                 final Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
                     @Override
                     public void onCompleted(final GraphUser user, final Response response) {
-                        if (response.getError() != null || (user != null && user.asMap().get("email") == null)) {
+                        if (response.getError() != null ) {
+                            toast.setText(R.string.default_error_string);
+                            toast.show();
+                            session.closeAndClearTokenInformation();
+                        }
+                        else if (user != null && user.asMap().get("email") == null) {
+                             // TODO if email not given, then deauthorize app and show user error to give email
+                            //https://developers.facebook.com/docs/facebook-login/permissions/v2.1
                             toast.setText(R.string.default_error_string);
                             toast.show();
                             session.closeAndClearTokenInformation();
@@ -218,7 +226,6 @@ public final class LoginActivityFragment extends InjectedFragment {
                 });
                 Request.executeBatchAsync(request);
                 //TODO match view to iOS
-                //TODO bug, if user cancels fb login, unable to click fb login button again
             }
         }
     };

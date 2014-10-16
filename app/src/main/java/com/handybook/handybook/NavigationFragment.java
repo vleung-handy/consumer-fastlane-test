@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 public final class NavigationFragment extends ListFragment {
     static final String ARG_SELECTED_ITEM = "com.handybook.handybook.ARG_SELECTED_ITEM";
@@ -19,6 +22,8 @@ public final class NavigationFragment extends ListFragment {
     private final ArrayList<String> items = new ArrayList<String>();
     private String selectedItem;
     private MenuDrawer menuDrawer;
+
+    @Inject UserManager userManager;
 
     static NavigationFragment newInstance(final String selectedItem) {
         final Bundle args = new Bundle();
@@ -32,6 +37,8 @@ public final class NavigationFragment extends ListFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((BaseApplication)getActivity().getApplication()).inject(this);
+
         loadNavItems();
 
         final Bundle args;
@@ -45,6 +52,12 @@ public final class NavigationFragment extends ListFragment {
                                    final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_navigation, container, false);
         return view;
+    }
+
+    @Override
+    public final void onResume() {
+        super.onResume();
+        loadNavItems();
     }
 
     @Override
@@ -86,10 +99,23 @@ public final class NavigationFragment extends ListFragment {
     }
 
     private void loadNavItems() {
+        final boolean userLoggedIn = userManager.getCurrentUser() != null;
+
         items.clear();
         items.add(getString(R.string.home));
+
+        if (userLoggedIn) {
+            items.add(getString(R.string.profile));
+            items.add(getString(R.string.my_bookings));
+        }
+
         items.add(getString(R.string.help));
+
+        if (userLoggedIn) items.add(getString(R.string.share));
+
         items.add(getString(R.string.promotions));
-        items.add(getString(R.string.log_in));
+
+        if (userManager.getCurrentUser() != null) items.add(getString(R.string.log_out));
+        else items.add(getString(R.string.log_in));
     }
 }

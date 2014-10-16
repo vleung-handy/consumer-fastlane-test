@@ -12,4 +12,8 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="facebook_app_id">365796390249413</string>
     <string name="or">or</string>
+    <string name="log_out">Log Out</string>
+    <string name="share">Share</string>
+    <string name="my_bookings">My Bookings</string>
+    <string name="profile">Profile</string>
 </resources>

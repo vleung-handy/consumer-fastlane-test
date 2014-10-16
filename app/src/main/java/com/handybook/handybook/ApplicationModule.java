@@ -16,6 +16,7 @@ import retrofit.RestAdapter;
 @Module(injects = {
         ServiceCategoriesFragment.class,
         LoginActivityFragment.class,
+        NavigationFragment.class,
         BaseDataManager.class
 })
 final class ApplicationModule {
