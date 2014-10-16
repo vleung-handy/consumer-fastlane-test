@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.simplealertdialog.SimpleAlertDialog;
 import com.simplealertdialog.SimpleAlertDialogFragment;
@@ -96,6 +95,10 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
         if (item.equals(getString(R.string.home))
                 && !(getString(R.string.home).equals(selectedItem))) {
             activity.navigateToActivity(ServiceCategoriesActivity.class);
+        }
+        else if (item.equals(getString(R.string.profile))
+                && !(getString(R.string.profile).equals(selectedItem))) {
+            activity.navigateToActivity(ProfileActivity.class);
         }
         else if (item.equals(getString(R.string.help))
                 && !(getString(R.string.help).equals(selectedItem))) {

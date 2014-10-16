@@ -29,7 +29,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class LoginActivityFragment extends InjectedFragment {
+public final class LoginFragment extends InjectedFragment {
     private static final String STATE_EMAIL_HIGHLIGHT = "EMAIL_HIGHLIGHT";
     private static final String STATE_PASSWORD_HIGHLIGHT = "PASSWORD_HIGHLIGHT";
 
@@ -48,8 +48,8 @@ public final class LoginActivityFragment extends InjectedFragment {
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
     @Inject UserManager userManager;
 
-    static LoginActivityFragment newInstance() {
-        return new LoginActivityFragment();
+    static LoginFragment newInstance() {
+        return new LoginFragment();
     }
 
     @Override
