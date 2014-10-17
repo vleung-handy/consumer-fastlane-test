@@ -1,5 +1,8 @@
 package com.handybook.handybook;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -66,6 +69,20 @@ public final class BaseDataManager extends DataManager {
             @Override
             void success(final JSONObject response) {
                 handleCreateSessionResponse(response, cb);
+            }
+        });
+    }
+
+    public final void getUserInfo(final String userId, final String authToken, final Callback<User> cb) {
+        service.getUserInfo(userId, authToken, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                final Gson gson = new Gson();
+                final User user = gson.fromJson(response.toString(), new TypeToken<User>(){}.getType());
+
+                user.setAuthToken(authToken);
+                user.setId(userId);
+                cb.onSuccess(user);
             }
         });
     }

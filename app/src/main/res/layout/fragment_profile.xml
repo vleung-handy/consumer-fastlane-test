@@ -10,7 +10,7 @@
         style="@style/Button.Blue" />
 
     <RelativeLayout
-        android:layout_above="@id/login_button"
+        android:layout_above="@id/update_button"
         style="@style/ContentLayout.NoBottom">
 
         <TextView
@@ -20,11 +20,6 @@
             android:gravity="center"
             android:text="@string/you_have_credits"
             style="@style/TextView" />
-
-        <com.handybook.handybook.EmailInputTextView
-            android:id="@+id/name_text"
-            android:layout_below="@id/credits_text"
-            style="@style/EditText.Email" />
 
     </RelativeLayout>
 

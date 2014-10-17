@@ -12,22 +12,32 @@ import java.util.Observable;
 public final class User extends Observable {
     @SerializedName("auth_token") private String authToken;
     @SerializedName("id") private String id;
+    @SerializedName("credits") private float credits;
 
-    String getAuthToken() {
+    final String getAuthToken() {
         return authToken;
     }
 
-    void setAuthToken(String authToken) {
+    final void setAuthToken(String authToken) {
         this.authToken = authToken;
         triggerObservers();
     }
 
-    String getId() {
+    final String getId() {
         return id;
     }
 
-    void setId(String id) {
+    final void setId(String id) {
         this.id = id;
+        triggerObservers();
+    }
+
+    final float getCredits() {
+        return credits;
+    }
+
+    final void setCredits(float credits) {
+        this.credits = credits;
         triggerObservers();
     }
 

@@ -146,7 +146,7 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
             activity.navigateToActivity(ServiceCategoriesActivity.class);
         }
     }
-    
+
     private void loadNavItems() {
         final boolean userLoggedIn = userManager.getCurrentUser() != null;
 

@@ -4,6 +4,7 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.Query;
 
 public interface HandyRetrofitService {
@@ -19,6 +20,9 @@ public interface HandyRetrofitService {
                              @Field("email") String email, @Field("first_name") String firstName,
                              @Field("last_name") String lastName,
                              HandyRetrofitCallback cb);
+
+    @GET("/users/{user}")
+    void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
