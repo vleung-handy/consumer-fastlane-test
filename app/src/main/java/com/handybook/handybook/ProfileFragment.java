@@ -2,12 +2,16 @@ package com.handybook.handybook;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
@@ -20,11 +24,14 @@ public final class ProfileFragment extends InjectedFragment {
     private static final String STATE_FULLNAME_HIGHLIGHT = "FULLNAME_HIGHLIGHT";
     private static final String STATE_EMAIL_HIGHLIGHT = "EMAIL_HIGHLIGHT";
     private static final String STATE_PHONE_HIGHLIGHT = "PHONE_HIGHLIGHT";
+    private static final String STATE_OLD_PWD_HIGHLIGHT = "OLD_PWD_HIGHLIGHT";
+    private static final String STATE_NEW_PWD_HIGHLIGHT = "NEW_PWD_HIGHLIGHT";
     private static final String STATE_LOADED_USER = "LOADED_USER";
 
     private User user;
     private ProgressDialog progressDialog;
     private boolean loadedUserInfo;
+    private Toast toast;
 
     @InjectView(R.id.credits_text) TextView creditsText;
     @InjectView(R.id.update_button) Button updateButton;
@@ -32,6 +39,8 @@ public final class ProfileFragment extends InjectedFragment {
     @InjectView(R.id.email_text) EmailInputTextView emailText;
     @InjectView(R.id.phone_prefix_text) TextView phonePrefixText;
     @InjectView(R.id.phone_text) PhoneInputTextView phoneText;
+    @InjectView(R.id.old_password_text) PasswordInputTextView oldPasswordtext;
+    @InjectView(R.id.new_password_text) PasswordInputTextView newPasswordtext;
 
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
@@ -45,6 +54,8 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = userManager.getCurrentUser();
+        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
     }
 
     @Override
@@ -59,6 +70,8 @@ public final class ProfileFragment extends InjectedFragment {
         progressDialog.setMessage(getString(R.string.loading));
 
         phoneText.setCountryCode(user.getPhonePrefix());
+        oldPasswordtext.addTextChangedListener(passwordTextWatcher);
+        newPasswordtext.addTextChangedListener(passwordTextWatcher);
 
         return view;
     }
@@ -70,6 +83,8 @@ public final class ProfileFragment extends InjectedFragment {
             if (savedInstanceState.getBoolean(STATE_FULLNAME_HIGHLIGHT)) fullNameText.highlight();
             if (savedInstanceState.getBoolean(STATE_EMAIL_HIGHLIGHT)) emailText.highlight();
             if (savedInstanceState.getBoolean(STATE_PHONE_HIGHLIGHT)) phoneText.highlight();
+            if (savedInstanceState.getBoolean(STATE_OLD_PWD_HIGHLIGHT)) oldPasswordtext.highlight();
+            if (savedInstanceState.getBoolean(STATE_NEW_PWD_HIGHLIGHT)) newPasswordtext.highlight();
             loadedUserInfo = savedInstanceState.getBoolean(STATE_LOADED_USER);
         }
     }
@@ -92,6 +107,8 @@ public final class ProfileFragment extends InjectedFragment {
         outState.putBoolean(STATE_FULLNAME_HIGHLIGHT, fullNameText.isHighlighted());
         outState.putBoolean(STATE_EMAIL_HIGHLIGHT, emailText.isHighlighted());
         outState.putBoolean(STATE_PHONE_HIGHLIGHT, phoneText.isHighlighted());
+        outState.putBoolean(STATE_OLD_PWD_HIGHLIGHT, oldPasswordtext.isHighlighted());
+        outState.putBoolean(STATE_NEW_PWD_HIGHLIGHT, newPasswordtext.isHighlighted());
         outState.putBoolean(STATE_LOADED_USER, loadedUserInfo);
     }
 
@@ -115,13 +132,47 @@ public final class ProfileFragment extends InjectedFragment {
         phoneText.unHighlight();
         phoneText.setText(user.getPhone());
         phoneText.setSelection(phoneText.getText().length());
+
+        oldPasswordtext.unHighlight();
+        oldPasswordtext.setText("");
+
+        newPasswordtext.unHighlight();
+        newPasswordtext.setText("");
     }
+
+    //TODO add confirmation info has been updated
 
     private boolean validateFields() {
         boolean validate = true;
         if (!fullNameText.validate()) validate = false;
         if (!emailText.validate()) validate = false;
         if (!phoneText.validate()) validate = false;
+
+        String oldPwd = oldPasswordtext.getText().toString();
+        String newPwd = newPasswordtext.getText().toString();
+
+        if (oldPwd.length() > 0 || newPwd.length() > 0) {
+            if (!oldPasswordtext.validate()) validate = false;
+            if (!newPasswordtext.validate()) validate = false;
+
+            if (oldPwd.length() < 1 || newPwd.length() < 1) {
+                validate = false;
+                toast.setText(getString(R.string.update_pwd_error));
+                toast.show();
+            }
+            else if (newPwd.length() < 8) {
+                validate = false;
+                newPasswordtext.highlight();
+                toast.setText(getString(R.string.pwd_length_error));
+                toast.show();
+            }
+            else if (!oldPasswordtext.validate()) {
+                validate = false;
+                toast.setText(getString(R.string.update_pwd_error));
+                toast.show();
+            }
+        }
+
         return validate;
     }
 
@@ -129,6 +180,8 @@ public final class ProfileFragment extends InjectedFragment {
         fullNameText.setClickable(false);
         emailText.setClickable(false);
         phoneText.setClickable(false);
+        oldPasswordtext.setClickable(false);
+        newPasswordtext.setClickable(false);
 
         final InputMethodManager imm = (InputMethodManager)getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -139,6 +192,8 @@ public final class ProfileFragment extends InjectedFragment {
         fullNameText.setClickable(true);
         emailText.setClickable(true);
         phoneText.setClickable(true);
+        oldPasswordtext.setClickable(true);
+        newPasswordtext.setClickable(true);
     }
 
     private void loadUserInfo() {
@@ -163,6 +218,8 @@ public final class ProfileFragment extends InjectedFragment {
                 updateUser.setEmail(emailText.getEmail());
                 updateUser.setPhone(phoneText.getPhoneNumber());
 
+                //TODO add pwd update
+
                 dataManager.updateUser(updateUser, userCallback);
             }
         }
@@ -184,6 +241,28 @@ public final class ProfileFragment extends InjectedFragment {
             progressDialog.dismiss();
             enableInputs();
             dataManagerErrorHandler.handleError(getActivity(), error);
+        }
+    };
+
+    private final TextWatcher passwordTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(final CharSequence charSequence, final int start,
+        final int count, final int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(final CharSequence charSequence, final int start,
+        final int before, final int count) {
+        }
+
+        @Override
+        public void afterTextChanged(final Editable editable) {
+            if (oldPasswordtext.getText().toString().length() < 1
+                    && newPasswordtext.getText().toString().length() < 1) {
+                oldPasswordtext.unHighlight();
+                newPasswordtext.unHighlight();
+            }
         }
     };
 }

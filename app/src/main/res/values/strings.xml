@@ -21,4 +21,9 @@
     <string name="want_to_log_out">Are you sure you want to log out?</string>
     <string name="update">Update</string>
     <string name="you_have_credits">YOU HAVE # CREDITS</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="update_pwd_error">To update password you need to enter old and new passwords.</string>
+    <string name="pwd_length_error">Your password must be at least 8 characters.</string>
 </resources>
