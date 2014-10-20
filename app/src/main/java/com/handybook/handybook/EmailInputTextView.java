@@ -28,4 +28,8 @@ final class EmailInputTextView extends InputTextField {
             return true;
         }
     }
+    
+    String getEmail() {
+        return this.getText().toString().trim();
+    }
 }

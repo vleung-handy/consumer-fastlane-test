@@ -145,24 +145,7 @@ public final class ProfileFragment extends InjectedFragment {
         updateUserInfo();
         disableInputs();
         progressDialog.show();
-
-        dataManager.getUserInfo(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
-            @Override
-            public void onSuccess(final User user) {
-                loadedUserInfo = true;
-                progressDialog.dismiss();
-                enableInputs();
-                userManager.setCurrentUser(user);
-                updateUserInfo();
-            }
-
-            @Override
-            public void onError(final DataManager.DataManagerError error) {
-                progressDialog.dismiss();
-                enableInputs();
-                dataManagerErrorHandler.handleError(getActivity(), error);
-            }
-        });
+        dataManager.getUser(user.getId(), user.getAuthToken(), userCallback);
     }
 
     private final View.OnClickListener updateClicked = new View.OnClickListener() {
@@ -171,10 +154,36 @@ public final class ProfileFragment extends InjectedFragment {
             if (validateFields()) {
                 disableInputs();
                 progressDialog.show();
-                progressDialog.dismiss();
-                enableInputs();
-                //TODO call update api
+
+                User updateUser = new User();
+                updateUser.setAuthToken(user.getAuthToken());
+                updateUser.setId(user.getId());
+                updateUser.setFirstName(fullNameText.getFirstName());
+                updateUser.setLastName(fullNameText.getLastName());
+                updateUser.setEmail(emailText.getEmail());
+                updateUser.setPhone(phoneText.getPhoneNumber());
+
+                dataManager.updateUser(updateUser, userCallback);
             }
+        }
+    };
+
+    private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>() {
+        @Override
+        public void onSuccess(final User user) {
+            loadedUserInfo = true;
+            userManager.setCurrentUser(user);
+            ProfileFragment.this.user = userManager.getCurrentUser();
+            updateUserInfo();
+            progressDialog.dismiss();
+            enableInputs();
+        }
+
+        @Override
+        public void onError(final DataManager.DataManagerError error) {
+            progressDialog.dismiss();
+            enableInputs();
+            dataManagerErrorHandler.handleError(getActivity(), error);
         }
     };
 }

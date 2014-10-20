@@ -1,9 +1,14 @@
 package com.handybook.handybook;
 
+import com.google.gson.annotations.SerializedName;
+
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
@@ -24,6 +29,19 @@ public interface HandyRetrofitService {
     @GET("/users/{user}")
     void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
+    @PUT("/users/{user}")
+    void updateUserInfo(@Path("user") String userId, @Body UserUpdateRequest req, HandyRetrofitCallback cb);
+
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
+
+    static final class UserUpdateRequest {
+        @SerializedName("user") private User user;
+        @SerializedName("auth_token") private String authToken;
+
+        UserUpdateRequest(User user, String authToken) {
+            this.user = user;
+            this.authToken = authToken;
+        }
+    }
 }

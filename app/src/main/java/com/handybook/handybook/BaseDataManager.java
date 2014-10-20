@@ -73,16 +73,21 @@ public final class BaseDataManager extends DataManager {
         });
     }
 
-    public final void getUserInfo(final String userId, final String authToken, final Callback<User> cb) {
+    public final void getUser(final String userId, final String authToken, final Callback<User> cb) {
         service.getUserInfo(userId, authToken, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
-                final Gson gson = new Gson();
-                final User user = gson.fromJson(response.toString(), new TypeToken<User>(){}.getType());
+                handleUserResponse(userId, authToken, response, cb);
+            }
+        });
+    }
 
-                user.setAuthToken(authToken);
-                user.setId(userId);
-                cb.onSuccess(user);
+    public final void updateUser(final User user, final Callback<User> cb) {
+        service.updateUserInfo(user.getId(), new HandyRetrofitService.UserUpdateRequest(user,
+                user.getAuthToken()), new HandyRetrofitCallback(cb) {
+            @Override
+            void success(JSONObject response) {
+                handleUserResponse(user.getId(), user.getAuthToken(), response, cb);
             }
         });
     }
@@ -102,6 +107,16 @@ public final class BaseDataManager extends DataManager {
         final User user = new User();
         user.setAuthToken(response.optString("auth_token"));
         user.setId(response.optString("id"));
+        cb.onSuccess(user);
+    }
+
+    private void handleUserResponse(final String userId, final String authToken,
+                                    final JSONObject response, final Callback<User> cb) {
+        final Gson gson = new Gson();
+        final User user = gson.fromJson(response.toString(), new TypeToken<User>(){}.getType());
+
+        user.setAuthToken(authToken);
+        user.setId(userId);
         cb.onSuccess(user);
     }
 }

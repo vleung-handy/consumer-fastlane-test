@@ -230,7 +230,7 @@ public final class LoginFragment extends InjectedFragment {
     private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>() {
         @Override
         public void onSuccess(final User user) {
-            dataManager.getUserInfo(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
+            dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
                 @Override
                 public void onSuccess(final User user) {
                     userManager.setCurrentUser(user);
@@ -240,7 +240,7 @@ public final class LoginFragment extends InjectedFragment {
                     Session session = Session.getActiveSession();
                     if (session != null) session.closeAndClearTokenInformation();
 
-                    final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+                    final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
                     final MenuDrawer menuDrawer = activity.getMenuDrawer();
                     menuDrawer.setOnDrawerStateChangeListener(new MenuDrawer.OnDrawerStateChangeListener() {
                         @Override

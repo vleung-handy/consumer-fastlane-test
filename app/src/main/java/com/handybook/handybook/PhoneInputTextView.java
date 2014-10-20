@@ -83,4 +83,8 @@ final class PhoneInputTextView extends InputTextField {
             return true;
         }
     }
+
+    String getPhoneNumber() {
+        return this.countryCode + this.getText().toString().replaceAll("\\D+","");
+    }
 }

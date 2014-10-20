@@ -2,10 +2,7 @@ package com.handybook.handybook;
 
 import android.content.Context;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 
 import java.util.Observable;
@@ -51,19 +48,7 @@ public final class UserManager implements Observer {
         user = newUser;
         user.addObserver(this);
 
-        final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
-            @Override
-            public boolean shouldSkipField(final FieldAttributes f) {
-                return false;
-            }
-
-            @Override
-            public boolean shouldSkipClass(final Class<?> clazz) {
-                return clazz.equals(Observer.class);
-            }
-        }).registerTypeAdapter(User.class, new User.UserSerializer()).create();
-
-        securePrefs.put("USER_OBJ", gson.toJson(user));
+        securePrefs.put("USER_OBJ", user.toJson());
         bus.post(new UserLoggedInEvent(true));
     }
 

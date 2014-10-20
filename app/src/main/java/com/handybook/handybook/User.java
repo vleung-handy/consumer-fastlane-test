@@ -1,5 +1,9 @@
 package com.handybook.handybook;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
@@ -8,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
 import java.util.Observable;
+import java.util.Observer;
 
 public final class User extends Observable {
     @SerializedName("auth_token") private String authToken;
@@ -109,6 +114,21 @@ public final class User extends Observable {
     final void setCurrencySuffix(final String currencySuffix) {
         this.currencySuffix = currencySuffix;
         triggerObservers();
+    }
+
+    final String toJson() {
+        final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(final FieldAttributes f) {
+                return false;
+            }
+
+            @Override
+            public boolean shouldSkipClass(final Class<?> clazz) {
+                return clazz.equals(Observer.class);
+            }
+        }).registerTypeAdapter(User.class, new User.UserSerializer()).create();
+        return gson.toJson(this);
     }
 
     private void triggerObservers() {
