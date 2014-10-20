@@ -58,6 +58,8 @@ public final class ProfileFragment extends InjectedFragment {
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.loading));
 
+        phoneText.setCountryCode(user.getPhonePrefix());
+
         return view;
     }
 
@@ -172,7 +174,6 @@ public final class ProfileFragment extends InjectedFragment {
                 progressDialog.dismiss();
                 enableInputs();
                 //TODO call update api
-                //TODO load user data on first login
             }
         }
     };

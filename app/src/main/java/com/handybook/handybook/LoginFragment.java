@@ -210,8 +210,7 @@ public final class LoginFragment extends InjectedFragment {
                             session.closeAndClearTokenInformation();
                         }
                         else if (user != null && user.asMap().get("email") == null) {
-                             // TODO if email not given, then deauthorize app and show user error to give email
-                            //https://developers.facebook.com/docs/facebook-login/permissions/v2.1
+                             // TODO if email not given, then deauthorize app
                             toast.setText(R.string.default_error_string);
                             toast.show();
                             session.closeAndClearTokenInformation();
@@ -224,8 +223,6 @@ public final class LoginFragment extends InjectedFragment {
                     }
                 });
                 Request.executeBatchAsync(request);
-                //TODO match view to iOS
-                //TODO create own facebook login button to avoid replay calls after crash and state change
             }
         }
     };

@@ -30,17 +30,19 @@ abstract class InputTextField extends EditText {
     private void init() {
         this.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            public void beforeTextChanged(final CharSequence charSequence, final int start,
+                                          final int count, final int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            public void onTextChanged(final CharSequence charSequence, final int start,
+                                      final int before, final int count) {
                 if (start != 0 || before != 0) unHighlight();
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(final Editable editable) {
             }
         });
     }
