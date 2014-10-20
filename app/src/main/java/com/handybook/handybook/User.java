@@ -25,6 +25,9 @@ public final class User extends Observable {
     @SerializedName("phone") private String phone;
     @SerializedName("currency_char") private String currencyChar;
     @SerializedName("currency_suffix") private String currencySuffix;
+    @SerializedName("password") private String password;
+    @SerializedName("current_password") private String currentPassword;
+    @SerializedName("password_confirmation") private String passwordConfirmation;
 
     final String getAuthToken() {
         return authToken;
@@ -114,6 +117,30 @@ public final class User extends Observable {
     final void setCurrencySuffix(final String currencySuffix) {
         this.currencySuffix = currencySuffix;
         triggerObservers();
+    }
+
+    final String getPassword() {
+        return password;
+    }
+
+    final void setPassword(final String password) {
+        this.password = password;
+    }
+
+    final String getCurrentPassword() {
+        return currentPassword;
+    }
+
+    final void setCurrentPassword(final String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    final String getPasswordConfirmation() {
+        return passwordConfirmation;
+    }
+
+    final void setPasswordConfirmation(final String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
     }
 
     final String toJson() {

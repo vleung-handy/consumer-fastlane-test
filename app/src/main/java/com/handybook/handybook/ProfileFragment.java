@@ -141,8 +141,6 @@ public final class ProfileFragment extends InjectedFragment {
         newPasswordtext.setText("");
     }
 
-    //TODO add confirmation info has been updated
-
     private boolean validateFields() {
         boolean validate = true;
         if (!fullNameText.validate()) validate = false;
@@ -211,7 +209,12 @@ public final class ProfileFragment extends InjectedFragment {
                 updateUser.setEmail(emailText.getEmail());
                 updateUser.setPhone(phoneText.getPhoneNumber());
 
-                //TODO add pwd update api
+                if (oldPasswordtext.getPassword().length() > 0
+                        && newPasswordtext.getPassword().length() > 0) {
+                    updateUser.setCurrentPassword(oldPasswordtext.getPassword());
+                    updateUser.setPassword(newPasswordtext.getPassword());
+                    updateUser.setPasswordConfirmation(newPasswordtext.getPassword());
+                }
 
                 updatingInfo = true;
                 dataManager.updateUser(updateUser, userCallback);

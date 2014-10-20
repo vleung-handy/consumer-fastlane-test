@@ -25,6 +25,10 @@ final class PasswordInputTextView extends InputTextField {
         this.setTypeface(Typeface.DEFAULT);
     }
 
+    String getPassword() {
+        return this.getText().toString().trim();
+    }
+
     boolean validate() {
         if (this.getText().toString().length() <= 3) {
             highlight();
