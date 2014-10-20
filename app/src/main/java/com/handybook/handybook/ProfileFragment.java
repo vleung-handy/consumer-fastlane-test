@@ -32,6 +32,7 @@ public final class ProfileFragment extends InjectedFragment {
     private ProgressDialog progressDialog;
     private boolean loadedUserInfo;
     private Toast toast;
+    private boolean updatingInfo;
 
     @InjectView(R.id.credits_text) TextView creditsText;
     @InjectView(R.id.update_button) Button updateButton;
@@ -177,11 +178,7 @@ public final class ProfileFragment extends InjectedFragment {
     }
 
     private void disableInputs() {
-        fullNameText.setClickable(false);
-        emailText.setClickable(false);
-        phoneText.setClickable(false);
-        oldPasswordtext.setClickable(false);
-        newPasswordtext.setClickable(false);
+        updateButton.setClickable(false);
 
         final InputMethodManager imm = (InputMethodManager)getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -189,11 +186,7 @@ public final class ProfileFragment extends InjectedFragment {
     }
 
     private void enableInputs() {
-        fullNameText.setClickable(true);
-        emailText.setClickable(true);
-        phoneText.setClickable(true);
-        oldPasswordtext.setClickable(true);
-        newPasswordtext.setClickable(true);
+        updateButton.setClickable(true);
     }
 
     private void loadUserInfo() {
@@ -218,8 +211,9 @@ public final class ProfileFragment extends InjectedFragment {
                 updateUser.setEmail(emailText.getEmail());
                 updateUser.setPhone(phoneText.getPhoneNumber());
 
-                //TODO add pwd update
+                //TODO add pwd update api
 
+                updatingInfo = true;
                 dataManager.updateUser(updateUser, userCallback);
             }
         }
@@ -234,6 +228,12 @@ public final class ProfileFragment extends InjectedFragment {
             updateUserInfo();
             progressDialog.dismiss();
             enableInputs();
+
+            if (updatingInfo) {
+                updatingInfo = false;
+                toast.setText(getString(R.string.info_updated));
+                toast.show();
+            }
         }
 
         @Override
