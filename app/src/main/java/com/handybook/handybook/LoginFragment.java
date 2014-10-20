@@ -230,43 +230,57 @@ public final class LoginFragment extends InjectedFragment {
     private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>() {
         @Override
         public void onSuccess(final User user) {
-            userManager.setCurrentUser(user);
-            progressDialog.dismiss();
-            enableInputs();
-
-            Session session = Session.getActiveSession();
-            if (session != null) session.closeAndClearTokenInformation();
-
-            final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
-            final MenuDrawer menuDrawer = activity.getMenuDrawer();
-            menuDrawer.setOnDrawerStateChangeListener(new MenuDrawer.OnDrawerStateChangeListener() {
+            dataManager.getUserInfo(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
                 @Override
-                public void onDrawerStateChange(final int oldState, final int newState) {
-                    if (newState == MenuDrawer.STATE_OPEN) {
-                        activity.navigateToActivity(ServiceCategoriesActivity.class);
-                        menuDrawer.setOnDrawerStateChangeListener(null);
-                    }
+                public void onSuccess(final User user) {
+                    userManager.setCurrentUser(user);
+                    progressDialog.dismiss();
+                    enableInputs();
+
+                    Session session = Session.getActiveSession();
+                    if (session != null) session.closeAndClearTokenInformation();
+
+                    final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+                    final MenuDrawer menuDrawer = activity.getMenuDrawer();
+                    menuDrawer.setOnDrawerStateChangeListener(new MenuDrawer.OnDrawerStateChangeListener() {
+                        @Override
+                        public void onDrawerStateChange(final int oldState, final int newState) {
+                            if (newState == MenuDrawer.STATE_OPEN) {
+                                activity.navigateToActivity(ServiceCategoriesActivity.class);
+                                menuDrawer.setOnDrawerStateChangeListener(null);
+                            }
+                        }
+
+                        @Override
+                        public void onDrawerSlide(float openRatio, int offsetPixels) {
+                        }
+                    });
+                    activity.getMenuDrawer().openMenu(true);
                 }
 
                 @Override
-                public void onDrawerSlide(float openRatio, int offsetPixels) {
+                public void onError(final DataManager.DataManagerError error) {
+                    handleUserCallbackError(error);
                 }
             });
-            activity.getMenuDrawer().openMenu(true);
         }
 
         @Override
         public void onError(final DataManager.DataManagerError error) {
-            progressDialog.dismiss();
-            enableInputs();
-
-            Session session = Session.getActiveSession();
-            if (session != null) session.closeAndClearTokenInformation();
-
-            final HashMap<String, InputTextField> inputMap = new HashMap<>();
-            inputMap.put("password", passwordText);
-            inputMap.put("email", emailText);
-            dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
+            handleUserCallbackError(error);
         }
     };
+
+    private void handleUserCallbackError(final DataManager.DataManagerError error) {
+        progressDialog.dismiss();
+        enableInputs();
+
+        final Session session = Session.getActiveSession();
+        if (session != null) session.closeAndClearTokenInformation();
+
+        final HashMap<String, InputTextField> inputMap = new HashMap<>();
+        inputMap.put("password", passwordText);
+        inputMap.put("email", emailText);
+        dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
+    }
 }
