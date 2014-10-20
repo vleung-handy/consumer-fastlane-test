@@ -28,7 +28,6 @@ abstract class InputTextField extends EditText {
     }
 
     private void init() {
-        this.setFreezesText(true);
         this.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {

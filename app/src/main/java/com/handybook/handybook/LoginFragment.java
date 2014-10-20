@@ -55,7 +55,6 @@ public final class LoginFragment extends InjectedFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
         uiHelper = new UiLifecycleHelper(getActivity(), statusCallback);
         uiHelper.onCreate(savedInstanceState);
     }
@@ -173,7 +172,7 @@ public final class LoginFragment extends InjectedFragment {
 
                 dataManager.requestPasswordReset(emailText.getText().toString(), new DataManager.Callback<String>() {
                     @Override
-                    public void onSuccess(String response) {
+                    public void onSuccess(final String response) {
                         progressDialog.dismiss();
                         enableInputs();
 
@@ -182,7 +181,7 @@ public final class LoginFragment extends InjectedFragment {
                     }
 
                     @Override
-                    public void onError(DataManager.DataManagerError error) {
+                    public void onError(final DataManager.DataManagerError error) {
                         progressDialog.dismiss();
                         enableInputs();
                         dataManagerErrorHandler.handleError(getActivity(), error);

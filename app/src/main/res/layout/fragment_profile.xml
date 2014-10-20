@@ -18,8 +18,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginBottom="16dp"
             android:text="@string/you_have_credits"
             style="@style/TextView" />
+
+        <com.handybook.handybook.FullNameInputTextView
+            android:id="@+id/fullname_text"
+            android:layout_below="@id/credits_text"
+            style="@style/EditText.FullName" />
+
+        <com.handybook.handybook.EmailInputTextView
+            android:id="@+id/email_text"
+            android:layout_below="@id/fullname_text"
+            style="@style/EditText.Email" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email_text">
+
+            <com.handybook.handybook.PhoneInputTextView
+                android:id="@+id/phone_text"
+                android:paddingStart="52dp"
+                android:paddingLeft="52dp"
+                android:paddingEnd="0dp"
+                android:paddingRight="0dp"
+                style="@style/EditText.Phone" />
+
+            <TextView
+                android:id="@+id/phone_prefix_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/phone_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                style="@style/TextView" />
+
+        </RelativeLayout>
+
+
 
     </RelativeLayout>
 
