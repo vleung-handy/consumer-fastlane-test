@@ -10,7 +10,7 @@
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="stageDebug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleStageDebug" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileStageDebugJava" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileStageDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleStageDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateStageDebugSources" />
         <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateStageDebugTestSources" />
@@ -98,6 +98,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 20, L preview Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -112,12 +113,12 @@
     <orderEntry type="library" exported="" name="dagger-compiler-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="otto-1.3.5" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.6.1" level="project" />
-    <orderEntry type="library" exported="" name="simplealertdialog-1.1.2" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.1.2" level="project" />
     <orderEntry type="library" exported="" name="butterknife-5.1.2" level="project" />
     <orderEntry type="library" exported="" name="javawriter-2.5.0" level="project" />
     <orderEntry type="module" module-name="facebook" exported="" />
+    <orderEntry type="module" module-name="simplealertdialog" exported="" />
   </component>
 </module>
 
