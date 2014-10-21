@@ -1,17 +1,17 @@
 package com.handybook.handybook;
 
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.simplealertdialog.SimpleAlertDialog;
-import com.simplealertdialog.SimpleAlertDialogFragment;
+import com.simplealertdialog.SimpleAlertDialogSupportFragment;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -21,14 +21,24 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public final class NavigationFragment extends ListFragment implements SimpleAlertDialog.OnClickListener {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+public final class NavigationFragment extends InjectedListFragment
+        implements SimpleAlertDialog.OnClickListener, SimpleAlertDialog.OnItemClickListener {
     static final String ARG_SELECTED_ITEM = "com.handybook.handybook.ARG_SELECTED_ITEM";
+    static final int REQUEST_LOGOUT = 1;
+    static final int REQUEST_ENV = 2;
 
     private final ArrayList<String> items = new ArrayList<String>();
+    private final ArrayList<String> envs = new ArrayList<String>();
     private String selectedItem;
     private MenuDrawer menuDrawer;
 
+    @InjectView(R.id.env_button) Button envButton;
+
     @Inject UserManager userManager;
+    @Inject DataManager dataManager;
     @Inject Bus bus;
 
     static NavigationFragment newInstance(final String selectedItem) {
@@ -43,13 +53,14 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((BaseApplication)getActivity().getApplication()).inject(this);
-
-        loadNavItems();
 
         final Bundle args;
         if ((args = getArguments()) != null) {
             selectedItem = args.getString(ARG_SELECTED_ITEM);
+        }
+
+        for (DataManager.Environment env : DataManager.Environment.values()) {
+            if (env != DataManager.Environment.P) envs.add(env.toString());
         }
     }
 
@@ -57,6 +68,24 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_navigation, container, false);
+        ButterKnife.inject(this, view);
+
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+            envButton.setVisibility(View.GONE);
+
+        envButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new SimpleAlertDialogSupportFragment.Builder()
+                        .setTitle("Select Environment")
+                        .setItems(envs.toArray(new String[envs.size()]))
+                        .setRequestCode(REQUEST_ENV)
+                        .setTargetFragment(NavigationFragment.this)
+                        .create().show(getActivity().getSupportFragmentManager(), "dialog");
+            }
+        });
+
+        loadNavItems();
         return view;
     }
 
@@ -113,12 +142,13 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
             activity.navigateToActivity(LoginActivity.class);
         }
         else if (item.equals(getString(R.string.log_out))) {
-            new SimpleAlertDialogFragment.Builder()
+            new SimpleAlertDialogSupportFragment.Builder()
                     .setMessage(getString(R.string.want_to_log_out))
                     .setPositiveButton(R.string.log_out)
                     .setNegativeButton(android.R.string.cancel)
-                    .setRequestCode(1)
-                    .create().show(getActivity().getFragmentManager(), "dialog");
+                    .setRequestCode(REQUEST_LOGOUT)
+                    .setTargetFragment(NavigationFragment.this)
+                    .create().show(getActivity().getSupportFragmentManager(), "dialog");
         }
         else menuDrawer.closeMenu();
     }
@@ -126,7 +156,7 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
     @Override
     public final void onDialogPositiveButtonClicked(final SimpleAlertDialog dialog,
                                               final int requestCode, final View view) {
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_LOGOUT) {
             userManager.setCurrentUser(null);
         }
     }
@@ -134,6 +164,13 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
     @Override
     public final void onDialogNegativeButtonClicked(final SimpleAlertDialog dialog,
                                               final int requestCode, final View view) {}
+
+    @Override
+    public final void onItemClick(final SimpleAlertDialog dialog, final int requestCode, final int which) {
+        if (requestCode == REQUEST_ENV) {
+            dataManager.setEnvironment(DataManager.Environment.valueOf(envs.get(which)));
+        }
+    }
 
     @Subscribe
     public final void userAuthUpdated(final UserLoggedInEvent event) {
@@ -145,6 +182,11 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
             final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
             activity.navigateToActivity(ServiceCategoriesActivity.class);
         }
+    }
+
+    @Subscribe
+    public final void envUpdated(final EnvironmentUpdatedEvent event) {
+        loadNavItems();
     }
 
     private void loadNavItems() {
@@ -166,5 +208,8 @@ public final class NavigationFragment extends ListFragment implements SimpleAler
 
         if (userManager.getCurrentUser() != null) items.add(getString(R.string.log_out));
         else items.add(getString(R.string.log_in));
+
+        envButton.setText(String.format(getString(R.string.env_format), dataManager.getEnvironment(),
+                BuildConfig.VERSION_NAME, Integer.valueOf(BuildConfig.VERSION_CODE).toString()));
     }
 }

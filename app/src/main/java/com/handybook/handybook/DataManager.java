@@ -1,8 +1,15 @@
 package com.handybook.handybook;
 
+import com.squareup.otto.Bus;
+
 abstract class DataManager {
     static enum Environment {P, S, Q1, Q2, Q3, Q4}
     private Environment env = Environment.S;
+    private final Bus bus;
+
+    DataManager(final Bus bus) {
+        this.bus = bus;
+    }
 
     Environment getEnvironment() {
         return env;
@@ -10,6 +17,7 @@ abstract class DataManager {
 
     void setEnvironment(Environment env) {
         this.env = env;
+        bus.post(new EnvironmentUpdatedEvent(env));
     }
 
     abstract String[] getServices();

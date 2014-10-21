@@ -35,9 +35,9 @@ final class ApplicationModule {
         return application.getApplicationContext();
     }
 
-//    @Provides @Singleton final HandyEndpoint provideHandyEnpoint() {
-//        return new HandyEndpoint(application.getApplicationContext());
-//    }
+    @Provides @Singleton final HandyRetrofitEndpoint provideHandyEnpoint() {
+        return new HandyRetrofitEndpoint(application.getApplicationContext());
+    }
 
     @Provides @Singleton final HandyRetrofitService provideHandyService(final HandyRetrofitEndpoint endpoint) {
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint)
@@ -54,12 +54,18 @@ final class ApplicationModule {
                         request.addHeader("Accept", "application/json");
                     }
                 }).build();
+
+        if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
+            restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
+        }
+
         return restAdapter.create(HandyRetrofitService.class);
     }
 
     @Provides @Singleton final DataManager provideDataManager(final HandyRetrofitService service,
-                                                              final HandyRetrofitEndpoint endpoint) {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint);
+                                                              final HandyRetrofitEndpoint endpoint,
+                                                              final Bus bus) {
+        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus);
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
             dataManager.setEnvironment(DataManager.Environment.P);
         }

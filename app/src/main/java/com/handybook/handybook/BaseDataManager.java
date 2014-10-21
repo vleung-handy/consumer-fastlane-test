@@ -2,6 +2,7 @@ package com.handybook.handybook;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.otto.Bus;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,7 +14,9 @@ public final class BaseDataManager extends DataManager {
     private final HandyRetrofitEndpoint endpoint;
 
     @Inject
-    BaseDataManager(final HandyRetrofitService service, final HandyRetrofitEndpoint endpoint) {
+    BaseDataManager(final HandyRetrofitService service, final HandyRetrofitEndpoint endpoint,
+                    final Bus bus) {
+        super(bus);
         this.service = service;
         this.endpoint = endpoint;
     }
