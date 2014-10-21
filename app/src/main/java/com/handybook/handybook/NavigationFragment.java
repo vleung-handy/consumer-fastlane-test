@@ -129,6 +129,10 @@ public final class NavigationFragment extends InjectedListFragment
                 && !(getString(R.string.profile).equals(selectedItem))) {
             activity.navigateToActivity(ProfileActivity.class);
         }
+        else if (item.equals(getString(R.string.my_bookings))
+                && !(getString(R.string.my_bookings).equals(selectedItem))) {
+            activity.navigateToActivity(BookingsActivity.class);
+        }
         else if (item.equals(getString(R.string.help))
                 && !(getString(R.string.help).equals(selectedItem))) {
 
