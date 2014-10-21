@@ -9,10 +9,17 @@
         android:text="@string/update"
         style="@style/Button.Blue" />
 
+    <TextView
+        android:id="@+id/nav_text"
+        android:text="@string/profile"
+        style="@style/TextView.Navbar" />
+
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/update_button">
+        android:layout_above="@id/update_button"
+        android:layout_below="@id/nav_text">
 
         <RelativeLayout
             style="@style/ContentLayout.NoBottom">
@@ -23,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginBottom="16dp"
+                android:textSize="@dimen/small_text_size"
                 android:text="@string/you_have_credits"
                 style="@style/TextView" />
 
@@ -70,6 +78,7 @@
                 android:gravity="center"
                 android:layout_marginBottom="16dp"
                 android:text="@string/change_password"
+                android:textSize="@dimen/small_text_size"
                 style="@style/TextView" />
 
             <com.handybook.handybook.PasswordInputTextView

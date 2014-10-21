@@ -7,6 +7,7 @@
     <color name="white_pressed">#E1E1E1</color>
     <color name="black">#434343</color>
     <color name="black_pressed">#B1B1B1</color>
+    <color name="nav_sep">#B1B1B1</color>
     <color name="error_red">#F95855</color>
     <color name="facebook">#246BAB</color>
 </resources>

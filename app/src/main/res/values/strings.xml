@@ -20,7 +20,7 @@
     <string name="profile">Profile</string>
     <string name="want_to_log_out">Are you sure you want to log out?</string>
     <string name="update">Update</string>
-    <string name="you_have_credits">YOU HAVE # CREDITS</string>
+    <string name="you_have_credits">YOU HAVE&#160;&#160;#&#160;&#160;CREDITS</string>
     <string name="change_password">CHANGE PASSWORD</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>

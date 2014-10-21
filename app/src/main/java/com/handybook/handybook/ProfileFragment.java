@@ -3,7 +3,10 @@ package com.handybook.handybook;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.TextAppearanceSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class ProfileFragment extends InjectedFragment {
     private static final String STATE_FULLNAME_HIGHLIGHT = "FULLNAME_HIGHLIGHT";
@@ -115,10 +119,21 @@ public final class ProfileFragment extends InjectedFragment {
 
     private void updateUserInfo() {
         final DecimalFormat df = new DecimalFormat("#.##");
-        creditsText.setText(getString(R.string.you_have_credits)
-                .replace("#", (user.getCurrencyChar() != null ? user.getCurrencyChar() : "")
-                        + df.format(user.getCredits())
-                        + (user.getCurrencySuffix() != null ? user.getCurrencySuffix() : "")));
+
+        String text = getString(R.string.you_have_credits);
+        final int replaceIndex = text.indexOf("#");
+        final String amount = (user.getCurrencyChar() != null ? user.getCurrencyChar() : "")
+                + df.format(user.getCredits())
+                + (user.getCurrencySuffix() != null ? user.getCurrencySuffix() : "");
+        text = text.replace("#", amount);
+
+        final SpannableString spanText = new SpannableString(text);
+        spanText.setSpan(new TextAppearanceSpan(getActivity(), R.style.TextView_XLarge_Bold),
+                replaceIndex, replaceIndex + amount.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spanText.setSpan(new CalligraphyTypefaceSpan(Typefaces.get(getActivity(), "CircularStd-Bold.otf")),
+                replaceIndex, replaceIndex + amount.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        creditsText.setText(spanText, TextView.BufferType.SPANNABLE);
 
         fullNameText.unHighlight();
         fullNameText.setText(user.getFirstName() + " " + user.getLastName());
