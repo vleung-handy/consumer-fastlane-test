@@ -255,7 +255,7 @@ public final class LoginFragment extends InjectedFragment {
                         public void onDrawerSlide(float openRatio, int offsetPixels) {
                         }
                     });
-                    activity.getMenuDrawer().openMenu(true);
+                    menuDrawer.openMenu(true);
                 }
 
                 @Override

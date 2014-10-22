@@ -1,10 +1,12 @@
 package com.handybook.handybook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,6 +84,15 @@ public final class BookingsFragment extends InjectedListFragment {
             pastBookings = savedInstanceState.getParcelableArrayList(STATE_PAST_BOOKINGS);
             upBookings = savedInstanceState.getParcelableArrayList(STATE_UP_BOOKINGS);
         }
+
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> adapterView, final View view,
+                                    final int i, final long l) {
+                final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

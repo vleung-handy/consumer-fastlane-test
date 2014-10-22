@@ -22,6 +22,10 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
         return new ServiceCategoriesFragment();
     }
 
+    public ServiceCategoriesFragment() {
+
+    }
+
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
             categoryView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+                    final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
                     startActivity(intent);
                 }
             });

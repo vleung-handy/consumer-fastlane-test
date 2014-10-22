@@ -32,4 +32,5 @@
     <string name="past">Past</string>
     <string name="no_upcoming_bookings">You don\'t have any upcoming bookings</string>
     <string name="hours">Hours</string>
+    <string name="booking">Booking</string>
 </resources>

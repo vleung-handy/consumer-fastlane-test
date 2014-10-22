@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg">
+
+    <TextView
+        android:id="@+id/nav_text"
+        android:text="@string/booking"
+        style="@style/TextView.Navbar" />
+
+</RelativeLayout>
