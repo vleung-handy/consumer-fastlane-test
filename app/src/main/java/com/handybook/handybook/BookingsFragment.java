@@ -209,7 +209,7 @@ public final class BookingsFragment extends InjectedListFragment {
 
                 if ((position >= offset && booking == pastBookings.get(pastBookings.size() - 1))
                         || (position < offset && booking == upBookings.get(upBookings.size() - 1))) {
-                    layout.setBackgroundColor(getResources().getColor(R.color.white));
+                    layout.setBackgroundResource((R.drawable.booking_cell_last));
                 }
             }
             return convertView;

@@ -16,6 +16,7 @@
         android:layout_below="@+id/nav_text"
         android:scrollbarStyle="outsideOverlay"
         android:clipToPadding="false"
+        android:choiceMode="singleChoice"
         android:divider="@null"/>
 
 </RelativeLayout>
