@@ -35,4 +35,9 @@
     <string name="booking">Booking</string>
     <string name="service">Service</string>
     <string name="job_num">Job #</string>
+    <string name="address">Address</string>
+    <string name="date">Date</string>
+    <string name="duration">Duration</string>
+    <string name="price">Price</string>
+    <string name="professional">Professional</string>
 </resources>
