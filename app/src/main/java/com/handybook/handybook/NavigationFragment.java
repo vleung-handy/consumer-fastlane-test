@@ -179,7 +179,8 @@ public final class NavigationFragment extends InjectedListFragment
     @Subscribe
     public final void userAuthUpdated(final UserLoggedInEvent event) {
         loadNavItems();
-        BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
+
+        final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
         adapter.notifyDataSetChanged();
 
         if (!event.isLoggedIn()) {

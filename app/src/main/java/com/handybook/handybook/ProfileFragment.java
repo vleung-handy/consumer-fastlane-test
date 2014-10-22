@@ -256,6 +256,7 @@ public final class ProfileFragment extends InjectedFragment {
 
         @Override
         public void onError(final DataManager.DataManagerError error) {
+            loadedUserInfo = true;
             progressDialog.dismiss();
             enableInputs();
             dataManagerErrorHandler.handleError(getActivity(), error);

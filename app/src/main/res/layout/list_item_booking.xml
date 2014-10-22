@@ -21,11 +21,11 @@
         style="@style/TextView.Headline.Small" />
 
     <TextView
-        android:id="@+id/hours"
+        android:id="@+id/time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/small_text_size"
-        android:text="HOURS"
+        android:text="TIME"
         style="@style/TextView" />
 
 </LinearLayout>

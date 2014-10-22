@@ -9,17 +9,28 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
 public final class BookingsFragment extends InjectedListFragment {
+    private static final String STATE_LOADED_BOOKINGS = "LOADED_BOOKINGS";
+    private static final String STATE_PAST_BOOKINGS = "STATE_PAST_BOOKINGS";
+    private static final String STATE_UP_BOOKINGS = "STATE_UP_BOOKINGS";
+
+    private boolean loadedBookings;
     private ProgressDialog progressDialog;
     private Toast toast;
-    private final ArrayList<String> upBookings = new ArrayList<>();
-    private final ArrayList<String> pastBookings = new ArrayList<>();
+    private ArrayList<Booking> upBookings = new ArrayList<>();
+    private ArrayList<Booking> pastBookings = new ArrayList<>();
+    private SimpleDateFormat dateFormat, timeFormat;
+    private DecimalFormat hoursFormat;
 
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
@@ -34,6 +45,15 @@ public final class BookingsFragment extends InjectedListFragment {
         super.onCreate(savedInstanceState);
         toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
+
+        dateFormat = new SimpleDateFormat("EEEE',' MMMM d");
+
+        timeFormat = new SimpleDateFormat("h:mm aaa");
+        final DateFormatSymbols symbols = new DateFormatSymbols();
+        symbols.setAmPmStrings(new String[] { "am", "pm" });
+        timeFormat.setDateFormatSymbols(symbols);
+
+        hoursFormat = new DecimalFormat("#.##");
     }
 
     @Override
@@ -48,11 +68,6 @@ public final class BookingsFragment extends InjectedListFragment {
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.loading));
 
-        upBookings.add("");
-        upBookings.add("1");
-        pastBookings.add("2");
-        pastBookings.add("3");
-
         return view;
     }
 
@@ -61,6 +76,55 @@ public final class BookingsFragment extends InjectedListFragment {
         super.onViewCreated(view, savedInstanceState);
         final PinnedSectionListView listView = (PinnedSectionListView)getListView();
         listView.setShadowVisible(false);
+
+        if (savedInstanceState != null) {
+            loadedBookings = savedInstanceState.getBoolean(STATE_LOADED_BOOKINGS);
+            pastBookings = savedInstanceState.getParcelableArrayList(STATE_PAST_BOOKINGS);
+            upBookings = savedInstanceState.getParcelableArrayList(STATE_UP_BOOKINGS);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!loadedBookings) loadBookings();
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_LOADED_BOOKINGS, loadedBookings);
+        outState.putParcelableArrayList(STATE_PAST_BOOKINGS, pastBookings);
+        outState.putParcelableArrayList(STATE_UP_BOOKINGS, upBookings);
+    }
+
+    private void loadBookings() {
+        progressDialog.show();
+        dataManager.getBookings(userManager.getCurrentUser(), new DataManager.Callback<List<Booking>>() {
+            @Override
+            public void onSuccess(final List<Booking> bookings) {
+                pastBookings.clear();
+                upBookings.clear();
+
+                for (Booking booking : bookings) {
+                    if (booking.isPast()) pastBookings.add(booking);
+                    else upBookings.add(booking);
+                }
+
+                final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
+                adapter.notifyDataSetChanged();
+
+                loadedBookings = true;
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error) {
+                loadedBookings = true;
+                progressDialog.dismiss();
+                dataManagerErrorHandler.handleError(getActivity(), error);
+            }
+        });
     }
 
     private final class BookingsListAdapter extends BaseAdapter
@@ -133,22 +197,34 @@ public final class BookingsFragment extends InjectedListFragment {
                 textView.setText(header);
             }
             else {
-                String booking = (String)getItem(position);
+                Booking booking = (Booking)getItem(position);
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_booking, null);
-
+                configureCell(convertView, booking);
 
                 // remove cell separator from final item in list
                 View layout = convertView.findViewById(R.id.cell_layout);
                 int offset = (upBookings.size() > 0 ? upBookings.size() + 1 : 2)
                         + (pastBookings.size() > 0 ? 1 : 0);
 
-                if ((position >= offset && booking.equals(pastBookings.get(pastBookings.size() - 1)))
-                        || (position < offset && booking.equals(upBookings.get(upBookings.size() - 1)))) {
+                if ((position >= offset && booking == pastBookings.get(pastBookings.size() - 1))
+                        || (position < offset && booking == upBookings.get(upBookings.size() - 1))) {
                     layout.setBackgroundColor(getResources().getColor(R.color.white));
                 }
             }
             return convertView;
         }
+    }
+
+    private void configureCell(final View cell, final Booking booking) {
+        final TextView serviceText = (TextView)cell.findViewById(R.id.service);
+        serviceText.setText(booking.getService());
+
+        final TextView dateText = (TextView)cell.findViewById(R.id.date);
+        dateText.setText(dateFormat.format(booking.getStartDate()));
+
+        final TextView timeText = (TextView)cell.findViewById(R.id.time);
+        timeText.setText(timeFormat.format(booking.getStartDate()) + " - "
+                + hoursFormat.format(booking.getHours()) + " " + getString(R.string.hours));
     }
 }

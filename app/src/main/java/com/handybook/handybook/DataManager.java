@@ -2,6 +2,8 @@ package com.handybook.handybook;
 
 import com.squareup.otto.Bus;
 
+import java.util.List;
+
 abstract class DataManager {
     static enum Environment {P, S, Q1, Q2, Q3, Q4}
     private Environment env = Environment.S;
@@ -21,6 +23,8 @@ abstract class DataManager {
     }
 
     abstract String[] getServices();
+
+    abstract void getBookings(User user, Callback<List<Booking>> cb);
 
     abstract void authUser(String email, String password, Callback<User> cb);
 

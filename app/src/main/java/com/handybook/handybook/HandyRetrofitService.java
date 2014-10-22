@@ -12,6 +12,10 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 
 public interface HandyRetrofitService {
+
+    @GET("/bookings")
+    void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,

@@ -1,11 +1,14 @@
 package com.handybook.handybook;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Bus;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -53,6 +56,26 @@ public final class BaseDataManager extends DataManager {
     @Override
     public final String[] getServices() {
         return new String[]{"Category 1", "Category 2", "Category 3", "Category 4"};
+    }
+
+    @Override
+    public final void getBookings(final User user, final Callback<List<Booking>> cb) {
+        service.getBookings(user.getAuthToken(), new HandyRetrofitCallback(cb) {
+            @Override
+            void success(JSONObject response) {
+                final JSONArray array = response.optJSONArray("user_bookings");
+
+                if (array == null) {
+                    cb.onError(new DataManagerError(Type.SERVER));
+                    return;
+                }
+
+                final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+                final List<Booking> bookings = gson.fromJson(array.toString(),
+                        new TypeToken<List<Booking>>(){}.getType());
+                cb.onSuccess(bookings);
+            }
+        });
     }
 
     @Override
