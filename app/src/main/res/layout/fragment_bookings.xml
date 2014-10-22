@@ -9,4 +9,13 @@
         android:text="@string/my_bookings"
         style="@style/TextView.Navbar" />
 
+    <com.handybook.handybook.PinnedSectionListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nav_text"
+        android:scrollbarStyle="outsideOverlay"
+        android:clipToPadding="false"
+        android:divider="@null"/>
+
 </RelativeLayout>

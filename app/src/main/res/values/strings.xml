@@ -28,4 +28,7 @@
     <string name="pwd_length_error">Your password must be at least 8 characters.</string>
     <string name="info_updated">Your information has been updated.</string>
     <string name="env_format" formatted="false">%s: v%s (%s)</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="past">Past</string>
+    <string name="no_upcoming_bookings">You don\'t have any upcoming bookings</string>
 </resources>

@@ -116,16 +116,54 @@
         <item name="fontPath">fonts/CircularStd-Bold.otf</item>
     </style>
 
+    <style name="TextView.Headline">
+        <item name="fontPath">fonts/CircularStd-Medium.otf</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextView.Headline.Blue">
+        <item name="android:textColor">@color/handy_blue</item>
+    </style>
+
+    <style name="TextView.Headline.Small">
+        <item name="fontPath">fonts/CircularStd-Medium.otf</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+    </style>
+
     <style name="TextView.Navbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/nav_bar</item>
         <item name="android:textColor">@color/handy_blue</item>
-        <item name="android:textSize">@dimen/default_text_size</item>
         <item name="fontPath">fonts/CircularStd-Medium.otf</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:padding">14dp</item>
+    </style>
+
+    <style name="TextView.BookingsHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/handy_bg</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="fontPath">fonts/CircularStd-Medium.otf</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="BookingsCell">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">96dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/booking_cell</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="BookingsCell.End">
+        <item name="android:background">@color/white</item>
     </style>
 
 </resources>
