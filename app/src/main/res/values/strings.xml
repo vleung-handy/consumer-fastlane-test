@@ -33,4 +33,6 @@
     <string name="no_upcoming_bookings">You don\'t have any upcoming bookings</string>
     <string name="hours">Hours</string>
     <string name="booking">Booking</string>
+    <string name="service">Service</string>
+    <string name="job_num">Job #</string>
 </resources>

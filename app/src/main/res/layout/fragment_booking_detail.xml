@@ -9,4 +9,74 @@
         android:text="@string/booking"
         style="@style/TextView.Navbar" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_text">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ContentLayout">
+
+                <LinearLayout
+                    android:id="@+id/service_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="144dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/service"
+                        style="@style/TextView.Medium"/>
+
+                    <TextView
+                        android:id="@+id/service_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Service"
+                        style="@style/TextView"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/service_layout"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="144dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/job_num"
+                        style="@style/TextView.Medium"/>
+
+                    <TextView
+                        android:id="@+id/job_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Job #"
+                        style="@style/TextView"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.25dp"
+                android:layout_gravity="bottom"
+                android:background="@color/nav_sep" />
+
+        </FrameLayout>
+
+    </ScrollView>
+
 </RelativeLayout>

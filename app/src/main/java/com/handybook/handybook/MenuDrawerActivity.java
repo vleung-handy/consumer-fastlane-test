@@ -23,7 +23,7 @@ abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDi
     protected abstract String getNavItemTitle();
 
     @Override
-    protected final void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT,

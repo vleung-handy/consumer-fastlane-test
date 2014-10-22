@@ -90,6 +90,7 @@ public final class BookingsFragment extends InjectedListFragment {
             public void onItemClick(final AdapterView<?> adapterView, final View view,
                                     final int i, final long l) {
                 final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
+                intent.putExtra(BookingDetailActivity.EXTRA_BOOKING, getBooking(i));
                 startActivity(intent);
             }
         });
@@ -157,11 +158,7 @@ public final class BookingsFragment extends InjectedListFragment {
                 return getActivity().getString(R.string.past).toUpperCase();
             }
             else {
-                int offset = (upBookings.size() > 0 ? upBookings.size() + 1 : 2)
-                        + (pastBookings.size() > 0 ? 1 : 0);
-
-                if (position >= offset) return pastBookings.get(position - offset);
-                else return upBookings.get(position - 1);
+                return getBooking(position);
             }
         }
 
@@ -208,13 +205,13 @@ public final class BookingsFragment extends InjectedListFragment {
                 textView.setText(header);
             }
             else {
-                Booking booking = (Booking)getItem(position);
+                final Booking booking = (Booking)getItem(position);
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_booking, null);
                 configureCell(convertView, booking);
 
                 // remove cell separator from final item in list
-                View layout = convertView.findViewById(R.id.cell_layout);
+                final View layout = convertView.findViewById(R.id.cell_layout);
                 int offset = (upBookings.size() > 0 ? upBookings.size() + 1 : 2)
                         + (pastBookings.size() > 0 ? 1 : 0);
 
@@ -225,6 +222,14 @@ public final class BookingsFragment extends InjectedListFragment {
             }
             return convertView;
         }
+    }
+
+    private Booking getBooking(final int position) {
+        final int offset = (upBookings.size() > 0 ? upBookings.size() + 1 : 2)
+                + (pastBookings.size() > 0 ? 1 : 0);
+
+        if (position >= offset) return pastBookings.get(position - offset);
+        else return upBookings.get(position - 1);
     }
 
     private void configureCell(final View cell, final Booking booking) {

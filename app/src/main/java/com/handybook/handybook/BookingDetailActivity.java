@@ -3,9 +3,12 @@ package com.handybook.handybook;
 import android.support.v4.app.Fragment;
 
 public final class BookingDetailActivity extends MenuDrawerActivity {
+    static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
+
     @Override
     protected final Fragment createFragment() {
-        return BookingDetailFragment.newInstance();
+        Booking booking = getIntent().getParcelableExtra(EXTRA_BOOKING);
+        return BookingDetailFragment.newInstance(booking);
     }
 
     @Override

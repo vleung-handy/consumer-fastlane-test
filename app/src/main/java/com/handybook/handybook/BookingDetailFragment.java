@@ -1,31 +1,36 @@
 package com.handybook.handybook;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
-import java.text.DateFormatSymbols;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public final class BookingDetailFragment extends InjectedFragment {
+    static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
 
-    static BookingDetailFragment newInstance() {
-        return new BookingDetailFragment();
+    private Booking booking;
+
+    @InjectView(R.id.service_text) TextView serviceText;
+    @InjectView(R.id.job_text) TextView jobText;
+
+    static BookingDetailFragment newInstance(Booking booking) {
+        BookingDetailFragment fragment = new BookingDetailFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(EXTRA_BOOKING, booking);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public final void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        booking = getArguments().getParcelable(EXTRA_BOOKING);
     }
 
     @Override
@@ -33,6 +38,10 @@ public final class BookingDetailFragment extends InjectedFragment {
                                    final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_booking_detail, container, false);
         ButterKnife.inject(this, view);
+
+        serviceText.setText(booking.getService());
+        jobText.setText(booking.getId());
+
         return view;
     }
 
