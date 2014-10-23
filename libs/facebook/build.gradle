@@ -6,12 +6,12 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 'android-L'
+    compileSdkVersion 20
     buildToolsVersion '20.0.0'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 'L'
+        targetSdkVersion 20
     }
 
     lintOptions {
