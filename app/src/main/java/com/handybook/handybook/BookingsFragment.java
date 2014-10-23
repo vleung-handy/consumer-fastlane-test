@@ -55,7 +55,7 @@ public final class BookingsFragment extends InjectedListFragment {
         symbols.setAmPmStrings(new String[] { "am", "pm" });
         timeFormat.setDateFormatSymbols(symbols);
 
-        hoursFormat = new DecimalFormat("#.##");
+        hoursFormat = new DecimalFormat("#.#");
     }
 
     @Override

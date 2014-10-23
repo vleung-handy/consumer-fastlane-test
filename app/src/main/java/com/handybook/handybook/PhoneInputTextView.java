@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 
 final class PhoneInputTextView extends InputTextField {
     private String countryCode;
+    private User user;
 
     public PhoneInputTextView(final Context context) {
         super(context);
@@ -38,26 +39,8 @@ final class PhoneInputTextView extends InputTextField {
             @Override
             public void afterTextChanged(final Editable editable) {
                 PhoneInputTextView.this.removeTextChangedListener(this);
-
-                String shortFormat = "(%s) %s", longFormat = "(%s) %s-%s";
-                if (countryCode != null && countryCode.equals("+44")) {
-                    shortFormat = "%s %s";
-                    longFormat = "%s %s %s";
-                }
-
-                final String raw = editable.toString().replaceAll("\\D+", "");
-
-                if (raw.length() < 4) PhoneInputTextView.this.setText(raw);
-
-                else if (raw.length() >= 4 && raw.length() <= 6) PhoneInputTextView.this
-                        .setText(String.format(shortFormat, raw.substring(0, 3), raw.substring(3)));
-
-                else if (raw.length() >= 7 && raw.length() <= 10) PhoneInputTextView.this
-                        .setText(String.format(longFormat, raw.substring(0, 3),
-                                raw.substring(3, 6), raw.substring(6)));
-
-                else PhoneInputTextView.this.setText(raw);
-
+                final String prefix = user != null ? user.getPhonePrefix() : null;
+                PhoneInputTextView.this.setText(TextUtils.formatPhone(editable.toString(), prefix));
                 PhoneInputTextView.this.setSelection(PhoneInputTextView.this.getText().length());
                 PhoneInputTextView.this.addTextChangedListener(this);
             }
@@ -72,7 +55,15 @@ final class PhoneInputTextView extends InputTextField {
         this.countryCode = countryCode;
     }
 
-    boolean validate() {
+    final User getUser() {
+        return user;
+    }
+
+    final void setUser(final User user) {
+        this.user = user;
+    }
+
+    final boolean validate() {
         final String phone = this.getText().toString();
         if (phone.replaceAll("\\D+","").length() != 10) {
             highlight();
@@ -84,7 +75,7 @@ final class PhoneInputTextView extends InputTextField {
         }
     }
 
-    String getPhoneNumber() {
+    final String getPhoneNumber() {
         return this.countryCode + this.getText().toString().replaceAll("\\D+","");
     }
 }

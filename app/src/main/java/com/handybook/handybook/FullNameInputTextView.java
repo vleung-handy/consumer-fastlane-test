@@ -17,7 +17,7 @@ final class FullNameInputTextView extends InputTextField {
         super(context, attrs, defStyle);
     }
 
-    boolean validate() {
+    final boolean validate() {
         final String name = this.getText().toString();
         if (name.split(" ").length < 2) {
             highlight();
@@ -29,13 +29,13 @@ final class FullNameInputTextView extends InputTextField {
         }
     }
 
-    String getFirstName() {
+    final String getFirstName() {
         final String[] parts = this.getText().toString().trim().split(" ");
         if (parts.length > 0) return parts[0];
         else return "";
     }
 
-    String getLastName() {
+    final String getLastName() {
         final String[] parts = this.getText().toString().trim().split(" ");
         if (parts.length > 1) return parts[1];
         else return "";

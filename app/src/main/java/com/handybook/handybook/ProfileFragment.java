@@ -122,9 +122,9 @@ public final class ProfileFragment extends InjectedFragment {
 
         String text = getString(R.string.you_have_credits);
         final int replaceIndex = text.indexOf("#");
-        final String amount = (user.getCurrencyChar() != null ? user.getCurrencyChar() : "")
-                + df.format(user.getCredits())
-                + (user.getCurrencySuffix() != null ? user.getCurrencySuffix() : "");
+        final String amount = TextUtils.formatPrice(user.getCredits(),
+                user.getCurrencyChar(), user.getCurrencySuffix());
+
         text = text.replace("#", amount);
 
         final SpannableString spanText = new SpannableString(text);
