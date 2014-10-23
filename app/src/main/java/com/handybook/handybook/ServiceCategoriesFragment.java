@@ -48,8 +48,8 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
             categoryView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-                    startActivity(intent);
+                    //final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+                    //startActivity(intent);
                 }
             });
             categoryLayout.addView(categoryView, 0);

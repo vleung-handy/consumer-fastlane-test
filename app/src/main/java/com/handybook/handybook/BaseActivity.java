@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -15,6 +16,8 @@ abstract class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         NewRelic.withApplicationToken("AAbaf8c55fb9788d1664e82661d94bc18ea7c39aa6")
                 .start(this.getApplication());
+
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override
