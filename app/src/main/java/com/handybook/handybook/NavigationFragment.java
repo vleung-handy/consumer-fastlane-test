@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,44 +109,63 @@ public final class NavigationFragment extends InjectedListFragment
 
         final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
         menuDrawer = activity.getMenuDrawer();
+        getListView().setAdapter(new ArrayAdapter<String>(getActivity(),
+                R.layout.list_item_nav, items) {
+            @Override
+            public final View getView(final int position, final View convertView, final ViewGroup parent) {
+                View view = convertView;
+                if (view == null) {
+                    final LayoutInflater inflater = (LayoutInflater)getContext()
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    view = inflater.inflate(R.layout.list_item_nav, null);
+                }
 
-        getListView().setAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, items));
+                final String text = items.get(position).toUpperCase();
+                final TextView item = (TextView)view.findViewById(R.id.nav_item);
+                item.setText(text);
+
+                if (text.equalsIgnoreCase(selectedItem))
+                    item.setTextColor(getResources().getColor(R.color.handy_blue));
+                else item.setTextColor(getResources().getColor(R.color.white));
+
+                return view;
+            }
+        });
     }
 
     @Override
     public final void onListItemClick(final ListView l, final View v, final int position, final long id) {
         super.onListItemClick(l, v, position, id);
 
-        final TextView textView = (TextView)v;
+        final TextView textView = (TextView)v.findViewById(R.id.nav_item);
         final String item = textView.getText().toString();
         final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
 
-        if (item.equals(getString(R.string.home))
-                && !(getString(R.string.home).equals(selectedItem))) {
+        if (item.equalsIgnoreCase(getString(R.string.home))
+                && !(getString(R.string.home).equalsIgnoreCase(selectedItem))) {
             activity.navigateToActivity(ServiceCategoriesActivity.class);
         }
-        else if (item.equals(getString(R.string.profile))
-                && !(getString(R.string.profile).equals(selectedItem))) {
+        else if (item.equalsIgnoreCase(getString(R.string.profile))
+                && !(getString(R.string.profile).equalsIgnoreCase(selectedItem))) {
             activity.navigateToActivity(ProfileActivity.class);
         }
-        else if (item.equals(getString(R.string.my_bookings))
-                && !(getString(R.string.my_bookings).equals(selectedItem))) {
+        else if (item.equalsIgnoreCase(getString(R.string.my_bookings))
+                && !(getString(R.string.my_bookings).equalsIgnoreCase(selectedItem))) {
             activity.navigateToActivity(BookingsActivity.class);
         }
-        else if (item.equals(getString(R.string.help))
-                && !(getString(R.string.help).equals(selectedItem))) {
+        else if (item.equalsIgnoreCase(getString(R.string.help))
+                && !(getString(R.string.help).equalsIgnoreCase(selectedItem))) {
 
         }
-        else if (item.equals(getString(R.string.promotions))
-                && !(getString(R.string.promotions).equals(selectedItem))) {
+        else if (item.equalsIgnoreCase(getString(R.string.promotions))
+                && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem))) {
 
         }
-        else if (item.equals(getString(R.string.log_in))
-                && !(getString(R.string.log_in).equals(selectedItem))) {
+        else if (item.equalsIgnoreCase(getString(R.string.log_in))
+                && !(getString(R.string.log_in).equalsIgnoreCase(selectedItem))) {
             activity.navigateToActivity(LoginActivity.class);
         }
-        else if (item.equals(getString(R.string.log_out))) {
+        else if (item.equalsIgnoreCase(getString(R.string.log_out))) {
             new SimpleAlertDialogSupportFragment.Builder()
                     .setMessage(getString(R.string.want_to_log_out))
                     .setPositiveButton(R.string.log_out)

@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1D1D1D">
+    android:background="@color/nav_bg">
 
     <Button
         android:id="@+id/env_button"
@@ -16,6 +16,9 @@
     <ListView android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/env_button"/>
+        android:paddingTop="@dimen/default_margin_x2"
+        android:layout_above="@id/env_button"
+        android:clipToPadding="false"
+        android:divider="@null"/>
 
 </RelativeLayout>

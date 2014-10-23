@@ -3,6 +3,7 @@
     <color name="handy_blue">#41C3E0</color>
     <color name="handy_blue_pressed">#349CB3</color>
     <color name="handy_bg">#EAEAEA</color>
+    <color name="nav_bg">#1D1D1D</color>
     <color name="white">#FFFFFF</color>
     <color name="white_pressed">#E1E1E1</color>
     <color name="black">#434343</color>

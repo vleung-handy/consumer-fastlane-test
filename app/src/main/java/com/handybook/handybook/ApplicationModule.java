@@ -32,8 +32,6 @@ final class ApplicationModule {
     }
 
     @Provides @Singleton final Context provideApplicationContext() {
-        Properties config = PropertiesReader.getProperties(application.getApplicationContext(), "config.properties");
-        config.getProperty("api_username");
         return application.getApplicationContext();
     }
 
