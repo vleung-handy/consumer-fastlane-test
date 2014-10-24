@@ -217,7 +217,13 @@ public final class BookingsFragment extends InjectedListFragment {
 
                 if ((position >= offset && booking == pastBookings.get(pastBookings.size() - 1))
                         || (position < offset && booking == upBookings.get(upBookings.size() - 1))) {
+                    final int paddingBottom = layout.getPaddingBottom(),
+                            paddingLeft = layout.getPaddingLeft(),
+                            paddingRight = layout.getPaddingRight(),
+                            paddingTop = layout.getPaddingTop();
+
                     layout.setBackgroundResource((R.drawable.booking_cell_last));
+                    layout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 }
             }
             return convertView;
