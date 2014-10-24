@@ -21,8 +21,6 @@
 
             <RelativeLayout
                 android:id="@+id/service_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/ContentLayoutCell">
 
                 <LinearLayout
@@ -79,8 +77,6 @@
 
             <LinearLayout
                 android:id="@+id/address_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_below="@id/service_layout"
                 android:orientation="horizontal"
                 style="@style/ContentLayoutCell">
@@ -108,8 +104,6 @@
 
             <RelativeLayout
                 android:id="@+id/date_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_below="@id/address_layout"
                 style="@style/ContentLayoutCell">
 
@@ -189,8 +183,6 @@
 
             <LinearLayout
                 android:id="@+id/pro_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_below="@id/date_layout"
                 android:orientation="horizontal"
                 style="@style/ContentLayoutCell">
@@ -216,6 +208,12 @@
                 android:layout_height="0.25dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/nav_sep" />
+
+            <!--empty view needed for bottom layout margin bug on older APIs-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@id/pro_layout" />
 
         </RelativeLayout>
 
