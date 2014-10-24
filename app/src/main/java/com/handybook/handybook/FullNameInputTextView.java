@@ -3,7 +3,7 @@ package com.handybook.handybook;
 import android.content.Context;
 import android.util.AttributeSet;
 
-final class FullNameInputTextView extends InputTextField {
+public final class FullNameInputTextView extends InputTextField {
 
     public FullNameInputTextView(final Context context) {
         super(context);

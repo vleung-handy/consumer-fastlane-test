@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'HandyStageKey'
+            keyPassword 'S0H@ndy!'
+            storeFile file('handy-stage-key.keystore')
+            storePassword 'S0H@ndy!'
+        }
+    }
     compileSdkVersion 20
     buildToolsVersion '20.0.0'
     defaultConfig {
@@ -14,6 +22,7 @@ android {
         release {
             runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
             runProguard false

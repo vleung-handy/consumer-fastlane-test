@@ -5,7 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
-final class PhoneInputTextView extends InputTextField {
+public final class PhoneInputTextView extends InputTextField {
     private String countryCode;
     private User user;
 

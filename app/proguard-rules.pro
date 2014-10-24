@@ -31,3 +31,17 @@
     @com.squareup.otto.Subscribe public *;
     @com.squareup.otto.Produce public *;
 }
+
+#Facebook
+-keep class com.facebook.** { *; }
+-keepattributes Signature
+
+#Retrofit
+-dontwarn rx.**
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.*
+-dontwarn retrofit.appengine.UrlFetchClient
+-keepattributes Annotation
+-keep class retrofit.** { *; }
+-keepclasseswithmembers class * { @retrofit.http.* <methods>; }
+-keepattributes Signature

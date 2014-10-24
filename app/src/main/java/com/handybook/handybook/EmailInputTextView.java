@@ -3,7 +3,7 @@ package com.handybook.handybook;
 import android.content.Context;
 import android.util.AttributeSet;
 
-final class EmailInputTextView extends InputTextField {
+public final class EmailInputTextView extends InputTextField {
 
     public EmailInputTextView(final Context context) {
         super(context);

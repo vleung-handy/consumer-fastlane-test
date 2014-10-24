@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-final class PasswordInputTextView extends InputTextField {
+public final class PasswordInputTextView extends InputTextField {
 
     public PasswordInputTextView(final Context context) {
         super(context);
