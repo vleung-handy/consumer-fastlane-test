@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.style.URLSpan;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ public final class TextUtils {
     }
 
     static void stripUnderlines(final TextView textView) {
-        final Spannable s = (Spannable)textView.getText();
+        final Spannable s = new SpannableString(textView.getText());
         final URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
 
         for (URLSpan span: spans) {
