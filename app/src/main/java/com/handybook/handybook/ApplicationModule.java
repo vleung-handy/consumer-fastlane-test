@@ -40,13 +40,20 @@ final class ApplicationModule {
     }
 
     @Provides @Singleton final HandyRetrofitService provideHandyService(final HandyRetrofitEndpoint endpoint) {
+        final Properties configs = PropertiesReader
+                .getProperties(application.getApplicationContext(), "config.properties");
+        final String username = configs.getProperty("api_username");
+        String password = configs.getProperty("api_password_internal");
+
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+            password = configs.getProperty("api_password");
+
+        final String pwd = password;
+
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint)
                 .setRequestInterceptor(new RequestInterceptor() {
-                    Properties configs = PropertiesReader
-                            .getProperties(application.getApplicationContext(), "config.properties");
-
-                    final String auth = "Basic " + Base64.encodeToString((configs.getProperty("api_username")
-                            + ":" + configs.getProperty("api_password")).getBytes(), Base64.NO_WRAP);
+                    final String auth = "Basic " + Base64.encodeToString((username + ":" + pwd)
+                            .getBytes(), Base64.NO_WRAP);
 
                     @Override
                     public void intercept(RequestFacade request) {
@@ -55,9 +62,8 @@ final class ApplicationModule {
                     }
                 }).build();
 
-        if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
+        if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
             restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-        }
 
         return restAdapter.create(HandyRetrofitService.class);
     }
