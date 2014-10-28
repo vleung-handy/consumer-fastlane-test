@@ -1,9 +1,11 @@
 package com.handybook.handybook;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
     private ProgressDialog progressDialog;
 
     @InjectView(R.id.category_layout) LinearLayout categoryLayout;
+    @InjectView(R.id.logo) ImageView logo;
 
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
@@ -43,6 +46,15 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
         progressDialog.setDelay(500);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.loading));
+
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                AnimationDrawable logoSpin = (AnimationDrawable) logo.getBackground();
+                logoSpin.stop();
+                logoSpin.start();
+            }
+        });
 
         loadServices();
         return view;

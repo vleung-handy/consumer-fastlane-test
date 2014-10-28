@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     android:background="@color/handy_blue">
 
-    <View
+    <ImageView
         android:id="@+id/logo"
-        android:layout_width="132dp"
-        android:layout_height="96dp"
-        android:layout_margin="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         android:layout_centerHorizontal="true"
-        android:background="@android:color/black" />
+        android:background="@drawable/logo_spin"
+        android:contentDescription="@string/app_name" />
 
     <LinearLayout
         android:id="@+id/category_layout"
