@@ -58,8 +58,13 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
             }
         });
 
-        loadServices();
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        loadServices();
     }
 
     private void displayServices() {
