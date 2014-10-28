@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -61,11 +62,12 @@ public final class BaseDataManager extends DataManager {
     @Override
     public final void getServices(final CacheResponse<List<Service>> cache,
                                   final Callback<List<Service>> cb) {
-        final ArrayList<Service> services = new ArrayList<>();
         final List<Service> cachedServices = new Gson().fromJson(prefs.getString("CACHED_SERVICES"),
                 new TypeToken<List<Service>>(){}.getType());
-
         cache.onResponse(cachedServices);
+
+        final ArrayList<Service> servicesMenu = new ArrayList<>();
+        final HashMap<String, Service> menuMap = new HashMap<>();
 
         service.getServicesMenu(new HandyRetrofitCallback(cb) {
             @Override
@@ -77,8 +79,6 @@ public final class BaseDataManager extends DataManager {
                     return;
                 }
 
-                final List<Service> services = new ArrayList<>();
-
                 for (int i = 0; i <= array.length(); i ++) {
                     final JSONObject obj = array.optJSONObject(i);
 
@@ -89,22 +89,78 @@ public final class BaseDataManager extends DataManager {
                         if (name == null || ignore == 1) continue;
 
                         final Service service = new Service();
+                        service.setUniq(obj.optString("uniq"));
                         service.setName(obj.optString("name"));
                         service.setOrder(obj.optInt("order", 0));
-                        services.add(service);
+                        servicesMenu.add(service);
+                        menuMap.put(service.getUniq(), service);
                     }
                 }
 
-                Collections.sort(services, new Comparator<Service>() {
+                final HashMap<Integer, ArrayList<Service>> servicesMap = new HashMap<>();
+
+                service.getServices(new HandyRetrofitCallback(cb) {
                     @Override
-                    public int compare(final Service lhs, final Service rhs) {
-                        return rhs.getOrder() - lhs.getOrder();
+                    void success(final JSONObject response) {
+                        final JSONArray array = response.optJSONArray("services_list");
+
+                        if (array == null) {
+                            cb.onError(new DataManagerError(Type.SERVER));
+                            return;
+                        }
+
+                        for (int i = 0; i <= array.length(); i ++) {
+                            final JSONObject obj = array.optJSONObject(i);
+
+                            if (obj != null) {
+                                final Service service = new Service();
+                                service.setId(obj.optInt("id"));
+                                service.setUniq(obj.optString("machine_name"));
+                                service.setName(obj.optString("name"));
+                                service.setOrder(obj.optInt("order", 0));
+                                service.setParentId(obj.optInt("parent", 0));
+
+                                final Service menuService;
+                                if ((menuService = menuMap.get(service.getUniq())) != null) {
+                                    menuService.setId(service.getId());
+                                    continue;
+                                }
+
+                                ArrayList<Service> list;
+                                if ((list = servicesMap.get(service.getParentId())) != null) list.add(service);
+                                else {
+                                    list = new ArrayList<Service>();
+                                    list.add(service);
+                                    servicesMap.put(service.getParentId(), list);
+                                }
+                            }
+                        }
+
+                        for (final Service service : servicesMenu) {
+                            final List<Service> services;
+                            if ((services = servicesMap.get(service.getId())) != null) {
+                                Collections.sort(services, new Comparator<Service>() {
+                                    @Override
+                                    public int compare(final Service lhs, final Service rhs) {
+                                        return rhs.getOrder() - lhs.getOrder();
+                                    }
+                                });
+                                service.setServices(services);
+                            }
+                        }
+
+                        Collections.sort(servicesMenu, new Comparator<Service>() {
+                            @Override
+                            public int compare(final Service lhs, final Service rhs) {
+                                return rhs.getOrder() - lhs.getOrder();
+                            }
+                        });
+
+                        prefs.put("CACHED_SERVICES", new Gson()
+                                .toJsonTree(servicesMenu).getAsJsonArray().toString());
+                        cb.onSuccess(servicesMenu);
                     }
                 });
-
-                prefs.put("CACHED_SERVICES", new Gson()
-                        .toJsonTree(services).getAsJsonArray().toString());
-                cb.onSuccess(services);
             }
         });
     }

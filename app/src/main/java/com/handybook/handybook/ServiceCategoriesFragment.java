@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
     private void displayServices() {
         categoryLayout.removeAllViews();
-        for (Service service : services) {
+        for (final Service service : services) {
             final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
 
             categoryView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -59,6 +60,8 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
             categoryView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String s = service.getServices().toString();
+                    Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                     //final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
                     //startActivity(intent);
                 }
