@@ -43,8 +43,6 @@ public final class UserManager implements Observer {
 
         securePrefs.put("USER_OBJ", user.toJson());
         bus.post(new UserLoggedInEvent(true));
-
-        //TODO use gson like with services for secure prefs conversion
     }
 
     @Override
