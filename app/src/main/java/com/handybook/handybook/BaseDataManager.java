@@ -8,6 +8,9 @@ import com.squareup.otto.Bus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,13 +18,15 @@ import javax.inject.Inject;
 public final class BaseDataManager extends DataManager {
     private final HandyRetrofitService service;
     private final HandyRetrofitEndpoint endpoint;
+    private final SecurePreferences prefs;
 
     @Inject
     BaseDataManager(final HandyRetrofitService service, final HandyRetrofitEndpoint endpoint,
-                    final Bus bus) {
+                    final Bus bus, final SecurePreferences prefs) {
         super(bus);
         this.service = service;
         this.endpoint = endpoint;
+        this.prefs = prefs;
     }
 
     @Override
@@ -54,8 +59,54 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final String[] getServices() {
-        return new String[]{"Category 1", "Category 2", "Category 3", "Category 4"};
+    public final void getServices(final CacheResponse<List<Service>> cache,
+                                  final Callback<List<Service>> cb) {
+        final ArrayList<Service> services = new ArrayList<>();
+        final List<Service> cachedServices = new Gson().fromJson(prefs.getString("CACHED_SERVICES"),
+                new TypeToken<List<Service>>(){}.getType());
+
+        cache.onResponse(cachedServices);
+
+        service.getServicesMenu(new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                final JSONArray array = response.optJSONArray("menu_structure");
+
+                if (array == null) {
+                    cb.onError(new DataManagerError(Type.SERVER));
+                    return;
+                }
+
+                final List<Service> services = new ArrayList<>();
+
+                for (int i = 0; i <= array.length(); i ++) {
+                    final JSONObject obj = array.optJSONObject(i);
+
+                    if (obj != null) {
+                        final String name = obj.isNull("name") ? null : obj.optString("name", null);
+                        final int ignore = obj.optInt("ignore", 1);
+
+                        if (name == null || ignore == 1) continue;
+
+                        final Service service = new Service();
+                        service.setName(obj.optString("name"));
+                        service.setOrder(obj.optInt("order", 0));
+                        services.add(service);
+                    }
+                }
+
+                Collections.sort(services, new Comparator<Service>() {
+                    @Override
+                    public int compare(final Service lhs, final Service rhs) {
+                        return rhs.getOrder() - lhs.getOrder();
+                    }
+                });
+
+                prefs.put("CACHED_SERVICES", new Gson()
+                        .toJsonTree(services).getAsJsonArray().toString());
+                cb.onSuccess(services);
+            }
+        });
     }
 
     @Override

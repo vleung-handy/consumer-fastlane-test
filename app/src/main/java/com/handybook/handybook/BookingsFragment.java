@@ -2,14 +2,12 @@ package com.handybook.handybook;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
@@ -28,7 +26,6 @@ public final class BookingsFragment extends InjectedListFragment {
 
     private boolean loadedBookings;
     private ProgressDialog progressDialog;
-    private Toast toast;
     private ArrayList<Booking> upBookings = new ArrayList<>();
     private ArrayList<Booking> pastBookings = new ArrayList<>();
     private SimpleDateFormat dateFormat, timeFormat;
@@ -45,8 +42,6 @@ public final class BookingsFragment extends InjectedListFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
 
         dateFormat = new SimpleDateFormat("EEEE',' MMMM d");
 
@@ -97,7 +92,7 @@ public final class BookingsFragment extends InjectedListFragment {
     }
 
     @Override
-    public void onStart() {
+    public final void onStart() {
         super.onStart();
         if (!loadedBookings) loadBookings();
     }

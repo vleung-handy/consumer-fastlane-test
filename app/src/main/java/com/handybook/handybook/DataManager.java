@@ -22,7 +22,7 @@ abstract class DataManager {
         bus.post(new EnvironmentUpdatedEvent(env));
     }
 
-    abstract String[] getServices();
+    abstract void getServices(CacheResponse<List<Service>> cache, Callback<List<Service>> cb);
 
     abstract void getBookings(User user, Callback<List<Booking>> cb);
 
@@ -40,6 +40,10 @@ abstract class DataManager {
     static interface Callback<T> {
         void onSuccess(T response);
         void onError(DataManagerError error);
+    }
+
+    static interface CacheResponse<T> {
+        void onResponse(T response);
     }
 
     static enum Type {OTHER, SERVER, CLIENT, NETWORK}

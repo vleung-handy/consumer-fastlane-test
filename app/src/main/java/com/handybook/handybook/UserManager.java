@@ -7,7 +7,6 @@ import com.squareup.otto.Bus;
 
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Properties;
 
 import javax.inject.Inject;
 
@@ -18,21 +17,15 @@ public final class UserManager implements Observer {
     private final SecurePreferences securePrefs;
 
     @Inject
-    UserManager(final Context context, final Bus bus) {
+    UserManager(final Context context, final Bus bus, final SecurePreferences prefs) {
         this.context = context;
         this.bus = bus;
-
-        final Properties configs = PropertiesReader.getProperties(context, "config.properties");
-        securePrefs = new SecurePreferences(context, null,
-                configs.getProperty("secure_prefs_key"), true);
+        this.securePrefs = prefs;
     }
 
     User getCurrentUser() {
         if (user != null) return user;
-        else {
-            Gson gson = new Gson();
-            return gson.fromJson(securePrefs.getString("USER_OBJ"), User.class);
-        }
+        else return new Gson().fromJson(securePrefs.getString("USER_OBJ"), User.class);
     }
 
     final void setCurrentUser(final User newUser) {
@@ -50,6 +43,8 @@ public final class UserManager implements Observer {
 
         securePrefs.put("USER_OBJ", user.toJson());
         bus.post(new UserLoggedInEvent(true));
+
+        //TODO use gson like with services for secure prefs conversion
     }
 
     @Override

@@ -22,13 +22,17 @@ import retrofit.RestAdapter;
         ProfileFragment.class,
         BookingsFragment.class,
         BookingDetailFragment.class,
+        ServiceCategoriesFragment.class,
         BaseDataManager.class
 })
 final class ApplicationModule {
     private final Application application;
+    private final Properties configs;
 
     ApplicationModule(final Application application) {
         this.application = application;
+        configs = PropertiesReader
+                .getProperties(application.getApplicationContext(), "config.properties");
     }
 
     @Provides @Singleton final Context provideApplicationContext() {
@@ -40,8 +44,6 @@ final class ApplicationModule {
     }
 
     @Provides @Singleton final HandyRetrofitService provideHandyService(final HandyRetrofitEndpoint endpoint) {
-        final Properties configs = PropertiesReader
-                .getProperties(application.getApplicationContext(), "config.properties");
         final String username = configs.getProperty("api_username");
         String password = configs.getProperty("api_password_internal");
 
@@ -70,8 +72,9 @@ final class ApplicationModule {
 
     @Provides @Singleton final DataManager provideDataManager(final HandyRetrofitService service,
                                                               final HandyRetrofitEndpoint endpoint,
-                                                              final Bus bus) {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus);
+                                                              final Bus bus,
+                                                              final SecurePreferences prefs) {
+        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
             dataManager.setEnvironment(DataManager.Environment.P);
         }
@@ -84,5 +87,10 @@ final class ApplicationModule {
 
     @Provides @Singleton final Bus provideBus() {
         return new Bus();
+    }
+
+    @Provides @Singleton final SecurePreferences providePrefs() {
+        return new SecurePreferences(application.getApplicationContext(), null,
+                configs.getProperty("secure_prefs_key"), true);
     }
 }

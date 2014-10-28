@@ -95,13 +95,13 @@ public final class ProfileFragment extends InjectedFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public final void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         updateButton.setOnClickListener(updateClicked);
     }
 
     @Override
-    public void onStart() {
+    public final void onStart() {
         super.onStart();
         if (!loadedUserInfo) loadUserInfo();
     }

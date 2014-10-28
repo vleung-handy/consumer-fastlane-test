@@ -13,6 +13,9 @@ import retrofit.http.Query;
 
 public interface HandyRetrofitService {
 
+    @GET("/services/most_common")
+    void getServicesMenu(HandyRetrofitCallback cb);
+
     @GET("/bookings")
     void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
