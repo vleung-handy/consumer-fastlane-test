@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
     @InjectView(R.id.category_layout) LinearLayout categoryLayout;
     @InjectView(R.id.logo) ImageView logo;
 
+    @Inject UserManager userManager;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
@@ -69,13 +71,21 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                     LinearLayout.LayoutParams.MATCH_PARENT, 0, 1));
 
             categoryView.setText(service.getName());
+
             categoryView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String s = service.getServices().toString();
-                    Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-                    //final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-                    //startActivity(intent);
+                    if (userManager.getCurrentUser() == null) {
+                        Toast.makeText(getActivity(), "Please Login", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    final ArrayList<Service> nextServices;
+                    if ((nextServices = new ArrayList<>(service.getServices())).size() > 0) {
+                        final Intent intent = new Intent(getActivity(), ServicesActivity.class);
+                        intent.putParcelableArrayListExtra(ServicesActivity.EXTRA_SERVICES, nextServices);
+                        startActivity(intent);
+                    }
                 }
             });
             categoryLayout.addView(categoryView, 0);

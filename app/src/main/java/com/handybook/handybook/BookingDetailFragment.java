@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -34,9 +32,9 @@ public final class BookingDetailFragment extends InjectedFragment {
     @InjectView(R.id.pro_text) TextView proText;
     @InjectView(R.id.pro_layout) View proView;
 
-    static BookingDetailFragment newInstance(Booking booking) {
-        BookingDetailFragment fragment = new BookingDetailFragment();
-        Bundle args = new Bundle();
+    static BookingDetailFragment newInstance(final Booking booking) {
+        final BookingDetailFragment fragment = new BookingDetailFragment();
+        final Bundle args = new Bundle();
         args.putParcelable(EXTRA_BOOKING, booking);
         fragment.setArguments(args);
         return fragment;
@@ -88,19 +86,5 @@ public final class BookingDetailFragment extends InjectedFragment {
         else proView.setVisibility(View.GONE);
 
         return view;
-    }
-
-    @Override
-    public final void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        final MenuDrawer menuDrawer = activity.getMenuDrawer();
-        menuDrawer.setOnInterceptMoveEventListener(new MenuDrawer.OnInterceptMoveEventListener() {
-            @Override
-            public boolean isViewDraggable(final View view, final int i, final int i2, final int i3) {
-                return true;
-            }
-        });
     }
 }

@@ -18,6 +18,7 @@ abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDi
 
     private MenuDrawer menuDrawer;
     private boolean showNavForTransition;
+    protected boolean disableDrawer;
 
     protected abstract Fragment createFragment();
     protected abstract String getNavItemTitle();
@@ -53,6 +54,13 @@ abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDi
                 = getIntent().getBooleanExtra(EXTRA_SHOW_NAV_FOR_TRANSITION, false))) {
             menuDrawer.openMenu(false);
         }
+
+        menuDrawer.setOnInterceptMoveEventListener(new MenuDrawer.OnInterceptMoveEventListener() {
+            @Override
+            public boolean isViewDraggable(final View view, final int i, final int i2, final int i3) {
+                return disableDrawer;
+            }
+        });
     }
 
     @Override

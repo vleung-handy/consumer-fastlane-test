@@ -3,13 +3,15 @@ package com.handybook.handybook;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-public final class BookingDetailActivity extends MenuDrawerActivity {
-    static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
+import java.util.ArrayList;
+
+public final class ServicesActivity extends MenuDrawerActivity {
+    static final String EXTRA_SERVICES = "com.handy.handy.EXTRA_SERVICES";
 
     @Override
     protected final Fragment createFragment() {
-        final Booking booking = getIntent().getParcelableExtra(EXTRA_BOOKING);
-        return BookingDetailFragment.newInstance(booking);
+        final ArrayList<Service> services = getIntent().getParcelableArrayListExtra(EXTRA_SERVICES);
+        return ServicesFragment.newInstance(services);
     }
 
     @Override
