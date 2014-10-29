@@ -112,7 +112,7 @@ public final class BaseDataManager extends DataManager {
                         for (int i = 0; i <= array.length(); i ++) {
                             final JSONObject obj = array.optJSONObject(i);
 
-                            if (obj != null) {
+                            if (obj != null && obj.optBoolean("no_show", true)) {
                                 final Service service = new Service();
                                 service.setId(obj.optInt("id"));
                                 service.setUniq(obj.optString("machine_name"));
@@ -142,7 +142,7 @@ public final class BaseDataManager extends DataManager {
                                 Collections.sort(services, new Comparator<Service>() {
                                     @Override
                                     public int compare(final Service lhs, final Service rhs) {
-                                        return rhs.getOrder() - lhs.getOrder();
+                                        return lhs.getOrder() - rhs.getOrder();
                                     }
                                 });
                                 service.setServices(services);
@@ -152,7 +152,7 @@ public final class BaseDataManager extends DataManager {
                         Collections.sort(servicesMenu, new Comparator<Service>() {
                             @Override
                             public int compare(final Service lhs, final Service rhs) {
-                                return rhs.getOrder() - lhs.getOrder();
+                                return lhs.getOrder() - rhs.getOrder();
                             }
                         });
 

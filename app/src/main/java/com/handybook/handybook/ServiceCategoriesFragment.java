@@ -69,6 +69,8 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
     private void displayServices() {
         categoryLayout.removeAllViews();
+        int pos = 0;
+
         for (final Service service : services) {
             final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
 
@@ -93,7 +95,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                     }
                 }
             });
-            categoryLayout.addView(categoryView, 0);
+            categoryLayout.addView(categoryView, pos++);
         }
     }
 
