@@ -64,7 +64,7 @@ public final class BaseDataManager extends DataManager {
                                   final Callback<List<Service>> cb) {
         final List<Service> cachedServices = new Gson().fromJson(prefs.getString("CACHED_SERVICES"),
                 new TypeToken<List<Service>>(){}.getType());
-        cache.onResponse(cachedServices);
+        cache.onResponse(cachedServices != null ? cachedServices : new ArrayList<Service>());
 
         final ArrayList<Service> servicesMenu = new ArrayList<>();
         final HashMap<String, Service> menuMap = new HashMap<>();
