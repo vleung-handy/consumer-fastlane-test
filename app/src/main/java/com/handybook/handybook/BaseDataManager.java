@@ -166,6 +166,16 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public final void validateBookingZip(final int serviceId, final String zipCode, final Callback<Void> cb) {
+        service.validateBookingZip(serviceId, zipCode, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(null);
+            }
+        });
+    }
+
+    @Override
     public final void getBookings(final User user, final Callback<List<Booking>> cb) {
         service.getBookings(user.getAuthToken(), new HandyRetrofitCallback(cb) {
             @Override

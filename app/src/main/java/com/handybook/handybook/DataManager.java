@@ -24,6 +24,8 @@ abstract class DataManager {
 
     abstract void getServices(CacheResponse<List<Service>> cache, Callback<List<Service>> cb);
 
+    abstract void validateBookingZip(int serviceId, String zipCode, Callback<Void> cb);
+
     abstract void getBookings(User user, Callback<List<Booking>> cb);
 
     abstract void authUser(String email, String password, Callback<User> cb);

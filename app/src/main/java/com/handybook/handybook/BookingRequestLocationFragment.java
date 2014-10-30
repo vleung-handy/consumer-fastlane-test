@@ -61,17 +61,7 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
             zipText.setText(address.getZip());
         }
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                if (validateFields()) {
-                    disableInputs();
-                    progressDialog.show();
-                    progressDialog.dismiss();
-                    enableInputs();
-                }
-            }
-        });
+        nextButton.setOnClickListener(nextClicked);
 
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,10 +120,35 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
         locationButton.setVisibility(View.INVISIBLE);
         zipProgress.setVisibility(View.VISIBLE);
 
-        toast.setText("LOCATION");
-        toast.show();
-
-        zipProgress.setVisibility(View.INVISIBLE);
-        locationButton.setVisibility(View.VISIBLE);
+        //TODO finish handler to get zip
+        //TODO handle invalid input highlighting for all views...i.e. zipcode
     }
+
+    private final View.OnClickListener nextClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            if (validateFields()) {
+                disableInputs();
+                progressDialog.show();
+
+                final BookingRequest request = requestManager.getCurrentRequest();
+
+                dataManager.validateBookingZip(request.getServiceId(), zipText.getZipCode(), new DataManager.Callback<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        request.setZipCode(zipText.getZipCode());
+                        enableInputs();
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error) {
+                        enableInputs();
+                        progressDialog.dismiss();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                });
+            }
+        }
+    };
 }
