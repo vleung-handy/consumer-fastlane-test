@@ -4,4 +4,66 @@
     android:layout_height="match_parent"
     android:background="@color/handy_bg">
 
+    <Button
+        android:id="@+id/next_button"
+        android:text="@string/next"
+        style="@style/Button.Blue" />
+
+    <TextView
+        android:id="@+id/nav_text"
+        android:text="@string/location"
+        style="@style/TextView.Navbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/next_button"
+        android:layout_below="@id/nav_text"
+        style="@style/ContentLayout.NoBottom">
+
+        <TextView
+            android:id="@+id/location_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:text="@string/where_located"
+            style="@style/TextView" />
+
+        <com.handybook.handybook.ZipCodeInputTextView
+            android:id="@+id/zip_text"
+            android:layout_below="@id/location_text"
+            style="@style/EditText.ZipCode" />
+
+        <ProgressBar
+            android:id="@+id/zip_progress"
+            android:layout_alignRight="@id/zip_text"
+            android:layout_alignEnd="@id/zip_text"
+            android:layout_alignBottom="@id/zip_text"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="invisible" />
+
+        <ImageButton
+            android:id="@+id/location_button"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignRight="@id/zip_text"
+            android:layout_alignEnd="@id/zip_text"
+            android:layout_alignBottom="@id/zip_text"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/location"
+            android:background="@drawable/button_location"/>
+
+    </RelativeLayout>
+
 </RelativeLayout>

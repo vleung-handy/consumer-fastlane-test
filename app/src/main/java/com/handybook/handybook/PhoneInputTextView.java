@@ -24,7 +24,8 @@ public final class PhoneInputTextView extends InputTextField {
         init();
     }
 
-    private void init() {
+    void init() {
+        super.init();
         this.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(final CharSequence charSequence, final int start,

@@ -28,6 +28,8 @@ public final class User extends Observable {
     @SerializedName("password") private String password;
     @SerializedName("current_password") private String currentPassword;
     @SerializedName("password_confirmation") private String passwordConfirmation;
+    @SerializedName("first_address") private Address address;
+
 
     final String getAuthToken() {
         return authToken;
@@ -143,6 +145,15 @@ public final class User extends Observable {
         this.passwordConfirmation = passwordConfirmation;
     }
 
+    final Address getAddress() {
+        return address;
+    }
+
+    final void setAddress(final Address address) {
+        this.address = address;
+        triggerObservers();
+    }
+
     final String toJson() {
         final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
             @Override
@@ -178,7 +189,21 @@ public final class User extends Observable {
             jsonObj.add("phone", context.serialize(value.getPhone()));
             jsonObj.add("currency_char", context.serialize(value.getCurrencyChar()));
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
+            jsonObj.add("first_address", context.serialize(value.getAddress()));
+
             return jsonObj;
+        }
+    }
+
+    static final class Address {
+        @SerializedName("zipcode") private String zip;
+
+        final String getZip() {
+            return zip;
+        }
+
+        final void setZip(final String zip) {
+            this.zip = zip;
         }
     }
 }

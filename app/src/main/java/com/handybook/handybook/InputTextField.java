@@ -27,7 +27,7 @@ abstract class InputTextField extends EditText {
         init();
     }
 
-    private void init() {
+    void init() {
         this.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(final CharSequence charSequence, final int start,

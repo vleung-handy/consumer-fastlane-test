@@ -111,6 +111,16 @@
         <item name="android:maxLength">100</item>
     </style>
 
+    <style name="EditText.ZipCode">
+        <item name="android:inputType">textPostalAddress</item>
+        <item name="android:freezesText">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/zip_code</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/black_pressed</item>
+        <item name="android:maxLength">100</item>
+    </style>
+
     <style name="TextView">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/default_text_size</item>

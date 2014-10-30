@@ -21,7 +21,8 @@ public final class PasswordInputTextView extends InputTextField {
         init();
     }
 
-    private void init() {
+    void init() {
+        super.init();
         this.setTypeface(Typeface.DEFAULT);
     }
 
