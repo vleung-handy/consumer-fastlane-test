@@ -93,10 +93,9 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                         return;
                     }
 
-                    final ArrayList<Service> nextServices;
-                    if ((nextServices = new ArrayList<>(service.getServices())).size() > 0) {
+                    if (service.getServices().size() > 0) {
                         final Intent intent = new Intent(getActivity(), ServicesActivity.class);
-                        intent.putParcelableArrayListExtra(ServicesActivity.EXTRA_SERVICES, nextServices);
+                        intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
                         intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, categoryView.getHeight());
                         startActivity(intent);
                     }
