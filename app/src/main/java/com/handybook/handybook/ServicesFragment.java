@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -21,6 +23,8 @@ public final class ServicesFragment extends InjectedListFragment {
 
     private Service service;
     private ArrayList<Service> services;
+
+    @Inject BookingRequestManager requestManager;
 
     @InjectView(R.id.nav_text) TextView navText;
 
@@ -65,6 +69,14 @@ public final class ServicesFragment extends InjectedListFragment {
                     final Intent intent = new Intent(getActivity(), ServicesActivity.class);
                     intent.putExtra(ServicesActivity.EXTRA_SERVICE, next);
                     intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, navText.getHeight());
+                    startActivity(intent);
+                }
+                else {
+                    final BookingRequest request = new BookingRequest();
+                    request.setServiceId(next.getId());
+                    requestManager.setCurrentRequest(request);
+
+                    final Intent intent = new Intent(getActivity(), BookingRequestLocationActivity.class);
                     startActivity(intent);
                 }
             }

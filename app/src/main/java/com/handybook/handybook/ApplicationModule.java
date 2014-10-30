@@ -24,6 +24,7 @@ import retrofit.RestAdapter;
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,
         ServicesFragment.class,
+        BookingRequestLocationFragment.class,
         BaseDataManager.class
 })
 final class ApplicationModule {
@@ -93,5 +94,9 @@ final class ApplicationModule {
     @Provides @Singleton final SecurePreferences providePrefs() {
         return new SecurePreferences(application.getApplicationContext(), null,
                 configs.getProperty("secure_prefs_key"), true);
+    }
+
+    @Provides @Singleton final BookingRequestManager provideBookingRequestManager() {
+        return new BookingRequestManager();
     }
 }

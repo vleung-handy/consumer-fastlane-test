@@ -23,7 +23,7 @@ public final class UserManager implements Observer {
         this.securePrefs = prefs;
     }
 
-    User getCurrentUser() {
+    final User getCurrentUser() {
         if (user != null) return user;
         else return new Gson().fromJson(securePrefs.getString("USER_OBJ"), User.class);
     }

@@ -27,6 +27,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
+    @Inject BookingRequestManager requestManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     static ServiceCategoriesFragment newInstance() {
@@ -97,6 +98,14 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                         final Intent intent = new Intent(getActivity(), ServicesActivity.class);
                         intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
                         intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, categoryView.getHeight());
+                        startActivity(intent);
+                    }
+                    else {
+                        final BookingRequest request = new BookingRequest();
+                        request.setServiceId(service.getId());
+                        requestManager.setCurrentRequest(request);
+
+                        final Intent intent = new Intent(getActivity(), BookingRequestLocationActivity.class);
                         startActivity(intent);
                     }
                 }
