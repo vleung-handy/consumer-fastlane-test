@@ -98,6 +98,12 @@ public final class BookingsFragment extends InjectedListFragment {
     }
 
     @Override
+    public final void onStop() {
+        super.onStop();
+        dataManager = null;
+    }
+
+    @Override
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_LOADED_BOOKINGS, loadedBookings);
@@ -190,19 +196,19 @@ public final class BookingsFragment extends InjectedListFragment {
         public final View getView(final int position, View convertView, final ViewGroup parent) {
             if (upBookings.size() < 1 && position == 1) {
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_no_booking, null);
+                        .inflate(R.layout.list_item_no_booking, parent, false);
             }
             else if (position == 0 || position == (upBookings.size() > 0 ? upBookings.size() + 1 : 2)) {
                 String header = (String)getItem(position);
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_booking_header, null);
+                        .inflate(R.layout.list_item_booking_header, parent, false);
                 TextView textView = (TextView)convertView.findViewById(R.id.title);
                 textView.setText(header);
             }
             else {
                 final Booking booking = (Booking)getItem(position);
                 convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_booking, null);
+                        .inflate(R.layout.list_item_booking, parent, false);
                 configureCell(convertView, booking);
 
                 // remove cell separator from final item in list

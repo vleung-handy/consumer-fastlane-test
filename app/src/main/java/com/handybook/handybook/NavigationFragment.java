@@ -117,7 +117,7 @@ public final class NavigationFragment extends InjectedListFragment
                 if (view == null) {
                     final LayoutInflater inflater = (LayoutInflater)getContext()
                             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    view = inflater.inflate(R.layout.list_item_nav, null);
+                    view = inflater.inflate(R.layout.list_item_nav, parent, false);
                 }
 
                 final String text = items.get(position).toUpperCase();

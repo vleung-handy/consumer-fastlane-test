@@ -62,9 +62,15 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
     }
 
     @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
+    public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loadServices();
+    }
+
+    @Override
+    public final void onStop() {
+        super.onStop();
+        dataManager = null;
     }
 
     private void displayServices() {
@@ -91,6 +97,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                     if ((nextServices = new ArrayList<>(service.getServices())).size() > 0) {
                         final Intent intent = new Intent(getActivity(), ServicesActivity.class);
                         intent.putParcelableArrayListExtra(ServicesActivity.EXTRA_SERVICES, nextServices);
+                        intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, categoryView.getHeight());
                         startActivity(intent);
                     }
                 }

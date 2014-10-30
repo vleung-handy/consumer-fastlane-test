@@ -107,6 +107,12 @@ public final class ProfileFragment extends InjectedFragment {
     }
 
     @Override
+    public final void onStop() {
+        super.onStop();
+        dataManager = null;
+    }
+
+    @Override
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_FULLNAME_HIGHLIGHT, fullNameText.isHighlighted());

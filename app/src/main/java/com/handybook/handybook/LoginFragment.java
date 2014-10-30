@@ -110,6 +110,12 @@ public final class LoginFragment extends InjectedFragment {
     }
 
     @Override
+    public final void onStop() {
+        super.onStop();
+        dataManager = null;
+    }
+
+    @Override
     public final void onDestroy() {
         super.onDestroy();
         uiHelper.onDestroy();

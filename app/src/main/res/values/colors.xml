@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="handy_blue">#41C3E0</color>
-    <color name="handy_blue_pressed">#349CB3</color>
+    <color name="handy_blue">#00CDED</color>
+    <color name="handy_blue_pressed">#00ABC6</color>
     <color name="handy_bg">#EAEAEA</color>
     <color name="nav_bg">#1D1D1D</color>
     <color name="white">#FFFFFF</color>
-    <color name="white_pressed">#E1E1E1</color>
+    <color name="white_pressed">#E0E0E0</color>
     <color name="black">#434343</color>
     <color name="black_pressed">#B1B1B1</color>
     <color name="nav_sep">#B1B1B1</color>
-    <color name="cell_sep">#D7D7D7</color>
-    <color name="cell_selected">#D7D7D7</color>
-    <color name="error_red">#F95855</color>
+    <color name="service_sep">#D6D6D6</color>
+    <color name="cell_sep">#D6D6D6</color>
+    <color name="cell_selected">#D6D6D6</color>
+    <color name="error_red">#FF5C5C</color>
     <color name="facebook">#246BAB</color>
 </resources>

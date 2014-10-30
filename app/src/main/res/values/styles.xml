@@ -179,6 +179,14 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="ServiceCell">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/service_cell</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
     <style name="TextView.ServiceCategory">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
