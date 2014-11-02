@@ -7,6 +7,8 @@ import butterknife.ButterKnife;
 
 public class InjectedListFragment extends ListFragment {
 
+    protected boolean allowCallbacks;
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,5 +19,17 @@ public class InjectedListFragment extends ListFragment {
     public final void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        allowCallbacks = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        allowCallbacks = false;
     }
 }

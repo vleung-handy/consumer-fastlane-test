@@ -65,13 +65,8 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
     @Override
     public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        allowCallbacks = true;
         loadServices();
-    }
-
-    @Override
-    public final void onStop() {
-        super.onStop();
-        dataManager = null;
     }
 
     private void displayServices() {
@@ -119,6 +114,10 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
         dataManager.getServices(new DataManager.CacheResponse<List<Service>>() {
             @Override
             public void onResponse(final List<Service> response) {
+                if (!allowCallbacks) return;
+
+                System.out.println("HERE " + response);
+
                 services = response;
                 displayServices();
                 progressDialog.dismiss();
@@ -127,6 +126,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
         new DataManager.Callback<List<Service>>() {
             @Override
             public void onSuccess(final List<Service> response) {
+                if (!allowCallbacks) return;
                 services = response;
                 displayServices();
                 progressDialog.dismiss();
@@ -134,6 +134,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
             @Override
             public void onError(final DataManager.DataManagerError error) {
+                if (!allowCallbacks) return;
                 progressDialog.dismiss();
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }

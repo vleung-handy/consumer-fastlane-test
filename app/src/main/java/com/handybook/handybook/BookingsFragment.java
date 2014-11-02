@@ -98,12 +98,6 @@ public final class BookingsFragment extends InjectedListFragment {
     }
 
     @Override
-    public final void onStop() {
-        super.onStop();
-        dataManager = null;
-    }
-
-    @Override
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_LOADED_BOOKINGS, loadedBookings);
@@ -116,6 +110,7 @@ public final class BookingsFragment extends InjectedListFragment {
         dataManager.getBookings(userManager.getCurrentUser(), new DataManager.Callback<List<Booking>>() {
             @Override
             public void onSuccess(final List<Booking> bookings) {
+                if (!allowCallbacks) return;
                 pastBookings.clear();
                 upBookings.clear();
 
@@ -133,6 +128,7 @@ public final class BookingsFragment extends InjectedListFragment {
 
             @Override
             public void onError(final DataManager.DataManagerError error) {
+                if (!allowCallbacks) return;
                 loadedBookings = true;
                 progressDialog.dismiss();
                 dataManagerErrorHandler.handleError(getActivity(), error);

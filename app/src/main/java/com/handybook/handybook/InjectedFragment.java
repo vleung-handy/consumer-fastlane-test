@@ -6,6 +6,8 @@ import butterknife.ButterKnife;
 
 public class InjectedFragment extends android.support.v4.app.Fragment {
 
+    protected boolean allowCallbacks;
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,5 +18,17 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     public final void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        allowCallbacks = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        allowCallbacks = false;
     }
 }

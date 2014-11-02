@@ -58,6 +58,7 @@ public final class ProfileFragment extends InjectedFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         user = userManager.getCurrentUser();
         toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -104,12 +105,6 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onStart() {
         super.onStart();
         if (!loadedUserInfo) loadUserInfo();
-    }
-
-    @Override
-    public final void onStop() {
-        super.onStop();
-        dataManager = null;
     }
 
     @Override
@@ -246,6 +241,8 @@ public final class ProfileFragment extends InjectedFragment {
     private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>() {
         @Override
         public void onSuccess(final User user) {
+            if (!allowCallbacks) return;
+
             loadedUserInfo = true;
             userManager.setCurrentUser(user);
             ProfileFragment.this.user = userManager.getCurrentUser();
@@ -262,6 +259,8 @@ public final class ProfileFragment extends InjectedFragment {
 
         @Override
         public void onError(final DataManager.DataManagerError error) {
+            if (!allowCallbacks) return;
+
             loadedUserInfo = true;
             progressDialog.dismiss();
             enableInputs();

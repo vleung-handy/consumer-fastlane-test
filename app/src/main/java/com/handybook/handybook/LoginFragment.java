@@ -110,12 +110,6 @@ public final class LoginFragment extends InjectedFragment {
     }
 
     @Override
-    public final void onStop() {
-        super.onStop();
-        dataManager = null;
-    }
-
-    @Override
     public final void onDestroy() {
         super.onDestroy();
         uiHelper.onDestroy();
@@ -179,6 +173,7 @@ public final class LoginFragment extends InjectedFragment {
                 dataManager.requestPasswordReset(emailText.getText().toString(), new DataManager.Callback<String>() {
                     @Override
                     public void onSuccess(final String response) {
+                        if (!allowCallbacks) return;
                         progressDialog.dismiss();
                         enableInputs();
 
@@ -188,6 +183,7 @@ public final class LoginFragment extends InjectedFragment {
 
                     @Override
                     public void onError(final DataManager.DataManagerError error) {
+                        if (!allowCallbacks) return;
                         progressDialog.dismiss();
                         enableInputs();
                         dataManagerErrorHandler.handleError(getActivity(), error);
@@ -200,7 +196,7 @@ public final class LoginFragment extends InjectedFragment {
     private final Session.StatusCallback statusCallback = new Session.StatusCallback() {
         @Override
         public void call(final Session session, final SessionState state, final Exception exception) {
-            if (!handleFBSessionUpdates) return;
+            if (!handleFBSessionUpdates || !allowCallbacks) return;
 
             if (exception instanceof FacebookAuthorizationException) {
                 toast.setText(R.string.default_error_string);
@@ -210,6 +206,7 @@ public final class LoginFragment extends InjectedFragment {
                 final Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
                     @Override
                     public void onCompleted(final GraphUser user, final Response response) {
+                        if (!allowCallbacks) return;
                         if (response.getError() != null ) {
                             toast.setText(R.string.default_error_string);
                             toast.show();
@@ -236,9 +233,11 @@ public final class LoginFragment extends InjectedFragment {
     private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>() {
         @Override
         public void onSuccess(final User user) {
+            if (!allowCallbacks) return;
             dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
                 @Override
                 public void onSuccess(final User user) {
+                    if (!allowCallbacks) return;
                     userManager.setCurrentUser(user);
                     progressDialog.dismiss();
                     enableInputs();
@@ -266,6 +265,7 @@ public final class LoginFragment extends InjectedFragment {
 
                 @Override
                 public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
                     handleUserCallbackError(error);
                 }
             });
@@ -273,6 +273,7 @@ public final class LoginFragment extends InjectedFragment {
 
         @Override
         public void onError(final DataManager.DataManagerError error) {
+            if (!allowCallbacks) return;
             handleUserCallbackError(error);
         }
     };
