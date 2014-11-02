@@ -64,6 +64,7 @@ final class ApplicationModule {
                     public void intercept(RequestFacade request) {
                         request.addHeader("Authorization", auth);
                         request.addHeader("Accept", "application/json");
+                        request.addQueryParam("app_version", "5.2");
                     }
                 }).build();
 
