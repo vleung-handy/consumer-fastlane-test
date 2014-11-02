@@ -21,6 +21,7 @@ import butterknife.InjectView;
 public final class ServiceCategoriesFragment extends InjectedFragment {
     private List<Service> services = new ArrayList<>();
     private ProgressDialog progressDialog;
+    private boolean usedCache;
 
     @InjectView(R.id.category_layout) LinearLayout categoryLayout;
     @InjectView(R.id.logo) ImageView logo;
@@ -111,10 +112,13 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
     private void loadServices() {
         progressDialog.show();
+        usedCache = false;
+
         dataManager.getServices(new DataManager.CacheResponse<List<Service>>() {
             @Override
             public void onResponse(final List<Service> response) {
                 if (!allowCallbacks) return;
+                usedCache = true;
                 services = response;
                 displayServices();
                 progressDialog.dismiss();
@@ -131,7 +135,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
             @Override
             public void onError(final DataManager.DataManagerError error) {
-                if (!allowCallbacks) return;
+                if (!allowCallbacks || usedCache) return;
                 progressDialog.dismiss();
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
