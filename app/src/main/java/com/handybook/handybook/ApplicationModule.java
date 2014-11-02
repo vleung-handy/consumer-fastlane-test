@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 
@@ -98,5 +99,9 @@ final class ApplicationModule {
 
     @Provides @Singleton final BookingRequestManager provideBookingRequestManager() {
         return new BookingRequestManager();
+    }
+
+    @Provides final ReactiveLocationProvider provideReactiveLocationProvider() {
+        return new ReactiveLocationProvider(application.getApplicationContext());
     }
 }
