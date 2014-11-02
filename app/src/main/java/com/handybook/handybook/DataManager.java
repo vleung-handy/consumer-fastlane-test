@@ -18,8 +18,8 @@ abstract class DataManager {
     }
 
     void setEnvironment(Environment env) {
+        bus.post(new EnvironmentUpdatedEvent(env, this.env));
         this.env = env;
-        bus.post(new EnvironmentUpdatedEvent(env));
     }
 
     abstract void getServices(CacheResponse<List<Service>> cache, Callback<List<Service>> cb);

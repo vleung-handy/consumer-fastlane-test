@@ -77,7 +77,9 @@ final class ApplicationModule {
                                                               final HandyRetrofitEndpoint endpoint,
                                                               final Bus bus,
                                                               final SecurePreferences prefs) {
+
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);
+
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
             dataManager.setEnvironment(DataManager.Environment.P);
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -19,8 +20,9 @@ public final class UserManager implements Observer {
     @Inject
     UserManager(final Context context, final Bus bus, final SecurePreferences prefs) {
         this.context = context;
-        this.bus = bus;
         this.securePrefs = prefs;
+        this.bus = bus;
+        this.bus.register(this);
     }
 
     final User getCurrentUser() {
@@ -48,6 +50,11 @@ public final class UserManager implements Observer {
     @Override
     public void update(final Observable observable, final Object data) {
         if (observable instanceof User) setCurrentUser((User)observable);
+    }
+
+    @Subscribe
+    public final void environmentUpdated(final EnvironmentUpdatedEvent event) {
+        if (event.getEnvironment() != event.getPrevEnvironment()) setCurrentUser(null);
     }
 }
 
