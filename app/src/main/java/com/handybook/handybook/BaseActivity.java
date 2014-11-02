@@ -16,7 +16,7 @@ abstract class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
-            NewRelic.withApplicationToken("AAbaf8c55fb9788d1664e82661d94bc18ea7c39aa6")
+            NewRelic.withApplicationToken("AA7a37dccf925fd1e474142399691d1b6b3f84648b")
                     .start(this.getApplication());
         }
         else {

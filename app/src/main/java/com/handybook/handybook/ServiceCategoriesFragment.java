@@ -115,9 +115,6 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
             @Override
             public void onResponse(final List<Service> response) {
                 if (!allowCallbacks) return;
-
-                System.out.println("HERE " + response);
-
                 services = response;
                 displayServices();
                 progressDialog.dismiss();
