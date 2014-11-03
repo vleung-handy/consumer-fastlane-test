@@ -244,6 +244,7 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
                 intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_OPTIONS,
                         new ArrayList<>(options));
+                intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, 0);
                 startActivity(intent);
             }
 

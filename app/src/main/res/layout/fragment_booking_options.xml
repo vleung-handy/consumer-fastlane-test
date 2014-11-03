@@ -4,9 +4,40 @@
     android:layout_height="match_parent"
     android:background="@color/handy_bg">
 
+    <Button
+        android:id="@+id/next_button"
+        android:text="@string/next"
+        style="@style/Button.Blue" />
+
     <TextView
         android:id="@+id/nav_text"
         android:text="@string/details"
         style="@style/TextView.Navbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_text"
+        android:layout_above="@id/next_button">
+
+        <LinearLayout
+            android:id="@+id/options_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/default_margin">
+
+            <TextView
+                android:id="@+id/header_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/tell_us_job"
+                android:gravity="center"
+                style="@style/TextView"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
