@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.LocationRequest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -241,6 +242,8 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
                 progressDialog.dismiss();
 
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_OPTIONS,
+                        new ArrayList<>(options));
                 startActivity(intent);
             }
 
