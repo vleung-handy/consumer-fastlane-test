@@ -26,6 +26,7 @@ import retrofit.RestAdapter;
         ServiceCategoriesFragment.class,
         ServicesFragment.class,
         BookingRequestLocationFragment.class,
+        BookingOptionsFragment.class,
         BaseDataManager.class
 })
 final class ApplicationModule {
@@ -68,7 +69,8 @@ final class ApplicationModule {
                     }
                 }).build();
 
-        if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
+                || BuildConfig.BUILD_TYPE.equals("debug"))
             restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
 
         return restAdapter.create(HandyRetrofitService.class);

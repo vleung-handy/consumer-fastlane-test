@@ -59,7 +59,7 @@ final class Service implements Parcelable {
     }
 
     final List<Service> getServices() {
-        if (services == null) services = new ArrayList<Service>();
+        if (services == null) services = new ArrayList<>();
         return services;
     }
 
@@ -79,7 +79,7 @@ final class Service implements Parcelable {
         parentId = intData[1];
         id = intData[2];
 
-        services = new ArrayList<Service>();
+        services = new ArrayList<>();
         in.readTypedList(services, Service.CREATOR);
     }
 

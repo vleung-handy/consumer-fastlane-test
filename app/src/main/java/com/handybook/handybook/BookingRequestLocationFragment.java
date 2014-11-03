@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
@@ -208,10 +209,7 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
                     @Override
                     public void onSuccess(Void v) {
                         if (!allowCallbacks) return;
-
-                        request.setZipCode(zipText.getZipCode());
-                        enableInputs();
-                        progressDialog.dismiss();
+                        displayBookingOptions();
                     }
 
                     @Override
@@ -229,6 +227,32 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
             }
         }
     };
+
+    private void displayBookingOptions() {
+        final BookingRequest request = requestManager.getCurrentRequest();
+        request.setZipCode(zipText.getZipCode());
+
+        dataManager.getBookingOptions(request.getServiceId(),
+                new DataManager.Callback<List<BookingOption>>() {
+            @Override
+            public void onSuccess(final List<BookingOption> options) {
+                if (!allowCallbacks) return;
+                enableInputs();
+                progressDialog.dismiss();
+
+                final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error) {
+                if (!allowCallbacks) return;
+                enableInputs();
+                progressDialog.dismiss();
+                dataManagerErrorHandler.handleError(getActivity(), error);
+            }
+        });
+    }
 
     private final TextWatcher zipTextWatcher = new TextWatcher() {
         @Override

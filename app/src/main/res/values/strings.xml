@@ -44,4 +44,5 @@
     <string name="location">Location</string>
     <string name="where_located">Okay, where are you located?</string>
     <string name="zip_code">ZIP Code</string>
+    <string name="details">Details</string>
 </resources>

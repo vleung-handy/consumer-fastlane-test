@@ -196,6 +196,26 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public final void getBookingOptions(final int serviceId, final Callback<List<BookingOption>> cb) {
+        service.getBookingOptions(serviceId, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                final JSONArray array = response.optJSONArray("booking_options");
+
+                if (array == null) {
+                    cb.onError(new DataManagerError(Type.SERVER));
+                    return;
+                }
+
+                final Gson gson = new Gson();
+                final List<BookingOption> bookingOptions = gson.fromJson(array.toString(),
+                        new TypeToken<List<BookingOption>>(){}.getType());
+                cb.onSuccess(bookingOptions);
+            }
+        });
+    }
+
+    @Override
     public final void authUser(final String email, final String password, final Callback<User> cb) {
         service.createUserSession(email, password, new HandyRetrofitCallback(cb) {
             @Override

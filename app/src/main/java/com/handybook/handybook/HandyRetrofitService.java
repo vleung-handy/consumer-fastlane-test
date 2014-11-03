@@ -25,6 +25,9 @@ public interface HandyRetrofitService {
     @GET("/bookings")
     void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
+    @GET("/bookings/new")
+    void getBookingOptions(@Query("service_id") int serviceId, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,
