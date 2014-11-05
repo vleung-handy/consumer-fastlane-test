@@ -34,7 +34,7 @@
                 android:layout_marginBottom="16dp"
                 android:text="@string/tell_us_job"
                 android:gravity="center"
-                style="@style/TextView"/>
+                style="@style/TextView" />
 
         </LinearLayout>
 

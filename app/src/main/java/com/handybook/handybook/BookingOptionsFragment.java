@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import antistatic.spinnerwheel.WheelHorizontalView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -73,7 +74,6 @@ public final class BookingOptionsFragment extends InjectedFragment {
         final View view = inflater.inflate(R.layout.fragment_booking_options, container, false);
         ButterKnife.inject(this, view);
 
-        //TODO change nav text based on content (comments, request, etc)
         if (page != 0) {
             headerText.setVisibility(View.GONE);
         }
@@ -90,6 +90,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
                 }
                 else {
                     final ArrayList<BookingOption> nextOptions = new ArrayList<>();
+
                     for (final BookingOption option : options) {
                         if (option.getPage() > page) nextOptions.add(option);
                     }
@@ -124,7 +125,13 @@ public final class BookingOptionsFragment extends InjectedFragment {
         for (final BookingOption option : options) {
             if (option.getPage() != page) continue;
 
-            //TODO add custom fields here
+            final WheelHorizontalView optionsSpinner = new WheelHorizontalView(getActivity());
+            optionsSpinner.setItemsDimmedAlpha(100);
+            optionsSpinner.setItemsPadding(0);
+            optionsSpinner.setViewAdapter(new OptionsAdapter<>(getActivity(),
+                    new String[] {"No", "Yes", "Webster Ross"},
+                    R.layout.view_spinner_option, R.id.text));
+
             final TextView temp = new TextView(getActivity());
             temp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     200));
@@ -135,6 +142,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
             if (diplayOption != null && !diplayOption) temp.setVisibility(View.GONE);
 
             optionsLayout.addView(temp, pos++);
+            optionsLayout.addView(optionsSpinner, pos++);
 
             //TODO if all options set invisible then prev view should have skipped this page
         }

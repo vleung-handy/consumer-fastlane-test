@@ -1,3 +1,4 @@
-include ':app', ':facebook', ':simplealertdialog'
+include ':app', ':facebook', ':simplealertdialog', ':androidspinner'
 project(':facebook').projectDir = new File('libs/facebook')
 project(':simplealertdialog').projectDir = new File('libs/simplealertdialog')
+project(':androidspinner').projectDir = new File('libs/androidspinner')
