@@ -15,7 +15,6 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import antistatic.spinnerwheel.WheelHorizontalView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -23,9 +22,13 @@ public final class BookingOptionsFragment extends InjectedFragment {
     static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
     static final String EXTRA_CHILD_DISPLAY_MAP = "com.handy.handy.EXTRA_CHILD_DISPLAY_MAP";
     static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
+    static final String STATE_CHILD_DISPLAY_MAP = "STATE_CHILD_DISPLAY_MAP";
+    static final String STATE_OPTION_INDEX_MAP = "STATE_OPTION_INDEX_MAP";
 
     private ArrayList<BookingOption> options;
     private HashMap<String, Boolean> childDisplayMap;
+    private HashMap<String, Integer> optionIndexMap;
+    private HashMap<String, BookingOptionsSpinnerView> optionsViewMap;
     private int page;
 
     @Inject BookingRequestManager requestManager;
@@ -66,6 +69,14 @@ public final class BookingOptionsFragment extends InjectedFragment {
         options = getArguments().getParcelableArrayList(EXTRA_OPTIONS);
         page = getArguments().getInt(EXTRA_PAGE);
         childDisplayMap = (HashMap) getArguments().getSerializable(EXTRA_CHILD_DISPLAY_MAP);
+
+        //TODO if all options set invisible then prev view should have skipped this page
+
+        if (savedInstanceState != null) {
+            childDisplayMap = (HashMap)savedInstanceState.getSerializable(STATE_CHILD_DISPLAY_MAP);
+            optionIndexMap = (HashMap)savedInstanceState.getSerializable(STATE_OPTION_INDEX_MAP);
+        }
+        else optionIndexMap = new HashMap<>();
     }
 
     @Override
@@ -79,8 +90,6 @@ public final class BookingOptionsFragment extends InjectedFragment {
         }
         else if (requestManager.getCurrentRequest().getServiceId() == 3)
             headerText.setText(getString(R.string.tell_us_place));
-
-        displayOptions();
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +117,23 @@ public final class BookingOptionsFragment extends InjectedFragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        displayOptions();
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(STATE_CHILD_DISPLAY_MAP, childDisplayMap);
+        outState.putSerializable(STATE_OPTION_INDEX_MAP, optionIndexMap);
+    }
+
     private void displayOptions() {
+        optionsViewMap = new HashMap<>();
+        optionsLayout.removeAllViews();
+
         if (childDisplayMap == null) {
             childDisplayMap = new HashMap<>();
 
@@ -121,30 +146,65 @@ public final class BookingOptionsFragment extends InjectedFragment {
             }
         }
 
-        int pos = 1;
+        int pos = 0;
         for (final BookingOption option : options) {
             if (option.getPage() != page) continue;
 
-            final WheelHorizontalView optionsSpinner = new WheelHorizontalView(getActivity());
-            optionsSpinner.setItemsDimmedAlpha(100);
-            optionsSpinner.setItemsPadding(0);
-            optionsSpinner.setViewAdapter(new OptionsAdapter<>(getActivity(),
-                    new String[] {"No", "Yes", "Webster Ross"},
-                    R.layout.view_spinner_option, R.id.text));
+            final String type = option.getType();
+            final BookingOptionsSpinnerView optionsView;
 
-            final TextView temp = new TextView(getActivity());
-            temp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    200));
-            temp.setText(option.getTitle());
-            temp.setBackgroundColor(getResources().getColor(R.color.white));
+            //TODO handle option case like in light fixtures
 
+            if (type.equals("quantity") || type.equals("option_picker")) {
+                final HashMap<String, String> requestOptions
+                        = requestManager.getCurrentRequest().getOptions();
+
+                optionsView = new BookingOptionsSpinnerView(getActivity(), option,
+                        new BookingOptionsSpinnerView.OnItemUpdatedListener() {
+                    @Override
+                    public void onUpdate(final BookingOptionsSpinnerView view) {
+                        requestOptions.put(option.getUniq(), view.getCurrentItem());
+                        requestManager.getCurrentRequest().setOptions(requestOptions);
+                        optionIndexMap.put(option.getUniq(), view.getCurrentIndex());
+                    }
+
+                    @Override
+                    public void onShowChildren(final BookingOptionsSpinnerView view,
+                                               final String[] items) {
+                        for (final String item : items) {
+                            final BookingOptionsSpinnerView optionsView = optionsViewMap.get(item);
+                            if (optionsView != null) {
+                                optionsView.setVisibility(View.VISIBLE);
+                                childDisplayMap.put(item, true);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onHideChildren(final BookingOptionsSpinnerView view,
+                                               final String[] items) {
+                        for (final String item : items) {
+                            final BookingOptionsSpinnerView optionsView = optionsViewMap.get(item);
+                            if (optionsView != null) {
+                                optionsView.setVisibility(View.GONE);
+                                childDisplayMap.put(item, false);
+                            }
+                        }
+                    }
+                });
+
+                final Integer index = optionIndexMap.get(option.getUniq());
+                if (index != null) optionsView.setCurrentIndex(index);
+                else optionsView.setCurrentIndex(optionsView.getCurrentIndex());
+
+                if (pos >= options.size()) optionsView.hideSeperator();
+                optionsLayout.addView(optionsView, pos++);
+            }
+            else optionsView = new BookingOptionsSpinnerView(getActivity(), option, null);
+
+            optionsViewMap.put(option.getUniq(), optionsView);
             final Boolean diplayOption = childDisplayMap.get(option.getUniq());
-            if (diplayOption != null && !diplayOption) temp.setVisibility(View.GONE);
-
-            optionsLayout.addView(temp, pos++);
-            optionsLayout.addView(optionsSpinner, pos++);
-
-            //TODO if all options set invisible then prev view should have skipped this page
+            if (diplayOption != null && !diplayOption) optionsView.setVisibility(View.GONE);
         }
     }
 }

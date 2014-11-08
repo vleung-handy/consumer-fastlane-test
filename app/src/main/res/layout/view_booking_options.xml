@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/booking_cell"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp">
+
+    <TextView android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:gravity="center"
+        android:text="Title"
+        android:freezesText="false"
+        style="@style/TextView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_text"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
+
+        <antistatic.spinnerwheel.WheelHorizontalView
+            android:id="@+id/options_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:itemsDimmedAlpha="100"
+            app:isAllVisible="true"
+            app:itemsPadding="@dimen/options_wheel_padding" />
+
+        <TextView android:id="@+id/info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:gravity="center"
+            android:text="Info"
+            android:freezesText="false"
+            android:visibility="gone"
+            style="@style/TextView.XSmall" />
+
+        <TextView android:id="@+id/warning_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:gravity="center"
+            android:text="Warning"
+            android:freezesText="false"
+            android:visibility="gone"
+            style="@style/TextView.XSmall" />
+
+    </LinearLayout>
+
+</RelativeLayout>

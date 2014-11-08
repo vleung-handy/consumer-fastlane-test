@@ -232,6 +232,7 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
     private void displayBookingOptions() {
         final BookingRequest request = requestManager.getCurrentRequest();
         request.setZipCode(zipText.getZipCode());
+        request.setOptions(null);
 
         dataManager.getBookingOptions(request.getServiceId(),
                 new DataManager.Callback<List<BookingOption>>() {

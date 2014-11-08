@@ -35,8 +35,12 @@ final class OptionsAdapter<T> extends ArrayWheelAdapter<T> {
     @Override
     public View getItem(int index, View convertView, ViewGroup parent) {
         final View view = super.getItem(index, convertView, parent);
-        final int width = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (int)((max) / 2),
+        int width = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float)(max / 2.5),
                 context.getResources().getDisplayMetrics());
+
+        final int defaultWidth = 160;
+        if (width <= defaultWidth) width += (defaultWidth - width);
+
         view.setLayoutParams(new ViewGroup.LayoutParams(width, view.getLayoutParams().height));
         return view;
     }

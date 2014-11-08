@@ -165,7 +165,7 @@ public final class User extends Observable {
             public boolean shouldSkipClass(final Class<?> clazz) {
                 return clazz.equals(Observer.class);
             }
-        }).registerTypeAdapter(User.class, new User.UserSerializer()).create();
+        }).registerTypeAdapter(User.class, new UserSerializer()).create();
         return gson.toJson(this);
     }
 

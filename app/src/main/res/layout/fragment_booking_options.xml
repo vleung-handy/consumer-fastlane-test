@@ -20,8 +20,7 @@
         android:layout_below="@id/nav_text"
         android:layout_above="@id/next_button">
 
-        <LinearLayout
-            android:id="@+id/options_layout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -36,7 +35,15 @@
                 android:gravity="center"
                 style="@style/TextView" />
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/options_layout"
+                android:layout_below="@id/header_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white" />
+
+        </RelativeLayout>
 
     </ScrollView>
 

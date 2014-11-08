@@ -1,7 +1,6 @@
 package com.handybook.handybook;
 
 import android.app.Application;
-import android.content.Context;
 import android.util.Base64;
 
 import com.squareup.otto.Bus;
@@ -37,10 +36,6 @@ final class ApplicationModule {
         this.application = application;
         configs = PropertiesReader
                 .getProperties(application.getApplicationContext(), "config.properties");
-    }
-
-    @Provides @Singleton final Context provideApplicationContext() {
-        return application.getApplicationContext();
     }
 
     @Provides @Singleton final HandyRetrofitEndpoint provideHandyEnpoint() {
@@ -103,7 +98,11 @@ final class ApplicationModule {
     }
 
     @Provides @Singleton final BookingRequestManager provideBookingRequestManager() {
-        return new BookingRequestManager();
+        return new BookingRequestManager(providePrefs());
+    }
+
+    @Provides @Singleton final UserManager provideUserManager() {
+        return new UserManager(provideBus(), providePrefs());
     }
 
     @Provides final ReactiveLocationProvider provideReactiveLocationProvider() {
