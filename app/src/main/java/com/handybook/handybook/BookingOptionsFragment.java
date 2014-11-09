@@ -28,7 +28,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
     private ArrayList<BookingOption> options;
     private HashMap<String, Boolean> childDisplayMap;
     private HashMap<String, Integer> optionIndexMap;
-    private HashMap<String, BookingOptionsSpinnerView> optionsViewMap;
+    private HashMap<String, BookingOptionsIndexView> optionsViewMap;
     private int page;
 
     @Inject BookingRequestManager requestManager;
@@ -150,61 +150,93 @@ public final class BookingOptionsFragment extends InjectedFragment {
         for (final BookingOption option : options) {
             if (option.getPage() != page) continue;
 
-            final String type = option.getType();
-            final BookingOptionsSpinnerView optionsView;
+            final BookingOptionsIndexView optionsView;
 
-            //TODO handle option case like in light fixtures
-
-            if (type.equals("quantity") || type.equals("option_picker")) {
-                final HashMap<String, String> requestOptions
-                        = requestManager.getCurrentRequest().getOptions();
-
-                optionsView = new BookingOptionsSpinnerView(getActivity(), option,
-                        new BookingOptionsSpinnerView.OnItemUpdatedListener() {
-                    @Override
-                    public void onUpdate(final BookingOptionsSpinnerView view) {
-                        requestOptions.put(option.getUniq(), view.getCurrentItem());
-                        requestManager.getCurrentRequest().setOptions(requestOptions);
-                        optionIndexMap.put(option.getUniq(), view.getCurrentIndex());
-                    }
-
-                    @Override
-                    public void onShowChildren(final BookingOptionsSpinnerView view,
-                                               final String[] items) {
-                        for (final String item : items) {
-                            final BookingOptionsSpinnerView optionsView = optionsViewMap.get(item);
-                            if (optionsView != null) {
-                                optionsView.setVisibility(View.VISIBLE);
-                                childDisplayMap.put(item, true);
+            switch (option.getType()) {
+                case "quantity":
+                case "option_picker": {
+                    optionsView = new BookingOptionsSpinnerView(getActivity(), option,
+                        new BookingOptionsIndexView.OnUpdatedListener() {
+                            @Override
+                            public void onUpdate(final BookingOptionsIndexView view) {
+                                handleIndexViewUpdate(view, option);
                             }
-                        }
-                    }
 
-                    @Override
-                    public void onHideChildren(final BookingOptionsSpinnerView view,
-                                               final String[] items) {
-                        for (final String item : items) {
-                            final BookingOptionsSpinnerView optionsView = optionsViewMap.get(item);
-                            if (optionsView != null) {
-                                optionsView.setVisibility(View.GONE);
-                                childDisplayMap.put(item, false);
+                            @Override
+                            public void onShowChildren(final BookingOptionsIndexView view,
+                                                           final String[] items) {
+                                handleChildViews(items, true);
                             }
-                        }
-                    }
-                });
 
-                final Integer index = optionIndexMap.get(option.getUniq());
-                if (index != null) optionsView.setCurrentIndex(index);
-                else optionsView.setCurrentIndex(optionsView.getCurrentIndex());
+                            @Override
+                            public void onHideChildren(final BookingOptionsIndexView view,
+                                                           final String[] items) {
+                                handleChildViews(items, false);
+                            }
+                        });
+                    break;
+                }
+                case "option": {
+                    optionsView = new BookingOptionsSelectView(getActivity(), option,
+                        new BookingOptionsIndexView.OnUpdatedListener() {
+                            @Override
+                            public void onUpdate(final BookingOptionsIndexView view) {
+                                handleIndexViewUpdate(view, option);
+                            }
 
-                if (pos >= options.size()) optionsView.hideSeperator();
-                optionsLayout.addView(optionsView, pos++);
+                            @Override
+                            public void onShowChildren(final BookingOptionsIndexView view,
+                                                           final String[] items) {
+                                handleChildViews(items, true);
+                            }
+
+                            @Override
+                            public void onHideChildren(final BookingOptionsIndexView view,
+                                                           final String[] items) {
+                                handleChildViews(items, false);
+                            }
+                        });
+                    break;
+                }
+                default:
+                    continue;
             }
-            else optionsView = new BookingOptionsSpinnerView(getActivity(), option, null);
 
+            // set default value for index based views
+            if (optionsView instanceof BookingOptionsIndexView) {
+                final Integer index = optionIndexMap.get(option.getUniq());
+                final BookingOptionsIndexView indexView = (BookingOptionsIndexView) optionsView;
+                if (index != null) indexView.setCurrentIndex(index);
+                else indexView.setCurrentIndex(indexView.getCurrentIndex());
+            }
+
+            if (pos >= options.size()) optionsView.hideSeparator();
+            optionsLayout.addView(optionsView, pos++);
             optionsViewMap.put(option.getUniq(), optionsView);
+
             final Boolean diplayOption = childDisplayMap.get(option.getUniq());
             if (diplayOption != null && !diplayOption) optionsView.setVisibility(View.GONE);
         }
+    }
+
+    private void handleChildViews(final String[] items, final boolean show) {
+        for (final String item : items) {
+            final View optionsView = optionsViewMap.get(item);
+            if (optionsView != null) {
+                if (show) optionsView.setVisibility(View.VISIBLE);
+                else optionsView.setVisibility(View.GONE);
+                childDisplayMap.put(item, show);
+            }
+        }
+    }
+
+    private void handleIndexViewUpdate(final BookingOptionsIndexView view,
+                                       final BookingOption option) {
+        final HashMap<String, String> requestOptions
+                = requestManager.getCurrentRequest().getOptions();
+
+        requestOptions.put(option.getUniq(), view.getCurrentItem());
+        requestManager.getCurrentRequest().setOptions(requestOptions);
+        optionIndexMap.put(option.getUniq(), view.getCurrentIndex());
     }
 }

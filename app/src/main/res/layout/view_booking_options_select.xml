@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/booking_cell"
+    android:paddingTop="16dp">
+
+    <TextView android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:gravity="center"
+        android:text="Title"
+        android:freezesText="false"
+        style="@style/TextView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_text"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:animateLayoutChanges="true">
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/info_text"
+            android:layout_marginBottom="16dp"
+            android:text="Info"
+            style="@style/TextView.BookingOptionInfo" />
+
+
+        <TextView android:id="@+id/warning_text"
+            android:layout_marginBottom="16dp"
+            android:text="Warning"
+            style="@style/TextView.BookingOptionInfo" />
+
+    </LinearLayout>
+
+</RelativeLayout>
