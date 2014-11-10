@@ -58,6 +58,8 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
 
     final void setCurrentIndex(final int index) {
         radioGroup.check(radioGroup.getChildAt(index).getId());
+        if (updateListener != null) updateListener
+                .onUpdate(BookingOptionsSelectView.this);
         invalidate();
         requestLayout();
     }
