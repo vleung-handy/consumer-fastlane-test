@@ -113,6 +113,7 @@
     <style name="EditText.Comment">
         <item name="android:freezesText">true</item>
         <item name="android:maxLength">1000</item>
+        <item name="android:layout_marginBottom">0dp</item>
     </style>
 
     <style name="TextView">
