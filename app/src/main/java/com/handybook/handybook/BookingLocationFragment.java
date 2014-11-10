@@ -42,7 +42,6 @@ public final class BookingLocationFragment extends InjectedFragment {
     private Toast toast;
     private boolean allowCallbacks;
 
-
     @Inject ReactiveLocationProvider locationProvider;
     @Inject UserManager userManager;
     @Inject BookingRequestManager requestManager;

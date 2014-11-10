@@ -1,6 +1,5 @@
 package com.handybook.handybook;
 
-import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -23,7 +22,11 @@ public final class UserManager implements Observer {
 
     final User getCurrentUser() {
         if (user != null) return user;
-        else return new Gson().fromJson(securePrefs.getString("USER_OBJ"), User.class);
+        else {
+            if ((user = User.fromJson(securePrefs.getString("USER_OBJ"))) != null)
+                user.addObserver(this);
+            return user;
+        }
     }
 
     final void setCurrentUser(final User newUser) {

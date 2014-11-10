@@ -80,6 +80,11 @@ public final class BookingRequest extends Observable {
         return gson.toJson(this);
     }
 
+    static BookingRequest fromJson(final String json) {
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+                .fromJson(json, BookingRequest.class);
+    }
+
     static final class BookingSerializer implements JsonSerializer<BookingRequest> {
         @Override
         public final JsonElement serialize(final BookingRequest value, final Type type,

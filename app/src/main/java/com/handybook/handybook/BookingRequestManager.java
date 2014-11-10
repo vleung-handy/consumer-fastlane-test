@@ -1,7 +1,5 @@
 package com.handybook.handybook;
 
-import com.google.gson.Gson;
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,7 +16,11 @@ public final class BookingRequestManager implements Observer {
 
     final BookingRequest getCurrentRequest() {
         if (request != null) return request;
-        else return new Gson().fromJson(securePrefs.getString("BOOKING_REQ"), BookingRequest.class);
+        else {
+            if ((request = BookingRequest.fromJson(securePrefs.getString("BOOKING_REQ"))) != null)
+                request.addObserver(this);
+            return request;
+        }
     }
 
     final void setCurrentRequest(final BookingRequest newRequest) {

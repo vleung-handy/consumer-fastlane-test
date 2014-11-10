@@ -174,6 +174,10 @@ public final class User extends Observable {
         notifyObservers();
     }
 
+    static User fromJson(final String json) {
+        return new Gson().fromJson(json, User.class);
+    }
+
     static final class UserSerializer implements JsonSerializer<User> {
         @Override
         public final JsonElement serialize(final User value, final Type type,
