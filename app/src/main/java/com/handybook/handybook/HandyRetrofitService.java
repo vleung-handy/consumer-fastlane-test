@@ -28,6 +28,9 @@ public interface HandyRetrofitService {
     @GET("/bookings/new")
     void getBookingOptions(@Query("service_id") int serviceId, HandyRetrofitCallback cb);
 
+    @POST("/bookings")
+    void createBooking(@Body BookingCreateRequest req, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,
@@ -57,6 +60,14 @@ public interface HandyRetrofitService {
         UserUpdateRequest(User user, String authToken) {
             this.user = user;
             this.authToken = authToken;
+        }
+    }
+
+    static final class BookingCreateRequest {
+        @SerializedName("booking") private BookingRequest bookingRequest;
+
+        BookingCreateRequest(BookingRequest bookingRequest) {
+            this.bookingRequest = bookingRequest;
         }
     }
 }

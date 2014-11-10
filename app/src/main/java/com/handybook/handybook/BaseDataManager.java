@@ -60,7 +60,7 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void getServices(final CacheResponse<List<Service>> cache,
+    final void getServices(final CacheResponse<List<Service>> cache,
                                   final Callback<List<Service>> cb) {
         final List<Service> cachedServices = new Gson().fromJson(prefs.getString("CACHED_SERVICES"),
                 new TypeToken<List<Service>>(){}.getType());
@@ -166,7 +166,7 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void validateBookingZip(final int serviceId, final String zipCode, final Callback<Void> cb) {
+    final void validateBookingZip(final int serviceId, final String zipCode, final Callback<Void> cb) {
         service.validateBookingZip(serviceId, zipCode, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
@@ -176,7 +176,7 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void getBookings(final User user, final Callback<List<Booking>> cb) {
+    final void getBookings(final User user, final Callback<List<Booking>> cb) {
         service.getBookings(user.getAuthToken(), new HandyRetrofitCallback(cb) {
             @Override
             void success(JSONObject response) {
@@ -196,7 +196,7 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void getBookingOptions(final int serviceId, final Callback<List<BookingOption>> cb) {
+    final void getBookingOptions(final int serviceId, final Callback<List<BookingOption>> cb) {
         service.getBookingOptions(serviceId, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
@@ -216,7 +216,18 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void authUser(final String email, final String password, final Callback<User> cb) {
+    void createBooking(final BookingRequest bookingRequest, final Callback<String> cb) {
+        service.createBooking(new HandyRetrofitService.BookingCreateRequest(bookingRequest),
+                new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(response.toString());
+            }
+        });
+    }
+
+    @Override
+    final void authUser(final String email, final String password, final Callback<User> cb) {
         service.createUserSession(email, password, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
@@ -226,7 +237,7 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void authFBUser(final String fbid, final String accessToken, final String email,
+    final void authFBUser(final String fbid, final String accessToken, final String email,
                                  final String firstName, String lastName, final Callback<User> cb) {
         service.createUserSessionFB(fbid, accessToken, email, firstName, lastName, new HandyRetrofitCallback(cb) {
             @Override
@@ -236,7 +247,7 @@ public final class BaseDataManager extends DataManager {
         });
     }
 
-    public final void getUser(final String userId, final String authToken, final Callback<User> cb) {
+    final void getUser(final String userId, final String authToken, final Callback<User> cb) {
         service.getUserInfo(userId, authToken, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
@@ -245,7 +256,7 @@ public final class BaseDataManager extends DataManager {
         });
     }
 
-    public final void updateUser(final User user, final Callback<User> cb) {
+    final void updateUser(final User user, final Callback<User> cb) {
         service.updateUserInfo(user.getId(), new HandyRetrofitService.UserUpdateRequest(user,
                 user.getAuthToken()), new HandyRetrofitCallback(cb) {
             @Override
@@ -256,7 +267,7 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void requestPasswordReset(final String email, final Callback<String> cb) {
+    final void requestPasswordReset(final String email, final Callback<String> cb) {
         service.requestPasswordReset(email, new HandyRetrofitCallback(cb) {
             @Override
             void success(JSONObject response) {

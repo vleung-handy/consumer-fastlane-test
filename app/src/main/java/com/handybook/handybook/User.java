@@ -155,17 +155,9 @@ public final class User extends Observable {
     }
 
     final String toJson() {
-        final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
-            @Override
-            public boolean shouldSkipField(final FieldAttributes f) {
-                return false;
-            }
+        final Gson gson = new GsonBuilder().setExclusionStrategies(getExclusionStrategy())
+                .registerTypeAdapter(User.class, new UserSerializer()).create();
 
-            @Override
-            public boolean shouldSkipClass(final Class<?> clazz) {
-                return clazz.equals(Observer.class);
-            }
-        }).registerTypeAdapter(User.class, new UserSerializer()).create();
         return gson.toJson(this);
     }
 
@@ -176,6 +168,20 @@ public final class User extends Observable {
 
     static User fromJson(final String json) {
         return new Gson().fromJson(json, User.class);
+    }
+
+    static ExclusionStrategy getExclusionStrategy() {
+        return new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(final FieldAttributes f) {
+                return false;
+            }
+
+            @Override
+            public boolean shouldSkipClass(final Class<?> clazz) {
+                return clazz.equals(Observer.class);
+            }
+        };
     }
 
     static final class UserSerializer implements JsonSerializer<User> {

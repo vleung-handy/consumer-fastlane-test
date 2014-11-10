@@ -25,6 +25,7 @@ public final class ServicesFragment extends InjectedListFragment {
     private ArrayList<Service> services;
 
     @Inject BookingRequestManager requestManager;
+    @Inject UserManager userManager;
 
     @InjectView(R.id.nav_text) TextView navText;
 
@@ -74,6 +75,10 @@ public final class ServicesFragment extends InjectedListFragment {
                 else {
                     final BookingRequest request = new BookingRequest();
                     request.setServiceId(next.getId());
+
+                    final User user = userManager.getCurrentUser();
+                    if (user != null) request.setEmail(user.getEmail());
+
                     requestManager.setCurrentRequest(request);
 
                     final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);

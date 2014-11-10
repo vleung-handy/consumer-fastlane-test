@@ -19,7 +19,8 @@ import java.util.Observer;
 public final class BookingRequest extends Observable {
     @SerializedName("service_id") private int serviceId;
     @SerializedName("zipcode") private String zipCode;
-    @SerializedName("options") private HashMap<String, String> options;
+    @SerializedName("email") private String email;
+    @SerializedName("service_attributes") private HashMap<String, String> options;
     @SerializedName("date_start") private Date startDate;
 
     final int getServiceId() {
@@ -37,6 +38,15 @@ public final class BookingRequest extends Observable {
 
     final void setZipCode(final String zipCode) {
         this.zipCode = zipCode;
+        triggerObservers();
+    }
+
+    final String getEmail() {
+        return email;
+    }
+
+    final void setEmail(final String email) {
+        this.email = email;
         triggerObservers();
     }
 
@@ -66,7 +76,19 @@ public final class BookingRequest extends Observable {
 
     final String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .setExclusionStrategies(new ExclusionStrategy() {
+                .setExclusionStrategies(getExclusionStrategy())
+                .registerTypeAdapter(BookingRequest.class, new BookingSerializer()).create();
+
+        return gson.toJson(this);
+    }
+
+    static BookingRequest fromJson(final String json) {
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+                .fromJson(json, BookingRequest.class);
+    }
+
+    static ExclusionStrategy getExclusionStrategy() {
+        return new ExclusionStrategy() {
             @Override
             public boolean shouldSkipField(final FieldAttributes f) {
                 return false;
@@ -76,13 +98,7 @@ public final class BookingRequest extends Observable {
             public boolean shouldSkipClass(final Class<?> clazz) {
                 return clazz.equals(Observer.class);
             }
-        }).registerTypeAdapter(BookingRequest.class, new BookingSerializer()).create();
-        return gson.toJson(this);
-    }
-
-    static BookingRequest fromJson(final String json) {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, BookingRequest.class);
+        };
     }
 
     static final class BookingSerializer implements JsonSerializer<BookingRequest> {
@@ -92,7 +108,8 @@ public final class BookingRequest extends Observable {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("service_id", context.serialize(value.getServiceId()));
             jsonObj.add("zipcode", context.serialize(value.getZipCode()));
-            jsonObj.add("options", context.serialize(value.getOptions()));
+            jsonObj.add("email", context.serialize(value.getEmail()));
+            jsonObj.add("service_attributes", context.serialize(value.getOptions()));
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
             return jsonObj;
         }

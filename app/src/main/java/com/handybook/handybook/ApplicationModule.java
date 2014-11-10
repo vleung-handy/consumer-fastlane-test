@@ -3,6 +3,7 @@ package com.handybook.handybook;
 import android.app.Application;
 import android.util.Base64;
 
+import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
@@ -14,6 +15,7 @@ import dagger.Provides;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 @Module(injects = {
         ServiceCategoriesFragment.class,
@@ -63,7 +65,13 @@ final class ApplicationModule {
                         request.addHeader("Accept", "application/json");
                         request.addQueryParam("app_version", "5.2");
                     }
-                }).build();
+                }).setConverter(new GsonConverter(new GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                        .setExclusionStrategies(BookingRequest.getExclusionStrategy())
+                        .registerTypeAdapter(BookingRequest.class, new BookingRequest.BookingSerializer())
+                        .setExclusionStrategies(User.getExclusionStrategy())
+                        .registerTypeAdapter(User.class, new User.UserSerializer())
+                        .create())).build();
 
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))

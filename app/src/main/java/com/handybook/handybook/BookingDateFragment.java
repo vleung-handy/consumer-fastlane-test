@@ -1,12 +1,14 @@
 package com.handybook.handybook;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,8 +20,14 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class BookingDateFragment extends InjectedFragment {
+    private ProgressDialog progressDialog;
+    private Toast toast;
+    private boolean allowCallbacks;
 
     @Inject BookingRequestManager requestManager;
+    @Inject DataManager dataManager;
+    @Inject DataManagerErrorHandler dataManagerErrorHandler;
+
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.date_picker) DatePicker datePicker;
     @InjectView(R.id.time_picker) TimePicker timePicker;
@@ -33,6 +41,14 @@ public final class BookingDateFragment extends InjectedFragment {
                                    final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_booking_date, container, false);
         ButterKnife.inject(this, view);
+
+        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setDelay(500);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(getString(R.string.loading));
 
         final Calendar cal = Calendar.getInstance();
         final int hours, minutes;
@@ -70,10 +86,30 @@ public final class BookingDateFragment extends InjectedFragment {
             }
         });
 
-        datePicker.setMinDate(Calendar.getInstance().getTimeInMillis());
+        // adding 1s to avoid illegal state excpetion being thrown
+        datePicker.setMinDate(Calendar.getInstance().getTimeInMillis() + 1000);
+        nextButton.setOnClickListener(nextClicked);
         return view;
+    }
 
-        //TODO handle next button click
+    @Override
+    public final void onStart() {
+        super.onStart();
+        allowCallbacks = true;
+    }
+
+    @Override
+    public final void onStop() {
+        super.onStop();
+        allowCallbacks = false;
+    }
+
+    private void disableInputs() {
+        nextButton.setClickable(false);
+    }
+
+    private void enableInputs() {
+        nextButton.setClickable(true);
     }
 
     private void updateRequestDate() {
@@ -89,4 +125,35 @@ public final class BookingDateFragment extends InjectedFragment {
         date.set(Calendar.MILLISECOND, 0);
         request.setStartDate(date.getTime());
     }
+
+    private final View.OnClickListener nextClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            disableInputs();
+            progressDialog.show();
+
+            final BookingRequest request = requestManager.getCurrentRequest();
+            dataManager.createBooking(request, new DataManager.Callback<String>() {
+                    @Override
+                    public void onSuccess(String resp) {
+                        if (!allowCallbacks) return;
+
+                        enableInputs();
+                        progressDialog.dismiss();
+
+                        toast.setText(resp);
+                        toast.show();
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error) {
+                        if (!allowCallbacks) return;
+
+                        enableInputs();
+                        progressDialog.dismiss();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+            });
+        }
+    };
 }

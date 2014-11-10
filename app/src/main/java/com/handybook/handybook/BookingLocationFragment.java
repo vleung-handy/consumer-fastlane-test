@@ -100,7 +100,7 @@ public final class BookingLocationFragment extends InjectedFragment {
     }
 
     @Override
-    public void onStart() {
+    public final void onStart() {
         super.onStart();
         allowCallbacks = true;
     }
@@ -233,6 +233,7 @@ public final class BookingLocationFragment extends InjectedFragment {
         final BookingRequest newRequest = new BookingRequest();
 
         newRequest.setServiceId(request.getServiceId());
+        newRequest.setEmail(request.getEmail());
         newRequest.setZipCode(zipText.getZipCode());
         requestManager.setCurrentRequest(newRequest);
 
