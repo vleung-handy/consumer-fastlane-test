@@ -48,4 +48,6 @@
     <string name="tell_us_job">Got it! Tell us about the job</string>
     <string name="tell_us_place">Tell us about your place</string>
     <string name="comments">Comments</string>
+    <string name="time">Time</string>
+    <string name="when_come">When would you like us to come?</string>
 </resources>

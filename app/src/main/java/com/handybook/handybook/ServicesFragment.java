@@ -76,7 +76,7 @@ public final class ServicesFragment extends InjectedListFragment {
                     request.setServiceId(next.getId());
                     requestManager.setCurrentRequest(request);
 
-                    final Intent intent = new Intent(getActivity(), BookingRequestLocationActivity.class);
+                    final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
                     startActivity(intent);
                 }
             }

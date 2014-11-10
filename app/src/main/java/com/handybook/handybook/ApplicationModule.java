@@ -24,8 +24,9 @@ import retrofit.RestAdapter;
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,
         ServicesFragment.class,
-        BookingRequestLocationFragment.class,
+        BookingLocationFragment.class,
         BookingOptionsFragment.class,
+        BookingDateFragment.class,
         BaseDataManager.class
 })
 final class ApplicationModule {

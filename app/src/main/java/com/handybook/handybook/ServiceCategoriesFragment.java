@@ -101,7 +101,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                         request.setServiceId(service.getId());
                         requestManager.setCurrentRequest(request);
 
-                        final Intent intent = new Intent(getActivity(), BookingRequestLocationActivity.class);
+                        final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
                         startActivity(intent);
                     }
                 }

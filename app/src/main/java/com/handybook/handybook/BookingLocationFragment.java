@@ -35,7 +35,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public final class BookingRequestLocationFragment extends InjectedFragment {
+public final class BookingLocationFragment extends InjectedFragment {
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
 
     private ProgressDialog progressDialog;
@@ -54,14 +54,14 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
     @InjectView(R.id.location_button) ImageButton locationButton;
     @InjectView(R.id.next_button) Button nextButton;
 
-    static BookingRequestLocationFragment newInstance() {
-        return new BookingRequestLocationFragment();
+    static BookingLocationFragment newInstance() {
+        return new BookingLocationFragment();
     }
 
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_bookreq_location, container, false);
+        final View view = inflater.inflate(R.layout.fragment_booking_location, container, false);
         ButterKnife.inject(this, view);
 
         toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
@@ -231,8 +231,11 @@ public final class BookingRequestLocationFragment extends InjectedFragment {
 
     private void displayBookingOptions() {
         final BookingRequest request = requestManager.getCurrentRequest();
-        request.setZipCode(zipText.getZipCode());
-        request.setOptions(null);
+        final BookingRequest newRequest = new BookingRequest();
+
+        newRequest.setServiceId(request.getServiceId());
+        newRequest.setZipCode(zipText.getZipCode());
+        requestManager.setCurrentRequest(newRequest);
 
         dataManager.getBookingOptions(request.getServiceId(),
                 new DataManager.Callback<List<BookingOption>>() {

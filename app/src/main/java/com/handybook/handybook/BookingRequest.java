@@ -11,6 +11,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -19,6 +20,7 @@ public final class BookingRequest extends Observable {
     @SerializedName("service_id") private int serviceId;
     @SerializedName("zipcode") private String zipCode;
     @SerializedName("options") private HashMap<String, String> options;
+    @SerializedName("date_start") private Date startDate;
 
     final int getServiceId() {
         return serviceId;
@@ -38,6 +40,15 @@ public final class BookingRequest extends Observable {
         triggerObservers();
     }
 
+    final Date getStartDate() {
+        return startDate;
+    }
+
+    final void setStartDate(final Date startDate) {
+        this.startDate = startDate;
+        triggerObservers();
+    }
+
     final HashMap<String, String> getOptions() {
         if (options == null) options = new HashMap<>();
         return options;
@@ -54,7 +65,8 @@ public final class BookingRequest extends Observable {
     }
 
     final String toJson() {
-        final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .setExclusionStrategies(new ExclusionStrategy() {
             @Override
             public boolean shouldSkipField(final FieldAttributes f) {
                 return false;
@@ -76,6 +88,7 @@ public final class BookingRequest extends Observable {
             jsonObj.add("service_id", context.serialize(value.getServiceId()));
             jsonObj.add("zipcode", context.serialize(value.getZipCode()));
             jsonObj.add("options", context.serialize(value.getOptions()));
+            jsonObj.add("date_start", context.serialize(value.getStartDate()));
             return jsonObj;
         }
     }

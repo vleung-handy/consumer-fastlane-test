@@ -24,13 +24,15 @@
 
         <activity android:name=".ServicesActivity" />
 
-        <activity android:name=".BookingRequestLocationActivity" />
+        <activity android:name=".BookingLocationActivity" />
 
         <activity android:name=".ProfileActivity" />
 
         <activity android:name=".BookingsActivity" />
 
         <activity android:name=".BookingOptionsActivity" />
+
+        <activity android:name=".BookingDateActivity" />
 
         <activity android:name=".BookingDetailActivity" />
 

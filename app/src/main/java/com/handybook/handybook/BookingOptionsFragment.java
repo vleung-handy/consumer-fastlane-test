@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +95,8 @@ public final class BookingOptionsFragment extends InjectedFragment {
             @Override
             public void onClick(final View v) {
                 if (options.get(options.size() - 1).getPage() <= page) {
-                    Toast.makeText(getActivity(), "SHOW DATE", Toast.LENGTH_SHORT).show();
+                    final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+                    startActivity(intent);
                 }
                 else {
                     final ArrayList<BookingOption> nextOptions = new ArrayList<>();
