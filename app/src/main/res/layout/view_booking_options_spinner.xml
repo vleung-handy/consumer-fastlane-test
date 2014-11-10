@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:paddingLeft="@dimen/default_margin"
-        android:paddingRight="@dimen/default_margin"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:gravity="center"
         android:text="Title"
         android:freezesText="false"
@@ -24,8 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title_text"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/default_margin"
-        android:paddingRight="@dimen/default_margin"
         android:animateLayoutChanges="true">
 
         <antistatic.spinnerwheel.WheelHorizontalView
@@ -40,11 +38,15 @@
 
         <TextView android:id="@+id/info_text"
             android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:text="Info"
             style="@style/TextView.BookingOptionInfo" />
 
         <TextView android:id="@+id/warning_text"
             android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:text="Warning"
             style="@style/TextView.BookingOptionInfo" />
 

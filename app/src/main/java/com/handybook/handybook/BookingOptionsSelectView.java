@@ -51,7 +51,7 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
         handleChildren(getCurrentIndex());
     }
 
-    final String getCurrentItem() {
+    final String getCurrentValue() {
         return optionsList[radioGroup
                 .indexOfChild(this.findViewById(radioGroup.getCheckedRadioButtonId()))];
     }

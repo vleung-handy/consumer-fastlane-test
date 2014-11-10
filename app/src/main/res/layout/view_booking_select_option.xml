@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
+    android:singleLine="true"
     android:text="Option"
     android:freezesText="false"
     style="@style/TextView" />

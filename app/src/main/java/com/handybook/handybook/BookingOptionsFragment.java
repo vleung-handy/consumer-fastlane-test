@@ -28,12 +28,13 @@ public final class BookingOptionsFragment extends InjectedFragment {
     private ArrayList<BookingOption> options;
     private HashMap<String, Boolean> childDisplayMap;
     private HashMap<String, Integer> optionIndexMap;
-    private HashMap<String, BookingOptionsIndexView> optionsViewMap;
+    private HashMap<String, BookingOptionsView> optionsViewMap;
     private int page;
 
     @Inject BookingRequestManager requestManager;
 
     @InjectView(R.id.options_layout) LinearLayout optionsLayout;
+    @InjectView(R.id.nav_text) TextView navText;
     @InjectView(R.id.header_text) TextView headerText;
     @InjectView(R.id.next_button) Button nextButton;
 
@@ -134,6 +135,8 @@ public final class BookingOptionsFragment extends InjectedFragment {
         optionsViewMap = new HashMap<>();
         optionsLayout.removeAllViews();
 
+        final ArrayList<BookingOption> pageOptions = new ArrayList<>();
+
         if (childDisplayMap == null) {
             childDisplayMap = new HashMap<>();
 
@@ -146,30 +149,32 @@ public final class BookingOptionsFragment extends InjectedFragment {
             }
         }
 
-        int pos = 0;
         for (final BookingOption option : options) {
-            if (option.getPage() != page) continue;
+            if (option.getPage() == page) pageOptions.add(option);
+        }
 
-            final BookingOptionsIndexView optionsView;
+        int pos = 0;
+        for (final BookingOption option : pageOptions) {
+            final BookingOptionsView optionsView;
 
             switch (option.getType()) {
                 case "quantity":
                 case "option_picker": {
                     optionsView = new BookingOptionsSpinnerView(getActivity(), option,
-                        new BookingOptionsIndexView.OnUpdatedListener() {
+                        new BookingOptionsView.OnUpdatedListener() {
                             @Override
-                            public void onUpdate(final BookingOptionsIndexView view) {
-                                handleIndexViewUpdate(view, option);
+                            public void onUpdate(final BookingOptionsView view) {
+                                handleOptionUpdate(view, option);
                             }
 
                             @Override
-                            public void onShowChildren(final BookingOptionsIndexView view,
+                            public void onShowChildren(final BookingOptionsView view,
                                                            final String[] items) {
                                 handleChildViews(items, true);
                             }
 
                             @Override
-                            public void onHideChildren(final BookingOptionsIndexView view,
+                            public void onHideChildren(final BookingOptionsView view,
                                                            final String[] items) {
                                 handleChildViews(items, false);
                             }
@@ -178,25 +183,49 @@ public final class BookingOptionsFragment extends InjectedFragment {
                 }
                 case "option": {
                     optionsView = new BookingOptionsSelectView(getActivity(), option,
-                        new BookingOptionsIndexView.OnUpdatedListener() {
+                        new BookingOptionsView.OnUpdatedListener() {
                             @Override
-                            public void onUpdate(final BookingOptionsIndexView view) {
-                                handleIndexViewUpdate(view, option);
+                            public void onUpdate(final BookingOptionsView view) {
+                                handleOptionUpdate(view, option);
                             }
 
                             @Override
-                            public void onShowChildren(final BookingOptionsIndexView view,
+                            public void onShowChildren(final BookingOptionsView view,
                                                            final String[] items) {
                                 handleChildViews(items, true);
                             }
 
                             @Override
-                            public void onHideChildren(final BookingOptionsIndexView view,
+                            public void onHideChildren(final BookingOptionsView view,
                                                            final String[] items) {
                                 handleChildViews(items, false);
                             }
                         });
                     break;
+
+                }
+                case "text": {
+                    optionsView = new BookingOptionsTextView(getActivity(), option,
+                        new BookingOptionsView.OnUpdatedListener() {
+                            @Override
+                            public void onUpdate(final BookingOptionsView view) {
+                                handleOptionUpdate(view, option);
+                            }
+
+                            @Override
+                            public void onShowChildren(final BookingOptionsView view,
+                                                       final String[] items) {
+                                handleChildViews(items, true);
+                            }
+
+                            @Override
+                            public void onHideChildren(final BookingOptionsView view,
+                                                       final String[] items) {
+                                handleChildViews(items, false);
+                            }
+                        });
+                    break;
+
                 }
                 default:
                     continue;
@@ -209,8 +238,20 @@ public final class BookingOptionsFragment extends InjectedFragment {
                 if (index != null) indexView.setCurrentIndex(index);
                 else indexView.setCurrentIndex(indexView.getCurrentIndex());
             }
+            else if (optionsView instanceof BookingOptionsTextView) {
+                final HashMap<String, String> requestOptions
+                        = requestManager.getCurrentRequest().getOptions();
 
-            if (pos >= options.size()) optionsView.hideSeparator();
+                ((BookingOptionsTextView)optionsView).setValue(requestOptions.get(option.getUniq()));
+            }
+
+            if (pos >= pageOptions.size() - 1) optionsView.hideSeparator();
+            if (pageOptions.size() == 1 && option.getType().equals("text")) {
+                navText.setText(getString(R.string.comments));
+                optionsLayout.setBackgroundColor(0);
+                ((BookingOptionsTextView)optionsView).enableSingleMode();
+            }
+
             optionsLayout.addView(optionsView, pos++);
             optionsViewMap.put(option.getUniq(), optionsView);
 
@@ -230,13 +271,15 @@ public final class BookingOptionsFragment extends InjectedFragment {
         }
     }
 
-    private void handleIndexViewUpdate(final BookingOptionsIndexView view,
-                                       final BookingOption option) {
+    private void handleOptionUpdate(final BookingOptionsView view,
+                                    final BookingOption option) {
         final HashMap<String, String> requestOptions
                 = requestManager.getCurrentRequest().getOptions();
 
-        requestOptions.put(option.getUniq(), view.getCurrentItem());
+        requestOptions.put(option.getUniq(), view.getCurrentValue());
         requestManager.getCurrentRequest().setOptions(requestOptions);
-        optionIndexMap.put(option.getUniq(), view.getCurrentIndex());
+
+        if (view instanceof BookingOptionsIndexView) optionIndexMap.put(option.getUniq(),
+                ((BookingOptionsIndexView)view).getCurrentIndex());
     }
 }

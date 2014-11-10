@@ -9,8 +9,8 @@
     <TextView android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/default_margin"
-        android:paddingRight="@dimen/default_margin"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:gravity="center"
         android:text="Title"
         android:freezesText="false"
@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title_text"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/default_margin"
-        android:paddingRight="@dimen/default_margin"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:animateLayoutChanges="true">
 
         <RadioGroup

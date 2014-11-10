@@ -2,26 +2,22 @@ package com.handybook.handybook;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-abstract class BookingOptionsIndexView extends FrameLayout {
-    protected BookingOption option;
+abstract class BookingOptionsIndexView extends BookingOptionsView {
     protected HashMap<Integer, ArrayList<String>> warningsMap;
     protected HashMap<Integer, ArrayList<String>> childMap;
-    protected OnUpdatedListener updateListener;
     protected String[] optionsList;
     private ArrayList<String> prevChildList;
     private TextView warningText;
 
     BookingOptionsIndexView(final Context context, final int layout, final BookingOption option,
                             final OnUpdatedListener updateListener) {
-        super(context);
-        init(context, layout, option, updateListener);
+        super(context, layout, option, updateListener);
+        init();
     }
 
     BookingOptionsIndexView(final Context context, final AttributeSet attrs) {
@@ -32,13 +28,10 @@ abstract class BookingOptionsIndexView extends FrameLayout {
         super(context, attrs, defStyle);
     }
 
-    private void init(final Context context, final int layout, final BookingOption option, final OnUpdatedListener updateListener) {
-        this.option = option;
-        this.updateListener = updateListener;
+    private void init() {
         warningsMap = new HashMap<>();
         childMap = new HashMap<>();
 
-        LayoutInflater.from(context).inflate(layout, this);
         final TextView titleText = (TextView)this.findViewById(R.id.title_text);
         final TextView infoText = (TextView)this.findViewById(R.id.info_text);
         warningText = (TextView)this.findViewById(R.id.warning_text);
@@ -129,17 +122,7 @@ abstract class BookingOptionsIndexView extends FrameLayout {
         }
     }
 
-    abstract void hideSeparator();
-
-    abstract String getCurrentItem();
-
     abstract void setCurrentIndex(int index);
 
     abstract int getCurrentIndex();
-
-    static interface OnUpdatedListener {
-        void onUpdate (BookingOptionsIndexView view);
-        void onShowChildren (BookingOptionsIndexView view,  String[] items);
-        void onHideChildren (BookingOptionsIndexView view, String[] items);
-    }
 }

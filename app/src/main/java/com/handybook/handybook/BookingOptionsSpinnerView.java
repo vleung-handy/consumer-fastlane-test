@@ -49,7 +49,7 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
         handleChildren(getCurrentIndex());
     }
 
-    final String getCurrentItem() {
+    final String getCurrentValue() {
         return optionsList[optionsSpinner.getCurrentItem()];
     }
 
