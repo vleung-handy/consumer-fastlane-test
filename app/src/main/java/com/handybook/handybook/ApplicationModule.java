@@ -64,6 +64,7 @@ final class ApplicationModule {
                         request.addHeader("Authorization", auth);
                         request.addHeader("Accept", "application/json");
                         request.addQueryParam("app_version", "5.2");
+                        request.addQueryParam("api_sub_version", "5");
                     }
                 }).setConverter(new GsonConverter(new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
