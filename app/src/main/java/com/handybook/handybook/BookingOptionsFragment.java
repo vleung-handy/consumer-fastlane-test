@@ -323,11 +323,11 @@ public final class BookingOptionsFragment extends InjectedFragment {
                         public void onSuccess(String resp) {
                             if (!allowCallbacks) return;
 
+                            final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
+                            startActivity(intent);
+
                             enableInputs();
                             progressDialog.dismiss();
-
-                            toast.setText(resp);
-                            toast.show();
                         }
 
                         @Override

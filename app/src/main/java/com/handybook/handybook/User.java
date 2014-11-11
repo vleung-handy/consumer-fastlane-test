@@ -207,6 +207,8 @@ public final class User extends Observable {
 
     static final class Address {
         @SerializedName("zipcode") private String zip;
+        @SerializedName("address1") private String address1;
+        @SerializedName("address2") private String address2;
 
         final String getZip() {
             return zip;
@@ -214,6 +216,22 @@ public final class User extends Observable {
 
         final void setZip(final String zip) {
             this.zip = zip;
+        }
+
+        final String getAddress1() {
+            return address1;
+        }
+
+        final void setAddress1(final String address1) {
+            this.address1 = address1;
+        }
+
+        final String getAddress2() {
+            return address2;
+        }
+
+        final void setAddress2(final String address2) {
+            this.address2 = address2;
         }
     }
 }

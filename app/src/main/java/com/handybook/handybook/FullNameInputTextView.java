@@ -18,7 +18,7 @@ public final class FullNameInputTextView extends InputTextField {
     }
 
     final boolean validate() {
-        final String name = this.getText().toString();
+        final String name = this.getText().toString().trim();
         if (name.split(" ").length < 2) {
             highlight();
             return false;

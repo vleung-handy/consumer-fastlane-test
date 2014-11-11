@@ -18,17 +18,10 @@ import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
-        ServiceCategoriesFragment.class,
-        LoginFragment.class,
-        NavigationFragment.class,
-        ProfileFragment.class,
-        BookingsFragment.class,
-        BookingDetailFragment.class,
-        ServiceCategoriesFragment.class,
-        ServicesFragment.class,
-        BookingLocationFragment.class,
-        BookingOptionsFragment.class,
-        BookingDateFragment.class,
+        ServiceCategoriesFragment.class, LoginFragment.class, NavigationFragment.class,
+        ProfileFragment.class, BookingsFragment.class, BookingDetailFragment.class,
+        ServiceCategoriesFragment.class, ServicesFragment.class, BookingLocationFragment.class,
+        BookingOptionsFragment.class, BookingDateFragment.class, BookingAddressFragment.class,
         BaseDataManager.class
 })
 final class ApplicationModule {

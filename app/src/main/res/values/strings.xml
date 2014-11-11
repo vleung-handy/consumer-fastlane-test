@@ -51,4 +51,6 @@
     <string name="time">Time</string>
     <string name="when_come">When would you like us to come?</string>
     <string name="request_pro">Request Pro</string>
+    <string name="street_addr">Street Address</string>
+    <string name="apt_num">Apt #</string>
 </resources>

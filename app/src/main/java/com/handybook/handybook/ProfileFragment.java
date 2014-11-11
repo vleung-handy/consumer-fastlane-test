@@ -58,7 +58,6 @@ public final class ProfileFragment extends InjectedFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         user = userManager.getCurrentUser();
         toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);

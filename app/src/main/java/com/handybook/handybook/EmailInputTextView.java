@@ -18,7 +18,7 @@ public final class EmailInputTextView extends InputTextField {
     }
 
     final boolean validate() {
-        final String email = this.getText().toString();
+        final String email = this.getText().toString().trim();
         if (email == null || !email.matches("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")) {
             highlight();
             return false;

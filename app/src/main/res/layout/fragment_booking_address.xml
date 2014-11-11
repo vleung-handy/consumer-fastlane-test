@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg">
+
+    <Button
+        android:id="@+id/next_button"
+        android:text="@string/next"
+        style="@style/Button.Blue" />
+
+    <TextView
+        android:id="@+id/nav_text"
+        android:text="@string/address"
+        style="@style/TextView.Navbar" />
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/next_button"
+        android:layout_below="@id/nav_text">
+
+        <RelativeLayout
+            style="@style/ContentLayout.NoBottom">
+
+            <TextView
+                android:id="@+id/booking_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"
+                android:text="|Booking Info|"
+                style="@style/TextView" />
+
+            <com.handybook.handybook.FullNameInputTextView
+                android:id="@+id/fullname_text"
+                android:layout_below="@id/booking_header"
+                style="@style/EditText.FullName" />
+
+            <LinearLayout
+                android:id="@+id/addr_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/fullname_text">
+
+                <com.handybook.handybook.StreetAddressInputTextView
+                    android:id="@+id/street_addr_text"
+                    android:layout_weight="2"
+                    style="@style/EditText.StreetAddress" />
+
+                <EditText
+                    android:id="@+id/other_addr_text"
+                    android:layout_weight="3"
+                    style="@style/EditText.OtherAddress" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/phone_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addr_layout"
+                android:layout_marginBottom="16dp">
+
+                <com.handybook.handybook.PhoneInputTextView
+                    android:id="@+id/phone_text"
+                    android:paddingStart="52dp"
+                    android:paddingLeft="52dp"
+                    android:paddingEnd="0dp"
+                    android:paddingRight="0dp"
+                    style="@style/EditText.Phone" />
+
+                <TextView
+                    android:id="@+id/phone_prefix_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/phone_text"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginLeft="12dp"
+                    style="@style/TextView" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

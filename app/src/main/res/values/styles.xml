@@ -98,6 +98,20 @@
         <item name="android:maxLength">100</item>
     </style>
 
+    <style name="EditText.StreetAddress">
+        <item name="android:inputType">textPostalAddress</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/street_addr</item>
+        <item name="android:maxLength">200</item>
+    </style>
+
+    <style name="EditText.OtherAddress">
+        <item name="android:inputType">textPostalAddress</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/apt_num</item>
+        <item name="android:maxLength">200</item>
+    </style>
+
     <style name="EditText.Phone">
         <item name="android:inputType">phone</item>
         <item name="android:digits">1234567890</item>
