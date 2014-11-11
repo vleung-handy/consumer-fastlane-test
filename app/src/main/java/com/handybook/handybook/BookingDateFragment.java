@@ -89,6 +89,9 @@ public final class BookingDateFragment extends InjectedFragment {
         // adding 1s to avoid illegal state excpetion being thrown
         datePicker.setMinDate(Calendar.getInstance().getTimeInMillis() + 1000);
         nextButton.setOnClickListener(nextClicked);
+
+        updateRequestDate();
+
         return view;
     }
 
