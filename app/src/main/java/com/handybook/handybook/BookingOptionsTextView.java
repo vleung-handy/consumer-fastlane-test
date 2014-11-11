@@ -27,7 +27,7 @@ final class BookingOptionsTextView extends BookingOptionsView {
     private void init(final Context context) {
         if (!option.getType().equals("text")) return;
 
-        editText = (EditText)this.findViewById(R.id.text);
+        editText = (EditText)this.findViewById(R.id.edit_text);
         editText.setHint(option.getDefaultValue());
         editText.addTextChangedListener(new TextWatcher() {
             @Override

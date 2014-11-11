@@ -12,6 +12,7 @@ abstract class BookingOptionsIndexView extends BookingOptionsView {
     protected HashMap<Integer, ArrayList<String>> childMap;
     protected String[] optionsList;
     private ArrayList<String> prevChildList;
+    private TextView titleText;
     private TextView warningText;
 
     BookingOptionsIndexView(final Context context, final int layout, final BookingOption option,
@@ -32,7 +33,7 @@ abstract class BookingOptionsIndexView extends BookingOptionsView {
         warningsMap = new HashMap<>();
         childMap = new HashMap<>();
 
-        final TextView titleText = (TextView)this.findViewById(R.id.title_text);
+        titleText = (TextView)this.findViewById(R.id.title_text);
         final TextView infoText = (TextView)this.findViewById(R.id.info_text);
         warningText = (TextView)this.findViewById(R.id.warning_text);
 
@@ -87,6 +88,12 @@ abstract class BookingOptionsIndexView extends BookingOptionsView {
                 }
             }
         }
+    }
+
+    final void hideTitle() {
+        titleText.setVisibility(GONE);
+        invalidate();
+        requestLayout();
     }
 
     protected void handleWarnings(final int item) {

@@ -254,10 +254,18 @@ public final class BookingOptionsFragment extends InjectedFragment {
             }
 
             if (pos >= pageOptions.size() - 1) optionsView.hideSeparator();
+
             if (pageOptions.size() == 1 && option.getType().equals("text")) {
                 navText.setText(getString(R.string.comments));
                 optionsLayout.setBackgroundColor(0);
                 ((BookingOptionsTextView)optionsView).enableSingleMode();
+            }
+            else if (pageOptions.size() == 1 && option.getType().equals("option")
+                    && option.getTitle().contains("professional")) {
+                headerText.setText(option.getTitle());
+                headerText.setVisibility(View.VISIBLE);
+                navText.setText(getString(R.string.request_pro));
+                ((BookingOptionsIndexView)optionsView).hideTitle();
             }
 
             optionsLayout.addView(optionsView, pos++);
