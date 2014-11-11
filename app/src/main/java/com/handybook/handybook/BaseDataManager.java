@@ -196,8 +196,8 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    final void getBookingOptions(final int serviceId, final Callback<List<BookingOption>> cb) {
-        service.getBookingOptions(serviceId, new HandyRetrofitCallback(cb) {
+    final void getBookingOptions(final int serviceId, final String userId, final Callback<List<BookingOption>> cb) {
+        service.getBookingOptions(serviceId, userId, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 final JSONArray array = response.optJSONArray("booking_options");

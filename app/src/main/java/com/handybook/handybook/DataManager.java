@@ -28,7 +28,7 @@ abstract class DataManager {
 
     abstract void getBookings(User user, Callback<List<Booking>> cb);
 
-    abstract void getBookingOptions(int serviceId, Callback<List<BookingOption>> cb);
+    abstract void getBookingOptions(int serviceId, String userId, Callback<List<BookingOption>> cb);
 
     abstract void createBooking(BookingRequest bookingRequest, Callback<String> cb);
 

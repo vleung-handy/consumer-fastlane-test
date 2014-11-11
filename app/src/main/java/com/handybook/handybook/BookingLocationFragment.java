@@ -237,7 +237,11 @@ public final class BookingLocationFragment extends InjectedFragment {
         newRequest.setZipCode(zipText.getZipCode());
         requestManager.setCurrentRequest(newRequest);
 
-        dataManager.getBookingOptions(request.getServiceId(),
+        String userId = null;
+        final User user = userManager.getCurrentUser();
+        if (user != null) userId = user.getId();
+
+        dataManager.getBookingOptions(request.getServiceId(), userId,
                 new DataManager.Callback<List<BookingOption>>() {
             @Override
             public void onSuccess(final List<BookingOption> options) {
