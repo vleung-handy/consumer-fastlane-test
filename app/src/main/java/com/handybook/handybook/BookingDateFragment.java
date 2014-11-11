@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -148,11 +149,17 @@ public final class BookingDateFragment extends InjectedFragment {
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
-//            if (postOptions != null && postOptions.size() > 0) {
-//                toast.setText("SHOW POST OPTIONS \n" + postOptions);
-//                toast.show();
-//                return;
-//            }
+            if (postOptions != null && postOptions.size() > 0) {
+                final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_OPTIONS,
+                        new ArrayList<>(postOptions));
+
+                intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, postOptions.get(0).getPage());
+                intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
+                startActivity(intent);
+
+                return;
+            }
 
             disableInputs();
             progressDialog.show();

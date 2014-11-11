@@ -11,6 +11,7 @@ public final class BookingOptionsActivity extends MenuDrawerActivity {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     static final String EXTRA_CHILD_DISPLAY_MAP = "com.handy.handy.EXTRA_CHILD_DISPLAY_MAP";
     static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
+    static final String EXTRA_IS_POST = "com.handy.handy.EXTRA_IS_POST";
 
     @Override
     protected final Fragment createFragment() {
@@ -23,7 +24,9 @@ public final class BookingOptionsActivity extends MenuDrawerActivity {
         final HashMap<String, Boolean> childDisplayMap
                 = (HashMap)getIntent().getSerializableExtra(EXTRA_CHILD_DISPLAY_MAP);
 
-        return BookingOptionsFragment.newInstance(options, page, childDisplayMap, postOptions);
+        final boolean isPost = getIntent().getBooleanExtra(EXTRA_IS_POST, false);
+
+        return BookingOptionsFragment.newInstance(options, page, childDisplayMap, postOptions, isPost);
     }
 
     @Override
