@@ -99,6 +99,10 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                     else {
                         final BookingRequest request = new BookingRequest();
                         request.setServiceId(service.getId());
+
+                        final User user = userManager.getCurrentUser();
+                        if (user != null) request.setEmail(user.getEmail());
+
                         requestManager.setCurrentRequest(request);
 
                         final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
