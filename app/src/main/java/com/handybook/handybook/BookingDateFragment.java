@@ -10,6 +10,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -20,6 +21,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class BookingDateFragment extends InjectedFragment {
+    static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
+
+    private ArrayList<BookingOption> postOptions;
     private ProgressDialog progressDialog;
     private Toast toast;
     private boolean allowCallbacks;
@@ -32,8 +36,20 @@ public final class BookingDateFragment extends InjectedFragment {
     @InjectView(R.id.date_picker) DatePicker datePicker;
     @InjectView(R.id.time_picker) TimePicker timePicker;
 
-    static BookingDateFragment newInstance() {
-        return new BookingDateFragment();
+    static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
+        final BookingDateFragment fragment = new BookingDateFragment();
+        final Bundle args = new Bundle();
+
+        args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    @Override
+    public final void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
     }
 
     @Override
@@ -132,6 +148,12 @@ public final class BookingDateFragment extends InjectedFragment {
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
+//            if (postOptions != null && postOptions.size() > 0) {
+//                toast.setText("SHOW POST OPTIONS \n" + postOptions);
+//                toast.show();
+//                return;
+//            }
+
             disableInputs();
             progressDialog.show();
 

@@ -15,6 +15,7 @@ final class BookingOption implements Parcelable {
     @SerializedName("warnings") private String[][] warnings;
     @SerializedName("child_elements") private String[][] children;
     @SerializedName("page") private int page;
+    @SerializedName("post") private int post;
 
     final String getUniq() {
         return uniq;
@@ -88,6 +89,14 @@ final class BookingOption implements Parcelable {
         this.page = page;
     }
 
+    final boolean isPost() {
+        return post == 1;
+    }
+
+    final void setPost(final boolean post) {
+        this.post = post ? 1 : 0;
+    }
+
     private BookingOption(final Parcel in) {
         final String[] stringData = new String[5];
         in.readStringArray(stringData);
@@ -97,9 +106,10 @@ final class BookingOption implements Parcelable {
         defaultValue = stringData[3];
         info = stringData[4];
 
-        final int[] intData = new int[1];
+        final int[] intData = new int[2];
         in.readIntArray(intData);
         page = intData[0];
+        post = intData[1];
 
         options = in.createStringArray();
         warnings = (String[][]) in.readSerializable();
@@ -109,7 +119,7 @@ final class BookingOption implements Parcelable {
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
         out.writeStringArray(new String[]{ uniq, type, title, defaultValue, info });
-        out.writeIntArray(new int[]{page});
+        out.writeIntArray(new int[]{ page, post });
         out.writeStringArray(options);
         out.writeSerializable(warnings);
         out.writeSerializable(children);

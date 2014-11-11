@@ -19,12 +19,14 @@ import butterknife.InjectView;
 
 public final class BookingOptionsFragment extends InjectedFragment {
     static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
+    static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     static final String EXTRA_CHILD_DISPLAY_MAP = "com.handy.handy.EXTRA_CHILD_DISPLAY_MAP";
     static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
     static final String STATE_CHILD_DISPLAY_MAP = "STATE_CHILD_DISPLAY_MAP";
     static final String STATE_OPTION_INDEX_MAP = "STATE_OPTION_INDEX_MAP";
 
     private ArrayList<BookingOption> options;
+    private ArrayList<BookingOption> postOptions;
     private HashMap<String, Boolean> childDisplayMap;
     private HashMap<String, Integer> optionIndexMap;
     private HashMap<String, BookingOptionsView> optionsViewMap;
@@ -38,24 +40,14 @@ public final class BookingOptionsFragment extends InjectedFragment {
     @InjectView(R.id.next_button) Button nextButton;
 
     static BookingOptionsFragment newInstance(final ArrayList<BookingOption> options,
-                                              final int page) {
-        final BookingOptionsFragment fragment = new BookingOptionsFragment();
-        final Bundle args = new Bundle();
-
-        args.putParcelableArrayList(EXTRA_OPTIONS, options);
-        args.putInt(EXTRA_PAGE, page);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
-    static BookingOptionsFragment newInstance(final ArrayList<BookingOption> options,
                                               final int page,
-                                              HashMap<String, Boolean> childDisplayMap) {
+                                              final HashMap<String, Boolean> childDisplayMap,
+                                              final ArrayList<BookingOption> postOptions) {
         final BookingOptionsFragment fragment = new BookingOptionsFragment();
         final Bundle args = new Bundle();
 
         args.putParcelableArrayList(EXTRA_OPTIONS, options);
+        args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
         args.putSerializable(EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
         args.putInt(EXTRA_PAGE, page);
         fragment.setArguments(args);
@@ -69,6 +61,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
         options = getArguments().getParcelableArrayList(EXTRA_OPTIONS);
         page = getArguments().getInt(EXTRA_PAGE);
         childDisplayMap = (HashMap) getArguments().getSerializable(EXTRA_CHILD_DISPLAY_MAP);
+        postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
 
         //TODO if all options set invisible then prev view should have skipped this page
 
@@ -94,22 +87,27 @@ public final class BookingOptionsFragment extends InjectedFragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                if (options.get(options.size() - 1).getPage() <= page) {
+                final ArrayList<BookingOption> nextOptions = new ArrayList<>();
+                for (final BookingOption option : options) {
+                    if (option.getPage() > page && !option.isPost()) nextOptions.add(option);
+                }
+
+                if (nextOptions.size() < 1 || nextOptions.get(nextOptions.size() - 1).getPage() <= page) {
                     final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+                    intent.putParcelableArrayListExtra(BookingDateActivity.EXTRA_POST_OPTIONS,
+                            new ArrayList<>(postOptions));
                     startActivity(intent);
                 }
                 else {
-                    final ArrayList<BookingOption> nextOptions = new ArrayList<>();
-
-                    for (final BookingOption option : options) {
-                        if (option.getPage() > page) nextOptions.add(option);
-                    }
-
                     final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
                     intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_OPTIONS,
                             new ArrayList<>(nextOptions));
+
+                    intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_POST_OPTIONS,
+                            new ArrayList<>(postOptions));
+
                     intent.putExtra(BookingOptionsActivity.EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
-                    intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, ++page);
+                    intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, nextOptions.get(0).getPage());
                     startActivity(intent);
                 }
             }
@@ -149,8 +147,18 @@ public final class BookingOptionsFragment extends InjectedFragment {
             }
         }
 
+        if (postOptions == null) {
+            postOptions = new ArrayList<>();
+
+            for (final BookingOption option : options) {
+                if (option.isPost()) {
+                    postOptions.add(option);
+                }
+            }
+        }
+
         for (final BookingOption option : options) {
-            if (option.getPage() == page) pageOptions.add(option);
+            if (option.getPage() == page && !option.isPost()) pageOptions.add(option);
         }
 
         int pos = 0;

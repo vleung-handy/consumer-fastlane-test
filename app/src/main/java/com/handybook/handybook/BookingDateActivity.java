@@ -3,11 +3,16 @@ package com.handybook.handybook;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import java.util.ArrayList;
+
 public final class BookingDateActivity extends MenuDrawerActivity {
+    static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
 
     @Override
     protected final Fragment createFragment() {
-        return BookingDateFragment.newInstance();
+        final ArrayList<BookingOption> postOptions
+                = getIntent().getParcelableArrayListExtra(EXTRA_POST_OPTIONS);
+        return BookingDateFragment.newInstance(postOptions);
     }
 
     @Override
