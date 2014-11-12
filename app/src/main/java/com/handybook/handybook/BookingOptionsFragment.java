@@ -38,7 +38,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
     private int page;
     private boolean isPost;
 
-    @Inject BookingRequestManager requestManager;
+    @Inject BookingManager bookingManager;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
@@ -102,7 +102,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
         if (page != 0) {
             headerText.setVisibility(View.GONE);
         }
-        else if (requestManager.getCurrentRequest().getServiceId() == 3)
+        else if (bookingManager.getCurrentRequest().getServiceId() == 3)
             headerText.setText(getString(R.string.tell_us_place));
 
         nextButton.setOnClickListener(nextClicked);
@@ -250,7 +250,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
             }
             else if (optionsView instanceof BookingOptionsTextView) {
                 final HashMap<String, String> requestOptions
-                        = requestManager.getCurrentRequest().getOptions();
+                        = bookingManager.getCurrentRequest().getOptions();
 
                 ((BookingOptionsTextView)optionsView).setValue(requestOptions.get(option.getUniq()));
             }
@@ -292,7 +292,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
     private void handleOptionUpdate(final BookingOptionsView view,
                                     final BookingOption option) {
         final HashMap<String, String> requestOptions
-                = requestManager.getCurrentRequest().getOptions();
+                = bookingManager.getCurrentRequest().getOptions();
 
         if (view instanceof BookingOptionsIndexView) {
             requestOptions.put(option.getUniq(),
@@ -304,7 +304,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
         }
         else requestOptions.put(option.getUniq(), view.getCurrentValue());
 
-        requestManager.getCurrentRequest().setOptions(requestOptions);
+        bookingManager.getCurrentRequest().setOptions(requestOptions);
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
@@ -319,11 +319,12 @@ public final class BookingOptionsFragment extends InjectedFragment {
                     disableInputs();
                     progressDialog.show();
 
-                    final BookingRequest request = requestManager.getCurrentRequest();
-                    dataManager.createBooking(request, new DataManager.Callback<String>() {
+                    final BookingRequest request = bookingManager.getCurrentRequest();
+                    dataManager.getBookingQuote(request, new DataManager.Callback<BookingQuote>() {
                         @Override
-                        public void onSuccess(String resp) {
+                        public void onSuccess(final BookingQuote quote) {
                             if (!allowCallbacks) return;
+                            bookingManager.setCurrentQuote(quote);
 
                             final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
                             startActivity(intent);

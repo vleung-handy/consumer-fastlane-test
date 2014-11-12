@@ -62,7 +62,11 @@ final class ApplicationModule {
                 }).setConverter(new GsonConverter(new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                         .setExclusionStrategies(BookingRequest.getExclusionStrategy())
-                        .registerTypeAdapter(BookingRequest.class, new BookingRequest.BookingSerializer())
+                        .registerTypeAdapter(BookingRequest.class,
+                                new BookingRequest.BookingRequestSerializer())
+                        .setExclusionStrategies(BookingQuote.getExclusionStrategy())
+                        .registerTypeAdapter(BookingQuote.class,
+                                new BookingQuote.BookingQuoteSerializer())
                         .setExclusionStrategies(User.getExclusionStrategy())
                         .registerTypeAdapter(User.class, new User.UserSerializer())
                         .create())).build();
@@ -100,8 +104,8 @@ final class ApplicationModule {
                 configs.getProperty("secure_prefs_key"), true);
     }
 
-    @Provides @Singleton final BookingRequestManager provideBookingRequestManager() {
-        return new BookingRequestManager(providePrefs());
+    @Provides @Singleton final BookingManager provideBookingRequestManager() {
+        return new BookingManager(providePrefs());
     }
 
     @Provides @Singleton final UserManager provideUserManager() {

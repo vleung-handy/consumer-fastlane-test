@@ -30,7 +30,7 @@ abstract class DataManager {
 
     abstract void getBookingOptions(int serviceId, String userId, Callback<List<BookingOption>> cb);
 
-    abstract void createBooking(BookingRequest bookingRequest, Callback<String> cb);
+    abstract void getBookingQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
 
     abstract void authUser(String email, String password, Callback<User> cb);
 

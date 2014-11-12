@@ -29,7 +29,7 @@ public final class BookingDateFragment extends InjectedFragment {
     private Toast toast;
     private boolean allowCallbacks;
 
-    @Inject BookingRequestManager requestManager;
+    @Inject BookingManager bookingManager;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
@@ -71,7 +71,7 @@ public final class BookingDateFragment extends InjectedFragment {
 
         final Calendar cal = Calendar.getInstance();
         final int hours, minutes;
-        final BookingRequest request = requestManager.getCurrentRequest();
+        final BookingRequest request = bookingManager.getCurrentRequest();
         final Date startDate = request.getStartDate();
 
         if (startDate != null) {
@@ -135,7 +135,7 @@ public final class BookingDateFragment extends InjectedFragment {
     }
 
     private void updateRequestDate() {
-        final BookingRequest request = requestManager.getCurrentRequest();
+        final BookingRequest request = bookingManager.getCurrentRequest();
         final Calendar date = Calendar.getInstance();
 
         date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
@@ -166,27 +166,28 @@ public final class BookingDateFragment extends InjectedFragment {
             disableInputs();
             progressDialog.show();
 
-            final BookingRequest request = requestManager.getCurrentRequest();
-            dataManager.createBooking(request, new DataManager.Callback<String>() {
-                    @Override
-                    public void onSuccess(String resp) {
-                        if (!allowCallbacks) return;
+            final BookingRequest request = bookingManager.getCurrentRequest();
+            dataManager.getBookingQuote(request, new DataManager.Callback<BookingQuote>() {
+                @Override
+                public void onSuccess(final BookingQuote quote) {
+                    if (!allowCallbacks) return;
+                    bookingManager.setCurrentQuote(quote);
 
-                        final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
-                        startActivity(intent);
+                    final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
+                    startActivity(intent);
 
-                        enableInputs();
-                        progressDialog.dismiss();
-                    }
+                    enableInputs();
+                    progressDialog.dismiss();
+                }
 
-                    @Override
-                    public void onError(final DataManager.DataManagerError error) {
-                        if (!allowCallbacks) return;
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
 
-                        enableInputs();
-                        progressDialog.dismiss();
-                        dataManagerErrorHandler.handleError(getActivity(), error);
-                    }
+                    enableInputs();
+                    progressDialog.dismiss();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
             });
         }
     };

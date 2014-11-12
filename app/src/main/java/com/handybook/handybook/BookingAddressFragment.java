@@ -19,7 +19,7 @@ public final class BookingAddressFragment extends InjectedFragment {
     private static final String STATE_ADDR1_HIGHLIGHT = "ADDR1_HIGHLIGHT";
     private static final String STATE_PHONE_HIGHLIGHT = "PHONE_HIGHLIGHT";
 
-    @Inject BookingRequestManager requestManager;
+    @Inject BookingManager bookingManager;
     @Inject UserManager userManager;
 
     @InjectView(R.id.next_button) Button nextButton;

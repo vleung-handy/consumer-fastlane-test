@@ -77,7 +77,7 @@ public final class BookingRequest extends Observable {
     final String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .setExclusionStrategies(getExclusionStrategy())
-                .registerTypeAdapter(BookingRequest.class, new BookingSerializer()).create();
+                .registerTypeAdapter(BookingRequest.class, new BookingRequestSerializer()).create();
 
         return gson.toJson(this);
     }
@@ -101,7 +101,7 @@ public final class BookingRequest extends Observable {
         };
     }
 
-    static final class BookingSerializer implements JsonSerializer<BookingRequest> {
+    static final class BookingRequestSerializer implements JsonSerializer<BookingRequest> {
         @Override
         public final JsonElement serialize(final BookingRequest value, final Type type,
                                            final JsonSerializationContext context) {

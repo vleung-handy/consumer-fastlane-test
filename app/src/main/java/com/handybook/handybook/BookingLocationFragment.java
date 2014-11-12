@@ -44,7 +44,7 @@ public final class BookingLocationFragment extends InjectedFragment {
 
     @Inject ReactiveLocationProvider locationProvider;
     @Inject UserManager userManager;
-    @Inject BookingRequestManager requestManager;
+    @Inject BookingManager bookingManager;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
@@ -204,7 +204,7 @@ public final class BookingLocationFragment extends InjectedFragment {
                 disableInputs();
                 progressDialog.show();
 
-                final BookingRequest request = requestManager.getCurrentRequest();
+                final BookingRequest request = bookingManager.getCurrentRequest();
 
                 dataManager.validateBookingZip(request.getServiceId(), zipText.getZipCode(),
                         new DataManager.Callback<Void>() {
@@ -231,13 +231,13 @@ public final class BookingLocationFragment extends InjectedFragment {
     };
 
     private void displayBookingOptions() {
-        final BookingRequest request = requestManager.getCurrentRequest();
+        final BookingRequest request = bookingManager.getCurrentRequest();
         final BookingRequest newRequest = new BookingRequest();
 
         newRequest.setServiceId(request.getServiceId());
         newRequest.setEmail(request.getEmail());
         newRequest.setZipCode(zipText.getZipCode());
-        requestManager.setCurrentRequest(newRequest);
+        bookingManager.setCurrentRequest(newRequest);
 
         String userId = null;
         final User user = userManager.getCurrentUser();

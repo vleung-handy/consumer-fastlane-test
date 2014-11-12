@@ -28,7 +28,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
 
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
-    @Inject BookingRequestManager requestManager;
+    @Inject BookingManager bookingManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     static ServiceCategoriesFragment newInstance() {
@@ -105,7 +105,7 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                         final User user = userManager.getCurrentUser();
                         if (user != null) request.setEmail(user.getEmail());
 
-                        requestManager.setCurrentRequest(request);
+                        bookingManager.setCurrentRequest(request);
 
                         final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
                         startActivity(intent);
