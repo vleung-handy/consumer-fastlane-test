@@ -6,7 +6,10 @@ import android.text.TextPaint;
 import android.text.style.URLSpan;
 import android.widget.TextView;
 
+import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class TextUtils {
 
@@ -37,6 +40,19 @@ public final class TextUtils {
                     phone.substring(6));
 
         else return phone;
+    }
+
+    static String formatDate(final Date date, final String format) {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        final DateFormatSymbols symbols = new DateFormatSymbols();
+        symbols.setAmPmStrings(new String[] { "am", "pm" });
+        dateFormat.setDateFormatSymbols(symbols);
+        return dateFormat.format(date);
+    }
+
+    static String formatDecimal(final float value, final String format) {
+        final DecimalFormat decimalFormat = new DecimalFormat(format);
+        return decimalFormat.format(value);
     }
 
     static void stripUnderlines(final TextView textView) {

@@ -170,6 +170,16 @@
         <item name="android:textSize">@dimen/small_text_size</item>
     </style>
 
+    <style name="TextView.Headline.Small.Light">
+        <item name="fontPath">fonts/CircularStd-Book.otf</item>
+    </style>
+
+    <style name="TextView.Headline.XSmall">
+        <item name="fontPath">fonts/CircularStd-Medium.otf</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/xsmall_text_size</item>
+    </style>
+
     <style name="TextView.Navbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

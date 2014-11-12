@@ -23,7 +23,6 @@ public final class BookingTransaction extends Observable {
     @SerializedName("phone") private String phone;
     @SerializedName("hrs") private float hours;
     @SerializedName("start_date") private Date startDate;
-    @SerializedName("__android_price") private float price;
 
     final String getFirstName() {
         return firstName;
@@ -88,15 +87,6 @@ public final class BookingTransaction extends Observable {
         triggerObservers();
     }
 
-    final float getPrice() {
-        return price;
-    }
-
-    final void setPrice(final float price) {
-        this.price = price;
-        triggerObservers();
-    }
-
     private void triggerObservers() {
         setChanged();
         notifyObservers();
@@ -142,7 +132,6 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("phone", context.serialize(value.getPhone()));
             jsonObj.add("hrs", context.serialize(value.getHours()));
             jsonObj.add("start_date", context.serialize(value.getStartDate()));
-            jsonObj.add("__android_price", context.serialize(value.getPrice()));
             return jsonObj;
         }
     }

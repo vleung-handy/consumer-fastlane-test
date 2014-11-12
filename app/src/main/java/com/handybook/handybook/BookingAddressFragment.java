@@ -28,6 +28,9 @@ public final class BookingAddressFragment extends InjectedFragment {
     @InjectView(R.id.other_addr_text) EditText otherAddrText;
     @InjectView(R.id.phone_prefix_text) TextView phonePrefixText;
     @InjectView(R.id.phone_text) PhoneInputTextView phoneText;
+    @InjectView(R.id.date_text) TextView dateText;
+    @InjectView(R.id.time_text) TextView timeText;
+    @InjectView(R.id.price_text) TextView priceText;
 
     static BookingAddressFragment newInstance() {
         final BookingAddressFragment fragment = new BookingAddressFragment();
@@ -60,9 +63,26 @@ public final class BookingAddressFragment extends InjectedFragment {
                 otherAddrText.setText(addr.getAddress2());
             }
 
-            //TODO if no user, use booking prefix, currency, etc
-            //TODO add this pages info to booking request
+            //TODO add this pages info to booking transaction
+            //TODO refactor header info into fragmetn and class
+            //TODO use format util for all date strings and decimal formats
         }
+        else {
+            //TODO if no user, use booking prefix, currency, phone prefix etc & leave fields blank
+        }
+
+        final BookingQuote quote = bookingManager.getCurrentQuote();
+        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+
+        dateText.setText(TextUtils.formatDate(transaction.getStartDate(), "EEEE',' MMMM d"));
+
+        timeText.setText(TextUtils.formatDate(transaction.getStartDate(), "h:mm aaa") + " - "
+                + TextUtils.formatDecimal(transaction.getHours(), "#.#")
+                + " " + getString(R.string.hours));
+
+        priceText.setText(TextUtils.formatPrice(quote.getPriceTableMap()
+                        .get(transaction.getHours()).getPrice(),
+                quote.getCurrencyChar(), quote.getCurrencySuffix()));
 
         nextButton.setOnClickListener(nextClicked);
         return view;

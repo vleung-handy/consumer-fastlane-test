@@ -11,7 +11,9 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -19,6 +21,11 @@ public final class BookingQuote extends Observable {
     @SerializedName("id") private int bookingId;
     @SerializedName("hrs") private float hours;
     @SerializedName("date_start") private Date startDate;
+    @SerializedName("currency_char") private String currencyChar;
+    @SerializedName("currency_suffix") private String currencySuffix;
+    @SerializedName("price_table") private ArrayList<PriceInfo> priceTable;
+
+    private HashMap<Float, PriceInfo> priceTableMap;
 
     final int getBookingId() {
         return bookingId;
@@ -47,9 +54,46 @@ public final class BookingQuote extends Observable {
         triggerObservers();
     }
 
+    final String getCurrencyChar() {
+        return currencyChar;
+    }
+
+    final void setCurrencyChar(final String currencyChar) {
+        this.currencyChar = currencyChar;
+        triggerObservers();
+    }
+
+    final String getCurrencySuffix() {
+        return currencySuffix;
+    }
+
+    final void setCurrencySuffix(final String currencySuffix) {
+        this.currencySuffix = currencySuffix;
+        triggerObservers();
+    }
+
+    final ArrayList<PriceInfo> getPriceTable() {
+        return priceTable;
+    }
+
+    final void setPriceTable(final ArrayList<PriceInfo> priceTable) {
+        this.priceTable = priceTable;
+        buildPriceMap();
+    }
+
+    public HashMap<Float, PriceInfo> getPriceTableMap() {
+        if (priceTableMap == null || priceTable.isEmpty()) buildPriceMap();
+        return priceTableMap;
+    }
+
     private void triggerObservers() {
         setChanged();
         notifyObservers();
+    }
+
+    private void buildPriceMap() {
+        priceTableMap = new HashMap<>();
+        for (final PriceInfo info : this.priceTable) priceTableMap.put(info.getHours(), info);
     }
 
     final String toJson() {
@@ -87,7 +131,23 @@ public final class BookingQuote extends Observable {
             jsonObj.add("id", context.serialize(value.getBookingId()));
             jsonObj.add("hrs", context.serialize(value.getHours()));
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
+            jsonObj.add("currency_char", context.serialize(value.getCurrencyChar()));
+            jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
+            jsonObj.add("price_table", context.serialize(value.getPriceTable()));
             return jsonObj;
+        }
+    }
+
+    static final class PriceInfo {
+        @SerializedName("hours") private float hours;
+        @SerializedName("price") private float price;
+
+        final float getHours() {
+            return hours;
+        }
+
+        final float getPrice() {
+            return price;
         }
     }
 }
