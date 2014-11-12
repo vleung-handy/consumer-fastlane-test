@@ -48,7 +48,9 @@ public final class ServicesFragment extends InjectedListFragment {
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_services, container, false);
+        final View view = getActivity().getLayoutInflater()
+                .inflate(R.layout.fragment_services,container, false);
+
         ButterKnife.inject(this, view);
 
         final int navHeight;

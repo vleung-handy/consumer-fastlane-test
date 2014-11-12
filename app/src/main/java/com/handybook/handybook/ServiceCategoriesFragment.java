@@ -43,7 +43,9 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_service_categories, container, false);
+        final View view = getActivity().getLayoutInflater()
+                .inflate(R.layout.fragment_service_categories,container, false);
+
         ButterKnife.inject(this, view);
 
         progressDialog = new ProgressDialog(getActivity());

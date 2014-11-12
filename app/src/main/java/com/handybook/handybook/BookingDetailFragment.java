@@ -49,7 +49,9 @@ public final class BookingDetailFragment extends InjectedFragment {
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_booking_detail, container, false);
+        final View view = getActivity().getLayoutInflater()
+                .inflate(R.layout.fragment_booking_detail,container, false);
+
         ButterKnife.inject(this, view);
 
         serviceText.setText(booking.getService());

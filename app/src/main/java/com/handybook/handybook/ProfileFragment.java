@@ -66,7 +66,9 @@ public final class ProfileFragment extends InjectedFragment {
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View view = getActivity().getLayoutInflater()
+                .inflate(R.layout.fragment_profile,container, false);
+
         ButterKnife.inject(this, view);
 
         progressDialog = new ProgressDialog(getActivity());

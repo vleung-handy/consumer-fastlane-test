@@ -68,7 +68,9 @@ public final class NavigationFragment extends InjectedListFragment
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_navigation, container, false);
+        final View view = getActivity().getLayoutInflater()
+                .inflate(R.layout.fragment_navigation,container, false);
+
         ButterKnife.inject(this, view);
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))

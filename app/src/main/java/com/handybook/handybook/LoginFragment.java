@@ -62,7 +62,9 @@ public final class LoginFragment extends InjectedFragment {
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_login, container, false);
+        final View view = getActivity().getLayoutInflater()
+                .inflate(R.layout.fragment_login,container, false);
+
         ButterKnife.inject(this, view);
 
         fbButton.setFragment(this);
