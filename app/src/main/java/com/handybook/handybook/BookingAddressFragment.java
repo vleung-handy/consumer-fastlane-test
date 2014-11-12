@@ -63,7 +63,6 @@ public final class BookingAddressFragment extends InjectedFragment {
                 otherAddrText.setText(addr.getAddress2());
             }
 
-            //TODO add this pages info to booking transaction
             //TODO refactor header info into fragmetn and class
             //TODO use format util for all date strings and decimal formats
         }
@@ -118,6 +117,12 @@ public final class BookingAddressFragment extends InjectedFragment {
         @Override
         public void onClick(final View view) {
             if (validateFields()) {
+                final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+                transaction.setFirstName(fullNameText.getFirstName());
+                transaction.setLastName(fullNameText.getLastName());
+                transaction.setAddress1(streetAddrText.getAddress());
+                transaction.setAddress2(otherAddrText.getText().toString());
+                transaction.setPhone(phoneText.getPhoneNumber());
                 Toast.makeText(getActivity(), "SHOW PAYMENT VIEW", Toast.LENGTH_SHORT).show();
             }
         }
