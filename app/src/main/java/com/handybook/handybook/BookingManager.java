@@ -94,5 +94,8 @@ public final class BookingManager implements Observer {
     public void update(final Observable observable, final Object data) {
         if (observable instanceof BookingRequest) setCurrentRequest((BookingRequest)observable);
         if (observable instanceof BookingQuote) setCurrentQuote((BookingQuote)observable);
+
+        if (observable instanceof BookingTransaction)
+            setCurrentTransaction((BookingTransaction)observable);
     }
 }
