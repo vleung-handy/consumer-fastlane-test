@@ -173,6 +173,11 @@ public final class BookingDateFragment extends InjectedFragment {
                     if (!allowCallbacks) return;
                     bookingManager.setCurrentQuote(quote);
 
+                    final BookingTransaction transaction = new BookingTransaction();
+                    transaction.setHours(quote.getHours());
+                    transaction.setStartDate(quote.getStartDate());
+                    bookingManager.setCurrentTransaction(transaction);
+
                     final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
                     startActivity(intent);
 

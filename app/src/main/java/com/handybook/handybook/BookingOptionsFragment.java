@@ -324,7 +324,14 @@ public final class BookingOptionsFragment extends InjectedFragment {
                         @Override
                         public void onSuccess(final BookingQuote quote) {
                             if (!allowCallbacks) return;
+
+                            //TODO refactor this out for reuse in booking date fragment
                             bookingManager.setCurrentQuote(quote);
+
+                            BookingTransaction transaction = new BookingTransaction();
+                            transaction.setHours(quote.getHours());
+                            transaction.setStartDate(quote.getStartDate());
+                            bookingManager.setCurrentTransaction(transaction);
 
                             final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
                             startActivity(intent);

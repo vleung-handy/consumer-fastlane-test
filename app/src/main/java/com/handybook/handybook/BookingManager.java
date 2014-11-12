@@ -8,6 +8,7 @@ import javax.inject.Inject;
 public final class BookingManager implements Observer {
     private BookingRequest request;
     private BookingQuote quote;
+    private BookingTransaction transaction;
     private final SecurePreferences securePrefs;
 
     @Inject
@@ -61,6 +62,32 @@ public final class BookingManager implements Observer {
         quote = newQuote;
         quote.addObserver(this);
         securePrefs.put("BOOKING_QUOTE", quote.toJson());
+
+        setCurrentTransaction(null);
+    }
+
+    final BookingTransaction getCurrentTransaction() {
+        if (transaction != null) return transaction;
+        else {
+            if ((transaction = BookingTransaction
+                    .fromJson(securePrefs.getString("BOOKING_TRANS"))) != null)
+                transaction.addObserver(this);
+            return transaction;
+        }
+    }
+
+    final void setCurrentTransaction(final BookingTransaction newTransaction) {
+        if (transaction != null) transaction.deleteObserver(this);
+
+        if (newTransaction == null) {
+            transaction = null;
+            securePrefs.put("BOOKING_TRANS", null);
+            return;
+        }
+
+        transaction = newTransaction;
+        transaction.addObserver(this);
+        securePrefs.put("BOOKING_TRANS", transaction.toJson());
     }
 
     @Override

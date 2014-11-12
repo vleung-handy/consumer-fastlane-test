@@ -11,12 +11,14 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
 public final class BookingQuote extends Observable {
     @SerializedName("id") private int bookingId;
     @SerializedName("hrs") private float hours;
+    @SerializedName("date_start") private Date startDate;
 
     final int getBookingId() {
         return bookingId;
@@ -33,6 +35,15 @@ public final class BookingQuote extends Observable {
 
     public void setHours(float hours) {
         this.hours = hours;
+        triggerObservers();
+    }
+
+    final Date getStartDate() {
+        return startDate;
+    }
+
+    final void setStartDate(final Date startDate) {
+        this.startDate = startDate;
         triggerObservers();
     }
 
@@ -75,6 +86,7 @@ public final class BookingQuote extends Observable {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("id", context.serialize(value.getBookingId()));
             jsonObj.add("hrs", context.serialize(value.getHours()));
+            jsonObj.add("date_start", context.serialize(value.getStartDate()));
             return jsonObj;
         }
     }
