@@ -16,8 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DecimalFormat;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -120,8 +118,6 @@ public final class ProfileFragment extends InjectedFragment {
     }
 
     private void updateUserInfo() {
-        final DecimalFormat df = new DecimalFormat("#.##");
-
         String text = getString(R.string.you_have_credits);
         final int replaceIndex = text.indexOf("#");
         final String amount = TextUtils.formatPrice(user.getCredits(),

@@ -9,9 +9,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.text.DateFormatSymbols;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +25,6 @@ public final class BookingsFragment extends InjectedListFragment {
     private ProgressDialog progressDialog;
     private ArrayList<Booking> upBookings = new ArrayList<>();
     private ArrayList<Booking> pastBookings = new ArrayList<>();
-    private SimpleDateFormat dateFormat, timeFormat;
-    private DecimalFormat hoursFormat;
 
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
@@ -37,20 +32,6 @@ public final class BookingsFragment extends InjectedListFragment {
 
     static BookingsFragment newInstance() {
         return new BookingsFragment();
-    }
-
-    @Override
-    public final void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        dateFormat = new SimpleDateFormat("EEEE',' MMMM d");
-
-        timeFormat = new SimpleDateFormat("h:mm aaa");
-        final DateFormatSymbols symbols = new DateFormatSymbols();
-        symbols.setAmPmStrings(new String[] { "am", "pm" });
-        timeFormat.setDateFormatSymbols(symbols);
-
-        hoursFormat = new DecimalFormat("#.#");
     }
 
     @Override
@@ -242,10 +223,10 @@ public final class BookingsFragment extends InjectedListFragment {
         serviceText.setText(booking.getService());
 
         final TextView dateText = (TextView)cell.findViewById(R.id.date);
-        dateText.setText(dateFormat.format(booking.getStartDate()));
+        dateText.setText(TextUtils.formatDate(booking.getStartDate(), "EEEE',' MMMM d"));
 
         final TextView timeText = (TextView)cell.findViewById(R.id.time);
-        timeText.setText(timeFormat.format(booking.getStartDate()) + " - "
-                + hoursFormat.format(booking.getHours()) + " " + getString(R.string.hours));
+        timeText.setText(TextUtils.formatDate(booking.getStartDate(), "h:mm aaa") + " - "
+                + TextUtils.formatDecimal(booking.getHours(), "#.#") + " " + getString(R.string.hours));
     }
 }

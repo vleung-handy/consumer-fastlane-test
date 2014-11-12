@@ -64,7 +64,6 @@ public final class BookingAddressFragment extends InjectedFragment {
             }
 
             //TODO refactor header info into fragmetn and class
-            //TODO use format util for all date strings and decimal formats
         }
         else {
             //TODO if no user, use booking prefix, currency, phone prefix etc & leave fields blank

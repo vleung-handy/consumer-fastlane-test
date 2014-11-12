@@ -7,10 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormatSymbols;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -62,14 +58,9 @@ public final class BookingDetailFragment extends InjectedFragment {
                 + address.getAddress2() + "\n" : "\n") + address.getCity() + ", "
                 + address.getState() + " " + address.getZip());
 
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d',' h:mm aaa");
-        final DateFormatSymbols symbols = new DateFormatSymbols();
-        symbols.setAmPmStrings(new String[] { "am", "pm" });
-        dateFormat.setDateFormatSymbols(symbols);
-        dateText.setText(dateFormat.format(booking.getStartDate()));
+        dateText.setText(TextUtils.formatDate(booking.getStartDate(), "MMM d',' h:mm aaa"));
 
-        final DecimalFormat decimalFormat = new DecimalFormat("#.#");
-        durationText.setText(decimalFormat.format(booking.getHours()) + " "
+        durationText.setText(TextUtils.formatDecimal(booking.getHours(), "#.#") + " "
                 + getString(R.string.hours).toLowerCase());
 
         final User user = userManager.getCurrentUser();
