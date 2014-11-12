@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/libs/androidspinner/androidspinner.iml" filepath="$PROJECT_DIR$/libs/androidspinner/androidspinner.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/facebook/facebook.iml" filepath="$PROJECT_DIR$/libs/facebook/facebook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/handy-andriod.iml" filepath="$PROJECT_DIR$/handy-andriod.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/simplealertdialog/simplealertdialog.iml" filepath="$PROJECT_DIR$/libs/simplealertdialog/simplealertdialog.iml" />
     </modules>
   </component>
