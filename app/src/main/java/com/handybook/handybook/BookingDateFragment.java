@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class BookingDateFragment extends InjectedFragment {
+public final class BookingDateFragment extends BookingFlowFragment {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
 
     private ArrayList<BookingOption> postOptions;
@@ -29,7 +29,6 @@ public final class BookingDateFragment extends InjectedFragment {
     private Toast toast;
     private boolean allowCallbacks;
 
-    @Inject BookingManager bookingManager;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
@@ -171,16 +170,7 @@ public final class BookingDateFragment extends InjectedFragment {
                 @Override
                 public void onSuccess(final BookingQuote quote) {
                     if (!allowCallbacks) return;
-                    bookingManager.setCurrentQuote(quote);
-
-                    final BookingTransaction transaction = new BookingTransaction();
-                    transaction.setHours(quote.getHours());
-                    transaction.setStartDate(quote.getStartDate());
-                    bookingManager.setCurrentTransaction(transaction);
-
-                    final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
-                    startActivity(intent);
-
+                    showBookingAddress(quote);
                     enableInputs();
                     progressDialog.dismiss();
                 }

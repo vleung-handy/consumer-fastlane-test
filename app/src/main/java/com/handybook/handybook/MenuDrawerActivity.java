@@ -67,7 +67,6 @@ abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDi
     protected final void onStart() {
         super.onStart();
 
-        //TODO fix below so that debug on device can work
         if (showNavForTransition) {
             menuDrawer.closeMenu();
             showNavForTransition = false;

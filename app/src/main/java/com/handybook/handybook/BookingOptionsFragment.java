@@ -19,7 +19,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class BookingOptionsFragment extends InjectedFragment {
+public final class BookingOptionsFragment extends BookingFlowFragment {
     static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     static final String EXTRA_CHILD_DISPLAY_MAP = "com.handy.handy.EXTRA_CHILD_DISPLAY_MAP";
@@ -38,7 +38,6 @@ public final class BookingOptionsFragment extends InjectedFragment {
     private int page;
     private boolean isPost;
 
-    @Inject BookingManager bookingManager;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
@@ -324,18 +323,7 @@ public final class BookingOptionsFragment extends InjectedFragment {
                         @Override
                         public void onSuccess(final BookingQuote quote) {
                             if (!allowCallbacks) return;
-
-                            //TODO refactor this out for reuse in booking date fragment
-                            bookingManager.setCurrentQuote(quote);
-
-                            BookingTransaction transaction = new BookingTransaction();
-                            transaction.setHours(quote.getHours());
-                            transaction.setStartDate(quote.getStartDate());
-                            bookingManager.setCurrentTransaction(transaction);
-
-                            final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
-                            startActivity(intent);
-
+                            showBookingAddress(quote);
                             enableInputs();
                             progressDialog.dismiss();
                         }
