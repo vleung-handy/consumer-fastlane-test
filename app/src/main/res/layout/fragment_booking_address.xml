@@ -24,57 +24,15 @@
         <RelativeLayout
             style="@style/ContentLayout.NoBottom">
 
-            <LinearLayout
-                android:id="@+id/info_header"
+            <FrameLayout
+                android:id="@+id/info_header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/date_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:singleLine="true"
-                        android:text="Date"
-                        style="@style/TextView.Headline.Small" />
-
-                    <TextView
-                        android:id="@+id/time_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/date_text"
-                        android:singleLine="true"
-                        android:text="Time"
-                        style="@style/TextView.Headline.Small.Light" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/price_text"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="end|center_vertical"
-                    android:singleLine="true"
-                    android:text="$0"
-                    style="@style/TextView.XLarge.Bold" />
-
-            </LinearLayout>
+                android:layout_marginBottom="16dp" />
 
             <com.handybook.handybook.FullNameInputTextView
                 android:id="@+id/fullname_text"
-                android:layout_below="@id/info_header"
+                android:layout_below="@id/info_header_layout"
                 style="@style/EditText.FullName" />
 
             <LinearLayout

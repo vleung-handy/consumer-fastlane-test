@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +29,6 @@ public final class BookingAddressFragment extends InjectedFragment {
     @InjectView(R.id.other_addr_text) EditText otherAddrText;
     @InjectView(R.id.phone_prefix_text) TextView phonePrefixText;
     @InjectView(R.id.phone_text) PhoneInputTextView phoneText;
-    @InjectView(R.id.date_text) TextView dateText;
-    @InjectView(R.id.time_text) TextView timeText;
-    @InjectView(R.id.price_text) TextView priceText;
 
     static BookingAddressFragment newInstance() {
         final BookingAddressFragment fragment = new BookingAddressFragment();
@@ -50,6 +48,10 @@ public final class BookingAddressFragment extends InjectedFragment {
 
         ButterKnife.inject(this, view);
 
+        BookingHeaderFragment header = new BookingHeaderFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.info_header_layout, header).commit();
+
         User user = userManager.getCurrentUser();
         if (user != null) {
             fullNameText.setText(user.getFirstName() + " " +user.getLastName());
@@ -68,19 +70,6 @@ public final class BookingAddressFragment extends InjectedFragment {
         else {
             //TODO if no user, use booking prefix, currency, phone prefix etc & leave fields blank
         }
-
-        final BookingQuote quote = bookingManager.getCurrentQuote();
-        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-
-        dateText.setText(TextUtils.formatDate(transaction.getStartDate(), "EEEE',' MMMM d"));
-
-        timeText.setText(TextUtils.formatDate(transaction.getStartDate(), "h:mm aaa") + " - "
-                + TextUtils.formatDecimal(transaction.getHours(), "#.#")
-                + " " + getString(R.string.hours));
-
-        priceText.setText(TextUtils.formatPrice(quote.getPriceTableMap()
-                        .get(transaction.getHours()).getPrice(),
-                quote.getCurrencyChar(), quote.getCurrencySuffix()));
 
         nextButton.setOnClickListener(nextClicked);
         return view;
