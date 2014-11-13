@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.stripe.android.model.Card;
 
@@ -132,7 +132,11 @@ public final class BookingPaymentFragment extends InjectedFragment {
                         @Override
                         public void onSuccess(final String resp) {
                             if (!allowCallbacks) return;
-                            Toast.makeText(getActivity(), resp, Toast.LENGTH_SHORT).show();
+
+                            final Intent intent = new Intent(getActivity(), BookingsActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+
                             enableInputs();
                             progressDialog.dismiss();
                         }
