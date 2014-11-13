@@ -1,4 +1,4 @@
-handy-andriod
+handy-android
 =============
 
-handy-andriod
+handy-android
