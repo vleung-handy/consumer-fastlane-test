@@ -53,4 +53,7 @@
     <string name="request_pro">Request Pro</string>
     <string name="street_addr">Street Address</string>
     <string name="apt_num">Apt #</string>
+    <string name="complete_booking">Complete Booking</string>
+    <string name="payment">Payment</string>
+    <string name="credit_card_num">Credit Card Number</string>
 </resources>

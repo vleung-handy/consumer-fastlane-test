@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg">
+
+    <Button
+        android:id="@+id/next_button"
+        android:text="@string/complete_booking"
+        style="@style/Button.Blue" />
+
+    <TextView
+        android:id="@+id/nav_text"
+        android:text="@string/payment"
+        style="@style/TextView.Navbar" />
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/next_button"
+        android:layout_below="@id/nav_text">
+
+        <RelativeLayout
+            style="@style/ContentLayout.NoBottom">
+
+            <FrameLayout
+                android:id="@+id/info_header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <com.handybook.handybook.FullNameInputTextView
+                android:id="@+id/fullname_text"
+                android:layout_below="@id/info_header_layout"
+                style="@style/EditText.CreditCard" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

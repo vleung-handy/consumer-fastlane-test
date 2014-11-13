@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -36,11 +36,6 @@ public final class BookingAddressFragment extends InjectedFragment {
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater()
@@ -48,11 +43,11 @@ public final class BookingAddressFragment extends InjectedFragment {
 
         ButterKnife.inject(this, view);
 
-        BookingHeaderFragment header = new BookingHeaderFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        final BookingHeaderFragment header = new BookingHeaderFragment();
+        final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();
 
-        User user = userManager.getCurrentUser();
+        final User user = userManager.getCurrentUser();
         if (user != null) {
             fullNameText.setText(user.getFirstName() + " " +user.getLastName());
             phoneText.setCountryCode(user.getPhonePrefix());
@@ -111,7 +106,9 @@ public final class BookingAddressFragment extends InjectedFragment {
                 transaction.setAddress1(streetAddrText.getAddress());
                 transaction.setAddress2(otherAddrText.getText().toString());
                 transaction.setPhone(phoneText.getPhoneNumber());
-                Toast.makeText(getActivity(), "SHOW PAYMENT VIEW", Toast.LENGTH_SHORT).show();
+
+                final Intent intent = new Intent(getActivity(), BookingPaymentActivity.class);
+                startActivity(intent);
             }
         }
     };

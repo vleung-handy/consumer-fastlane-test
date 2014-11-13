@@ -120,6 +120,14 @@
         <item name="android:maxLength">100</item>
     </style>
 
+    <style name="EditText.CreditCard">
+        <item name="android:inputType">number</item>
+        <item name="android:digits">1234567890</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/credit_card_num</item>
+        <item name="android:maxLength">50</item>
+    </style>
+
     <style name="EditText.ZipCode">
         <item name="android:inputType">textPostalAddress</item>
         <item name="android:singleLine">true</item>
