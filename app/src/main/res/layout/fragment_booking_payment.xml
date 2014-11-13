@@ -30,10 +30,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
 
-            <com.handybook.handybook.FullNameInputTextView
-                android:id="@+id/fullname_text"
-                android:layout_below="@id/info_header_layout"
-                style="@style/EditText.CreditCard" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/info_header_layout">
+
+                <com.handybook.handybook.CreditCardInputTextView
+                    android:id="@+id/credit_card_text"
+                    android:layout_marginBottom="0dp"
+                    style="@style/EditText.CreditCard" />
+
+                <Button
+                    android:id="@+id/change_button"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="@dimen/inner_textfield_padding"
+                    android:layout_marginEnd="@dimen/inner_textfield_padding"
+                    android:text="@string/change"
+                    style="@style/RoundedButton" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

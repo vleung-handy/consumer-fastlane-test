@@ -29,6 +29,7 @@ public final class User extends Observable {
     @SerializedName("current_password") private String currentPassword;
     @SerializedName("password_confirmation") private String passwordConfirmation;
     @SerializedName("first_address") private Address address;
+    @SerializedName("card_info") private CreditCard creditCard;
 
 
     final String getAuthToken() {
@@ -154,6 +155,14 @@ public final class User extends Observable {
         triggerObservers();
     }
 
+    final CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    final void setCreditCard(final CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+
     final String toJson() {
         final Gson gson = new GsonBuilder().setExclusionStrategies(getExclusionStrategy())
                 .registerTypeAdapter(User.class, new UserSerializer()).create();
@@ -200,6 +209,7 @@ public final class User extends Observable {
             jsonObj.add("currency_char", context.serialize(value.getCurrencyChar()));
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("first_address", context.serialize(value.getAddress()));
+            jsonObj.add("card_info", context.serialize(value.getCreditCard()));
 
             return jsonObj;
         }
@@ -220,6 +230,19 @@ public final class User extends Observable {
 
         final String getAddress2() {
             return address2;
+        }
+    }
+
+    static final class CreditCard {
+        @SerializedName("last4") private String last4;
+        @SerializedName("brand") private String brand;
+
+        final String getLast4() {
+            return last4;
+        }
+
+        final String getBrand() {
+            return brand;
         }
     }
 }

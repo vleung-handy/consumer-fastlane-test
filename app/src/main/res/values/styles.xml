@@ -49,6 +49,18 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="RoundedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/xsmall_text_size</item>
+        <item name="android:background">@drawable/rounded_button_grey</item>
+        <item name="android:textColor">@drawable/button_text_white</item>
+    </style>
+
     <style name="TextButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
