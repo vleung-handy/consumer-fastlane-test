@@ -32,6 +32,9 @@ public interface HandyRetrofitService {
     @POST("/bookings")
     void createBooking(@Body BookingCreateRequest req, HandyRetrofitCallback cb);
 
+    @POST("/transactions")
+    void completeBooking(@Body BookingTransaction req, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,

@@ -19,8 +19,11 @@ import java.util.Observer;
 
 public final class BookingQuote extends Observable {
     @SerializedName("id") private int bookingId;
+    @SerializedName("service_id") private int serviceId;
+    @SerializedName("user_id") private String userId;
     @SerializedName("hrs") private float hours;
     @SerializedName("date_start") private Date startDate;
+    @SerializedName("zipcode") private String zipCode;
     @SerializedName("currency_char") private String currencyChar;
     @SerializedName("currency_suffix") private String currencySuffix;
     @SerializedName("price_table") private ArrayList<PriceInfo> priceTable;
@@ -33,6 +36,24 @@ public final class BookingQuote extends Observable {
 
     final void setBookingId(final int bookingId) {
         this.bookingId = bookingId;
+        triggerObservers();
+    }
+
+    final int getServiceId() {
+        return serviceId;
+    }
+
+    final void setServiceId(final int serviceId) {
+        this.serviceId = serviceId;
+        triggerObservers();
+    }
+
+    final String getUserId() {
+        return userId;
+    }
+
+    final void setUserId(final String userId) {
+        this.userId = userId;
         triggerObservers();
     }
 
@@ -51,6 +72,15 @@ public final class BookingQuote extends Observable {
 
     final void setStartDate(final Date startDate) {
         this.startDate = startDate;
+        triggerObservers();
+    }
+
+    final String getZipCode() {
+        return zipCode;
+    }
+
+    final void setZipCode(final String zipCode) {
+        this.zipCode = zipCode;
         triggerObservers();
     }
 
@@ -129,8 +159,11 @@ public final class BookingQuote extends Observable {
                                            final JsonSerializationContext context) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("id", context.serialize(value.getBookingId()));
+            jsonObj.add("service_id", context.serialize(value.getServiceId()));
+            jsonObj.add("user_id", context.serialize(value.getUserId()));
             jsonObj.add("hrs", context.serialize(value.getHours()));
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
+            jsonObj.add("zipcode", context.serialize(value.getZipCode()));
             jsonObj.add("currency_char", context.serialize(value.getCurrencyChar()));
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("price_table", context.serialize(value.getPriceTable()));

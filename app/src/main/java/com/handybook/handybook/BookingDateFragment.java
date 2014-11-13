@@ -2,14 +2,12 @@ package com.handybook.handybook;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,9 +24,8 @@ public final class BookingDateFragment extends BookingFlowFragment {
 
     private ArrayList<BookingOption> postOptions;
     private ProgressDialog progressDialog;
-    private Toast toast;
-    private boolean allowCallbacks;
 
+    @Inject UserManager userManager;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
@@ -59,9 +56,6 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 .inflate(R.layout.fragment_booking_date,container, false);
 
         ButterKnife.inject(this, view);
-
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setDelay(500);
@@ -113,18 +107,6 @@ public final class BookingDateFragment extends BookingFlowFragment {
         return view;
     }
 
-    @Override
-    public final void onStart() {
-        super.onStart();
-        allowCallbacks = true;
-    }
-
-    @Override
-    public final void onStop() {
-        super.onStop();
-        allowCallbacks = false;
-    }
-
     private void disableInputs() {
         nextButton.setClickable(false);
     }
@@ -166,6 +148,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
             progressDialog.show();
 
             final BookingRequest request = bookingManager.getCurrentRequest();
+            request.setUserId(userManager.getCurrentUser().getId());
             dataManager.getBookingQuote(request, new DataManager.Callback<BookingQuote>() {
                 @Override
                 public void onSuccess(final BookingQuote quote) {

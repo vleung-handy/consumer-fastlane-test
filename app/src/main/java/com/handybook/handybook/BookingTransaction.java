@@ -16,13 +16,46 @@ import java.util.Observable;
 import java.util.Observer;
 
 public final class BookingTransaction extends Observable {
+    @SerializedName("booking_id") private int bookingId;
+    @SerializedName("user_id") private String userId;
+    @SerializedName("service_id") private int serviceId;
     @SerializedName("first_name") private String firstName;
     @SerializedName("last_name") private String lastName;
     @SerializedName("address1") private String address1;
     @SerializedName("address2") private String address2;
     @SerializedName("phone") private String phone;
+    @SerializedName("zipcode") private String zipCode;
+    @SerializedName("email") private String email;
     @SerializedName("hrs") private float hours;
-    @SerializedName("start_date") private Date startDate;
+    @SerializedName("date_start") private Date startDate;
+    @SerializedName("auth_token") private String authToken;
+
+    final int getBookingId() {
+        return bookingId;
+    }
+
+    final void setBookingId(final int bookingId) {
+        this.bookingId = bookingId;
+        triggerObservers();
+    }
+
+    final String getUserId() {
+        return userId;
+    }
+
+    final void setUserId(final String userId) {
+        this.userId = userId;
+        triggerObservers();
+    }
+
+    final int getServiceId() {
+        return serviceId;
+    }
+
+    final void setServiceId(final int serviceId) {
+        this.serviceId = serviceId;
+        triggerObservers();
+    }
 
     final String getFirstName() {
         return firstName;
@@ -69,6 +102,24 @@ public final class BookingTransaction extends Observable {
         triggerObservers();
     }
 
+    final String getZipCode() {
+        return zipCode;
+    }
+
+    final void setZipCode(final String zipCode) {
+        this.zipCode = zipCode;
+        triggerObservers();
+    }
+
+    final String getEmail() {
+        return email;
+    }
+
+    final void setEmail(final String email) {
+        this.email = email;
+        triggerObservers();
+    }
+
     final float getHours() {
         return hours;
     }
@@ -84,6 +135,15 @@ public final class BookingTransaction extends Observable {
 
     final void setStartDate(final Date startDate) {
         this.startDate = startDate;
+        triggerObservers();
+    }
+
+    final String getAuthToken() {
+        return authToken;
+    }
+
+    final void setAuthToken(final String authToken) {
+        this.authToken = authToken;
         triggerObservers();
     }
 
@@ -125,13 +185,19 @@ public final class BookingTransaction extends Observable {
         public final JsonElement serialize(final BookingTransaction value, final Type type,
                                            final JsonSerializationContext context) {
             final JsonObject jsonObj = new JsonObject();
+            jsonObj.add("booking_id", context.serialize(value.getBookingId()));
+            jsonObj.add("user_id", context.serialize(value.getUserId()));
+            jsonObj.add("service_id", context.serialize(value.getServiceId()));
             jsonObj.add("first_name", context.serialize(value.getFirstName()));
             jsonObj.add("last_name", context.serialize(value.getLastName()));
             jsonObj.add("address1", context.serialize(value.getAddress1()));
             jsonObj.add("address2", context.serialize(value.getAddress2()));
             jsonObj.add("phone", context.serialize(value.getPhone()));
+            jsonObj.add("zipcode", context.serialize(value.getZipCode()));
+            jsonObj.add("email", context.serialize(value.getEmail()));
             jsonObj.add("hrs", context.serialize(value.getHours()));
-            jsonObj.add("start_date", context.serialize(value.getStartDate()));
+            jsonObj.add("date_start", context.serialize(value.getStartDate()));
+            jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             return jsonObj;
         }
     }

@@ -59,8 +59,6 @@ public final class BookingAddressFragment extends InjectedFragment {
                 streetAddrText.setText(addr.getAddress1());
                 otherAddrText.setText(addr.getAddress2());
             }
-
-            //TODO refactor header info into fragmetn and class
         }
         else {
             //TODO if no user, use booking prefix, currency, phone prefix etc & leave fields blank

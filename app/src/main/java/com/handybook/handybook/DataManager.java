@@ -32,6 +32,8 @@ abstract class DataManager {
 
     abstract void getBookingQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
 
+    abstract void completeBooking(BookingTransaction bookingTransaction, Callback<String> cb);
+
     abstract void authUser(String email, String password, Callback<User> cb);
 
     abstract void getUser(String userId, String authToken, Callback<User> cb);

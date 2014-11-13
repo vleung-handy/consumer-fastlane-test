@@ -20,6 +20,7 @@ public final class BookingRequest extends Observable {
     @SerializedName("service_id") private int serviceId;
     @SerializedName("zipcode") private String zipCode;
     @SerializedName("email") private String email;
+    @SerializedName("user_id") private String userId;
     @SerializedName("service_attributes") private HashMap<String, String> options;
     @SerializedName("date_start") private Date startDate;
 
@@ -47,6 +48,15 @@ public final class BookingRequest extends Observable {
 
     final void setEmail(final String email) {
         this.email = email;
+        triggerObservers();
+    }
+
+    final String getUserId() {
+        return userId;
+    }
+
+    final void setUserId(final String userId) {
+        this.userId = userId;
         triggerObservers();
     }
 
@@ -109,6 +119,7 @@ public final class BookingRequest extends Observable {
             jsonObj.add("service_id", context.serialize(value.getServiceId()));
             jsonObj.add("zipcode", context.serialize(value.getZipCode()));
             jsonObj.add("email", context.serialize(value.getEmail()));
+            jsonObj.add("user_id", context.serialize(value.getUserId()));
             jsonObj.add("service_attributes", context.serialize(value.getOptions()));
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
             return jsonObj;
