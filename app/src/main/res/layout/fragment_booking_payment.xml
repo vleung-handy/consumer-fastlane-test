@@ -37,6 +37,10 @@
 
                 <com.handybook.handybook.CreditCardInputTextView
                     android:id="@+id/credit_card_text"
+                    android:paddingStart="70dp"
+                    android:paddingLeft="70dp"
+                    android:paddingRight="0dp"
+                    android:paddingEnd="0dp"
                     android:layout_marginBottom="0dp"
                     style="@style/EditText.CreditCard" />
 
@@ -49,6 +53,15 @@
                     android:layout_marginEnd="@dimen/inner_textfield_padding"
                     android:text="@string/change"
                     style="@style/RoundedButton" />
+
+                <ImageView
+                    android:id="@+id/card_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginLeft="@dimen/inner_textfield_padding"
+                    android:layout_marginStart="@dimen/inner_textfield_padding"
+                    android:src="@drawable/ic_card_blank" />
 
             </RelativeLayout>
 

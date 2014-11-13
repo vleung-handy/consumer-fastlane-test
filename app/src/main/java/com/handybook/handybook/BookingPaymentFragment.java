@@ -6,6 +6,9 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.stripe.android.model.Card;
 
 import javax.inject.Inject;
 
@@ -17,6 +20,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
     @Inject UserManager userManager;
 
     @InjectView(R.id.credit_card_text) CreditCardInputTextView creditCardText;
+    @InjectView(R.id.card_icon) ImageView creditCardIcon;
 
     static BookingPaymentFragment newInstance() {
         final BookingPaymentFragment fragment = new BookingPaymentFragment();
@@ -42,12 +46,41 @@ public final class BookingPaymentFragment extends InjectedFragment {
             creditCardText.setHint("\u2022\u2022\u2022\u2022 " + card.getLast4());
             creditCardText.setInputType(InputType.TYPE_NULL);
             creditCardText.setEnabled(false);
-            //TODO handle if user has a card and doesnt have card
+            setCardIcon(card.getBrand());
         }
         else {
-            //TODO handle no user so show card input fields
+            //TODO handle no user so show card input fields or if user doesnt have card
         }
 
+        //TODO implement change button
+
         return view;
+    }
+
+    private void setCardIcon(final String type) {
+        if (type == null) {
+            creditCardIcon.setImageResource(R.drawable.ic_card_blank);
+            return;
+        }
+        switch (type) {
+            case Card.AMERICAN_EXPRESS:
+                creditCardIcon.setImageResource(R.drawable.ic_card_amex);
+                break;
+
+            case Card.DISCOVER:
+                creditCardIcon.setImageResource(R.drawable.ic_card_discover);
+                break;
+
+            case Card.MASTERCARD:
+                creditCardIcon.setImageResource(R.drawable.ic_card_mc);
+                break;
+
+            case Card.VISA:
+                creditCardIcon.setImageResource(R.drawable.ic_card_visa);
+                break;
+
+            default:
+                creditCardIcon.setImageResource(R.drawable.ic_card_blank);
+        }
     }
 }
