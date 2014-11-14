@@ -29,6 +29,7 @@ public final class BookingTransaction extends Observable {
     @SerializedName("hrs") private float hours;
     @SerializedName("date_start") private Date startDate;
     @SerializedName("auth_token") private String authToken;
+    @SerializedName("stripe_token") private String stripeToken;
 
     final int getBookingId() {
         return bookingId;
@@ -147,6 +148,15 @@ public final class BookingTransaction extends Observable {
         triggerObservers();
     }
 
+    final String getStripeToken() {
+        return stripeToken;
+    }
+
+    final void setStripeToken(final String stripeToken) {
+        this.stripeToken = stripeToken;
+        triggerObservers();
+    }
+
     private void triggerObservers() {
         setChanged();
         notifyObservers();
@@ -198,6 +208,7 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("hrs", context.serialize(value.getHours()));
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
+            jsonObj.add("stripe_token", context.serialize(value.getStripeToken()));
             return jsonObj;
         }
     }

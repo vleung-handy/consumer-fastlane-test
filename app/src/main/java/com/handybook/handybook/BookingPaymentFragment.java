@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.stripe.android.Stripe;
+import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.Token;
+import com.stripe.exception.CardException;
 
 import javax.inject.Inject;
 
@@ -29,6 +35,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
 
     private boolean useExistingCard;
     private ProgressDialog progressDialog;
+    private Toast toast;
 
     @Inject BookingManager bookingManager;
     @Inject UserManager userManager;
@@ -63,6 +70,9 @@ public final class BookingPaymentFragment extends InjectedFragment {
                 .inflate(R.layout.fragment_booking_payment,container, false);
 
         ButterKnife.inject(this, view);
+
+        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setDelay(500);
@@ -211,32 +221,61 @@ public final class BookingPaymentFragment extends InjectedFragment {
                 disableInputs();
                 progressDialog.show();
 
-                dataManager.completeBooking(bookingManager.getCurrentTransaction(),
-                    new DataManager.Callback<String>() {
+                if (!useExistingCard) {
+                    final Card card = new Card(creditCardText.getCardNumber(), expText.getExpMonth(),
+                            expText.getExpYear(), cvcText.getCVC());
+
+                    final Stripe stripe = new Stripe();
+                    stripe.createToken(card, bookingManager.getCurrentQuote().getStripeKey(),
+                            new TokenCallback() {
                         @Override
-                        public void onSuccess(final String resp) {
-                            if (!allowCallbacks) return;
-
-                            final Intent intent = new Intent(getActivity(), BookingsActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-
-                            enableInputs();
-                            progressDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onError(final DataManager.DataManagerError error) {
+                        public void onError(final Exception e) {
                             if (!allowCallbacks) return;
 
                             enableInputs();
                             progressDialog.dismiss();
-                            dataManagerErrorHandler.handleError(getActivity(), error);
+
+                            if (e instanceof CardException) toast.setText(e.getMessage());
+                            else toast.setText(getString(R.string.default_error_string));
+                            toast.show();
                         }
-                });
+                        @Override
+                        public void onSuccess(final Token token) {
+                            if (!allowCallbacks) return;
+                            bookingManager.getCurrentTransaction().setStripeToken(token.getId());
+                            completeBooking();
+                        }
+                    });
+                } else completeBooking();
             }
         }
     };
+
+    private void completeBooking() {
+        dataManager.completeBooking(bookingManager.getCurrentTransaction(),
+            new DataManager.Callback<String>() {
+                @Override
+                public void onSuccess(final String resp) {
+                    if (!allowCallbacks) return;
+
+                    final Intent intent = new Intent(getActivity(), BookingsActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+
+                    enableInputs();
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+
+                    enableInputs();
+                    progressDialog.dismiss();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
+        });
+    }
 
     private final TextWatcher cardTextWatcher = new TextWatcher() {
         @Override

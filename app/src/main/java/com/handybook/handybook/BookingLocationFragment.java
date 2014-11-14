@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.gms.location.LocationRequest;
 
@@ -39,7 +37,6 @@ public final class BookingLocationFragment extends InjectedFragment {
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
 
     private ProgressDialog progressDialog;
-    private Toast toast;
     private boolean allowCallbacks;
 
     @Inject ReactiveLocationProvider locationProvider;
@@ -64,9 +61,6 @@ public final class BookingLocationFragment extends InjectedFragment {
                 .inflate(R.layout.fragment_booking_location,container, false);
 
         ButterKnife.inject(this, view);
-
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setDelay(500);

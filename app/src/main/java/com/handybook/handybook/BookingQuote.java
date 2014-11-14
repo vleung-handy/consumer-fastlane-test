@@ -27,6 +27,7 @@ public final class BookingQuote extends Observable {
     @SerializedName("currency_char") private String currencyChar;
     @SerializedName("currency_suffix") private String currencySuffix;
     @SerializedName("price_table") private ArrayList<PriceInfo> priceTable;
+    @SerializedName("stripe_key") private String stripeKey;
 
     private HashMap<Float, PriceInfo> priceTableMap;
 
@@ -116,6 +117,15 @@ public final class BookingQuote extends Observable {
         return priceTableMap;
     }
 
+    final String getStripeKey() {
+        return stripeKey;
+    }
+
+    final void setStripeKey(final String stripeKey) {
+        this.stripeKey = stripeKey;
+        triggerObservers();
+    }
+
     private void triggerObservers() {
         setChanged();
         notifyObservers();
@@ -167,6 +177,7 @@ public final class BookingQuote extends Observable {
             jsonObj.add("currency_char", context.serialize(value.getCurrencyChar()));
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("price_table", context.serialize(value.getPriceTable()));
+            jsonObj.add("stripe_key", context.serialize(value.getStripeKey()));
             return jsonObj;
         }
     }
