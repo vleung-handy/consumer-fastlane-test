@@ -35,13 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/info_header_layout">
 
-                <com.handybook.handybook.CreditCardInputTextView
+                <com.handybook.handybook.CreditCardNumberInputTextView
                     android:id="@+id/credit_card_text"
                     android:paddingStart="70dp"
                     android:paddingLeft="70dp"
                     android:paddingRight="0dp"
                     android:paddingEnd="0dp"
-                    android:layout_marginBottom="0dp"
                     style="@style/EditText.CreditCard" />
 
                 <Button
@@ -62,6 +61,11 @@
                     android:layout_marginLeft="@dimen/inner_textfield_padding"
                     android:layout_marginStart="@dimen/inner_textfield_padding"
                     android:src="@drawable/ic_card_blank" />
+
+                <com.handybook.handybook.CreditCardExpDateInputTextView
+                    android:id="@+id/exp_text"
+                    android:layout_below="@id/credit_card_text"
+                    style="@style/EditText.CreditCardExp" />
 
             </RelativeLayout>
 

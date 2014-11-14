@@ -22,6 +22,7 @@ import butterknife.InjectView;
 
 public final class BookingPaymentFragment extends InjectedFragment {
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
+    private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
     private static final String STATE_USE_EXISTING_CARD = "USE_EXISTING_CARD";
 
     private boolean useExistingCard;
@@ -34,7 +35,8 @@ public final class BookingPaymentFragment extends InjectedFragment {
 
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.change_button) Button changeButton;
-    @InjectView(R.id.credit_card_text) CreditCardInputTextView creditCardText;
+    @InjectView(R.id.credit_card_text) CreditCardNumberInputTextView creditCardText;
+    @InjectView(R.id.exp_text) CreditCardExpDateInputTextView expText;
     @InjectView(R.id.card_icon) ImageView creditCardIcon;
 
     static BookingPaymentFragment newInstance() {
@@ -70,7 +72,8 @@ public final class BookingPaymentFragment extends InjectedFragment {
         final User user = userManager.getCurrentUser();
         final User.CreditCard card = user.getCreditCard();
 
-        if ((card != null && card.getLast4() != null) && (savedInstanceState == null || useExistingCard)) {
+        if ((card != null && card.getLast4() != null)
+                && (savedInstanceState == null || useExistingCard)) {
             useExistingCard = true;
             creditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + card.getLast4());
             setCardIcon(card.getBrand());
@@ -94,6 +97,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null) {
             if (savedInstanceState.getBoolean(STATE_CARD_NUMBER_HIGHLIGHT)) creditCardText.highlight();
+            if (savedInstanceState.getBoolean(STATE_CARD_EXP_HIGHLIGHT)) expText.highlight();
         }
     }
 
@@ -101,6 +105,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_CARD_NUMBER_HIGHLIGHT, creditCardText.isHighlighted());
+        outState.putBoolean(STATE_CARD_EXP_HIGHLIGHT, expText.isHighlighted());
         outState.putBoolean(STATE_USE_EXISTING_CARD, useExistingCard);
     }
 
@@ -175,6 +180,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
     private boolean validateFields() {
         boolean validate = true;
         if (!useExistingCard && !creditCardText.validate()) validate = false;
+        if (!expText.validate()) validate = false;
         return validate;
     }
 

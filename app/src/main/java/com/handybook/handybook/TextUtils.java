@@ -82,6 +82,17 @@ public final class TextUtils {
         return raw;
     }
 
+    static String formatCreditCardExpDate(final String number) {
+        if (number == null || number.length() < 1) return number;
+
+        final String raw = number.replaceAll("\\D+","");
+
+        if (raw.length() >= 3) return String.format("%s/%s",
+                raw.substring(0, 2), raw.substring(2));
+
+        return raw;
+    }
+
     static void stripUnderlines(final TextView textView) {
         final Spannable s = new SpannableString(textView.getText());
         final URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);

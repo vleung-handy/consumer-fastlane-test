@@ -8,22 +8,22 @@ import android.util.AttributeSet;
 
 import com.stripe.android.model.Card;
 
-public final class CreditCardInputTextView extends InputTextField {
+public final class CreditCardNumberInputTextView extends InputTextField {
     private CreditCard.Type cardType;
     private int defaultInputType;
 
-    public CreditCardInputTextView(final Context context) {
+    public CreditCardNumberInputTextView(final Context context) {
         super(context);
         init();
     }
 
-    public CreditCardInputTextView(final Context context, final AttributeSet attrs) {
+    public CreditCardNumberInputTextView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public CreditCardInputTextView(final Context context, final AttributeSet attrs,
-                                   final int defStyle) {
+    public CreditCardNumberInputTextView(final Context context, final AttributeSet attrs,
+                                         final int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -45,10 +45,9 @@ public final class CreditCardInputTextView extends InputTextField {
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                CreditCardInputTextView.this.removeTextChangedListener(this);
+                CreditCardNumberInputTextView.this.removeTextChangedListener(this);
 
-                cardType = CreditCard.Type.OTHER;
-                final String cardNumber = CreditCardInputTextView.this.getText().toString();
+                final String cardNumber = CreditCardNumberInputTextView.this.getText().toString();
                 final Card dummyCard = new Card("", 0, 0, "");
                 dummyCard.setNumber(cardNumber);
 
@@ -76,22 +75,21 @@ public final class CreditCardInputTextView extends InputTextField {
                     }
                 }
 
-                CreditCardInputTextView.this.setText(TextUtils
+                CreditCardNumberInputTextView.this.setText(TextUtils
                         .formatCreditCardNumber(cardType, editable.toString()));
 
-                CreditCardInputTextView.this
-                        .setSelection(CreditCardInputTextView.this.getText().length());
+                CreditCardNumberInputTextView.this
+                        .setSelection(CreditCardNumberInputTextView.this.getText().length());
 
-                CreditCardInputTextView.this.addTextChangedListener(this);
+                CreditCardNumberInputTextView.this.addTextChangedListener(this);
             }
         });
     }
 
     final boolean validate() {
-        final String cardNumber = this.getText().toString().trim();
-        final Card card = new Card(cardNumber, -1, -1, "");
-
-        if (cardNumber.length() < 1 || !card.validateNumber()) {
+        final Card card = new Card(getCardNumber(), -1, -1, "");
+        
+        if (!card.validateNumber()) {
             highlight();
             return false;
         }
@@ -102,7 +100,7 @@ public final class CreditCardInputTextView extends InputTextField {
     }
 
     final String getCardNumber() {
-        return this.getText().toString().trim();
+        return this.getText().toString().replaceAll("\\D+","");
     }
 
     final CreditCard.Type getCardType() {
