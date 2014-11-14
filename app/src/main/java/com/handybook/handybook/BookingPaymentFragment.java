@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.text.InputType;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class BookingPaymentFragment extends InjectedFragment {
-    private boolean useExisitnigCard;
+    private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
+    private static final String STATE_USE_EXISTING_CARD = "USE_EXISTING_CARD";
+
+    private boolean useExistingCard;
     private ProgressDialog progressDialog;
 
     @Inject BookingManager bookingManager;
@@ -29,12 +33,21 @@ public final class BookingPaymentFragment extends InjectedFragment {
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     @InjectView(R.id.next_button) Button nextButton;
+    @InjectView(R.id.change_button) Button changeButton;
     @InjectView(R.id.credit_card_text) CreditCardInputTextView creditCardText;
     @InjectView(R.id.card_icon) ImageView creditCardIcon;
 
     static BookingPaymentFragment newInstance() {
         final BookingPaymentFragment fragment = new BookingPaymentFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            useExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
+        }
     }
 
     @Override
@@ -55,24 +68,40 @@ public final class BookingPaymentFragment extends InjectedFragment {
         transaction.replace(R.id.info_header_layout, header).commit();
 
         final User user = userManager.getCurrentUser();
-        User.CreditCard card;
+        final User.CreditCard card = user.getCreditCard();
 
-        if (user != null && (card = user.getCreditCard()) != null && card.getLast4() != null) {
-            useExisitnigCard = true;
-            creditCardText.setHint("\u2022\u2022\u2022\u2022 " + card.getLast4());
-            creditCardText.setInputType(InputType.TYPE_NULL);
-            creditCardText.setEnabled(false);
+        if ((card != null && card.getLast4() != null) && (savedInstanceState == null || useExistingCard)) {
+            useExistingCard = true;
+            creditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + card.getLast4());
             setCardIcon(card.getBrand());
         }
-        else {
-            //TODO handle no user so show card input fields or if user doesnt have card
-        }
+        else allowCardInput();
 
-        //TODO implement change button
-
+        creditCardText.addTextChangedListener(cardTextWatcher);
         nextButton.setOnClickListener(nextClicked);
+        changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                allowCardInput();
+            }
+        });
 
         return view;
+    }
+
+    @Override
+    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(STATE_CARD_NUMBER_HIGHLIGHT)) creditCardText.highlight();
+        }
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_CARD_NUMBER_HIGHLIGHT, creditCardText.isHighlighted());
+        outState.putBoolean(STATE_USE_EXISTING_CARD, useExistingCard);
     }
 
     private void setCardIcon(final String type) {
@@ -80,6 +109,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
             creditCardIcon.setImageResource(R.drawable.ic_card_blank);
             return;
         }
+
         switch (type) {
             case Card.AMERICAN_EXPRESS:
                 creditCardIcon.setImageResource(R.drawable.ic_card_amex);
@@ -102,6 +132,34 @@ public final class BookingPaymentFragment extends InjectedFragment {
         }
     }
 
+    private void setCardIcon(final CreditCard.Type type) {
+        if (type == null) {
+            creditCardIcon.setImageResource(R.drawable.ic_card_blank);
+            return;
+        }
+
+        switch (type) {
+            case AMEX:
+                creditCardIcon.setImageResource(R.drawable.ic_card_amex);
+                break;
+
+            case DISCOVER:
+                creditCardIcon.setImageResource(R.drawable.ic_card_discover);
+                break;
+
+            case MASTERCARD:
+                creditCardIcon.setImageResource(R.drawable.ic_card_mc);
+                break;
+
+            case VISA:
+                creditCardIcon.setImageResource(R.drawable.ic_card_visa);
+                break;
+
+            default:
+                creditCardIcon.setImageResource(R.drawable.ic_card_blank);
+        }
+    }
+
     private void disableInputs() {
         nextButton.setClickable(false);
 
@@ -116,8 +174,16 @@ public final class BookingPaymentFragment extends InjectedFragment {
 
     private boolean validateFields() {
         boolean validate = true;
-        if (!useExisitnigCard && !creditCardText.validate()) validate = false;
+        if (!useExistingCard && !creditCardText.validate()) validate = false;
         return validate;
+    }
+
+    private void allowCardInput() {
+        setCardIcon(CreditCard.Type.OTHER);
+        creditCardText.setText(null);
+        creditCardText.setDisabled(false, getString(R.string.credit_card_num));
+        changeButton.setVisibility(View.GONE);
+        useExistingCard = false;
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
@@ -151,6 +217,23 @@ public final class BookingPaymentFragment extends InjectedFragment {
                         }
                 });
             }
+        }
+    };
+
+    private final TextWatcher cardTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(final CharSequence charSequence, final int start,
+                                      final int count, final int after) {
+        }
+
+        @Override
+        public void onTextChanged(final CharSequence charSequence, final int start,
+                                  final int before, final int count) {
+        }
+
+        @Override
+        public void afterTextChanged(final Editable editable) {
+            if (!useExistingCard) setCardIcon(creditCardText.getCardType());
         }
     };
 }

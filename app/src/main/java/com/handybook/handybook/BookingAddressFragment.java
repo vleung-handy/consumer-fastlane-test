@@ -61,7 +61,6 @@ public final class BookingAddressFragment extends InjectedFragment {
             }
         }
         else {
-            //TODO if no user, use booking prefix, currency, phone prefix etc & leave fields blank
         }
 
         nextButton.setOnClickListener(nextClicked);

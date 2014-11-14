@@ -73,8 +73,6 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
         postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
         isPost = getArguments().getBoolean(EXTRA_IS_POST);
 
-        //TODO if all options set invisible then prev view should have skipped this page
-
         if (savedInstanceState != null) {
             childDisplayMap = (HashMap)savedInstanceState.getSerializable(STATE_CHILD_DISPLAY_MAP);
             optionIndexMap = (HashMap)savedInstanceState.getSerializable(STATE_OPTION_INDEX_MAP);

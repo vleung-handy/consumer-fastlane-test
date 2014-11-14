@@ -13,8 +13,6 @@ import java.util.Date;
 
 public final class TextUtils {
 
-    enum CreditCardType {OTHER, AMEX, DISCOVER, MASTERCARD, VISA}
-
     static String formatPrice(final float price, final String currencyChar,
                               final String currencySuffix) {
         final DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -57,12 +55,12 @@ public final class TextUtils {
         return decimalFormat.format(value);
     }
 
-    static String formatCreditCardNumber(final CreditCardType cardType, final String number) {
+    static String formatCreditCardNumber(final CreditCard.Type cardType, final String number) {
         if (number == null || number.length() < 1) return number;
 
         final String raw = number.replaceAll("\\D+","");
 
-        if (cardType == CreditCardType.AMEX) {
+        if (cardType == CreditCard.Type.AMEX) {
             if (raw.length() >= 5 && raw.length() <= 10) return String.format("%s %s",
                     raw.substring(0, 4), raw.substring(4));
 

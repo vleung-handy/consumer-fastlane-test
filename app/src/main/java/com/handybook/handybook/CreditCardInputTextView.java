@@ -2,12 +2,15 @@ package com.handybook.handybook;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
 import com.stripe.android.model.Card;
 
 public final class CreditCardInputTextView extends InputTextField {
+    private CreditCard.Type cardType;
+    private int defaultInputType;
 
     public CreditCardInputTextView(final Context context) {
         super(context);
@@ -27,6 +30,8 @@ public final class CreditCardInputTextView extends InputTextField {
 
     void init() {
         super.init();
+        defaultInputType = this.getInputType();
+
         this.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(final CharSequence charSequence, final int start,
@@ -42,37 +47,37 @@ public final class CreditCardInputTextView extends InputTextField {
             public void afterTextChanged(final Editable editable) {
                 CreditCardInputTextView.this.removeTextChangedListener(this);
 
-                final TextUtils.CreditCardType type;
+                cardType = CreditCard.Type.OTHER;
                 final String cardNumber = CreditCardInputTextView.this.getText().toString();
                 final Card dummyCard = new Card("", 0, 0, "");
                 dummyCard.setNumber(cardNumber);
 
-                if (dummyCard.getType() == null) type = TextUtils.CreditCardType.OTHER;
+                if (dummyCard.getType() == null) cardType = CreditCard.Type.OTHER;
                 else {
                     switch (dummyCard.getType()) {
                         case Card.AMERICAN_EXPRESS:
-                            type = TextUtils.CreditCardType.AMEX;
+                            cardType = CreditCard.Type.AMEX;
                             break;
 
                         case Card.DISCOVER:
-                            type = TextUtils.CreditCardType.DISCOVER;
+                            cardType = CreditCard.Type.DISCOVER;
                             break;
 
                         case Card.MASTERCARD:
-                            type = TextUtils.CreditCardType.MASTERCARD;
+                            cardType = CreditCard.Type.MASTERCARD;
                             break;
 
                         case Card.VISA:
-                            type = TextUtils.CreditCardType.VISA;
+                            cardType = CreditCard.Type.VISA;
                             break;
 
                         default:
-                            type = TextUtils.CreditCardType.OTHER;
+                            cardType = CreditCard.Type.OTHER;
                     }
                 }
 
                 CreditCardInputTextView.this.setText(TextUtils
-                        .formatCreditCardNumber(type, editable.toString()));
+                        .formatCreditCardNumber(cardType, editable.toString()));
 
                 CreditCardInputTextView.this
                         .setSelection(CreditCardInputTextView.this.getText().length());
@@ -84,12 +89,36 @@ public final class CreditCardInputTextView extends InputTextField {
 
     final boolean validate() {
         final String cardNumber = this.getText().toString().trim();
-        highlight();
-        unHighlight();
-        return true;
+        final Card card = new Card(cardNumber, -1, -1, "");
+
+        if (cardNumber.length() < 1 || !card.validateNumber()) {
+            highlight();
+            return false;
+        }
+        else {
+            unHighlight();
+            return true;
+        }
     }
 
     final String getCardNumber() {
         return this.getText().toString().trim();
+    }
+
+    final CreditCard.Type getCardType() {
+        return cardType;
+    }
+
+    void setDisabled(final boolean disabled, final String hint) {
+        if (disabled) {
+            setHint(hint);
+            setInputType(InputType.TYPE_NULL);
+            setEnabled(false);
+        }
+        else {
+            setHint(hint);
+            setInputType(defaultInputType);
+            setEnabled(true);
+        }
     }
 }
