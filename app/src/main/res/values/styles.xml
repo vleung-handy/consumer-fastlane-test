@@ -145,7 +145,13 @@
         <item name="android:digits">1234567890</item>
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/mm_yy</item>
-        <item name="android:maxLength">5</item>
+    </style>
+
+    <style name="EditText.CreditCardCVC">
+        <item name="android:inputType">number</item>
+        <item name="android:digits">1234567890</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/cvc</item>
     </style>
 
     <style name="EditText.ZipCode">

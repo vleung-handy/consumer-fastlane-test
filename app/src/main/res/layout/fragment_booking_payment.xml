@@ -30,44 +30,66 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/info_header_layout">
+                android:layout_below="@id/info_header_layout"
+                android:orientation="vertical">
 
-                <com.handybook.handybook.CreditCardNumberInputTextView
-                    android:id="@+id/credit_card_text"
-                    android:paddingStart="70dp"
-                    android:paddingLeft="70dp"
-                    android:paddingRight="0dp"
-                    android:paddingEnd="0dp"
-                    style="@style/EditText.CreditCard" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/change_button"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginRight="@dimen/inner_textfield_padding"
-                    android:layout_marginEnd="@dimen/inner_textfield_padding"
-                    android:text="@string/change"
-                    style="@style/RoundedButton" />
+                    <com.handybook.handybook.CreditCardNumberInputTextView
+                        android:id="@+id/credit_card_text"
+                        android:paddingStart="70dp"
+                        android:paddingLeft="70dp"
+                        android:paddingRight="0dp"
+                        android:paddingEnd="0dp"
+                        style="@style/EditText.CreditCard" />
 
-                <ImageView
-                    android:id="@+id/card_icon"
-                    android:layout_width="wrap_content"
+                    <Button
+                        android:id="@+id/change_button"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginRight="@dimen/inner_textfield_padding"
+                        android:layout_marginEnd="@dimen/inner_textfield_padding"
+                        android:text="@string/change"
+                        style="@style/RoundedButton" />
+
+                    <ImageView
+                        android:id="@+id/card_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginLeft="@dimen/inner_textfield_padding"
+                        android:layout_marginStart="@dimen/inner_textfield_padding"
+                        android:src="@drawable/ic_card_blank"
+                        android:contentDescription="@string/credit_card" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/card_extras_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginLeft="@dimen/inner_textfield_padding"
-                    android:layout_marginStart="@dimen/inner_textfield_padding"
-                    android:src="@drawable/ic_card_blank" />
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                <com.handybook.handybook.CreditCardExpDateInputTextView
-                    android:id="@+id/exp_text"
-                    android:layout_below="@id/credit_card_text"
-                    style="@style/EditText.CreditCardExp" />
+                    <com.handybook.handybook.CreditCardExpDateInputTextView
+                        android:id="@+id/exp_text"
+                        android:layout_weight="1"
+                        style="@style/EditText.CreditCardExp" />
 
-            </RelativeLayout>
+                    <com.handybook.handybook.CreditCardCVCInputTextView
+                        android:id="@+id/cvc_text"
+                        android:layout_weight="1"
+                        style="@style/EditText.CreditCardCVC" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </RelativeLayout>
 

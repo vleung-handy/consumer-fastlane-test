@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.stripe.android.model.Card;
 
@@ -23,6 +24,7 @@ import butterknife.InjectView;
 public final class BookingPaymentFragment extends InjectedFragment {
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
+    private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
     private static final String STATE_USE_EXISTING_CARD = "USE_EXISTING_CARD";
 
     private boolean useExistingCard;
@@ -37,7 +39,9 @@ public final class BookingPaymentFragment extends InjectedFragment {
     @InjectView(R.id.change_button) Button changeButton;
     @InjectView(R.id.credit_card_text) CreditCardNumberInputTextView creditCardText;
     @InjectView(R.id.exp_text) CreditCardExpDateInputTextView expText;
+    @InjectView(R.id.cvc_text) CreditCardCVCInputTextView cvcText;
     @InjectView(R.id.card_icon) ImageView creditCardIcon;
+    @InjectView(R.id.card_extras_layout) LinearLayout cardExtrasLayout;
 
     static BookingPaymentFragment newInstance() {
         final BookingPaymentFragment fragment = new BookingPaymentFragment();
@@ -98,6 +102,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
         if (savedInstanceState != null) {
             if (savedInstanceState.getBoolean(STATE_CARD_NUMBER_HIGHLIGHT)) creditCardText.highlight();
             if (savedInstanceState.getBoolean(STATE_CARD_EXP_HIGHLIGHT)) expText.highlight();
+            if (savedInstanceState.getBoolean(STATE_CARD_CVC_HIGHLIGHT)) cvcText.highlight();
         }
     }
 
@@ -106,6 +111,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_CARD_NUMBER_HIGHLIGHT, creditCardText.isHighlighted());
         outState.putBoolean(STATE_CARD_EXP_HIGHLIGHT, expText.isHighlighted());
+        outState.putBoolean(STATE_CARD_CVC_HIGHLIGHT, cvcText.isHighlighted());
         outState.putBoolean(STATE_USE_EXISTING_CARD, useExistingCard);
     }
 
@@ -179,8 +185,13 @@ public final class BookingPaymentFragment extends InjectedFragment {
 
     private boolean validateFields() {
         boolean validate = true;
-        if (!useExistingCard && !creditCardText.validate()) validate = false;
-        if (!expText.validate()) validate = false;
+
+        if (!useExistingCard) {
+            if (!creditCardText.validate()) validate = false;
+            if (!expText.validate()) validate = false;
+            if (!cvcText.validate()) validate = false;
+        }
+
         return validate;
     }
 
@@ -189,6 +200,7 @@ public final class BookingPaymentFragment extends InjectedFragment {
         creditCardText.setText(null);
         creditCardText.setDisabled(false, getString(R.string.credit_card_num));
         changeButton.setVisibility(View.GONE);
+        cardExtrasLayout.setVisibility(View.VISIBLE);
         useExistingCard = false;
     }
 

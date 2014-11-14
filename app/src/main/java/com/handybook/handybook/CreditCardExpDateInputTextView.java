@@ -2,6 +2,7 @@ package com.handybook.handybook;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
@@ -27,6 +28,10 @@ public final class CreditCardExpDateInputTextView extends InputTextField {
 
     void init() {
         super.init();
+
+        InputFilter[] filterArray = new InputFilter[]{ new InputFilter.LengthFilter(5)};
+        this.setFilters(filterArray);
+
         this.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(final CharSequence charSequence, final int start,
