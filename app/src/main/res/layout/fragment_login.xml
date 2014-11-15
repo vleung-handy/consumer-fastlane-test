@@ -34,9 +34,20 @@
             android:text="@string/or"
             style="@style/TextView" />
 
+        <TextView
+            android:id="@+id/welcome_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/or_text"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="@string/welcome_back"
+            android:visibility="gone"
+            style="@style/TextView" />
+
         <com.handybook.handybook.EmailInputTextView
             android:id="@+id/email_text"
-            android:layout_below="@id/or_text"
+            android:layout_below="@id/welcome_text"
             style="@style/EditText.Email" />
 
         <com.handybook.handybook.PasswordInputTextView

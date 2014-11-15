@@ -59,6 +59,9 @@ public class BookingFlowFragment extends InjectedFragment {
                 enableInputs();
                 progressDialog.dismiss();
                 dataManagerErrorHandler.handleError(getActivity(), error);
+
+                if (BookingFlowFragment.this instanceof LoginFragment)
+                    BookingFlowFragment.this.getActivity().finish();
             }
         });
     }

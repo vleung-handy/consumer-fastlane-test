@@ -29,12 +29,15 @@ import butterknife.InjectView;
 
 public final class LoginFragment extends BookingFlowFragment {
     static final String EXTRA_IS_FOR_BOOKING = "com.handy.handy.EXTRA_IS_FOR_BOOKING";
+    static final String EXTRA_USER_NAME = "com.handy.handy.EXTRA_USER_NAME";
+    static final String EXTRA_USER_EMAIL = "com.handy.handy.EXTRA_USER_EMAIL";
     private static final String STATE_EMAIL_HIGHLIGHT = "EMAIL_HIGHLIGHT";
     private static final String STATE_PASSWORD_HIGHLIGHT = "PASSWORD_HIGHLIGHT";
 
     private UiLifecycleHelper uiHelper;
     private boolean handleFBSessionUpdates = false;
     private boolean isForBooking;
+    private String userName, userEmail;
 
     @InjectView(R.id.nav_text) TextView navText;
     @InjectView(R.id.login_button) Button loginButton;
@@ -42,12 +45,17 @@ public final class LoginFragment extends BookingFlowFragment {
     @InjectView(R.id.email_text) EmailInputTextView emailText;
     @InjectView(R.id.password_text) PasswordInputTextView passwordText;
     @InjectView(R.id.fb_button) LoginButton fbButton;
+    @InjectView(R.id.or_text) TextView orText;
+    @InjectView(R.id.welcome_text) TextView welcomeText;
 
-    static LoginFragment newInstance(final boolean isForBooking) {
+    static LoginFragment newInstance(final boolean isForBooking, final String userName,
+                                     final String userEmail) {
         final LoginFragment fragment = new LoginFragment();
         final Bundle args = new Bundle();
 
         args.putBoolean(EXTRA_IS_FOR_BOOKING, isForBooking);
+        args.putString(EXTRA_USER_NAME, userName);
+        args.putString(EXTRA_USER_EMAIL, userEmail);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,6 +66,8 @@ public final class LoginFragment extends BookingFlowFragment {
         uiHelper = new UiLifecycleHelper(getActivity(), statusCallback);
         uiHelper.onCreate(savedInstanceState);
         isForBooking = getArguments().getBoolean(EXTRA_IS_FOR_BOOKING);
+        userName = getArguments().getString(EXTRA_USER_NAME);
+        userEmail = getArguments().getString(EXTRA_USER_EMAIL);
     }
 
     @Override
@@ -73,6 +83,13 @@ public final class LoginFragment extends BookingFlowFragment {
             passwordText.setVisibility(View.GONE);
             forgotButton.setVisibility(View.GONE);
             loginButton.setText(getString(R.string.next));
+        }
+        else if (userName != null) {
+            fbButton.setVisibility(View.GONE);
+            orText.setVisibility(View.GONE);
+            emailText.setText(userEmail);
+            welcomeText.setText(String.format(getString(R.string.welcome_back), userName));
+            welcomeText.setVisibility(View.VISIBLE);
         }
 
         fbButton.setFragment(this);
@@ -126,7 +143,8 @@ public final class LoginFragment extends BookingFlowFragment {
     }
 
     @Override
-    public final void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+    public final void onActivityResult(final int requestCode, final int resultCode,
+                                       final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         uiHelper.onActivityResult(requestCode, resultCode, data);
     }
@@ -170,8 +188,11 @@ public final class LoginFragment extends BookingFlowFragment {
                             if (!allowCallbacks) return;
 
                             if (name != null) {
-                                Toast.makeText(getActivity(), name, Toast.LENGTH_SHORT).show();
-                                //Todo show email password welcome view
+                                final Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                intent.putExtra(LoginActivity.EXTRA_USER_NAME, name);
+                                intent.putExtra(LoginActivity.EXTRA_USER_EMAIL, emailText.getEmail());
+                                startActivity(intent);
+                                getActivity().finish();
                             }
                             else {
                                 Toast.makeText(getActivity(), "Please Login", Toast.LENGTH_SHORT).show();
@@ -201,11 +222,13 @@ public final class LoginFragment extends BookingFlowFragment {
     private final View.OnClickListener forgotClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
+            passwordText.unHighlight();
             if (emailText.validate()) {
                 disableInputs();
                 progressDialog.show();
 
-                dataManager.requestPasswordReset(emailText.getText().toString(), new DataManager.Callback<String>() {
+                dataManager.requestPasswordReset(emailText.getText().toString(),
+                        new DataManager.Callback<String>() {
                     @Override
                     public void onSuccess(final String response) {
                         if (!allowCallbacks) return;
@@ -290,7 +313,7 @@ public final class LoginFragment extends BookingFlowFragment {
                     Session session = Session.getActiveSession();
                     if (session != null) session.closeAndClearTokenInformation();
 
-                    if (isForBooking) {
+                    if (isForBooking || userName != null) {
                         showBookingAddress();
                         return;
                     }
@@ -300,7 +323,8 @@ public final class LoginFragment extends BookingFlowFragment {
 
                     final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
                     final MenuDrawer menuDrawer = activity.getMenuDrawer();
-                    menuDrawer.setOnDrawerStateChangeListener(new MenuDrawer.OnDrawerStateChangeListener() {
+                    menuDrawer.setOnDrawerStateChangeListener(
+                            new MenuDrawer.OnDrawerStateChangeListener() {
                         @Override
                         public void onDrawerStateChange(final int oldState, final int newState) {
                             if (newState == MenuDrawer.STATE_OPEN) {

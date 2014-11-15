@@ -61,4 +61,5 @@
     <string name="credit_card">Credit Card</string>
     <string name="cvc">CVC</string>
     <string name="contact">Contact</string>
+    <string name="welcome_back" formatted="false">Welcome back, %s!</string>
 </resources>
