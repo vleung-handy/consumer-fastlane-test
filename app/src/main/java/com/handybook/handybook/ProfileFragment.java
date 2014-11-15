@@ -108,8 +108,10 @@ public final class ProfileFragment extends InjectedFragment {
     private void updateUserInfo() {
         String text = getString(R.string.you_have_credits);
         final int replaceIndex = text.indexOf("#");
-        final String amount = TextUtils.formatPrice(user.getCredits(),
-                user.getCurrencyChar(), user.getCurrencySuffix());
+        final String currChar = user.getCurrencyChar() != null ? user.getCurrencyChar() : "$";
+
+        final String amount = TextUtils.formatPrice(user.getCredits(), currChar,
+                user.getCurrencySuffix());
 
         text = text.replace("#", amount);
 
@@ -122,16 +124,22 @@ public final class ProfileFragment extends InjectedFragment {
         creditsText.setText(spanText, TextView.BufferType.SPANNABLE);
 
         fullNameText.unHighlight();
-        fullNameText.setText(user.getFirstName() + " " + user.getLastName());
-        fullNameText.setSelection(fullNameText.getText().length());
+
+        final String firstName = user.getFirstName();
+        final String lastName = user.getLastName();
+        if (firstName != null && lastName != null) {
+            fullNameText.setText(user.getFirstName() + " " + user.getLastName());
+            fullNameText.setSelection(fullNameText.getText().length());
+        }
 
         emailText.unHighlight();
         emailText.setText(user.getEmail());
         emailText.setSelection(emailText.getText().length());
 
-        phonePrefixText.setText(user.getPhonePrefix());
+        phonePrefixText.setText(user.getPhonePrefix() != null ? user.getPhonePrefix() : "+1");
 
         phoneText.unHighlight();
+        phoneText.setCountryCode(phonePrefixText.getText().toString());
         phoneText.setText(user.getPhone());
         phoneText.setSelection(phoneText.getText().length());
 

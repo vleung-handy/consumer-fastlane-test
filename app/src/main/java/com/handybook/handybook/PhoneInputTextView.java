@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 
 public final class PhoneInputTextView extends InputTextField {
     private String countryCode;
-    private User user;
 
     public PhoneInputTextView(final Context context) {
         super(context);
@@ -50,21 +49,11 @@ public final class PhoneInputTextView extends InputTextField {
     }
 
     final String getCountryCode() {
-        if (user != null) return user.getPhonePrefix();
         return countryCode;
     }
 
     final void setCountryCode(final String countryCode) {
-        if (user != null) this.countryCode = user.getPhonePrefix();
-        else this.countryCode = countryCode;
-    }
-
-    final User getUser() {
-        return user;
-    }
-
-    final void setUser(final User user) {
-        this.user = user;
+        this.countryCode = countryCode;
     }
 
     final boolean validate() {
