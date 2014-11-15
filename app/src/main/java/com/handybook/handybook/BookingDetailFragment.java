@@ -50,8 +50,10 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         jobText.setText(booking.getId());
 
         final Booking.Address address = booking.getAddress();
-        addrText.setText(address.getAddress1() + (address.getAddress2() != null ? ", "
-                + address.getAddress2() + "\n" : "\n") + address.getCity() + ", "
+        final String address2 = address.getAddress2();
+
+        addrText.setText(address.getAddress1() + (address2 != null && address2.length() > 0 ? ", "
+                + address2 + "\n" : "\n") + address.getCity() + ", "
                 + address.getState() + " " + address.getZip());
 
         dateText.setText(TextUtils.formatDate(booking.getStartDate(), "MMM d',' h:mm aaa"));

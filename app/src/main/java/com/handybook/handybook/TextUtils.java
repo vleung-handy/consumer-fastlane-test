@@ -16,7 +16,7 @@ public final class TextUtils {
     static String formatPrice(final float price, final String currencyChar,
                               final String currencySuffix) {
         final DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        return (currencyChar != null ? currencyChar : "")
+        return (currencyChar != null ? currencyChar : "$")
                 + decimalFormat.format(price)
                 + (currencySuffix != null ? currencySuffix : "");
     }

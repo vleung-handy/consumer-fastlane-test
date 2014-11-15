@@ -108,9 +108,7 @@ public final class ProfileFragment extends InjectedFragment {
     private void updateUserInfo() {
         String text = getString(R.string.you_have_credits);
         final int replaceIndex = text.indexOf("#");
-        final String currChar = user.getCurrencyChar() != null ? user.getCurrencyChar() : "$";
-
-        final String amount = TextUtils.formatPrice(user.getCredits(), currChar,
+        final String amount = TextUtils.formatPrice(user.getCredits(), user.getCurrencyChar(),
                 user.getCurrencySuffix());
 
         text = text.replace("#", amount);
