@@ -65,7 +65,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         transaction.replace(R.id.info_header_layout, header).commit();
 
         final User user = userManager.getCurrentUser();
-        final User.CreditCard card = user.getCreditCard();
+        final User.CreditCard card = user != null ? user.getCreditCard() : null;
 
         if ((card != null && card.getLast4() != null)
                 && (savedInstanceState == null || useExistingCard)) {
@@ -238,10 +238,34 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
 
     private void completeBooking() {
         dataManager.completeBooking(bookingManager.getCurrentTransaction(),
-            new DataManager.Callback<String>() {
+            new DataManager.Callback<BookingCompleteTransaction>() {
                 @Override
-                public void onSuccess(final String resp) {
+                public void onSuccess(final BookingCompleteTransaction trans) {
                     if (!allowCallbacks) return;
+
+                    if (userManager.getCurrentUser() == null) {
+                        final BookingCompleteTransaction.User transUser = trans.getUser();
+                        final User user = new User();
+
+                        user.setAuthToken(transUser.getAuthToken());
+                        user.setId(transUser.getId());
+                        userManager.setCurrentUser(user);
+                    }
+
+                    final User user = userManager.getCurrentUser();
+                    dataManager.getUser(user.getId(), user.getAuthToken(),
+                            new DataManager.Callback<User>() {
+                        @Override
+                        public void onSuccess(final User updatedUser) {
+                            updatedUser.setId(user.getId());
+                            updatedUser.setAuthToken(user.getAuthToken());
+                            userManager.setCurrentUser(updatedUser);
+                        }
+
+                        @Override
+                        public void onError(final DataManager.DataManagerError error) {
+                        }
+                    });
 
                     final Intent intent = new Intent(getActivity(), BookingsActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

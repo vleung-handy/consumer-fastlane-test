@@ -227,11 +227,12 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    void completeBooking(final BookingTransaction bookingTransaction, final Callback<String> cb) {
+    void completeBooking(final BookingTransaction bookingTransaction,
+                         final Callback<BookingCompleteTransaction> cb) {
         service.completeBooking(bookingTransaction, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
-                cb.onSuccess(response.toString());
+                cb.onSuccess(BookingCompleteTransaction.fromJson(response.toString()));
             }
         });
     }

@@ -40,8 +40,9 @@ public final class PhoneInputTextView extends InputTextField {
             @Override
             public void afterTextChanged(final Editable editable) {
                 PhoneInputTextView.this.removeTextChangedListener(this);
-                final String prefix = user != null ? user.getPhonePrefix() : null;
-                PhoneInputTextView.this.setText(TextUtils.formatPhone(editable.toString(), prefix));
+                PhoneInputTextView.this.setText(TextUtils.formatPhone(editable.toString(),
+                        getCountryCode()));
+
                 PhoneInputTextView.this.setSelection(PhoneInputTextView.this.getText().length());
                 PhoneInputTextView.this.addTextChangedListener(this);
             }
@@ -49,11 +50,13 @@ public final class PhoneInputTextView extends InputTextField {
     }
 
     final String getCountryCode() {
+        if (user != null) return user.getPhonePrefix();
         return countryCode;
     }
 
     final void setCountryCode(final String countryCode) {
-        this.countryCode = countryCode;
+        if (user != null) this.countryCode = user.getPhonePrefix();
+        else this.countryCode = countryCode;
     }
 
     final User getUser() {

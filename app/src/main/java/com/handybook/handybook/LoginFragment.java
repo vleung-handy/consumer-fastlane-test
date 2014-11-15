@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request;
@@ -181,8 +180,10 @@ public final class LoginFragment extends BookingFlowFragment {
                 disableInputs();
                 progressDialog.show();
 
+                final String email = emailText.getEmail();
+
                 if (isForBooking) {
-                    dataManager.getUser(emailText.getEmail(), new DataManager.Callback<String>() {
+                    dataManager.getUser(email, new DataManager.Callback<String>() {
                         @Override
                         public void onSuccess(final String name) {
                             if (!allowCallbacks) return;
@@ -190,16 +191,17 @@ public final class LoginFragment extends BookingFlowFragment {
                             if (name != null) {
                                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 intent.putExtra(LoginActivity.EXTRA_USER_NAME, name);
-                                intent.putExtra(LoginActivity.EXTRA_USER_EMAIL, emailText.getEmail());
+                                intent.putExtra(LoginActivity.EXTRA_USER_EMAIL, email);
                                 startActivity(intent);
                                 getActivity().finish();
+
+                                progressDialog.dismiss();
+                                enableInputs();
                             }
                             else {
-                                Toast.makeText(getActivity(), "Please Login", Toast.LENGTH_SHORT).show();
+                                bookingManager.getCurrentRequest().setEmail(email);
+                                showBookingAddress();
                             }
-
-                            progressDialog.dismiss();
-                            enableInputs();
                         }
 
                         @Override
@@ -212,7 +214,7 @@ public final class LoginFragment extends BookingFlowFragment {
                     });
                 }
                 else {
-                    dataManager.authUser(emailText.getEmail(),
+                    dataManager.authUser(email,
                             passwordText.getPassword(), userCallback);
                 }
             }

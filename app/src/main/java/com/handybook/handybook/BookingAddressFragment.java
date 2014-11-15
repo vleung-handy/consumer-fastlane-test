@@ -56,6 +56,9 @@ public final class BookingAddressFragment extends BookingFlowFragment {
             }
         }
         else {
+            final String prefix = bookingManager.getCurrentQuote().getPhonePrefix();
+            phoneText.setCountryCode(prefix);
+            phonePrefixText.setText(prefix);
         }
 
         nextButton.setOnClickListener(nextClicked);
