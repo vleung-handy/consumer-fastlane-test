@@ -266,6 +266,15 @@ public final class BaseDataManager extends DataManager {
         });
     }
 
+    final void getUser(final String email, final Callback<String> cb) {
+        service.getUserInfo(email, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(response.optString("name", null));
+            }
+        });
+    }
+    
     final void updateUser(final User user, final Callback<User> cb) {
         service.updateUserInfo(user.getId(), new HandyRetrofitService.UserUpdateRequest(user,
                 user.getAuthToken()), new HandyRetrofitCallback(cb) {

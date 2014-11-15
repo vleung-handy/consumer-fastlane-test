@@ -38,6 +38,8 @@ abstract class DataManager {
 
     abstract void getUser(String userId, String authToken, Callback<User> cb);
 
+    abstract void getUser(String email, Callback<String> cb);
+
     abstract void updateUser(User user, Callback<User> cb);
 
     abstract void authFBUser(String fbid, String accessToken, String email, String firstName,

@@ -51,6 +51,9 @@ public interface HandyRetrofitService {
     @GET("/users/{user}")
     void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
+    @GET("/users/dont_look_at_this")
+    void getUserInfo(@Query("email")String email, HandyRetrofitCallback cb);
+
     @PUT("/users/{user}")
     void updateUserInfo(@Path("user") String userId, @Body UserUpdateRequest req, HandyRetrofitCallback cb);
 

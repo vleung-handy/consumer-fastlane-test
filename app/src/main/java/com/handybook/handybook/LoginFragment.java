@@ -164,15 +164,35 @@ public final class LoginFragment extends BookingFlowFragment {
                 progressDialog.show();
 
                 if (isForBooking) {
-                    //TODO send request to get user info then show welcome screen
-                    //TODO handle facebook case -> go straight to address page after loading user data
-                    progressDialog.dismiss();
-                    enableInputs();
-                    Toast.makeText(getActivity(), "SHOW WELCOME", Toast.LENGTH_SHORT).show();
+                    dataManager.getUser(emailText.getEmail(), new DataManager.Callback<String>() {
+                        @Override
+                        public void onSuccess(final String name) {
+                            if (!allowCallbacks) return;
+
+                            if (name != null) {
+                                Toast.makeText(getActivity(), name, Toast.LENGTH_SHORT).show();
+                                //Todo show email password welcome view
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "Please Login", Toast.LENGTH_SHORT).show();
+                            }
+
+                            progressDialog.dismiss();
+                            enableInputs();
+                        }
+
+                        @Override
+                        public void onError(DataManager.DataManagerError error) {
+                            if (!allowCallbacks) return;
+                            progressDialog.dismiss();
+                            enableInputs();
+                            dataManagerErrorHandler.handleError(getActivity(), error);
+                        }
+                    });
                 }
                 else {
-                    dataManager.authUser(emailText.getText().toString(),
-                            passwordText.getText().toString(), userCallback);
+                    dataManager.authUser(emailText.getEmail(),
+                            passwordText.getPassword(), userCallback);
                 }
             }
         }
@@ -211,9 +231,15 @@ public final class LoginFragment extends BookingFlowFragment {
     private final Session.StatusCallback statusCallback = new Session.StatusCallback() {
         @Override
         public void call(final Session session, final SessionState state, final Exception exception) {
+            disableInputs();
+            progressDialog.show();
+
             if (!handleFBSessionUpdates || !allowCallbacks) return;
 
             if (exception instanceof FacebookAuthorizationException) {
+                progressDialog.dismiss();
+                enableInputs();
+
                 toast.setText(R.string.default_error_string);
                 toast.show();
             }
@@ -223,12 +249,18 @@ public final class LoginFragment extends BookingFlowFragment {
                     public void onCompleted(final GraphUser user, final Response response) {
                         if (!allowCallbacks) return;
                         if (response.getError() != null ) {
+                            progressDialog.dismiss();
+                            enableInputs();
+
                             toast.setText(R.string.default_error_string);
                             toast.show();
                             session.closeAndClearTokenInformation();
                         }
                         else if (user != null && user.asMap().get("email") == null) {
                              // TODO if email not given, then deauthorize app
+                            progressDialog.dismiss();
+                            enableInputs();
+
                             toast.setText(R.string.default_error_string);
                             toast.show();
                             session.closeAndClearTokenInformation();
@@ -253,12 +285,18 @@ public final class LoginFragment extends BookingFlowFragment {
                 @Override
                 public void onSuccess(final User user) {
                     if (!allowCallbacks) return;
-                    userManager.setCurrentUser(user);
-                    progressDialog.dismiss();
-                    enableInputs();
 
+                    userManager.setCurrentUser(user);
                     Session session = Session.getActiveSession();
                     if (session != null) session.closeAndClearTokenInformation();
+
+                    if (isForBooking) {
+                        showBookingAddress();
+                        return;
+                    }
+
+                    progressDialog.dismiss();
+                    enableInputs();
 
                     final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
                     final MenuDrawer menuDrawer = activity.getMenuDrawer();

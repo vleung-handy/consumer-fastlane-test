@@ -8,7 +8,10 @@ public class BookingFlowFragment extends InjectedFragment {
         final BookingRequest request = bookingManager.getCurrentRequest();
         final User user = userManager.getCurrentUser();
 
-        if (user != null) request.setUserId(userManager.getCurrentUser().getId());
+        if (user != null) {
+            request.setUserId(user.getId());
+            request.setEmail(user.getEmail());
+        }
         else {
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra(LoginActivity.EXTRA_IS_FOR_BOOKING, true);
@@ -41,6 +44,9 @@ public class BookingFlowFragment extends InjectedFragment {
 
                 final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
                 startActivity(intent);
+
+                if (BookingFlowFragment.this instanceof LoginFragment)
+                    BookingFlowFragment.this.getActivity().finish();
 
                 enableInputs();
                 progressDialog.dismiss();
