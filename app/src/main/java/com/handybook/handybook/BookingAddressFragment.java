@@ -10,18 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class BookingAddressFragment extends InjectedFragment {
+public final class BookingAddressFragment extends BookingFlowFragment {
     private static final String STATE_FULLNAME_HIGHLIGHT = "FULLNAME_HIGHLIGHT";
     private static final String STATE_ADDR1_HIGHLIGHT = "ADDR1_HIGHLIGHT";
     private static final String STATE_PHONE_HIGHLIGHT = "PHONE_HIGHLIGHT";
-
-    @Inject BookingManager bookingManager;
-    @Inject UserManager userManager;
 
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.fullname_text) FullNameInputTextView fullNameText;

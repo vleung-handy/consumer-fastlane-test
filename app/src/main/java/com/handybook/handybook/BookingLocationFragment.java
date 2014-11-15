@@ -33,17 +33,10 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public final class BookingLocationFragment extends InjectedFragment {
+public final class BookingLocationFragment extends BookingFlowFragment {
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
 
-    private ProgressDialog progressDialog;
-    private boolean allowCallbacks;
-
     @Inject ReactiveLocationProvider locationProvider;
-    @Inject UserManager userManager;
-    @Inject BookingManager bookingManager;
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     @InjectView(R.id.zip_text) ZipCodeInputTextView zipText;
     @InjectView(R.id.zip_progress) ProgressBar zipProgress;
@@ -61,11 +54,6 @@ public final class BookingLocationFragment extends InjectedFragment {
                 .inflate(R.layout.fragment_booking_location,container, false);
 
         ButterKnife.inject(this, view);
-
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
 
         final User.Address address;
         final User user = userManager.getCurrentUser();
@@ -96,18 +84,6 @@ public final class BookingLocationFragment extends InjectedFragment {
     }
 
     @Override
-    public final void onStart() {
-        super.onStart();
-        allowCallbacks = true;
-    }
-
-    @Override
-    public final void onStop() {
-        super.onStop();
-        allowCallbacks = false;
-    }
-
-    @Override
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_ZIP_HIGHLIGHT, zipText.isHighlighted());
@@ -119,7 +95,9 @@ public final class BookingLocationFragment extends InjectedFragment {
         return validate;
     }
 
-    private void disableInputs() {
+    @Override
+    protected void disableInputs() {
+        super.disableInputs();
         nextButton.setClickable(false);
         locationButton.setClickable(false);
         final InputMethodManager imm = (InputMethodManager)getActivity()
@@ -127,7 +105,9 @@ public final class BookingLocationFragment extends InjectedFragment {
         imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
     }
 
-    private void enableInputs() {
+    @Override
+    protected final void enableInputs() {
+        super.enableInputs();
         nextButton.setClickable(true);
         locationButton.setClickable(true);
     }

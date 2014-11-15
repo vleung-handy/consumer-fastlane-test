@@ -14,8 +14,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -23,11 +21,6 @@ public final class BookingDateFragment extends BookingFlowFragment {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
 
     private ArrayList<BookingOption> postOptions;
-    private ProgressDialog progressDialog;
-
-    @Inject UserManager userManager;
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.date_picker) DatePicker datePicker;
@@ -56,11 +49,6 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 .inflate(R.layout.fragment_booking_date,container, false);
 
         ButterKnife.inject(this, view);
-
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
 
         final Calendar cal = Calendar.getInstance();
         final int hours, minutes;
@@ -107,11 +95,15 @@ public final class BookingDateFragment extends BookingFlowFragment {
         return view;
     }
 
-    private void disableInputs() {
+    @Override
+    protected final void disableInputs() {
+        super.disableInputs();
         nextButton.setClickable(false);
     }
 
-    private void enableInputs() {
+    @Override
+    protected final void enableInputs() {
+        super.enableInputs();
         nextButton.setClickable(true);
     }
 
@@ -142,31 +134,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 startActivity(intent);
 
                 return;
-            }
-
-            disableInputs();
-            progressDialog.show();
-
-            final BookingRequest request = bookingManager.getCurrentRequest();
-            request.setUserId(userManager.getCurrentUser().getId());
-            dataManager.getBookingQuote(request, new DataManager.Callback<BookingQuote>() {
-                @Override
-                public void onSuccess(final BookingQuote quote) {
-                    if (!allowCallbacks) return;
-                    showBookingAddress(quote);
-                    enableInputs();
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error) {
-                    if (!allowCallbacks) return;
-
-                    enableInputs();
-                    progressDialog.dismiss();
-                    dataManagerErrorHandler.handleError(getActivity(), error);
-                }
-            });
+            } showBookingAddress();
         }
     };
 }

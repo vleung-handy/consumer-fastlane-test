@@ -8,28 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class ServiceCategoriesFragment extends InjectedFragment {
+public final class ServiceCategoriesFragment extends BookingFlowFragment {
     private List<Service> services = new ArrayList<>();
-    private ProgressDialog progressDialog;
     private boolean usedCache;
 
     @InjectView(R.id.category_layout) LinearLayout categoryLayout;
     @InjectView(R.id.logo) ImageView logo;
-
-    @Inject UserManager userManager;
-    @Inject DataManager dataManager;
-    @Inject BookingManager bookingManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     static ServiceCategoriesFragment newInstance() {
         return new ServiceCategoriesFragment();
@@ -47,11 +38,6 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
                 .inflate(R.layout.fragment_service_categories,container, false);
 
         ButterKnife.inject(this, view);
-
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,11 +73,6 @@ public final class ServiceCategoriesFragment extends InjectedFragment {
             categoryView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (userManager.getCurrentUser() == null) {
-                        Toast.makeText(getActivity(), "Please Login", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
                     if (service.getServices().size() > 0) {
                         final Intent intent = new Intent(getActivity(), ServicesActivity.class);
                         intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);

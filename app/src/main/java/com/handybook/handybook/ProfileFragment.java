@@ -7,16 +7,12 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.TextAppearanceSpan;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,9 +27,7 @@ public final class ProfileFragment extends InjectedFragment {
     private static final String STATE_LOADED_USER = "LOADED_USER";
 
     private User user;
-    private ProgressDialog progressDialog;
     private boolean loadedUserInfo;
-    private Toast toast;
     private boolean updatingInfo;
 
     @InjectView(R.id.credits_text) TextView creditsText;
@@ -45,10 +39,6 @@ public final class ProfileFragment extends InjectedFragment {
     @InjectView(R.id.old_password_text) PasswordInputTextView oldPasswordtext;
     @InjectView(R.id.new_password_text) PasswordInputTextView newPasswordtext;
 
-    @Inject UserManager userManager;
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
-
     static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
@@ -57,8 +47,6 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = userManager.getCurrentUser();
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
     }
 
     @Override
@@ -188,7 +176,10 @@ public final class ProfileFragment extends InjectedFragment {
         return validate;
     }
 
-    private void disableInputs() {
+
+    @Override
+    protected final void disableInputs() {
+        super.disableInputs();
         updateButton.setClickable(false);
 
         final InputMethodManager imm = (InputMethodManager)getActivity()
@@ -196,7 +187,9 @@ public final class ProfileFragment extends InjectedFragment {
         imm.hideSoftInputFromWindow(fullNameText.getWindowToken(), 0);
     }
 
-    private void enableInputs() {
+    @Override
+    protected final void enableInputs() {
+        super.enableInputs();
         updateButton.setClickable(true);
     }
 

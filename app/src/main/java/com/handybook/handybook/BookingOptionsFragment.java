@@ -2,19 +2,15 @@ package com.handybook.handybook;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,8 +24,6 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
     static final String STATE_CHILD_DISPLAY_MAP = "STATE_CHILD_DISPLAY_MAP";
     static final String STATE_OPTION_INDEX_MAP = "STATE_OPTION_INDEX_MAP";
 
-    private ProgressDialog progressDialog;
-    private Toast toast;
     private ArrayList<BookingOption> options;
     private ArrayList<BookingOption> postOptions;
     private HashMap<String, Boolean> childDisplayMap;
@@ -37,9 +31,6 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
     private HashMap<String, BookingOptionsView> optionsViewMap;
     private int page;
     private boolean isPost;
-
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     @InjectView(R.id.options_layout) LinearLayout optionsLayout;
     @InjectView(R.id.nav_text) TextView navText;
@@ -88,17 +79,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
 
         ButterKnife.inject(this, view);
 
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
-
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-
-        if (page != 0) {
-            headerText.setVisibility(View.GONE);
-        }
+        if (page != 0) headerText.setVisibility(View.GONE);
         else if (bookingManager.getCurrentRequest().getServiceId() == 3)
             headerText.setText(getString(R.string.tell_us_place));
 
@@ -120,11 +101,15 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
         outState.putSerializable(STATE_OPTION_INDEX_MAP, optionIndexMap);
     }
 
-    private void disableInputs() {
+    @Override
+    protected final void disableInputs() {
+        super.disableInputs();
         nextButton.setClickable(false);
     }
 
-    private void enableInputs() {
+    @Override
+    protected final void enableInputs() {
+        super.enableInputs();
         nextButton.setClickable(true);
     }
 
@@ -313,28 +298,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
             }
             if (nextOptions.size() < 1 || nextOptions.get(nextOptions.size() - 1).getPage() <= page) {
                 if (isPost) {
-                    disableInputs();
-                    progressDialog.show();
-
-                    final BookingRequest request = bookingManager.getCurrentRequest();
-                    dataManager.getBookingQuote(request, new DataManager.Callback<BookingQuote>() {
-                        @Override
-                        public void onSuccess(final BookingQuote quote) {
-                            if (!allowCallbacks) return;
-                            showBookingAddress(quote);
-                            enableInputs();
-                            progressDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onError(final DataManager.DataManagerError error) {
-                            if (!allowCallbacks) return;
-
-                            enableInputs();
-                            progressDialog.dismiss();
-                            dataManagerErrorHandler.handleError(getActivity(), error);
-                        }
-                    });
+                    showBookingAddress();
                     return;
                 }
 

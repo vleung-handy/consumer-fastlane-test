@@ -6,13 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class BookingHeaderFragment extends InjectedFragment {
-    @Inject BookingManager bookingManager;
+public final class BookingHeaderFragment extends BookingFlowFragment {
 
     @InjectView(R.id.date_text) TextView dateText;
     @InjectView(R.id.time_text) TextView timeText;

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
@@ -22,25 +20,16 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.CardException;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class BookingPaymentFragment extends InjectedFragment {
+public final class BookingPaymentFragment extends BookingFlowFragment {
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
     private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
     private static final String STATE_USE_EXISTING_CARD = "USE_EXISTING_CARD";
 
     private boolean useExistingCard;
-    private ProgressDialog progressDialog;
-    private Toast toast;
-
-    @Inject BookingManager bookingManager;
-    @Inject UserManager userManager;
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.change_button) Button changeButton;
@@ -70,14 +59,6 @@ public final class BookingPaymentFragment extends InjectedFragment {
                 .inflate(R.layout.fragment_booking_payment,container, false);
 
         ButterKnife.inject(this, view);
-
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
 
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -181,7 +162,9 @@ public final class BookingPaymentFragment extends InjectedFragment {
         }
     }
 
-    private void disableInputs() {
+    @Override
+    protected final void disableInputs() {
+        super.disableInputs();
         nextButton.setClickable(false);
 
         final InputMethodManager imm = (InputMethodManager)getActivity()
@@ -189,7 +172,9 @@ public final class BookingPaymentFragment extends InjectedFragment {
         imm.hideSoftInputFromWindow(creditCardText.getWindowToken(), 0);
     }
 
-    private void enableInputs() {
+    @Override
+    protected final void enableInputs() {
+        super.enableInputs();
         nextButton.setClickable(true);
     }
 

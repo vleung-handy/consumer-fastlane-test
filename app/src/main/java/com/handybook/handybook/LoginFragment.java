@@ -3,13 +3,11 @@ package com.handybook.handybook;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request;
@@ -24,17 +22,13 @@ import net.simonvt.menudrawer.MenuDrawer;
 
 import java.util.HashMap;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class LoginFragment extends InjectedFragment {
+public final class LoginFragment extends BookingFlowFragment {
     private static final String STATE_EMAIL_HIGHLIGHT = "EMAIL_HIGHLIGHT";
     private static final String STATE_PASSWORD_HIGHLIGHT = "PASSWORD_HIGHLIGHT";
 
-    private ProgressDialog progressDialog;
-    private Toast toast;
     private UiLifecycleHelper uiHelper;
     private boolean handleFBSessionUpdates = false;
 
@@ -43,10 +37,6 @@ public final class LoginFragment extends InjectedFragment {
     @InjectView(R.id.email_text) EmailInputTextView emailText;
     @InjectView(R.id.password_text) PasswordInputTextView passwordText;
     @InjectView(R.id.fb_button) LoginButton fbButton;
-
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
-    @Inject UserManager userManager;
 
     static LoginFragment newInstance() {
         return new LoginFragment();
@@ -69,14 +59,6 @@ public final class LoginFragment extends InjectedFragment {
 
         fbButton.setFragment(this);
         fbButton.setReadPermissions("email");
-
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
-
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
 
         return view;
     }
@@ -138,7 +120,9 @@ public final class LoginFragment extends InjectedFragment {
         return validate;
     }
 
-    private void disableInputs() {
+    @Override
+    protected final void disableInputs() {
+        super.disableInputs();
         loginButton.setClickable(false);
         forgotButton.setClickable(false);
 
@@ -147,7 +131,9 @@ public final class LoginFragment extends InjectedFragment {
         imm.hideSoftInputFromWindow(emailText.getWindowToken(), 0);
     }
 
-    private void enableInputs() {
+    @Override
+    protected final void enableInputs() {
+        super.enableInputs();
         loginButton.setClickable(true);
         forgotButton.setClickable(true);
     }

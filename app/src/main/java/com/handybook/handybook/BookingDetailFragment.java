@@ -7,17 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class BookingDetailFragment extends InjectedFragment {
+public final class BookingDetailFragment extends BookingFlowFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
 
     private Booking booking;
-
-    @Inject UserManager userManager;
 
     @InjectView(R.id.service_text) TextView serviceText;
     @InjectView(R.id.job_text) TextView jobText;
