@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request;
@@ -26,20 +28,28 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class LoginFragment extends BookingFlowFragment {
+    static final String EXTRA_IS_FOR_BOOKING = "com.handy.handy.EXTRA_IS_FOR_BOOKING";
     private static final String STATE_EMAIL_HIGHLIGHT = "EMAIL_HIGHLIGHT";
     private static final String STATE_PASSWORD_HIGHLIGHT = "PASSWORD_HIGHLIGHT";
 
     private UiLifecycleHelper uiHelper;
     private boolean handleFBSessionUpdates = false;
+    private boolean isForBooking;
 
+    @InjectView(R.id.nav_text) TextView navText;
     @InjectView(R.id.login_button) Button loginButton;
     @InjectView(R.id.forgot_button) Button forgotButton;
     @InjectView(R.id.email_text) EmailInputTextView emailText;
     @InjectView(R.id.password_text) PasswordInputTextView passwordText;
     @InjectView(R.id.fb_button) LoginButton fbButton;
 
-    static LoginFragment newInstance() {
-        return new LoginFragment();
+    static LoginFragment newInstance(final boolean isForBooking) {
+        final LoginFragment fragment = new LoginFragment();
+        final Bundle args = new Bundle();
+
+        args.putBoolean(EXTRA_IS_FOR_BOOKING, isForBooking);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -47,6 +57,7 @@ public final class LoginFragment extends BookingFlowFragment {
         super.onCreate(savedInstanceState);
         uiHelper = new UiLifecycleHelper(getActivity(), statusCallback);
         uiHelper.onCreate(savedInstanceState);
+        isForBooking = getArguments().getBoolean(EXTRA_IS_FOR_BOOKING);
     }
 
     @Override
@@ -56,6 +67,13 @@ public final class LoginFragment extends BookingFlowFragment {
                 .inflate(R.layout.fragment_login,container, false);
 
         ButterKnife.inject(this, view);
+
+        if (isForBooking) {
+            navText.setText(getString(R.string.contact));
+            passwordText.setVisibility(View.GONE);
+            forgotButton.setVisibility(View.GONE);
+            loginButton.setText(getString(R.string.next));
+        }
 
         fbButton.setFragment(this);
         fbButton.setReadPermissions("email");
@@ -116,7 +134,7 @@ public final class LoginFragment extends BookingFlowFragment {
     private boolean validateFields() {
         boolean validate = true;
         if (!emailText.validate()) validate = false;
-        if (!passwordText.validate()) validate = false;
+        if (!isForBooking && !passwordText.validate()) validate = false;
         return validate;
     }
 
@@ -145,8 +163,17 @@ public final class LoginFragment extends BookingFlowFragment {
                 disableInputs();
                 progressDialog.show();
 
-                dataManager.authUser(emailText.getText().toString(),
-                    passwordText.getText().toString(), userCallback);
+                if (isForBooking) {
+                    //TODO send request to get user info then show welcome screen
+                    //TODO handle facebook case -> go straight to address page after loading user data
+                    progressDialog.dismiss();
+                    enableInputs();
+                    Toast.makeText(getActivity(), "SHOW WELCOME", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    dataManager.authUser(emailText.getText().toString(),
+                            passwordText.getText().toString(), userCallback);
+                }
             }
         }
     };

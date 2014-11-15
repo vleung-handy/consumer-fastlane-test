@@ -5,13 +5,19 @@ import android.content.Intent;
 public class BookingFlowFragment extends InjectedFragment {
 
     protected void showBookingAddress() {
-        disableInputs();
-        progressDialog.show();
-
         final BookingRequest request = bookingManager.getCurrentRequest();
         final User user = userManager.getCurrentUser();
 
         if (user != null) request.setUserId(userManager.getCurrentUser().getId());
+        else {
+            final Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.putExtra(LoginActivity.EXTRA_IS_FOR_BOOKING, true);
+            startActivity(intent);
+            return;
+        }
+
+        disableInputs();
+        progressDialog.show();
 
         dataManager.getBookingQuote(request, new DataManager.Callback<BookingQuote>() {
             @Override

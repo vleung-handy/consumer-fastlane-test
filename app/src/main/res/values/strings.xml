@@ -60,4 +60,5 @@
     <string name="mm_yy">MM/YY</string>
     <string name="credit_card">Credit Card</string>
     <string name="cvc">CVC</string>
+    <string name="contact">Contact</string>
 </resources>
