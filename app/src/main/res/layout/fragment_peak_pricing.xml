@@ -38,8 +38,10 @@
                 style="@style/TextView.Small" />
 
             <RelativeLayout
+                android:id="@+id/date_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:layout_below="@id/header_text"
                 android:background="@color/white">
 
@@ -56,6 +58,15 @@
                     style="@style/TextView.Headline"/>
 
             </RelativeLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_below="@id/date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="16dp">
+
+            </android.support.v4.view.ViewPager>
 
         </RelativeLayout>
 

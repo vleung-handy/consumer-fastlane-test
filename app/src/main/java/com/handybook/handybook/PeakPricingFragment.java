@@ -1,6 +1,10 @@
 package com.handybook.handybook;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +18,11 @@ import butterknife.InjectView;
 
 public final class PeakPricingFragment extends BookingFlowFragment {
     private ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakPriceTable;
+    private int currentIndex;
 
     @InjectView(R.id.skip_button) Button skipButton;
     @InjectView(R.id.date_text) TextView dateText;
+    @InjectView(R.id.pager) ViewPager datePager;
 
     static PeakPricingFragment newInstance() {
         final PeakPricingFragment fragment = new PeakPricingFragment();
@@ -44,10 +50,18 @@ public final class PeakPricingFragment extends BookingFlowFragment {
             }
         });
 
-        dateText.setText(TextUtils.formatDate(peakPriceTable
-                .get(getFirstRegPriceIndex()).get(0).getDate(), "EEEE',' MMMM d"));
+        datePager.setOnPageChangeListener(pageListener);
+        currentIndex = getFirstRegPriceIndex();
+        updateDateHeader();
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        datePager.setAdapter(new PeakPriceTablePagerAdapter(getActivity().getSupportFragmentManager()));
+        datePager.setCurrentItem(currentIndex);
     }
 
     private int getFirstRegPriceIndex() {
@@ -62,5 +76,46 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         }
 
         return index;
+    }
+
+    private void updateDateHeader() {
+        dateText.setText(TextUtils.formatDate(peakPriceTable
+                .get(currentIndex).get(0).getDate(), "EEEE',' MMMM d"));
+    }
+
+    private final ViewPager.OnPageChangeListener pageListener
+            = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(final int i, final float v, final int i2) {
+
+        }
+
+        @Override
+        public void onPageSelected(final int i) {
+            currentIndex = i;
+            updateDateHeader();
+        }
+
+        @Override
+        public void onPageScrollStateChanged(final int i) {
+
+        }
+    };
+
+    private final class PeakPriceTablePagerAdapter extends FragmentPagerAdapter {
+
+        PeakPriceTablePagerAdapter(final FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public final Fragment getItem(final int i) {
+            return PeakPricingTableFragment.newInstance();
+        }
+
+        @Override
+        public final int getCount() {
+            return peakPriceTable.size();
+        }
     }
 }
