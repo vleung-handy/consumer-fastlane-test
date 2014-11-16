@@ -5,20 +5,20 @@
     android:background="@color/handy_bg">
 
     <Button
-        android:id="@+id/next_button"
-        android:text="@string/next"
+        android:id="@+id/skip_button"
+        android:text="@string/skip"
         style="@style/Button.Blue" />
 
     <TextView
         android:id="@+id/nav_text"
-        android:text="@string/details"
+        android:text="@string/price"
         style="@style/TextView.Navbar" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/nav_text"
-        android:layout_above="@id/next_button">
+        android:layout_above="@id/skip_button">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,17 +33,29 @@
                 android:layout_marginBottom="16dp"
                 android:paddingLeft="@dimen/default_margin"
                 android:paddingRight="@dimen/default_margin"
-                android:text="@string/tell_us_job"
+                android:text="@string/peak_price_info"
                 android:gravity="center"
-                style="@style/TextView" />
+                style="@style/TextView.Small" />
 
-            <LinearLayout
-                android:id="@+id/options_layout"
-                android:layout_below="@id/header_text"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/white" />
+                android:layout_below="@id/header_text"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/date_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/default_margin"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:text="Date"
+                    style="@style/TextView.Headline"/>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

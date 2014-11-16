@@ -2,6 +2,8 @@ package com.handybook.handybook;
 
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 public class BookingFlowFragment extends InjectedFragment {
 
     protected void showBookingAddress() {
@@ -28,6 +30,18 @@ public class BookingFlowFragment extends InjectedFragment {
                 if (!allowCallbacks) return;
 
                 bookingManager.setCurrentQuote(quote);
+
+                final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
+                        = quote.getPeakPriceTable();
+
+                if (!(BookingFlowFragment.this instanceof PeakPricingFragment) && peakTable != null
+                        && !peakTable.isEmpty()) {
+                    final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+                    startActivity(intent);
+                    enableInputs();
+                    progressDialog.dismiss();
+                    return;
+                }
 
                 final User user = userManager.getCurrentUser();
                 final BookingTransaction transaction = new BookingTransaction();

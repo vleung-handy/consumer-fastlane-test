@@ -173,6 +173,10 @@
         <item name="android:freezesText">true</item>
     </style>
 
+    <style name="TextView.Small">
+        <item name="android:textSize">@dimen/small_text_size</item>
+    </style>
+
     <style name="TextView.XSmall">
         <item name="android:textSize">@dimen/xsmall_text_size</item>
     </style>

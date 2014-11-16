@@ -62,4 +62,7 @@
     <string name="cvc">CVC</string>
     <string name="contact">Contact</string>
     <string name="welcome_back" formatted="false">Welcome back, %s!</string>
+    <string name="skip">Skip</string>
+    <string name="peak_price_info">Due to high demand, peak pricing is in \neffect at this time.
+        If you’d like, you can \npick a different time.</string>
 </resources>
