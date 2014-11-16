@@ -12,6 +12,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Observable;
@@ -27,10 +30,12 @@ public final class BookingQuote extends Observable {
     @SerializedName("currency_char") private String currencyChar;
     @SerializedName("currency_suffix") private String currencySuffix;
     @SerializedName("price_table") private ArrayList<PriceInfo> priceTable;
+    @SerializedName("dynamic_options") private ArrayList<PeakPriceInfo> surgePriceTable;
     @SerializedName("stripe_key") private String stripeKey;
     @SerializedName("phone_country_prefix") private String phonePrefix;
 
     private HashMap<Float, PriceInfo> priceTableMap;
+    private ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable;
 
     final int getBookingId() {
         return bookingId;
@@ -111,11 +116,27 @@ public final class BookingQuote extends Observable {
     final void setPriceTable(final ArrayList<PriceInfo> priceTable) {
         this.priceTable = priceTable;
         buildPriceMap();
+        triggerObservers();
     }
 
-    public HashMap<Float, PriceInfo> getPriceTableMap() {
+    final HashMap<Float, PriceInfo> getPriceTableMap() {
         if (priceTableMap == null || priceTable.isEmpty()) buildPriceMap();
         return priceTableMap;
+    }
+
+    final ArrayList<PeakPriceInfo> getSurgePriceTable() {
+        return surgePriceTable;
+    }
+
+    final void setSurgePriceTable(final ArrayList<PeakPriceInfo> surgePriceTable) {
+        this.surgePriceTable = surgePriceTable;
+        buildPeakPriceTable();
+        triggerObservers();
+    }
+
+    final ArrayList<ArrayList<PeakPriceInfo>> getPeakPriceTable() {
+        if (peakPriceTable == null || peakPriceTable.isEmpty()) buildPeakPriceTable();
+        return peakPriceTable;
     }
 
     final String getPhonePrefix() {
@@ -142,7 +163,58 @@ public final class BookingQuote extends Observable {
 
     private void buildPriceMap() {
         priceTableMap = new HashMap<>();
+
+        if (this.priceTable == null) return;
+
         for (final PriceInfo info : this.priceTable) priceTableMap.put(info.getHours(), info);
+    }
+
+    private void buildPeakPriceTable() {
+        if (this.surgePriceTable == null) return;
+
+        final HashMap<Date, ArrayList<PeakPriceInfo>> peakPriceMap = new HashMap<>();
+
+        for (final PeakPriceInfo info : this.surgePriceTable) {
+            final Calendar dateCal = Calendar.getInstance();
+            dateCal.setTime(info.getDate());
+
+            final Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_MONTH, dateCal.get(Calendar.DAY_OF_MONTH));
+            cal.set(Calendar.MONTH, dateCal.get(Calendar.MONTH));
+            cal.set(Calendar.YEAR, dateCal.get(Calendar.YEAR));
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+
+            final Date date = cal.getTime();
+            ArrayList<PeakPriceInfo> priceList;
+
+            if ((priceList = peakPriceMap.get(date)) != null) {
+                priceList.add(info);
+            }
+            else {
+                priceList = new ArrayList<>();
+                priceList.add(info);
+                peakPriceMap.put(date, priceList);
+            }
+        }
+
+        final ArrayList<ArrayList<PeakPriceInfo>> table = new ArrayList<>();
+        final ArrayList<Date> keys = new ArrayList<>(peakPriceMap.keySet());
+
+        Collections.sort(keys, new Comparator<Date>() {
+            @Override
+            public int compare(final Date lhs, final Date rhs) {
+                return (int)(lhs.getTime() - rhs.getTime());
+            }
+        });
+
+        for (final Date d : keys) {
+            final ArrayList<PeakPriceInfo> list = peakPriceMap.get(d);
+            table.add(list);
+        }
+        peakPriceTable = table;
     }
 
     final String toJson() {
@@ -187,6 +259,7 @@ public final class BookingQuote extends Observable {
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("phone_country_prefix", context.serialize(value.getPhonePrefix()));
             jsonObj.add("price_table", context.serialize(value.getPriceTable()));
+            jsonObj.add("dynamic_options", context.serialize(value.getSurgePriceTable()));
             jsonObj.add("stripe_key", context.serialize(value.getStripeKey()));
             return jsonObj;
         }
@@ -198,6 +271,24 @@ public final class BookingQuote extends Observable {
 
         final float getHours() {
             return hours;
+        }
+
+        final float getPrice() {
+            return price;
+        }
+    }
+
+    static final class PeakPriceInfo {
+        @SerializedName("date") private Date date;
+        @SerializedName("price") private float price;
+        @SerializedName("type") private String type;
+
+        final Date getDate() {
+            return date;
+        }
+
+        final String getType() {
+            return type;
         }
 
         final float getPrice() {
