@@ -110,7 +110,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
 
         @Override
         public final Fragment getItem(final int i) {
-            return PeakPricingTableFragment.newInstance();
+            return PeakPricingTableFragment.newInstance(i);
         }
 
         @Override

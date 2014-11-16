@@ -65,4 +65,5 @@
     <string name="skip">Skip</string>
     <string name="peak_price_info">Due to high demand, peak pricing is in \neffect at this time.
         If you’d like, you can \npick a different time.</string>
+    <string name="unavailable">Unavailable</string>
 </resources>
