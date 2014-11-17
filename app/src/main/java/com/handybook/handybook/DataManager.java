@@ -2,6 +2,7 @@ package com.handybook.handybook;
 
 import com.squareup.otto.Bus;
 
+import java.util.Date;
 import java.util.List;
 
 abstract class DataManager {
@@ -31,6 +32,9 @@ abstract class DataManager {
     abstract void getBookingOptions(int serviceId, String userId, Callback<List<BookingOption>> cb);
 
     abstract void getBookingQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
+
+    abstract void updateBookingDate(int bookingId, Date date,
+                                    Callback<BookingQuote> cb);
 
     abstract void completeBooking(BookingTransaction bookingTransaction,
                                   Callback<BookingCompleteTransaction> cb);

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -219,6 +220,17 @@ public final class BaseDataManager extends DataManager {
     void getBookingQuote(final BookingRequest bookingRequest, final Callback<BookingQuote> cb) {
         service.createBooking(new HandyRetrofitService.BookingCreateRequest(bookingRequest),
                 new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(BookingQuote.fromJson(response.toString()));
+            }
+        });
+    }
+
+    @Override
+    void updateBookingDate(final int bookingId, final Date date,
+                                    final Callback<BookingQuote> cb) {
+        service.updateBookingDate(bookingId, date, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 cb.onSuccess(BookingQuote.fromJson(response.toString()));

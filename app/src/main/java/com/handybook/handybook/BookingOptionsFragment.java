@@ -298,7 +298,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
             }
             if (nextOptions.size() < 1 || nextOptions.get(nextOptions.size() - 1).getPage() <= page) {
                 if (isPost) {
-                    showBookingAddress();
+                    continueBookingFlow();
                     return;
                 }
 

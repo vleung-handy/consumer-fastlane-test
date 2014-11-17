@@ -17,6 +17,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class PeakPricingFragment extends BookingFlowFragment {
+    private static final String STATE_PRICE_TABLE = "PRICE_TABLE";
+
     private ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakPriceTable;
     private int currentIndex;
 
@@ -32,7 +34,12 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        peakPriceTable = bookingManager.getCurrentQuote().getPeakPriceTable();
+
+        if (savedInstanceState != null) {
+            peakPriceTable = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
+                    savedInstanceState.getSerializable(STATE_PRICE_TABLE);
+        }
+        else peakPriceTable = bookingManager.getCurrentQuote().getPeakPriceTable();
     }
 
     @Override
@@ -46,7 +53,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                showBookingAddress();
+                continueBookingFlow();
             }
         });
 
@@ -62,6 +69,12 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         super.onActivityCreated(savedInstanceState);
         datePager.setAdapter(new PeakPriceTablePagerAdapter(getActivity().getSupportFragmentManager()));
         datePager.setCurrentItem(currentIndex);
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(STATE_PRICE_TABLE, peakPriceTable);
     }
 
     private int getFirstRegPriceIndex() {
@@ -110,7 +123,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
 
         @Override
         public final Fragment getItem(final int i) {
-            return PeakPricingTableFragment.newInstance(i);
+            return PeakPricingTableFragment.newInstance(i, peakPriceTable);
         }
 
         @Override

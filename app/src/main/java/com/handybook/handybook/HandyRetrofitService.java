@@ -2,6 +2,8 @@ package com.handybook.handybook;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
@@ -31,6 +33,11 @@ public interface HandyRetrofitService {
 
     @POST("/bookings")
     void createBooking(@Body BookingCreateRequest req, HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
+    @POST("/bookings/{booking}/set_new_date")
+    void updateBookingDate(@Path("booking") int bookingId, @Field("date_start") Date date,
+                           HandyRetrofitCallback cb);
 
     @POST("/transactions")
     void completeBooking(@Body BookingTransaction req, HandyRetrofitCallback cb);

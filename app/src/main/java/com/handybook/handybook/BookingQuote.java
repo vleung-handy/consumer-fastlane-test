@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -278,7 +279,7 @@ public final class BookingQuote extends Observable {
         }
     }
 
-    static final class PeakPriceInfo {
+    static final class PeakPriceInfo implements Serializable {
         @SerializedName("date") private Date date;
         @SerializedName("price") private float price;
         @SerializedName("type") private String type;

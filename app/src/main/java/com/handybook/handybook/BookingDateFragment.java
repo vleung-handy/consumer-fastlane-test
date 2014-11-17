@@ -134,7 +134,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 startActivity(intent);
 
                 return;
-            } showBookingAddress();
+            } continueBookingFlow();
         }
     };
 }

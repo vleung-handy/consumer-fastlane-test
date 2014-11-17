@@ -200,7 +200,7 @@ public final class LoginFragment extends BookingFlowFragment {
                             }
                             else {
                                 bookingManager.getCurrentRequest().setEmail(email);
-                                showBookingAddress();
+                                continueBookingFlow();
                             }
                         }
 
@@ -316,7 +316,7 @@ public final class LoginFragment extends BookingFlowFragment {
                     if (session != null) session.closeAndClearTokenInformation();
 
                     if (isForBooking || userName != null) {
-                        showBookingAddress();
+                        continueBookingFlow();
                         return;
                     }
 
