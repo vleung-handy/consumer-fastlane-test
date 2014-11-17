@@ -17,6 +17,8 @@ final class BookingOption implements Parcelable {
     @SerializedName("page") private int page;
     @SerializedName("post") private int post;
 
+    BookingOption() {}
+
     final String getUniq() {
         return uniq;
     }

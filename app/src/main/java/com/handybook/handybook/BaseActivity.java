@@ -11,6 +11,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 abstract class BaseActivity extends FragmentActivity {
 
+    private OnBackPressedListener onBackPressedListener;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,5 +34,19 @@ abstract class BaseActivity extends FragmentActivity {
     @Override
     protected final void attachBaseContext(final Context newBase) {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (onBackPressedListener != null) onBackPressedListener.onBack();
+        else super.onBackPressed();
+    }
+
+    public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+    interface OnBackPressedListener {
+        void onBack();
     }
 }

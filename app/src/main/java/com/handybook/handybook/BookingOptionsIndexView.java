@@ -90,7 +90,7 @@ abstract class BookingOptionsIndexView extends BookingOptionsView {
         }
     }
 
-    final void hideTitle() {
+    protected void hideTitle() {
         titleText.setVisibility(GONE);
         invalidate();
         requestLayout();

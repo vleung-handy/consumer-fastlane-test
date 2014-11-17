@@ -75,7 +75,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_options,container, false);
+                .inflate(R.layout.fragment_booking_options, container, false);
 
         ButterKnife.inject(this, view);
 

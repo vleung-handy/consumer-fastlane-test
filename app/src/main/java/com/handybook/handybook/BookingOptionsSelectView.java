@@ -6,13 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 final class BookingOptionsSelectView extends BookingOptionsIndexView {
     private RadioGroup radioGroup;
+    private RelativeLayout layout;
 
     BookingOptionsSelectView(final Context context, final BookingOption option,
                              final OnUpdatedListener updateListener) {
         super(context, R.layout.view_booking_options_select, option, updateListener);
+        init(context);
+    }
+
+    BookingOptionsSelectView(final Context context, final BookingOption option) {
+        super(context, R.layout.view_booking_options_select, option, null);
         init(context);
     }
 
@@ -27,6 +34,7 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
     private void init(final Context context) {
         if (!option.getType().equals("option")) return;
 
+        layout = (RelativeLayout)this.findViewById(R.id.layout);
         radioGroup = (RadioGroup)this.findViewById(R.id.radio_group);
 
         for (final String optionText : optionsList) {
@@ -72,6 +80,17 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
     public final void hideSeparator() {
         final View view = this.findViewById(R.id.layout);
         view.setBackgroundResource((R.drawable.booking_cell_last));
+        invalidate();
+        requestLayout();
+    }
+
+    @Override
+    protected void hideTitle() {
+        super.hideTitle();
+
+        layout.setPadding(layout.getPaddingLeft(), 0, layout.getPaddingRight(),
+                layout.getPaddingBottom());
+
         invalidate();
         requestLayout();
     }

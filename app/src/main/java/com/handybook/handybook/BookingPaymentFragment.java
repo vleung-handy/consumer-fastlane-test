@@ -267,8 +267,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                         }
                     });
 
-                    final Intent intent = new Intent(getActivity(), BookingsActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    final Intent intent = new Intent(getActivity(),
+                            BookingConfirmationActivity.class);
+
                     startActivity(intent);
 
                     enableInputs();

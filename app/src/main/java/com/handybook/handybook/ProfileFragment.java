@@ -116,8 +116,10 @@ public final class ProfileFragment extends InjectedFragment {
         final SpannableString spanText = new SpannableString(text);
         spanText.setSpan(new TextAppearanceSpan(getActivity(), R.style.TextView_XLarge_Bold),
                 replaceIndex, replaceIndex + amount.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spanText.setSpan(new CalligraphyTypefaceSpan(Typefaces.get(getActivity(), "CircularStd-Bold.otf")),
-                replaceIndex, replaceIndex + amount.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        spanText.setSpan(new CalligraphyTypefaceSpan(Typefaces.get(getActivity(),
+                        "CircularStd-Bold.otf")), replaceIndex, replaceIndex + amount.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         creditsText.setText(spanText, TextView.BufferType.SPANNABLE);
 

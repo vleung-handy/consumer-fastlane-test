@@ -63,7 +63,11 @@
     <string name="contact">Contact</string>
     <string name="welcome_back" formatted="false">Welcome back, %s!</string>
     <string name="skip">Skip</string>
-    <string name="peak_price_info">Due to high demand, peak pricing is in \neffect at this time.
-        If you’d like, you can \npick a different time.</string>
+    <string name="peak_price_info">Due to high demand, peak pricing is in \neffect at this time. If you’d like, you can \npick a different time.</string>
     <string name="unavailable">Unavailable</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="payment_confirmed">Your payment has been confirmed.\nHow will your professional get in?</string>
+    <string name="will_be_home">I\'ll be home</string>
+    <string name="doorman">Doorman</string>
+    <string name="will_hide_key">I\'ll hide the key</string>
 </resources>
