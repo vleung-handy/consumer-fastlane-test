@@ -250,6 +250,17 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    void addBookingPostInfo(final int bookingId, final BookingPostInfo postInfo,
+                            final Callback<Void> cb) {
+        service.addBookingPostInfo(bookingId, postInfo, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(null);
+            }
+        });
+    }
+
+    @Override
     final void authUser(final String email, final String password, final Callback<User> cb) {
         service.createUserSession(email, password, new HandyRetrofitCallback(cb) {
             @Override

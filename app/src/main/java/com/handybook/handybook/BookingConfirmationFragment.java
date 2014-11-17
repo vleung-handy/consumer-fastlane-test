@@ -127,8 +127,26 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                 startActivity(intent);
             }
             else {
-                //TODO show pwd if new user otherwise show bookings
-                showBookings();
+                //TODO show pwd if view new user otherwise show bookings after posting
+                dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
+                        postInfo, new DataManager.Callback<Void>() {
+                    @Override
+                    public void onSuccess(final Void response) {
+                        if (!allowCallbacks) return;
+                        showBookings();
+                        enableInputs();
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error) {
+                        if (!allowCallbacks) return;
+
+                        enableInputs();
+                        progressDialog.dismiss();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                });
             }
         }
     };
@@ -179,5 +197,3 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     };
 }
 
-//TODO post to after_booking_update
-//TODO and leave keys info text
