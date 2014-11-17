@@ -267,6 +267,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                         }
                     });
 
+                    bookingManager.setCurrentPostInfo(new BookingPostInfo());
+
                     final Intent intent = new Intent(getActivity(),
                             BookingConfirmationActivity.class);
 

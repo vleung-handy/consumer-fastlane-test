@@ -9,6 +9,7 @@ public final class BookingManager implements Observer {
     private BookingRequest request;
     private BookingQuote quote;
     private BookingTransaction transaction;
+    private BookingPostInfo postInfo;
     private final SecurePreferences securePrefs;
 
     @Inject
@@ -90,6 +91,30 @@ public final class BookingManager implements Observer {
         securePrefs.put("BOOKING_TRANS", transaction.toJson());
     }
 
+    final BookingPostInfo getCurrentPostInfo() {
+        if (postInfo != null) return postInfo;
+        else {
+            if ((postInfo = BookingPostInfo
+                    .fromJson(securePrefs.getString("BOOKING_POST"))) != null)
+                postInfo.addObserver(this);
+            return postInfo;
+        }
+    }
+
+    final void setCurrentPostInfo(final BookingPostInfo newInfo) {
+        if (postInfo != null) postInfo.deleteObserver(this);
+
+        if (newInfo == null) {
+            postInfo = null;
+            securePrefs.put("BOOKING_POST", null);
+            return;
+        }
+
+        postInfo = newInfo;
+        postInfo.addObserver(this);
+        securePrefs.put("BOOKING_POST", postInfo.toJson());
+    }
+
     @Override
     public void update(final Observable observable, final Object data) {
         if (observable instanceof BookingRequest) setCurrentRequest((BookingRequest)observable);
@@ -97,5 +122,8 @@ public final class BookingManager implements Observer {
 
         if (observable instanceof BookingTransaction)
             setCurrentTransaction((BookingTransaction)observable);
+
+        if (observable instanceof BookingPostInfo)
+            setCurrentPostInfo((BookingPostInfo)observable);
     }
 }

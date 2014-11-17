@@ -17,17 +17,28 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class BookingConfirmationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener {
-    private static final String STATE_SELECTED_PRO_ENTRY_OPTION = "SELECTED_PRO_ENTRY_OPTION";
+    static final String EXTRA_IS_LAST = "com.handy.handy.EXTRA_IS_LAST";
 
-    private BookingOptionsSelectView optionsView;
+    private BookingOptionsView optionsView;
+    private BookingPostInfo postInfo;
+    private boolean isLast;
 
     @InjectView(R.id.options_layout) LinearLayout optionsLayout;
     @InjectView(R.id.header_text) TextView headerText;
     @InjectView(R.id.next_button) Button nextButton;
 
-    static BookingConfirmationFragment newInstance() {
+    static BookingConfirmationFragment newInstance(final boolean isLast) {
         final BookingConfirmationFragment fragment = new BookingConfirmationFragment();
+        final Bundle args = new Bundle();
+        args.putBoolean(EXTRA_IS_LAST, isLast);
+        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isLast = getArguments().getBoolean(EXTRA_IS_LAST, false);
     }
 
     @Override
@@ -38,52 +49,56 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
         ButterKnife.inject(this, view);
 
-        final String text = getString(R.string.payment_confirmed);
-        final SpannableString spanText = new SpannableString(text);
+        postInfo = bookingManager.getCurrentPostInfo();
 
-        spanText.setSpan(new CalligraphyTypefaceSpan(Typefaces.get(getActivity(),
-                        "CircularStd-Medium.otf")), 0, text.indexOf("\n"),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (isLast) {
+            headerText.setText(getString(R.string.pro_to_know));
+            nextButton.setText(getString(R.string.finish));
 
-        headerText.setText(spanText, TextView.BufferType.SPANNABLE);
+            final BookingOption option = new BookingOption();
+            option.setType("text");
+            option.setDefaultValue(getString(R.string.additional_pro_info));
 
-        final BookingOption option = new BookingOption();
-        option.setType("option");
-        option.setDefaultValue("0");
+            optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
+            ((BookingOptionsTextView)optionsView).setValue(postInfo.getExtraMessage());
+        }
+        else {
+            final String text = getString(R.string.payment_confirmed);
+            final SpannableString spanText = new SpannableString(text);
 
-        option.setOptions(new String[] { getString(R.string.will_be_home),
-                getString(R.string.doorman), getString(R.string.will_hide_key)});
+            spanText.setSpan(new CalligraphyTypefaceSpan(Typefaces.get(getActivity(),
+                            "CircularStd-Medium.otf")), 0, text.indexOf("\n"),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        optionsView = new BookingOptionsSelectView(getActivity(), option);
-        optionsView.hideTitle();
+            headerText.setText(spanText, TextView.BufferType.SPANNABLE);
+
+            final BookingOption option = new BookingOption();
+            option.setType("option");
+            option.setDefaultValue("0");
+
+            option.setOptions(new String[] { getString(R.string.will_be_home),
+                    getString(R.string.doorman), getString(R.string.will_hide_key)});
+
+            optionsView = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
+            ((BookingOptionsSelectView)optionsView).hideTitle();
+            ((BookingOptionsSelectView)optionsView).setCurrentIndex(postInfo.getGetInId());
+        }
+
         optionsLayout.addView(optionsView, 0);
-
-        if (savedInstanceState != null) optionsView.setCurrentIndex(savedInstanceState
-                .getInt(STATE_SELECTED_PRO_ENTRY_OPTION, 0));
-
-        //TODO add next listener to show comments page
-        //TODO add password page if new user
-        //TODO clear booking manager after completeing booking
-
+        nextButton.setOnClickListener(nextClicked);
         return view;
-    }
-
-    @Override
-    public final void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_PRO_ENTRY_OPTION, optionsView.getCurrentIndex());
     }
 
     @Override
     public final void onStart() {
         super.onStart();
-        ((BaseActivity)getActivity()).setOnBackPressedListener(this);
+        if (!isLast) ((BaseActivity)getActivity()).setOnBackPressedListener(this);
     }
 
     @Override
     public final void onStop() {
         super.onStop();
-        ((BaseActivity)getActivity()).setOnBackPressedListener(null);
+        if (!isLast) ((BaseActivity)getActivity()).setOnBackPressedListener(null);
     }
 
     @Override
@@ -100,11 +115,69 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
     @Override
     public final void onBack() {
-        final Intent intent = new Intent(getActivity(), BookingsActivity.class);
+        if (!isLast) showBookings();
+    }
 
+    private final View.OnClickListener nextClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            if (!isLast) {
+                final Intent intent = new Intent(getActivity(), BookingConfirmationActivity.class);
+                intent.putExtra(BookingConfirmationActivity.EXTRA_IS_LAST, true);
+                startActivity(intent);
+            }
+            else {
+                //TODO show pwd if new user otherwise show bookings
+                showBookings();
+            }
+        }
+    };
+
+    private void showBookings() {
+        bookingManager.setCurrentRequest(null);
+
+        final Intent intent = new Intent(getActivity(), BookingsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
         startActivity(intent);
     }
+
+    private final BookingOptionsView.OnUpdatedListener textUpdated
+            = new BookingOptionsView.OnUpdatedListener() {
+        @Override
+        public void onUpdate(final BookingOptionsView view) {
+            postInfo.setExtraMessage(view.getCurrentValue());
+        }
+
+        @Override
+        public void onShowChildren(final BookingOptionsView view,
+        final String[] items) {
+        }
+
+        @Override
+        public void onHideChildren(final BookingOptionsView view,
+        final String[] items) {
+        }
+    };
+
+    private final BookingOptionsView.OnUpdatedListener optionUpdated
+            = new BookingOptionsView.OnUpdatedListener() {
+        @Override
+        public void onUpdate(final BookingOptionsView view) {
+            postInfo.setGetInId(((BookingOptionsSelectView) view).getCurrentIndex());
+        }
+
+        @Override
+        public void onShowChildren(final BookingOptionsView view,
+                                   final String[] items) {
+        }
+
+        @Override
+        public void onHideChildren(final BookingOptionsView view,
+                                   final String[] items) {
+        }
+    };
 }
+
+//TODO post to after_booking_update
+//TODO and leave keys info text

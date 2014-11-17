@@ -13,7 +13,7 @@ final class BookingOptionsTextView extends BookingOptionsView {
     BookingOptionsTextView(final Context context, final BookingOption option,
                            final OnUpdatedListener updateListener) {
         super(context, R.layout.view_booking_options_text, option, updateListener);
-        init(context);
+        init();
     }
 
     BookingOptionsTextView(final Context context, final AttributeSet attrs) {
@@ -24,7 +24,7 @@ final class BookingOptionsTextView extends BookingOptionsView {
         super(context, attrs, defStyle);
     }
 
-    private void init(final Context context) {
+    private void init() {
         if (!option.getType().equals("text")) return;
 
         editText = (EditText)this.findViewById(R.id.edit_text);

@@ -68,6 +68,9 @@ final class ApplicationModule {
                         .setExclusionStrategies(BookingQuote.getExclusionStrategy())
                         .registerTypeAdapter(BookingQuote.class,
                                 new BookingQuote.BookingQuoteSerializer())
+                        .setExclusionStrategies(BookingPostInfo.getExclusionStrategy())
+                        .registerTypeAdapter(BookingPostInfo.class,
+                                new BookingPostInfo.BookingPostInfoSerializer())
                         .setExclusionStrategies(User.getExclusionStrategy())
                         .registerTypeAdapter(User.class, new User.UserSerializer())
                         .create())).build();

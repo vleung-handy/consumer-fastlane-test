@@ -18,11 +18,6 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
         init(context);
     }
 
-    BookingOptionsSelectView(final Context context, final BookingOption option) {
-        super(context, R.layout.view_booking_options_select, option, null);
-        init(context);
-    }
-
     BookingOptionsSelectView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }

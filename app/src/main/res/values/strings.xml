@@ -70,4 +70,7 @@
     <string name="will_be_home">I\'ll be home</string>
     <string name="doorman">Doorman</string>
     <string name="will_hide_key">I\'ll hide the key</string>
+    <string name="pro_to_know">Anything you\'d like your \nprofessional to know?</string>
+    <string name="finish">Finish</string>
+    <string name="additional_pro_info">e.g, Focus on or skip specific rooms or surfaces, or other special requests.</string>
 </resources>
