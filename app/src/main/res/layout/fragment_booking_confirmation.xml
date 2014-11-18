@@ -38,6 +38,16 @@
                 android:freezesText="false"
                 style="@style/TextView" />
 
+            <com.handybook.handybook.PasswordInputTextView
+                android:id="@+id/pwd_text"
+                android:layout_below="@id/header_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:visibility="gone"
+                style="@style/EditText.Password" />
+
             <LinearLayout
                 android:id="@+id/options_layout"
                 android:layout_below="@id/header_text"

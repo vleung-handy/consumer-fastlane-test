@@ -18,6 +18,7 @@ public final class BookingPostInfo extends Observable {
     @SerializedName("get_in") private int getInId;
     @SerializedName("get_in_text") private String getInText;
     @SerializedName("extra_message") private String extraMessage;
+    @SerializedName("password") private String password;
 
     final int getGetInId() {
         return getInId;
@@ -43,6 +44,15 @@ public final class BookingPostInfo extends Observable {
 
     final void setExtraMessage(final String extraMessage) {
         this.extraMessage = extraMessage;
+        triggerObservers();
+    }
+
+    final String getPassword() {
+        return password;
+    }
+
+    final void setPassword(final String password) {
+        this.password = password;
         triggerObservers();
     }
 
@@ -87,6 +97,7 @@ public final class BookingPostInfo extends Observable {
             jsonObj.add("get_in", context.serialize(value.getGetInId()));
             jsonObj.add("get_in_text", context.serialize(value.getGetInText()));
             jsonObj.add("extra_message", context.serialize(value.getExtraMessage()));
+            jsonObj.add("password", context.serialize(value.getPassword()));
             return jsonObj;
         }
     }

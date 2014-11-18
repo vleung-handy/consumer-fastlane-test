@@ -74,4 +74,5 @@
     <string name="finish">Finish</string>
     <string name="additional_pro_info">e.g, Focus on or skip specific rooms or surfaces, or other special requests.</string>
     <string name="where_hide_key">Where will you hide the key?</string>
+    <string name="use_your_pwd">Use your password to log in and \nmanage your bookings.</string>
 </resources>

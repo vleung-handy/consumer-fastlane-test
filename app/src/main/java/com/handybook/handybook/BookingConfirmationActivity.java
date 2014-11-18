@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 public final class BookingConfirmationActivity extends MenuDrawerActivity {
-    static final String EXTRA_IS_LAST = "com.handy.handy.EXTRA_IS_LAST";
+    static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
+    static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
 
     @Override
     protected final Fragment createFragment() {
-        final boolean isLast = getIntent().getBooleanExtra(EXTRA_IS_LAST, false);
-        return BookingConfirmationFragment.newInstance(isLast);
+        final int page = getIntent().getIntExtra(EXTRA_PAGE, 0);
+        final boolean isNewUser = getIntent().getBooleanExtra(EXTRA_NEW_USER, false);
+        return BookingConfirmationFragment.newInstance(page, isNewUser);
     }
 
     @Override

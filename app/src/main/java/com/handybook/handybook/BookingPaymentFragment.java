@@ -243,7 +243,11 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                 public void onSuccess(final BookingCompleteTransaction trans) {
                     if (!allowCallbacks) return;
 
+                    boolean isNewUser = false;
+
                     if (userManager.getCurrentUser() == null) {
+                        isNewUser = true;
+
                         final BookingCompleteTransaction.User transUser = trans.getUser();
                         final User user = new User();
 
@@ -272,6 +276,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                     final Intent intent = new Intent(getActivity(),
                             BookingConfirmationActivity.class);
 
+                    intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, isNewUser);
                     startActivity(intent);
 
                     enableInputs();

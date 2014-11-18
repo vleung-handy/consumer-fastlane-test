@@ -19,23 +19,29 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class BookingConfirmationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener {
-    static final String EXTRA_IS_LAST = "com.handy.handy.EXTRA_IS_LAST";
-    static final String EXTRA_ASK_PWD = "com.handy.handy.EXTRA_ASK_PWD";
+    static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
+    static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
     private static final String STATE_KEY_HIGHLIGHT = "KEY_HIGHLIGHT";
+    private static final String STATE_PWD_HIGHLIGHT = "PWD_HIGHLIGHT";
 
     private BookingOptionsView optionsView;
     private BookingPostInfo postInfo;
-    private boolean isLast;
+    private int page;
+    private boolean isNewUser;
 
     @InjectView(R.id.options_layout) LinearLayout optionsLayout;
     @InjectView(R.id.header_text) TextView headerText;
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.keys_text) BasicInputTextView keysText;
+    @InjectView(R.id.pwd_text) PasswordInputTextView pwdText;
 
-    static BookingConfirmationFragment newInstance(final boolean isLast) {
+    static BookingConfirmationFragment newInstance(final int page, final boolean isNewUser) {
         final BookingConfirmationFragment fragment = new BookingConfirmationFragment();
         final Bundle args = new Bundle();
-        args.putBoolean(EXTRA_IS_LAST, isLast);
+
+        args.putInt(EXTRA_PAGE, page);
+        args.putBoolean(EXTRA_NEW_USER, isNewUser);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,7 +49,8 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isLast = getArguments().getBoolean(EXTRA_IS_LAST, false);
+        page = getArguments().getInt(EXTRA_PAGE, 0);
+        isNewUser = getArguments().getBoolean(EXTRA_NEW_USER, false);
     }
 
     @Override
@@ -60,9 +67,9 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
         postInfo = bookingManager.getCurrentPostInfo();
 
-        if (isLast) {
+        if (page == 1) {
             headerText.setText(getString(R.string.pro_to_know));
-            nextButton.setText(getString(R.string.finish));
+            if (!isNewUser) nextButton.setText(getString(R.string.finish));
 
             final BookingOption option = new BookingOption();
             option.setType("text");
@@ -70,6 +77,11 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
             optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
             ((BookingOptionsTextView)optionsView).setValue(postInfo.getExtraMessage());
+        }
+        else if (page == 2) {
+            headerText.setText(getString(R.string.use_your_pwd));
+            nextButton.setText(getString(R.string.finish));
+            pwdText.setVisibility(View.VISIBLE);
         }
         else {
             final String text = getString(R.string.payment_confirmed);
@@ -93,7 +105,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             ((BookingOptionsSelectView)optionsView).setCurrentIndex(postInfo.getGetInId());
         }
 
-        optionsLayout.addView(optionsView, 0);
+        if (page == 0 || page == 1) optionsLayout.addView(optionsView, 0);
         nextButton.setOnClickListener(nextClicked);
         return view;
     }
@@ -103,6 +115,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null) {
             if (savedInstanceState.getBoolean(STATE_KEY_HIGHLIGHT)) keysText.highlight();
+            if (savedInstanceState.getBoolean(STATE_PWD_HIGHLIGHT)) pwdText.highlight();
         }
     }
 
@@ -110,18 +123,19 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_KEY_HIGHLIGHT, keysText.isHighlighted());
+        outState.putBoolean(STATE_PWD_HIGHLIGHT, pwdText.isHighlighted());
     }
 
     @Override
     public final void onStart() {
         super.onStart();
-        if (!isLast) ((BaseActivity)getActivity()).setOnBackPressedListener(this);
+        if (page == 0) ((BaseActivity)getActivity()).setOnBackPressedListener(this);
     }
 
     @Override
     public final void onStop() {
         super.onStop();
-        if (!isLast) ((BaseActivity)getActivity()).setOnBackPressedListener(null);
+        if (page == 0) ((BaseActivity)getActivity()).setOnBackPressedListener(null);
     }
 
     @Override
@@ -139,15 +153,17 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     private boolean validateFields() {
         boolean validate = true;
 
-        if (!isLast && ((BookingOptionsSelectView)optionsView).getCurrentIndex() == 2 && !keysText.validate())
-            validate = false;
+        if (page == 0 && ((BookingOptionsSelectView)optionsView).getCurrentIndex() == 2
+                && !keysText.validate()) validate = false;
+
+        if (page == 2 && !pwdText.validate()) validate = false;
 
         return validate;
     }
 
     @Override
     public final void onBack() {
-        if (!isLast) showBookings();
+        if (page == 0) showBookings();
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
@@ -155,13 +171,21 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         public void onClick(final View view) {
             if (!validateFields()) return;
 
-            if (!isLast) {
+            if (page == 0) {
                 final Intent intent = new Intent(getActivity(), BookingConfirmationActivity.class);
-                intent.putExtra(BookingConfirmationActivity.EXTRA_IS_LAST, true);
+                intent.putExtra(BookingConfirmationActivity.EXTRA_PAGE, 1);
+                intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, isNewUser);
+                startActivity(intent);
+            }
+            else if (page == 1 && isNewUser) {
+                final Intent intent = new Intent(getActivity(), BookingConfirmationActivity.class);
+                intent.putExtra(BookingConfirmationActivity.EXTRA_PAGE, 2);
+                intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, isNewUser);
                 startActivity(intent);
             }
             else {
-                //TODO show pwd if view new user otherwise show bookings after posting
+                if (page == 2) postInfo.setPassword(pwdText.getPassword());
+
                 dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
                         postInfo, new DataManager.Callback<Void>() {
                     @Override
