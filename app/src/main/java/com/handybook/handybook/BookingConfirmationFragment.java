@@ -156,7 +156,15 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         if (page == 0 && ((BookingOptionsSelectView)optionsView).getCurrentIndex() == 2
                 && !keysText.validate()) validate = false;
 
-        if (page == 2 && !pwdText.validate()) validate = false;
+        if (page == 2) {
+            if (!pwdText.validate()) validate = false;
+            if (pwdText.getPassword().length() < 8) {
+                validate = false;
+                pwdText.highlight();
+                toast.setText(getString(R.string.pwd_length_error));
+                toast.show();
+            }
+        }
 
         return validate;
     }

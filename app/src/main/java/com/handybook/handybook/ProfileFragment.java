@@ -156,8 +156,8 @@ public final class ProfileFragment extends InjectedFragment {
         if (!emailText.validate()) validate = false;
         if (!phoneText.validate()) validate = false;
 
-        String oldPwd = oldPasswordtext.getText().toString();
-        String newPwd = newPasswordtext.getText().toString();
+        final String oldPwd = oldPasswordtext.getPassword();
+        final String newPwd = newPasswordtext.getPassword();
 
         if (oldPwd.length() > 0 || newPwd.length() > 0) {
             if (!oldPasswordtext.validate()) validate = false;
