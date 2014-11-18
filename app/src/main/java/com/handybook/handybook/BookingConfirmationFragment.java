@@ -2,8 +2,10 @@ package com.handybook.handybook;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 public final class BookingConfirmationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener {
     static final String EXTRA_IS_LAST = "com.handy.handy.EXTRA_IS_LAST";
+    static final String EXTRA_ASK_PWD = "com.handy.handy.EXTRA_ASK_PWD";
+    private static final String STATE_KEY_HIGHLIGHT = "KEY_HIGHLIGHT";
 
     private BookingOptionsView optionsView;
     private BookingPostInfo postInfo;
@@ -26,6 +30,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     @InjectView(R.id.options_layout) LinearLayout optionsLayout;
     @InjectView(R.id.header_text) TextView headerText;
     @InjectView(R.id.next_button) Button nextButton;
+    @InjectView(R.id.keys_text) BasicInputTextView keysText;
 
     static BookingConfirmationFragment newInstance(final boolean isLast) {
         final BookingConfirmationFragment fragment = new BookingConfirmationFragment();
@@ -48,6 +53,10 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_confirmation, container, false);
 
         ButterKnife.inject(this, view);
+
+        keysText.setMinLength(2);
+        keysText.setHint(getString(R.string.where_hide_key));
+        keysText.addTextChangedListener(keyTextWatcher);
 
         postInfo = bookingManager.getCurrentPostInfo();
 
@@ -90,6 +99,20 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     }
 
     @Override
+    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(STATE_KEY_HIGHLIGHT)) keysText.highlight();
+        }
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_KEY_HIGHLIGHT, keysText.isHighlighted());
+    }
+
+    @Override
     public final void onStart() {
         super.onStart();
         if (!isLast) ((BaseActivity)getActivity()).setOnBackPressedListener(this);
@@ -113,6 +136,15 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         nextButton.setClickable(true);
     }
 
+    private boolean validateFields() {
+        boolean validate = true;
+
+        if (!isLast && ((BookingOptionsSelectView)optionsView).getCurrentIndex() == 2 && !keysText.validate())
+            validate = false;
+
+        return validate;
+    }
+
     @Override
     public final void onBack() {
         if (!isLast) showBookings();
@@ -121,6 +153,8 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
+            if (!validateFields()) return;
+
             if (!isLast) {
                 final Intent intent = new Intent(getActivity(), BookingConfirmationActivity.class);
                 intent.putExtra(BookingConfirmationActivity.EXTRA_IS_LAST, true);
@@ -182,7 +216,14 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             = new BookingOptionsView.OnUpdatedListener() {
         @Override
         public void onUpdate(final BookingOptionsView view) {
-            postInfo.setGetInId(((BookingOptionsSelectView) view).getCurrentIndex());
+            final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
+            postInfo.setGetInId(index);
+
+            if (index == 2) keysText.setVisibility(View.VISIBLE);
+            else {
+                keysText.unHighlight();
+                keysText.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -195,5 +236,22 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                                    final String[] items) {
         }
     };
-}
 
+    private final TextWatcher keyTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(final CharSequence charSequence, final int start,
+                                      final int count, final int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(final CharSequence charSequence, final int start,
+                                  final int before, final int count) {
+        }
+
+        @Override
+        public void afterTextChanged(final Editable editable) {
+            postInfo.setGetInText(keysText.getInput());
+        }
+    };
+}

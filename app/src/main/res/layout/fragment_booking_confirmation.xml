@@ -43,8 +43,20 @@
                 android:layout_below="@id/header_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical"
                 android:background="@color/white" />
+
+            <com.handybook.handybook.BasicInputTextView
+                android:id="@+id/keys_text"
+                android:layout_below="@id/options_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:visibility="gone"
+                style="@style/EditText" />
 
         </RelativeLayout>
 

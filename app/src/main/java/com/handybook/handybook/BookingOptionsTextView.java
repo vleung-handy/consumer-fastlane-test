@@ -51,7 +51,7 @@ final class BookingOptionsTextView extends BookingOptionsView {
     }
 
     final String getCurrentValue() {
-        return editText.getText().toString();
+        return editText.getText().toString().trim();
     }
 
     final void setValue(final String value) {
