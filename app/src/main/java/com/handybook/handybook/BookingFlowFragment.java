@@ -44,19 +44,6 @@ public class BookingFlowFragment extends InjectedFragment {
 
             bookingManager.setCurrentQuote(quote);
 
-            final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
-                    = quote.getPeakPriceTable();
-
-            if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
-                    !(BookingFlowFragment.this instanceof PeakPricingTableFragment) && peakTable != null
-                    && !peakTable.isEmpty()) {
-                final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
-                startActivity(intent);
-                enableInputs();
-                progressDialog.dismiss();
-                return;
-            }
-
             final User user = userManager.getCurrentUser();
             final BookingTransaction transaction = new BookingTransaction();
 
@@ -74,6 +61,28 @@ public class BookingFlowFragment extends InjectedFragment {
             else transaction.setEmail(bookingManager.getCurrentRequest().getEmail());
 
             bookingManager.setCurrentTransaction(transaction);
+
+            if (quote.hasRecurring()) {
+                final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
+                startActivity(intent);
+                enableInputs();
+                progressDialog.dismiss();
+                return;
+            }
+
+            final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
+                    = quote.getPeakPriceTable();
+
+            //TODO rename class with booking on front
+            if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
+                    !(BookingFlowFragment.this instanceof PeakPricingTableFragment) && peakTable != null
+                    && !peakTable.isEmpty()) {
+                final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+                startActivity(intent);
+                enableInputs();
+                progressDialog.dismiss();
+                return;
+            }
 
             final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
             startActivity(intent);

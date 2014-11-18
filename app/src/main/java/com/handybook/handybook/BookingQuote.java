@@ -140,6 +140,12 @@ public final class BookingQuote extends Observable {
         return peakPriceTable;
     }
 
+    public boolean hasRecurring() {
+        final PriceInfo info = this.priceTable.get(0);
+        return !(info.getBiMonthlyprice() <= 0 && info.getMonthlyPrice() <= 0
+                && info.getWeeklyPrice() <= 0);
+    }
+
     final String getPhonePrefix() {
         return phonePrefix;
     }
@@ -269,6 +275,9 @@ public final class BookingQuote extends Observable {
     static final class PriceInfo {
         @SerializedName("hours") private float hours;
         @SerializedName("price") private float price;
+        @SerializedName("bimonthly_recurring_price") private float biMonthlyprice;
+        @SerializedName("monthly_recurring_price") private float monthlyPrice;
+        @SerializedName("weekly_recurring_price") private float weeklyPrice;
 
         final float getHours() {
             return hours;
@@ -276,6 +285,18 @@ public final class BookingQuote extends Observable {
 
         final float getPrice() {
             return price;
+        }
+
+        final float getBiMonthlyprice() {
+            return biMonthlyprice;
+        }
+
+        final float getMonthlyPrice() {
+            return monthlyPrice;
+        }
+
+        final float getWeeklyPrice() {
+            return weeklyPrice;
         }
     }
 

@@ -128,7 +128,8 @@ public final class BaseDataManager extends DataManager {
                                 }
 
                                 ArrayList<Service> list;
-                                if ((list = servicesMap.get(service.getParentId())) != null) list.add(service);
+                                if ((list = servicesMap.get(service.getParentId())) != null)
+                                    list.add(service);
                                 else {
                                     list = new ArrayList<Service>();
                                     list.add(service);

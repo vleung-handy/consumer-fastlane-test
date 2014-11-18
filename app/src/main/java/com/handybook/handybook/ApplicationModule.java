@@ -23,7 +23,8 @@ import retrofit.converter.GsonConverter;
         ServiceCategoriesFragment.class, ServicesFragment.class, BookingLocationFragment.class,
         BookingOptionsFragment.class, BookingDateFragment.class, BookingAddressFragment.class,
         BookingHeaderFragment.class, BookingPaymentFragment.class, PeakPricingFragment.class,
-        PeakPricingTableFragment.class, BookingConfirmationFragment.class, BaseDataManager.class
+        PeakPricingTableFragment.class, BookingConfirmationFragment.class,
+        BookingRecurrenceFragment.class, BaseDataManager.class
 })
 final class ApplicationModule {
     private final Application application;

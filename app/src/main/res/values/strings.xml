@@ -75,4 +75,9 @@
     <string name="additional_pro_info">e.g, Focus on or skip specific rooms or surfaces, or other special requests.</string>
     <string name="where_hide_key">Where will you hide the key?</string>
     <string name="use_your_pwd">Use your password to log in and \nmanage your bookings.</string>
+    <string name="how_often">How Often?</string>
+    <string name="every_week">Every week</string>
+    <string name="every_four_weeks">Every 4 weeks</string>
+    <string name="every_two_weeks">Every 2 weeks</string>
+    <string name="once">Once</string>
 </resources>
