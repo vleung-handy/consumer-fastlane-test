@@ -53,7 +53,7 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
     }
 
     final void setCurrentIndex(final int index) {
-        if (index < 1) return;
+        if (index < 0) return;
 
         optionsSpinner.setCurrentItem(index);
         if (updateListener != null) updateListener

@@ -23,12 +23,14 @@
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:paddingTop="16dp"
         android:animateLayoutChanges="true">
 
-        <RadioGroup
-            android:id="@+id/radio_group"
+        <LinearLayout
+            android:id="@+id/options_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
 
         <TextView android:id="@+id/info_text"
             android:layout_marginBottom="16dp"

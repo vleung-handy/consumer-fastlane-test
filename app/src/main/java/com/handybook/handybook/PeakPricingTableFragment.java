@@ -1,7 +1,6 @@
 package com.handybook.handybook;
 
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,9 +63,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
                 .LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        layoutParams.setMargins(0, 0, 0,
-                Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        1, getResources().getDisplayMetrics())));
+        layoutParams.setMargins(0, 0, 0, Utils.toDP(1, getActivity()));
 
         int i = 0;
         for (final BookingQuote.PeakPriceInfo info : priceList) {

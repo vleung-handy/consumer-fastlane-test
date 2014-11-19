@@ -2,7 +2,6 @@ package com.handybook.handybook;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -35,8 +34,7 @@ final class OptionsAdapter<T> extends ArrayWheelAdapter<T> {
     @Override
     public View getItem(int index, View convertView, ViewGroup parent) {
         final View view = super.getItem(index, convertView, parent);
-        int width = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                (float)(max / 2.5), context.getResources().getDisplayMetrics()));
+        int width = Utils.toDP((float)(max / 2.5), context);
 
         final int defaultWidth = 160;
         if (width <= defaultWidth) width += (defaultWidth - width);
