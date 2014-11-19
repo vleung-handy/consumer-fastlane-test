@@ -34,7 +34,6 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
                 R.layout.view_spinner_option, R.id.text));
 
         optionsSpinner.setCurrentItem(Integer.parseInt(option.getDefaultValue()));
-
         optionsSpinner.addChangingListener(new OnWheelChangedListener() {
             @Override
             public void onChanged(AbstractWheel wheel, int oldValue, int newValue) {
@@ -54,6 +53,8 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
     }
 
     final void setCurrentIndex(final int index) {
+        if (index < 1) return;
+
         optionsSpinner.setCurrentItem(index);
         if (updateListener != null) updateListener
                 .onUpdate(BookingOptionsSpinnerView.this);

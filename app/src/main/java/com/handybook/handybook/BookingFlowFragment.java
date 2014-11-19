@@ -73,7 +73,6 @@ public class BookingFlowFragment extends InjectedFragment {
             final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
                     = quote.getPeakPriceTable();
 
-            //TODO rename class with booking on front
             if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
                     !(BookingFlowFragment.this instanceof PeakPricingTableFragment) && peakTable != null
                     && !peakTable.isEmpty()) {
