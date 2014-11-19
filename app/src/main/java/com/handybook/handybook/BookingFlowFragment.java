@@ -42,6 +42,7 @@ public class BookingFlowFragment extends InjectedFragment {
         public void onSuccess(final BookingQuote quote) {
             if (!allowCallbacks) return;
 
+            final BookingTransaction oldTransaction = bookingManager.getCurrentTransaction();
             bookingManager.setCurrentQuote(quote);
 
             final User user = userManager.getCurrentUser();
@@ -54,6 +55,10 @@ public class BookingFlowFragment extends InjectedFragment {
             transaction.setUserId(quote.getUserId());
             transaction.setServiceId(quote.getServiceId());
 
+            if (oldTransaction != null) {
+                transaction.setRecurringFrequency(oldTransaction.getRecurringFrequency());
+            }
+
             if (user != null) {
                 transaction.setEmail(user.getEmail());
                 transaction.setAuthToken(user.getAuthToken());
@@ -62,7 +67,10 @@ public class BookingFlowFragment extends InjectedFragment {
 
             bookingManager.setCurrentTransaction(transaction);
 
-            if (quote.hasRecurring()) {
+            if (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)
+                    && !(BookingFlowFragment.this instanceof PeakPricingFragment)
+                    && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
+                    && quote.hasRecurring()) {
                 final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
                 startActivity(intent);
                 enableInputs();
@@ -92,6 +100,9 @@ public class BookingFlowFragment extends InjectedFragment {
             enableInputs();
             progressDialog.dismiss();
         }
+
+        //TODO show different peak price table for recurring
+        //TODO dont reload quote after recurrence, peak price skip, extras!!
 
         @Override
         public void onError(final DataManager.DataManagerError error) {

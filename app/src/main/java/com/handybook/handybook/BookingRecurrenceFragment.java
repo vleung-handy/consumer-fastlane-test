@@ -85,7 +85,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
-
+            continueBookingFlow();
         }
     };
 
