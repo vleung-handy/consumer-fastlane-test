@@ -218,6 +218,14 @@
         <item name="android:textSize">@dimen/xsmall_text_size</item>
     </style>
 
+    <style name="TextView.Headline.XSmall.Blue">
+        <item name="android:textColor">@color/handy_blue</item>
+    </style>
+
+    <style name="TextView.Headline.XSmall.Bold">
+        <item name="fontPath">fonts/CircularStd-Bold.otf</item>
+    </style>
+
     <style name="TextView.Navbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

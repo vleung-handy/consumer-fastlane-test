@@ -1,23 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <CheckBox
         android:id="@+id/check_box"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="4">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:freezesText="false"
+            android:singleLine="true"
+            style="@style/TextView" />
+
+        <TextView
+            android:id="@+id/sub_text"
+            android:layout_below="@id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subtitle"
+            android:freezesText="false"
+            android:singleLine="true"
+            android:visibility="gone"
+            style="@style/TextView.Headline.XSmall.Blue" />
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/title_text"
-        android:layout_toRightOf="@id/check_box"
-        android:layout_toEndOf="@id/check_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:text="Option"
+        android:id="@+id/right_text"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center|end"
+        android:layout_weight="1"
+        android:text="Text"
         android:freezesText="false"
         android:singleLine="true"
-        style="@style/TextView" />
+        android:visibility="gone"
+        style="@style/TextView.Headline.XSmall.Bold" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -49,6 +49,11 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
                 getString(R.string.every_two_weeks), getString(R.string.every_four_weeks),
                 getString(R.string.once)});
 
+        option.setOptionsSubTitles(new String[]
+                { null, getString(R.string.most_popular) , null, null });
+
+        option.setOptionsRightText(getSavingsInfo());
+
         final BookingOptionsSelectView optionsView
                 = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
 
@@ -102,4 +107,27 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
                                    final String[] items) {
         }
     };
+
+    private String[] getSavingsInfo() {
+        final String[] info = new String[4];
+        final BookingQuote quote = bookingManager.getCurrentQuote();
+        final float hours = bookingTransaction.getHours();
+        final float prices[] = quote.getPricing(hours, 0);
+        final float price = prices[0];
+        final float discount = prices[1];
+
+        for (int i = 1; i < 4; i++) {
+            final float recurPrices[] = quote.getPricing(hours, i);
+            final float recurPrice = recurPrices[0];
+            final float recurDiscount = recurPrices[1];
+
+            int percent;
+            if (recurPrice != recurDiscount)
+                percent = Math.round((discount - recurDiscount) / discount * 100);
+            else percent = Math.round((price - recurPrice) / price * 100);
+
+            if (percent > 0) info[i - 1] = getString(R.string.save) + " " + percent + "%";
+        }
+        return info;
+    }
 }

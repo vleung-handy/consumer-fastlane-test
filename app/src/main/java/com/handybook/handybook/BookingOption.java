@@ -12,6 +12,8 @@ final class BookingOption implements Parcelable {
     @SerializedName("info") private String info;
     @SerializedName("default_value") private String defaultValue;
     @SerializedName("options") private String[] options;
+    @SerializedName("options_sub_title") private String[] optionsSubTitles;
+    @SerializedName("options_left_text") private String[] optionsRightText;
     @SerializedName("warnings") private String[][] warnings;
     @SerializedName("child_elements") private String[][] children;
     @SerializedName("page") private int page;
@@ -67,6 +69,22 @@ final class BookingOption implements Parcelable {
         this.options = options;
     }
 
+    final String[] getOptionsSubTitles() {
+        return optionsSubTitles;
+    }
+
+    final void setOptionsSubTitles(final String[] optionsSubTitles) {
+        this.optionsSubTitles = optionsSubTitles;
+    }
+
+    final String[] getOptionsRightText() {
+        return optionsRightText;
+    }
+
+    final void setOptionsRightText(final String[] optionsRightText) {
+        this.optionsRightText = optionsRightText;
+    }
+
     final String[][] getWarnings() {
         return warnings;
     }
@@ -114,6 +132,8 @@ final class BookingOption implements Parcelable {
         post = intData[1];
 
         options = in.createStringArray();
+        optionsSubTitles = in.createStringArray();
+        optionsRightText = in.createStringArray();
         warnings = (String[][]) in.readSerializable();
         children = (String[][]) in.readSerializable();
     }
@@ -123,6 +143,8 @@ final class BookingOption implements Parcelable {
         out.writeStringArray(new String[]{ uniq, type, title, defaultValue, info });
         out.writeIntArray(new int[]{ page, post });
         out.writeStringArray(options);
+        out.writeStringArray(optionsSubTitles);
+        out.writeStringArray(optionsRightText);
         out.writeSerializable(warnings);
         out.writeSerializable(children);
     }

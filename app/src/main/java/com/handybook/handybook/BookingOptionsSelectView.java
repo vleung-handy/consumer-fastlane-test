@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 final class BookingOptionsSelectView extends BookingOptionsIndexView {
+    protected String[] optionsSubtitles;
+    protected String[] optionsRightText;
     private LinearLayout optionLayout;
     private RelativeLayout layout;
     private HashMap<Integer, CheckBox> checkMap;
@@ -35,6 +37,9 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
     private void init(final Context context) {
         if (!option.getType().equals("option")) return;
 
+        optionsSubtitles = option.getOptionsSubTitles();
+        optionsRightText = option.getOptionsRightText();
+
         checkMap = new HashMap<>();
         layout = (RelativeLayout)this.findViewById(R.id.layout);
         optionLayout = (LinearLayout)this.findViewById(R.id.options_layout);
@@ -42,11 +47,27 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
 
         for (int i = 0; i < optionsList.length; i++) {
             final String optionText = optionsList[i];
-            final RelativeLayout optionView = (RelativeLayout)LayoutInflater.from(context)
+            final LinearLayout optionView = (LinearLayout)LayoutInflater.from(context)
                     .inflate(R.layout.view_booking_select_option, null);
 
             final TextView title = (TextView)optionView.findViewById(R.id.title_text);
             title.setText(optionText);
+
+            String subTitleText;
+            if (optionsSubtitles != null && optionsSubtitles.length >= i + 1
+                    && (subTitleText = optionsSubtitles[i]) != null && subTitleText.length() > 0) {
+                final TextView subTitle = (TextView)optionView.findViewById(R.id.sub_text);
+                subTitle.setText(subTitleText);
+                subTitle.setVisibility(VISIBLE);
+            }
+
+            String rightText;
+            if (optionsRightText != null && optionsRightText.length >= i + 1
+                    && (rightText = optionsRightText[i]) != null && rightText.length() > 0) {
+                final TextView rightTextView = (TextView)optionView.findViewById(R.id.right_text);
+                rightTextView.setText(rightText);
+                rightTextView.setVisibility(VISIBLE);
+            }
 
             final CheckBox checkBox = (CheckBox)optionView.findViewById(R.id.check_box);
             if (i == checkedIndex) checkBox.setChecked(true);

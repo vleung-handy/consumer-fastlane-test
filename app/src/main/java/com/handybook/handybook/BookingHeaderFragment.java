@@ -71,27 +71,8 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
                 + TextUtils.formatDecimal(transaction.getHours(), "#.#")
                 + " " + getString(R.string.hours));
 
-        final BookingQuote.PriceInfo info = quote.getPriceTableMap().get(transaction.getHours());
-        float  price;
-
-        switch (transaction.getRecurringFrequency()) {
-            case 1:
-                price = info.getWeeklyPrice();
-                break;
-
-            case 2:
-                price = info.getBiMonthlyprice();
-                break;
-
-            case 3:
-                price = info.getMonthlyPrice();
-                break;
-
-            default:
-                price = info.getPrice();
-        }
-
-        priceText.setText(TextUtils.formatPrice(price, quote.getCurrencyChar(),
-                quote.getCurrencySuffix()));
+        priceText.setText(TextUtils.formatPrice((quote.getPricing(transaction.getHours(),
+                        transaction.getRecurringFrequency())[0]),
+                quote.getCurrencyChar(), quote.getCurrencySuffix()));
     }
 }

@@ -140,10 +140,28 @@ public final class BookingQuote extends Observable {
         return peakPriceTable;
     }
 
-    public boolean hasRecurring() {
+    final boolean hasRecurring() {
         final PriceInfo info = this.priceTable.get(0);
         return !(info.getBiMonthlyprice() <= 0 && info.getMonthlyPrice() <= 0
                 && info.getWeeklyPrice() <= 0);
+    }
+
+    final float[] getPricing(final float hours, final int freq) {
+        final PriceInfo info = this.getPriceTableMap().get(hours);
+
+        switch (freq) {
+            case 1:
+                return new float[]{ info.getWeeklyPrice(), info.getDiscountWeeklyPrice()};
+
+            case 2:
+                return new float[]{ info.getBiMonthlyprice(), info.getDiscountBiMonthlyprice()};
+
+            case 3:
+                return new float[]{ info.getMonthlyPrice(), info.getDiscountMonthlyPrice()};
+
+            default:
+               return new float[]{ info.getPrice(), info.getDiscountPrice()};
+        }
     }
 
     final String getPhonePrefix() {
@@ -275,9 +293,13 @@ public final class BookingQuote extends Observable {
     static final class PriceInfo {
         @SerializedName("hours") private float hours;
         @SerializedName("price") private float price;
+        @SerializedName("discount_price") private float discountPrice;
         @SerializedName("bimonthly_recurring_price") private float biMonthlyprice;
+        @SerializedName("discount_bimonthly_recurring_price") private float discountBiMonthlyprice;
         @SerializedName("monthly_recurring_price") private float monthlyPrice;
+        @SerializedName("discount_monthly_recurring_price") private float discountMonthlyPrice;
         @SerializedName("weekly_recurring_price") private float weeklyPrice;
+        @SerializedName("discount_weekly_recurring_price") private float discountWeeklyPrice;
 
         final float getHours() {
             return hours;
@@ -297,6 +319,22 @@ public final class BookingQuote extends Observable {
 
         final float getWeeklyPrice() {
             return weeklyPrice;
+        }
+
+        final float getDiscountPrice() {
+            return discountPrice;
+        }
+
+        final float getDiscountBiMonthlyprice() {
+            return discountBiMonthlyprice;
+        }
+
+        final float getDiscountMonthlyPrice() {
+            return discountMonthlyPrice;
+        }
+
+        final float getDiscountWeeklyPrice() {
+            return discountWeeklyPrice;
         }
     }
 

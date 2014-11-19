@@ -80,4 +80,6 @@
     <string name="every_four_weeks">Every 4 weeks</string>
     <string name="every_two_weeks">Every 2 weeks</string>
     <string name="once">Once</string>
+    <string name="most_popular">Most Popular</string>
+    <string name="save">Save</string>
 </resources>
