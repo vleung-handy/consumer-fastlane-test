@@ -7,6 +7,19 @@ import java.util.ArrayList;
 public class BookingFlowFragment extends InjectedFragment {
 
     protected void continueBookingFlow() {
+        // don't reload quote after recurrence selection
+        if (BookingFlowFragment.this instanceof BookingRecurrenceFragment) {
+            continueFlow();
+            return;
+        }
+
+        // if user skipped, don't reload quote
+        if (BookingFlowFragment.this instanceof PeakPricingFragment) {
+            continueFlow();
+            return;
+        }
+
+        // user selected new time, reload quote
         if (BookingFlowFragment.this instanceof PeakPricingTableFragment) {
             disableInputs();
             progressDialog.show();
@@ -36,72 +49,77 @@ public class BookingFlowFragment extends InjectedFragment {
         dataManager.getBookingQuote(request, bookingQuoteCallback);
     }
 
+    private void continueFlow() {
+        final BookingQuote quote = bookingManager.getCurrentQuote();
+        final BookingTransaction oldTransaction = bookingManager.getCurrentTransaction();
+        final User user = userManager.getCurrentUser();
+        final BookingTransaction transaction = new BookingTransaction();
+
+        transaction.setBookingId(quote.getBookingId());
+        transaction.setHours(quote.getHours());
+        transaction.setStartDate(quote.getStartDate());
+        transaction.setZipCode(quote.getZipCode());
+        transaction.setUserId(quote.getUserId());
+        transaction.setServiceId(quote.getServiceId());
+
+        if (oldTransaction != null) {
+            transaction.setRecurringFrequency(oldTransaction.getRecurringFrequency());
+        }
+
+        if (user != null) {
+            transaction.setEmail(user.getEmail());
+            transaction.setAuthToken(user.getAuthToken());
+        }
+        else transaction.setEmail(bookingManager.getCurrentRequest().getEmail());
+
+        bookingManager.setCurrentTransaction(transaction);
+
+        // show recurrence options if available
+        if (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)
+                && !(BookingFlowFragment.this instanceof PeakPricingFragment)
+                && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
+                && quote.hasRecurring()) {
+            final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
+            startActivity(intent);
+            enableInputs();
+            progressDialog.dismiss();
+            return;
+        }
+
+        final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
+                = quote.getPeakPriceTable();
+
+        // show surge pricing options if necessary
+        if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
+                !(BookingFlowFragment.this instanceof PeakPricingTableFragment) && peakTable != null
+                && !peakTable.isEmpty()) {
+            final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+            startActivity(intent);
+            enableInputs();
+            progressDialog.dismiss();
+            return;
+        }
+
+        // show address info
+        final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
+        startActivity(intent);
+
+        // is user logged in, hide login view on back
+        if (user != null && BookingFlowFragment.this instanceof LoginFragment)
+            BookingFlowFragment.this.getActivity().finish();
+
+        enableInputs();
+        progressDialog.dismiss();
+    }
+
     private DataManager.Callback<BookingQuote> bookingQuoteCallback
             = new DataManager.Callback<BookingQuote>() {
         @Override
         public void onSuccess(final BookingQuote quote) {
             if (!allowCallbacks) return;
-
-            final BookingTransaction oldTransaction = bookingManager.getCurrentTransaction();
             bookingManager.setCurrentQuote(quote);
-
-            final User user = userManager.getCurrentUser();
-            final BookingTransaction transaction = new BookingTransaction();
-
-            transaction.setBookingId(quote.getBookingId());
-            transaction.setHours(quote.getHours());
-            transaction.setStartDate(quote.getStartDate());
-            transaction.setZipCode(quote.getZipCode());
-            transaction.setUserId(quote.getUserId());
-            transaction.setServiceId(quote.getServiceId());
-
-            if (oldTransaction != null) {
-                transaction.setRecurringFrequency(oldTransaction.getRecurringFrequency());
-            }
-
-            if (user != null) {
-                transaction.setEmail(user.getEmail());
-                transaction.setAuthToken(user.getAuthToken());
-            }
-            else transaction.setEmail(bookingManager.getCurrentRequest().getEmail());
-
-            bookingManager.setCurrentTransaction(transaction);
-
-            if (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)
-                    && !(BookingFlowFragment.this instanceof PeakPricingFragment)
-                    && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
-                    && quote.hasRecurring()) {
-                final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
-                startActivity(intent);
-                enableInputs();
-                progressDialog.dismiss();
-                return;
-            }
-
-            final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
-                    = quote.getPeakPriceTable();
-
-            if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
-                    !(BookingFlowFragment.this instanceof PeakPricingTableFragment) && peakTable != null
-                    && !peakTable.isEmpty()) {
-                final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
-                startActivity(intent);
-                enableInputs();
-                progressDialog.dismiss();
-                return;
-            }
-
-            final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
-            startActivity(intent);
-
-            if (user != null && BookingFlowFragment.this instanceof LoginFragment)
-                BookingFlowFragment.this.getActivity().finish();
-
-            enableInputs();
-            progressDialog.dismiss();
+            continueFlow();
         }
-
-        //TODO dont reload quote after recurrence, peak price skip, extras!!
 
         @Override
         public void onError(final DataManager.DataManagerError error) {
