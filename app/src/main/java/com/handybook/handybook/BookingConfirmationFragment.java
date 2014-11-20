@@ -218,7 +218,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     };
 
     private void showBookings() {
-        bookingManager.setCurrentRequest(null);
+        bookingManager.clearAll();
 
         final Intent intent = new Intent(getActivity(), BookingsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK

@@ -38,8 +38,6 @@ public final class BookingManager implements Observer {
         request = newRequest;
         request.addObserver(this);
         securePrefs.put("BOOKING_REQ", request.toJson());
-
-        setCurrentQuote(null);
     }
 
     final BookingQuote getCurrentQuote() {
@@ -63,8 +61,6 @@ public final class BookingManager implements Observer {
         quote = newQuote;
         quote.addObserver(this);
         securePrefs.put("BOOKING_QUOTE", quote.toJson());
-
-        setCurrentTransaction(null);
     }
 
     final BookingTransaction getCurrentTransaction() {
@@ -125,5 +121,12 @@ public final class BookingManager implements Observer {
 
         if (observable instanceof BookingPostInfo)
             setCurrentPostInfo((BookingPostInfo)observable);
+    }
+
+    void clearAll() {
+        setCurrentRequest(null);
+        setCurrentQuote(null);
+        setCurrentTransaction(null);
+        setCurrentPostInfo(null);
     }
 }
