@@ -50,26 +50,10 @@ public final class BookingDateFragment extends BookingFlowFragment {
 
         ButterKnife.inject(this, view);
 
-        final Calendar cal = Calendar.getInstance();
-        final int hours, minutes;
-        final BookingRequest request = bookingManager.getCurrentRequest();
-        final Date startDate = request.getStartDate();
+        final Calendar startDate = currentStartDate();
 
-        if (startDate != null) {
-            cal.setTime(startDate);
-            hours = cal.get(Calendar.HOUR_OF_DAY);
-            minutes = cal.get(Calendar.MINUTE);
-        }
-        else {
-            // initialize date 3 days ahead with random time between 10a - 5p
-            final Random random = new Random();
-            hours = random.nextInt(8) + 10;
-            minutes = 0;
-            cal.add(Calendar.DATE, 3);
-        }
-
-        datePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+        datePicker.init(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH),
+            startDate.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
                 @Override
                 public void onDateChanged(final DatePicker view, final int year,
                                           final int monthOfYear, final int dayOfMonth) {
@@ -77,8 +61,8 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 }
         });
 
-        timePicker.setCurrentHour(hours);
-        timePicker.setCurrentMinute(minutes);
+        timePicker.setCurrentHour(startDate.get(Calendar.HOUR_OF_DAY));
+        timePicker.setCurrentMinute(startDate.get(Calendar.MINUTE));
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(final TimePicker view, final int hourOfDay, final int minute) {
@@ -96,6 +80,18 @@ public final class BookingDateFragment extends BookingFlowFragment {
     }
 
     @Override
+    public final void onResume() {
+        super.onResume();
+
+        final Calendar startDate = currentStartDate();
+        datePicker.updateDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH),
+                startDate.get(Calendar.DAY_OF_MONTH));
+
+        timePicker.setCurrentHour(startDate.get(Calendar.HOUR_OF_DAY));
+        timePicker.setCurrentMinute(startDate.get(Calendar.MINUTE));
+    }
+
+    @Override
     protected final void disableInputs() {
         super.disableInputs();
         nextButton.setClickable(false);
@@ -105,6 +101,29 @@ public final class BookingDateFragment extends BookingFlowFragment {
     protected final void enableInputs() {
         super.enableInputs();
         nextButton.setClickable(true);
+    }
+
+    private Calendar currentStartDate() {
+        final Calendar cal = Calendar.getInstance();
+        final Date requestDate = bookingManager.getCurrentRequest().getStartDate();
+        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+        Date tranDate = null;
+
+        if (transaction != null) tranDate = transaction.getStartDate();
+        final Date startDate = tranDate != null ? tranDate : requestDate;
+
+        if (startDate != null) {
+            cal.setTime(startDate);
+        }
+        else {
+            // initialize date 3 days ahead with random time between 10a - 5p
+            final Random random = new Random();
+            cal.set(Calendar.HOUR_OF_DAY, random.nextInt(8) + 10);
+            cal.set(Calendar.MINUTE, 0);
+            cal.add(Calendar.DATE, 3);
+        }
+
+        return cal;
     }
 
     private void updateRequestDate() {

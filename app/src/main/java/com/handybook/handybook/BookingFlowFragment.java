@@ -101,7 +101,6 @@ public class BookingFlowFragment extends InjectedFragment {
             progressDialog.dismiss();
         }
 
-        //TODO reset start date picker to current transaction date if going back
         //TODO dont reload quote after recurrence, peak price skip, extras!!
 
         @Override

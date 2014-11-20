@@ -81,6 +81,7 @@ public final class ServicesFragment extends InjectedListFragment {
                     final User user = userManager.getCurrentUser();
                     if (user != null) request.setEmail(user.getEmail());
 
+                    bookingManager.clearAll();
                     bookingManager.setCurrentRequest(request);
 
                     final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);

@@ -86,6 +86,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
                         final User user = userManager.getCurrentUser();
                         if (user != null) request.setEmail(user.getEmail());
 
+                        bookingManager.clearAll();
                         bookingManager.setCurrentRequest(request);
 
                         final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
