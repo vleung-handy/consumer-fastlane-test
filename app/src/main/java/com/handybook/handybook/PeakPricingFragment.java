@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -64,7 +65,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         });
 
         datePager.setOnPageChangeListener(pageListener);
-        currentIndex = getFirstRegPriceIndex();
+        currentIndex = getStartIndex();
         updateDateHeader();
 
         return view;
@@ -83,18 +84,18 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         outState.putSerializable(STATE_PRICE_TABLE, peakPriceTable);
     }
 
-    private int getFirstRegPriceIndex() {
-        int index = 0;
+    private int getStartIndex() {
+        final Date startDate = bookingManager.getCurrentTransaction().getStartDate();
 
         for (int i = 0; i < peakPriceTable.size(); i++) {
             for (final BookingQuote.PeakPriceInfo info : peakPriceTable.get(i)) {
-                if (info.getType().equals("reg-price")) {
+                if (Utils.equalDates(startDate, info.getDate())) {
                     return i;
                 }
             }
         }
 
-        return index;
+        return 0;
     }
 
     private void updateDateHeader() {
