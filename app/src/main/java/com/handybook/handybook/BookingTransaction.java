@@ -216,10 +216,13 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("zipcode", context.serialize(value.getZipCode()));
             jsonObj.add("email", context.serialize(value.getEmail()));
             jsonObj.add("hrs", context.serialize(value.getHours()));
-            jsonObj.add("updated_recurring_freq", context.serialize(value.getRecurringFrequency()));
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("stripe_token", context.serialize(value.getStripeToken()));
+
+            final int recur = value.getRecurringFrequency();
+            if (recur > 0) jsonObj.add("updated_recurring_freq", context.serialize(recur));
+
             return jsonObj;
         }
     }
