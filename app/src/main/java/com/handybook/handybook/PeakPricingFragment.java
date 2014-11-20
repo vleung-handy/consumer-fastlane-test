@@ -24,6 +24,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
 
     @InjectView(R.id.skip_button) Button skipButton;
     @InjectView(R.id.date_text) TextView dateText;
+    @InjectView(R.id.header_text) TextView headerText;
     @InjectView(R.id.pager) ViewPager datePager;
 
     static PeakPricingFragment newInstance() {
@@ -50,7 +51,12 @@ public final class PeakPricingFragment extends BookingFlowFragment {
 
         ButterKnife.inject(this, view);
 
-        skipButton.setOnClickListener(new View.OnClickListener() {
+        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+        if (transaction.getRecurringFrequency() > 0) {
+            skipButton.setVisibility(View.GONE);
+            headerText.setText(R.string.peak_price_info_recur);
+        }
+        else skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 continueBookingFlow();

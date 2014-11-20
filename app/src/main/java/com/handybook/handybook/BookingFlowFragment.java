@@ -101,7 +101,9 @@ public class BookingFlowFragment extends InjectedFragment {
             progressDialog.dismiss();
         }
 
-        //TODO show different peak price table for recurring
+        //TODO reset start date picker to current transaction date if going back
+        //TODO inrease date text lenght in header to fit november 26
+        //TODO change go to first reg price date to go tow current date
         //TODO dont reload quote after recurrence, peak price skip, extras!!
 
         @Override

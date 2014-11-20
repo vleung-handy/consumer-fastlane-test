@@ -94,7 +94,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         @Override
         public void onUpdate(final BookingOptionsView view) {
             final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-            bookingTransaction.setRecurringFrequency(index + 1);
+            bookingTransaction.setRecurringFrequency(index == 3 ? 0 : index + 1);
         }
 
         @Override
