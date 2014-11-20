@@ -77,6 +77,7 @@ public final class ServicesFragment extends InjectedListFragment {
                 else {
                     final BookingRequest request = new BookingRequest();
                     request.setServiceId(next.getId());
+                    request.setUniq(next.getUniq());
 
                     final User user = userManager.getCurrentUser();
                     if (user != null) request.setEmail(user.getEmail());

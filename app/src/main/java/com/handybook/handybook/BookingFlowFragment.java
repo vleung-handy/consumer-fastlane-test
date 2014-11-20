@@ -50,6 +50,7 @@ public class BookingFlowFragment extends InjectedFragment {
     }
 
     private void continueFlow() {
+        final BookingRequest request = bookingManager.getCurrentRequest();
         final BookingQuote quote = bookingManager.getCurrentQuote();
         final BookingTransaction oldTransaction = bookingManager.getCurrentTransaction();
         final User user = userManager.getCurrentUser();
@@ -70,7 +71,7 @@ public class BookingFlowFragment extends InjectedFragment {
             transaction.setEmail(user.getEmail());
             transaction.setAuthToken(user.getAuthToken());
         }
-        else transaction.setEmail(bookingManager.getCurrentRequest().getEmail());
+        else transaction.setEmail(request.getEmail());
 
         bookingManager.setCurrentTransaction(transaction);
 
@@ -78,6 +79,7 @@ public class BookingFlowFragment extends InjectedFragment {
         if (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)
                 && !(BookingFlowFragment.this instanceof PeakPricingFragment)
                 && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
+                && !(BookingFlowFragment.this instanceof BookingExtrasFragment)
                 && quote.hasRecurring()) {
             final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             startActivity(intent);
@@ -91,9 +93,20 @@ public class BookingFlowFragment extends InjectedFragment {
 
         // show surge pricing options if necessary
         if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
-                !(BookingFlowFragment.this instanceof PeakPricingTableFragment) && peakTable != null
-                && !peakTable.isEmpty()) {
+                !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
+                && !(BookingFlowFragment.this instanceof BookingExtrasFragment)
+                && peakTable != null && !peakTable.isEmpty()) {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+            startActivity(intent);
+            enableInputs();
+            progressDialog.dismiss();
+            return;
+        }
+
+        // show extras for home cleaning
+        if (!(BookingFlowFragment.this instanceof BookingExtrasFragment)
+                && request.getUniq().equals("home_cleaning")) {
+            final Intent intent = new Intent(getActivity(), BookingExtrasActivity.class);
             startActivity(intent);
             enableInputs();
             progressDialog.dismiss();

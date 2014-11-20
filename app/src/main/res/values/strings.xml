@@ -84,4 +84,10 @@
     <string name="most_popular">Most Popular</string>
     <string name="save">Save</string>
     <string name="available">Available</string>
+    <string name="extras">Extras</string>
+    <string name="inside_cabinets">Inside cabinets</string>
+    <string name="inside_fridge">Inside fridge</string>
+    <string name="inside_oven">Inside oven</string>
+    <string name="laundry_wash_dry"><![CDATA[Laundry wash & dry]]></string>
+    <string name="interior_windows">Interior windows</string>
 </resources>

@@ -18,6 +18,7 @@ import java.util.Observer;
 
 public final class BookingRequest extends Observable {
     @SerializedName("service_id") private int serviceId;
+    @SerializedName("uniq") private String uniq;
     @SerializedName("zipcode") private String zipCode;
     @SerializedName("email") private String email;
     @SerializedName("user_id") private String userId;
@@ -30,6 +31,15 @@ public final class BookingRequest extends Observable {
 
     final void setServiceId(final int serviceId) {
         this.serviceId = serviceId;
+        triggerObservers();
+    }
+
+    final String getUniq() {
+        return uniq;
+    }
+
+    final void setUniq(final String uniq) {
+        this.uniq = uniq;
         triggerObservers();
     }
 
@@ -117,6 +127,7 @@ public final class BookingRequest extends Observable {
                                            final JsonSerializationContext context) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("service_id", context.serialize(value.getServiceId()));
+            jsonObj.add("uniq", context.serialize(value.getUniq()));
             jsonObj.add("zipcode", context.serialize(value.getZipCode()));
             jsonObj.add("email", context.serialize(value.getEmail()));
             jsonObj.add("user_id", context.serialize(value.getUserId()));

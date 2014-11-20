@@ -206,12 +206,7 @@ public final class BookingLocationFragment extends BookingFlowFragment {
 
     private void displayBookingOptions() {
         final BookingRequest request = bookingManager.getCurrentRequest();
-        final BookingRequest newRequest = new BookingRequest();
-
-        newRequest.setServiceId(request.getServiceId());
-        newRequest.setEmail(request.getEmail());
-        newRequest.setZipCode(zipText.getZipCode());
-        bookingManager.setCurrentRequest(newRequest);
+        request.setZipCode(zipText.getZipCode());
 
         String userId = null;
         final User user = userManager.getCurrentUser();

@@ -82,6 +82,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
                     else {
                         final BookingRequest request = new BookingRequest();
                         request.setServiceId(service.getId());
+                        request.setUniq(service.getUniq());
 
                         final User user = userManager.getCurrentUser();
                         if (user != null) request.setEmail(user.getEmail());
