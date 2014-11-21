@@ -128,5 +128,6 @@ public final class BookingManager implements Observer {
         setCurrentQuote(null);
         setCurrentTransaction(null);
         setCurrentPostInfo(null);
+        securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", null);
     }
 }

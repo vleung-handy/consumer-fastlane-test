@@ -8,12 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class BookingExtrasFragment extends BookingFlowFragment {
-
     private BookingTransaction bookingTransaction;
+
+    @Inject SecurePreferences securePrefs;
 
     @InjectView(R.id.options_layout) LinearLayout optionsLayout;
     @InjectView(R.id.next_button) Button nextButton;
@@ -43,7 +48,6 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
 
         final BookingOption option = new BookingOption();
         option.setType("option");
-        option.setDefaultValue("0");
 
         option.setOptions(new String[] { getString(R.string.inside_cabinets),
                 getString(R.string.inside_fridge), getString(R.string.inside_oven),
@@ -52,14 +56,22 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
         option.setOptionsSubTitles(new String[]{ "??", "??", "??", "??", "??" });
 
         final BookingOptionsSelectView optionsView
-                = new BookingOptionsSelectView(getActivity(), option, null);
+                = new BookingOptionsSelectView(getActivity(), option, true, optionUpdated);
 
         optionsView.hideTitle();
 
-//        final int freq = bookingTransaction.getRecurringFrequency();
-//
-//        if (savedInstanceState == null) optionsView.setCurrentIndex(1);
-//        else optionsView.setCurrentIndex(freq == 0 ? 3 : freq - 1);
+        final String selected = securePrefs.getString("STATE_BOOKING_CLEANING_EXTRAS_SEL");
+        if (selected != null) {
+            final String[] indexes = selected.split(",");
+            final ArrayList<Integer> checked = new ArrayList<>();
+
+            for (int i = 0; i < indexes.length; i++) {
+                try { checked.add(Integer.parseInt(indexes[i])); }
+                catch (final NumberFormatException e) {}
+            }
+
+            optionsView.setCheckedIndexes(checked.toArray(new Integer[checked.size()]));
+        }
 //
         optionsLayout.addView(optionsView, 0);
 //
@@ -86,24 +98,27 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
 //        }
 //    };
 //
-//    private final BookingOptionsView.OnUpdatedListener optionUpdated
-//            = new BookingOptionsView.OnUpdatedListener() {
-//        @Override
-//        public void onUpdate(final BookingOptionsView view) {
-//            final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-//            bookingTransaction.setRecurringFrequency(index == 3 ? 0 : index + 1);
-//        }
-//
-//        @Override
-//        public void onShowChildren(final BookingOptionsView view,
-//                                   final String[] items) {
-//        }
-//
-//        @Override
-//        public void onHideChildren(final BookingOptionsView view,
-//                                   final String[] items) {
-//        }
-//    };
+    private final BookingOptionsView.OnUpdatedListener optionUpdated
+            = new BookingOptionsView.OnUpdatedListener() {
+        @Override
+        public void onUpdate(final BookingOptionsView view) {
+            final Integer[] indexes = ((BookingOptionsSelectView) view).getCheckedIndexes();
+            String selected = "";
+            
+            for (final int i : indexes) selected += i + ",";
+            securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", selected);
+        }
+
+        @Override
+        public void onShowChildren(final BookingOptionsView view,
+                                   final String[] items) {
+        }
+
+        @Override
+        public void onHideChildren(final BookingOptionsView view,
+                                   final String[] items) {
+        }
+    };
 //
 //    private String[] getSavingsInfo() {
 //        final String[] info = new String[4];

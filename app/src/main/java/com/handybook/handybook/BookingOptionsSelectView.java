@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 final class BookingOptionsSelectView extends BookingOptionsIndexView {
     protected String[] optionsSubtitles;
@@ -19,11 +20,13 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
     private RelativeLayout layout;
     private HashMap<Integer, CheckBox> checkMap;
     private int checkedIndex;
+    private HashSet<Integer> checkedIndexes;
+    private boolean isMulti;
 
     BookingOptionsSelectView(final Context context, final BookingOption option,
-                             final OnUpdatedListener updateListener) {
+                             final boolean isMulti, final OnUpdatedListener updateListener) {
         super(context, R.layout.view_booking_options_select, option, updateListener);
-        init(context);
+        init(context, isMulti);
     }
 
     BookingOptionsSelectView(final Context context, final AttributeSet attrs) {
@@ -34,8 +37,10 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
         super(context, attrs, defStyle);
     }
 
-    private void init(final Context context) {
+    private void init(final Context context, final boolean isMulti) {
         if (!option.getType().equals("option")) return;
+
+        this.isMulti = isMulti;
 
         optionsSubtitles = option.getOptionsSubTitles();
         optionsRightText = option.getOptionsRightText();
@@ -43,7 +48,8 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
         checkMap = new HashMap<>();
         layout = (RelativeLayout)this.findViewById(R.id.layout);
         optionLayout = (LinearLayout)this.findViewById(R.id.options_layout);
-        checkedIndex = Integer.parseInt(option.getDefaultValue());
+        checkedIndex = isMulti ? 0 : Integer.parseInt(option.getDefaultValue());
+        checkedIndexes = new HashSet<>();
 
         for (int i = 0; i < optionsList.length; i++) {
             final String optionText = optionsList[i];
@@ -70,7 +76,7 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
             }
 
             final CheckBox checkBox = (CheckBox)optionView.findViewById(R.id.check_box);
-            if (i == checkedIndex) checkBox.setChecked(true);
+            if (!isMulti && i == checkedIndex) checkBox.setChecked(true);
             checkBox.setOnCheckedChangeListener(checkedChanged);
             checkMap.put(i, checkBox);
 
@@ -87,7 +93,9 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
             optionView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    ((CheckBox)optionView.findViewById(R.id.check_box)).setChecked(true);
+                    final CheckBox box =  ((CheckBox)optionView.findViewById(R.id.check_box));
+                    if (isMulti) box.setChecked(!box.isChecked());
+                    else box.setChecked(true);
                 }
             });
 
@@ -113,12 +121,33 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
 
         if (updateListener != null) updateListener
                 .onUpdate(BookingOptionsSelectView.this);
+
+        invalidate();
+        requestLayout();
+    }
+
+    final void setCheckedIndexes(final Integer[] indexes) {
+        for (final CheckBox checkBox : checkMap.values()) checkBox.setChecked(false);
+        checkedIndexes.clear();
+
+        for (final int i : indexes) {
+            checkMap.get(i).setChecked(true);
+            checkedIndexes.add(i);
+        }
+
+        if (updateListener != null) updateListener
+                .onUpdate(BookingOptionsSelectView.this);
+
         invalidate();
         requestLayout();
     }
 
     final int getCurrentIndex() {
         return checkedIndex;
+    }
+
+    final Integer[] getCheckedIndexes() {
+        return checkedIndexes.toArray(new Integer[checkedIndexes.size()]);
     }
 
     public final void hideSeparator() {
@@ -147,11 +176,18 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
                 final CheckBox box = checkMap.get(index);
 
                 box.setOnCheckedChangeListener(null);
+
                 if (box == buttonView) {
                     checkedIndex = index;
-                    box.setChecked(true);
+                    if (!isMulti) box.setChecked(true);
+                    else {
+                        box.setChecked(isChecked);
+                        if (isChecked) checkedIndexes.add(index);
+                        else checkedIndexes.remove(index);
+                    }
                 }
-                else box.setChecked(false);
+                else if (!isMulti) box.setChecked(false);
+
                 box.setOnCheckedChangeListener(this);
             }
 

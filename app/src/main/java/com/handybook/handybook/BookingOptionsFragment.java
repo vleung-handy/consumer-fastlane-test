@@ -174,7 +174,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment {
                     break;
                 }
                 case "option": {
-                    optionsView = new BookingOptionsSelectView(getActivity(), option,
+                    optionsView = new BookingOptionsSelectView(getActivity(), option, false,
                         new BookingOptionsView.OnUpdatedListener() {
                             @Override
                             public void onUpdate(final BookingOptionsView view) {

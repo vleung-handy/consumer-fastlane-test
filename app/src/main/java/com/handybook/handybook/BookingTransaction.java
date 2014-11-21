@@ -28,6 +28,8 @@ public final class BookingTransaction extends Observable {
     @SerializedName("email") private String email;
     @SerializedName("hrs") private float hours;
     @SerializedName("updated_recurring_freq") private int recurringFrequency;
+    @SerializedName("extra_cleaning_text") private String extraText;
+    @SerializedName("extra_hours") private float extraHours;
     @SerializedName("date_start") private Date startDate;
     @SerializedName("auth_token") private String authToken;
     @SerializedName("stripe_token") private String stripeToken;
@@ -140,6 +142,24 @@ public final class BookingTransaction extends Observable {
         triggerObservers();
     }
 
+    final String getExtraText() {
+        return extraText;
+    }
+
+    final void setExtraText(final String extraText) {
+        this.extraText = extraText;
+        triggerObservers();
+    }
+
+    final float getExtraHours() {
+        return extraHours;
+    }
+
+    final void setExtraHours(final float extraHours) {
+        this.extraHours = extraHours;
+        triggerObservers();
+    }
+
     final Date getStartDate() {
         return startDate;
     }
@@ -222,6 +242,9 @@ public final class BookingTransaction extends Observable {
 
             final int recur = value.getRecurringFrequency();
             if (recur > 0) jsonObj.add("updated_recurring_freq", context.serialize(recur));
+
+            final float extraHours = value.getExtraHours();
+            if (extraHours > 0) jsonObj.add("extra_hours", context.serialize(extraHours));
 
             return jsonObj;
         }
