@@ -34,6 +34,7 @@ public final class BookingQuote extends Observable {
     @SerializedName("dynamic_options") private ArrayList<PeakPriceInfo> surgePriceTable;
     @SerializedName("stripe_key") private String stripeKey;
     @SerializedName("phone_country_prefix") private String phonePrefix;
+    @SerializedName("special_extras_options") private BookingOption extrasOptions;
 
     private HashMap<Float, PriceInfo> priceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable;
@@ -181,6 +182,15 @@ public final class BookingQuote extends Observable {
         triggerObservers();
     }
 
+    final BookingOption getExtrasOptions() {
+        return extrasOptions;
+    }
+
+    final void setExtrasOptions(final BookingOption extrasOptions) {
+        this.extrasOptions = extrasOptions;
+        triggerObservers();
+    }
+
     private void triggerObservers() {
         setChanged();
         notifyObservers();
@@ -286,6 +296,7 @@ public final class BookingQuote extends Observable {
             jsonObj.add("price_table", context.serialize(value.getPriceTable()));
             jsonObj.add("dynamic_options", context.serialize(value.getSurgePriceTable()));
             jsonObj.add("stripe_key", context.serialize(value.getStripeKey()));
+            jsonObj.add("special_extras_options", context.serialize(value.getExtrasOptions()));
             return jsonObj;
         }
     }

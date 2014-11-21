@@ -53,7 +53,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
                 getString(R.string.inside_fridge), getString(R.string.inside_oven),
                 getString(R.string.laundry_wash_dry), getString(R.string.interior_windows)});
 
-        option.setOptionsSubTitles(new String[]{ "??", "??", "??", "??", "??" });
+        option.setOptionsSubText(new String[]{"??", "??", "??", "??", "??"});
 
         final BookingOptionsSelectView optionsView
                 = new BookingOptionsSelectView(getActivity(), option, true, optionUpdated);
@@ -104,7 +104,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
         public void onUpdate(final BookingOptionsView view) {
             final Integer[] indexes = ((BookingOptionsSelectView) view).getCheckedIndexes();
             String selected = "";
-            
+
             for (final int i : indexes) selected += i + ",";
             securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", selected);
         }

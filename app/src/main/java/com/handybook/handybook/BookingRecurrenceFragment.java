@@ -49,8 +49,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
                 getString(R.string.every_two_weeks), getString(R.string.every_four_weeks),
                 getString(R.string.once)});
 
-        option.setOptionsSubTitles(new String[]
-                { null, getString(R.string.most_popular) , null, null });
+        option.setOptionsSubText(new String[]
+                {null, getString(R.string.most_popular), null, null});
 
         option.setOptionsRightText(getSavingsInfo());
 

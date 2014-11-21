@@ -42,7 +42,7 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
 
         this.isMulti = isMulti;
 
-        optionsSubtitles = option.getOptionsSubTitles();
+        optionsSubtitles = option.getOptionsSubText();
         optionsRightText = option.getOptionsRightText();
 
         checkMap = new HashMap<>();
