@@ -55,7 +55,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         option.setOptionsRightText(getSavingsInfo());
 
         final BookingOptionsSelectView optionsView
-                = new BookingOptionsSelectView(getActivity(), option, false, optionUpdated);
+                = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
 
         optionsView.hideTitle();
 

@@ -100,7 +100,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             option.setOptions(new String[] { getString(R.string.will_be_home),
                     getString(R.string.doorman), getString(R.string.will_hide_key)});
 
-            optionsView = new BookingOptionsSelectView(getActivity(), option, false, optionUpdated);
+            optionsView = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
             ((BookingOptionsSelectView)optionsView).hideTitle();
             ((BookingOptionsSelectView)optionsView).setCurrentIndex(postInfo.getGetInId());
         }

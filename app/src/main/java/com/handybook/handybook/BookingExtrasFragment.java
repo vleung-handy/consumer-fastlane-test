@@ -46,17 +46,8 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();
 
-        final BookingOption option = new BookingOption();
-        option.setType("option");
-
-        option.setOptions(new String[] { getString(R.string.inside_cabinets),
-                getString(R.string.inside_fridge), getString(R.string.inside_oven),
-                getString(R.string.laundry_wash_dry), getString(R.string.interior_windows)});
-
-        option.setOptionsSubText(new String[]{"??", "??", "??", "??", "??"});
-
-        final BookingOptionsSelectView optionsView
-                = new BookingOptionsSelectView(getActivity(), option, true, optionUpdated);
+        final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(getActivity(),
+                bookingManager.getCurrentQuote().getExtrasOptions(), optionUpdated);
 
         optionsView.hideTitle();
 

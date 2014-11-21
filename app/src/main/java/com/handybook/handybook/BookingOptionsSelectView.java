@@ -24,9 +24,9 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
     private boolean isMulti;
 
     BookingOptionsSelectView(final Context context, final BookingOption option,
-                             final boolean isMulti, final OnUpdatedListener updateListener) {
+                             final OnUpdatedListener updateListener) {
         super(context, R.layout.view_booking_options_select, option, updateListener);
-        init(context, isMulti);
+        init(context);
     }
 
     BookingOptionsSelectView(final Context context, final AttributeSet attrs) {
@@ -37,10 +37,10 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
         super(context, attrs, defStyle);
     }
 
-    private void init(final Context context, final boolean isMulti) {
-        if (!option.getType().equals("option")) return;
-
-        this.isMulti = isMulti;
+    private void init(final Context context) {
+        final String type = option.getType();
+        if (!type.equals("option") && !type.equals("checklist")) return;
+        if (type.equals("checklist")) isMulti = true;
 
         optionsSubtitles = option.getOptionsSubText();
         optionsRightText = option.getOptionsRightText();
