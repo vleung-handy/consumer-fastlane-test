@@ -256,9 +256,6 @@ public final class LoginFragment extends BookingFlowFragment {
     private final Session.StatusCallback statusCallback = new Session.StatusCallback() {
         @Override
         public void call(final Session session, final SessionState state, final Exception exception) {
-            disableInputs();
-            progressDialog.show();
-
             if (!handleFBSessionUpdates || !allowCallbacks) return;
 
             if (exception instanceof FacebookAuthorizationException) {
@@ -269,6 +266,9 @@ public final class LoginFragment extends BookingFlowFragment {
                 toast.show();
             }
             else if (session != null && session.isOpened()) {
+                disableInputs();
+                progressDialog.show();
+
                 final Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
                     @Override
                     public void onCompleted(final GraphUser user, final Response response) {
