@@ -17,6 +17,7 @@ import butterknife.InjectView;
 
 public final class BookingExtrasFragment extends BookingFlowFragment {
     private BookingTransaction bookingTransaction;
+    private BookingQuote bookingQuote;
 
     @Inject SecurePreferences securePrefs;
 
@@ -32,6 +33,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bookingTransaction = bookingManager.getCurrentTransaction();
+        bookingQuote = bookingManager.getCurrentQuote();
     }
 
     @Override
@@ -47,7 +49,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
         transaction.replace(R.id.info_header_layout, header).commit();
 
         final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(getActivity(),
-                bookingManager.getCurrentQuote().getExtrasOptions(), optionUpdated);
+                bookingQuote.getExtrasOptions(), optionUpdated);
 
         optionsView.hideTitle();
 
@@ -63,41 +65,43 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
 
             optionsView.setCheckedIndexes(checked.toArray(new Integer[checked.size()]));
         }
-//
+
         optionsLayout.addView(optionsView, 0);
-//
 //        nextButton.setOnClickListener(nextClicked);
         return view;
     }
 
-//    @Override
-//    protected final void disableInputs() {
-//        super.disableInputs();
-//        nextButton.setClickable(false);
-//    }
-//
-//    @Override
-//    protected final void enableInputs() {
-//        super.enableInputs();
-//        nextButton.setClickable(true);
-//    }
-//
 //    private final View.OnClickListener nextClicked = new View.OnClickListener() {
 //        @Override
 //        public void onClick(final View view) {
 //            continueBookingFlow();
 //        }
 //    };
-//
+
     private final BookingOptionsView.OnUpdatedListener optionUpdated
             = new BookingOptionsView.OnUpdatedListener() {
         @Override
         public void onUpdate(final BookingOptionsView view) {
             final Integer[] indexes = ((BookingOptionsSelectView) view).getCheckedIndexes();
-            String selected = "";
+            final BookingOption option = bookingQuote.getExtrasOptions();
+            final float[] hoursMap = option.getHoursInfo();
+            final String[] options = option.getOptions();
 
-            for (final int i : indexes) selected += i + ",";
+            float extraHours = 0;
+            String selected = "";
+            String extraText = "";
+
+            int j = 0;
+            for (final int i : indexes) {
+                selected += i + ",";
+                extraHours += hoursMap[i];
+                extraText += options[i] + (j == indexes.length - 1 ? "" : ", ");
+                j++;
+            }
+
             securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", selected);
+            bookingTransaction.setExtraHours(extraHours);
+            bookingTransaction.setExtraCleaningText(extraText.length() > 0 ? extraText : null);
         }
 
         @Override
@@ -110,27 +114,4 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
                                    final String[] items) {
         }
     };
-//
-//    private String[] getSavingsInfo() {
-//        final String[] info = new String[4];
-//        final BookingQuote quote = bookingManager.getCurrentQuote();
-//        final float hours = bookingTransaction.getHours();
-//        final float prices[] = quote.getPricing(hours, 0);
-//        final float price = prices[0];
-//        final float discount = prices[1];
-//
-//        for (int i = 1; i < 4; i++) {
-//            final float recurPrices[] = quote.getPricing(hours, i);
-//            final float recurPrice = recurPrices[0];
-//            final float recurDiscount = recurPrices[1];
-//
-//            int percent;
-//            if (recurPrice != recurDiscount)
-//                percent = Math.round((discount - recurDiscount) / discount * 100);
-//            else percent = Math.round((price - recurPrice) / price * 100);
-//
-//            if (percent > 0) info[i - 1] = getString(R.string.save) + " " + percent + "%";
-//        }
-//        return info;
-//    }
 }

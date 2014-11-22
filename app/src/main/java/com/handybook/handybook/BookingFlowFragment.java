@@ -130,6 +130,11 @@ public class BookingFlowFragment extends InjectedFragment {
         @Override
         public void onSuccess(final BookingQuote quote) {
             if (!allowCallbacks) return;
+
+            // persist extras since api may not return them on subsequent calls
+            final BookingQuote oldQuote = bookingManager.getCurrentQuote();
+            if (oldQuote != null) quote.setExtrasOptions(oldQuote.getExtrasOptions());
+
             bookingManager.setCurrentQuote(quote);
             continueFlow();
         }

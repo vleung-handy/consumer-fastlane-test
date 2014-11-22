@@ -28,7 +28,7 @@ public final class BookingTransaction extends Observable {
     @SerializedName("email") private String email;
     @SerializedName("hrs") private float hours;
     @SerializedName("updated_recurring_freq") private int recurringFrequency;
-    @SerializedName("extra_cleaning_text") private String extraText;
+    @SerializedName("extra_cleaning_text") private String extraCleaningText;
     @SerializedName("extra_hours") private float extraHours;
     @SerializedName("date_start") private Date startDate;
     @SerializedName("auth_token") private String authToken;
@@ -142,12 +142,12 @@ public final class BookingTransaction extends Observable {
         triggerObservers();
     }
 
-    final String getExtraText() {
-        return extraText;
+    final String getExtraCleaningText() {
+        return extraCleaningText;
     }
 
-    final void setExtraText(final String extraText) {
-        this.extraText = extraText;
+    final void setExtraCleaningText(final String extraCleaningText) {
+        this.extraCleaningText = extraCleaningText;
         triggerObservers();
     }
 
@@ -239,6 +239,7 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("stripe_token", context.serialize(value.getStripeToken()));
+            jsonObj.add("extra_cleaning_text", context.serialize(value.getExtraCleaningText()));
 
             final int recur = value.getRecurringFrequency();
             if (recur > 0) jsonObj.add("updated_recurring_freq", context.serialize(recur));

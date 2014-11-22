@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -147,7 +148,9 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
     }
 
     final Integer[] getCheckedIndexes() {
-        return checkedIndexes.toArray(new Integer[checkedIndexes.size()]);
+        final Integer[] indexes = checkedIndexes.toArray(new Integer[checkedIndexes.size()]);
+        Arrays.sort(indexes);
+        return indexes;
     }
 
     public final void hideSeparator() {

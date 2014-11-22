@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -65,14 +66,17 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     }
 
     private void refreshInfo() {
-        dateText.setText(TextUtils.formatDate(transaction.getStartDate(), "EEEE',' MMMM d"));
+        final float hours = transaction.getHours() + transaction.getExtraHours();
+        final Date startDate = transaction.getStartDate();
 
-        timeText.setText(TextUtils.formatDate(transaction.getStartDate(), "h:mm aaa") + " - "
-                + TextUtils.formatDecimal(transaction.getHours(), "#.#")
+        dateText.setText(TextUtils.formatDate(startDate, "EEEE',' MMMM d"));
+
+        timeText.setText(TextUtils.formatDate(startDate, "h:mm aaa") + " - "
+                + TextUtils.formatDecimal(hours, "#.#")
                 + " " + getString(R.string.hours));
 
-        priceText.setText(TextUtils.formatPrice((quote.getPricing(transaction.getHours(),
-                        transaction.getRecurringFrequency())[0]),
+        priceText.setText(TextUtils
+                .formatPrice((quote.getPricing(hours, transaction.getRecurringFrequency())[0]),
                 quote.getCurrencyChar(), quote.getCurrencySuffix()));
     }
 }
