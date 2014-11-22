@@ -7,8 +7,13 @@ import java.util.ArrayList;
 public class BookingFlowFragment extends InjectedFragment {
 
     protected void continueBookingFlow() {
-        // don't reload quote after recurrence selection
-        if (BookingFlowFragment.this instanceof BookingRecurrenceFragment) {
+        /*
+          don't reload quote after recurrence selection, after extras selection,
+          or if user skipped peak pricing
+        */
+        if (BookingFlowFragment.this instanceof BookingRecurrenceFragment
+                || BookingFlowFragment.this instanceof PeakPricingFragment
+                || BookingFlowFragment.this instanceof BookingExtrasFragment) {
             continueFlow();
             return;
         }
@@ -63,8 +68,11 @@ public class BookingFlowFragment extends InjectedFragment {
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
 
+        // persist additional transaction fields not contained in quote
         if (oldTransaction != null) {
             transaction.setRecurringFrequency(oldTransaction.getRecurringFrequency());
+            transaction.setExtraHours(oldTransaction.getExtraHours());
+            transaction.setExtraCleaningText(oldTransaction.getExtraCleaningText());
         }
 
         if (user != null) {
