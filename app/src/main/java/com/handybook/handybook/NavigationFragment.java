@@ -227,7 +227,7 @@ public final class NavigationFragment extends InjectedListFragment
             items.add(getString(R.string.my_bookings));
         }
 
-        items.add(getString(R.string.help));
+        //items.add(getString(R.string.help));
 
         //if (userLoggedIn) items.add(getString(R.string.share));
 
