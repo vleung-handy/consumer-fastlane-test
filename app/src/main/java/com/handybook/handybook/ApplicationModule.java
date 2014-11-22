@@ -112,12 +112,13 @@ final class ApplicationModule {
                 configs.getProperty("secure_prefs_key"), true);
     }
 
-    @Provides @Singleton final BookingManager provideBookingRequestManager() {
-        return new BookingManager(providePrefs());
+    @Provides @Singleton final BookingManager provideBookingManager(final SecurePreferences prefs) {
+        return new BookingManager(prefs);
     }
 
-    @Provides @Singleton final UserManager provideUserManager() {
-        return new UserManager(provideBus(), providePrefs());
+    @Provides @Singleton final UserManager provideUserManager(final Bus bus,
+                                                              final SecurePreferences prefs) {
+        return new UserManager(bus, prefs);
     }
 
     @Provides final ReactiveLocationProvider provideReactiveLocationProvider() {
