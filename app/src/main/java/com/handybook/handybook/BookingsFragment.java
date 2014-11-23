@@ -81,6 +81,12 @@ public final class BookingsFragment extends InjectedListFragment {
     }
 
     @Override
+    public final void onStop() {
+        super.onStop();
+        progressDialog.dismiss();
+    }
+
+    @Override
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_LOADED_BOOKINGS, loadedBookings);

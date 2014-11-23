@@ -95,6 +95,12 @@ public final class ProfileFragment extends InjectedFragment {
     }
 
     @Override
+    public final void onStop() {
+        super.onStop();
+        progressDialog.dismiss();
+    }
+
+    @Override
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_FULLNAME_HIGHLIGHT, fullNameText.isHighlighted());
