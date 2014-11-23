@@ -27,16 +27,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class LoginFragment extends BookingFlowFragment {
-    static final String EXTRA_IS_FOR_BOOKING = "com.handy.handy.EXTRA_IS_FOR_BOOKING";
-    static final String EXTRA_USER_NAME = "com.handy.handy.EXTRA_USER_NAME";
-    static final String EXTRA_USER_EMAIL = "com.handy.handy.EXTRA_USER_EMAIL";
+    static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
+    static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
+    static final String EXTRA_BOOKING_EMAIL = "com.handy.handy.EXTRA_BOOKING_EMAIL";
     private static final String STATE_EMAIL_HIGHLIGHT = "EMAIL_HIGHLIGHT";
     private static final String STATE_PASSWORD_HIGHLIGHT = "PASSWORD_HIGHLIGHT";
 
     private UiLifecycleHelper uiHelper;
     private boolean handleFBSessionUpdates = false;
-    private boolean isForBooking;
-    private String userName, userEmail;
+    private boolean findUser;
+    private String bookingUserName, bookingUserEmail;
+    private BookingRequest bookingRequest;
 
     @InjectView(R.id.nav_text) TextView navText;
     @InjectView(R.id.login_button) Button loginButton;
@@ -47,14 +48,14 @@ public final class LoginFragment extends BookingFlowFragment {
     @InjectView(R.id.or_text) TextView orText;
     @InjectView(R.id.welcome_text) TextView welcomeText;
 
-    static LoginFragment newInstance(final boolean isForBooking, final String userName,
-                                     final String userEmail) {
+    static LoginFragment newInstance(final boolean findUser, final String bookingUserName,
+                                     final String bookingUserEmail) {
         final LoginFragment fragment = new LoginFragment();
         final Bundle args = new Bundle();
 
-        args.putBoolean(EXTRA_IS_FOR_BOOKING, isForBooking);
-        args.putString(EXTRA_USER_NAME, userName);
-        args.putString(EXTRA_USER_EMAIL, userEmail);
+        args.putBoolean(EXTRA_FIND_USER, findUser);
+        args.putString(EXTRA_BOOKING_USER_NAME, bookingUserName);
+        args.putString(EXTRA_BOOKING_EMAIL, bookingUserEmail);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,11 +63,14 @@ public final class LoginFragment extends BookingFlowFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        bookingRequest = bookingManager.getCurrentRequest();
         uiHelper = new UiLifecycleHelper(getActivity(), statusCallback);
         uiHelper.onCreate(savedInstanceState);
-        isForBooking = getArguments().getBoolean(EXTRA_IS_FOR_BOOKING);
-        userName = getArguments().getString(EXTRA_USER_NAME);
-        userEmail = getArguments().getString(EXTRA_USER_EMAIL);
+        findUser = getArguments().getBoolean(EXTRA_FIND_USER);
+        bookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
+        bookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
     }
 
     @Override
@@ -77,18 +81,20 @@ public final class LoginFragment extends BookingFlowFragment {
 
         ButterKnife.inject(this, view);
 
-        if (isForBooking) {
+        if (findUser) {
             navText.setText(getString(R.string.contact));
             passwordText.setVisibility(View.GONE);
             forgotButton.setVisibility(View.GONE);
             loginButton.setText(getString(R.string.next));
+            emailText.setText(bookingRequest.getEmail());
         }
-        else if (userName != null) {
+        else if (bookingUserName != null) {
             fbButton.setVisibility(View.GONE);
             orText.setVisibility(View.GONE);
-            emailText.setText(userEmail);
-            welcomeText.setText(String.format(getString(R.string.welcome_back), userName));
+            emailText.setText(bookingUserEmail);
+            welcomeText.setText(String.format(getString(R.string.welcome_back), bookingUserName));
             welcomeText.setVisibility(View.VISIBLE);
+            bookingRequest.setEmail(bookingUserEmail);
         }
 
         fbButton.setFragment(this);
@@ -151,7 +157,7 @@ public final class LoginFragment extends BookingFlowFragment {
     private boolean validateFields() {
         boolean validate = true;
         if (!emailText.validate()) validate = false;
-        if (!isForBooking && !passwordText.validate()) validate = false;
+        if (!findUser && !passwordText.validate()) validate = false;
         return validate;
     }
 
@@ -182,7 +188,7 @@ public final class LoginFragment extends BookingFlowFragment {
 
                 final String email = emailText.getEmail();
 
-                if (isForBooking) {
+                if (findUser) {
                     dataManager.getUser(email, new DataManager.Callback<String>() {
                         @Override
                         public void onSuccess(final String name) {
@@ -190,16 +196,15 @@ public final class LoginFragment extends BookingFlowFragment {
 
                             if (name != null) {
                                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                intent.putExtra(LoginActivity.EXTRA_USER_NAME, name);
-                                intent.putExtra(LoginActivity.EXTRA_USER_EMAIL, email);
-                                startActivity(intent);
-                                getActivity().finish();
+                                intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, name);
+                                intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, email);
+                                startActivityForResult(intent, LoginActivity.RESULT_FINISH);
 
                                 progressDialog.dismiss();
                                 enableInputs();
                             }
                             else {
-                                bookingManager.getCurrentRequest().setEmail(email);
+                                bookingRequest.setEmail(email);
                                 continueBookingFlow();
                             }
                         }
@@ -315,7 +320,7 @@ public final class LoginFragment extends BookingFlowFragment {
                     Session session = Session.getActiveSession();
                     if (session != null) session.closeAndClearTokenInformation();
 
-                    if (isForBooking || userName != null) {
+                    if (bookingUserName != null) {
                         continueBookingFlow();
                         return;
                     }

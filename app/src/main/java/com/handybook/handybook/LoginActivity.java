@@ -1,19 +1,27 @@
 package com.handybook.handybook;
 
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 public final class LoginActivity extends MenuDrawerActivity {
-    static final String EXTRA_IS_FOR_BOOKING = "com.handy.handy.EXTRA_IS_FOR_BOOKING";
-    static final String EXTRA_USER_NAME = "com.handy.handy.EXTRA_USER_NAME";
-    static final String EXTRA_USER_EMAIL = "com.handy.handy.EXTRA_USER_EMAIL";
+    static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
+    static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
+    static final String EXTRA_BOOKING_EMAIL = "com.handy.handy.EXTRA_BOOKING_EMAIL";
+    static final int RESULT_FINISH = 1;
 
     @Override
     protected final Fragment createFragment() {
-        final boolean isForBooking = getIntent().getBooleanExtra(EXTRA_IS_FOR_BOOKING, false);
-        final String userName = getIntent().getStringExtra(EXTRA_USER_NAME);
-        final String userEmail = getIntent().getStringExtra(EXTRA_USER_EMAIL);
-        return LoginFragment.newInstance(isForBooking, userName, userEmail);
+        final boolean findUser = getIntent().getBooleanExtra(EXTRA_FIND_USER, false);
+        final String userName = getIntent().getStringExtra(EXTRA_BOOKING_USER_NAME);
+        final String userEmail = getIntent().getStringExtra(EXTRA_BOOKING_EMAIL);
+        return LoginFragment.newInstance(findUser, userName, userEmail);
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode,
+                                    final Intent data) {
+        if (resultCode == RESULT_FINISH) finish();
     }
 
     @Override

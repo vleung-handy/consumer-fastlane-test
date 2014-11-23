@@ -42,9 +42,9 @@ public class BookingFlowFragment extends InjectedFragment {
             request.setUserId(user.getId());
             request.setEmail(user.getEmail());
         }
-        else if (request.getEmail() == null) {
+        else if (!(BookingFlowFragment.this instanceof LoginFragment)) {
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.putExtra(LoginActivity.EXTRA_IS_FOR_BOOKING, true);
+            intent.putExtra(LoginActivity.EXTRA_FIND_USER, true);
             startActivity(intent);
             return;
         }
@@ -83,6 +83,9 @@ public class BookingFlowFragment extends InjectedFragment {
 
         bookingManager.setCurrentTransaction(transaction);
 
+        final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
+                = quote.getPeakPriceTable();
+
         // show recurrence options if available
         if (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)
                 && !(BookingFlowFragment.this instanceof PeakPricingFragment)
@@ -91,43 +94,35 @@ public class BookingFlowFragment extends InjectedFragment {
                 && quote.hasRecurring()) {
             final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             startActivity(intent);
-            enableInputs();
-            progressDialog.dismiss();
-            return;
         }
 
-        final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
-                = quote.getPeakPriceTable();
-
         // show surge pricing options if necessary
-        if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
+        else if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
                 !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
                 && !(BookingFlowFragment.this instanceof BookingExtrasFragment)
                 && peakTable != null && !peakTable.isEmpty()) {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
             startActivity(intent);
-            enableInputs();
-            progressDialog.dismiss();
-            return;
         }
 
         // show extras for home cleaning
-        if (!(BookingFlowFragment.this instanceof BookingExtrasFragment)
+        else if (!(BookingFlowFragment.this instanceof BookingExtrasFragment)
                 && request.getUniq().equals("home_cleaning")) {
             final Intent intent = new Intent(getActivity(), BookingExtrasActivity.class);
             startActivity(intent);
-            enableInputs();
-            progressDialog.dismiss();
-            return;
         }
 
         // show address info
-        final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
-        startActivity(intent);
+        else {
+            final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
+            startActivity(intent);
+        }
 
-        // is user logged in, hide login view on back
-        if (user != null && BookingFlowFragment.this instanceof LoginFragment)
-            BookingFlowFragment.this.getActivity().finish();
+        // if user logged in, hide login view on back
+        if (user != null && BookingFlowFragment.this instanceof LoginFragment) {
+            getActivity().setResult(LoginActivity.RESULT_FINISH);
+            getActivity().finish();
+        }
 
         enableInputs();
         progressDialog.dismiss();
@@ -156,7 +151,8 @@ public class BookingFlowFragment extends InjectedFragment {
             dataManagerErrorHandler.handleError(getActivity(), error);
 
             if (BookingFlowFragment.this instanceof LoginFragment)
-                BookingFlowFragment.this.getActivity().finish();
+                getActivity().setResult(LoginActivity.RESULT_FINISH);
+                getActivity().finish();
         }
     };
 }
