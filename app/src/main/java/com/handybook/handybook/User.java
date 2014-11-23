@@ -210,6 +210,9 @@ public final class User extends Observable {
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("first_address", context.serialize(value.getAddress()));
             jsonObj.add("card_info", context.serialize(value.getCreditCard()));
+            jsonObj.add("password", context.serialize(value.getPassword()));
+            jsonObj.add("current_password", context.serialize(value.getCurrentPassword()));
+            jsonObj.add("password_confirmation", context.serialize(value.getPasswordConfirmation()));
 
             return jsonObj;
         }
