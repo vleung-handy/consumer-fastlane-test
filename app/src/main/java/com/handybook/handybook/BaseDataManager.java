@@ -331,7 +331,7 @@ public final class BaseDataManager extends DataManager {
     private void handleUserResponse(final String userId, final String authToken,
                                     final JSONObject response, final Callback<User> cb) {
         final Gson gson = new Gson();
-        final User user = gson.fromJson(response.toString(), new TypeToken<User>(){}.getType());
+        final User user = User.fromJson(response.toString());
 
         user.setAuthToken(authToken);
         user.setId(userId);

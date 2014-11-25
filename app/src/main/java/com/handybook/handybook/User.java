@@ -11,6 +11,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -30,7 +31,7 @@ public final class User extends Observable {
     @SerializedName("password_confirmation") private String passwordConfirmation;
     @SerializedName("first_address") private Address address;
     @SerializedName("card_info") private CreditCard creditCard;
-
+    @SerializedName("analytics") private Analytics analytics;
 
     final String getAuthToken() {
         return authToken;
@@ -165,13 +166,16 @@ public final class User extends Observable {
 
     final void setCreditCard(final CreditCard creditCard) {
         this.creditCard = creditCard;
+        triggerObservers();
     }
 
-    final String toJson() {
-        final Gson gson = new GsonBuilder().setExclusionStrategies(getExclusionStrategy())
-                .registerTypeAdapter(User.class, new UserSerializer()).create();
+    final Analytics getAnalytics() {
+        return analytics;
+    }
 
-        return gson.toJson(this);
+    final void setAnalytics(final Analytics analytics) {
+        this.analytics = analytics;
+        triggerObservers();
     }
 
     private void triggerObservers() {
@@ -179,8 +183,17 @@ public final class User extends Observable {
         notifyObservers();
     }
 
+    final String toJson() {
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .setExclusionStrategies(getExclusionStrategy())
+                .registerTypeAdapter(User.class, new UserSerializer()).create();
+
+        return gson.toJson(this);
+    }
+
     static User fromJson(final String json) {
-        return new Gson().fromJson(json, User.class);
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+                .fromJson(json, User.class);
     }
 
     static ExclusionStrategy getExclusionStrategy() {
@@ -214,6 +227,7 @@ public final class User extends Observable {
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("first_address", context.serialize(value.getAddress()));
             jsonObj.add("card_info", context.serialize(value.getCreditCard()));
+            jsonObj.add("analytics", context.serialize(value.getAnalytics()));
             jsonObj.add("password", context.serialize(value.getPassword()));
             jsonObj.add("current_password", context.serialize(value.getCurrentPassword()));
             jsonObj.add("password_confirmation", context.serialize(value.getPasswordConfirmation()));
@@ -250,6 +264,59 @@ public final class User extends Observable {
 
         final String getBrand() {
             return brand;
+        }
+    }
+
+    static final class Analytics {
+        @SerializedName("last_booking_end") private Date lastBookingEnd;
+        @SerializedName("partner") private String partner;
+        @SerializedName("bookings") private int bookings;
+        @SerializedName("total_bookings_count") private int totalBookings;
+        @SerializedName("past_bookings_count") private int pastBookings;
+        @SerializedName("upcoming_bookings_count") private int upcomingBookings;
+        @SerializedName("recurring_bookings_count") private int recurringBookings;
+        @SerializedName("provider") private boolean isProvider;
+        @SerializedName("vip") private boolean isVip;
+        @SerializedName("facebook_login") private boolean isFacebookLogin;
+
+        final Date getLastBookingEnd() {
+            return lastBookingEnd;
+        }
+
+        final String getPartner() {
+            return partner;
+        }
+
+        final int getBookings() {
+            return bookings;
+        }
+
+        final int getTotalBookings() {
+            return totalBookings;
+        }
+
+        final int getPastBookings() {
+            return pastBookings;
+        }
+
+        final int getUpcomingBookings() {
+            return upcomingBookings;
+        }
+
+        final int getRecurringBookings() {
+            return recurringBookings;
+        }
+
+        final boolean isProvider() {
+            return isProvider;
+        }
+
+        final boolean isVip() {
+            return isVip;
+        }
+
+        final boolean isFacebookLogin() {
+            return isFacebookLogin;
         }
     }
 }
