@@ -70,9 +70,9 @@ public final class BookingDateFragment extends BookingFlowFragment {
             }
         });
 
-        // adding 10s to avoid illegal state excpetion being thrown
+        // subtracting 1s to avoid illegal state excpetion being thrown
         final Calendar today = Calendar.getInstance();
-        datePicker.setMinDate(today.getTimeInMillis() + 10000);
+        datePicker.setMinDate(today.getTimeInMillis() - 1000);
 
         // set max date to one year from today
         today.set(Calendar.YEAR, today.get(Calendar.YEAR) + 1);

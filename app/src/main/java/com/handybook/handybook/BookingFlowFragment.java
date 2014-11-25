@@ -150,9 +150,10 @@ public class BookingFlowFragment extends InjectedFragment {
             progressDialog.dismiss();
             dataManagerErrorHandler.handleError(getActivity(), error);
 
-            if (BookingFlowFragment.this instanceof LoginFragment)
+            if (BookingFlowFragment.this instanceof LoginFragment) {
                 getActivity().setResult(LoginActivity.RESULT_FINISH);
                 getActivity().finish();
+            }
         }
     };
 }
