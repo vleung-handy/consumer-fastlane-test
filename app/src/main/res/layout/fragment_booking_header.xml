@@ -35,14 +35,35 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/price_text"
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:gravity="end|center_vertical"
-        android:singleLine="true"
-        android:text="$0"
-        style="@style/TextView.XLarge.Bold" />
+        android:layout_weight="3"
+        android:gravity="end|center_vertical">
+
+        <TextView
+            android:id="@+id/discount_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_alignBaseline="@id/price_text"
+            android:textColor="@color/black_pressed"
+            android:singleLine="true"
+            android:text="$0"
+            android:visibility="gone"
+            style="@style/TextView.XSmall" />
+
+        <TextView
+            android:id="@+id/price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/discount_text"
+            android:layout_toRightOf="@id/discount_text"
+            android:singleLine="true"
+            android:text="$0"
+            style="@style/TextView.XLarge.Bold" />
+
+    </RelativeLayout>
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     @InjectView(R.id.date_text) TextView dateText;
     @InjectView(R.id.time_text) TextView timeText;
     @InjectView(R.id.price_text) TextView priceText;
+    @InjectView(R.id.discount_text) TextView discountText;
 
     static BookingHeaderFragment newInstance() {
         return new BookingHeaderFragment();
@@ -40,6 +42,8 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
                 .inflate(R.layout.fragment_booking_header,container, false);
 
         ButterKnife.inject(this, view);
+        discountText.setPaintFlags(discountText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
         refreshInfo();
         return view;
     }
@@ -75,8 +79,18 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
                 + TextUtils.formatDecimal(hours, "#.#")
                 + " " + getString(R.string.hours));
 
-        priceText.setText(TextUtils
-                .formatPrice((quote.getPricing(hours, transaction.getRecurringFrequency())[0]),
-                quote.getCurrencyChar(), quote.getCurrencySuffix()));
+        final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
+        final String currChar = quote.getCurrencyChar();
+        final String currSuffix = quote.getCurrencySuffix();
+
+        if (pricing[0] == pricing[1]) {
+            priceText.setText(TextUtils.formatPrice(pricing[0], currChar, currSuffix));
+            discountText.setVisibility(View.GONE);
+        }
+        else {
+            priceText.setText(TextUtils.formatPrice(pricing[1], currChar, currSuffix));
+            discountText.setText(TextUtils.formatPrice(pricing[0], currChar, currSuffix));
+            discountText.setVisibility(View.VISIBLE);
+        }
     }
 }
