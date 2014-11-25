@@ -5,7 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.newrelic.agent.android.NewRelic;
+import javax.inject.Inject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -13,20 +13,16 @@ abstract class BaseActivity extends FragmentActivity {
 
     private OnBackPressedListener onBackPressedListener;
 
+    @Inject Mixpanel mixpanel;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
-            NewRelic.withApplicationToken("AA7a37dccf925fd1e474142399691d1b6b3f84648b")
-                    .start(this.getApplication());
-        }
-        else {
-            NewRelic.withApplicationToken("AAbaf8c55fb9788d1664e82661d94bc18ea7c39aa6")
-                    .start(this.getApplication());
-        }
+        ((BaseApplication)this.getApplication()).inject(this);
 
-        if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE) && !BuildConfig.BUILD_TYPE.equals("debug")) {
+        if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)
+                && !BuildConfig.BUILD_TYPE.equals("debug")) {
             setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
@@ -40,6 +36,12 @@ abstract class BaseActivity extends FragmentActivity {
     public void onBackPressed() {
         if (onBackPressedListener != null) onBackPressedListener.onBack();
         else super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mixpanel.flush();
+        super.onDestroy();
     }
 
     public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener) {

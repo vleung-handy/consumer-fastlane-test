@@ -77,6 +77,10 @@ public final class User extends Observable {
         triggerObservers();
     }
 
+    final String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     final String getEmail() {
         return email;
     }

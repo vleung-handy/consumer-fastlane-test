@@ -24,7 +24,13 @@ import retrofit.converter.GsonConverter;
         BookingOptionsFragment.class, BookingDateFragment.class, BookingAddressFragment.class,
         BookingHeaderFragment.class, BookingPaymentFragment.class, PeakPricingFragment.class,
         PeakPricingTableFragment.class, BookingConfirmationFragment.class,
-        BookingExtrasFragment.class, BookingRecurrenceFragment.class, BaseDataManager.class
+        BookingExtrasFragment.class, BookingRecurrenceFragment.class, BaseDataManager.class,
+        ServiceCategoriesActivity.class, ServicesActivity.class, ProfileActivity.class,
+        PeakPricingActivity.class, MenuDrawerActivity.class, LoginActivity.class,
+        BookingsActivity.class, BookingRecurrenceActivity.class, BookingPaymentActivity.class,
+        BookingOptionsActivity.class, BookingLocationActivity.class, BookingExtrasActivity.class,
+        BookingDetailActivity.class, BookingDateActivity.class, BookingConfirmationActivity.class,
+        BookingAddressActivity.class
 })
 final class ApplicationModule {
     private final Application application;
@@ -40,7 +46,8 @@ final class ApplicationModule {
         return new HandyRetrofitEndpoint(application.getApplicationContext());
     }
 
-    @Provides @Singleton final HandyRetrofitService provideHandyService(final HandyRetrofitEndpoint endpoint) {
+    @Provides @Singleton final HandyRetrofitService provideHandyService(
+            final HandyRetrofitEndpoint endpoint) {
         final String username = configs.getProperty("api_username");
         String password = configs.getProperty("api_password_internal");
 
@@ -123,5 +130,10 @@ final class ApplicationModule {
 
     @Provides final ReactiveLocationProvider provideReactiveLocationProvider() {
         return new ReactiveLocationProvider(application.getApplicationContext());
+    }
+
+    @Provides @Singleton final Mixpanel provideMixpanel(final UserManager userManager,
+                                                        final Bus bus) {
+        return new Mixpanel(application.getApplicationContext(), userManager, bus);
     }
 }
