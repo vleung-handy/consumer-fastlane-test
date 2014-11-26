@@ -104,7 +104,7 @@
     </style>
 
     <style name="EditText.FullName">
-        <item name="android:inputType">textPersonName</item>
+        <item name="android:inputType">textCapWords</item>
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/full_name</item>
         <item name="android:maxLength">100</item>
