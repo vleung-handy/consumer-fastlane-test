@@ -243,6 +243,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                 @Override
                 public void onSuccess(final BookingCompleteTransaction trans) {
                     mixpanel.trackEventSubmitPayment();
+                    mixpanel.trackEventBookingMade();
                     if (!allowCallbacks) return;
 
                     boolean isNewUser = false;

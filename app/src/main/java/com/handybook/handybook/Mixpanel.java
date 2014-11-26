@@ -109,6 +109,18 @@ class Mixpanel {
         calledMap.put(event, true);
     }
 
+    void trackEventBookingMade() {
+        final String event = "booking made";
+        final Boolean called = calledMap.get(event);
+        if (called != null && called) return;
+
+        final JSONObject props = new JSONObject();
+        addBookingMadeFlowProps(props);
+
+        mixpanel.track(event, props);
+        calledMap.put(event, true);
+    }
+
     private void trackWhenPageEvents(final String event) {
         final Boolean called = calledMap.get(event);
         if (called != null && called) return;
@@ -191,6 +203,33 @@ class Mixpanel {
         addProps(props, "cleaning_extras_tapped", cleaningExtrasSelected);
         if (cleaningExtrasSelected) addProps(props, "extra_hours", hours);
         if (cleaningExtrasSelected) addProps(props, "extras", cleaningExtras);
+    }
+
+    private void addBookingMadeFlowProps(final JSONObject props) {
+        addSubmitPaymentFlowProps(props);
+
+        final BookingQuote quote = bookingManager.getCurrentQuote();
+        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+
+        float hourlyPrice = 0, totalPrice = 0;
+        boolean isRepeating = false;
+
+        if (quote != null) hourlyPrice = quote.getHourlyAmount();
+
+        if (transaction != null) {
+            isRepeating = transaction.getRecurringFrequency() > 0;
+
+            final float hours = transaction.getHours() + transaction.getExtraHours();
+            float[] pricing = new float[]{0, 0};
+
+            if (quote != null) pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
+            if (pricing[0] == pricing[1]) totalPrice = pricing[0];
+            else totalPrice = pricing[1];
+        }
+
+        addProps(props, "price_per_hour", hourlyPrice);
+        addProps(props, "charge", totalPrice);
+        addProps(props, "converted_to_repeat", isRepeating);
     }
 
     @Subscribe

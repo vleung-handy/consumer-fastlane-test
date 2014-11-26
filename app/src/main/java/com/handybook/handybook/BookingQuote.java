@@ -30,6 +30,7 @@ public final class BookingQuote extends Observable {
     @SerializedName("zipcode") private String zipCode;
     @SerializedName("currency_char") private String currencyChar;
     @SerializedName("currency_suffix") private String currencySuffix;
+    @SerializedName("hourly_amount") private float hourlyAmount;
     @SerializedName("price_table") private ArrayList<PriceInfo> priceTable;
     @SerializedName("dynamic_options") private ArrayList<PeakPriceInfo> surgePriceTable;
     @SerializedName("stripe_key") private String stripeKey;
@@ -109,6 +110,14 @@ public final class BookingQuote extends Observable {
     final void setCurrencySuffix(final String currencySuffix) {
         this.currencySuffix = currencySuffix;
         triggerObservers();
+    }
+
+    final float getHourlyAmount() {
+        return hourlyAmount;
+    }
+
+    final void setHourlyAmount(final float hourlyAmount) {
+        this.hourlyAmount = hourlyAmount;
     }
 
     final ArrayList<PriceInfo> getPriceTable() {
@@ -293,6 +302,7 @@ public final class BookingQuote extends Observable {
             jsonObj.add("currency_char", context.serialize(value.getCurrencyChar()));
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("phone_country_prefix", context.serialize(value.getPhonePrefix()));
+            jsonObj.add("hourly_amount", context.serialize(value.getHourlyAmount()));
             jsonObj.add("price_table", context.serialize(value.getPriceTable()));
             jsonObj.add("dynamic_options", context.serialize(value.getSurgePriceTable()));
             jsonObj.add("stripe_key", context.serialize(value.getStripeKey()));
