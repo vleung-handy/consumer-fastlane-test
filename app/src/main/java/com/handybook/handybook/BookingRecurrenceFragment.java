@@ -12,8 +12,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class BookingRecurrenceFragment extends BookingFlowFragment {
-
     private BookingTransaction bookingTransaction;
+    private int[] recurValues;
 
     @InjectView(R.id.options_layout) LinearLayout optionsLayout;
     @InjectView(R.id.next_button) Button nextButton;
@@ -48,6 +48,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         option.setOptions(new String[] { getString(R.string.every_week),
                 getString(R.string.every_two_weeks), getString(R.string.every_four_weeks),
                 getString(R.string.once)});
+
+        recurValues = new int[] { 1, 2, 4, 0 };
 
         option.setOptionsSubText(new String[]
                 {null, getString(R.string.most_popular), null, null});
@@ -94,7 +96,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         @Override
         public void onUpdate(final BookingOptionsView view) {
             final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-            bookingTransaction.setRecurringFrequency(index == 3 ? 0 : index + 1);
+            bookingTransaction.setRecurringFrequency(recurValues[index]);
         }
 
         @Override

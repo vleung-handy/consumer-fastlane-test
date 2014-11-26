@@ -120,7 +120,7 @@ final class ApplicationModule {
 
     @Provides @Singleton final BookingManager provideBookingManager(final Bus bus,
                                                                     final SecurePreferences prefs) {
-        return new BookingManager(prefs, bus);
+        return new BookingManager(bus, prefs);
     }
 
     @Provides @Singleton final UserManager provideUserManager(final Bus bus,
