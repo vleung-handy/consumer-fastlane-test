@@ -95,7 +95,7 @@ public class BookingFlowFragment extends InjectedFragment {
                 && !(BookingFlowFragment.this instanceof PeakPricingFragment)
                 && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
                 && !(BookingFlowFragment.this instanceof BookingExtrasFragment)
-                && quote.hasRecurring()) {
+                && quote.hasRecurring() && request.getUniq().equals("home_cleaning")) {
             final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             startActivity(intent);
         }
