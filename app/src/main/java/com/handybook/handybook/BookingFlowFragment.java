@@ -52,10 +52,6 @@ public class BookingFlowFragment extends InjectedFragment {
         disableInputs();
         progressDialog.show();
         dataManager.getBookingQuote(request, bookingQuoteCallback);
-
-        if (BookingFlowFragment.this instanceof BookingDateFragment
-                || BookingFlowFragment.this instanceof BookingOptionsFragment)
-            mixpanel.trackEventWhenPageSubmitted();
     }
 
     private void continueFlow() {
@@ -136,6 +132,10 @@ public class BookingFlowFragment extends InjectedFragment {
             = new DataManager.Callback<BookingQuote>() {
         @Override
         public void onSuccess(final BookingQuote quote) {
+            if (BookingFlowFragment.this instanceof BookingDateFragment
+                    || BookingFlowFragment.this instanceof BookingOptionsFragment)
+                mixpanel.trackEventWhenPageSubmitted();
+
             if (!allowCallbacks) return;
 
             // persist extras since api may not return them on subsequent calls

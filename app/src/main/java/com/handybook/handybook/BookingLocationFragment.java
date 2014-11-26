@@ -184,6 +184,10 @@ public final class BookingLocationFragment extends BookingFlowFragment {
                         new DataManager.Callback<Void>() {
                     @Override
                     public void onSuccess(Void v) {
+                        final BookingRequest request = bookingManager.getCurrentRequest();
+                        request.setZipCode(zipText.getZipCode());
+                        mixpanel.trackEventWhenPage();
+
                         if (!allowCallbacks) return;
                         displayBookingOptions();
                     }
@@ -206,8 +210,6 @@ public final class BookingLocationFragment extends BookingFlowFragment {
 
     private void displayBookingOptions() {
         final BookingRequest request = bookingManager.getCurrentRequest();
-        request.setZipCode(zipText.getZipCode());
-        mixpanel.trackEventWhenPage();
 
         String userId = null;
         final User user = userManager.getCurrentUser();

@@ -1,7 +1,6 @@
 package com.handybook.handybook;
 
 import android.content.Context;
-import android.widget.BaseAdapter;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Bus;
@@ -98,6 +97,18 @@ class Mixpanel {
         calledMap.put(event, true);
     }
 
+    void trackEventSubmitPayment() {
+        final String event = "submit payment";
+        final Boolean called = calledMap.get(event);
+        if (called != null && called) return;
+
+        final JSONObject props = new JSONObject();
+        addSubmitPaymentFlowProps(props);
+
+        mixpanel.track(event, props);
+        calledMap.put(event, true);
+    }
+
     private void trackWhenPageEvents(final String event) {
         final Boolean called = calledMap.get(event);
         if (called != null && called) return;
@@ -155,6 +166,31 @@ class Mixpanel {
         addProps(props, "repeat", isRepeat);
         addProps(props, "dynamic_price", hasDynamicPricing);
         if (repeatFreq > 0) addProps(props, "repeat_freq", repeatFreq);
+    }
+
+    private void addSubmitPaymentFlowProps(final JSONObject props) {
+        addPaymentFlowProps(props);
+
+        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+        String cleaningExtras = null;
+        boolean cleaningExtrasSelected = false;
+        float hours = 0;
+
+
+        if (transaction != null) {
+            cleaningExtras = transaction.getExtraCleaningText();
+
+            if (cleaningExtras != null) {
+                final String[] extrasList = cleaningExtras.split(",");
+                if (extrasList.length > 0) cleaningExtrasSelected = true;
+            }
+
+            hours = transaction.getExtraHours();
+        }
+
+        addProps(props, "cleaning_extras_tapped", cleaningExtrasSelected);
+        if (cleaningExtrasSelected) addProps(props, "extra_hours", hours);
+        if (cleaningExtrasSelected) addProps(props, "extras", cleaningExtras);
     }
 
     @Subscribe
