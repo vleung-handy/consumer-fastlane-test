@@ -15,16 +15,16 @@ import java.util.Observable;
 import java.util.Observer;
 
 public final class BookingPostInfo extends Observable {
-    @SerializedName("get_in") private int getInId;
+    @SerializedName("get_in") private String getInId;
     @SerializedName("get_in_text") private String getInText;
     @SerializedName("extra_message") private String extraMessage;
     @SerializedName("password") private String password;
 
-    final int getGetInId() {
+    final String getGetInId() {
         return getInId;
     }
 
-    final void setGetInId(final int getInId) {
+    final void setGetInId(final String getInId) {
         this.getInId = getInId;
         triggerObservers();
     }

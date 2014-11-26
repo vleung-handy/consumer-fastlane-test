@@ -102,7 +102,10 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
             optionsView = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
             ((BookingOptionsSelectView)optionsView).hideTitle();
-            ((BookingOptionsSelectView)optionsView).setCurrentIndex(postInfo.getGetInId());
+
+            final String indexStr = postInfo.getGetInId();
+            final int index = indexStr == null ? 0 : Integer.parseInt(indexStr);
+            ((BookingOptionsSelectView)optionsView).setCurrentIndex(index);
         }
 
         if (page == 0 || page == 1) optionsLayout.addView(optionsView, 0);
@@ -249,7 +252,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         @Override
         public void onUpdate(final BookingOptionsView view) {
             final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-            postInfo.setGetInId(index);
+            postInfo.setGetInId(Integer.toString(index));
 
             if (index == 2) keysText.setVisibility(View.VISIBLE);
             else {
