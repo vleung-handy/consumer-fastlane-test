@@ -140,7 +140,10 @@ public class BookingFlowFragment extends InjectedFragment {
 
             // persist extras since api may not return them on subsequent calls
             final BookingQuote oldQuote = bookingManager.getCurrentQuote();
-            if (oldQuote != null) quote.setExtrasOptions(oldQuote.getExtrasOptions());
+            if (oldQuote != null) {
+                quote.setExtrasOptions(oldQuote.getExtrasOptions());
+                quote.setSurgePriceTable(oldQuote.getSurgePriceTable());
+            }
 
             bookingManager.setCurrentQuote(quote);
             continueFlow();
