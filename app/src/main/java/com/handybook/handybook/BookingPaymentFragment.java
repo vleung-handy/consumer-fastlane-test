@@ -55,6 +55,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
+        mixpanel.trackEventPaymentPage();
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_payment,container, false);
 

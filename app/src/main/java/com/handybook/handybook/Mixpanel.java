@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.content.Context;
+import android.widget.BaseAdapter;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Bus;
@@ -85,11 +86,30 @@ class Mixpanel {
         trackWhenPageEvents("when page submitted");
     }
 
+    void trackEventPaymentPage() {
+        final String event = "payment page";
+        final Boolean called = calledMap.get(event);
+        if (called != null && called) return;
+
+        final JSONObject props = new JSONObject();
+        addPaymentFlowProps(props);
+
+        mixpanel.track(event, props);
+        calledMap.put(event, true);
+    }
+
     private void trackWhenPageEvents(final String event) {
         final Boolean called = calledMap.get(event);
         if (called != null && called) return;
 
         final JSONObject props = new JSONObject();
+        addWhenFlowProps(props);
+
+        mixpanel.track(event, props);
+        calledMap.put(event, true);
+    }
+
+    private void addWhenFlowProps(final JSONObject props) {
         final BookingRequest request = bookingManager.getCurrentRequest();
         String service = null, zip = null;
 
@@ -100,13 +120,51 @@ class Mixpanel {
 
         addProps(props, "service", service);
         addProps(props, "booking_zipcode", zip);
-
-        mixpanel.track(event, props);
-        calledMap.put(event, true);
     }
-    
+
+    private void addPaymentFlowProps(final JSONObject props) {
+        addWhenFlowProps(props);
+
+        final BookingRequest request = bookingManager.getCurrentRequest();
+        final BookingQuote quote = bookingManager.getCurrentQuote();
+        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+
+        String email = null;
+        int bookingId = 0, repeatFreq = 0;
+        float hours = 0, price = 0;
+        boolean hasDynamicPricing = false, isRepeat = false;
+
+        if (request != null) email = request.getEmail();
+
+        if (quote != null) {
+            bookingId = quote.getBookingId();
+            hours = quote.getHours();
+            hasDynamicPricing = quote.getSurgePriceTable() != null;
+        }
+
+        if (transaction != null) {
+            repeatFreq = transaction.getRecurringFrequency();
+            isRepeat = repeatFreq > 0;
+            if (quote != null) price = quote.getPricing(hours, repeatFreq)[0];
+        }
+
+        addProps(props, "booking_id", bookingId);
+        addProps(props, "hours", hours);
+        addProps(props, "email", email);
+        addProps(props, "price_before_discount", price);
+        addProps(props, "repeat", isRepeat);
+        addProps(props, "dynamic_price", hasDynamicPricing);
+        if (repeatFreq > 0) addProps(props, "repeat_freq", repeatFreq);
+    }
+
+    @Subscribe
+    public final void userAuthUpdated(final UserLoggedInEvent event) {
+        setSuperProps();
+    }
+
     @Subscribe
     public final void bookingFlowCleared(final BookingFlowClearedEvent event) {
         calledMap = new HashMap<>();
+        setSuperProps();
     }
 }
