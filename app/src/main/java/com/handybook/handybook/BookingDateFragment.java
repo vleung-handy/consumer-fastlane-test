@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.ButterKnife;
@@ -60,6 +63,26 @@ public final class BookingDateFragment extends BookingFlowFragment {
                     updateRequestDate();
                 }
         });
+
+        // set minutes picker to 15 min intervals
+        try {
+            final Class<?> classForid = Class.forName("com.android.internal.R$id");
+            final Field field = classForid.getField("minute");
+
+            final NumberPicker minutePicker
+                    = (NumberPicker)timePicker.findViewById(field.getInt(null));
+
+            minutePicker.setMinValue(0);
+            minutePicker.setMaxValue(7);
+
+            final List<String> displayedValues = new ArrayList<>();
+            for (int i = 0; i < 60; i += 15) displayedValues.add(String.format("%02d", i));
+            for (int i = 0; i < 60; i += 15) displayedValues.add(String.format("%02d", i));
+
+            minutePicker.setDisplayedValues(displayedValues
+                    .toArray(new String[displayedValues.size()]));
+
+        } catch (Exception e) {}
 
         timePicker.setCurrentHour(startDate.get(Calendar.HOUR_OF_DAY));
         timePicker.setCurrentMinute(startDate.get(Calendar.MINUTE));
