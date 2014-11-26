@@ -52,6 +52,10 @@ public class BookingFlowFragment extends InjectedFragment {
         disableInputs();
         progressDialog.show();
         dataManager.getBookingQuote(request, bookingQuoteCallback);
+
+        if (BookingFlowFragment.this instanceof BookingDateFragment
+                || BookingFlowFragment.this instanceof BookingOptionsFragment)
+            mixpanel.trackEventWhenPageSubmitted();
     }
 
     private void continueFlow() {

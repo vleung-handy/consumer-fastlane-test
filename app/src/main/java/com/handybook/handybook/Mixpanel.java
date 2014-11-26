@@ -9,35 +9,37 @@ import com.squareup.otto.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
 class Mixpanel {
     private MixpanelAPI mixpanel;
     private UserManager userManager;
+    private BookingManager bookingManager;
     private Bus bus;
+    private HashMap<String, Boolean> calledMap;
 
     @Inject
-    Mixpanel(final Context context, final UserManager userManager, final Bus bus)   {
+    Mixpanel(final Context context, final UserManager userManager,
+             final BookingManager bookingManager, final Bus bus)   {
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
             mixpanel = MixpanelAPI.getInstance(context, "864ccb52b900de546bb1bba717ab4fac");
         }
         else mixpanel = MixpanelAPI.getInstance(context, "5b31021d4a78ed7d57d9f19fd796f1cd");
 
         this.userManager = userManager;
+        this.bookingManager = bookingManager;
         this.bus = bus;
         this.bus.register(this);
+        this.calledMap = new HashMap<>();
+
         setSuperProps();
     }
 
     void flush() {
        mixpanel.flush();
    }
-
-    void test() {
-        final JSONObject props = new JSONObject();
-        addProps(props, "Test Event", "Test");
-        mixpanel.track("Test Event", props);
-    }
 
     private void setSuperProps() {
         mixpanel.clearSuperProperties();
@@ -75,8 +77,36 @@ class Mixpanel {
         catch (final JSONException e) { throw new RuntimeException(e); }
     }
 
+    void trackEventWhenPage() {
+        trackWhenPageEvents("when page");
+    }
+
+    void trackEventWhenPageSubmitted() {
+        trackWhenPageEvents("when page submitted");
+    }
+
+    private void trackWhenPageEvents(final String event) {
+        final Boolean called = calledMap.get(event);
+        if (called != null && called) return;
+
+        final JSONObject props = new JSONObject();
+        final BookingRequest request = bookingManager.getCurrentRequest();
+        String service = null, zip = null;
+
+        if (request != null) {
+            service = request.getUniq();
+            zip = request.getZipCode();
+        }
+
+        addProps(props, "service", service);
+        addProps(props, "booking_zipcode", zip);
+
+        mixpanel.track(event, props);
+        calledMap.put(event, true);
+    }
+    
     @Subscribe
-    public final void userAuthUpdated(final UserLoggedInEvent event) {
-        setSuperProps();
+    public final void bookingFlowCleared(final BookingFlowClearedEvent event) {
+        calledMap = new HashMap<>();
     }
 }

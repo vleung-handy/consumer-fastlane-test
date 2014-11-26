@@ -37,7 +37,7 @@ public final class BookingLocationFragment extends BookingFlowFragment {
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
 
     @Inject ReactiveLocationProvider locationProvider;
-
+    
     @InjectView(R.id.zip_text) ZipCodeInputTextView zipText;
     @InjectView(R.id.zip_progress) ProgressBar zipProgress;
     @InjectView(R.id.location_button) ImageButton locationButton;
@@ -207,6 +207,7 @@ public final class BookingLocationFragment extends BookingFlowFragment {
     private void displayBookingOptions() {
         final BookingRequest request = bookingManager.getCurrentRequest();
         request.setZipCode(zipText.getZipCode());
+        mixpanel.trackEventWhenPage();
 
         String userId = null;
         final User user = userManager.getCurrentUser();

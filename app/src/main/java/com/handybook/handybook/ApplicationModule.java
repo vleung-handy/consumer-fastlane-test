@@ -97,12 +97,11 @@ final class ApplicationModule {
                                                               final HandyRetrofitEndpoint endpoint,
                                                               final Bus bus,
                                                               final SecurePreferences prefs) {
-
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);
 
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
             dataManager.setEnvironment(DataManager.Environment.P);
-        }
+
         return dataManager;
     }
 
@@ -119,8 +118,9 @@ final class ApplicationModule {
                 configs.getProperty("secure_prefs_key"), true);
     }
 
-    @Provides @Singleton final BookingManager provideBookingManager(final SecurePreferences prefs) {
-        return new BookingManager(prefs);
+    @Provides @Singleton final BookingManager provideBookingManager(final Bus bus,
+                                                                    final SecurePreferences prefs) {
+        return new BookingManager(prefs, bus);
     }
 
     @Provides @Singleton final UserManager provideUserManager(final Bus bus,
@@ -133,7 +133,8 @@ final class ApplicationModule {
     }
 
     @Provides @Singleton final Mixpanel provideMixpanel(final UserManager userManager,
+                                                        final BookingManager bookingManager,
                                                         final Bus bus) {
-        return new Mixpanel(application.getApplicationContext(), userManager, bus);
+        return new Mixpanel(application.getApplicationContext(), userManager, bookingManager, bus);
     }
 }

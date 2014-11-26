@@ -1,5 +1,7 @@
 package com.handybook.handybook;
 
+import com.squareup.otto.Bus;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,10 +13,13 @@ public final class BookingManager implements Observer {
     private BookingTransaction transaction;
     private BookingPostInfo postInfo;
     private final SecurePreferences securePrefs;
+    private final Bus bus;
 
     @Inject
-    BookingManager(final SecurePreferences prefs) {
+    BookingManager(final Bus bus, final SecurePreferences prefs) {
         this.securePrefs = prefs;
+        this.bus = bus;
+        this.bus.register(this);
     }
 
     final BookingRequest getCurrentRequest() {
@@ -129,5 +134,6 @@ public final class BookingManager implements Observer {
         setCurrentTransaction(null);
         setCurrentPostInfo(null);
         securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", null);
+        bus.post(new BookingFlowClearedEvent());
     }
 }

@@ -16,6 +16,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
 
     @Inject BookingManager bookingManager;
     @Inject UserManager userManager;
+    @Inject Mixpanel mixpanel;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
