@@ -72,9 +72,20 @@ class Mixpanel {
         mixpanel.registerSuperProperties(props);
     }
 
-    private void addProps(final JSONObject object, final String key, final Object value) {
-        try { object.put(key, value); }
-        catch (final JSONException e) { throw new RuntimeException(e); }
+    void trackPageLogin() {
+        mixpanel.track("log in page view", null);
+    }
+
+    void trackEventLoginSuccess(LoginType type) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "log_in_type", type.getValue());
+        mixpanel.track("log in successful", props);
+    }
+
+    void trackEventLoginFailure(LoginType type) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "log_in_type", type.getValue());
+        mixpanel.track("log in failure", props);
     }
 
     void trackEventWhenPage() {
@@ -119,6 +130,11 @@ class Mixpanel {
 
         mixpanel.track(event, props);
         calledMap.put(event, true);
+    }
+
+    private void addProps(final JSONObject object, final String key, final Object value) {
+        try { object.put(key, value); }
+        catch (final JSONException e) { throw new RuntimeException(e); }
     }
 
     private void trackWhenPageEvents(final String event) {
@@ -241,5 +257,19 @@ class Mixpanel {
     public final void bookingFlowCleared(final BookingFlowClearedEvent event) {
         calledMap = new HashMap<>();
         setSuperProps();
+    }
+
+    enum LoginType {
+        EMAIL("email/password"), FACEBOOK("facebook");
+
+        private String value;
+
+        private LoginType(final String value) {
+            this.value = value;
+        }
+
+        String getValue() {
+            return value;
+        }
     }
 }

@@ -38,6 +38,8 @@ public final class LoginFragment extends BookingFlowFragment {
     private boolean findUser;
     private String bookingUserName, bookingUserEmail;
     private BookingRequest bookingRequest;
+    private AuthType authType;
+    private enum AuthType {EMAIL, FACEBOOK}
 
     @InjectView(R.id.nav_text) TextView navText;
     @InjectView(R.id.login_button) Button loginButton;
@@ -71,6 +73,8 @@ public final class LoginFragment extends BookingFlowFragment {
         findUser = getArguments().getBoolean(EXTRA_FIND_USER);
         bookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
         bookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
+
+        if (!findUser && bookingUserName == null) mixpanel.trackPageLogin();
     }
 
     @Override
@@ -219,6 +223,7 @@ public final class LoginFragment extends BookingFlowFragment {
                     });
                 }
                 else {
+                    authType = AuthType.EMAIL;
                     dataManager.authUser(email,
                             passwordText.getPassword(), userCallback);
                 }
@@ -296,6 +301,7 @@ public final class LoginFragment extends BookingFlowFragment {
                             session.closeAndClearTokenInformation();
                         }
                         else {
+                            authType = AuthType.FACEBOOK;
                             dataManager.authFBUser(user.getId(), session.getAccessToken(),
                                     user.asMap().get("email").toString(),  user.getFirstName(),
                                     user.getLastName(), userCallback);
@@ -316,8 +322,13 @@ public final class LoginFragment extends BookingFlowFragment {
                 public void onSuccess(final User user) {
                     if (!allowCallbacks) return;
 
+                    if (authType == AuthType.FACEBOOK) {
+                        mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.FACEBOOK);
+                    } else mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
+
                     userManager.setCurrentUser(user);
                     Session session = Session.getActiveSession();
+
                     if (session != null) session.closeAndClearTokenInformation();
 
                     if (bookingUserName != null) {
@@ -363,6 +374,10 @@ public final class LoginFragment extends BookingFlowFragment {
     };
 
     private void handleUserCallbackError(final DataManager.DataManagerError error) {
+        if (authType == AuthType.FACEBOOK) {
+            mixpanel.trackEventLoginFailure(Mixpanel.LoginType.FACEBOOK);
+        } else mixpanel.trackEventLoginFailure(Mixpanel.LoginType.EMAIL);
+
         progressDialog.dismiss();
         enableInputs();
 
