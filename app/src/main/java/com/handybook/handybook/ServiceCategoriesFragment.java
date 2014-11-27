@@ -1,8 +1,10 @@
 package com.handybook.handybook;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,16 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        if (!prefs.getBoolean("APP_OPENED_PREV", false)) {
+            mixpanel.trackEventFirstTimeUse();
+
+            final SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean("APP_OPENED_PREV", true);
+            edit.apply();
+        }
     }
 
     @Override

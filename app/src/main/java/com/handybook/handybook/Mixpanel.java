@@ -132,6 +132,10 @@ class Mixpanel {
         calledMap.put(event, true);
     }
 
+    void trackEventFirstTimeUse() {
+        mixpanel.track("first time use", null);
+    }
+
     private void addProps(final JSONObject object, final String key, final Object value) {
         try { object.put(key, value); }
         catch (final JSONException e) { throw new RuntimeException(e); }
