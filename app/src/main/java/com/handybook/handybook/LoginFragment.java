@@ -322,13 +322,13 @@ public final class LoginFragment extends BookingFlowFragment {
                 public void onSuccess(final User user) {
                     if (!allowCallbacks) return;
 
+                    userManager.setCurrentUser(user);
+
                     if (authType == AuthType.FACEBOOK) {
                         mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.FACEBOOK);
                     } else mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
 
-                    userManager.setCurrentUser(user);
                     Session session = Session.getActiveSession();
-
                     if (session != null) session.closeAndClearTokenInformation();
 
                     if (bookingUserName != null) {
