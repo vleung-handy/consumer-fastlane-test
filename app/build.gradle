@@ -29,12 +29,12 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 17
-        versionName '0.17'
+        versionCode 18
+        versionName '0.18'
     }
     buildTypes {
         release {
-            runProguard true
+            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
