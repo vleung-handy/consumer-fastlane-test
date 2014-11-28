@@ -1,8 +1,12 @@
 package com.handybook.handybook;
 
+import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
 
 import com.newrelic.agent.android.NewRelic;
+
+import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -12,11 +16,17 @@ public final class BaseApplication extends Application {
     static final String FLAVOR_STAGE = "stage";
 
     private ObjectGraph graph;
+    private int started;
+    private Activity lastActivity;
+    private boolean savedInstance;
+
+    @Inject Mixpanel mixpanel;
 
     @Override
     public final void onCreate() {
         super.onCreate();
         graph = ObjectGraph.create(new ApplicationModule(this));
+        inject(this);
 
         CalligraphyConfig.initDefault("fonts/CircularStd-Book.otf", R.attr.fontPath);
 
@@ -26,6 +36,46 @@ public final class BaseApplication extends Application {
         else {
             NewRelic.withApplicationToken("AAbaf8c55fb9788d1664e82661d94bc18ea7c39aa6").start(this);
         }
+
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(final Activity activity,
+                                          final Bundle savedInstanceState) {
+                savedInstance = savedInstanceState != null;
+            }
+
+            @Override
+            public void onActivityStarted(final Activity activity) {
+                ++started;
+
+                if (started == 1) {
+                    if (!savedInstance) mixpanel.trackEventAppOpened(true);
+                    else mixpanel.trackEventAppOpened(false);
+                }
+
+                if (lastActivity != null && lastActivity.getClass() == activity.getClass()) {
+                    mixpanel.trackEventAppOpened(false);
+                }
+            }
+
+            @Override
+            public void onActivityResumed(final Activity activity) {}
+
+            @Override
+            public void onActivityPaused(final Activity activity) {
+                lastActivity = activity;
+            }
+
+            @Override
+            public void onActivityStopped(final Activity activity) {}
+
+            @Override
+            public void onActivitySaveInstanceState(final Activity activity,
+                                                    final Bundle outState) {}
+
+            @Override
+            public void onActivityDestroyed(final Activity activity) {}
+        });
     }
 
     final void inject(final Object object) {

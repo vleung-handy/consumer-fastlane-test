@@ -136,6 +136,12 @@ class Mixpanel {
         mixpanel.track("first time use", null);
     }
 
+    void trackEventAppOpened(final boolean newOpen) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "new_open", newOpen);
+        mixpanel.track("app had been opened", props);
+    }
+
     private void addProps(final JSONObject object, final String key, final Object value) {
         try { object.put(key, value); }
         catch (final JSONException e) { throw new RuntimeException(e); }

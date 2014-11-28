@@ -30,7 +30,7 @@ import retrofit.converter.GsonConverter;
         BookingsActivity.class, BookingRecurrenceActivity.class, BookingPaymentActivity.class,
         BookingOptionsActivity.class, BookingLocationActivity.class, BookingExtrasActivity.class,
         BookingDetailActivity.class, BookingDateActivity.class, BookingConfirmationActivity.class,
-        BookingAddressActivity.class
+        BookingAddressActivity.class, BaseApplication.class
 })
 final class ApplicationModule {
     private final Application application;
