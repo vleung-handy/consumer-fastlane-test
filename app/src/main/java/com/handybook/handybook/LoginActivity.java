@@ -21,6 +21,7 @@ public final class LoginActivity extends MenuDrawerActivity {
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode,
                                     final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_FINISH) finish();
     }
 
