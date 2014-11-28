@@ -61,10 +61,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
 
         optionsView.hideTitle();
 
-        final int freq = bookingTransaction.getRecurringFrequency();
-
         if (savedInstanceState == null) optionsView.setCurrentIndex(1);
-        else optionsView.setCurrentIndex(freq == 0 ? 3 : freq - 1);
+        else optionsView.setCurrentIndex(indexForFreq(bookingTransaction.getRecurringFrequency()));
 
         optionsLayout.addView(optionsView, 0);
 
@@ -118,8 +116,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         final float price = prices[0];
         final float discount = prices[1];
 
-        for (int i = 1; i < 4; i++) {
-            final float recurPrices[] = quote.getPricing(hours, i);
+        for (int i = 0; i < 3; i++) {
+            final float recurPrices[] = quote.getPricing(hours, freqForIndex(i));
             final float recurPrice = recurPrices[0];
             final float recurDiscount = recurPrices[1];
 
@@ -128,8 +126,40 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
                 percent = Math.round((discount - recurDiscount) / discount * 100);
             else percent = Math.round((price - recurPrice) / price * 100);
 
-            if (percent > 0) info[i - 1] = getString(R.string.save) + " " + percent + "%";
+            if (percent > 0) info[i] = getString(R.string.save) + " " + percent + "%";
         }
         return info;
+    }
+
+    private int indexForFreq(final int freq) {
+        switch (freq) {
+            case 1:
+                return 0;
+
+            case 2:
+                return 1;
+
+            case 4:
+                return 2;
+
+            default:
+                return 3;
+        }
+    }
+
+    private int freqForIndex(final int index) {
+        switch (index) {
+            case 0:
+                return 1;
+
+            case 1:
+                return 2;
+
+            case 2:
+                return 4;
+
+            default:
+                return 0;
+        }
     }
 }

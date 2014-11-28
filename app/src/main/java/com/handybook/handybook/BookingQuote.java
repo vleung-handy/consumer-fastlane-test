@@ -166,7 +166,7 @@ public final class BookingQuote extends Observable {
             case 2:
                 return new float[]{ info.getBiMonthlyprice(), info.getDiscountBiMonthlyprice()};
 
-            case 3:
+            case 4:
                 return new float[]{ info.getMonthlyPrice(), info.getDiscountMonthlyPrice()};
 
             default:
