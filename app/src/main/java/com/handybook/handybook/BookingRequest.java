@@ -133,6 +133,7 @@ public final class BookingRequest extends Observable {
             jsonObj.add("user_id", context.serialize(value.getUserId()));
             jsonObj.add("service_attributes", context.serialize(value.getOptions()));
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
+            jsonObj.add("mobile", context.serialize(1));
             return jsonObj;
         }
     }

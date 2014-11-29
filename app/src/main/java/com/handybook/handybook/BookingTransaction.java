@@ -240,6 +240,7 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("stripe_token", context.serialize(value.getStripeToken()));
             jsonObj.add("extra_cleaning_text", context.serialize(value.getExtraCleaningText()));
+            jsonObj.add("mobile", context.serialize(1));
 
             final int recur = value.getRecurringFrequency();
             if (recur > 0) jsonObj.add("updated_recurring_freq", context.serialize(recur));
