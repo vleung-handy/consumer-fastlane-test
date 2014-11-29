@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 public class InjectedFragment extends android.support.v4.app.Fragment {
-
     protected boolean allowCallbacks;
     protected ProgressDialog progressDialog;
     protected Toast toast;
@@ -29,7 +28,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
         toast.setGravity(Gravity.CENTER, 0, 0);
 
         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
+        progressDialog.setDelay(400);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.loading));
     }

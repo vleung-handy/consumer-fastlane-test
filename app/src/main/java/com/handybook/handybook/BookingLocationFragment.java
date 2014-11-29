@@ -220,14 +220,15 @@ public final class BookingLocationFragment extends BookingFlowFragment {
             @Override
             public void onSuccess(final List<BookingOption> options) {
                 if (!allowCallbacks) return;
-                enableInputs();
-                progressDialog.dismiss();
 
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
                 intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_OPTIONS,
                         new ArrayList<>(options));
                 intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, 0);
                 startActivity(intent);
+
+                enableInputs();
+                progressDialog.dismiss();
             }
 
             @Override

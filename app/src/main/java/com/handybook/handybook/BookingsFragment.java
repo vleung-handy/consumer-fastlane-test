@@ -12,8 +12,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 
 public final class BookingsFragment extends InjectedListFragment {
@@ -22,13 +20,8 @@ public final class BookingsFragment extends InjectedListFragment {
     private static final String STATE_UP_BOOKINGS = "STATE_UP_BOOKINGS";
 
     private boolean loadedBookings;
-    private ProgressDialog progressDialog;
     private ArrayList<Booking> upBookings = new ArrayList<>();
     private ArrayList<Booking> pastBookings = new ArrayList<>();
-
-    @Inject UserManager userManager;
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     static BookingsFragment newInstance() {
         return new BookingsFragment();
@@ -42,11 +35,6 @@ public final class BookingsFragment extends InjectedListFragment {
 
         ButterKnife.inject(this, view);
         setListAdapter(new BookingsListAdapter());
-
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
 
         return view;
     }

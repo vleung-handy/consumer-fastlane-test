@@ -57,11 +57,6 @@ public final class ProfileFragment extends InjectedFragment {
 
         ButterKnife.inject(this, view);
 
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(500);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
-
         phoneText.setCountryCode(user.getPhonePrefix());
         oldPasswordtext.addTextChangedListener(passwordTextWatcher);
         newPasswordtext.addTextChangedListener(passwordTextWatcher);
