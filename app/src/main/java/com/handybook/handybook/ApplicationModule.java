@@ -6,9 +6,11 @@ import android.provider.Settings;
 import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -17,6 +19,7 @@ import dagger.Provides;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
@@ -50,6 +53,10 @@ final class ApplicationModule {
 
     @Provides @Singleton final HandyRetrofitService provideHandyService(
             final HandyRetrofitEndpoint endpoint, final UserManager userManager) {
+
+        final OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+
         final String username = configs.getProperty("api_username");
         String password = configs.getProperty("api_password_internal");
 
@@ -93,7 +100,7 @@ final class ApplicationModule {
                                 new BookingTransaction.BookingTransactionSerializer())
                         .setExclusionStrategies(User.getExclusionStrategy())
                         .registerTypeAdapter(User.class, new User.UserSerializer())
-                        .create())).build();
+                        .create())).setClient(new OkClient(okHttpClient)).build();
 
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
