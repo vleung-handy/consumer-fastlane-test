@@ -75,7 +75,7 @@ public interface HandyRetrofitService {
         @SerializedName("user") private User user;
         @SerializedName("auth_token") private String authToken;
 
-        UserUpdateRequest(User user, String authToken) {
+        UserUpdateRequest(final User user, final String authToken) {
             this.user = user;
             this.authToken = authToken;
         }
@@ -84,7 +84,7 @@ public interface HandyRetrofitService {
     static final class BookingCreateRequest {
         @SerializedName("booking") private BookingRequest bookingRequest;
 
-        BookingCreateRequest(BookingRequest bookingRequest) {
+        BookingCreateRequest(final BookingRequest bookingRequest) {
             this.bookingRequest = bookingRequest;
         }
     }

@@ -1,6 +1,8 @@
 package com.handybook.handybook;
 
 import android.app.Application;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
@@ -47,7 +49,7 @@ final class ApplicationModule {
     }
 
     @Provides @Singleton final HandyRetrofitService provideHandyService(
-            final HandyRetrofitEndpoint endpoint) {
+            final HandyRetrofitEndpoint endpoint, final UserManager userManager) {
         final String username = configs.getProperty("api_username");
         String password = configs.getProperty("api_password_internal");
 
@@ -67,6 +69,12 @@ final class ApplicationModule {
                         request.addHeader("Accept", "application/json");
                         request.addQueryParam("app_version", "5.2");
                         request.addQueryParam("api_sub_version", "5");
+                        request.addQueryParam("app_device_id", getDeviceId());
+                        request.addQueryParam("app_device_model", getDeviceName());
+                        request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
+
+                        final User user = userManager.getCurrentUser();
+                        if (user != null) request.addQueryParam("app_user_id", user.getId());
                     }
                 }).setConverter(new GsonConverter(new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -136,5 +144,18 @@ final class ApplicationModule {
                                                         final BookingManager bookingManager,
                                                         final Bus bus) {
         return new Mixpanel(application.getApplicationContext(), userManager, bookingManager, bus);
+    }
+
+    private String getDeviceId() {
+        return Settings.Secure.getString(application.getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+    }
+
+    private String getDeviceName() {
+        final String manufacturer = Build.MANUFACTURER;
+        final String model = Build.MODEL;
+
+        if (model.startsWith(manufacturer)) return model;
+        else return manufacturer + " " + model;
     }
 }
