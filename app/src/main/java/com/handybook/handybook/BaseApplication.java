@@ -20,6 +20,8 @@ public final class BaseApplication extends Application {
     private Activity lastActivity;
     private boolean savedInstance;
 
+    @Inject UserManager userManager;
+    @Inject DataManager dataManager;
     @Inject Mixpanel mixpanel;
 
     @Override
@@ -51,10 +53,12 @@ public final class BaseApplication extends Application {
                 if (started == 1) {
                     if (!savedInstance) mixpanel.trackEventAppOpened(true);
                     else mixpanel.trackEventAppOpened(false);
+                    updateUser();
                 }
 
                 if (lastActivity != null && lastActivity.getClass() == activity.getClass()) {
                     mixpanel.trackEventAppOpened(false);
+                    updateUser();
                 }
             }
 
@@ -80,5 +84,21 @@ public final class BaseApplication extends Application {
 
     final void inject(final Object object) {
         graph.inject(object);
+    }
+
+    private void updateUser() {
+        final User user = userManager.getCurrentUser();
+
+        if (user != null) {
+            dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
+                @Override
+                public void onSuccess(final User updatedUser) {
+                    userManager.setCurrentUser(updatedUser);
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {}
+            });
+        }
     }
 }

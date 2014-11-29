@@ -264,14 +264,11 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                             new DataManager.Callback<User>() {
                         @Override
                         public void onSuccess(final User updatedUser) {
-                            updatedUser.setId(user.getId());
-                            updatedUser.setAuthToken(user.getAuthToken());
                             userManager.setCurrentUser(updatedUser);
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error) {
-                        }
+                        public void onError(final DataManager.DataManagerError error) {}
                     });
 
                     bookingManager.setCurrentPostInfo(new BookingPostInfo());

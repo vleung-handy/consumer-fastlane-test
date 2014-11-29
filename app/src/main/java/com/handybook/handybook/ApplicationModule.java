@@ -73,7 +73,7 @@ final class ApplicationModule {
                         request.addQueryParam("app_device_id", getDeviceId());
                         request.addQueryParam("app_device_model", getDeviceName());
                         request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
-                        
+
                         final User user = userManager.getCurrentUser();
                         if (user != null) request.addQueryParam("app_user_id", user.getId());
                     }

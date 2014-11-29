@@ -317,6 +317,7 @@ public final class LoginFragment extends BookingFlowFragment {
         @Override
         public void onSuccess(final User user) {
             if (!allowCallbacks) return;
+
             dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
                 @Override
                 public void onSuccess(final User user) {
