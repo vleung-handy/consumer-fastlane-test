@@ -26,15 +26,27 @@
         android:orientation="vertical"
         android:animateLayoutChanges="true">
 
-        <antistatic.spinnerwheel.WheelHorizontalView
-            android:id="@+id/options_spinner"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:itemsDimmedAlpha="100"
-            app:isAllVisible="true"
-            app:itemsPadding="@dimen/options_wheel_padding" />
+            android:layout_height="wrap_content">
+
+            <antistatic.spinnerwheel.WheelHorizontalView
+                android:id="@+id/options_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:itemsDimmedAlpha="100"
+                app:isAllVisible="true"
+                app:itemsPadding="@dimen/options_wheel_padding"
+                android:layout_gravity="center" />
+
+            <View
+                android:id="@+id/circle_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/option_circle"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
 
         <TextView android:id="@+id/info_text"
             android:layout_marginTop="16dp"

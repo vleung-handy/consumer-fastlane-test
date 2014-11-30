@@ -3,6 +3,7 @@ package com.handybook.handybook;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.OnWheelChangedListener;
@@ -30,9 +31,11 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
         if (!type.equals("quantity") && !type.equals("option_picker")) return;
 
         optionsSpinner = (WheelHorizontalView)this.findViewById(R.id.options_spinner);
-        optionsSpinner.setViewAdapter(new OptionsAdapter<>(context, optionsList,
-                R.layout.view_spinner_option, R.id.text));
 
+        final OptionsAdapter adapter = new OptionsAdapter<>(context, optionsList,
+                R.layout.view_spinner_option, R.id.text);
+
+        optionsSpinner.setViewAdapter(adapter);
         optionsSpinner.setCurrentItem(Integer.parseInt(option.getDefaultValue()));
         optionsSpinner.addChangingListener(new OnWheelChangedListener() {
             @Override
@@ -43,6 +46,16 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
                         .onUpdate(BookingOptionsSpinnerView.this);
             }
         });
+
+        optionsSpinner.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        final View circleView = BookingOptionsSpinnerView.this.findViewById(R.id.circle_view);
+                        circleView.getLayoutParams().width = adapter.getMaxItemWidth();
+                        circleView.getLayoutParams().height = adapter.getMaxItemHeight();
+                    }
+                });
 
         handleWarnings(getCurrentIndex());
         handleChildren(getCurrentIndex());
