@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -109,7 +110,7 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
 
     final String getCurrentValue() {
         final CheckBox box = checkMap.get(checkedIndex);
-        final RelativeLayout layout = (RelativeLayout)box.getParent();
+        final ViewGroup layout = (ViewGroup)box.getParent();
         final TextView title = (TextView)layout.findViewById(R.id.title_text);
         return title.getText().toString();
     }
@@ -171,6 +172,26 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
         requestLayout();
     }
 
+    private void selectOption(final CheckBox box, final boolean isChecked) {
+        final ViewGroup layout = (ViewGroup)box.getParent();
+        final TextView title = (TextView)layout.findViewById(R.id.title_text);
+        final TextView subTitle = (TextView)layout.findViewById(R.id.sub_text);
+        final TextView rightText = (TextView)layout.findViewById(R.id.right_text);
+
+        if (isChecked) {
+            title.setTextColor(getResources().getColor(R.color.black));
+            subTitle.setTextColor(getResources().getColor(R.color.handy_blue));
+            rightText.setTextColor(getResources().getColor(R.color.black));
+            box.setChecked(true);
+        }
+        else {
+            title.setTextColor(getResources().getColor(R.color.black_pressed));
+            subTitle.setTextColor(getResources().getColor(R.color.black_pressed));
+            rightText.setTextColor(getResources().getColor(R.color.black_pressed));
+            box.setChecked(false);
+        }
+    }
+
     private final CompoundButton.OnCheckedChangeListener checkedChanged
             = new CompoundButton.OnCheckedChangeListener() {
         @Override
@@ -182,14 +203,14 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
 
                 if (box == buttonView) {
                     checkedIndex = index;
-                    if (!isMulti) box.setChecked(true);
+                    if (!isMulti) selectOption(box, true);
                     else {
-                        box.setChecked(isChecked);
+                        selectOption(box, isChecked);
                         if (isChecked) checkedIndexes.add(index);
                         else checkedIndexes.remove(index);
                     }
                 }
-                else if (!isMulti) box.setChecked(false);
+                else if (!isMulti) selectOption(box, false);
 
                 box.setOnCheckedChangeListener(this);
             }
