@@ -46,6 +46,7 @@ class Mixpanel {
 
         final JSONObject props = new JSONObject();
         addProps(props, "mobile", true);
+        addProps(props, "client", "android");
         addProps(props, "impersonating", false);
 
         final User user = userManager.getCurrentUser();
