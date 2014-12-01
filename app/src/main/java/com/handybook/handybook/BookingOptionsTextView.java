@@ -4,8 +4,8 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 final class BookingOptionsTextView extends BookingOptionsView {
     private EditText editText;
@@ -26,6 +26,8 @@ final class BookingOptionsTextView extends BookingOptionsView {
 
     private void init() {
         if (!option.getType().equals("text")) return;
+
+        mainLayout = (RelativeLayout)this.findViewById(R.id.rel_layout);
 
         editText = (EditText)this.findViewById(R.id.edit_text);
         editText.setHint(option.getDefaultValue());
@@ -58,17 +60,9 @@ final class BookingOptionsTextView extends BookingOptionsView {
         editText.setText(value);
     }
 
-    public final void hideSeparator() {
-        final View view = this.findViewById(R.id.layout);
-        view.setBackgroundResource((R.drawable.booking_cell_last));
-        invalidate();
-        requestLayout();
-    }
-
     public final void enableSingleMode() {
-        final View view = this.findViewById(R.id.layout);
-        view.setBackgroundResource(0);
-        view.setPadding(view.getPaddingLeft(), 0, view.getPaddingRight(), 0);
+        mainLayout.setBackgroundResource(0);
+        mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, mainLayout.getPaddingRight(), 0);
         invalidate();
         requestLayout();
     }

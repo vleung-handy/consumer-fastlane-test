@@ -3,11 +3,13 @@ package com.handybook.handybook;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 abstract class BookingOptionsView extends FrameLayout {
     protected BookingOption option;
     protected OnUpdatedListener updateListener;
+    protected ViewGroup mainLayout;
 
     BookingOptionsView(final Context context, final int layout, final BookingOption option,
                        final OnUpdatedListener updateListener) {
@@ -36,7 +38,18 @@ abstract class BookingOptionsView extends FrameLayout {
         void onHideChildren (BookingOptionsView view, String[] items);
     }
 
-    abstract String getCurrentValue();
+    final void hideSeparator() {
+        final int paddingBottom = mainLayout.getPaddingBottom(),
+                paddingLeft = mainLayout.getPaddingLeft(),
+                paddingRight = mainLayout.getPaddingRight(),
+                paddingTop = mainLayout.getPaddingTop();
 
-    abstract void hideSeparator();
+        mainLayout.setBackgroundResource((R.drawable.booking_cell_last));
+        mainLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+
+        invalidate();
+        requestLayout();
+    }
+
+    abstract String getCurrentValue();
 }

@@ -18,8 +18,6 @@ import java.util.HashSet;
 final class BookingOptionsSelectView extends BookingOptionsIndexView {
     protected String[] optionsSubtitles;
     protected String[] optionsRightText;
-    private LinearLayout optionLayout;
-    private RelativeLayout layout;
     private HashMap<Integer, CheckBox> checkMap;
     private int checkedIndex;
     private HashSet<Integer> checkedIndexes;
@@ -44,19 +42,21 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
         if (!type.equals("option") && !type.equals("checklist")) return;
         if (type.equals("checklist")) isMulti = true;
 
+        mainLayout = (RelativeLayout)this.findViewById(R.id.rel_layout);
+
+        final LinearLayout optionLayout = (LinearLayout)this.findViewById(R.id.options_layout);
+
         optionsSubtitles = option.getOptionsSubText();
         optionsRightText = option.getOptionsRightText();
 
         checkMap = new HashMap<>();
-        layout = (RelativeLayout)this.findViewById(R.id.layout);
-        optionLayout = (LinearLayout)this.findViewById(R.id.options_layout);
         checkedIndex = isMulti ? 0 : Integer.parseInt(option.getDefaultValue());
         checkedIndexes = new HashSet<>();
 
         for (int i = 0; i < optionsList.length; i++) {
             final String optionText = optionsList[i];
             final LinearLayout optionView = (LinearLayout)LayoutInflater.from(context)
-                    .inflate(R.layout.view_booking_select_option, null);
+                    .inflate(R.layout.view_booking_select_option, this, false);
 
             final TextView title = (TextView)optionView.findViewById(R.id.title_text);
             title.setText(optionText);
@@ -154,19 +154,12 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
         return indexes;
     }
 
-    public final void hideSeparator() {
-        final View view = this.findViewById(R.id.layout);
-        view.setBackgroundResource((R.drawable.booking_cell_last));
-        invalidate();
-        requestLayout();
-    }
-
     @Override
     protected void hideTitle() {
         super.hideTitle();
 
-        layout.setPadding(layout.getPaddingLeft(), 0, layout.getPaddingRight(),
-                layout.getPaddingBottom());
+        mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, mainLayout.getPaddingRight(),
+                mainLayout.getPaddingBottom());
 
         invalidate();
         requestLayout();

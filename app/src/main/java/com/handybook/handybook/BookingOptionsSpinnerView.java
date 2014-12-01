@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
 
 import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.OnWheelChangedListener;
@@ -29,6 +30,8 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
     private void init(final Context context) {
         final String type = option.getType();
         if (!type.equals("quantity") && !type.equals("option_picker")) return;
+
+        mainLayout = (RelativeLayout)this.findViewById(R.id.rel_layout);
 
         optionsSpinner = (WheelHorizontalView)this.findViewById(R.id.options_spinner);
 
@@ -77,12 +80,5 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
 
     final int getCurrentIndex() {
         return optionsSpinner.getCurrentItem();
-    }
-
-    public final void hideSeparator() {
-        final View view = this.findViewById(R.id.layout);
-        view.setBackgroundResource((R.drawable.booking_cell_last));
-        invalidate();
-        requestLayout();
     }
 }
