@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:button="@drawable/option_checkbox"
+        android:background="@drawable/option_checkbox"
+        android:button="@null"
         android:saveEnabled="false"
         android:layout_marginRight="12dp"
         android:layout_marginEnd="12dp" />
