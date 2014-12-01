@@ -57,17 +57,21 @@ class Mixpanel {
             addProps(props, "email", user.getEmail());
             addProps(props, "user_id", user.getId());
 
+
             final User.Analytics analytics = user.getAnalytics();
-            addProps(props, "last_booking_end", analytics.getLastBookingEnd());
-            addProps(props, "partner", analytics.getPartner());
-            addProps(props, "bookings", analytics.getBookings());
-            addProps(props, "past_bookings_count", analytics.getPastBookings());
-            addProps(props, "upcoming_bookings_count", analytics.getUpcomingBookings());
-            addProps(props, "total_bookings_count", analytics.getTotalBookings());
-            addProps(props, "recurring_bookings_count", analytics.getRecurringBookings());
-            addProps(props, "provider", analytics.isProvider());
-            addProps(props, "vip", analytics.isVip());
-            addProps(props, "facebook_login", analytics.isFacebookLogin());
+
+            if (analytics != null) {
+                addProps(props, "last_booking_end", analytics.getLastBookingEnd());
+                addProps(props, "partner", analytics.getPartner());
+                addProps(props, "bookings", analytics.getBookings());
+                addProps(props, "past_bookings_count", analytics.getPastBookings());
+                addProps(props, "upcoming_bookings_count", analytics.getUpcomingBookings());
+                addProps(props, "total_bookings_count", analytics.getTotalBookings());
+                addProps(props, "recurring_bookings_count", analytics.getRecurringBookings());
+                addProps(props, "provider", analytics.isProvider());
+                addProps(props, "vip", analytics.isVip());
+                addProps(props, "facebook_login", analytics.isFacebookLogin());
+            }
         }
         mixpanel.registerSuperProperties(props);
     }
