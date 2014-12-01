@@ -19,15 +19,31 @@
         android:layout_above="@id/login_button"
         style="@style/ContentLayout.NoBottom">
 
-        <com.facebook.widget.LoginButton
-            android:id="@+id/fb_button"
-            style="@style/FacebookButton" />
+        <RelativeLayout
+            android:id="@+id/fb_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.facebook.widget.LoginButton
+                android:id="@+id/fb_button"
+                style="@style/FacebookButton" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_facebook"
+                android:contentDescription="facebook" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/or_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fb_button"
+            android:layout_below="@id/fb_layout"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="16dp"
             android:gravity="center"

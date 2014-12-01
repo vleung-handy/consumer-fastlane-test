@@ -76,7 +76,7 @@
     <style name="FacebookButton" parent="com_facebook_loginview_default_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/facebook</item>
+        <item name="android:background">@drawable/rounded_button_fb</item>
     </style>
 
     <style name="EditText">

@@ -18,4 +18,5 @@
     <color name="error_red">#FF5C5C</color>
     <color name="price_green">#ACC63F</color>
     <color name="facebook">#246BAB</color>
+    <color name="facebook_pressed">#1C4B76</color>
 </resources>
