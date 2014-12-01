@@ -123,8 +123,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
 
             int percent;
             if (recurPrice != recurDiscount)
-                percent = Math.round((discount - recurDiscount) / discount * 100);
-            else percent = Math.round((price - recurPrice) / price * 100);
+                percent = (int)((discount - recurDiscount) / discount * 100);
+            else percent = (int)((price - recurPrice) / price * 100);
 
             if (percent > 0) info[i] = getString(R.string.save) + " " + percent + "%";
         }
