@@ -2,6 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="false">
         <shape android:shape="oval">
+            <solid android:color="@android:color/transparent" />
             <stroke android:width="2dp" android:color="@color/black_pressed" />
             <size android:width="52dp" android:height="52dp" />
         </shape>
@@ -13,6 +14,7 @@
             </item>
             <item>
                 <shape android:shape="oval">
+                    <solid android:color="@android:color/transparent" />
                     <stroke android:width="2dp" android:color="@color/handy_blue" />
                     <size android:width="52dp" android:height="52dp" />
                 </shape>
@@ -21,6 +23,7 @@
     </item>
     <item android:state_checked="false">
         <shape android:shape="oval">
+            <solid android:color="@android:color/transparent" />
             <stroke android:width="2dp" android:color="@color/black_pressed" />
             <size android:width="52dp" android:height="52dp" />
         </shape>
