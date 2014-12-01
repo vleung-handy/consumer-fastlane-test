@@ -12,6 +12,8 @@ import antistatic.spinnerwheel.WheelHorizontalView;
 
 final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
     private WheelHorizontalView optionsSpinner;
+    private OptionsAdapter adapter;
+    private View circleView;
 
     BookingOptionsSpinnerView(final Context context, final BookingOption option,
                               final OnUpdatedListener updateListener) {
@@ -32,10 +34,10 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
         if (!type.equals("quantity") && !type.equals("option_picker")) return;
 
         mainLayout = (RelativeLayout)this.findViewById(R.id.rel_layout);
-
+        circleView = BookingOptionsSpinnerView.this.findViewById(R.id.circle_view);
         optionsSpinner = (WheelHorizontalView)this.findViewById(R.id.options_spinner);
 
-        final OptionsAdapter adapter = new OptionsAdapter<>(context, optionsList,
+        adapter = new OptionsAdapter<>(context, optionsList,
                 R.layout.view_spinner_option, R.id.text);
 
         optionsSpinner.setViewAdapter(adapter);
@@ -54,11 +56,12 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        final View circleView = BookingOptionsSpinnerView.this.findViewById(R.id.circle_view);
-                        circleView.getLayoutParams().width = adapter.getMaxItemWidth();
-                        circleView.getLayoutParams().height = adapter.getMaxItemHeight();
+                        resizeIndicators();
                     }
                 });
+
+        // calling again to handle 'onback' case
+        resizeIndicators();
 
         handleWarnings(getCurrentIndex());
         handleChildren(getCurrentIndex());
@@ -80,5 +83,10 @@ final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
 
     final int getCurrentIndex() {
         return optionsSpinner.getCurrentItem();
+    }
+
+    private void resizeIndicators() {
+        circleView.getLayoutParams().width = adapter.getMaxItemWidth();
+        circleView.getLayoutParams().height = adapter.getMaxItemHeight();
     }
 }
