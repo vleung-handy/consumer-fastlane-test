@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -38,6 +39,7 @@ public final class ProfileFragment extends InjectedFragment {
     @InjectView(R.id.phone_text) PhoneInputTextView phoneText;
     @InjectView(R.id.old_password_text) PasswordInputTextView oldPasswordtext;
     @InjectView(R.id.new_password_text) PasswordInputTextView newPasswordtext;
+    @InjectView(R.id.menu_button_layout) FrameLayout menuButtonLayout;
 
     static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -60,6 +62,10 @@ public final class ProfileFragment extends InjectedFragment {
         phoneText.setCountryCode(user.getPhonePrefix());
         oldPasswordtext.addTextChangedListener(passwordTextWatcher);
         newPasswordtext.addTextChangedListener(passwordTextWatcher);
+
+        final MenuButton menuButton = new MenuButton(getActivity());
+        menuButton.setColor(getResources().getColor(R.color.black_pressed));
+        menuButtonLayout.addView(menuButton);
 
         return view;
     }

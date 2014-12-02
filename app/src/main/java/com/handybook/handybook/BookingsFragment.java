@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public final class BookingsFragment extends InjectedListFragment {
     private static final String STATE_LOADED_BOOKINGS = "LOADED_BOOKINGS";
@@ -22,6 +24,8 @@ public final class BookingsFragment extends InjectedListFragment {
     private boolean loadedBookings;
     private ArrayList<Booking> upBookings = new ArrayList<>();
     private ArrayList<Booking> pastBookings = new ArrayList<>();
+
+    @InjectView(R.id.menu_button_layout) FrameLayout menuButtonLayout;
 
     static BookingsFragment newInstance() {
         return new BookingsFragment();
@@ -35,6 +39,10 @@ public final class BookingsFragment extends InjectedListFragment {
 
         ButterKnife.inject(this, view);
         setListAdapter(new BookingsListAdapter());
+
+        final MenuButton menuButton = new MenuButton(getActivity());
+        menuButton.setColor(getResources().getColor(R.color.black_pressed));
+        menuButtonLayout.addView(menuButton);
 
         return view;
     }

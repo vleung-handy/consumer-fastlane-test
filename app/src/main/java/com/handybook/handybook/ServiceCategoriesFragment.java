@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -23,6 +24,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
 
     @InjectView(R.id.category_layout) LinearLayout categoryLayout;
     @InjectView(R.id.logo) ImageView logo;
+    @InjectView(R.id.menu_button_layout) FrameLayout menuButtonLayout;
 
     static ServiceCategoriesFragment newInstance() {
         return new ServiceCategoriesFragment();
@@ -59,6 +61,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
                 logoSpin.start();
             }
         });
+
+        final MenuButton menuButton = new MenuButton(getActivity());
+        menuButtonLayout.addView(menuButton);
 
         return view;
     }
