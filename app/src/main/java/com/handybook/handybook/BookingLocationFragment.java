@@ -112,10 +112,21 @@ public final class BookingLocationFragment extends BookingFlowFragment {
         locationButton.setClickable(true);
     }
 
+    private void showLocationProgress(final boolean display, final boolean showPressed) {
+        if (display) {
+            locationButton.setPressed(false);
+            locationButton.setVisibility(View.INVISIBLE);
+            zipProgress.setVisibility(View.VISIBLE);
+        }
+        else {
+            zipProgress.setVisibility(View.INVISIBLE);
+            locationButton.setVisibility(View.VISIBLE);
+            locationButton.setPressed(showPressed);
+        }
+    }
+
     private void updateZip() {
-        locationButton.setPressed(false);
-        locationButton.setVisibility(View.INVISIBLE);
-        zipProgress.setVisibility(View.VISIBLE);
+        showLocationProgress(true, false);
 
         final Observable<Location> locationObservable = locationProvider
                 .getUpdatedLocation(LocationRequest.create()
@@ -155,18 +166,16 @@ public final class BookingLocationFragment extends BookingFlowFragment {
                                         final String zip = addresses.get(0).getPostalCode();
                                         zipText.setText(zip);
                                         zipText.setSelection(zip.length());
-
-                                        zipProgress.setVisibility(View.INVISIBLE);
-                                        locationButton.setVisibility(View.VISIBLE);
-                                        locationButton.setPressed(true);
+                                        showLocationProgress(false, true);
                                     }
                                 }
                             });
-                } else {
-                    zipProgress.setVisibility(View.INVISIBLE);
-                    locationButton.setVisibility(View.VISIBLE);
-                    locationButton.setPressed(false);
-                }
+                } else showLocationProgress(false, false);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(final Throwable throwable) {
+                showLocationProgress(false, false);
             }
         }, Schedulers.io());
     }
