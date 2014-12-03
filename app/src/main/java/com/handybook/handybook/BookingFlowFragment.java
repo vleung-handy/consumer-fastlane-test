@@ -57,9 +57,10 @@ public class BookingFlowFragment extends InjectedFragment {
     private void continueFlow() {
         final BookingRequest request = bookingManager.getCurrentRequest();
         final BookingQuote quote = bookingManager.getCurrentQuote();
-        final BookingTransaction oldTransaction = bookingManager.getCurrentTransaction();
         final User user = userManager.getCurrentUser();
-        final BookingTransaction transaction = new BookingTransaction();
+
+        BookingTransaction transaction = bookingManager.getCurrentTransaction();
+        if (transaction == null) transaction = new BookingTransaction();
 
         transaction.setBookingId(quote.getBookingId());
         transaction.setHours(quote.getHours());
@@ -67,13 +68,6 @@ public class BookingFlowFragment extends InjectedFragment {
         transaction.setZipCode(quote.getZipCode());
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
-
-        // persist additional transaction fields not contained in quote
-        if (oldTransaction != null) {
-            transaction.setRecurringFrequency(oldTransaction.getRecurringFrequency());
-            transaction.setExtraHours(oldTransaction.getExtraHours());
-            transaction.setExtraCleaningText(oldTransaction.getExtraCleaningText());
-        }
 
         if (user != null) {
             transaction.setEmail(user.getEmail());
