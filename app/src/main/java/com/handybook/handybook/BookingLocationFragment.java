@@ -169,14 +169,17 @@ public final class BookingLocationFragment extends BookingFlowFragment {
                                         showLocationProgress(false, true);
                                     }
                                 }
+                            }, new Action1<Throwable>() {
+                                @Override
+                                public void call(final Throwable throwable) {
+                                    showLocationProgress(false, false);
+                                }
                             });
                 } else showLocationProgress(false, false);
             }
         }, new Action1<Throwable>() {
             @Override
-            public void call(final Throwable throwable) {
-                showLocationProgress(false, false);
-            }
+            public void call(final Throwable throwable) { showLocationProgress(false, false); }
         }, Schedulers.io());
     }
 
