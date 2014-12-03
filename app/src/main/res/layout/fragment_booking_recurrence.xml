@@ -7,7 +7,7 @@
     <Button
         android:id="@+id/next_button"
         android:text="@string/next"
-        style="@style/Button.Blue" />
+        style="@style/Button.Green" />
 
     <TextView
         android:id="@+id/nav_text"

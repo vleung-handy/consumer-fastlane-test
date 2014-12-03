@@ -7,7 +7,7 @@
     <Button
         android:id="@+id/update_button"
         android:text="@string/update"
-        style="@style/Button.Blue" />
+        style="@style/Button.Green" />
 
     <FrameLayout
         android:id="@+id/nav_layout"

@@ -7,7 +7,7 @@
     <Button
         android:id="@+id/skip_button"
         android:text="@string/skip"
-        style="@style/Button.Blue" />
+        style="@style/Button.Green" />
 
     <TextView
         android:id="@+id/nav_text"
