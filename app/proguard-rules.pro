@@ -39,9 +39,18 @@
 #Retrofit
 -dontwarn rx.**
 -dontwarn okio.**
--dontwarn com.squareup.okhttp.*
 -dontwarn retrofit.appengine.UrlFetchClient
 -keepattributes Annotation
 -keep class retrofit.** { *; }
 -keepclasseswithmembers class * { @retrofit.http.* <methods>; }
 -keepattributes Signature
+
+#OkHttp
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+#Newrelic
+-keep class com.newrelic.** { *; }
+-dontwarn com.newrelic.**
+-keepattributes Exceptions, Signature, InnerClasses

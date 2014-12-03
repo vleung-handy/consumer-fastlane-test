@@ -16,10 +16,16 @@ apply plugin: 'newrelic'
 
 android {
     signingConfigs {
-        config {
+        stage {
             keyAlias 'HandyStageKey'
             keyPassword 'S0H@ndy!'
             storeFile file('handy-stage-key.keystore')
+            storePassword 'S0H@ndy!'
+        }
+        prod {
+            keyAlias 'HandyProdKey'
+            keyPassword 'S0H@ndy!'
+            storeFile file('handy-prod-key.keystore')
             storePassword 'S0H@ndy!'
         }
     }
@@ -29,14 +35,13 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 22
-        versionName '0.22'
+        versionCode 23
+        versionName '0.23'
     }
     buildTypes {
         release {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
         debug {
             runProguard false
@@ -46,9 +51,11 @@ android {
     productFlavors {
         stage {
             applicationId 'com.handy.handy.stage'
+            signingConfig signingConfigs.stage
         }
         prod {
             applicationId 'com.handy.handy'
+            signingConfig signingConfigs.prod
         }
     }
     compileOptions {
