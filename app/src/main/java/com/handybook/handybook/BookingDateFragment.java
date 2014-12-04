@@ -22,8 +22,10 @@ import butterknife.InjectView;
 
 public final class BookingDateFragment extends BookingFlowFragment {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
+    private final int MINUTE_INTERVAL = 15;
 
     private ArrayList<BookingOption> postOptions;
+    private List<String> displayedMinuteValues;
 
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.date_picker) DatePicker datePicker;
@@ -43,6 +45,10 @@ public final class BookingDateFragment extends BookingFlowFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
+
+        displayedMinuteValues = new ArrayList<>();
+        for (int i = 0; i < 60; i += MINUTE_INTERVAL) displayedMinuteValues.add(String.format("%02d", i));
+        for (int i = 0; i < 60; i += MINUTE_INTERVAL) displayedMinuteValues.add(String.format("%02d", i));
     }
 
     @Override
@@ -75,17 +81,13 @@ public final class BookingDateFragment extends BookingFlowFragment {
             minutePicker.setMinValue(0);
             minutePicker.setMaxValue(7);
 
-            final List<String> displayedValues = new ArrayList<>();
-            for (int i = 0; i < 60; i += 15) displayedValues.add(String.format("%02d", i));
-            for (int i = 0; i < 60; i += 15) displayedValues.add(String.format("%02d", i));
-
-            minutePicker.setDisplayedValues(displayedValues
-                    .toArray(new String[displayedValues.size()]));
+            minutePicker.setDisplayedValues(displayedMinuteValues
+                    .toArray(new String[displayedMinuteValues.size()]));
 
         } catch (Exception e) {}
 
         timePicker.setCurrentHour(startDate.get(Calendar.HOUR_OF_DAY));
-        timePicker.setCurrentMinute(startDate.get(Calendar.MINUTE));
+        timePicker.setCurrentMinute(startDate.get(Calendar.MINUTE) / MINUTE_INTERVAL);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(final TimePicker view, final int hourOfDay, final int minute) {
@@ -116,7 +118,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 startDate.get(Calendar.DAY_OF_MONTH));
 
         timePicker.setCurrentHour(startDate.get(Calendar.HOUR_OF_DAY));
-        timePicker.setCurrentMinute(startDate.get(Calendar.MINUTE));
+        timePicker.setCurrentMinute(startDate.get(Calendar.MINUTE) / MINUTE_INTERVAL);
     }
 
     @Override
@@ -162,7 +164,10 @@ public final class BookingDateFragment extends BookingFlowFragment {
         date.set(Calendar.MONTH, datePicker.getMonth());
         date.set(Calendar.YEAR, datePicker.getYear());
         date.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
-        date.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+
+        date.set(Calendar.MINUTE, Integer.parseInt(displayedMinuteValues
+                .get(timePicker.getCurrentMinute())));
+
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
         request.setStartDate(date.getTime());
