@@ -1,14 +1,17 @@
 package com.handybook.handybook;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     @InjectView(R.id.date_text) TextView dateText;
     @InjectView(R.id.header_text) TextView headerText;
     @InjectView(R.id.pager) ViewPager datePager;
+    @InjectView(R.id.arrow_left) ImageView arrowLeft;
+    @InjectView(R.id.arrow_right) ImageView arrowRight;
 
     static PeakPricingFragment newInstance() {
         final PeakPricingFragment fragment = new PeakPricingFragment();
@@ -66,7 +71,9 @@ public final class PeakPricingFragment extends BookingFlowFragment {
 
         datePager.setOnPageChangeListener(pageListener);
         currentIndex = getStartIndex();
-        updateDateHeader();
+
+        arrowLeft.setOnTouchListener(arrowTouched);
+        arrowRight.setOnTouchListener(arrowTouched);
 
         return view;
     }
@@ -76,6 +83,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         super.onActivityCreated(savedInstanceState);
         datePager.setAdapter(new PeakPriceTablePagerAdapter(getActivity().getSupportFragmentManager()));
         datePager.setCurrentItem(currentIndex);
+        updateDateHeader();
     }
 
     @Override
@@ -101,7 +109,47 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     private void updateDateHeader() {
         dateText.setText(TextUtils.formatDate(peakPriceTable
                 .get(currentIndex).get(0).getDate(), "EEEE',' MMMM d"));
+
+        arrowRight.setVisibility(View.VISIBLE);
+        arrowLeft.setVisibility(View.VISIBLE);
+
+        if (currentIndex == datePager.getAdapter().getCount() - 1) {
+            arrowRight.setVisibility(View.INVISIBLE);
+        }
+        else if (currentIndex == 0) arrowLeft.setVisibility(View.INVISIBLE);
     }
+
+    private View.OnTouchListener arrowTouched = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(final View v, final MotionEvent event) {
+            final ImageView view = (ImageView)v;
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    view.setColorFilter(getResources().getColor(R.color.handy_blue_pressed),
+                            PorterDuff.Mode.SRC_ATOP);
+
+                    view.invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int currentItem = datePager.getCurrentItem();
+                    final int count = datePager.getAdapter().getCount();
+
+                    if (v == arrowLeft) {
+                        datePager.setCurrentItem(Math.max(--currentItem, 0), true);
+                    }
+                    else if (v == arrowRight) {
+                        datePager.setCurrentItem(Math.min(++currentItem, count), true);
+                    }
+                case MotionEvent.ACTION_CANCEL:
+                    view.clearColorFilter();
+                    view.invalidate();
+                    break;
+            }
+
+            return true;
+        }
+    };
 
     private final ViewPager.OnPageChangeListener pageListener
             = new ViewPager.OnPageChangeListener() {
