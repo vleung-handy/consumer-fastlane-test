@@ -43,6 +43,8 @@ public final class TextUtils {
     }
 
     static String formatDate(final Date date, final String format) {
+        if (date == null) return null;
+
         final SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         final DateFormatSymbols symbols = new DateFormatSymbols();
         symbols.setAmPmStrings(new String[] { "am", "pm" });

@@ -31,7 +31,7 @@ public class BookingFlowFragment extends InjectedFragment {
 
             final BookingQuote quote = bookingManager.getCurrentQuote();
             dataManager.updateBookingDate(quote.getBookingId(), quote.getStartDate(),
-                    bookingQuoteCallback);
+                    bookingQuoteUpdateCallback);
             return;
         }
 
@@ -126,35 +126,56 @@ public class BookingFlowFragment extends InjectedFragment {
             = new DataManager.Callback<BookingQuote>() {
         @Override
         public void onSuccess(final BookingQuote quote) {
-            if (BookingFlowFragment.this instanceof BookingDateFragment
-                    || BookingFlowFragment.this instanceof BookingOptionsFragment)
-                mixpanel.trackEventWhenPageSubmitted();
-
-            if (!allowCallbacks) return;
-
-            // persist extras since api may not return them on subsequent calls
-            final BookingQuote oldQuote = bookingManager.getCurrentQuote();
-            if (oldQuote != null) {
-                quote.setExtrasOptions(oldQuote.getExtrasOptions());
-                quote.setSurgePriceTable(oldQuote.getSurgePriceTable());
-            }
-
-            bookingManager.setCurrentQuote(quote);
-            continueFlow();
+            handleBookingQuoteSuccess(quote, false);
         }
 
         @Override
         public void onError(final DataManager.DataManagerError error) {
-            if (!allowCallbacks) return;
-
-            enableInputs();
-            progressDialog.dismiss();
-            dataManagerErrorHandler.handleError(getActivity(), error);
-
-            if (BookingFlowFragment.this instanceof LoginFragment) {
-                getActivity().setResult(LoginActivity.RESULT_FINISH);
-                getActivity().finish();
-            }
+            handleBookingQuoteError(error);
         }
     };
+
+    private DataManager.Callback<BookingQuote> bookingQuoteUpdateCallback
+            = new DataManager.Callback<BookingQuote>() {
+        @Override
+        public void onSuccess(final BookingQuote quote) {
+            handleBookingQuoteSuccess(quote, true);
+        }
+
+        @Override
+        public void onError(final DataManager.DataManagerError error) {
+            handleBookingQuoteError(error);
+        }
+    };
+
+    private void handleBookingQuoteError(final DataManager.DataManagerError error) {
+        if (!allowCallbacks) return;
+
+        enableInputs();
+        progressDialog.dismiss();
+        dataManagerErrorHandler.handleError(getActivity(), error);
+
+        if (BookingFlowFragment.this instanceof LoginFragment) {
+            getActivity().setResult(LoginActivity.RESULT_FINISH);
+            getActivity().finish();
+        }
+    }
+
+    private void handleBookingQuoteSuccess(final BookingQuote quote, final boolean isUpdate) {
+        if (BookingFlowFragment.this instanceof BookingDateFragment
+                || BookingFlowFragment.this instanceof BookingOptionsFragment)
+            mixpanel.trackEventWhenPageSubmitted();
+
+        if (!allowCallbacks) return;
+
+        // persist extras since api doesnt return them on quote update calls
+        final BookingQuote oldQuote = bookingManager.getCurrentQuote();
+        if (isUpdate && oldQuote != null) {
+            quote.setExtrasOptions(oldQuote.getExtrasOptions());
+            quote.setSurgePriceTable(oldQuote.getSurgePriceTable());
+        }
+
+        bookingManager.setCurrentQuote(quote);
+        continueFlow();
+    }
 }
