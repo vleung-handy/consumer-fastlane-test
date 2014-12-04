@@ -44,7 +44,6 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         ButterKnife.inject(this, view);
         discountText.setPaintFlags(discountText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        refreshInfo();
         return view;
     }
 
@@ -53,7 +52,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         super.onStart();
         transaction.addObserver(this);
         quote.addObserver(this);
-
+        refreshInfo();
     }
 
     @Override
