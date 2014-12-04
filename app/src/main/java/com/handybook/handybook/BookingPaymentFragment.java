@@ -2,6 +2,7 @@ package com.handybook.handybook;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -36,6 +37,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @InjectView(R.id.credit_card_text) CreditCardNumberInputTextView creditCardText;
     @InjectView(R.id.exp_text) CreditCardExpDateInputTextView expText;
     @InjectView(R.id.cvc_text) CreditCardCVCInputTextView cvcText;
+    @InjectView(R.id.lock_icon) ImageView lockIcon;
     @InjectView(R.id.card_icon) ImageView creditCardIcon;
     @InjectView(R.id.card_extras_layout) LinearLayout cardExtrasLayout;
 
@@ -84,6 +86,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                 allowCardInput();
             }
         });
+
+        lockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
+                PorterDuff.Mode.SRC_ATOP);
 
         return view;
     }

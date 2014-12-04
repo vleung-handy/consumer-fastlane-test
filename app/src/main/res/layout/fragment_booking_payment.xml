@@ -87,6 +87,16 @@
                         android:layout_weight="1"
                         style="@style/EditText.CreditCardCVC" />
 
+                    <ImageView
+                        android:id="@+id/lock_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_lock"
+                        android:contentDescription="lock" />
+
                 </LinearLayout>
 
             </LinearLayout>
