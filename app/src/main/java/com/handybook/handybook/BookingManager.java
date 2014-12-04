@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -135,5 +136,15 @@ public final class BookingManager implements Observer {
         setCurrentPostInfo(null);
         securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", null);
         bus.post(new BookingFlowClearedEvent());
+    }
+
+    @Subscribe
+    public final void environmentUpdated(final EnvironmentUpdatedEvent event) {
+        if (event.getEnvironment() != event.getPrevEnvironment()) clearAll();
+    }
+
+    @Subscribe
+    public final void userAuthUpdated(final UserLoggedInEvent event) {
+        if (!event.isLoggedIn()) clearAll();
     }
 }

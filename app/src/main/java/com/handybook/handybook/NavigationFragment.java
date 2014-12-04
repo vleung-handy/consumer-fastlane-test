@@ -114,7 +114,8 @@ public final class NavigationFragment extends InjectedListFragment
         getListView().setAdapter(new ArrayAdapter<String>(getActivity(),
                 R.layout.list_item_nav, items) {
             @Override
-            public final View getView(final int position, final View convertView, final ViewGroup parent) {
+            public final View getView(final int position, final View convertView,
+                                      final ViewGroup parent) {
                 View view = convertView;
                 if (view == null) {
                     final LayoutInflater inflater = (LayoutInflater)getContext()
@@ -136,7 +137,8 @@ public final class NavigationFragment extends InjectedListFragment
     }
 
     @Override
-    public final void onListItemClick(final ListView l, final View v, final int position, final long id) {
+    public final void onListItemClick(final ListView l, final View v, final int position,
+                                      final long id) {
         super.onListItemClick(l, v, position, id);
 
         final TextView textView = (TextView)v.findViewById(R.id.nav_item);
@@ -192,7 +194,8 @@ public final class NavigationFragment extends InjectedListFragment
                                               final int requestCode, final View view) {}
 
     @Override
-    public final void onItemClick(final SimpleAlertDialog dialog, final int requestCode, final int which) {
+    public final void onItemClick(final SimpleAlertDialog dialog, final int requestCode,
+                                  final int which) {
         if (requestCode == REQUEST_ENV) {
             dataManager.setEnvironment(DataManager.Environment.valueOf(envs.get(which)));
         }
