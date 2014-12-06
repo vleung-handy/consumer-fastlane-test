@@ -9,7 +9,6 @@ import android.widget.TextView;
 import antistatic.spinnerwheel.adapters.ArrayWheelAdapter;
 
 final class OptionsAdapter<T> extends ArrayWheelAdapter<T> {
-    private static final int MIN_WIDTH = 50;
     private static final int PADDING = 32;
 
     private int maxWidth;
@@ -24,18 +23,21 @@ final class OptionsAdapter<T> extends ArrayWheelAdapter<T> {
         final View view = inflater.inflate(itemRes, null);
         final TextView text = (TextView)view.findViewById(textRes);
 
-        for (final T item : items) {
-            Paint p = new Paint();
-            p.set(text.getPaint());
-            p.setTextSize(text.getTextSize());
+        final Paint paint = new Paint();
+        paint.set(text.getPaint());
+        paint.setTextSize(text.getTextSize());
 
-            maxWidth = Math.max(maxWidth, (int)p.measureText(item.toString()));
-            maxWidth = Math.max(maxWidth, MIN_WIDTH);
+        // set default width to length of textView using '10'
+        final int minWidth = (int)paint.measureText("10");
+
+        for (final T item : items) {
+            maxWidth = Math.max(maxWidth, (int)paint.measureText(item.toString()));
+            maxWidth = Math.max(maxWidth, minWidth);
         }
 
         padding = Utils.toDP(PADDING, context);
         maxWidth += padding;
-        maxHeight = MIN_WIDTH + padding;
+        maxHeight =  minWidth + padding;
     }
 
     @Override
