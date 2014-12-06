@@ -23,13 +23,13 @@
             <item>
                 <shape android:shape="rectangle">
                     <stroke android:width="1px" android:color="@color/handy_blue" />
-                    <solid android:color="@color/cell_selected" />
+                    <solid android:color="@color/category_selected" />
                 </shape>
             </item>
             <item android:bottom="1px">
                 <shape android:shape="rectangle">
-                    <stroke android:width="1px" android:color="@color/cell_selected" />
-                    <solid android:color="@color/cell_selected" />
+                    <stroke android:width="1px" android:color="@color/category_selected" />
+                    <solid android:color="@color/category_selected" />
                 </shape>
             </item>
         </layer-list>

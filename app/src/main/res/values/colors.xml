@@ -17,6 +17,7 @@
     <color name="service_sep">#D6D6D6</color>
     <color name="cell_sep">#D6D6D6</color>
     <color name="cell_selected">#D6D6D6</color>
+    <color name="category_selected">#F6F6F6</color>
     <color name="error_red">#FF5C5C</color>
     <color name="price_green">#ACC63F</color>
     <color name="facebook">#246BAB</color>
