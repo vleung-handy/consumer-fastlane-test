@@ -42,6 +42,13 @@ public final class TextUtils {
         else return phone;
     }
 
+    static String formatAddress(final String address1, final String address2, final String city,
+                                final String state, final String zip) {
+        return address1 +(address2 != null && address2.length() > 0 ? ", "
+                + address2 + "\n" : "\n") + city + ", "
+                + state + " " + (zip != null ? zip.replace(" ", "\u00A0") : null);
+    }
+
     static String formatDate(final Date date, final String format) {
         if (date == null) return null;
 
