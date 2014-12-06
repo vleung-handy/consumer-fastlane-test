@@ -63,7 +63,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
 
         final User user = userManager.getCurrentUser();
         priceText.setText(TextUtils.formatPrice(booking.getPrice(),
-                user.getCurrencyChar(), user.getCurrencySuffix()));
+                user.getCurrencyChar(), null));
 
         final Booking.Provider pro = booking.getProvider();
         if (pro.getStatus() == 3) {

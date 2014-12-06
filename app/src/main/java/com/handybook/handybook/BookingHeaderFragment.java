@@ -83,12 +83,12 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         final String currSuffix = quote.getCurrencySuffix();
 
         if (pricing[0] == pricing[1]) {
-            priceText.setText(TextUtils.formatPrice(pricing[0], currChar, currSuffix));
+            priceText.setText(TextUtils.formatPrice(pricing[0], currChar, null));
             discountText.setVisibility(View.GONE);
         }
         else {
-            priceText.setText(TextUtils.formatPrice(pricing[1], currChar, currSuffix));
-            discountText.setText(TextUtils.formatPrice(pricing[0], currChar, currSuffix));
+            priceText.setText(TextUtils.formatPrice(pricing[1], currChar, null));
+            discountText.setText(TextUtils.formatPrice(pricing[0], currChar, null));
             discountText.setVisibility(View.VISIBLE);
         }
     }

@@ -72,7 +72,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
             final TextView priceText = (TextView) row.findViewById(R.id.price_text);
 
             dateText.setText(TextUtils.formatDate(info.getDate(), "h:mm aaa"));
-            priceText.setText(TextUtils.formatPrice(info.getPrice(), currChar, currSuffix));
+            priceText.setText(TextUtils.formatPrice(info.getPrice(), currChar, null));
 
             final int freq = bookingManager.getCurrentTransaction().getRecurringFrequency();
             final String type = info.getType();
