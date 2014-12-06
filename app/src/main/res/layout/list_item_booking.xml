@@ -29,6 +29,6 @@
         android:singleLine="true"
         android:textSize="@dimen/small_text_size"
         android:text="TIME"
-        style="@style/TextView" />
+        style="@style/TextView.Headline.Small.Light" />
 
 </LinearLayout>
