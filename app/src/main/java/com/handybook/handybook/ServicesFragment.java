@@ -52,9 +52,6 @@ public final class ServicesFragment extends InjectedListFragment {
                 .inflate(R.layout.fragment_services,container, false);
 
         ButterKnife.inject(this, view);
-
-        final int navHeight;
-        if ((navHeight = getArguments().getInt(EXTRA_NAV_HEIGHT)) > 0) navText.setHeight(navHeight);
         navText.setText(service.getName());
 
         return view;
