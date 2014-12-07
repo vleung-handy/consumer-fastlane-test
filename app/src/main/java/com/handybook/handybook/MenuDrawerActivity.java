@@ -107,6 +107,10 @@ abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDi
         this.overridePendingTransition(0, 0);
         this.finish();
     }
+    
+    final void setDrawerDisabled(final boolean disableDrawer) {
+        this.disableDrawer = disableDrawer;
+    }
 
     @Override
     public final void onDialogPositiveButtonClicked(final SimpleAlertDialog dialog,

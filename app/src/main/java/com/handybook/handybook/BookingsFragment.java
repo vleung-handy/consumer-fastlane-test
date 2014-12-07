@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public final class BookingsFragment extends InjectedListFragment {
     private ArrayList<Booking> upBookings = new ArrayList<>();
     private ArrayList<Booking> pastBookings = new ArrayList<>();
 
-    @InjectView(R.id.menu_button_layout) FrameLayout menuButtonLayout;
+    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
 
     static BookingsFragment newInstance() {
         return new BookingsFragment();
@@ -42,6 +41,7 @@ public final class BookingsFragment extends InjectedListFragment {
 
         final MenuButton menuButton = new MenuButton(getActivity());
         menuButton.setColor(getResources().getColor(R.color.black_pressed));
+        Utils.extendHitArea(menuButton, menuButtonLayout, Utils.toDP(32, getActivity()));
         menuButtonLayout.addView(menuButton);
 
         return view;

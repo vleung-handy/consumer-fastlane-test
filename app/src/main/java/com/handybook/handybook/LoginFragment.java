@@ -47,8 +47,10 @@ public final class LoginFragment extends BookingFlowFragment {
     @InjectView(R.id.email_text) EmailInputTextView emailText;
     @InjectView(R.id.password_text) PasswordInputTextView passwordText;
     @InjectView(R.id.fb_button) LoginButton fbButton;
+    @InjectView(R.id.fb_layout) View fbLayout;
     @InjectView(R.id.or_text) TextView orText;
     @InjectView(R.id.welcome_text) TextView welcomeText;
+    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
 
     static LoginFragment newInstance(final boolean findUser, final String bookingUserName,
                                      final String bookingUserEmail) {
@@ -85,7 +87,10 @@ public final class LoginFragment extends BookingFlowFragment {
 
         ButterKnife.inject(this, view);
 
+        final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+
         if (findUser) {
+            activity.setDrawerDisabled(true);
             navText.setText(getString(R.string.contact));
             passwordText.setVisibility(View.GONE);
             forgotButton.setVisibility(View.GONE);
@@ -93,12 +98,19 @@ public final class LoginFragment extends BookingFlowFragment {
             emailText.setText(bookingRequest.getEmail());
         }
         else if (bookingUserName != null) {
-            fbButton.setVisibility(View.GONE);
+            activity.setDrawerDisabled(true);
+            fbLayout.setVisibility(View.GONE);
             orText.setVisibility(View.GONE);
             emailText.setText(bookingUserEmail);
             welcomeText.setText(String.format(getString(R.string.welcome_back), bookingUserName));
             welcomeText.setVisibility(View.VISIBLE);
             bookingRequest.setEmail(bookingUserEmail);
+        }
+        else {
+            final MenuButton menuButton = new MenuButton(getActivity());
+            menuButton.setColor(getResources().getColor(R.color.black_pressed));
+            Utils.extendHitArea(menuButton, menuButtonLayout, Utils.toDP(32, getActivity()));
+            menuButtonLayout.addView(menuButton);
         }
 
         fbButton.setFragment(this);

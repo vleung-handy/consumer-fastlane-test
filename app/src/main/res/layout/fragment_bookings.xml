@@ -14,13 +14,9 @@
             android:text="@string/my_bookings"
             style="@style/TextView.Navbar" />
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/menu_button_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            style="@style/MenuButtonLayout" />
 
     </FrameLayout>
 

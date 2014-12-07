@@ -1,8 +1,11 @@
 package com.handybook.handybook;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.text.format.Time;
 import android.util.TypedValue;
+import android.view.TouchDelegate;
+import android.view.View;
 
 import java.util.Date;
 
@@ -29,5 +32,22 @@ public final class Utils {
 
         return (thenYear == time.year) && (thenMonth == time.month)
                 && (thenMonthDay == time.monthDay);
+    }
+
+    static void extendHitArea(final View view, final View parent, final int extra) {
+        parent.post(new Runnable() {
+            @Override
+            public void run() {
+                final Rect delegateArea = new Rect();
+                view.getHitRect(delegateArea);
+                delegateArea.right += extra;
+                delegateArea.bottom += extra;
+
+                final TouchDelegate touchDelegate = new TouchDelegate(delegateArea, view);
+                if (View.class.isInstance(view.getParent())) {
+                    ((View)view.getParent()).setTouchDelegate(touchDelegate);
+                }
+            }
+        });
     }
 }
