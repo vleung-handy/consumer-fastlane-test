@@ -344,7 +344,7 @@ public final class LoginFragment extends BookingFlowFragment {
                     Session session = Session.getActiveSession();
                     if (session != null) session.closeAndClearTokenInformation();
 
-                    if (bookingUserName != null) {
+                    if (bookingUserName != null || (authType == AuthType.FACEBOOK && findUser)) {
                         continueBookingFlow();
                         return;
                     }
