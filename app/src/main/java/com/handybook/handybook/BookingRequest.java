@@ -95,7 +95,7 @@ public final class BookingRequest extends Observable {
     }
 
     final String toJson() {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm")
                 .setExclusionStrategies(getExclusionStrategy())
                 .registerTypeAdapter(BookingRequest.class, new BookingRequestSerializer()).create();
 
@@ -103,7 +103,7 @@ public final class BookingRequest extends Observable {
     }
 
     static BookingRequest fromJson(final String json) {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm").create()
                 .fromJson(json, BookingRequest.class);
     }
 
