@@ -88,7 +88,6 @@ public final class NavigationFragment extends InjectedListFragment
             }
         });
 
-        loadNavItems();
         return view;
     }
 
@@ -205,9 +204,6 @@ public final class NavigationFragment extends InjectedListFragment
     public final void userAuthUpdated(final UserLoggedInEvent event) {
         loadNavItems();
 
-        final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
-        adapter.notifyDataSetChanged();
-
         if (!event.isLoggedIn()) {
             final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
             activity.navigateToActivity(ServiceCategoriesActivity.class);
@@ -241,5 +237,8 @@ public final class NavigationFragment extends InjectedListFragment
 
         envButton.setText(String.format(getString(R.string.env_format), dataManager.getEnvironment(),
                 BuildConfig.VERSION_NAME, Integer.valueOf(BuildConfig.VERSION_CODE).toString()));
+
+        final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
+        if (adapter != null) adapter.notifyDataSetChanged();
     }
 }
