@@ -35,8 +35,8 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 28
-        versionName '0.28'
+        versionCode 30
+        versionName '1.0'
     }
     buildTypes {
         release {
@@ -54,7 +54,7 @@ android {
             signingConfig signingConfigs.stage
         }
         prod {
-            applicationId 'com.handy.handy'
+            applicationId 'com.handy.handy.prod'
             signingConfig signingConfigs.prod
         }
     }

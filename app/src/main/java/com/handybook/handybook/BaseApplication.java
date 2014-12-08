@@ -17,7 +17,6 @@ public final class BaseApplication extends Application {
 
     private ObjectGraph graph;
     private int started;
-    private Activity lastActivity;
     private boolean savedInstance;
 
     @Inject UserManager userManager;
@@ -55,20 +54,13 @@ public final class BaseApplication extends Application {
                     else mixpanel.trackEventAppOpened(false);
                     updateUser();
                 }
-
-                if (lastActivity != null && lastActivity.getClass() == activity.getClass()) {
-                    mixpanel.trackEventAppOpened(false);
-                    updateUser();
-                }
             }
 
             @Override
             public void onActivityResumed(final Activity activity) {}
 
             @Override
-            public void onActivityPaused(final Activity activity) {
-                lastActivity = activity;
-            }
+            public void onActivityPaused(final Activity activity) {}
 
             @Override
             public void onActivityStopped(final Activity activity) {}
