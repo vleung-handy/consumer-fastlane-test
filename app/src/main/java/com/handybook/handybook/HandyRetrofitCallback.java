@@ -40,7 +40,7 @@ abstract class HandyRetrofitCallback implements retrofit.Callback<Response> {
             throw new RuntimeException("Unable to parse API response body");
         }
 
-        if (obj.has("error") && obj.optBoolean("error")) {
+        if (obj.has("error") && (obj.optBoolean("error") || obj.optInt("error") == 1)) {
             final DataManager.DataManagerError err;
             final JSONArray messages = obj.optJSONArray("messages");
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -34,9 +35,11 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
 
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.change_button) Button changeButton;
+    @InjectView(R.id.promo_button) Button promoButton;
     @InjectView(R.id.credit_card_text) CreditCardNumberInputTextView creditCardText;
     @InjectView(R.id.exp_text) CreditCardExpDateInputTextView expText;
     @InjectView(R.id.cvc_text) CreditCardCVCInputTextView cvcText;
+    @InjectView(R.id.promo_text) EditText promoText;
     @InjectView(R.id.lock_icon) ImageView lockIcon;
     @InjectView(R.id.card_icon) ImageView creditCardIcon;
     @InjectView(R.id.card_extras_layout) LinearLayout cardExtrasLayout;
@@ -89,6 +92,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
 
         lockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
+
+        promoButton.setOnClickListener(promoClicked);
 
         return view;
     }
@@ -238,6 +243,36 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                         }
                     });
                 } else completeBooking();
+            }
+        }
+    };
+
+    private final View.OnClickListener promoClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            final String promoCode = promoText.getText().toString();
+            if (promoCode.length() > 0) {
+                progressDialog.show();
+
+                final User user = userManager.getCurrentUser();
+
+                dataManager.applyPromo(promoCode,
+                        bookingManager.getCurrentTransaction().getBookingId(),
+                        user != null ? user.getId() : null, new DataManager.Callback<String>() {
+                            @Override
+                            public void onSuccess(final String response) {
+                                progressDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onError(final DataManager.DataManagerError error) {
+                                if (!allowCallbacks) return;
+
+                                enableInputs();
+                                progressDialog.dismiss();
+                                dataManagerErrorHandler.handleError(getActivity(), error);
+                            }
+                        });
             }
         }
     };

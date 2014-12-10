@@ -39,6 +39,11 @@ public interface HandyRetrofitService {
     void updateBookingDate(@Path("booking") int bookingId, @Field("date_start") Date date,
                            HandyRetrofitCallback cb);
 
+    @FormUrlEncoded
+    @POST("/bookings/{booking}/set_coupon")
+    void applyPromo(@Field("coupon") String promoCode, @Path("booking") int bookingId,
+                    @Field("user_id") String userId, HandyRetrofitCallback cb);
+
     @POST("/transactions")
     void completeBooking(@Body BookingTransaction req, HandyRetrofitCallback cb);
 
