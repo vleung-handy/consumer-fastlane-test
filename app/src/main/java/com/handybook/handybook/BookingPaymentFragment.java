@@ -93,6 +93,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         lockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
 
+        final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
+
+        final String promoText = bookingTransaction.isPromoApplied()
+                ? getString(R.string.remove) : getString(R.string.apply);
+
+        promoButton.setText(promoText);
         promoButton.setOnClickListener(promoClicked);
 
         return view;
@@ -250,17 +256,22 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     private final View.OnClickListener promoClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
+            final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
+            final boolean hasPromo = bookingTransaction.isPromoApplied();
             final String promoCode = promoText.getText().toString();
-            if (promoCode.length() > 0) {
+
+            if (hasPromo || promoCode.length() > 0) {
                 progressDialog.show();
 
-                final User user = userManager.getCurrentUser();
+                final int bookingId = bookingTransaction.getBookingId();
 
-                dataManager.applyPromo(promoCode,
-                        bookingManager.getCurrentTransaction().getBookingId(),
-                        user != null ? user.getId() : null, new DataManager.Callback<String>() {
+                if (hasPromo) {
+                    dataManager.removePromo(bookingId, new DataManager.Callback<String>() {
                             @Override
                             public void onSuccess(final String response) {
+                                bookingTransaction.setPromoApplied(false);
+                                promoButton.setText(getString(R.string.apply));
+                                promoText.setText(null);
                                 progressDialog.dismiss();
                             }
 
@@ -268,11 +279,37 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                             public void onError(final DataManager.DataManagerError error) {
                                 if (!allowCallbacks) return;
 
+                                promoText.setText(null);
                                 enableInputs();
                                 progressDialog.dismiss();
                                 dataManagerErrorHandler.handleError(getActivity(), error);
                             }
-                        });
+                    });
+                }
+                else {
+                    final User user = userManager.getCurrentUser();
+
+                    dataManager.applyPromo(promoCode, bookingId, user != null ? user.getId() : null,
+                            new DataManager.Callback<String>() {
+                            @Override
+                            public void onSuccess(final String response) {
+                                bookingTransaction.setPromoApplied(true);
+                                promoButton.setText(getString(R.string.remove));
+                                promoText.setText(null);
+                                progressDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onError(final DataManager.DataManagerError error) {
+                                if (!allowCallbacks) return;
+
+                                promoText.setText(null);
+                                enableInputs();
+                                progressDialog.dismiss();
+                                dataManagerErrorHandler.handleError(getActivity(), error);
+                            }
+                    });
+                }
             }
         }
     };

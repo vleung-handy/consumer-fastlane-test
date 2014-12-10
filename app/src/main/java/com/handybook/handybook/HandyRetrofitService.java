@@ -44,6 +44,9 @@ public interface HandyRetrofitService {
     void applyPromo(@Field("coupon") String promoCode, @Path("booking") int bookingId,
                     @Field("user_id") String userId, HandyRetrofitCallback cb);
 
+    @POST("/bookings/{booking}/remove_coupon")
+    void removePromo(@Path("booking") int bookingId, HandyRetrofitCallback cb);
+
     @POST("/transactions")
     void completeBooking(@Body BookingTransaction req, HandyRetrofitCallback cb);
 
