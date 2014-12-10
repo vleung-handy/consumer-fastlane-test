@@ -64,7 +64,7 @@
     </style>
 
     <style name="RoundedButton">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">64dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -152,6 +152,13 @@
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/credit_card_num</item>
         <item name="android:maxLength">32</item>
+    </style>
+
+    <style name="EditText.PromoCode">
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/promo_code_opt</item>
+        <item name="android:maxLength">100</item>
     </style>
 
     <style name="EditText.CreditCardExp">
