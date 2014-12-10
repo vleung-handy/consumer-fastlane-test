@@ -87,4 +87,5 @@
     <string name="extras">Extras</string>
     <string name="apply">Apply</string>
     <string name="promo_code_opt">Promo Code (optional)</string>
+    <string name="remove">Remove</string>
 </resources>

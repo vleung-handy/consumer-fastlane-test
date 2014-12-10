@@ -244,7 +244,17 @@ public final class BaseDataManager extends DataManager {
                     final Callback<String> cb) {
         service.applyPromo(promoCode, bookingId, userId, new HandyRetrofitCallback(cb) {
             @Override
-            void success(JSONObject response) {
+            void success(final JSONObject response) {
+                cb.onSuccess(response.toString());
+            }
+        });
+    }
+
+    @Override
+    void removePromo(final int bookingId, final Callback<String> cb) {
+        service.removePromo(bookingId, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
                 cb.onSuccess(response.toString());
             }
         });
