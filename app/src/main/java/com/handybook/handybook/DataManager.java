@@ -36,6 +36,9 @@ abstract class DataManager {
     abstract void updateBookingDate(int bookingId, Date date,
                                     Callback<BookingQuote> cb);
 
+    abstract void applyPromo(String promoCode, int bookingId, String userId,
+                             Callback<String> cb);
+
     abstract void completeBooking(BookingTransaction bookingTransaction,
                                   Callback<BookingCompleteTransaction> cb);
 
