@@ -10,7 +10,7 @@
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="stageDebug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleStageDebug" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileStageDebugJava" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileStageDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleStageDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateStageDebugSources" />
         <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateStageDebugTestSources" />
@@ -31,6 +31,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/stage/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/stage/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/stage/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/stage/debug" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/stageDebug/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/stageDebug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/stageDebug/assets" type="java-resource" />
@@ -43,6 +44,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/test/stage/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/test/stage/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/test/stage/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/test/stage/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/stage/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/stage/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/stage/assets" type="java-resource" />
@@ -98,6 +100,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

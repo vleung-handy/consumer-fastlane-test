@@ -35,16 +35,16 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 33
+        versionCode 34
         versionName '1.0'
     }
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
