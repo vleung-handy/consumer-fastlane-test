@@ -256,33 +256,26 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     private final View.OnClickListener promoClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
+            final String promoCode = promoText.getText().toString();
             final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
             final boolean hasPromo = bookingTransaction.isPromoApplied();
-            final String promoCode = promoText.getText().toString();
 
             if (hasPromo || promoCode.length() > 0) {
                 progressDialog.show();
 
+                final BookingQuote quote = bookingManager.getCurrentQuote();
                 final int bookingId = bookingTransaction.getBookingId();
 
                 if (hasPromo) {
-                    dataManager.removePromo(bookingId, new DataManager.Callback<String>() {
+                    dataManager.removePromo(bookingId, new DataManager.Callback<BookingCoupon>() {
                             @Override
-                            public void onSuccess(final String response) {
-                                bookingTransaction.setPromoApplied(false);
-                                promoButton.setText(getString(R.string.apply));
-                                promoText.setText(null);
-                                progressDialog.dismiss();
+                            public void onSuccess(final BookingCoupon coupon) {
+                                handlePromoSuccess(coupon, quote, bookingTransaction, false);
                             }
 
                             @Override
                             public void onError(final DataManager.DataManagerError error) {
-                                if (!allowCallbacks) return;
-
-                                promoText.setText(null);
-                                enableInputs();
-                                progressDialog.dismiss();
-                                dataManagerErrorHandler.handleError(getActivity(), error);
+                                handlePromoFailure(error);
                             }
                     });
                 }
@@ -290,23 +283,15 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                     final User user = userManager.getCurrentUser();
 
                     dataManager.applyPromo(promoCode, bookingId, user != null ? user.getId() : null,
-                            new DataManager.Callback<String>() {
+                            new DataManager.Callback<BookingCoupon>() {
                             @Override
-                            public void onSuccess(final String response) {
-                                bookingTransaction.setPromoApplied(true);
-                                promoButton.setText(getString(R.string.remove));
-                                promoText.setText(null);
-                                progressDialog.dismiss();
+                            public void onSuccess(final BookingCoupon coupon) {
+                                handlePromoSuccess(coupon, quote, bookingTransaction, true);
                             }
 
                             @Override
                             public void onError(final DataManager.DataManagerError error) {
-                                if (!allowCallbacks) return;
-
-                                promoText.setText(null);
-                                enableInputs();
-                                progressDialog.dismiss();
-                                dataManagerErrorHandler.handleError(getActivity(), error);
+                                handlePromoFailure(error);
                             }
                     });
                 }
@@ -387,4 +372,22 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
             if (!useExistingCard) setCardIcon(creditCardText.getCardType());
         }
     };
+
+    private void handlePromoSuccess(final BookingCoupon coupon, final BookingQuote quote,
+                                    final BookingTransaction transaction, final boolean applied) {
+        quote.setPriceTable(coupon.getPriceTable());
+        transaction.setPromoApplied(applied);
+        promoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
+        promoText.setText(null);
+        progressDialog.dismiss();
+    }
+
+    private void handlePromoFailure(final DataManager.DataManagerError error) {
+        if (!allowCallbacks) return;
+
+        promoText.setText(null);
+        enableInputs();
+        progressDialog.dismiss();
+        dataManagerErrorHandler.handleError(getActivity(), error);
+    }
 }
