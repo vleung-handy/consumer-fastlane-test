@@ -101,6 +101,8 @@ public final class User extends Observable {
     }
 
     final String getPhone() {
+        final int phoneLen = phone != null ? phone.length() : 0;
+        if (phone != null & phoneLen > 10) return phone.substring(phoneLen - 10);
         return phone;
     }
 
