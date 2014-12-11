@@ -31,13 +31,13 @@ public final class BookingQuote extends Observable {
     @SerializedName("currency_char") private String currencyChar;
     @SerializedName("currency_suffix") private String currencySuffix;
     @SerializedName("hourly_amount") private float hourlyAmount;
-    @SerializedName("price_table") private ArrayList<PriceInfo> priceTable;
+    @SerializedName("price_table") private ArrayList<BookingPriceInfo> priceTable;
     @SerializedName("dynamic_options") private ArrayList<PeakPriceInfo> surgePriceTable;
     @SerializedName("stripe_key") private String stripeKey;
     @SerializedName("phone_country_prefix") private String phonePrefix;
     @SerializedName("special_extras_options") private BookingOption extrasOptions;
 
-    private HashMap<Float, PriceInfo> priceTableMap;
+    private HashMap<Float, BookingPriceInfo> priceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable;
 
     final int getBookingId() {
@@ -120,17 +120,17 @@ public final class BookingQuote extends Observable {
         this.hourlyAmount = hourlyAmount;
     }
 
-    final ArrayList<PriceInfo> getPriceTable() {
+    final ArrayList<BookingPriceInfo> getPriceTable() {
         return priceTable;
     }
 
-    final void setPriceTable(final ArrayList<PriceInfo> priceTable) {
+    final void setPriceTable(final ArrayList<BookingPriceInfo> priceTable) {
         this.priceTable = priceTable;
         buildPriceMap();
         triggerObservers();
     }
 
-    final HashMap<Float, PriceInfo> getPriceTableMap() {
+    final HashMap<Float, BookingPriceInfo> getPriceTableMap() {
         if (priceTableMap == null || priceTable.isEmpty()) buildPriceMap();
         return priceTableMap;
     }
@@ -151,13 +151,13 @@ public final class BookingQuote extends Observable {
     }
 
     final boolean hasRecurring() {
-        final PriceInfo info = this.priceTable.get(0);
+        final BookingPriceInfo info = this.priceTable.get(0);
         return !(info.getBiMonthlyprice() <= 0 && info.getMonthlyPrice() <= 0
                 && info.getWeeklyPrice() <= 0);
     }
 
     final float[] getPricing(final float hours, final int freq) {
-        final PriceInfo info = this.getPriceTableMap().get(hours);
+        final BookingPriceInfo info = this.getPriceTableMap().get(hours);
 
         switch (freq) {
             case 1:
@@ -210,7 +210,7 @@ public final class BookingQuote extends Observable {
 
         if (this.priceTable == null) return;
 
-        for (final PriceInfo info : this.priceTable) priceTableMap.put(info.getHours(), info);
+        for (final BookingPriceInfo info : this.priceTable) priceTableMap.put(info.getHours(), info);
     }
 
     private void buildPeakPriceTable() {
@@ -308,54 +308,6 @@ public final class BookingQuote extends Observable {
             jsonObj.add("stripe_key", context.serialize(value.getStripeKey()));
             jsonObj.add("special_extras_options", context.serialize(value.getExtrasOptions()));
             return jsonObj;
-        }
-    }
-
-    static final class PriceInfo {
-        @SerializedName("hours") private float hours;
-        @SerializedName("price") private float price;
-        @SerializedName("discount_price") private float discountPrice;
-        @SerializedName("bimonthly_recurring_price") private float biMonthlyprice;
-        @SerializedName("discount_bimonthly_recurring_price") private float discountBiMonthlyprice;
-        @SerializedName("monthly_recurring_price") private float monthlyPrice;
-        @SerializedName("discount_monthly_recurring_price") private float discountMonthlyPrice;
-        @SerializedName("weekly_recurring_price") private float weeklyPrice;
-        @SerializedName("discount_weekly_recurring_price") private float discountWeeklyPrice;
-
-        final float getHours() {
-            return hours;
-        }
-
-        final float getPrice() {
-            return price;
-        }
-
-        final float getBiMonthlyprice() {
-            return biMonthlyprice;
-        }
-
-        final float getMonthlyPrice() {
-            return monthlyPrice;
-        }
-
-        final float getWeeklyPrice() {
-            return weeklyPrice;
-        }
-
-        final float getDiscountPrice() {
-            return discountPrice;
-        }
-
-        final float getDiscountBiMonthlyprice() {
-            return discountBiMonthlyprice;
-        }
-
-        final float getDiscountMonthlyPrice() {
-            return discountMonthlyPrice;
-        }
-
-        final float getDiscountWeeklyPrice() {
-            return discountWeeklyPrice;
         }
     }
 

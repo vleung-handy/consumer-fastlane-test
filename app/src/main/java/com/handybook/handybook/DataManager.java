@@ -37,9 +37,9 @@ abstract class DataManager {
                                     Callback<BookingQuote> cb);
 
     abstract void applyPromo(String promoCode, int bookingId, String userId,
-                             Callback<String> cb);
+                             Callback<BookingCoupon> cb);
 
-    abstract void removePromo(int bookingId, Callback<String> cb);
+    abstract void removePromo(int bookingId, Callback<BookingCoupon> cb);
 
     abstract void completeBooking(BookingTransaction bookingTransaction,
                                   Callback<BookingCompleteTransaction> cb);

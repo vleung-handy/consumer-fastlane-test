@@ -175,6 +175,13 @@ public class BookingFlowFragment extends InjectedFragment {
             quote.setSurgePriceTable(oldQuote.getSurgePriceTable());
         }
 
+        // remove promo if new quote requested
+        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+        if (transaction != null && oldQuote != null && oldQuote.getBookingId()
+                != quote.getBookingId()) {
+            transaction.setPromoApplied(false);
+        }
+
         bookingManager.setCurrentQuote(quote);
         continueFlow();
     }
