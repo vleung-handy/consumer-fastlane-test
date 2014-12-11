@@ -95,13 +95,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         lockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
 
-        final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-
-        final String promoText = bookingTransaction.isPromoApplied()
-                ? getString(R.string.remove) : getString(R.string.apply);
-
-        promoButton.setText(promoText);
         promoButton.setOnClickListener(promoClicked);
+        updatePromoButtonText();
 
         return view;
     }
@@ -378,9 +373,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
 
     private void handlePromoSuccess(final BookingCoupon coupon, final BookingQuote quote,
                                     final BookingTransaction transaction, final boolean applied) {
+        if (!allowCallbacks) return;
+
         quote.setPriceTable(coupon.getPriceTable());
         transaction.setPromoApplied(applied);
-        promoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
+
+        updatePromoButtonText();
         promoText.setText(null);
         promoProgress.setVisibility(View.INVISIBLE);
     }
@@ -388,9 +386,16 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     private void handlePromoFailure(final DataManager.DataManagerError error) {
         if (!allowCallbacks) return;
 
+        updatePromoButtonText();
         promoText.setText(null);
-        enableInputs();
         promoProgress.setVisibility(View.INVISIBLE);
         dataManagerErrorHandler.handleError(getActivity(), error);
+    }
+
+    private void updatePromoButtonText() {
+        final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
+        final String promoText = bookingTransaction.isPromoApplied()
+                ? getString(R.string.remove) : getString(R.string.apply);
+        promoButton.setText(promoText);
     }
 }
