@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
@@ -43,6 +44,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @InjectView(R.id.lock_icon) ImageView lockIcon;
     @InjectView(R.id.card_icon) ImageView creditCardIcon;
     @InjectView(R.id.card_extras_layout) LinearLayout cardExtrasLayout;
+    @InjectView(R.id.promo_progress) ProgressBar promoProgress;
 
     static BookingPaymentFragment newInstance() {
         final BookingPaymentFragment fragment = new BookingPaymentFragment();
@@ -261,7 +263,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
             final boolean hasPromo = bookingTransaction.isPromoApplied();
 
             if (hasPromo || promoCode.length() > 0) {
-                progressDialog.show();
+                promoProgress.setVisibility(View.VISIBLE);
+                promoButton.setText(null);
 
                 final BookingQuote quote = bookingManager.getCurrentQuote();
                 final int bookingId = bookingTransaction.getBookingId();
@@ -379,7 +382,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         transaction.setPromoApplied(applied);
         promoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
         promoText.setText(null);
-        progressDialog.dismiss();
+        promoProgress.setVisibility(View.INVISIBLE);
     }
 
     private void handlePromoFailure(final DataManager.DataManagerError error) {
@@ -387,7 +390,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
 
         promoText.setText(null);
         enableInputs();
-        progressDialog.dismiss();
+        promoProgress.setVisibility(View.INVISIBLE);
         dataManagerErrorHandler.handleError(getActivity(), error);
     }
 }
