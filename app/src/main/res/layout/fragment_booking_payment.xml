@@ -110,15 +110,28 @@
                         android:id="@+id/promo_text"
                         style="@style/EditText.PromoCode" />
 
-                    <Button
-                        android:id="@+id/promo_button"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginTop="3dp"
                         android:layout_marginRight="@dimen/inner_textfield_padding"
-                        android:layout_marginEnd="@dimen/inner_textfield_padding"
-                        android:text="@string/apply"
-                        style="@style/RoundedButton" />
+                        android:layout_marginEnd="@dimen/inner_textfield_padding">
+
+                        <Button
+                            android:id="@+id/promo_button"
+                            android:text="@string/apply"
+                            style="@style/RoundedButton" />
+
+                        <ProgressBar
+                            android:id="@+id/promo_progress"
+                            android:layout_centerInParent="true"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
 
                 </RelativeLayout>
 
