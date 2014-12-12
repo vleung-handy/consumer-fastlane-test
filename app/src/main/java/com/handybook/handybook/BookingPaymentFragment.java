@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -40,15 +39,14 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @InjectView(R.id.credit_card_text) CreditCardNumberInputTextView creditCardText;
     @InjectView(R.id.exp_text) CreditCardExpDateInputTextView expText;
     @InjectView(R.id.cvc_text) CreditCardCVCInputTextView cvcText;
-    @InjectView(R.id.promo_text) EditText promoText;
+    @InjectView(R.id.promo_text) FreezableInputTextView promoText;
     @InjectView(R.id.lock_icon) ImageView lockIcon;
     @InjectView(R.id.card_icon) ImageView creditCardIcon;
     @InjectView(R.id.card_extras_layout) LinearLayout cardExtrasLayout;
     @InjectView(R.id.promo_progress) ProgressBar promoProgress;
 
     static BookingPaymentFragment newInstance() {
-        final BookingPaymentFragment fragment = new BookingPaymentFragment();
-        return fragment;
+        return new BookingPaymentFragment();
     }
 
     @Override
@@ -96,7 +94,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                 PorterDuff.Mode.SRC_ATOP);
 
         promoButton.setOnClickListener(promoClicked);
-        updatePromoButtonText();
+        updatePromoUI();
 
         return view;
     }
@@ -255,7 +253,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         public void onClick(final View v) {
             final String promoCode = promoText.getText().toString();
             final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-            final boolean hasPromo = bookingTransaction.isPromoApplied();
+            final boolean hasPromo = bookingTransaction.promoApplied() != null;
 
             if (hasPromo || promoCode.length() > 0) {
                 promoProgress.setVisibility(View.VISIBLE);
@@ -268,7 +266,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                     dataManager.removePromo(bookingId, new DataManager.Callback<BookingCoupon>() {
                             @Override
                             public void onSuccess(final BookingCoupon coupon) {
-                                handlePromoSuccess(coupon, quote, bookingTransaction, false);
+                                handlePromoSuccess(coupon, quote, bookingTransaction, null);
                             }
 
                             @Override
@@ -284,7 +282,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                             new DataManager.Callback<BookingCoupon>() {
                             @Override
                             public void onSuccess(final BookingCoupon coupon) {
-                                handlePromoSuccess(coupon, quote, bookingTransaction, true);
+                                handlePromoSuccess(coupon, quote, bookingTransaction, promoCode);
                             }
 
                             @Override
@@ -372,30 +370,28 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     };
 
     private void handlePromoSuccess(final BookingCoupon coupon, final BookingQuote quote,
-                                    final BookingTransaction transaction, final boolean applied) {
+                                    final BookingTransaction transaction, final String promo) {
         if (!allowCallbacks) return;
-
         quote.setPriceTable(coupon.getPriceTable());
-        transaction.setPromoApplied(applied);
-
-        updatePromoButtonText();
+        transaction.setPromoApplied(promo);
+        updatePromoUI();
         promoText.setText(null);
-        promoProgress.setVisibility(View.INVISIBLE);
     }
 
     private void handlePromoFailure(final DataManager.DataManagerError error) {
         if (!allowCallbacks) return;
-
-        updatePromoButtonText();
+        updatePromoUI();
         promoText.setText(null);
-        promoProgress.setVisibility(View.INVISIBLE);
         dataManagerErrorHandler.handleError(getActivity(), error);
     }
 
-    private void updatePromoButtonText() {
+    private void updatePromoUI() {
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-        final String promoText = bookingTransaction.isPromoApplied()
-                ? getString(R.string.remove) : getString(R.string.apply);
-        promoButton.setText(promoText);
+        final String promo = bookingTransaction.promoApplied();
+        final boolean applied = promo != null;
+
+        promoProgress.setVisibility(View.INVISIBLE);
+        promoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
+        promoText.setDisabled(applied, applied ? promo : getString(R.string.promo_code_opt));
     }
 }

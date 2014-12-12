@@ -168,7 +168,7 @@ public class BookingFlowFragment extends InjectedFragment {
 
         if (!allowCallbacks) return;
 
-        // persist extras since api doesnt return them on quote update calls
+        // persist extras since api doesn't return them on quote update calls
         final BookingQuote oldQuote = bookingManager.getCurrentQuote();
         if (isUpdate && oldQuote != null) {
             quote.setExtrasOptions(oldQuote.getExtrasOptions());
@@ -179,7 +179,7 @@ public class BookingFlowFragment extends InjectedFragment {
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         if (transaction != null && oldQuote != null && oldQuote.getBookingId()
                 != quote.getBookingId()) {
-            transaction.setPromoApplied(false);
+            transaction.setPromoApplied(null);
         }
 
         bookingManager.setCurrentQuote(quote);
