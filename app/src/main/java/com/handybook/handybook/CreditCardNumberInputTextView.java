@@ -2,15 +2,13 @@ package com.handybook.handybook;
 
 import android.content.Context;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
 import com.stripe.android.model.Card;
 
-public final class CreditCardNumberInputTextView extends InputTextField {
+public final class CreditCardNumberInputTextView extends FreezableInputTextView {
     private CreditCard.Type cardType;
-    private int defaultInputType;
 
     public CreditCardNumberInputTextView(final Context context) {
         super(context);
@@ -30,7 +28,6 @@ public final class CreditCardNumberInputTextView extends InputTextField {
 
     void init() {
         super.init();
-        defaultInputType = this.getInputType();
 
         this.addTextChangedListener(new TextWatcher() {
             @Override
@@ -105,18 +102,5 @@ public final class CreditCardNumberInputTextView extends InputTextField {
 
     final CreditCard.Type getCardType() {
         return cardType;
-    }
-
-    void setDisabled(final boolean disabled, final String hint) {
-        if (disabled) {
-            setHint(hint);
-            setInputType(InputType.TYPE_NULL);
-            setEnabled(false);
-        }
-        else {
-            setHint(hint);
-            setInputType(defaultInputType);
-            setEnabled(true);
-        }
     }
 }

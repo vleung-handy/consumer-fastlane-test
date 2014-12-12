@@ -33,7 +33,7 @@ public final class BookingTransaction extends Observable {
     @SerializedName("date_start") private Date startDate;
     @SerializedName("auth_token") private String authToken;
     @SerializedName("stripe_token") private String stripeToken;
-    @SerializedName("_android_promo_applied") private boolean promoApplied;
+    @SerializedName("_android_promo_applied") private String promoApplied;
 
     final int getBookingId() {
         return bookingId;
@@ -188,11 +188,11 @@ public final class BookingTransaction extends Observable {
         triggerObservers();
     }
 
-    final boolean isPromoApplied() {
+    final String promoApplied() {
         return promoApplied;
     }
 
-    final void setPromoApplied(boolean promoApplied) {
+    final void setPromoApplied(final String promoApplied) {
         this.promoApplied = promoApplied;
         triggerObservers();
     }
@@ -251,7 +251,7 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("stripe_token", context.serialize(value.getStripeToken()));
             jsonObj.add("extra_cleaning_text", context.serialize(value.getExtraCleaningText()));
             jsonObj.add("mobile", context.serialize(1));
-            jsonObj.add("_android_promo_applied", context.serialize(value.isPromoApplied()));
+            jsonObj.add("_android_promo_applied", context.serialize(value.promoApplied()));
 
             final int recur = value.getRecurringFrequency();
             if (recur > 0) jsonObj.add("updated_recurring_freq", context.serialize(recur));
