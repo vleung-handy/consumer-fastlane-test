@@ -204,7 +204,7 @@ public final class BookingsFragment extends InjectedListFragment {
                             paddingRight = layout.getPaddingRight(),
                             paddingTop = layout.getPaddingTop();
 
-                    layout.setBackgroundResource((R.drawable.booking_cell_last));
+                    layout.setBackgroundResource((R.drawable.cell_booking_last));
                     layout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 }
             }

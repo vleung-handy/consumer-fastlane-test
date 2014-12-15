@@ -44,7 +44,7 @@ abstract class BookingOptionsView extends FrameLayout {
                 paddingRight = mainLayout.getPaddingRight(),
                 paddingTop = mainLayout.getPaddingTop();
 
-        mainLayout.setBackgroundResource((R.drawable.booking_cell_last));
+        mainLayout.setBackgroundResource((R.drawable.cell_booking_last));
         mainLayout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
         invalidate();

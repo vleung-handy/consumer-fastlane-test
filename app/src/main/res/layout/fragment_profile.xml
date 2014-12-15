@@ -33,14 +33,18 @@
         android:layout_below="@id/nav_layout">
 
         <RelativeLayout
-            style="@style/ContentLayout.NoBottom">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/credits_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="4dp"
+                android:paddingBottom="8dp"
                 android:gravity="center"
-                android:layout_marginBottom="16dp"
                 android:textSize="@dimen/small_text_size"
                 android:text="@string/you_have_credits"
                 style="@style/TextView" />
@@ -55,31 +59,28 @@
                 android:layout_below="@id/fullname_text"
                 style="@style/EditText.Email" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/phone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/email_text"
-                android:layout_marginBottom="16dp">
-
-                <com.handybook.handybook.PhoneInputTextView
-                    android:id="@+id/phone_text"
-                    android:paddingStart="52dp"
-                    android:paddingLeft="52dp"
-                    android:paddingEnd="0dp"
-                    android:paddingRight="0dp"
-                    style="@style/EditText.Phone" />
+                android:layout_below="@id/email_text">
 
                 <TextView
                     android:id="@+id/phone_prefix_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/phone_text"
-                    android:layout_marginStart="@dimen/inner_textfield_padding"
-                    android:layout_marginLeft="@dimen/inner_textfield_padding"
-                    style="@style/TextView" />
+                    style="@style/EditText.Last" />
 
-            </RelativeLayout>
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="@color/cell_sep"/>
+
+                <com.handybook.handybook.PhoneInputTextView
+                    android:id="@+id/phone_text"
+                    style="@style/EditText.Last.Phone" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/change_password_text"
@@ -87,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/phone_layout"
                 android:gravity="center"
-                android:layout_marginBottom="16dp"
+                android:padding="@dimen/default_padding"
                 android:text="@string/change_password"
                 android:textSize="@dimen/small_text_size"
                 style="@style/TextView" />
@@ -101,9 +102,8 @@
             <com.handybook.handybook.PasswordInputTextView
                 android:id="@+id/new_password_text"
                 android:layout_below="@id/old_password_text"
-                android:layout_marginBottom="16dp"
                 android:hint="@string/new_password"
-                style="@style/EditText.Password" />
+                style="@style/EditText.Last.Password" />
 
         </RelativeLayout>
 

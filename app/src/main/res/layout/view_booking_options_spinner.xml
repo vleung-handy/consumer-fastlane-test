@@ -4,7 +4,7 @@
     android:id="@+id/rel_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/booking_cell"
+    android:background="@drawable/cell_booking"
     android:paddingBottom="16dp"
     android:paddingTop="16dp">
 
