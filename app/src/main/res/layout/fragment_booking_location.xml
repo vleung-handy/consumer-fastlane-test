@@ -18,51 +18,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text"
-        style="@style/ContentLayout.NoBottom">
+        android:layout_below="@id/nav_text">
 
         <TextView
             android:id="@+id/location_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginBottom="16dp"
+            android:padding="@dimen/default_padding"
             android:text="@string/where_located"
             style="@style/TextView" />
 
-        <com.handybook.handybook.ZipCodeInputTextView
-            android:id="@+id/zip_text"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/location_text"
-            style="@style/EditText.ZipCode" />
+            android:orientation="horizontal">
 
-        <ProgressBar
-            android:id="@+id/zip_progress"
-            android:layout_alignRight="@id/zip_text"
-            android:layout_alignEnd="@id/zip_text"
-            android:layout_alignBottom="@id/zip_text"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:visibility="invisible" />
+            <com.handybook.handybook.ZipCodeInputTextView
+                android:id="@+id/zip_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/EditText.Last.ZipCode" />
 
-        <ImageButton
-            android:id="@+id/location_button"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_alignRight="@id/zip_text"
-            android:layout_alignEnd="@id/zip_text"
-            android:layout_alignBottom="@id/zip_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:contentDescription="@string/location"
-            android:background="@drawable/button_location"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <ImageButton
+                    android:id="@+id/location_button"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/location"
+                    android:src="@drawable/button_location"
+                    android:background="@color/white"/>
+
+                <ProgressBar
+                    android:id="@+id/zip_progress"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

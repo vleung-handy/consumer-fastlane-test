@@ -202,6 +202,13 @@
         <item name="android:maxLength">100</item>
     </style>
 
+    <style name="EditText.Last.ZipCode">
+        <item name="android:inputType">textPostalAddress</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/zip_code</item>
+        <item name="android:maxLength">100</item>
+    </style>
+
     <style name="EditText.Comment">
         <item name="android:freezesText">true</item>
         <item name="android:maxLength">1000</item>
