@@ -25,70 +25,84 @@
         android:text="@string/log_in"
         style="@style/Button.Green" />
 
-    <RelativeLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/nav_layout"
-        android:layout_above="@id/login_button"
-        style="@style/ContentLayout.NoBottom">
+        android:layout_above="@id/login_button">
 
         <RelativeLayout
-            android:id="@+id/fb_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/default_padding">
 
-            <com.facebook.widget.LoginButton
-                android:id="@+id/fb_button"
-                style="@style/FacebookButton" />
+            <RelativeLayout
+                android:id="@+id/fb_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
-                android:layout_marginStart="12dp"
-                android:src="@drawable/ic_facebook"
-                android:contentDescription="facebook" />
+                <com.facebook.widget.LoginButton
+                    android:id="@+id/fb_button"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    style="@style/FacebookButton" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
+                    android:src="@drawable/ic_facebook"
+                    android:contentDescription="facebook" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/or_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fb_layout"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:gravity="center"
+                android:text="@string/or"
+                style="@style/TextView" />
+
+            <TextView
+                android:id="@+id/welcome_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/or_text"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:text="@string/welcome_back"
+                android:visibility="gone"
+                style="@style/TextView" />
+
+            <com.handybook.handybook.EmailInputTextView
+                android:id="@+id/email_text"
+                android:layout_below="@id/welcome_text"
+                style="@style/EditText.Email" />
+
+            <com.handybook.handybook.PasswordInputTextView
+                android:id="@+id/password_text"
+                android:layout_below="@id/email_text"
+                style="@style/EditText.Password" />
+
+            <Button
+                android:id="@+id/forgot_button"
+                android:layout_below="@id/password_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/forgot_password"
+                style="@style/TextButton.SmallFont" />
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/or_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/fb_layout"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="@string/or"
-            style="@style/TextView" />
-
-        <TextView
-            android:id="@+id/welcome_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/or_text"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:text="@string/welcome_back"
-            android:visibility="gone"
-            style="@style/TextView" />
-
-        <com.handybook.handybook.EmailInputTextView
-            android:id="@+id/email_text"
-            android:layout_below="@id/welcome_text"
-            style="@style/EditText.Email" />
-
-        <com.handybook.handybook.PasswordInputTextView
-            android:id="@+id/password_text"
-            android:layout_below="@id/email_text"
-            style="@style/EditText.Password" />
-
-        <Button
-            android:id="@+id/forgot_button"
-            android:layout_below="@id/password_text"
-            android:layout_centerHorizontal="true"
-            android:text="@string/forgot_password"
-            style="@style/TextButton.SmallFont" />
-
-    </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
