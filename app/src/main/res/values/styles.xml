@@ -181,6 +181,13 @@
         <item name="android:maxLength">100</item>
     </style>
 
+    <style name="EditText.Last.PromoCode">
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/promo_code_opt</item>
+        <item name="android:maxLength">100</item>
+    </style>
+
     <style name="EditText.CreditCardExp">
         <item name="android:inputType">number</item>
         <item name="android:digits">1234567890</item>
