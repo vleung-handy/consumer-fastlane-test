@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -30,6 +31,7 @@ final class BookingOptionsTextView extends BookingOptionsView {
         mainLayout = (RelativeLayout)this.findViewById(R.id.rel_layout);
 
         editText = (EditText)this.findViewById(R.id.edit_text);
+        editText.setGravity(Gravity.TOP);
         editText.setHint(option.getDefaultValue());
         editText.addTextChangedListener(new TextWatcher() {
             @Override

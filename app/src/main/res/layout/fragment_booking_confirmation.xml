@@ -42,10 +42,8 @@
                 android:layout_below="@id/header_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
                 android:visibility="gone"
-                style="@style/EditText.Password" />
+                style="@style/EditText.Last.Password" />
 
             <LinearLayout
                 android:id="@+id/options_layout"
@@ -62,10 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
                 android:visibility="gone"
-                style="@style/EditText" />
+                style="@style/EditText.Last" />
 
         </RelativeLayout>
 
