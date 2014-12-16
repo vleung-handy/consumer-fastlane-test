@@ -76,6 +76,7 @@
 
                 <com.handybook.handybook.PhoneInputTextView
                     android:id="@+id/phone_text"
+                    android:layout_marginBottom="@dimen/default_margin"
                     style="@style/EditText.Last.Phone" />
 
             </LinearLayout>
