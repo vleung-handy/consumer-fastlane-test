@@ -102,6 +102,7 @@
             <com.handybook.handybook.PasswordInputTextView
                 android:id="@+id/new_password_text"
                 android:layout_below="@id/old_password_text"
+                android:layout_marginBottom="@dimen/default_margin"
                 android:hint="@string/new_password"
                 style="@style/EditText.Last.Password" />
 
