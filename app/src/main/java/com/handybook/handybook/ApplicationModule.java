@@ -28,14 +28,14 @@ import retrofit.converter.GsonConverter;
         ServiceCategoriesFragment.class, ServicesFragment.class, BookingLocationFragment.class,
         BookingOptionsFragment.class, BookingDateFragment.class, BookingAddressFragment.class,
         BookingHeaderFragment.class, BookingPaymentFragment.class, PeakPricingFragment.class,
-        PeakPricingTableFragment.class, BookingConfirmationFragment.class,
+        PeakPricingTableFragment.class, BookingConfirmationFragment.class, PromosFragment.class,
         BookingExtrasFragment.class, BookingRecurrenceFragment.class, BaseDataManager.class,
         ServiceCategoriesActivity.class, ServicesActivity.class, ProfileActivity.class,
         PeakPricingActivity.class, MenuDrawerActivity.class, LoginActivity.class,
         BookingsActivity.class, BookingRecurrenceActivity.class, BookingPaymentActivity.class,
         BookingOptionsActivity.class, BookingLocationActivity.class, BookingExtrasActivity.class,
         BookingDetailActivity.class, BookingDateActivity.class, BookingConfirmationActivity.class,
-        BookingAddressActivity.class, BaseApplication.class
+        BookingAddressActivity.class, PromosActivity.class, BaseApplication.class
 })
 final class ApplicationModule {
     private final Application application;

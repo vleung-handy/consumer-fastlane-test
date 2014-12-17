@@ -131,7 +131,7 @@
                         android:id="@+id/promo_text"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        style="@style/EditText.Last.PromoCode" />
+                        style="@style/EditText.Last.PromoCodeOpt" />
 
                     <FrameLayout
                         android:layout_width="wrap_content"

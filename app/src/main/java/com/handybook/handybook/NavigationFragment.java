@@ -162,7 +162,7 @@ public final class NavigationFragment extends InjectedListFragment
         }
         else if (item.equalsIgnoreCase(getString(R.string.promotions))
                 && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem))) {
-
+            activity.navigateToActivity(PromosActivity.class);
         }
         else if (item.equalsIgnoreCase(getString(R.string.log_in))
                 && !(getString(R.string.log_in).equalsIgnoreCase(selectedItem))) {
@@ -230,7 +230,7 @@ public final class NavigationFragment extends InjectedListFragment
 
         //if (userLoggedIn) items.add(getString(R.string.share));
 
-        //items.add(getString(R.string.promotions));
+        items.add(getString(R.string.promotions));
 
         if (userManager.getCurrentUser() != null) items.add(getString(R.string.log_out));
         else items.add(getString(R.string.log_in));
