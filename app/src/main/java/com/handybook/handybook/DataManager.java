@@ -41,6 +41,8 @@ abstract class DataManager {
 
     abstract void removePromo(int bookingId, Callback<BookingCoupon> cb);
 
+    abstract void getPreBookingPromo(String promoCode, Callback<String> cb);
+
     abstract void completeBooking(BookingTransaction bookingTransaction,
                                   Callback<BookingCompleteTransaction> cb);
 
