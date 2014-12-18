@@ -96,20 +96,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
                         intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, categoryView.getHeight());
                         startActivity(intent);
                     }
-                    else {
-                        final BookingRequest request = new BookingRequest();
-                        request.setServiceId(service.getId());
-                        request.setUniq(service.getUniq());
-
-                        final User user = userManager.getCurrentUser();
-                        if (user != null) request.setEmail(user.getEmail());
-
-                        bookingManager.clearAll();
-                        bookingManager.setCurrentRequest(request);
-
-                        final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
-                        startActivity(intent);
-                    }
+                    else startBookingFlow(service.getId(), service.getUniq());
                 }
             });
             categoryLayout.addView(categoryView, pos++);

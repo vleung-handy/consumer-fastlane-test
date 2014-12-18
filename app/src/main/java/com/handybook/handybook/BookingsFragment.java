@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class BookingsFragment extends InjectedListFragment {
+public final class BookingsFragment extends InjectedFragment {
     private static final String STATE_LOADED_BOOKINGS = "LOADED_BOOKINGS";
     private static final String STATE_PAST_BOOKINGS = "STATE_PAST_BOOKINGS";
     private static final String STATE_UP_BOOKINGS = "STATE_UP_BOOKINGS";
@@ -25,6 +25,7 @@ public final class BookingsFragment extends InjectedListFragment {
     private ArrayList<Booking> pastBookings = new ArrayList<>();
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
+    @InjectView(android.R.id.list) PinnedSectionListView listView;
 
     static BookingsFragment newInstance() {
         return new BookingsFragment();
@@ -37,7 +38,8 @@ public final class BookingsFragment extends InjectedListFragment {
                 .inflate(R.layout.fragment_bookings,container, false);
 
         ButterKnife.inject(this, view);
-        setListAdapter(new BookingsListAdapter());
+
+        listView.setAdapter(new BookingsListAdapter());
 
         final MenuButton menuButton = new MenuButton(getActivity());
         menuButton.setColor(getResources().getColor(R.color.black_pressed));
@@ -50,7 +52,6 @@ public final class BookingsFragment extends InjectedListFragment {
     @Override
     public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final PinnedSectionListView listView = (PinnedSectionListView)getListView();
         listView.setShadowVisible(false);
 
         if (savedInstanceState != null) {
@@ -59,7 +60,7 @@ public final class BookingsFragment extends InjectedListFragment {
             upBookings = savedInstanceState.getParcelableArrayList(STATE_UP_BOOKINGS);
         }
 
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view,
                                     final int i, final long l) {
@@ -104,7 +105,7 @@ public final class BookingsFragment extends InjectedListFragment {
                     else upBookings.add(booking);
                 }
 
-                final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
+                final BaseAdapter adapter = (BaseAdapter)listView.getAdapter();
                 adapter.notifyDataSetChanged();
 
                 loadedBookings = true;

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class ServicesFragment extends InjectedListFragment {
+public final class ServicesFragment extends BookingFlowFragment {
     static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
     static final String EXTRA_NAV_HEIGHT = "com.handy.handy.EXTRA_NAV_HEIGHT";
 
@@ -28,6 +29,7 @@ public final class ServicesFragment extends InjectedListFragment {
     @Inject UserManager userManager;
 
     @InjectView(R.id.nav_text) TextView navText;
+    @InjectView(android.R.id.list) ListView listView;
 
     static ServicesFragment newInstance(final Service service, final int navHeight) {
         final ServicesFragment fragment = new ServicesFragment();
@@ -60,7 +62,7 @@ public final class ServicesFragment extends InjectedListFragment {
     @Override
     public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view,
                                     final int i, final long l) {
@@ -71,20 +73,7 @@ public final class ServicesFragment extends InjectedListFragment {
                     intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, navText.getHeight());
                     startActivity(intent);
                 }
-                else {
-                    final BookingRequest request = new BookingRequest();
-                    request.setServiceId(next.getId());
-                    request.setUniq(next.getUniq());
-
-                    final User user = userManager.getCurrentUser();
-                    if (user != null) request.setEmail(user.getEmail());
-
-                    bookingManager.clearAll();
-                    bookingManager.setCurrentRequest(request);
-
-                    final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
-                    startActivity(intent);
-                }
+                else startBookingFlow(next.getId(), next.getUniq());
             }
         });
     }
@@ -92,7 +81,7 @@ public final class ServicesFragment extends InjectedListFragment {
     @Override
     public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getListView().setAdapter(new ArrayAdapter<Service>(getActivity(),
+        listView.setAdapter(new ArrayAdapter<Service>(getActivity(),
                 R.layout.list_item_service, services) {
             @Override
             public final View getView(final int position, final View convertView, final ViewGroup parent) {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -25,7 +26,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class NavigationFragment extends InjectedListFragment
+public final class NavigationFragment extends InjectedFragment
         implements SimpleAlertDialog.OnClickListener, SimpleAlertDialog.OnItemClickListener {
     static final String ARG_SELECTED_ITEM = "com.handybook.handybook.ARG_SELECTED_ITEM";
     static final int REQUEST_LOGOUT = 1;
@@ -37,6 +38,7 @@ public final class NavigationFragment extends InjectedListFragment
     private MenuDrawer menuDrawer;
 
     @InjectView(R.id.env_button) Button envButton;
+    @InjectView(android.R.id.list) ListView listView;
 
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
@@ -110,20 +112,20 @@ public final class NavigationFragment extends InjectedListFragment
 
         final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
         menuDrawer = activity.getMenuDrawer();
-        getListView().setAdapter(new ArrayAdapter<String>(getActivity(),
+        listView.setAdapter(new ArrayAdapter<String>(getActivity(),
                 R.layout.list_item_nav, items) {
             @Override
             public final View getView(final int position, final View convertView,
                                       final ViewGroup parent) {
                 View view = convertView;
                 if (view == null) {
-                    final LayoutInflater inflater = (LayoutInflater)getContext()
+                    final LayoutInflater inflater = (LayoutInflater) getContext()
                             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     view = inflater.inflate(R.layout.list_item_nav, parent, false);
                 }
 
                 final String text = items.get(position).toUpperCase();
-                final TextView item = (TextView)view.findViewById(R.id.nav_item);
+                final TextView item = (TextView) view.findViewById(R.id.nav_item);
                 item.setText(text);
 
                 if (text.equalsIgnoreCase(selectedItem))
@@ -133,51 +135,51 @@ public final class NavigationFragment extends InjectedListFragment
                 return view;
             }
         });
-    }
 
-    @Override
-    public final void onListItemClick(final ListView l, final View v, final int position,
-                                      final long id) {
-        super.onListItemClick(l, v, position, id);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view,
+                                    final int position, final long id) {
+                final TextView textView = (TextView)view.findViewById(R.id.nav_item);
+                final String item = textView.getText().toString();
+                final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
 
-        final TextView textView = (TextView)v.findViewById(R.id.nav_item);
-        final String item = textView.getText().toString();
-        final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
-
-        if (item.equalsIgnoreCase(getString(R.string.home))
-                && !(getString(R.string.home).equalsIgnoreCase(selectedItem))) {
-            activity.navigateToActivity(ServiceCategoriesActivity.class);
-        }
-        else if (item.equalsIgnoreCase(getString(R.string.profile))
-                && !(getString(R.string.profile).equalsIgnoreCase(selectedItem))) {
-            activity.navigateToActivity(ProfileActivity.class);
-        }
-        else if (item.equalsIgnoreCase(getString(R.string.my_bookings))
-                && !(getString(R.string.my_bookings).equalsIgnoreCase(selectedItem))) {
-            activity.navigateToActivity(BookingsActivity.class);
-        }
-        else if (item.equalsIgnoreCase(getString(R.string.help))
-                && !(getString(R.string.help).equalsIgnoreCase(selectedItem))) {
-            menuDrawer.closeMenu();
-        }
-        else if (item.equalsIgnoreCase(getString(R.string.promotions))
-                && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem))) {
-            activity.navigateToActivity(PromosActivity.class);
-        }
-        else if (item.equalsIgnoreCase(getString(R.string.log_in))
-                && !(getString(R.string.log_in).equalsIgnoreCase(selectedItem))) {
-            activity.navigateToActivity(LoginActivity.class);
-        }
-        else if (item.equalsIgnoreCase(getString(R.string.log_out))) {
-            new SimpleAlertDialogSupportFragment.Builder()
-                    .setMessage(getString(R.string.want_to_log_out))
-                    .setPositiveButton(R.string.log_out)
-                    .setNegativeButton(android.R.string.cancel)
-                    .setRequestCode(REQUEST_LOGOUT)
-                    .setTargetFragment(NavigationFragment.this)
-                    .create().show(getActivity().getSupportFragmentManager(), "dialog");
-        }
-        else menuDrawer.closeMenu();
+                if (item.equalsIgnoreCase(getString(R.string.home))
+                        && !(getString(R.string.home).equalsIgnoreCase(selectedItem))) {
+                    activity.navigateToActivity(ServiceCategoriesActivity.class);
+                }
+                else if (item.equalsIgnoreCase(getString(R.string.profile))
+                        && !(getString(R.string.profile).equalsIgnoreCase(selectedItem))) {
+                    activity.navigateToActivity(ProfileActivity.class);
+                }
+                else if (item.equalsIgnoreCase(getString(R.string.my_bookings))
+                        && !(getString(R.string.my_bookings).equalsIgnoreCase(selectedItem))) {
+                    activity.navigateToActivity(BookingsActivity.class);
+                }
+                else if (item.equalsIgnoreCase(getString(R.string.help))
+                        && !(getString(R.string.help).equalsIgnoreCase(selectedItem))) {
+                    menuDrawer.closeMenu();
+                }
+                else if (item.equalsIgnoreCase(getString(R.string.promotions))
+                        && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem))) {
+                    activity.navigateToActivity(PromosActivity.class);
+                }
+                else if (item.equalsIgnoreCase(getString(R.string.log_in))
+                        && !(getString(R.string.log_in).equalsIgnoreCase(selectedItem))) {
+                    activity.navigateToActivity(LoginActivity.class);
+                }
+                else if (item.equalsIgnoreCase(getString(R.string.log_out))) {
+                    new SimpleAlertDialogSupportFragment.Builder()
+                            .setMessage(getString(R.string.want_to_log_out))
+                            .setPositiveButton(R.string.log_out)
+                            .setNegativeButton(android.R.string.cancel)
+                            .setRequestCode(REQUEST_LOGOUT)
+                            .setTargetFragment(NavigationFragment.this)
+                            .create().show(getActivity().getSupportFragmentManager(), "dialog");
+                }
+                else menuDrawer.closeMenu();
+            }
+        });
     }
 
     @Override
@@ -238,7 +240,7 @@ public final class NavigationFragment extends InjectedListFragment
         envButton.setText(String.format(getString(R.string.env_format), dataManager.getEnvironment(),
                 BuildConfig.VERSION_NAME, Integer.valueOf(BuildConfig.VERSION_CODE).toString()));
 
-        final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
+        final BaseAdapter adapter = (BaseAdapter)listView.getAdapter();
         if (adapter != null) adapter.notifyDataSetChanged();
     }
 }

@@ -6,7 +6,22 @@ import java.util.ArrayList;
 
 public class BookingFlowFragment extends InjectedFragment {
 
-    protected void continueBookingFlow() {
+    final void startBookingFlow(final int serviceId, final String uniq) {
+        final BookingRequest request = new BookingRequest();
+        request.setServiceId(serviceId);
+        request.setUniq(uniq);
+
+        final User user = userManager.getCurrentUser();
+        if (user != null) request.setEmail(user.getEmail());
+
+        bookingManager.clearAll();
+        bookingManager.setCurrentRequest(request);
+
+        final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
+        startActivity(intent);
+    }
+
+    final void continueBookingFlow() {
         /*
           don't reload quote after recurrence selection, after extras selection,
           or if user skipped peak pricing
