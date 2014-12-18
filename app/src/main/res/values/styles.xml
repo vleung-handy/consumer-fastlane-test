@@ -177,21 +177,21 @@
     </style>
 
     <style name="EditText.PromoCodeOpt">
-        <item name="android:inputType">textCapWords</item>
+        <item name="android:inputType">textCapCharacters</item>
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/promo_code_opt</item>
         <item name="android:maxLength">100</item>
     </style>
 
     <style name="EditText.Last.PromoCodeOpt">
-        <item name="android:inputType">textCapWords</item>
+        <item name="android:inputType">textCapCharacters</item>
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/promo_code_opt</item>
         <item name="android:maxLength">100</item>
     </style>
 
     <style name="EditText.Last.PromoCode">
-        <item name="android:inputType">textCapWords</item>
+        <item name="android:inputType">textCapCharacters</item>
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/promo_code</item>
         <item name="android:maxLength">100</item>
