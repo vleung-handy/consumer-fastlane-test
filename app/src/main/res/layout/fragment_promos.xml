@@ -36,9 +36,19 @@
             android:layout_width="match_parent"
             android:paddingTop="@dimen/default_padding">
 
+            <ImageView
+                android:id="@+id/tag_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/ic_price_tag" />
+
             <EditText
                 android:id="@+id/promo_text"
-                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_below="@id/tag_img"
+                android:layout_marginBottom="16dp"
                 style="@style/EditText.Last.PromoCode" />
 
         </RelativeLayout>
