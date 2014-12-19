@@ -10,7 +10,7 @@ import android.widget.EditText;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class PromosFragment extends InjectedFragment {
+public final class PromosFragment extends BookingFlowFragment {
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
     @InjectView(R.id.apply_button) Button applyButton;
@@ -42,16 +42,20 @@ public final class PromosFragment extends InjectedFragment {
                     disableInputs();
                     progressDialog.show();
 
-                    dataManager.getPreBookingPromo(promoCode, new DataManager.Callback<String>() {
+                    dataManager.getPreBookingPromo(promoCode, new DataManager.Callback<PromoCode>() {
                         @Override
-                        public void onSuccess(final String response) {
+                        public void onSuccess(final PromoCode code) {
                             if (!allowCallbacks) return;
 
                             progressDialog.dismiss();
                             enableInputs();
 
-                            toast.setText(response);
-                            toast.show();
+                            if (code.getType() == PromoCode.Type.VOUCHER) {
+                                startBookingFlow(code.getServiceId(), code.getUniq(), code.getCode());
+                            }
+                            else {
+                                //TODO show error here for not having coupons
+                            }
                         }
 
                         @Override

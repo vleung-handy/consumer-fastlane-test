@@ -25,7 +25,8 @@ abstract class DataManager {
 
     abstract void getServices(CacheResponse<List<Service>> cache, Callback<List<Service>> cb);
 
-    abstract void validateBookingZip(int serviceId, String zipCode, Callback<Void> cb);
+    abstract void validateBookingZip(int serviceId, String zipCode, String userId, String authToken,
+                                     String promoCode, Callback<Void> cb);
 
     abstract void getBookings(User user, Callback<List<Booking>> cb);
 
@@ -41,7 +42,7 @@ abstract class DataManager {
 
     abstract void removePromo(int bookingId, Callback<BookingCoupon> cb);
 
-    abstract void getPreBookingPromo(String promoCode, Callback<String> cb);
+    abstract void getPreBookingPromo(String promoCode, Callback<PromoCode> cb);
 
     abstract void completeBooking(BookingTransaction bookingTransaction,
                                   Callback<BookingCompleteTransaction> cb);

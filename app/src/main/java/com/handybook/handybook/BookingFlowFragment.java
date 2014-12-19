@@ -7,9 +7,14 @@ import java.util.ArrayList;
 public class BookingFlowFragment extends InjectedFragment {
 
     final void startBookingFlow(final int serviceId, final String uniq) {
+        startBookingFlow(serviceId, uniq, null);
+    }
+
+    final void startBookingFlow(final int serviceId, final String uniq, final String promoCode) {
         final BookingRequest request = new BookingRequest();
         request.setServiceId(serviceId);
         request.setUniq(uniq);
+        request.setPromoCode(promoCode);
 
         final User user = userManager.getCurrentUser();
         if (user != null) request.setEmail(user.getEmail());

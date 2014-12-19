@@ -76,10 +76,15 @@
 
                 <com.handybook.handybook.PhoneInputTextView
                     android:id="@+id/phone_text"
-                    android:layout_marginBottom="@dimen/default_margin"
                     style="@style/EditText.Last.Phone" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phone_layout"
+                android:layout_marginTop="@dimen/default_margin" />
 
         </RelativeLayout>
 

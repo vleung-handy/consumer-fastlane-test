@@ -33,8 +33,11 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public final class BookingLocationFragment extends BookingFlowFragment {
+public final class BookingLocationFragment extends BookingFlowFragment
+        implements BaseActivity.OnBackPressedListener {
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
+
+    private boolean isPromoFlow;
 
     @Inject ReactiveLocationProvider locationProvider;
     
@@ -45,6 +48,16 @@ public final class BookingLocationFragment extends BookingFlowFragment {
 
     static BookingLocationFragment newInstance() {
         return new BookingLocationFragment();
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        final BookingRequest request = bookingManager.getCurrentRequest();
+        if ((isPromoFlow = request.getPromoCode() != null)) {
+            ((BaseActivity)getActivity()).setOnBackPressedListener(this);
+        }
     }
 
     @Override
@@ -110,6 +123,14 @@ public final class BookingLocationFragment extends BookingFlowFragment {
         super.enableInputs();
         nextButton.setClickable(true);
         locationButton.setClickable(true);
+    }
+
+    @Override
+    public final void onBack() {
+        final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void showLocationProgress(final boolean display, final boolean showPressed) {
@@ -191,9 +212,13 @@ public final class BookingLocationFragment extends BookingFlowFragment {
                 progressDialog.show();
 
                 final BookingRequest request = bookingManager.getCurrentRequest();
+                final User user = userManager.getCurrentUser();
+                final String userId = user != null ? user.getId() : null;
+                final String authToken = user != null ? user.getAuthToken() : null;
 
-                dataManager.validateBookingZip(request.getServiceId(), zipText.getZipCode(),
-                        new DataManager.Callback<Void>() {
+
+                dataManager.validateBookingZip(request.getServiceId(), zipText.getZipCode(), userId,
+                        authToken, request.getPromoCode(), new DataManager.Callback<Void>() {
                     @Override
                     public void onSuccess(Void v) {
                         final BookingRequest request = bookingManager.getCurrentRequest();
@@ -201,7 +226,14 @@ public final class BookingLocationFragment extends BookingFlowFragment {
                         mixpanel.trackEventWhenPage();
 
                         if (!allowCallbacks) return;
-                        displayBookingOptions();
+                        enableInputs();
+                        progressDialog.dismiss();
+
+                        if (!isPromoFlow) displayBookingOptions();
+                        else {
+                            final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+                            startActivity(intent);
+                        }
                     }
 
                     @Override

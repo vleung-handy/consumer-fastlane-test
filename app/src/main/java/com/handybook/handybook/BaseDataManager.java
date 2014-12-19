@@ -168,8 +168,10 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    final void validateBookingZip(final int serviceId, final String zipCode, final Callback<Void> cb) {
-        service.validateBookingZip(serviceId, zipCode, new HandyRetrofitCallback(cb) {
+    final void validateBookingZip(final int serviceId, final String zipCode, final String userId,
+                                  final String authToken, final String promoCode,
+                                  final Callback<Void> cb) {
+        service.validateBookingZip(serviceId, zipCode, userId, authToken, promoCode, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 cb.onSuccess(null);
@@ -261,11 +263,30 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    void getPreBookingPromo(final String promoCode, final Callback<String> cb) {
+    void getPreBookingPromo(final String promoCode, final Callback<PromoCode> cb) {
         service.getPreBookingPromo(promoCode, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
-                cb.onSuccess(response.toString());
+                if (response.has("coupon") && response.optInt("coupon") == 1) {
+                    cb.onSuccess(new PromoCode(PromoCode.Type.COUPON, promoCode));
+                }
+                else if (response.has("voucher")) {
+                    final JSONObject voucher = response.optJSONObject("voucher");
+
+                    final PromoCode code = new PromoCode(PromoCode.Type.VOUCHER,
+                            voucher.optString("code"));
+
+                    code.setServiceId(voucher.optInt("service_id"));
+
+                    //TODO remove this harcoding below after update to API response
+                    code.setUniq("home_cleaning");
+                    //code.setUniq(voucher.optString("machine_name"));
+
+                    cb.onSuccess(code);
+                }
+                else {
+                    cb.onError(new DataManagerError(Type.SERVER));
+                }
             }
         });
     }

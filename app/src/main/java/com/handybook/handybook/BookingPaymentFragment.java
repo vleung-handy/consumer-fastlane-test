@@ -44,6 +44,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @InjectView(R.id.card_icon) ImageView creditCardIcon;
     @InjectView(R.id.card_extras_layout) LinearLayout cardExtrasLayout;
     @InjectView(R.id.promo_progress) ProgressBar promoProgress;
+    @InjectView(R.id.promo_layout) LinearLayout promoLayout;
 
     static BookingPaymentFragment newInstance() {
         return new BookingPaymentFragment();
@@ -93,8 +94,13 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         lockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
 
-        promoButton.setOnClickListener(promoClicked);
-        updatePromoUI();
+        final BookingRequest request = bookingManager.getCurrentRequest();
+
+        if (request.getPromoCode() != null) promoLayout.setVisibility(View.GONE);
+        else {
+            promoButton.setOnClickListener(promoClicked);
+            updatePromoUI();
+        }
 
         return view;
     }
