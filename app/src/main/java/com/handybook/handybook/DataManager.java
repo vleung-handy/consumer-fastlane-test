@@ -18,8 +18,8 @@ abstract class DataManager {
         return env;
     }
 
-    void setEnvironment(Environment env) {
-        bus.post(new EnvironmentUpdatedEvent(env, this.env));
+    void setEnvironment(final Environment env, final boolean notify) {
+        if (notify) bus.post(new EnvironmentUpdatedEvent(env, this.env));
         this.env = env;
     }
 
@@ -89,7 +89,7 @@ abstract class DataManager {
             return invalidInputs;
         }
 
-        final void setInvalidInputs(String[] inputs) {
+        final void setInvalidInputs(final String[] inputs) {
             this.invalidInputs = inputs;
         }
 

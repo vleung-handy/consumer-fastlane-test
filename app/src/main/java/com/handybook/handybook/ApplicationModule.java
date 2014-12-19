@@ -116,7 +116,7 @@ final class ApplicationModule {
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-            dataManager.setEnvironment(DataManager.Environment.P);
+            dataManager.setEnvironment(DataManager.Environment.P, false);
 
         return dataManager;
     }

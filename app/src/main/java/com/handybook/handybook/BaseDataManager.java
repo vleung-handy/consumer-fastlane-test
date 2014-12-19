@@ -32,8 +32,8 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    void setEnvironment(Environment env) {
-        super.setEnvironment(env);
+    void setEnvironment(final Environment env, final boolean notify) {
+        super.setEnvironment(env, notify);
         switch (env) {
             case P:
                 endpoint.setEnv(HandyRetrofitEndpoint.Environment.P);

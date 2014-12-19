@@ -196,7 +196,7 @@ public final class NavigationFragment extends InjectedListFragment
     public final void onItemClick(final SimpleAlertDialog dialog, final int requestCode,
                                   final int which) {
         if (requestCode == REQUEST_ENV) {
-            dataManager.setEnvironment(DataManager.Environment.valueOf(envs.get(which)));
+            dataManager.setEnvironment(DataManager.Environment.valueOf(envs.get(which)), true);
         }
     }
 
