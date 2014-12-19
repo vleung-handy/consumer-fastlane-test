@@ -54,7 +54,8 @@ public final class PromosFragment extends BookingFlowFragment {
                                 startBookingFlow(code.getServiceId(), code.getUniq(), code.getCode());
                             }
                             else {
-                                //TODO show error here for not having coupons
+                                toast.setText(getString(R.string.coupon_on_payment_screen));
+                                toast.show();
                             }
                         }
 
