@@ -243,8 +243,9 @@ public final class BaseDataManager extends DataManager {
 
     @Override
     void applyPromo(final String promoCode, final int bookingId, final String userId,
-                    final Callback<BookingCoupon> cb) {
-        service.applyPromo(promoCode, bookingId, userId, new HandyRetrofitCallback(cb) {
+                    final String email, final String authToken, final Callback<BookingCoupon> cb) {
+        service.applyPromo(promoCode, bookingId, userId, email, authToken,
+                new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 cb.onSuccess(BookingCoupon.fromJson(response.toString()));

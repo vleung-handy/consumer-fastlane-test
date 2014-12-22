@@ -283,8 +283,11 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                 }
                 else {
                     final User user = userManager.getCurrentUser();
+                    final String userId = user != null ? user.getId() : null;
+                    final String email = user != null ? user.getEmail() : null;
+                    final String authToken = user != null ? user.getAuthToken() : null;
 
-                    dataManager.applyPromo(promoCode, bookingId, user != null ? user.getId() : null,
+                    dataManager.applyPromo(promoCode, bookingId, userId, email, authToken,
                             new DataManager.Callback<BookingCoupon>() {
                             @Override
                             public void onSuccess(final BookingCoupon coupon) {

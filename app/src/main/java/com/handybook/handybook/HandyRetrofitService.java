@@ -44,7 +44,8 @@ public interface HandyRetrofitService {
     @FormUrlEncoded
     @POST("/bookings/{booking}/set_coupon")
     void applyPromo(@Field("coupon") String promoCode, @Path("booking") int bookingId,
-                    @Field("user_id") String userId, HandyRetrofitCallback cb);
+                    @Field("user_id") String userId, @Field("email") String email,
+                    @Field("auth_token") String authToken, HandyRetrofitCallback cb);
 
     @POST("/bookings/{booking}/remove_coupon")
     void removePromo(@Path("booking") int bookingId, HandyRetrofitCallback cb);
@@ -73,13 +74,15 @@ public interface HandyRetrofitService {
                              HandyRetrofitCallback cb);
 
     @GET("/users/{user}")
-    void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken, HandyRetrofitCallback cb);
+    void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken,
+                     HandyRetrofitCallback cb);
 
     @GET("/users/dont_look_at_this")
     void getUserInfo(@Query("email")String email, HandyRetrofitCallback cb);
 
     @PUT("/users/{user}")
-    void updateUserInfo(@Path("user") String userId, @Body UserUpdateRequest req, HandyRetrofitCallback cb);
+    void updateUserInfo(@Path("user") String userId, @Body UserUpdateRequest req,
+                        HandyRetrofitCallback cb);
 
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
