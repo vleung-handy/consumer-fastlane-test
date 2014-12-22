@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ final class BaseDataManagerErrorHandler implements DataManagerErrorHandler {
             toast.setGravity(Gravity.CENTER, 0, 0);
         }
 
-        toast.setText(message);
+        toast.setText(Html.fromHtml(message).toString());
         toast.show();
     }
 

@@ -3,6 +3,7 @@ package com.handybook.handybook;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -259,7 +260,7 @@ public final class LoginFragment extends BookingFlowFragment {
                         progressDialog.dismiss();
                         enableInputs();
 
-                        toast.setText(response);
+                        toast.setText(Html.fromHtml(response).toString());
                         toast.show();
                     }
 
