@@ -1,11 +1,13 @@
 package com.handybook.handybook;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.simplealertdialog.SimpleAlertDialog;
 
@@ -19,6 +21,7 @@ abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDi
     private MenuDrawer menuDrawer;
     private boolean showNavForTransition;
     protected boolean disableDrawer;
+    private OnDrawerStateChangeListener onDrawerStateChangeListener;
 
     protected abstract Fragment createFragment();
     protected abstract String getNavItemTitle();
@@ -60,6 +63,31 @@ abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDi
             public boolean isViewDraggable(final View view, final int i, final int i2, final int i3) {
                 return disableDrawer;
             }
+        });
+
+        menuDrawer.setOnDrawerStateChangeListener(
+            new MenuDrawer.OnDrawerStateChangeListener() {
+                @Override
+                public void onDrawerStateChange(final int oldState, final int newState) {
+                    if (newState == MenuDrawer.STATE_OPENING
+                            || newState == MenuDrawer.STATE_CLOSING
+                            || newState == MenuDrawer.STATE_DRAGGING) {
+
+                        InputMethodManager imm = (InputMethodManager)MenuDrawerActivity.this
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                        final View focus = MenuDrawerActivity.this.getCurrentFocus();
+                        if (focus != null) {
+                            imm.hideSoftInputFromWindow(focus.getWindowToken(), 0);
+                        }
+                    }
+
+                    if (onDrawerStateChangeListener != null)
+                        onDrawerStateChangeListener.onDrawerStateChange(menuDrawer, oldState, newState);
+                }
+
+                @Override
+                public void onDrawerSlide(float openRatio, int offsetPixels) {}
         });
     }
 
@@ -128,5 +156,13 @@ abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDi
         final NavigationFragment navFragment
                 = (NavigationFragment)fm.findFragmentById(R.id.nav_fragment_container);
         if (requestCode == 1) navFragment.onDialogNegativeButtonClicked(dialog, requestCode, view);
+    }
+
+    void setOnDrawerStateChangedListener(final OnDrawerStateChangeListener onDrawerStateChangedListener) {
+        this.onDrawerStateChangeListener = onDrawerStateChangedListener;
+    }
+
+    interface OnDrawerStateChangeListener {
+        void onDrawerStateChange(final MenuDrawer menuDrawer, final int oldState, final int newState);
     }
 }

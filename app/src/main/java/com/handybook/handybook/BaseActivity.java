@@ -44,7 +44,7 @@ abstract class BaseActivity extends FragmentActivity {
         super.onDestroy();
     }
 
-    public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener) {
+    void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener) {
         this.onBackPressedListener = onBackPressedListener;
     }
 

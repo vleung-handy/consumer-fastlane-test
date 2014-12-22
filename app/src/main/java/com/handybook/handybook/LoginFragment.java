@@ -27,7 +27,8 @@ import java.util.HashMap;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class LoginFragment extends BookingFlowFragment {
+public final class LoginFragment extends BookingFlowFragment
+        implements MenuDrawerActivity.OnDrawerStateChangeListener {
     static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
     static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
     static final String EXTRA_BOOKING_EMAIL = "com.handy.handy.EXTRA_BOOKING_EMAIL";
@@ -40,6 +41,7 @@ public final class LoginFragment extends BookingFlowFragment {
     private String bookingUserName, bookingUserEmail;
     private BookingRequest bookingRequest;
     private AuthType authType;
+
     private enum AuthType {EMAIL, FACEBOOK}
 
     @InjectView(R.id.nav_text) TextView navText;
@@ -354,21 +356,9 @@ public final class LoginFragment extends BookingFlowFragment {
                     enableInputs();
 
                     final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-                    final MenuDrawer menuDrawer = activity.getMenuDrawer();
-                    menuDrawer.setOnDrawerStateChangeListener(
-                            new MenuDrawer.OnDrawerStateChangeListener() {
-                        @Override
-                        public void onDrawerStateChange(final int oldState, final int newState) {
-                            if (newState == MenuDrawer.STATE_OPEN) {
-                                activity.navigateToActivity(ServiceCategoriesActivity.class);
-                                menuDrawer.setOnDrawerStateChangeListener(null);
-                            }
-                        }
+                    activity.setOnDrawerStateChangedListener(LoginFragment.this);
 
-                        @Override
-                        public void onDrawerSlide(float openRatio, int offsetPixels) {
-                        }
-                    });
+                    final MenuDrawer menuDrawer = activity.getMenuDrawer();
                     menuDrawer.openMenu(true);
                 }
 
@@ -386,6 +376,15 @@ public final class LoginFragment extends BookingFlowFragment {
             handleUserCallbackError(error);
         }
     };
+
+    @Override
+    public void onDrawerStateChange(final MenuDrawer menuDrawer, final int oldState,
+                                    final int newState) {
+        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+        if (newState == MenuDrawer.STATE_OPEN) {
+            activity.navigateToActivity(ServiceCategoriesActivity.class);
+        }
+    }
 
     private void handleUserCallbackError(final DataManager.DataManagerError error) {
         if (authType == AuthType.FACEBOOK) {

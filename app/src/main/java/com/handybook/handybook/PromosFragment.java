@@ -1,9 +1,11 @@
 package com.handybook.handybook;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -72,6 +74,16 @@ public final class PromosFragment extends BookingFlowFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        promoText.requestFocus();
+        InputMethodManager imm
+                = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(promoText, InputMethodManager.SHOW_IMPLICIT);
     }
 
     @Override
