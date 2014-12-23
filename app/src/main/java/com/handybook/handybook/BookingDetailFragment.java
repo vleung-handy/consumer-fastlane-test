@@ -88,7 +88,8 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         }
         else proView.setVisibility(View.GONE);
 
-        rescheduleButton.setOnClickListener(rescheduleClicked);
+        if (booking.isPast()) rescheduleButton.setVisibility(View.GONE);
+        else rescheduleButton.setOnClickListener(rescheduleClicked);
 
         return view;
     }
