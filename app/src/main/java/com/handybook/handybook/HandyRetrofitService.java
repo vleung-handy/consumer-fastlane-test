@@ -64,6 +64,12 @@ public interface HandyRetrofitService {
     void getPreRescheduleInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
+    @POST("/bookings/{booking}/reschedule")
+    void rescheduleBooking(@Path("booking") String bookingId, @Field("new_date") String date,
+                           @Field("user_id") String userId, @Field("auth_token") String authToken,
+                           HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,
                            HandyRetrofitCallback cb);

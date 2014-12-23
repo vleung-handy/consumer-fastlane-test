@@ -329,6 +329,24 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    void rescheduleBooking(final String bookingId, final String date, final String userId,
+                           final String authToken, final Callback<String> cb) {
+        service.rescheduleBooking(bookingId, date, userId, authToken, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                String message = null;
+
+                if (response.optBoolean("alert", false)) {
+                    final JSONArray array = response.optJSONArray("messages");
+                    if (array != null) message = array.isNull(0) ? null : array.optString(0);
+                }
+
+                cb.onSuccess(message);
+            }
+        });
+    }
+
+    @Override
     final void authUser(final String email, final String password, final Callback<User> cb) {
         service.createUserSession(email, password, new HandyRetrofitCallback(cb) {
             @Override

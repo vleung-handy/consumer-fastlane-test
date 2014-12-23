@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,7 +131,55 @@ public final class BookingRescheduleFragment extends BookingFlowFragment {
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
+            disableInputs();
+            progressDialog.show();
 
+            final Calendar date = Calendar.getInstance();
+
+            date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+            date.set(Calendar.MONTH, datePicker.getMonth());
+            date.set(Calendar.YEAR, datePicker.getYear());
+            date.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+
+            date.set(Calendar.MINUTE, Integer.parseInt(displayedMinuteValues
+                    .get(timePicker.getCurrentMinute())));
+
+            date.set(Calendar.SECOND, 0);
+            date.set(Calendar.MILLISECOND, 0);
+
+            final String newDate = TextUtils.formatDate(date.getTime(), "yyyy-MM-dd HH:mm");
+            final User user = userManager.getCurrentUser();
+
+            dataManager.rescheduleBooking(rescheduleBooking.getId(), newDate, user.getId(),
+                    user.getAuthToken(), new DataManager.Callback<String>() {
+                @Override
+                public void onSuccess(final String message) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+
+                    if (message != null) {
+                        toast.setText(message);
+                        toast.show();
+                    }
+
+                    final Intent intent = new Intent();
+                    intent.putExtra(BookingRescheduleActivity.EXTRA_NEW_DATE, date.getTimeInMillis());
+                    getActivity().setResult(BookingRescheduleActivity.RESULT_NEW_DATE, intent);
+                    getActivity().finish();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
+            });
         }
     };
 }
+
+//TODO handle surge pricing
+//TODO reschedule all subsequent (reschedule_all)

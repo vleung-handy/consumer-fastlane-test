@@ -66,7 +66,7 @@ public final class BookingsFragment extends InjectedFragment {
                                     final int i, final long l) {
                 final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
                 intent.putExtra(BookingDetailActivity.EXTRA_BOOKING, getBooking(i));
-                startActivity(intent);
+                startActivityForResult(intent, BookingDetailActivity.RESULT_BOOKING_UPDATED);
             }
         });
     }
@@ -89,6 +89,32 @@ public final class BookingsFragment extends InjectedFragment {
         outState.putBoolean(STATE_LOADED_BOOKINGS, loadedBookings);
         outState.putParcelableArrayList(STATE_PAST_BOOKINGS, pastBookings);
         outState.putParcelableArrayList(STATE_UP_BOOKINGS, upBookings);
+    }
+
+    @Override
+    public final void onActivityResult(final int requestCode, final int resultCode,
+                                       final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == BookingDetailActivity.RESULT_BOOKING_UPDATED) {
+            final Booking updatedBooking = data
+                    .getParcelableExtra(BookingDetailActivity.EXTRA_UPDATED_BOOKING);
+
+            final String bookingId = updatedBooking.getId();
+
+            for (int i = 0; i < upBookings.size(); i++) {
+                final Booking booking = upBookings.get(i);
+
+                if (booking.getId().equals(bookingId)) {
+                    upBookings.set(i, updatedBooking);
+
+                    final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
+                    adapter.notifyDataSetChanged();
+                    getListView().setSelection(0);
+                    break;
+                }
+            }
+        }
     }
 
     private void loadBookings() {

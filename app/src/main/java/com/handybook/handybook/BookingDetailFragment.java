@@ -9,13 +9,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class BookingDetailFragment extends BookingFlowFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
+    private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
 
     private Booking booking;
+    private boolean updatedBooking;
 
     @InjectView(R.id.service_text) TextView serviceText;
     @InjectView(R.id.job_text) TextView jobText;
@@ -40,6 +44,12 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         booking = getArguments().getParcelable(EXTRA_BOOKING);
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(STATE_UPDATED_BOOKING)) {
+                setUpdatedBookingResult();
+            }
+        }
     }
 
     @Override
@@ -95,6 +105,25 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         rescheduleButton.setClickable(true);
     }
 
+    @Override
+    public final void onActivityResult(final int requestCode, final int resultCode,
+                                       final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == BookingRescheduleActivity.RESULT_NEW_DATE) {
+            booking.setStartDate(new Date(data
+                    .getLongExtra(BookingRescheduleActivity.EXTRA_NEW_DATE, 0)));
+            dateText.setText(TextUtils.formatDate(booking.getStartDate(), "MMM d',' h:mm aaa"));
+            setUpdatedBookingResult();
+        }
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_UPDATED_BOOKING, updatedBooking);
+    }
+
     private View.OnClickListener rescheduleClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
@@ -111,7 +140,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
                     final Intent intent = new Intent(getActivity(), BookingRescheduleActivity.class);
                     intent.putExtra(BookingRescheduleActivity.EXTRA_BOOKING, booking);
                     intent.putExtra(BookingRescheduleActivity.EXTRA_NOTICE, notice);
-                    startActivity(intent);
+                    startActivityForResult(intent, BookingRescheduleActivity.RESULT_NEW_DATE);
                 }
 
                 @Override
@@ -124,4 +153,12 @@ public final class BookingDetailFragment extends BookingFlowFragment {
             });
         }
     };
+
+    private final void setUpdatedBookingResult() {
+        updatedBooking = true;
+
+        final Intent intent = new Intent();
+        intent.putExtra(BookingDetailActivity.EXTRA_UPDATED_BOOKING, booking);
+        getActivity().setResult(BookingDetailActivity.RESULT_BOOKING_UPDATED, intent);
+    }
 }
