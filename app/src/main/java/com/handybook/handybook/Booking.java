@@ -14,6 +14,7 @@ final class Booking implements Parcelable {
     @SerializedName("date_start") private Date startDate;
     @SerializedName("hours") private float hours;
     @SerializedName("price") private float price;
+    @SerializedName("recurring") private int isRecurring;
     @SerializedName("address") private Address address;
     @SerializedName("provider") private Provider provider;
 
@@ -32,6 +33,10 @@ final class Booking implements Parcelable {
     final void setIsPast(final boolean isPast) {
         if (isPast) this.isPast = 1;
         else this.isPast = 0;
+    }
+
+    final boolean getIsRecurring() {
+        return isRecurring == 1;
     }
 
     final String getService() {
@@ -88,9 +93,10 @@ final class Booking implements Parcelable {
         id = stringData[0];
         service = stringData[1];
 
-        final int[] intData = new int[1];
+        final int[] intData = new int[2];
         in.readIntArray(intData);
         isPast = intData[0];
+        isRecurring = intData[1];
 
         final float[] floatData = new float[2];
         in.readFloatArray(floatData);
@@ -106,7 +112,7 @@ final class Booking implements Parcelable {
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
         out.writeStringArray(new String[]{ id, service});
-        out.writeIntArray(new int[]{ isPast });
+        out.writeIntArray(new int[]{ isPast, isRecurring });
         out.writeFloatArray(new float[]{ hours, price });
         out.writeLong(startDate.getTime());
         out.writeParcelable(address, 0);

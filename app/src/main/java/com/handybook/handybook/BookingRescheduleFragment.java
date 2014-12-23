@@ -131,9 +131,6 @@ public final class BookingRescheduleFragment extends BookingFlowFragment {
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
-            disableInputs();
-            progressDialog.show();
-
             final Calendar date = Calendar.getInstance();
 
             date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
@@ -149,6 +146,15 @@ public final class BookingRescheduleFragment extends BookingFlowFragment {
 
             final String newDate = TextUtils.formatDate(date.getTime(), "yyyy-MM-dd HH:mm");
             final User user = userManager.getCurrentUser();
+
+            if (rescheduleBooking.getIsRecurring()) {
+                toast.setText("Ask Recurring Option");
+                toast.show();
+                return;
+            }
+
+            disableInputs();
+            progressDialog.show();
 
             dataManager.rescheduleBooking(rescheduleBooking.getId(), newDate, user.getId(),
                     user.getAuthToken(), new DataManager.Callback<String>() {
@@ -181,5 +187,7 @@ public final class BookingRescheduleFragment extends BookingFlowFragment {
     };
 }
 
+//TODO dont show recurring for past bookings
+//TODO refactor dte and reschedule to remove dup logic
 //TODO handle surge pricing
 //TODO reschedule all subsequent (reschedule_all)
