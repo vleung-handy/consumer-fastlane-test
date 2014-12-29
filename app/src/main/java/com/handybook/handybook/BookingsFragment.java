@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -107,6 +109,13 @@ public final class BookingsFragment extends InjectedFragment {
 
                 if (booking.getId().equals(bookingId)) {
                     upBookings.set(i, updatedBooking);
+
+                    Collections.sort(upBookings, new Comparator<Booking>() {
+                        @Override
+                        public int compare(Booking lhs, Booking rhs) {
+                            return (int)(lhs.getStartDate().compareTo(rhs.getStartDate()));
+                        }
+                    });
 
                     final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
                     adapter.notifyDataSetChanged();

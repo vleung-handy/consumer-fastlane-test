@@ -303,6 +303,5 @@ public final class BookingDateFragment extends BookingFlowFragment {
     }
 }
 
-//TODO reorder bookings when returnign back to list view
-//TODO handle surge pricing
 //TODO reschedule all subsequent (reschedule_all)
+//TODO handle surge pricing
