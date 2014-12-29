@@ -70,13 +70,10 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
             public void onClick(final View view) {
                 rescheduleBooking(booking, date, optionIndex == 1);
 
-                //TODO save date when going forward then back
-                //TODO better transition when leaving double fnish
-
+                //TODO better transition when leaving double finish
                 // TODO handle surge pricing
                 //TODO refactor single option views to use framelayout instead of list
                 //TODO long press date picker fields are editbale
-                //TODO date screen should keep user changed value if leaving then coming back
             }
         });
 

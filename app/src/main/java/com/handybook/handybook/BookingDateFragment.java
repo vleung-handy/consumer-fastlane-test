@@ -25,11 +25,13 @@ public final class BookingDateFragment extends BookingFlowFragment {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
+    private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
     private final int MINUTE_INTERVAL = 15;
 
     private ArrayList<BookingOption> postOptions;
     private List<String> displayedMinuteValues;
     private Booking rescheduleBooking;
+    private Date rescheduleDate;
     private String notice;
 
     @InjectView(R.id.next_button) Button nextButton;
@@ -65,6 +67,11 @@ public final class BookingDateFragment extends BookingFlowFragment {
 
         rescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
         if (rescheduleBooking != null) {
+            if (savedInstanceState != null) {
+                rescheduleDate = new Date(savedInstanceState.getLong(STATE_RESCHEDULE_DATE, 0));
+            }
+            else rescheduleDate = rescheduleBooking.getStartDate();
+
             notice = getArguments().getString(EXTRA_RESCHEDULE_NOTICE);
 
             // flash notice since it may not initially appear in view
@@ -194,10 +201,16 @@ public final class BookingDateFragment extends BookingFlowFragment {
         }
     }
 
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (rescheduleDate != null) outState.putLong(STATE_RESCHEDULE_DATE, rescheduleDate.getTime());
+    }
+
     private Calendar currentStartDate() {
         if (rescheduleBooking != null) {
             final Calendar startDate = Calendar.getInstance();
-            startDate.setTime(rescheduleBooking.getStartDate());
+            startDate.setTime(rescheduleDate);
             return startDate;
         }
 
@@ -224,9 +237,6 @@ public final class BookingDateFragment extends BookingFlowFragment {
     }
 
     private void updateRequestDate() {
-        if (rescheduleBooking != null) return;
-
-        final BookingRequest request = bookingManager.getCurrentRequest();
         final Calendar date = Calendar.getInstance();
 
         date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
@@ -241,10 +251,15 @@ public final class BookingDateFragment extends BookingFlowFragment {
         date.set(Calendar.MILLISECOND, 0);
 
         final Date newDate = date.getTime();
-        request.setStartDate(newDate);
 
-        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-        if (transaction != null) transaction.setStartDate(newDate);
+        if (rescheduleBooking != null) rescheduleDate = newDate;
+        else {
+            final BookingRequest request = bookingManager.getCurrentRequest();
+            request.setStartDate(newDate);
+
+            final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+            if (transaction != null) transaction.setStartDate(newDate);
+        }
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
