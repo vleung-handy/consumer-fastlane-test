@@ -239,7 +239,12 @@ public final class BookingDateFragment extends BookingFlowFragment {
 
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
-        request.setStartDate(date.getTime());
+
+        final Date newDate = date.getTime();
+        request.setStartDate(newDate);
+
+        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+        if (transaction != null) transaction.setStartDate(newDate);
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
