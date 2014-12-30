@@ -111,9 +111,9 @@ public final class BookingDetailFragment extends BookingFlowFragment {
                                        final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == BookingRescheduleActivity.RESULT_NEW_DATE) {
+        if (resultCode == BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE) {
             booking.setStartDate(new Date(data
-                    .getLongExtra(BookingRescheduleActivity.EXTRA_NEW_DATE, 0)));
+                    .getLongExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, 0)));
             dateText.setText(TextUtils.formatDate(booking.getStartDate(), "MMM d',' h:mm aaa"));
             setUpdatedBookingResult();
         }
@@ -138,10 +138,10 @@ public final class BookingDetailFragment extends BookingFlowFragment {
                     enableInputs();
                     progressDialog.dismiss();
 
-                    final Intent intent = new Intent(getActivity(), BookingRescheduleActivity.class);
-                    intent.putExtra(BookingRescheduleActivity.EXTRA_BOOKING, booking);
-                    intent.putExtra(BookingRescheduleActivity.EXTRA_NOTICE, notice);
-                    startActivityForResult(intent, BookingRescheduleActivity.RESULT_NEW_DATE);
+                    final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
+                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
+                    startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE);
                 }
 
                 @Override

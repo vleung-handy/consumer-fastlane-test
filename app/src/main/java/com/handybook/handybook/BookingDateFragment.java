@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.lang.reflect.Field;
@@ -22,14 +23,20 @@ import butterknife.InjectView;
 
 public final class BookingDateFragment extends BookingFlowFragment {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
+    static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
+    static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
     private final int MINUTE_INTERVAL = 15;
 
     private ArrayList<BookingOption> postOptions;
     private List<String> displayedMinuteValues;
+    private Booking rescheduleBooking;
+    private String notice;
 
     @InjectView(R.id.next_button) Button nextButton;
     @InjectView(R.id.date_picker) DatePicker datePicker;
     @InjectView(R.id.time_picker) TimePicker timePicker;
+    @InjectView(R.id.nav_text) TextView navText;
+    @InjectView(R.id.notice_text) TextView noticeText;
 
     static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
         final BookingDateFragment fragment = new BookingDateFragment();
@@ -41,10 +48,32 @@ public final class BookingDateFragment extends BookingFlowFragment {
         return fragment;
     }
 
+    static BookingDateFragment newInstance(final Booking rescheduleBooking, final String notice) {
+        final BookingDateFragment fragment = new BookingDateFragment();
+        final Bundle args = new Bundle();
+
+        args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
+        args.putString(EXTRA_RESCHEDULE_NOTICE, notice);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
+
+        rescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
+        if (rescheduleBooking != null) {
+            notice = getArguments().getString(EXTRA_RESCHEDULE_NOTICE);
+
+            // flash notice since it may not initially appear in view
+            if (savedInstanceState == null && notice != null) {
+                toast.setText(notice);
+                toast.show();
+            }
+        }
+        else postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
 
         displayedMinuteValues = new ArrayList<>();
         for (int i = 0; i < 60; i += MINUTE_INTERVAL) displayedMinuteValues.add(String.format("%02d", i));
@@ -58,6 +87,16 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 .inflate(R.layout.fragment_booking_date,container, false);
 
         ButterKnife.inject(this, view);
+
+        if (rescheduleBooking != null) {
+            navText.setText(getString(R.string.reschedule));
+            nextButton.setText(getString(R.string.reschedule));
+
+            if (notice != null) {
+                noticeText.setText(notice);
+                noticeText.setVisibility(View.VISIBLE);
+            }
+        }
 
         final Calendar startDate = currentStartDate();
 
@@ -134,6 +173,12 @@ public final class BookingDateFragment extends BookingFlowFragment {
     }
 
     private Calendar currentStartDate() {
+        if (rescheduleBooking != null) {
+            final Calendar startDate = Calendar.getInstance();
+            startDate.setTime(rescheduleBooking.getStartDate());
+            return startDate;
+        }
+
         final Calendar cal = Calendar.getInstance();
         final Date requestDate = bookingManager.getCurrentRequest().getStartDate();
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
@@ -157,6 +202,8 @@ public final class BookingDateFragment extends BookingFlowFragment {
     }
 
     private void updateRequestDate() {
+        if (rescheduleBooking != null) return;
+
         final BookingRequest request = bookingManager.getCurrentRequest();
         final Calendar date = Calendar.getInstance();
 
@@ -176,6 +223,12 @@ public final class BookingDateFragment extends BookingFlowFragment {
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
+
+            if (rescheduleBooking != null) {
+                rescheduleBooking();
+                return;
+            }
+
             if (postOptions != null && postOptions.size() > 0) {
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
                 intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_OPTIONS,
@@ -186,7 +239,70 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 startActivity(intent);
 
                 return;
-            } continueBookingFlow();
+            }
+
+            continueBookingFlow();
         }
     };
+
+    private void rescheduleBooking() {
+        final Calendar date = Calendar.getInstance();
+
+        date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+        date.set(Calendar.MONTH, datePicker.getMonth());
+        date.set(Calendar.YEAR, datePicker.getYear());
+        date.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+
+        date.set(Calendar.MINUTE, Integer.parseInt(displayedMinuteValues
+                .get(timePicker.getCurrentMinute())));
+
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+
+        final String newDate = TextUtils.formatDate(date.getTime(), "yyyy-MM-dd HH:mm");
+        final User user = userManager.getCurrentUser();
+
+        if (rescheduleBooking.getIsRecurring()) {
+            toast.setText("Ask Recurring Option");
+            toast.show();
+            return;
+        }
+
+        disableInputs();
+        progressDialog.show();
+
+        dataManager.rescheduleBooking(rescheduleBooking.getId(), newDate, user.getId(),
+            user.getAuthToken(), new DataManager.Callback<String>() {
+                @Override
+                public void onSuccess(final String message) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+
+                    if (message != null) {
+                        toast.setText(message);
+                        toast.show();
+                    }
+
+                    final Intent intent = new Intent();
+                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE,
+                            date.getTimeInMillis());
+
+                    getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+                    getActivity().finish();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
+        });
+    }
 }
+
+//TODO reorder bookings when returnign back to list view
+//TODO handle surge pricing
+//TODO reschedule all subsequent (reschedule_all)
