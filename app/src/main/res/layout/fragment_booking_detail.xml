@@ -225,7 +225,7 @@
                 android:paddingTop="16dp">
 
                 <Button
-                    android:id="@+id/rechedule_button"
+                    android:id="@+id/reschedule_button"
                     android:layout_marginLeft="@dimen/default_margin"
                     android:layout_marginRight="@dimen/default_margin"
                     android:text="@string/reschedule"

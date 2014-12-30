@@ -47,6 +47,8 @@ abstract class DataManager {
     abstract void completeBooking(BookingTransaction bookingTransaction,
                                   Callback<BookingCompleteTransaction> cb);
 
+    abstract void getPreRescheduleInfo(String bookingId, Callback<String> cb);
+
     abstract void addBookingPostInfo(int bookingId, BookingPostInfo postInfo, Callback<Void> cb);
 
     abstract void authUser(String email, String password, Callback<User> cb);

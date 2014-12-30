@@ -46,7 +46,7 @@ abstract class HandyRetrofitCallback implements retrofit.Callback<Response> {
 
             if (messages != null && messages.length() > 0) {
                 err = new DataManager.DataManagerError(DataManager.Type.CLIENT,
-                        messages.optString(0));
+                        messages.isNull(0) ? null : messages.optString(0));
             }
             else {
                 err = new DataManager.DataManagerError(DataManager.Type.CLIENT);
@@ -86,7 +86,9 @@ abstract class HandyRetrofitCallback implements retrofit.Callback<Response> {
                     }
                     else err = new DataManager.DataManagerError(DataManager.Type.CLIENT);
                 }
-                else if (resp >= 500 && resp < 600) err = new DataManager.DataManagerError(DataManager.Type.SERVER);
+                else if (resp >= 500 && resp < 600) {
+                    err = new DataManager.DataManagerError(DataManager.Type.SERVER);
+                }
                 else err = new DataManager.DataManagerError(DataManager.Type.OTHER);
             }
             callback.onError(err);

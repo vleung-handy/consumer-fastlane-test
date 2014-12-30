@@ -1,10 +1,12 @@
 package com.handybook.handybook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -23,6 +25,8 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.price_text) TextView priceText;
     @InjectView(R.id.pro_text) TextView proText;
     @InjectView(R.id.pro_layout) View proView;
+    @InjectView(R.id.reschedule_button) Button rescheduleButton;
+
 
     static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -74,6 +78,50 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         }
         else proView.setVisibility(View.GONE);
 
+        rescheduleButton.setOnClickListener(rescheduleClicked);
+
         return view;
     }
+
+    @Override
+    protected void disableInputs() {
+        super.disableInputs();
+        rescheduleButton.setClickable(false);
+    }
+
+    @Override
+    protected final void enableInputs() {
+        super.enableInputs();
+        rescheduleButton.setClickable(true);
+    }
+
+    private View.OnClickListener rescheduleClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            disableInputs();
+            progressDialog.show();
+
+            dataManager.getPreRescheduleInfo(booking.getId(), new DataManager.Callback<String>() {
+                @Override
+                public void onSuccess(final String notice) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+
+                    final Intent intent = new Intent(getActivity(), BookingRescheduleActivity.class);
+                    intent.putExtra(BookingRescheduleActivity.EXTRA_BOOKING, booking);
+                    intent.putExtra(BookingRescheduleActivity.EXTRA_NOTICE, notice);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
+            });
+        }
+    };
 }

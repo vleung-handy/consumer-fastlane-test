@@ -25,7 +25,7 @@ public interface HandyRetrofitService {
     void validateBookingZip(@Query("service_id") int serviceId, @Query("zipcode") String zipCode,
                             @Query("user_id") String userId, @Query("auth_token") String authToken,
                             @Query("entered_code") String promoCode, HandyRetrofitCallback cb);
-
+    
     @GET("/bookings")
     void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
@@ -59,6 +59,9 @@ public interface HandyRetrofitService {
     @POST("/bookings/{booking}/after_booking_update")
     void addBookingPostInfo(@Path("booking") int bookingId, @Body BookingPostInfo info,
                             HandyRetrofitCallback cb);
+
+    @GET("/bookings/prereschedule_info")
+    void getPreRescheduleInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/user_sessions")

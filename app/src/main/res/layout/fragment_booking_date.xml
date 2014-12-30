@@ -49,6 +49,23 @@
                 android:layout_below="@id/date_picker"
                 android:layout_centerHorizontal="true"/>
 
+            <TextView
+                android:id="@+id/notice_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time_picker"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="notice"
+                android:visibility="gone"
+                style="@style/TextView.XSmall" />
+
+            <View
+                android:layout_below="@id/notice_text"
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
         </RelativeLayout>
 
     </ScrollView>

@@ -45,6 +45,11 @@
                 android:orientation="vertical"
                 android:background="@color/white" />
 
+            <View
+                android:layout_below="@id/options_layout"
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
         </RelativeLayout>
 
     </ScrollView>

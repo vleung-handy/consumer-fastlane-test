@@ -90,8 +90,8 @@ public final class BaseDataManager extends DataManager {
                         if (name == null || ignore == 1) continue;
 
                         final Service service = new Service();
-                        service.setUniq(obj.optString("uniq"));
-                        service.setName(obj.optString("name"));
+                        service.setUniq(obj.isNull("uniq") ? null : obj.optString("uniq"));
+                        service.setName(obj.isNull("name") ? null : obj.optString("name"));
                         service.setOrder(obj.optInt("order", 0));
                         servicesMenu.add(service);
                         menuMap.put(service.getUniq(), service);
@@ -116,8 +116,11 @@ public final class BaseDataManager extends DataManager {
                             if (obj != null && obj.optBoolean("no_show", true)) {
                                 final Service service = new Service();
                                 service.setId(obj.optInt("id"));
-                                service.setUniq(obj.optString("machine_name"));
-                                service.setName(obj.optString("name"));
+
+                                service.setUniq(obj.isNull("machine_name") ? null
+                                        : obj.optString("machine_name"));
+
+                                service.setName(obj.isNull("name") ? null : obj.optString("name"));
                                 service.setOrder(obj.optInt("order", 0));
                                 service.setParentId(obj.optInt("parent", 0));
 
@@ -200,7 +203,8 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    final void getBookingOptions(final int serviceId, final String userId, final Callback<List<BookingOption>> cb) {
+    final void getBookingOptions(final int serviceId, final String userId,
+                                 final Callback<List<BookingOption>> cb) {
         service.getBookingOptions(serviceId, userId, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
@@ -315,6 +319,16 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    void getPreRescheduleInfo(final String bookingId, final Callback<String> cb) {
+        service.getPreRescheduleInfo(bookingId, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(response.isNull("notice") ? null : response.optString("notice", null));
+            }
+        });
+    }
+
+    @Override
     final void authUser(final String email, final String password, final Callback<User> cb) {
         service.createUserSession(email, password, new HandyRetrofitCallback(cb) {
             @Override
@@ -327,7 +341,8 @@ public final class BaseDataManager extends DataManager {
     @Override
     final void authFBUser(final String fbid, final String accessToken, final String email,
                                  final String firstName, String lastName, final Callback<User> cb) {
-        service.createUserSessionFB(fbid, accessToken, email, firstName, lastName, new HandyRetrofitCallback(cb) {
+        service.createUserSessionFB(fbid, accessToken, email, firstName, lastName,
+                new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 handleCreateSessionResponse(response, cb);
@@ -348,7 +363,7 @@ public final class BaseDataManager extends DataManager {
         service.getUserInfo(email, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
-                cb.onSuccess(response.optString("name", null));
+                cb.onSuccess(response.isNull("name") ? null : response.optString("name"));
             }
         });
     }
@@ -369,15 +384,16 @@ public final class BaseDataManager extends DataManager {
             @Override
             void success(JSONObject response) {
                 final JSONArray array = response.optJSONArray("messages");
-                cb.onSuccess(array != null && array.length() > 0 ? array.optString(0) : null);
+                cb.onSuccess(array != null && array.length() > 0 ?
+                        (array.isNull(0) ? null : array.optString(0)) : null);
             }
         });
     }
 
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb) {
         final User user = new User();
-        user.setAuthToken(response.optString("auth_token"));
-        user.setId(response.optString("id"));
+        user.setAuthToken(response.isNull("auth_token") ? null : response.optString("auth_token"));
+        user.setId(response.isNull("id") ? null : response.optString("id"));
         cb.onSuccess(user);
     }
 
