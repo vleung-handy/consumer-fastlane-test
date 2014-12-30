@@ -3,6 +3,7 @@ package com.handybook.handybook;
 import android.content.Intent;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BookingFlowFragment extends InjectedFragment {
 
@@ -72,6 +73,56 @@ public class BookingFlowFragment extends InjectedFragment {
         disableInputs();
         progressDialog.show();
         dataManager.getBookingQuote(request, bookingQuoteCallback);
+    }
+
+    final void rescheduleBooking(final Booking booking, final Date date) {
+        final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");
+        final User user = userManager.getCurrentUser();
+
+        disableInputs();
+        progressDialog.show();
+
+        dataManager.rescheduleBooking(booking.getId(), newDate, user.getId(),
+                user.getAuthToken(), new DataManager.Callback<String>() {
+                    @Override
+                    public void onSuccess(final String message) {
+                        if (!allowCallbacks) return;
+                        enableInputs();
+                        progressDialog.dismiss();
+
+                        if (message != null) {
+                            toast.setText(message);
+                            toast.show();
+                        }
+
+                        final Intent intent = new Intent();
+
+                        if (BookingFlowFragment.this.getActivity() instanceof BookingDateActivity) {
+                            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE,
+                                    date.getTime());
+
+                            getActivity().setResult(BookingDateActivity
+                                    .RESULT_RESCHEDULE_NEW_DATE, intent);
+                        }
+                        else if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment) {
+                            intent.putExtra(BookingRescheduleOptionsActivity
+                                    .EXTRA_RESCHEDULE_NEW_DATE, date.getTime());
+
+                            getActivity().setResult(BookingRescheduleOptionsActivity
+                                    .RESULT_RESCHEDULE_NEW_DATE, intent);
+                        }
+
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error) {
+                        if (!allowCallbacks) return;
+                        enableInputs();
+                        progressDialog.dismiss();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                });
     }
 
     private void continueFlow() {

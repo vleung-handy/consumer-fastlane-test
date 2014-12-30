@@ -125,6 +125,10 @@ public final class BookingDateFragment extends BookingFlowFragment {
 
         } catch (Exception e) {}
 
+        // resolves issue https://code.google.com/p/android/issues/detail?id=22754
+        timePicker.setSaveFromParentEnabled(false);
+        timePicker.setSaveEnabled(true);
+
         timePicker.setCurrentHour(startDate.get(Calendar.HOUR_OF_DAY));
         timePicker.setCurrentMinute(startDate.get(Calendar.MINUTE) / MINUTE_INTERVAL);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -170,6 +174,24 @@ public final class BookingDateFragment extends BookingFlowFragment {
     protected final void enableInputs() {
         super.enableInputs();
         nextButton.setClickable(true);
+    }
+
+
+    @Override
+    public final void onActivityResult(final int requestCode, final int resultCode,
+                                       final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == BookingRescheduleOptionsActivity.RESULT_RESCHEDULE_NEW_DATE) {
+            final long date = data
+                    .getLongExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
+
+            final Intent intent = new Intent();
+            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, date);
+
+            getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+            getActivity().finish();
+        }
     }
 
     private Calendar currentStartDate() {
@@ -223,13 +245,35 @@ public final class BookingDateFragment extends BookingFlowFragment {
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
-
             if (rescheduleBooking != null) {
-                rescheduleBooking();
-                return;
-            }
+                final Calendar date = Calendar.getInstance();
+                date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+                date.set(Calendar.MONTH, datePicker.getMonth());
+                date.set(Calendar.YEAR, datePicker.getYear());
+                date.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
 
-            if (postOptions != null && postOptions.size() > 0) {
+                date.set(Calendar.MINUTE, Integer.parseInt(displayedMinuteValues
+                        .get(timePicker.getCurrentMinute())));
+
+                date.set(Calendar.SECOND, 0);
+                date.set(Calendar.MILLISECOND, 0);
+
+                if (!rescheduleBooking.getIsRecurring()) {
+                    final Intent intent = new Intent(getActivity(),
+                            BookingRescheduleOptionsActivity.class);
+
+                    intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_BOOKING,
+                            rescheduleBooking);
+
+                    intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_DATE,
+                            date.getTimeInMillis());
+
+                    startActivityForResult(intent, BookingRescheduleOptionsActivity
+                            .RESULT_RESCHEDULE_NEW_DATE);
+                }
+                else rescheduleBooking(rescheduleBooking, date.getTime());
+            }
+            else if (postOptions != null && postOptions.size() > 0) {
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
                 intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_OPTIONS,
                         new ArrayList<>(postOptions));
@@ -237,71 +281,8 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, postOptions.get(0).getPage());
                 intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
                 startActivity(intent);
-
-                return;
             }
-
-            continueBookingFlow();
+            else continueBookingFlow();
         }
     };
-
-    private void rescheduleBooking() {
-        final Calendar date = Calendar.getInstance();
-
-        date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
-        date.set(Calendar.MONTH, datePicker.getMonth());
-        date.set(Calendar.YEAR, datePicker.getYear());
-        date.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
-
-        date.set(Calendar.MINUTE, Integer.parseInt(displayedMinuteValues
-                .get(timePicker.getCurrentMinute())));
-
-        date.set(Calendar.SECOND, 0);
-        date.set(Calendar.MILLISECOND, 0);
-
-        final String newDate = TextUtils.formatDate(date.getTime(), "yyyy-MM-dd HH:mm");
-        final User user = userManager.getCurrentUser();
-
-        if (rescheduleBooking.getIsRecurring()) {
-            toast.setText("Ask Recurring Option");
-            toast.show();
-            return;
-        }
-
-        disableInputs();
-        progressDialog.show();
-
-        dataManager.rescheduleBooking(rescheduleBooking.getId(), newDate, user.getId(),
-            user.getAuthToken(), new DataManager.Callback<String>() {
-                @Override
-                public void onSuccess(final String message) {
-                    if (!allowCallbacks) return;
-                    enableInputs();
-                    progressDialog.dismiss();
-
-                    if (message != null) {
-                        toast.setText(message);
-                        toast.show();
-                    }
-
-                    final Intent intent = new Intent();
-                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE,
-                            date.getTimeInMillis());
-
-                    getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
-                    getActivity().finish();
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error) {
-                    if (!allowCallbacks) return;
-                    enableInputs();
-                    progressDialog.dismiss();
-                    dataManagerErrorHandler.handleError(getActivity(), error);
-                }
-        });
-    }
 }
-
-//TODO reschedule all subsequent (reschedule_all)
-//TODO handle surge pricing

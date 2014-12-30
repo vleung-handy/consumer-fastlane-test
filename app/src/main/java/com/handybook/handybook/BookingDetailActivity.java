@@ -1,6 +1,5 @@
 package com.handybook.handybook;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -24,11 +23,5 @@ public final class BookingDetailActivity extends MenuDrawerActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         disableDrawer = true;
-    }
-
-    @Override
-    protected void onActivityResult(final int requestCode, final int resultCode,
-                                    final Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }

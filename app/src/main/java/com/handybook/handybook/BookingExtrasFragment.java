@@ -67,16 +67,14 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
         }
 
         optionsLayout.addView(optionsView, 0);
-        nextButton.setOnClickListener(nextClicked);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                continueBookingFlow();
+            }
+        });
         return view;
     }
-
-    private final View.OnClickListener nextClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(final View view) {
-            continueBookingFlow();
-        }
-    };
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated
             = new BookingOptionsView.OnUpdatedListener() {

@@ -53,7 +53,7 @@
 
         <activity android:name=".BookingExtrasActivity" />
 
-        <activity android:name=".BookingRescheduleActivity" />
+        <activity android:name=".BookingRescheduleOptionsActivity" />
 
         <activity android:name=".PeakPricingActivity" />
 

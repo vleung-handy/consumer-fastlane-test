@@ -78,7 +78,7 @@ final class BookingOptionsSelectView extends BookingOptionsIndexView {
             }
 
             final CheckBox checkBox = (CheckBox)optionView.findViewById(R.id.check_box);
-            if (!isMulti && i == checkedIndex) checkBox.setChecked(true);
+            if (!isMulti && i == checkedIndex) selectOption(checkBox, true);
             checkBox.setOnCheckedChangeListener(checkedChanged);
             checkMap.put(i, checkBox);
 
