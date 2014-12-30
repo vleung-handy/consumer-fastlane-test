@@ -211,9 +211,27 @@
 
             <!--empty view needed for bottom layout margin bug on older APIs-->
             <View
+                android:id="@+id/end_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_below="@id/pro_layout" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/end_view"
+                android:background="@color/handy_bg"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp">
+
+                <Button
+                    android:id="@+id/rechedule_button"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:text="@string/reschedule"
+                    style="@style/Button.Blue" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
