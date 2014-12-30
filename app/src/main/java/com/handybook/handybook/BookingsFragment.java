@@ -113,13 +113,13 @@ public final class BookingsFragment extends InjectedFragment {
                     Collections.sort(upBookings, new Comparator<Booking>() {
                         @Override
                         public int compare(Booking lhs, Booking rhs) {
-                            return (int)(lhs.getStartDate().compareTo(rhs.getStartDate()));
+                            return lhs.getStartDate().compareTo(rhs.getStartDate());
                         }
                     });
 
-                    final BaseAdapter adapter = (BaseAdapter)getListView().getAdapter();
+                    final BaseAdapter adapter = (BaseAdapter)listView.getAdapter();
                     adapter.notifyDataSetChanged();
-                    getListView().setSelection(0);
+                    listView.setSelection(0);
                     break;
                 }
             }

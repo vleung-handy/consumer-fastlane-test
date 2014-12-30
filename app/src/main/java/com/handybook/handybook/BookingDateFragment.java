@@ -232,6 +232,8 @@ public final class BookingDateFragment extends BookingFlowFragment {
         if (transaction != null) tranDate = transaction.getStartDate();
         final Date startDate = tranDate != null ? tranDate : requestDate;
 
+
+        //TODO fix issue when going back for surge and date changes to initial date
         if (startDate != null) {
             cal.setTime(startDate);
         }
@@ -288,7 +290,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 date.set(Calendar.SECOND, 0);
                 date.set(Calendar.MILLISECOND, 0);
 
-                if (!rescheduleBooking.isRecurring()) {
+                if (rescheduleBooking.isRecurring()) {
                     final Intent intent = new Intent(getActivity(),
                             BookingRescheduleOptionsActivity.class);
 
