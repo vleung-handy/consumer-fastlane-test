@@ -68,13 +68,11 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         rescheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                rescheduleBooking(booking, date);
-                //TODO set all param here
-                // TODO reschedule all subsequent (reschedule_all)
+                rescheduleBooking(booking, date, optionIndex == 1);
 
                 //TODO save date when going forward then back
                 //TODO better transition when leaving double fnish
-                
+
                 // TODO handle surge pricing
                 //TODO refactor single option views to use framelayout instead of list
                 //TODO long press date picker fields are editbale

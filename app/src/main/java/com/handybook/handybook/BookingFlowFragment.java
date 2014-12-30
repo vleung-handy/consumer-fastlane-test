@@ -75,14 +75,14 @@ public class BookingFlowFragment extends InjectedFragment {
         dataManager.getBookingQuote(request, bookingQuoteCallback);
     }
 
-    final void rescheduleBooking(final Booking booking, final Date date) {
+    final void rescheduleBooking(final Booking booking, final Date date, final boolean rescheduleAll) {
         final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");
         final User user = userManager.getCurrentUser();
 
         disableInputs();
         progressDialog.show();
 
-        dataManager.rescheduleBooking(booking.getId(), newDate, user.getId(),
+        dataManager.rescheduleBooking(booking.getId(), newDate, rescheduleAll, user.getId(),
                 user.getAuthToken(), new DataManager.Callback<String>() {
                     @Override
                     public void onSuccess(final String message) {

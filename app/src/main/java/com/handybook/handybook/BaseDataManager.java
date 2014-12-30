@@ -329,9 +329,10 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    void rescheduleBooking(final String bookingId, final String date, final String userId,
-                           final String authToken, final Callback<String> cb) {
-        service.rescheduleBooking(bookingId, date, userId, authToken, new HandyRetrofitCallback(cb) {
+    void rescheduleBooking(final String bookingId, final String date,  final boolean rescheduleAll,
+                           final String userId, final String authToken, final Callback<String> cb) {
+        service.rescheduleBooking(bookingId, date, rescheduleAll ? 1 : 0, userId, authToken,
+                new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 String message = null;

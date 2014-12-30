@@ -271,7 +271,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                     startActivityForResult(intent, BookingRescheduleOptionsActivity
                             .RESULT_RESCHEDULE_NEW_DATE);
                 }
-                else rescheduleBooking(rescheduleBooking, date.getTime());
+                else rescheduleBooking(rescheduleBooking, date.getTime(), false);
             }
             else if (postOptions != null && postOptions.size() > 0) {
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);

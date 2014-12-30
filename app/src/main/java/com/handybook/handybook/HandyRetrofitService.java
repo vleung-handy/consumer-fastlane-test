@@ -66,8 +66,8 @@ public interface HandyRetrofitService {
     @FormUrlEncoded
     @POST("/bookings/{booking}/reschedule")
     void rescheduleBooking(@Path("booking") String bookingId, @Field("new_date") String date,
-                           @Field("user_id") String userId, @Field("auth_token") String authToken,
-                           HandyRetrofitCallback cb);
+                           @Field("reschedule_all") int rescheduleAll, @Field("user_id") String userId,
+                           @Field("auth_token") String authToken, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/user_sessions")
