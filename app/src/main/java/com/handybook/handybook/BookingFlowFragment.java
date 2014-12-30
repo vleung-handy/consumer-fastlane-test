@@ -1,6 +1,7 @@
 package com.handybook.handybook;
 
 import android.content.Intent;
+import android.support.v4.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,7 +76,7 @@ public class BookingFlowFragment extends InjectedFragment {
         dataManager.getBookingQuote(request, bookingQuoteCallback);
     }
 
-    final void rescheduleBooking(final Booking booking, final Date date, final boolean rescheduleAll) {
+    protected void rescheduleBooking(final Booking booking, final Date date, final boolean rescheduleAll) {
         final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");
         final User user = userManager.getCurrentUser();
 
@@ -83,46 +84,72 @@ public class BookingFlowFragment extends InjectedFragment {
         progressDialog.show();
 
         dataManager.rescheduleBooking(booking.getId(), newDate, rescheduleAll, user.getId(),
-                user.getAuthToken(), new DataManager.Callback<String>() {
-                    @Override
-                    public void onSuccess(final String message) {
-                        if (!allowCallbacks) return;
-                        enableInputs();
-                        progressDialog.dismiss();
+            user.getAuthToken(), new DataManager.Callback<Pair<String, BookingQuote>>() {
+                @Override
+                public void onSuccess(final Pair<String, BookingQuote> response) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
 
-                        if (message != null) {
-                            toast.setText(message);
-                            toast.show();
-                        }
+                    final String message = response.first;
+                    if (message != null) {
+                        toast.setText(message);
+                        toast.show();
+                    }
 
-                        final Intent intent = new Intent();
+                    final BookingQuote quote = response.second;
+                    final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
+                            = quote != null ? quote.getPeakPriceTable() : null;
 
-                        if (BookingFlowFragment.this.getActivity() instanceof BookingDateActivity) {
-                            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE,
-                                    date.getTime());
+                    if (peakTable != null && !peakTable.isEmpty()) {
+                        final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+                        intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_BOOKING, booking);
+                        intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_PRICE_TABLE, peakTable);
+                        intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_ALL, rescheduleAll);
+                        startActivityForResult(intent, PeakPricingActivity.RESULT_RESCHEDULE_NEW_DATE);
+                        return;
+                    }
 
-                            getActivity().setResult(BookingDateActivity
-                                    .RESULT_RESCHEDULE_NEW_DATE, intent);
-                        }
-                        else if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment) {
-                            intent.putExtra(BookingRescheduleOptionsActivity
-                                    .EXTRA_RESCHEDULE_NEW_DATE, date.getTime());
+                    final Intent intent = new Intent();
 
-                            getActivity().setResult(BookingRescheduleOptionsActivity
-                                    .RESULT_RESCHEDULE_NEW_DATE, intent);
-                        }
+                    if (BookingFlowFragment.this instanceof PeakPricingTableFragment) {
+                        intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE,
+                                date.getTime());
 
+                        getActivity().setResult(PeakPricingActivity
+                                .RESULT_RESCHEDULE_NEW_DATE, intent);
+                    }
+                    else if (BookingFlowFragment.this instanceof BookingDateFragment) {
+                        intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE,
+                                date.getTime());
+
+                        getActivity().setResult(BookingDateActivity
+                                .RESULT_RESCHEDULE_NEW_DATE, intent);
+                    }
+                    else if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment) {
+                        intent.putExtra(BookingRescheduleOptionsActivity
+                                .EXTRA_RESCHEDULE_NEW_DATE, date.getTime());
+
+                        getActivity().setResult(BookingRescheduleOptionsActivity
+                                .RESULT_RESCHEDULE_NEW_DATE, intent);
+                    }
+
+                    getActivity().finish();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+
+                    // go back to date screen if error occurs on options screen
+                    if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment) {
                         getActivity().finish();
                     }
-
-                    @Override
-                    public void onError(final DataManager.DataManagerError error) {
-                        if (!allowCallbacks) return;
-                        enableInputs();
-                        progressDialog.dismiss();
-                        dataManagerErrorHandler.handleError(getActivity(), error);
-                    }
-                });
+                }
+        });
     }
 
     private void continueFlow() {

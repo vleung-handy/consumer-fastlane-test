@@ -21,10 +21,16 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class PeakPricingFragment extends BookingFlowFragment {
+    static final String EXTRA_RESCHEDULE_PRICE_TABLE = "com.handy.handy.EXTRA_RESCHEDULE_PRICE_TABLE";
+    static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
+    static final String EXTRA_RESCHEDULE_ALL = "com.handy.handy.EXTRA_RESCHEDULE_ALL";
     private static final String STATE_PRICE_TABLE = "PRICE_TABLE";
 
     private ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakPriceTable;
     private int currentIndex;
+    private boolean forReschedule;
+    private Booking rescheduleBooking;
+    private boolean rescheduleAll;
 
     @InjectView(R.id.skip_button) Button skipButton;
     @InjectView(R.id.date_text) TextView dateText;
@@ -38,15 +44,40 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         return fragment;
     }
 
+    static PeakPricingFragment newInstance(final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>
+                                                   reschedulePriceTable, final Booking rescheduleBooking,
+                                           final boolean rescheduleAll) {
+        final PeakPricingFragment fragment = new PeakPricingFragment();
+
+        final Bundle args = new Bundle();
+        args.putSerializable(EXTRA_RESCHEDULE_PRICE_TABLE, reschedulePriceTable);
+        args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
+        args.putBoolean(EXTRA_RESCHEDULE_ALL, rescheduleAll);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> reschedulePriceTable
+                = getArguments() != null ? (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
+                getArguments().getSerializable(EXTRA_RESCHEDULE_PRICE_TABLE) : null;
+
+        if (reschedulePriceTable != null) {
+            forReschedule = true;
+            peakPriceTable = reschedulePriceTable;
+            rescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
+            rescheduleAll = getArguments().getBoolean(EXTRA_RESCHEDULE_ALL);
+        }
+        else peakPriceTable = bookingManager.getCurrentQuote().getPeakPriceTable();
 
         if (savedInstanceState != null) {
             peakPriceTable = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
                     savedInstanceState.getSerializable(STATE_PRICE_TABLE);
         }
-        else peakPriceTable = bookingManager.getCurrentQuote().getPeakPriceTable();
     }
 
     @Override
@@ -58,7 +89,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         ButterKnife.inject(this, view);
 
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-        if (transaction.getRecurringFrequency() > 0) {
+        if (forReschedule || (transaction != null && transaction.getRecurringFrequency() > 0)) {
             skipButton.setVisibility(View.GONE);
             headerText.setText(R.string.peak_price_info_recur);
         }
@@ -93,7 +124,8 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     }
 
     private int getStartIndex() {
-        final Date startDate = bookingManager.getCurrentTransaction().getStartDate();
+        final Date startDate = forReschedule ? rescheduleBooking.getStartDate()
+                : bookingManager.getCurrentTransaction().getStartDate();
 
         for (int i = 0; i < peakPriceTable.size(); i++) {
             for (final BookingQuote.PeakPriceInfo info : peakPriceTable.get(i)) {
@@ -178,7 +210,8 @@ public final class PeakPricingFragment extends BookingFlowFragment {
 
         @Override
         public final Fragment getItem(final int i) {
-            return PeakPricingTableFragment.newInstance(i, peakPriceTable);
+            return PeakPricingTableFragment.newInstance(i, peakPriceTable,
+                    rescheduleBooking, rescheduleAll);
         }
 
         @Override

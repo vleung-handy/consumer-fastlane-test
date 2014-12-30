@@ -1,5 +1,7 @@
 package com.handybook.handybook;
 
+import android.support.v4.util.Pair;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -330,19 +332,25 @@ public final class BaseDataManager extends DataManager {
 
     @Override
     void rescheduleBooking(final String bookingId, final String date,  final boolean rescheduleAll,
-                           final String userId, final String authToken, final Callback<String> cb) {
+                           final String userId, final String authToken,
+                           final Callback<Pair<String, BookingQuote>> cb) {
         service.rescheduleBooking(bookingId, date, rescheduleAll ? 1 : 0, userId, authToken,
                 new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 String message = null;
+                BookingQuote quote = null;
 
                 if (response.optBoolean("alert", false)) {
                     final JSONArray array = response.optJSONArray("messages");
                     if (array != null) message = array.isNull(0) ? null : array.optString(0);
                 }
 
-                cb.onSuccess(message);
+                if (response.optJSONArray("dynamic_options") != null) {
+                    quote = BookingQuote.fromJson(response.toString());
+                }
+
+                cb.onSuccess(new Pair<>(message, quote));
             }
         });
     }
@@ -418,7 +426,6 @@ public final class BaseDataManager extends DataManager {
 
     private void handleUserResponse(final String userId, final String authToken,
                                     final JSONObject response, final Callback<User> cb) {
-        final Gson gson = new Gson();
         final User user = User.fromJson(response.toString());
 
         user.setAuthToken(authToken);

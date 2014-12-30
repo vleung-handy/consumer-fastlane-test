@@ -15,20 +15,30 @@ import butterknife.InjectView;
 public final class PeakPricingTableFragment extends BookingFlowFragment {
     static final String EXTRA_PEAK_PRICE_INDEX = "com.handy.handy.EXTRA_PEAK_PRICE_INDEX";
     static final String EXTRA_PEAK_PRICE_TABLE = "com.handy.handy.EXTRA_PEAK_PRICE_TABLE";
+    static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
+    static final String EXTRA_RESCHEDULE_ALL = "com.handy.handy.EXTRA_RESCHEDULE_ALL";
 
     private int index;
     private ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakPriceTable;
+    private Booking rescheduleBooking;
+    private boolean forReschedule;
+    private boolean rescheduleAll;
 
     @InjectView(R.id.table_layout) LinearLayout tableLayout;
 
     static PeakPricingTableFragment newInstance(final int index,
                                                 final ArrayList<ArrayList<BookingQuote
-                                                        .PeakPriceInfo>> peakPriceTable) {
+                                                        .PeakPriceInfo>> peakPriceTable,
+                                                final Booking rescheduleBooking,
+                                                final boolean rescheduleAll) {
         final PeakPricingTableFragment fragment = new PeakPricingTableFragment();
 
         final Bundle args = new Bundle();
         args.putInt(EXTRA_PEAK_PRICE_INDEX, index);
         args.putSerializable(EXTRA_PEAK_PRICE_TABLE, peakPriceTable);
+        args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
+        args.putBoolean(EXTRA_RESCHEDULE_ALL, rescheduleAll);
+
         fragment.setArguments(args);
 
         return fragment;
@@ -38,8 +48,13 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         index = getArguments().getInt(EXTRA_PEAK_PRICE_INDEX, 0);
+
         peakPriceTable = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
                 getArguments().getSerializable(EXTRA_PEAK_PRICE_TABLE);
+
+        rescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
+        rescheduleAll = getArguments().getBoolean(EXTRA_RESCHEDULE_ALL);
+        forReschedule = rescheduleBooking != null;
     }
 
     @Override
@@ -53,11 +68,12 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
         ButterKnife.inject(this, view);
 
         final BookingQuote quote = bookingManager.getCurrentQuote();
+        final User user = userManager.getCurrentUser();
         final ArrayList<BookingQuote.PeakPriceInfo> priceList
                 = peakPriceTable.get(index);
 
-        final String currChar = quote.getCurrencyChar();
-        final String currSuffix = quote.getCurrencySuffix();
+        final String currChar = forReschedule ? user.getCurrencyChar()
+                : quote.getCurrencyChar();
 
         final LinearLayout.LayoutParams layoutParams = new LinearLayout
                 .LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -74,18 +90,20 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
             dateText.setText(TextUtils.formatDate(info.getDate(), "h:mm aaa"));
             priceText.setText(TextUtils.formatPrice(info.getPrice(), currChar, null));
 
-            final int freq = bookingManager.getCurrentTransaction().getRecurringFrequency();
+            final int freq = forReschedule ? -1
+                    : bookingManager.getCurrentTransaction().getRecurringFrequency();
+
             final String type = info.getType();
 
             switch (type) {
                 case "peak-price":
-                    if (freq > 0) disableRow(row);
+                    if (freq > 0 || forReschedule) disableRow(row);
                     else priceText.setTextColor(getResources().getColor(R.color.error_red));
                     break;
 
                 case "reg-price":
                     priceText.setTextColor(getResources().getColor(R.color.price_green));
-                    if (freq > 0)
+                    if (freq > 0 || forReschedule)
                         priceText.setText(getString(R.string.available));
                     break;
 
@@ -99,8 +117,13 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        quote.setStartDate(info.getDate());
-                        continueBookingFlow();
+                        if (forReschedule) {
+                            rescheduleBooking(rescheduleBooking, info.getDate(), rescheduleAll);
+                        }
+                        else {
+                            quote.setStartDate(info.getDate());
+                            continueBookingFlow();
+                        }
                     }
                 });
             }

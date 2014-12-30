@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,11 +70,6 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
             @Override
             public void onClick(final View view) {
                 rescheduleBooking(booking, date, optionIndex == 1);
-
-                //TODO better transition when leaving double finish
-                // TODO handle surge pricing
-                //TODO refactor single option views to use framelayout instead of list
-                //TODO long press date picker fields are editbale
             }
         });
 
@@ -84,6 +80,23 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_OPTION_INDEX, optionIndex);
+    }
+
+    @Override
+    public final void onActivityResult(final int requestCode, final int resultCode,
+                                       final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == PeakPricingActivity.RESULT_RESCHEDULE_NEW_DATE) {
+            final long date = data
+                    .getLongExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
+
+            final Intent intent = new Intent();
+            intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_NEW_DATE, date);
+
+            getActivity().setResult(BookingRescheduleOptionsActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+            getActivity().finish();
+        }
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated

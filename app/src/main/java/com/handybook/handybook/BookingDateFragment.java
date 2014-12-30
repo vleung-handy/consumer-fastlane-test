@@ -42,8 +42,8 @@ public final class BookingDateFragment extends BookingFlowFragment {
 
     static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
         final BookingDateFragment fragment = new BookingDateFragment();
-        final Bundle args = new Bundle();
 
+        final Bundle args = new Bundle();
         args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
         fragment.setArguments(args);
 
@@ -199,6 +199,16 @@ public final class BookingDateFragment extends BookingFlowFragment {
             getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();
         }
+        else if (resultCode == PeakPricingActivity.RESULT_RESCHEDULE_NEW_DATE) {
+            final long date = data
+                    .getLongExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
+
+            final Intent intent = new Intent();
+            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, date);
+
+            getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -278,7 +288,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 date.set(Calendar.SECOND, 0);
                 date.set(Calendar.MILLISECOND, 0);
 
-                if (!rescheduleBooking.getIsRecurring()) {
+                if (!rescheduleBooking.isRecurring()) {
                     final Intent intent = new Intent(getActivity(),
                             BookingRescheduleOptionsActivity.class);
 

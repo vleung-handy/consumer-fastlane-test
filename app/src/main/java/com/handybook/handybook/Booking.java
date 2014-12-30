@@ -35,7 +35,7 @@ final class Booking implements Parcelable {
         else this.isPast = 0;
     }
 
-    final boolean getIsRecurring() {
+    final boolean isRecurring() {
         return isRecurring == 1;
     }
 
