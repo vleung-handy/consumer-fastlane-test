@@ -254,7 +254,9 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("_android_promo_applied", context.serialize(value.promoApplied()));
 
             final int recur = value.getRecurringFrequency();
-            if (recur > 0) jsonObj.add("updated_recurring_freq", context.serialize(recur));
+
+            if (recur > 0) jsonObj.add("updated_recurring_freq",
+                    context.serialize(Integer.toString(recur)));
 
             final float extraHours = value.getExtraHours();
             if (extraHours > 0) jsonObj.add("extra_hours", context.serialize(extraHours));
