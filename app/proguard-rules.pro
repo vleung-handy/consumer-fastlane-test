@@ -57,3 +57,7 @@
 
 #Stripe
 -keep class com.stripe.** { *; }
+
+#Crashlytics
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable

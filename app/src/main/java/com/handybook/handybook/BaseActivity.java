@@ -5,6 +5,8 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.crashlytics.android.Crashlytics;
+
 import javax.inject.Inject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -18,6 +20,8 @@ abstract class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Crashlytics.start(this);
 
         ((BaseApplication)this.getApplication()).inject(this);
 

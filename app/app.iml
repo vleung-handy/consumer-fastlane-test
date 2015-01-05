@@ -118,6 +118,7 @@
     <orderEntry type="library" exported="" name="okhttp-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-5.1.2" level="project" />
     <orderEntry type="library" exported="" name="menudrawer-3.0.6" level="project" />
+    <orderEntry type="library" exported="" name="crashlytics-1.1.13" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="stripe-android-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="rxjava-android-0.18.4" level="project" />
