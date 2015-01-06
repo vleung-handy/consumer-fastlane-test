@@ -123,6 +123,9 @@ public final class BookingsFragment extends InjectedFragment {
                     break;
                 }
             }
+
+            // reloading all bookings here until there is a way to update recurring instances as well
+            loadBookings();
         }
     }
 
