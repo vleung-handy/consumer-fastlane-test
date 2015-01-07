@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.handybook.handybook">
+    package="com.handybook.handybook">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -28,45 +28,57 @@
         </activity>
 
         <activity android:name=".LoginActivity" />
-
         <activity android:name=".ServicesActivity" />
-
         <activity android:name=".BookingLocationActivity" />
-
         <activity android:name=".ProfileActivity" />
-
         <activity android:name=".BookingsActivity" />
-
         <activity android:name=".BookingOptionsActivity" />
-
         <activity android:name=".BookingDateActivity" />
-
         <activity android:name=".BookingAddressActivity" />
-
         <activity android:name=".BookingPaymentActivity" />
-
         <activity android:name=".BookingDetailActivity" />
-
         <activity android:name=".BookingConfirmationActivity" />
-
         <activity android:name=".BookingRecurrenceActivity" />
-
         <activity android:name=".BookingExtrasActivity" />
-
         <activity android:name=".BookingRescheduleOptionsActivity" />
-
         <activity android:name=".PeakPricingActivity" />
-
         <activity android:name=".PromosActivity" />
-
         <activity android:name="com.facebook.LoginActivity" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-                   android:value="@string/facebook_app_id" />
+        <receiver
+            android:name=".MasterInstallReferrerReceiver"
+            android:exported="true"
+            android:enabled="true">
 
-        <meta-data android:name="com.google.android.gms.version"
-                   android:value="@integer/google_play_services_version" />
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="688486cdd4f0b095424122ad0a42e5e3473e83be"/>
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+
+        </receiver>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="688486cdd4f0b095424122ad0a42e5e3473e83be"/>
+
+        <meta-data
+            android:name="YozioAppKey"
+            android:value="ea269dcf-ff3c-435a-bdc6-55b4c7904493" />
+
+        <meta-data
+            android:name="YozioSecretKey"
+            android:value="243eee8e-5ae7-47f8-9739-e11cad7f57c0" />
+
+        <meta-data
+            android:name="YozioMetaDataCallback"
+            android:value="com.handybook.handybook.YozioMetaDataCallback" />
 
     </application>
 
