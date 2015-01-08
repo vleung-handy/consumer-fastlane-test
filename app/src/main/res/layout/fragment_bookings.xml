@@ -20,7 +20,7 @@
 
     </FrameLayout>
 
-    <com.handybook.handybook.PinnedSectionListView
+    <com.handybook.handybook.ui.widget.PinnedSectionListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

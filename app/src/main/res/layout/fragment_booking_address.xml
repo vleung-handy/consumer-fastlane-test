@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_padding" />
 
-            <com.handybook.handybook.FullNameInputTextView
+            <com.handybook.handybook.ui.widget.FullNameInputTextView
                 android:id="@+id/fullname_text"
                 android:layout_below="@id/info_header_layout"
                 style="@style/EditText.FullName" />
@@ -43,7 +43,7 @@
                 android:orientation="horizontal"
                 android:layout_below="@id/fullname_text">
 
-                <com.handybook.handybook.StreetAddressInputTextView
+                <com.handybook.handybook.ui.widget.StreetAddressInputTextView
                     android:id="@+id/street_addr_text"
                     android:width="0dp"
                     android:layout_weight="2"
@@ -74,7 +74,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/cell_sep"/>
 
-                <com.handybook.handybook.PhoneInputTextView
+                <com.handybook.handybook.ui.widget.PhoneInputTextView
                     android:id="@+id/phone_text"
                     style="@style/EditText.Last.Phone" />
 

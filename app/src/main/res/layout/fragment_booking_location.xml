@@ -35,7 +35,7 @@
             android:layout_below="@id/location_text"
             android:orientation="horizontal">
 
-            <com.handybook.handybook.ZipCodeInputTextView
+            <com.handybook.handybook.ui.widget.ZipCodeInputTextView
                 android:id="@+id/zip_text"
                 android:layout_width="0dp"
                 android:layout_weight="1"

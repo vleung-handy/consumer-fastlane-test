@@ -58,7 +58,7 @@
                         android:background="@drawable/bg_edit_text"
                         android:contentDescription="@string/credit_card" />
 
-                    <com.handybook.handybook.CreditCardNumberInputTextView
+                    <com.handybook.handybook.ui.widget.CreditCardNumberInputTextView
                         android:id="@+id/credit_card_text"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -90,12 +90,12 @@
                     android:orientation="horizontal"
                     android:visibility="gone">
 
-                    <com.handybook.handybook.CreditCardExpDateInputTextView
+                    <com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView
                         android:id="@+id/exp_text"
                         android:layout_weight="1"
                         style="@style/EditText.CreditCardExp" />
 
-                    <com.handybook.handybook.CreditCardCVCInputTextView
+                    <com.handybook.handybook.ui.widget.CreditCardCVCInputTextView
                         android:id="@+id/cvc_text"
                         android:layout_weight="1"
                         style="@style/EditText.CreditCardCVC" />
@@ -128,7 +128,7 @@
                     android:layout_marginBottom="@dimen/default_margin"
                     android:orientation="horizontal">
 
-                    <com.handybook.handybook.FreezableInputTextView
+                    <com.handybook.handybook.ui.widget.FreezableInputTextView
                         android:id="@+id/promo_text"
                         android:layout_width="0dp"
                         android:layout_weight="1"

@@ -49,12 +49,12 @@
                 android:text="@string/you_have_credits"
                 style="@style/TextView" />
 
-            <com.handybook.handybook.FullNameInputTextView
+            <com.handybook.handybook.ui.widget.FullNameInputTextView
                 android:id="@+id/fullname_text"
                 android:layout_below="@id/credits_text"
                 style="@style/EditText.FullName" />
 
-            <com.handybook.handybook.EmailInputTextView
+            <com.handybook.handybook.ui.widget.EmailInputTextView
                 android:id="@+id/email_text"
                 android:layout_below="@id/fullname_text"
                 style="@style/EditText.Email" />
@@ -76,7 +76,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/cell_sep"/>
 
-                <com.handybook.handybook.PhoneInputTextView
+                <com.handybook.handybook.ui.widget.PhoneInputTextView
                     android:id="@+id/phone_text"
                     style="@style/EditText.Last.Phone" />
 
@@ -93,13 +93,13 @@
                 android:textSize="@dimen/small_text_size"
                 style="@style/TextView" />
 
-            <com.handybook.handybook.PasswordInputTextView
+            <com.handybook.handybook.ui.widget.PasswordInputTextView
                 android:id="@+id/old_password_text"
                 android:layout_below="@id/change_password_text"
                 android:hint="@string/old_password"
                 style="@style/EditText.Password" />
 
-            <com.handybook.handybook.PasswordInputTextView
+            <com.handybook.handybook.ui.widget.PasswordInputTextView
                 android:id="@+id/new_password_text"
                 android:layout_below="@id/old_password_text"
                 android:layout_marginBottom="@dimen/default_margin"

@@ -37,7 +37,7 @@
                 android:freezesText="false"
                 style="@style/TextView" />
 
-            <com.handybook.handybook.PasswordInputTextView
+            <com.handybook.handybook.ui.widget.PasswordInputTextView
                 android:id="@+id/pwd_text"
                 android:layout_below="@id/header_text"
                 android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 android:orientation="vertical"
                 android:background="@color/white" />
 
-            <com.handybook.handybook.BasicInputTextView
+            <com.handybook.handybook.ui.widget.BasicInputTextView
                 android:id="@+id/keys_text"
                 android:layout_below="@id/options_layout"
                 android:layout_width="match_parent"

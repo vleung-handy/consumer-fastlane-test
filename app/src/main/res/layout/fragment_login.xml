@@ -82,12 +82,12 @@
                 android:visibility="gone"
                 style="@style/TextView" />
 
-            <com.handybook.handybook.EmailInputTextView
+            <com.handybook.handybook.ui.widget.EmailInputTextView
                 android:id="@+id/email_text"
                 android:layout_below="@id/welcome_text"
                 style="@style/EditText.Email" />
 
-            <com.handybook.handybook.PasswordInputTextView
+            <com.handybook.handybook.ui.widget.PasswordInputTextView
                 android:id="@+id/password_text"
                 android:layout_below="@id/email_text"
                 style="@style/EditText.Password" />
