@@ -14,10 +14,12 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.util.TextUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -177,18 +179,21 @@ public final class BookingDetailFragment extends BookingFlowFragment {
             progressDialog.show();
 
             dataManager.getPreCancelationInfo(booking.getId(),
-                    new DataManager.Callback<Pair<String, List>>() {
+                    new DataManager.Callback<Pair<String, List<String>>>() {
                 @Override
-                public void onSuccess(final Pair<String, List> result) {
+                public void onSuccess(final Pair<String, List<String>> result) {
                     if (!allowCallbacks) return;
                     enableInputs();
                     progressDialog.dismiss();
 
-                    toast.setText(result.first);
-                    toast.show();
+                    final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
 
-                    toast.setText(result.second.toString());
-                    toast.show();
+                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
+                            new ArrayList<>(result.second));
+
+                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
+
+                    startActivity(intent);
                 }
 
                 @Override
@@ -201,7 +206,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
             });
         }
     };
-    
+
     private final void setUpdatedBookingResult() {
         updatedBooking = true;
 

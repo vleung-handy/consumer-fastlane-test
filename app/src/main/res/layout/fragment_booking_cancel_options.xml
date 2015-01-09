@@ -5,20 +5,20 @@
     android:background="@color/handy_bg">
 
     <Button
-        android:id="@+id/reschedule_button"
-        android:text="@string/reschedule"
+        android:id="@+id/cancel_button"
+        android:text="@string/cancel_booking"
         style="@style/Button.Green" />
 
     <TextView
         android:id="@+id/nav_text"
-        android:text="@string/reschedule"
+        android:text="@string/cancel_booking"
         style="@style/TextView.Navbar" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/nav_text"
-        android:layout_above="@id/reschedule_button">
+        android:layout_above="@id/cancel_button">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_marginBottom="16dp"
                 android:paddingLeft="@dimen/default_margin"
                 android:paddingRight="@dimen/default_margin"
-                android:text="@string/reschedule_all_bookings"
+                android:text="@string/why_cancel"
                 android:gravity="center"
                 style="@style/TextView" />
 
@@ -41,6 +41,18 @@
                 android:layout_below="@id/header_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/notice_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/options_layout"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="notice"
+                android:visibility="gone"
+                style="@style/TextView.XSmall" />
 
             <View
                 android:layout_width="match_parent"

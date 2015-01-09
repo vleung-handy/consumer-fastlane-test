@@ -17,6 +17,7 @@ import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
+import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
@@ -35,6 +36,7 @@ import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
+import com.handybook.handybook.ui.fragment.BookingCancelOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingConfirmationFragment;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailFragment;
@@ -84,7 +86,8 @@ import retrofit.converter.GsonConverter;
         BookingOptionsActivity.class, BookingLocationActivity.class, BookingExtrasActivity.class,
         BookingDetailActivity.class, BookingDateActivity.class, BookingConfirmationActivity.class,
         BookingAddressActivity.class, PromosActivity.class, BaseApplication.class,
-        BookingRescheduleOptionsActivity.class, BookingRescheduleOptionsFragment.class
+        BookingRescheduleOptionsActivity.class, BookingRescheduleOptionsFragment.class,
+        BookingCancelOptionsActivity.class, BookingCancelOptionsFragment.class
 })
 final class ApplicationModule {
     private final Application application;

@@ -342,7 +342,8 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public void getPreCancelationInfo(final String bookingId, final Callback<Pair<String, List>> cb) {
+    public void getPreCancelationInfo(final String bookingId,
+                                      final Callback<Pair<String, List<String>>> cb) {
         service.getPreCancelationInfo(bookingId, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
@@ -352,9 +353,10 @@ public final class BaseDataManager extends DataManager {
                 final JSONArray array = response.optJSONArray("options");
                 final Gson gson = new Gson();
                 final List<String> options = gson.fromJson(array.toString(),
-                        new TypeToken<List<String>>(){}.getType());
+                        new TypeToken<List<String>>() {
+                        }.getType());
 
-                cb.onSuccess(new Pair<String, List>(notice, options));
+                cb.onSuccess(new Pair<>(notice, options));
             }
         });
     }
