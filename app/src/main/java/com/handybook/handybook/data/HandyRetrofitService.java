@@ -73,6 +73,9 @@ public interface HandyRetrofitService {
                            @Field("reschedule_all") int rescheduleAll, @Field("user_id") String userId,
                            @Field("auth_token") String authToken, HandyRetrofitCallback cb);
 
+    @GET("/bookings/precancelation_info")
+    void getPreCancelationInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,

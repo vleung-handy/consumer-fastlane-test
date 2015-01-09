@@ -2,6 +2,7 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.Date;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -37,7 +39,9 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.price_text) TextView priceText;
     @InjectView(R.id.pro_text) TextView proText;
     @InjectView(R.id.pro_layout) View proView;
+    @InjectView(R.id.options_layout) View optionsLayout;
     @InjectView(R.id.reschedule_button) Button rescheduleButton;
+    @InjectView(R.id.cancel_button) Button canceButton;
 
 
     public static BookingDetailFragment newInstance(final Booking booking) {
@@ -96,8 +100,11 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         }
         else proView.setVisibility(View.GONE);
 
-        if (booking.isPast()) rescheduleButton.setVisibility(View.GONE);
-        else rescheduleButton.setOnClickListener(rescheduleClicked);
+        if (booking.isPast()) optionsLayout.setVisibility(View.GONE);
+        else {
+            rescheduleButton.setOnClickListener(rescheduleClicked);
+            canceButton.setOnClickListener(cancelClicked);
+        }
 
         return view;
     }
@@ -163,6 +170,38 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         }
     };
 
+    private View.OnClickListener cancelClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            disableInputs();
+            progressDialog.show();
+
+            dataManager.getPreCancelationInfo(booking.getId(),
+                    new DataManager.Callback<Pair<String, List>>() {
+                @Override
+                public void onSuccess(final Pair<String, List> result) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+
+                    toast.setText(result.first);
+                    toast.show();
+
+                    toast.setText(result.second.toString());
+                    toast.show();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    enableInputs();
+                    progressDialog.dismiss();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
+            });
+        }
+    };
+    
     private final void setUpdatedBookingResult() {
         updatedBooking = true;
 

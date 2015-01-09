@@ -342,6 +342,24 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public void getPreCancelationInfo(final String bookingId, final Callback<Pair<String, List>> cb) {
+        service.getPreCancelationInfo(bookingId, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                final String notice = response.isNull("notice") ? null
+                        : response.optString("notice", null);
+
+                final JSONArray array = response.optJSONArray("options");
+                final Gson gson = new Gson();
+                final List<String> options = gson.fromJson(array.toString(),
+                        new TypeToken<List<String>>(){}.getType());
+
+                cb.onSuccess(new Pair<String, List>(notice, options));
+            }
+        });
+    }
+
+    @Override
     public void rescheduleBooking(final String bookingId, final String date, final boolean rescheduleAll,
                                   final String userId, final String authToken,
                                   final Callback<Pair<String, BookingQuote>> cb) {
