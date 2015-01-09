@@ -94,4 +94,5 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="reschedule_all_bookings">Reschedule all subsequent bookings?</string>
+    <string name="cancel_booking">Cancel Booking</string>
 </resources>

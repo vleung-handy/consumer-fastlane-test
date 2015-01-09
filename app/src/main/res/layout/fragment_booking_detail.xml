@@ -228,8 +228,19 @@
                     android:id="@+id/reschedule_button"
                     android:layout_marginLeft="@dimen/default_margin"
                     android:layout_marginRight="@dimen/default_margin"
+                    android:layout_alignParentBottom="false"
                     android:text="@string/reschedule"
                     style="@style/Button.Blue" />
+
+                <Button
+                    android:id="@+id/cancel_button"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_alignParentBottom="false"
+                    android:layout_below="@id/reschedule_button"
+                    android:text="@string/cancel_booking"
+                    style="@style/Button.Grey" />
 
             </RelativeLayout>
 
