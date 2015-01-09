@@ -342,6 +342,26 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public void rescheduleBooking(final String bookingId, final String date, final boolean rescheduleAll,
+                                  final String userId, final String authToken,
+                                  final Callback<Pair<String, BookingQuote>> cb) {
+        service.rescheduleBooking(bookingId, date, rescheduleAll ? 1 : 0, userId, authToken,
+                new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                final String message = parseAlertMessage(response);
+                BookingQuote quote = null;
+
+                if (response.optJSONArray("dynamic_options") != null) {
+                    quote = BookingQuote.fromJson(response.toString());
+                }
+
+                cb.onSuccess(new Pair<>(message, quote));
+            }
+        });
+    }
+
+    @Override
     public void getPreCancelationInfo(final String bookingId,
                                       final Callback<Pair<String, List<String>>> cb) {
         service.getPreCancelationInfo(bookingId, new HandyRetrofitCallback(cb) {
@@ -362,28 +382,18 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public void rescheduleBooking(final String bookingId, final String date, final boolean rescheduleAll,
-                                  final String userId, final String authToken,
-                                  final Callback<Pair<String, BookingQuote>> cb) {
-        service.rescheduleBooking(bookingId, date, rescheduleAll ? 1 : 0, userId, authToken,
-                new HandyRetrofitCallback(cb) {
+    public void cancelBooking(final String bookingId, final int reasonCode, final String userId,
+                              final String authToken, final Callback<String> cb) {
+        final HandyRetrofitCallback callback = new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
-                String message = null;
-                BookingQuote quote = null;
-
-                if (response.optBoolean("alert", false)) {
-                    final JSONArray array = response.optJSONArray("messages");
-                    if (array != null) message = array.isNull(0) ? null : array.optString(0);
-                }
-
-                if (response.optJSONArray("dynamic_options") != null) {
-                    quote = BookingQuote.fromJson(response.toString());
-                }
-
-                cb.onSuccess(new Pair<>(message, quote));
+                final String message = parseAlertMessage(response);
+                cb.onSuccess(message);
             }
-        });
+        };
+
+        if (reasonCode >= 0) service.cancelBooking(bookingId,reasonCode, userId, authToken, callback);
+        else service.cancelBooking(bookingId, userId, authToken, callback);
     }
 
     @Override
@@ -462,5 +472,13 @@ public final class BaseDataManager extends DataManager {
         user.setAuthToken(authToken);
         user.setId(userId);
         cb.onSuccess(user);
+    }
+
+    private String parseAlertMessage(final JSONObject response) {
+        if (response.optBoolean("alert", false)) {
+            final JSONArray array = response.optJSONArray("messages");
+            return array != null && !array.isNull(0) ? array.optString(0) : null;
+        }
+        else return null;
     }
 }

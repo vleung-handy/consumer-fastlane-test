@@ -43,7 +43,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.pro_layout) View proView;
     @InjectView(R.id.options_layout) View optionsLayout;
     @InjectView(R.id.reschedule_button) Button rescheduleButton;
-    @InjectView(R.id.cancel_button) Button canceButton;
+    @InjectView(R.id.cancel_button) Button cancelButton;
 
 
     public static BookingDetailFragment newInstance(final Booking booking) {
@@ -105,7 +105,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         if (booking.isPast()) optionsLayout.setVisibility(View.GONE);
         else {
             rescheduleButton.setOnClickListener(rescheduleClicked);
-            canceButton.setOnClickListener(cancelClicked);
+            cancelButton.setOnClickListener(cancelClicked);
         }
 
         return view;
@@ -133,6 +133,11 @@ public final class BookingDetailFragment extends BookingFlowFragment {
                     .getLongExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, 0)));
             dateText.setText(TextUtils.formatDate(booking.getStartDate(), "MMM d',' h:mm aaa"));
             setUpdatedBookingResult();
+        }
+
+        else if (resultCode == BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED) {
+            setCanceledBookingResult();
+            getActivity().finish();
         }
     }
 
@@ -192,8 +197,9 @@ public final class BookingDetailFragment extends BookingFlowFragment {
                             new ArrayList<>(result.second));
 
                     intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
+                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
 
-                    startActivity(intent);
+                    startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
                 }
 
                 @Override
@@ -213,5 +219,11 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         final Intent intent = new Intent();
         intent.putExtra(BookingDetailActivity.EXTRA_UPDATED_BOOKING, booking);
         getActivity().setResult(BookingDetailActivity.RESULT_BOOKING_UPDATED, intent);
+    }
+
+    private final void setCanceledBookingResult() {
+        final Intent intent = new Intent();
+        intent.putExtra(BookingDetailActivity.EXTRA_CANCELED_BOOKING, booking);
+        getActivity().setResult(BookingDetailActivity.RESULT_BOOKING_CANCELED, intent);
     }
 }

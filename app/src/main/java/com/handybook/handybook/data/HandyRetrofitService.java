@@ -77,6 +77,17 @@ public interface HandyRetrofitService {
     void getPreCancelationInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
+    @POST("/bookings/{booking}/cancel")
+    void cancelBooking(@Path("booking") String bookingId, @Field("cancellation_reason") int reasonCode,
+                       @Field("user_id") String userId, @Field("auth_token") String authToken,
+                       HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
+    @POST("/bookings/{booking}/cancel")
+    void cancelBooking(@Path("booking") String bookingId, @Field("user_id") String userId,
+                       @Field("auth_token") String authToken, HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,
                            HandyRetrofitCallback cb);

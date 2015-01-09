@@ -67,8 +67,11 @@ public abstract class DataManager {
                                            String userId, String authToken,
                                            Callback<Pair<String, BookingQuote>> cb);
 
-    public abstract void getPreCancelationInfo(final String bookingId,
-                                               final Callback<Pair<String, List<String>>> cb);
+    public abstract void getPreCancelationInfo(String bookingId,
+                                               Callback<Pair<String, List<String>>> cb);
+
+    public abstract void cancelBooking(String bookingId, int reasonCode, String userId,
+                                       String authToken, Callback<String> cb);
 
     public abstract void addBookingPostInfo(int bookingId, BookingPostInfo postInfo, Callback<Void> cb);
 

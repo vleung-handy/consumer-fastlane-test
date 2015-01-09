@@ -107,17 +107,27 @@ public final class BookingsFragment extends InjectedFragment {
                                        final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == BookingDetailActivity.RESULT_BOOKING_UPDATED) {
-            final Booking updatedBooking = data
-                    .getParcelableExtra(BookingDetailActivity.EXTRA_UPDATED_BOOKING);
+        if (resultCode == BookingDetailActivity.RESULT_BOOKING_UPDATED
+                || resultCode == BookingDetailActivity.RESULT_BOOKING_CANCELED) {
 
-            final String bookingId = updatedBooking.getId();
+            final boolean isCancel = resultCode == BookingDetailActivity.RESULT_BOOKING_CANCELED;
+            final Booking booking;
+
+            if (isCancel) {
+                booking = data.getParcelableExtra(BookingDetailActivity.EXTRA_CANCELED_BOOKING);
+            }
+            else {
+                booking = data.getParcelableExtra(BookingDetailActivity.EXTRA_UPDATED_BOOKING);
+            }
+
+            final String bookingId = booking.getId();
 
             for (int i = 0; i < upBookings.size(); i++) {
-                final Booking booking = upBookings.get(i);
+                final Booking upBooking = upBookings.get(i);
 
-                if (booking.getId().equals(bookingId)) {
-                    upBookings.set(i, updatedBooking);
+                if (upBooking.getId().equals(bookingId)) {
+                    if (isCancel) upBookings.remove(i);
+                    else upBookings.set(i, booking);
 
                     Collections.sort(upBookings, new Comparator<Booking>() {
                         @Override

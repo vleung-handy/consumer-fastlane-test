@@ -9,7 +9,9 @@ import com.handybook.handybook.ui.fragment.BookingDetailFragment;
 public final class BookingDetailActivity extends MenuDrawerActivity {
     public static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     public static final String EXTRA_UPDATED_BOOKING = "com.handy.handy.EXTRA_UPDATED_BOOKING";
+    public static final String EXTRA_CANCELED_BOOKING = "com.handy.handy.EXTRA_CANCELED_BOOKING";
     public static final int RESULT_BOOKING_UPDATED = 1;
+    public static final int RESULT_BOOKING_CANCELED = 2;
 
     @Override
     protected final Fragment createFragment() {
