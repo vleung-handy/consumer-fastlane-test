@@ -147,6 +147,12 @@ public class Mixpanel {
         calledMap.put(event, true);
     }
 
+    public void trackEventYozioInstall(final HashMap<String, Object> metaData) {
+        final JSONObject props = new JSONObject();
+        addProps(props, metaData);
+        mixpanel.track("Yozio Install", props);
+    }
+    
     public void trackEventFirstTimeUse() {
         mixpanel.track("first time use", null);
     }
@@ -159,6 +165,13 @@ public class Mixpanel {
 
     private void addProps(final JSONObject object, final String key, final Object value) {
         try { object.put(key, value); }
+        catch (final JSONException e) { throw new RuntimeException(e); }
+    }
+
+    private void addProps(final JSONObject object, final HashMap<String, Object> props) {
+        try {
+            for (final String key : props.keySet()) object.put(key, props.get(key));
+        }
         catch (final JSONException e) { throw new RuntimeException(e); }
     }
 

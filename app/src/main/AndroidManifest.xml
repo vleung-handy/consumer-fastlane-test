@@ -79,7 +79,7 @@
 
         <meta-data
             android:name="YozioMetaDataCallback"
-            android:value="com.handybook.handybook.YozioMetaDataCallback" />
+            android:value="com.handybook.handybook.yozio.YozioMetaDataCallback" />
 
     </application>
 

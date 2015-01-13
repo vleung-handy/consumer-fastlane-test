@@ -2,38 +2,27 @@ package com.handybook.handybook.yozio;
 
 import android.content.Context;
 
+import com.handybook.handybook.core.ApplicationModule;
+import com.handybook.handybook.data.Mixpanel;
 import com.yozio.android.Yozio;
 import com.yozio.android.interfaces.YozioMetaDataCallbackable;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
+
 public class YozioMetaDataCallback implements YozioMetaDataCallbackable {
 
-	public YozioMetaDataCallback() {}
-	
-	public void onCallback(final Context context, final String targetActivityClassName,
-                           final HashMap<String, Object> metaData) {
-        /**
-         * To retrieve meta data passed by Yozio for new installs, you must implement this interface.
-         *
-         * This example demonstrates how to
-         * 1) retrieve meta data passed by Yozio for new installs, and
-         * 2) launching of a new activity based on your configuration on yozio web console.
-         *
-         * Please note you must include the following lines in your Manifest file to configure this class properly.
-         *
-         * See sample manifest config below.
-         *
-         * <application>
-         * ...
-         *    <meta-data android:name="YozioMetaDataCallback" android:value="com.yozio.yozio_android_sample_app.YozioMetaDataCallback" />
-         * ...
-         * </application>
-         */
+    @Inject Mixpanel mixpanel;
 
-        // get the meta data from Yozio, so you can post it back to your server for tracking and segmentation
-        //Log.e("YozioMetaDataCallback", "Got meta data: " + metaData.toString());
-        // ie. post it back to your server here
+	public final void onCallback(final Context context, final String targetActivityClassName,
+                           final HashMap<String, Object> metaData) {
+        final ObjectGraph graph = ObjectGraph.create(new ApplicationModule(context));
+        graph.inject(this);
+
+        mixpanel.trackEventYozioInstall(metaData);
 
         // launching the activity with meta data using Yozio helper
         // You have to use Yozio.startActivityWithMetaData here, so the analytics will work properly.

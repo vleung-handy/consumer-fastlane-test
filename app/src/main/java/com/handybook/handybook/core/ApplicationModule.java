@@ -1,6 +1,6 @@
 package com.handybook.handybook.core;
 
-import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Base64;
@@ -56,6 +56,7 @@ import com.handybook.handybook.ui.fragment.ProfileFragment;
 import com.handybook.handybook.ui.fragment.PromosFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
+import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 
@@ -87,20 +88,21 @@ import retrofit.converter.GsonConverter;
         BookingDetailActivity.class, BookingDateActivity.class, BookingConfirmationActivity.class,
         BookingAddressActivity.class, PromosActivity.class, BaseApplication.class,
         BookingRescheduleOptionsActivity.class, BookingRescheduleOptionsFragment.class,
-        BookingCancelOptionsActivity.class, BookingCancelOptionsFragment.class
+        BookingCancelOptionsActivity.class, BookingCancelOptionsFragment.class,
+        YozioMetaDataCallback.class
 })
-final class ApplicationModule {
-    private final Application application;
+public final class ApplicationModule {
+    private final Context context;
     private final Properties configs;
 
-    ApplicationModule(final Application application) {
-        this.application = application;
+    public ApplicationModule(final Context context) {
+        this.context = context.getApplicationContext();
         configs = PropertiesReader
-                .getProperties(application.getApplicationContext(), "config.properties");
+                .getProperties(context, "config.properties");
     }
 
     @Provides @Singleton final HandyRetrofitEndpoint provideHandyEnpoint() {
-        return new HandyRetrofitEndpoint(application.getApplicationContext());
+        return new HandyRetrofitEndpoint(context);
     }
 
     @Provides @Singleton final HandyRetrofitService provideHandyService(
@@ -178,11 +180,11 @@ final class ApplicationModule {
     }
 
     @Provides @Singleton final Bus provideBus() {
-        return new Bus();
+        return new MainBus();
     }
 
     @Provides @Singleton final SecurePreferences providePrefs() {
-        return new SecurePreferences(application.getApplicationContext(), null,
+        return new SecurePreferences(context, null,
                 configs.getProperty("secure_prefs_key"), true);
     }
 
@@ -197,17 +199,17 @@ final class ApplicationModule {
     }
 
     @Provides final ReactiveLocationProvider provideReactiveLocationProvider() {
-        return new ReactiveLocationProvider(application.getApplicationContext());
+        return new ReactiveLocationProvider(context);
     }
 
     @Provides @Singleton final Mixpanel provideMixpanel(final UserManager userManager,
                                                         final BookingManager bookingManager,
                                                         final Bus bus) {
-        return new Mixpanel(application.getApplicationContext(), userManager, bookingManager, bus);
+        return new Mixpanel(context, userManager, bookingManager, bus);
     }
 
     private String getDeviceId() {
-        return Settings.Secure.getString(application.getApplicationContext().getContentResolver(),
+        return Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
     }
 
