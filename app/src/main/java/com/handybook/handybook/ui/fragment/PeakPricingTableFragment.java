@@ -24,12 +24,14 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
     static final String EXTRA_PEAK_PRICE_TABLE = "com.handy.handy.EXTRA_PEAK_PRICE_TABLE";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_ALL = "com.handy.handy.EXTRA_RESCHEDULE_ALL";
+    static final String EXTRA_FOR_VOUCHER = "com.handy.handy.EXTRA_FOR_VOUCHER";
 
     private int index;
     private ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakPriceTable;
     private Booking rescheduleBooking;
     private boolean forReschedule;
     private boolean rescheduleAll;
+    private boolean forVoucher;
 
     @InjectView(R.id.table_layout) LinearLayout tableLayout;
 
@@ -37,7 +39,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
                                                 final ArrayList<ArrayList<BookingQuote
                                                         .PeakPriceInfo>> peakPriceTable,
                                                 final Booking rescheduleBooking,
-                                                final boolean rescheduleAll) {
+                                                final boolean rescheduleAll, final boolean forVoucher) {
         final PeakPricingTableFragment fragment = new PeakPricingTableFragment();
 
         final Bundle args = new Bundle();
@@ -45,6 +47,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
         args.putSerializable(EXTRA_PEAK_PRICE_TABLE, peakPriceTable);
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
         args.putBoolean(EXTRA_RESCHEDULE_ALL, rescheduleAll);
+        args.putBoolean(EXTRA_FOR_VOUCHER, forVoucher);
 
         fragment.setArguments(args);
 
@@ -54,13 +57,16 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        index = getArguments().getInt(EXTRA_PEAK_PRICE_INDEX, 0);
+
+        final Bundle args = getArguments();
+        index = args.getInt(EXTRA_PEAK_PRICE_INDEX, 0);
+        forVoucher = args.getBoolean(EXTRA_FOR_VOUCHER, false);
 
         peakPriceTable = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
-                getArguments().getSerializable(EXTRA_PEAK_PRICE_TABLE);
+                args.getSerializable(EXTRA_PEAK_PRICE_TABLE);
 
-        rescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
-        rescheduleAll = getArguments().getBoolean(EXTRA_RESCHEDULE_ALL);
+        rescheduleBooking = args.getParcelable(EXTRA_RESCHEDULE_BOOKING);
+        rescheduleAll = args.getBoolean(EXTRA_RESCHEDULE_ALL);
         forReschedule = rescheduleBooking != null;
     }
 
@@ -97,20 +103,20 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
             dateText.setText(TextUtils.formatDate(info.getDate(), "h:mm aaa"));
             priceText.setText(TextUtils.formatPrice(info.getPrice(), currChar, null));
 
-            final int freq = forReschedule ? -1
+            final int freq = forVoucher || forReschedule ? -1
                     : bookingManager.getCurrentTransaction().getRecurringFrequency();
 
             final String type = info.getType();
 
             switch (type) {
                 case "peak-price":
-                    if (freq > 0 || forReschedule) disableRow(row);
+                    if (freq > 0 || forReschedule || forVoucher) disableRow(row);
                     else priceText.setTextColor(getResources().getColor(R.color.error_red));
                     break;
 
                 case "reg-price":
                     priceText.setTextColor(getResources().getColor(R.color.price_green));
-                    if (freq > 0 || forReschedule)
+                    if (freq > 0 || forReschedule || forVoucher)
                         priceText.setText(getString(R.string.available));
                     break;
 

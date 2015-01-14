@@ -194,22 +194,31 @@ public class BookingFlowFragment extends InjectedFragment {
         final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
                 = quote.getPeakPriceTable();
 
-        // show recurrence options if available
-        if (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)
-                && !(BookingFlowFragment.this instanceof PeakPricingFragment)
-                && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
-                && !(BookingFlowFragment.this instanceof BookingExtrasFragment)
-                && request.getUniq().equals("home_cleaning")) {
+        //TODO make a siginal to indicate voucher flow
+        boolean isVoucherFlow = false;
+
+        // show recurrence options if available (show first if regular flow)
+        if (!isVoucherFlow && shouldShowRecurrenceOptions(request, isVoucherFlow)) {
             final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             startActivity(intent);
         }
 
-        // show surge pricing options if necessary
-        else if (!(BookingFlowFragment.this instanceof PeakPricingFragment) &&
-                !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
-                && !(BookingFlowFragment.this instanceof BookingExtrasFragment)
-                && peakTable != null && !peakTable.isEmpty()) {
+        // show surge pricing options if necessary (show second if regular flow)
+        else if (!isVoucherFlow && shouldShowSurgePricingOptions(peakTable, isVoucherFlow)) {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+            startActivity(intent);
+        }
+
+        // show surge pricing options if necessary (show first if voucher flow)
+        else if (isVoucherFlow && shouldShowSurgePricingOptions(peakTable, isVoucherFlow)) {
+            final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+            intent.putExtra(PeakPricingActivity.EXTRA_FOR_VOUCHER, true);
+            startActivity(intent);
+        }
+
+        // show recurrence options if available (show second if voucher flow)
+        else if (isVoucherFlow && shouldShowRecurrenceOptions(request, isVoucherFlow)) {
+            final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             startActivity(intent);
         }
 
@@ -261,6 +270,24 @@ public class BookingFlowFragment extends InjectedFragment {
             handleBookingQuoteError(error);
         }
     };
+
+    private boolean shouldShowRecurrenceOptions(final BookingRequest request,
+                                                final boolean isVoucherFlow) {
+        return !((BookingFlowFragment.this instanceof BookingRecurrenceFragment)
+                || (BookingFlowFragment.this instanceof BookingExtrasFragment)
+                || !request.getUniq().equals("home_cleaning")) && (isVoucherFlow
+                || (!(BookingFlowFragment.this instanceof PeakPricingFragment)
+                && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)));
+    }
+
+    private boolean shouldShowSurgePricingOptions(final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable,
+                                                  final boolean isVoucherFlow) {
+        return !((BookingFlowFragment.this instanceof PeakPricingFragment)
+                || (BookingFlowFragment.this instanceof PeakPricingTableFragment)
+                || (BookingFlowFragment.this instanceof BookingExtrasFragment)
+                || peakTable == null || peakTable.isEmpty()) && (!isVoucherFlow
+                || (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)));
+    }
 
     private void handleBookingQuoteError(final DataManager.DataManagerError error) {
         if (!allowCallbacks) return;

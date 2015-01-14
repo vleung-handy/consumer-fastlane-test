@@ -31,11 +31,13 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     static final String EXTRA_RESCHEDULE_PRICE_TABLE = "com.handy.handy.EXTRA_RESCHEDULE_PRICE_TABLE";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_ALL = "com.handy.handy.EXTRA_RESCHEDULE_ALL";
+    static final String EXTRA_FOR_VOUCHER = "com.handy.handy.EXTRA_FOR_VOUCHER";
     private static final String STATE_PRICE_TABLE = "PRICE_TABLE";
 
     private ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakPriceTable;
     private int currentIndex;
     private boolean forReschedule;
+    private boolean forVoucher;
     private Booking rescheduleBooking;
     private boolean rescheduleAll;
 
@@ -46,20 +48,26 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     @InjectView(R.id.arrow_left) ImageView arrowLeft;
     @InjectView(R.id.arrow_right) ImageView arrowRight;
 
-    public static PeakPricingFragment newInstance() {
-        final PeakPricingFragment fragment = new PeakPricingFragment();
-        return fragment;
+    public static PeakPricingFragment newInstance(final boolean forVoucher) {
+        return newInstance(null, null, false, forVoucher);
+    }
+
+    public static PeakPricingFragment newInstance(final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>
+                                                          reschedulePriceTable, final Booking rescheduleBooking,
+                                                  final boolean rescheduleAll) {
+        return newInstance(reschedulePriceTable, rescheduleBooking, rescheduleAll, false);
     }
 
     public static PeakPricingFragment newInstance(final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>
                                                    reschedulePriceTable, final Booking rescheduleBooking,
-                                           final boolean rescheduleAll) {
+                                           final boolean rescheduleAll, final boolean forVoucher) {
         final PeakPricingFragment fragment = new PeakPricingFragment();
 
         final Bundle args = new Bundle();
         args.putSerializable(EXTRA_RESCHEDULE_PRICE_TABLE, reschedulePriceTable);
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
         args.putBoolean(EXTRA_RESCHEDULE_ALL, rescheduleAll);
+        args.putBoolean(EXTRA_FOR_VOUCHER, forVoucher);
         fragment.setArguments(args);
 
         return fragment;
@@ -69,9 +77,14 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> reschedulePriceTable
-                = getArguments() != null ? (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
-                getArguments().getSerializable(EXTRA_RESCHEDULE_PRICE_TABLE) : null;
+        final Bundle args = getArguments();
+        ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> reschedulePriceTable = null;
+
+        if (args != null) {
+            reschedulePriceTable = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
+                    args.getSerializable(EXTRA_RESCHEDULE_PRICE_TABLE);
+            forVoucher = args.getBoolean(EXTRA_FOR_VOUCHER);
+        }
 
         if (reschedulePriceTable != null) {
             forReschedule = true;
@@ -96,7 +109,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         ButterKnife.inject(this, view);
 
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-        if (forReschedule || (transaction != null && transaction.getRecurringFrequency() > 0)) {
+        if (forVoucher || forReschedule || (transaction != null && transaction.getRecurringFrequency() > 0)) {
             skipButton.setVisibility(View.GONE);
             headerText.setText(R.string.peak_price_info_recur);
         }
@@ -218,7 +231,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         @Override
         public final Fragment getItem(final int i) {
             return PeakPricingTableFragment.newInstance(i, peakPriceTable,
-                    rescheduleBooking, rescheduleAll);
+                    rescheduleBooking, rescheduleAll, forVoucher);
         }
 
         @Override
