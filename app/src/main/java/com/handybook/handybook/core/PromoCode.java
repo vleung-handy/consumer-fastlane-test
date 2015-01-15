@@ -1,7 +1,7 @@
 package com.handybook.handybook.core;
 
 public final class PromoCode {
-    public enum Type {COUPON, VOUCHER}
+    public enum Type {UNKNOWN, COUPON, VOUCHER}
 
     private Type type;
     private String code, uniq;

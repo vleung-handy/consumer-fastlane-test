@@ -26,6 +26,7 @@ public final class BookingRequest extends Observable {
     @SerializedName("service_attributes") private HashMap<String, String> options;
     @SerializedName("date_start") private Date startDate;
     @SerializedName("entered_code") private String promoCode;
+    @SerializedName("_android_promo_type") private PromoCode.Type promoType;
 
     public final int getServiceId() {
         return serviceId;
@@ -100,6 +101,15 @@ public final class BookingRequest extends Observable {
         triggerObservers();
     }
 
+    public final PromoCode.Type getPromoType() {
+        return promoType;
+    }
+
+    public final void setPromoType(final PromoCode.Type promoType) {
+        this.promoType = promoType;
+        triggerObservers();
+    }
+
     private void triggerObservers() {
         setChanged();
         notifyObservers();
@@ -149,6 +159,7 @@ public final class BookingRequest extends Observable {
 
             if (value.getPromoCode() != null) {
                 jsonObj.add("entered_code", context.serialize(value.getPromoCode()));
+                jsonObj.add("_android_promo_type", context.serialize(value.getPromoType()));
             }
 
             jsonObj.add("mobile", context.serialize(1));

@@ -59,7 +59,7 @@ public final class PromosFragment extends BookingFlowFragment {
                             enableInputs();
 
                             if (code.getType() == PromoCode.Type.VOUCHER) {
-                                startBookingFlow(code.getServiceId(), code.getUniq(), code.getCode());
+                                startBookingFlow(code.getServiceId(), code.getUniq(), code);
                             }
                             else {
                                 toast.setText(getString(R.string.coupon_on_payment_screen));

@@ -2,11 +2,13 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 import android.support.v4.util.Pair;
+import android.util.Log;
 
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
+import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
@@ -28,11 +30,15 @@ public class BookingFlowFragment extends InjectedFragment {
         startBookingFlow(serviceId, uniq, null);
     }
 
-    final void startBookingFlow(final int serviceId, final String uniq, final String promoCode) {
+    final void startBookingFlow(final int serviceId, final String uniq, final PromoCode promoCode) {
         final BookingRequest request = new BookingRequest();
         request.setServiceId(serviceId);
         request.setUniq(uniq);
-        request.setPromoCode(promoCode);
+
+        if (promoCode != null) {
+            request.setPromoCode(promoCode.getCode());
+            request.setPromoType(promoCode.getType());
+        }
 
         final User user = userManager.getCurrentUser();
         if (user != null) request.setEmail(user.getEmail());
@@ -194,8 +200,7 @@ public class BookingFlowFragment extends InjectedFragment {
         final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
                 = quote.getPeakPriceTable();
 
-        //TODO make a siginal to indicate voucher flow
-        boolean isVoucherFlow = false;
+        boolean isVoucherFlow = request.getPromoType() == PromoCode.Type.VOUCHER;
 
         // show recurrence options if available (show first if regular flow)
         if (!isVoucherFlow && shouldShowRecurrenceOptions(request, isVoucherFlow)) {
