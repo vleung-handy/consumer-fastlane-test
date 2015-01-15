@@ -2,7 +2,6 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 import android.support.v4.util.Pair;
-import android.util.Log;
 
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingQuote;

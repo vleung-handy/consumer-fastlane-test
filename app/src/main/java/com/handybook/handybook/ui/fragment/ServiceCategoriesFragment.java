@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.ServiceCategoryView;
@@ -46,9 +47,16 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
         if (!prefs.getBoolean("APP_OPENED_PREV", false)) {
             mixpanel.trackEventFirstTimeUse();
 
+            //TODO add on-boarding here
+
             final SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("APP_OPENED_PREV", true);
             edit.apply();
+        }
+
+        if (savedInstanceState == null) {
+            final Intent intent = new Intent(getActivity(), OnboardActivity.class);
+            startActivity(intent);
         }
     }
 

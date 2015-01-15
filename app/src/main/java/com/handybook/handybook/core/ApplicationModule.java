@@ -30,6 +30,7 @@ import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
 import com.handybook.handybook.ui.activity.PromosActivity;
@@ -50,6 +51,7 @@ import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
+import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.PeakPricingFragment;
 import com.handybook.handybook.ui.fragment.PeakPricingTableFragment;
 import com.handybook.handybook.ui.fragment.ProfileFragment;
@@ -89,7 +91,7 @@ import retrofit.converter.GsonConverter;
         BookingAddressActivity.class, PromosActivity.class, BaseApplication.class,
         BookingRescheduleOptionsActivity.class, BookingRescheduleOptionsFragment.class,
         BookingCancelOptionsActivity.class, BookingCancelOptionsFragment.class,
-        YozioMetaDataCallback.class
+        YozioMetaDataCallback.class, OnboardActivity.class, OnboardFragment.class
 })
 public final class ApplicationModule {
     private final Context context;
