@@ -96,4 +96,5 @@
     <string name="reschedule_all_bookings">Reschedule all subsequent bookings?</string>
     <string name="cancel_booking">Cancel Booking</string>
     <string name="why_cancel">Why are you canceling?</string>
+    <string name="get_started">Get Started</string>
 </resources>

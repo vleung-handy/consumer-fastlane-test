@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/handy_bg">
 
     <Button
-        android:id="@+id/next_button"
-        android:text="@string/next"
-        style="@style/Button.Green" />
+        android:id="@+id/start_button"
+        android:text="@string/get_started"
+        style="@style/Button.Green"
+        android:visibility="visible"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_above="@id/start_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

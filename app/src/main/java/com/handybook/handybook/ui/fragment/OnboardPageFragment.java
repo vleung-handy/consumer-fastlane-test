@@ -11,28 +11,19 @@ import com.handybook.handybook.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class OnboardFragment extends BookingFlowFragment {
+public final class OnboardPageFragment extends BookingFlowFragment {
 
-    @InjectView(R.id.next_button) Button nextButton;
-
-    public static OnboardFragment newInstance() {
-        return new OnboardFragment();
+    public static OnboardPageFragment newInstance() {
+        return new OnboardPageFragment();
     }
 
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_onboard, container, false);
+                .inflate(R.layout.fragment_onboard_page, container, false);
 
         ButterKnife.inject(this, view);
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                getActivity().finish();
-            }
-        });
 
         return view;
     }

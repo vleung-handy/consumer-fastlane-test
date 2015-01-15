@@ -1,6 +1,7 @@
 package com.handybook.handybook.util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.text.format.Time;
 import android.util.TypedValue;
@@ -49,5 +50,16 @@ public final class Utils {
                 }
             }
         });
+    }
+
+    public static int interpolateColor(final int color1, final int color2, final float proportion) {
+        final float[] hsva = new float[3];
+        final float[] hsvb = new float[3];
+
+        Color.colorToHSV(color1, hsva);
+        Color.colorToHSV(color2, hsvb);
+
+        for (int i = 0; i < 3; i++) hsvb[i] = (hsva[i] + ((hsvb[i] - hsva[i]) * proportion));
+        return Color.HSVToColor(hsvb);
     }
 }
