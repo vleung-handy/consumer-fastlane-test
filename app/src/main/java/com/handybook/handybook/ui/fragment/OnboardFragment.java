@@ -1,24 +1,17 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.util.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -67,8 +60,8 @@ public final class OnboardFragment extends BookingFlowFragment {
         public void onPageScrolled(final int position, final float offset, final int pixelOffset) {
             // transition background colors
             final int[] colors = {getResources().getColor(R.color.white),
-                    getResources().getColor(R.color.handy_purple),
                     getResources().getColor(R.color.handy_blue),
+                    getResources().getColor(R.color.handy_purple),
                     getResources().getColor(R.color.handy_teal),
                     getResources().getColor(R.color.white)};
 
@@ -83,6 +76,8 @@ public final class OnboardFragment extends BookingFlowFragment {
             else if (offset > 0) {
                 layout.setBackgroundColor((int)rgbEval.evaluate(offset, fromColor, toColor));
             }
+
+            //TODO save & restore index position state
         }
 
         @Override
