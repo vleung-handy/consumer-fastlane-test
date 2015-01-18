@@ -97,5 +97,8 @@
     <string name="cancel_booking">Cancel Booking</string>
     <string name="why_cancel">Why are you canceling?</string>
     <string name="get_started">Get Started</string>
-    <string name="onboard_msg"><![CDATA[Book trusted cleaners\n & handymen instantly]]></string>
+    <string name="onboard_msg">Book trusted cleaners\n &amp; handymen instantly</string>
+    <string name="onboard_msg_pro">We\'ll match you with\n a highly rated professional</string>
+    <string name="onboard_msg_manage">Manage your bookings\n on the go</string>
+    <string name="onboard_msg_rate">Rate to help us\n maintain quality service</string>
 </resources>

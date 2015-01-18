@@ -9,6 +9,7 @@
     <color name="handy_bg">#EAEAEA</color>
     <color name="nav_bg">#1D1D1D</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_trans">#7EFFFFFF</color>
     <color name="white_pressed">#E0E0E0</color>
     <color name="black">#434343</color>
     <color name="black_pressed">#B1B1B1</color>

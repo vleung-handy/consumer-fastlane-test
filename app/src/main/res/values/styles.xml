@@ -4,6 +4,7 @@
     <style name="Theme.Base" parent="android:Theme.Holo.Light.NoActionBar">
         <item name="simpleAlertDialogStyle">@style/Theme.SimpleAlertDialog.Light</item>
         <item name="abstractWheelViewStyle">@style/abstractWheelViewStyle</item>
+        <item name="vpiCirclePageIndicatorStyle">@style/CirclePageIndicatorStyle</item>
     </style>
 
     <style name="ContentLayout">
@@ -380,5 +381,14 @@
     </style>
 
     <style name="abstractWheelViewStyle" />
+
+    <style name="CirclePageIndicatorStyle">
+        <item name="fillColor">@color/black</item>
+        <item name="pageColor">@color/dark_grey</item>
+        <item name="radius">3dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="centered">true</item>
+        <item name="snap">true</item>
+    </style>
 
 </resources>

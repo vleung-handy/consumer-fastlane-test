@@ -14,10 +14,11 @@
         android:contentDescription="logo" />
 
     <TextView
+        android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/logo"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:paddingLeft="@dimen/default_padding"
         android:paddingRight="@dimen/default_padding"
         android:layout_centerHorizontal="true"

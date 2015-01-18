@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,6 +23,7 @@ public final class OnboardFragment extends BookingFlowFragment {
     @InjectView(R.id.layout) View layout;
     @InjectView(R.id.pager) ViewPager pager;
     @InjectView(R.id.start_button) Button startButton;
+    @InjectView(R.id.indicator) CirclePageIndicator indicator;
 
     public static OnboardFragment newInstance() {
         return new OnboardFragment();
@@ -42,8 +44,6 @@ public final class OnboardFragment extends BookingFlowFragment {
             }
         });
 
-        pager.setOnPageChangeListener(pageListener);
-
         return view;
     }
 
@@ -51,6 +51,8 @@ public final class OnboardFragment extends BookingFlowFragment {
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         pager.setAdapter(new PagerAdapter(getActivity().getSupportFragmentManager()));
+        indicator.setViewPager(pager);
+        indicator.setOnPageChangeListener(pageListener);
     }
 
     private final ViewPager.OnPageChangeListener pageListener
@@ -58,24 +60,42 @@ public final class OnboardFragment extends BookingFlowFragment {
 
         @Override
         public void onPageScrolled(final int position, final float offset, final int pixelOffset) {
-            // transition background colors
-            final int[] colors = {getResources().getColor(R.color.white),
+            // transition colors
+            final int[] backgroundColors = {getResources().getColor(R.color.white),
                     getResources().getColor(R.color.handy_blue),
                     getResources().getColor(R.color.handy_purple),
                     getResources().getColor(R.color.handy_teal),
                     getResources().getColor(R.color.white)};
 
-            final int fromColor = colors[position];
-            final int toColor = colors[position + 1];
+            final int[] indicatorFillColors = {getResources().getColor(R.color.black),
+                    getResources().getColor(R.color.white),
+                    getResources().getColor(R.color.white),
+                    getResources().getColor(R.color.white),
+                    getResources().getColor(R.color.black)};
+
+            final int[] indicatorPageColors = {getResources().getColor(R.color.dark_grey),
+                    getResources().getColor(R.color.white_trans),
+                    getResources().getColor(R.color.white_trans),
+                    getResources().getColor(R.color.white_trans),
+                    getResources().getColor(R.color.dark_grey)};
+
+            final int fromBackgroundColor = backgroundColors[position];
+            final int toBackgroundColor = backgroundColors[position + 1];
+            final int fromIndicatorPageColor = indicatorPageColors[position];
+            final int toIndicatorPageColor = indicatorPageColors[position + 1];
+            final int fromIndicatorFillColor = indicatorFillColors[position];
+            final int toIndicatorFillColor = indicatorFillColors[position + 1];
 
             final ArgbEvaluator rgbEval = new ArgbEvaluator();
 
-            if (position == currentIndex && offset > 0) {
-                layout.setBackgroundColor((int)rgbEval.evaluate(offset, fromColor, toColor));
-            }
-            else if (offset > 0) {
-                layout.setBackgroundColor((int)rgbEval.evaluate(offset, fromColor, toColor));
-            }
+            layout.setBackgroundColor((int)rgbEval.evaluate(offset,
+                    fromBackgroundColor, toBackgroundColor));
+
+            indicator.setFillColor((int) rgbEval.evaluate(offset,
+                    fromIndicatorFillColor, toIndicatorFillColor));
+
+            indicator.setPageColor((int) rgbEval.evaluate(offset,
+                    fromIndicatorPageColor, toIndicatorPageColor));
 
             //TODO save & restore index position state
         }
@@ -97,7 +117,7 @@ public final class OnboardFragment extends BookingFlowFragment {
 
         @Override
         public final Fragment getItem(final int i) {
-            return OnboardPageFragment.newInstance();
+            return OnboardPageFragment.newInstance(i);
         }
 
         @Override
