@@ -14,6 +14,16 @@
         android:contentDescription="logo"
         android:visibility="invisible"/>
 
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_onboard_pencil"
+        android:layout_marginTop="40dp"
+        android:contentDescription="logo"
+        android:visibility="visible"/>
+
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
@@ -27,5 +37,15 @@
         android:text="@string/onboard_msg_manage"
         android:textColor="@color/white"
         style="@style/TextView.Large.Bold"/>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/img_android_white"
+        android:visibility="invisible"
+        android:contentDescription="image" />
 
 </RelativeLayout>

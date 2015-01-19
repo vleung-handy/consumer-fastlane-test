@@ -98,6 +98,7 @@ public final class OnboardFragment extends BookingFlowFragment {
                     fromIndicatorPageColor, toIndicatorPageColor));
 
             //TODO save & restore index position state
+            //TODO finalize main page animations
         }
 
         @Override
@@ -106,23 +107,40 @@ public final class OnboardFragment extends BookingFlowFragment {
         }
 
         @Override
-        public void onPageScrollStateChanged(final int state) {}
+        public void onPageScrollStateChanged(final int state) {
+            if (true||state == ViewPager.SCROLL_STATE_IDLE || state == ViewPager.SCROLL_STATE_SETTLING) {
+                final OnboardPageFragment page = ((PagerAdapter) pager
+                        .getAdapter()).getFragment(currentIndex);
+
+                //TODO check if running on backgorund causes slow start / fix slow start
+                if (page != null) page.animate();
+            }
+        }
     };
 
     private final class PagerAdapter extends FragmentPagerAdapter {
+        private int count = 4;
+        private OnboardPageFragment[] fragments;
 
         PagerAdapter(final FragmentManager fm) {
             super(fm);
+            fragments = new OnboardPageFragment[count];
         }
 
         @Override
         public final Fragment getItem(final int i) {
-            return OnboardPageFragment.newInstance(i);
+            final OnboardPageFragment fragment = OnboardPageFragment.newInstance(i);
+            fragments[i] = fragment;
+            return fragment;
         }
 
         @Override
         public final int getCount() {
-            return 4;
+            return count;
+        }
+
+        final OnboardPageFragment getFragment(final int i) {
+            return fragments[i];
         }
     }
 }
