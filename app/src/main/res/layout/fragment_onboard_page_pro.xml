@@ -38,13 +38,49 @@
         android:textColor="@color/white"
         style="@style/TextView.Large.Bold"/>
 
-    <ImageView
+    <RelativeLayout
         android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:visibility="invisible"
-        android:contentDescription="image" />
+        android:layout_marginBottom="-108dp"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/image_pro_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_pro_match_1"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="image" />
+
+        <ImageView
+            android:id="@+id/image_pro_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_pro_1"
+            android:src="@drawable/img_pro_match_2"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="image" />
+
+        <ImageView
+            android:id="@+id/image_pro_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_pro_2"
+            android:src="@drawable/img_pro_match_3"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="image" />
+
+        <ImageView
+            android:id="@+id/image_pro_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_pro_3"
+            android:src="@drawable/img_pro_match_4"
+            android:contentDescription="image" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

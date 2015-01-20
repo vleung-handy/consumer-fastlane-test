@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,17 +13,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.ui.activity.LoginActivity;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class OnboardFragment extends BookingFlowFragment {
+    private static final String STATE_ANIMATE_PAGES = "ANIMATED_PAGES";
+
     private int currentIndex;
+    private boolean[] animatePages;
+    private int count = 4;
 
     @InjectView(R.id.layout) View layout;
     @InjectView(R.id.pager) ViewPager pager;
     @InjectView(R.id.start_button) Button startButton;
+    @InjectView(R.id.login_button) Button loginButton;
     @InjectView(R.id.indicator) CirclePageIndicator indicator;
 
     public static OnboardFragment newInstance() {
@@ -44,6 +51,24 @@ public final class OnboardFragment extends BookingFlowFragment {
             }
         });
 
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
+        if (savedInstanceState != null) {
+            animatePages = savedInstanceState.getBooleanArray(STATE_ANIMATE_PAGES);
+        }
+        else {
+            animatePages = new boolean[count];
+            for (int i = 0; i < count; i++) animatePages[i] = true;
+        }
+
         return view;
     }
 
@@ -53,6 +78,12 @@ public final class OnboardFragment extends BookingFlowFragment {
         pager.setAdapter(new PagerAdapter(getActivity().getSupportFragmentManager()));
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(pageListener);
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBooleanArray(STATE_ANIMATE_PAGES, animatePages);
     }
 
     private final ViewPager.OnPageChangeListener pageListener
@@ -96,9 +127,6 @@ public final class OnboardFragment extends BookingFlowFragment {
 
             indicator.setPageColor((int) rgbEval.evaluate(offset,
                     fromIndicatorPageColor, toIndicatorPageColor));
-
-            //TODO save & restore index position state
-            //TODO finalize main page animations
         }
 
         @Override
@@ -108,18 +136,15 @@ public final class OnboardFragment extends BookingFlowFragment {
 
         @Override
         public void onPageScrollStateChanged(final int state) {
-            if (true||state == ViewPager.SCROLL_STATE_IDLE || state == ViewPager.SCROLL_STATE_SETTLING) {
-                final OnboardPageFragment page = ((PagerAdapter) pager
-                        .getAdapter()).getFragment(currentIndex);
+            final OnboardPageFragment page = ((PagerAdapter) pager
+                    .getAdapter()).getFragment(currentIndex);
 
-                //TODO check if running on backgorund causes slow start / fix slow start
-                if (page != null) page.animate();
-            }
+            if (page != null) page.animate();
         }
     };
 
     private final class PagerAdapter extends FragmentPagerAdapter {
-        private int count = 4;
+
         private OnboardPageFragment[] fragments;
 
         PagerAdapter(final FragmentManager fm) {
@@ -129,8 +154,9 @@ public final class OnboardFragment extends BookingFlowFragment {
 
         @Override
         public final Fragment getItem(final int i) {
-            final OnboardPageFragment fragment = OnboardPageFragment.newInstance(i);
+            final OnboardPageFragment fragment = OnboardPageFragment.newInstance(i, animatePages[i]);
             fragments[i] = fragment;
+            animatePages[i] = false;
             return fragment;
         }
 
