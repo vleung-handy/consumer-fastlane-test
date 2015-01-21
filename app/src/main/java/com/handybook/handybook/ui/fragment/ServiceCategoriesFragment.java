@@ -48,6 +48,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
             mixpanel.trackEventFirstTimeUse();
 
             //TODO add on-boarding here
+            //TODO remove 4dp spacing from pro match images
 
             final SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("APP_OPENED_PREV", true);

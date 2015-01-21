@@ -44,9 +44,12 @@ public final class OnboardFragment extends BookingFlowFragment {
 
         ButterKnife.inject(this, view);
 
+        mixpanel.trackOnboardingShown();
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                mixpanel.trackOnboardingActionSkip(currentIndex + 1);
                 getActivity().finish();
             }
         });
@@ -54,6 +57,8 @@ public final class OnboardFragment extends BookingFlowFragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                mixpanel.trackOnboardingActionLogin(currentIndex + 1);
+
                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);

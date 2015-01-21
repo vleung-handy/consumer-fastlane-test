@@ -87,6 +87,28 @@ public class Mixpanel {
         mixpanel.registerSuperProperties(props);
     }
 
+    public void trackOnboardingShown() {
+        final JSONObject props = new JSONObject();
+        addProps(props, "type", "default");
+        mixpanel.track("Onboarding Show", props);
+    }
+
+    public void trackOnboardingActionLogin(final int page) {
+        trackOnboardingActions("login", page);
+    }
+
+    public void trackOnboardingActionSkip(final int page) {
+        trackOnboardingActions("skip", page);
+    }
+
+    private void trackOnboardingActions(final String action, final int page) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "type", "default");
+        addProps(props, "action", action);
+        addProps(props, "page", page);
+        mixpanel.track("Onboarding Action", props);
+    }
+
     public void trackPageLogin() {
         mixpanel.track("log in page view", null);
     }
