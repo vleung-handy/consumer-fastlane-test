@@ -112,12 +112,22 @@ public final class OnboardPageFragment extends BookingFlowFragment {
 
                 @Override
                 public void onAnimationEnd(final Animation animation) {
-                    final Animation fadeOut = AnimationUtils
+                    Animation fadeOut = AnimationUtils
                             .loadAnimation(getActivity(), R.anim.onboard_pro_fade);
-
                     fadeOut.setFillAfter(true);
+                    fadeOut.setStartOffset(50);
                     proImage1.startAnimation(fadeOut);
+
+                    fadeOut = AnimationUtils
+                            .loadAnimation(getActivity(), R.anim.onboard_pro_fade);
+                    fadeOut.setFillAfter(true);
+                    fadeOut.setStartOffset(300);
                     proImage3.startAnimation(fadeOut);
+
+                    fadeOut = AnimationUtils
+                            .loadAnimation(getActivity(), R.anim.onboard_pro_fade);
+                    fadeOut.setFillAfter(true);
+                    fadeOut.setStartOffset(500);
                     proImage4.startAnimation(fadeOut);
                 }
 

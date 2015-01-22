@@ -36,7 +36,7 @@
         android:gravity="center"
         android:text="@string/onboard_msg_pro"
         android:textColor="@color/white"
-        style="@style/TextView.Large.Bold" />
+        style="@style/TextView.Large.Bold"/>
 
     <RelativeLayout
         android:id="@+id/image"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-72dp"
+        android:layout_marginBottom="-90dp"
         android:visibility="invisible">
 
         <ImageView
@@ -58,7 +58,7 @@
             android:id="@+id/image_pro_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-6dp"
             android:layout_below="@id/image_pro_1"
             android:src="@drawable/img_pro_match_2"
             android:contentDescription="image" />
@@ -67,7 +67,7 @@
             android:id="@+id/image_pro_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-6dp"
             android:layout_below="@id/image_pro_2"
             android:src="@drawable/img_pro_match_3"
             android:contentDescription="image" />
@@ -76,7 +76,7 @@
             android:id="@+id/image_pro_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-6dp"
             android:layout_below="@id/image_pro_3"
             android:src="@drawable/img_pro_match_4"
             android:contentDescription="image" />
