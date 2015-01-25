@@ -36,10 +36,20 @@ public final class HelpFragment extends InjectedFragment {
 
         webButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"
                         + getString(R.string.web_help)));
 
+                startActivity(intent);
+            }
+        });
+
+        phoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
+                        + getString(R.string.phone_help)));
+                
                 startActivity(intent);
             }
         });
