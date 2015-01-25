@@ -47,20 +47,15 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
         if (!prefs.getBoolean("APP_OPENED_PREV", false)) {
             mixpanel.trackEventFirstTimeUse();
 
-            //TODO add on-boarding here
-            //TODO remove 4dp spacing from pro match images
+            final Intent intent = new Intent(getActivity(), OnboardActivity.class);
+            startActivity(intent);
 
             final SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("APP_OPENED_PREV", true);
             edit.apply();
         }
-
-        if (savedInstanceState == null) {
-            final Intent intent = new Intent(getActivity(), OnboardActivity.class);
-            startActivity(intent);
-        }
     }
-
+    
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
