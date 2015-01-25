@@ -21,6 +21,7 @@
     </FrameLayout>
 
     <RelativeLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
@@ -46,36 +47,31 @@
 
     </RelativeLayout>
 
-    <ScrollView
+    <RelativeLayout
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/nav_layout">
+        android:layout_below="@id/nav_layout"
+        android:layout_above="@id/buttons"
+        android:paddingTop="@dimen/default_padding">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/help_img"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="16dp"
+            android:src="@drawable/ic_price_tag"
+            android:contentDescription="help" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:paddingTop="@dimen/default_padding">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/help_img"
+            android:text="@string/always_here_help"
+            android:gravity="center"
+            android:padding="@dimen/default_padding"
+            style="@style/TextView"/>
 
-            <ImageView
-                android:id="@+id/help_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:padding="16dp"
-                android:src="@drawable/ic_price_tag"
-                android:contentDescription="help" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/help_img"
-                android:text="@string/always_here_help"
-                android:gravity="center"
-                android:padding="@dimen/default_padding"
-                style="@style/TextView"/>
-
-        </RelativeLayout>
-
-    </ScrollView>
+    </RelativeLayout>
 
 </RelativeLayout>
