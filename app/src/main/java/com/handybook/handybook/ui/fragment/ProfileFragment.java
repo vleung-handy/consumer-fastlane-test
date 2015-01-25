@@ -23,7 +23,6 @@ import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -73,9 +72,7 @@ public final class ProfileFragment extends InjectedFragment {
         oldPasswordtext.addTextChangedListener(passwordTextWatcher);
         newPasswordtext.addTextChangedListener(passwordTextWatcher);
 
-        final MenuButton menuButton = new MenuButton(getActivity());
-        menuButton.setColor(getResources().getColor(R.color.black_pressed));
-        Utils.extendHitArea(menuButton, menuButtonLayout, Utils.toDP(32, getActivity()));
+        final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);
 
         return view;

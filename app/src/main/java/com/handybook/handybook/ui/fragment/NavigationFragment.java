@@ -20,6 +20,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.ui.activity.BookingsActivity;
+import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
@@ -171,7 +172,7 @@ public final class NavigationFragment extends InjectedFragment
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.help))
                         && !(getString(R.string.help).equalsIgnoreCase(selectedItem))) {
-                    menuDrawer.closeMenu();
+                    activity.navigateToActivity(HelpActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.promotions))
                         && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem))) {
@@ -241,7 +242,7 @@ public final class NavigationFragment extends InjectedFragment
             items.add(getString(R.string.my_bookings));
         }
 
-        //items.add(getString(R.string.help));
+        items.add(getString(R.string.help));
 
         //if (userLoggedIn) items.add(getString(R.string.share));
 

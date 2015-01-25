@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg">
+
+    <FrameLayout
+        android:id="@+id/nav_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/nav_text"
+            android:text="@string/help"
+            style="@style/TextView.Navbar" />
+
+        <RelativeLayout
+            android:id="@+id/menu_button_layout"
+            style="@style/MenuButtonLayout" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/web_button"
+            android:layout_alignParentBottom="false"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginBottom="16dp"
+            android:text="@string/web_help"
+            style="@style/Button.Blue" />
+
+        <Button
+            android:id="@+id/phone_button"
+            android:layout_below="@id/web_button"
+            android:layout_alignParentBottom="false"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:text="@string/phone_help"
+            style="@style/Button.Blue" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_layout">
+
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/default_padding">
+
+            <ImageView
+                android:id="@+id/help_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="16dp"
+                android:src="@drawable/ic_price_tag"
+                android:contentDescription="help" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_img"
+                android:text="@string/always_here_help"
+                android:gravity="center"
+                android:padding="@dimen/default_padding"
+                style="@style/TextView"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

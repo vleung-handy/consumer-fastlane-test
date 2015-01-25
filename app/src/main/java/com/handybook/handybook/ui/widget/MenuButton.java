@@ -8,29 +8,33 @@ import android.widget.ImageButton;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.util.Utils;
 
 public final class MenuButton extends ImageButton {
 
-    public MenuButton(final Context context) {
+    public MenuButton(final Context context, final View parent) {
         super(context);
-        init(context);
+        init(context, parent);
     }
 
     public MenuButton(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(context, null);
     }
 
     public MenuButton(final Context context, final AttributeSet attrs,
                       final int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
+        init(context, null);
     }
 
-    void init(final Context context) {
+    void init(final Context context, final View parent) {
         this.setImageResource(R.drawable.ic_menu);
         this.setBackgroundResource(0);
-        this.setPadding(0,0,0,0);
+        this.setPadding(0, 0, 0, 0);
+        this.setColor(getResources().getColor(R.color.black_pressed));
+
+        Utils.extendHitArea(this, parent, Utils.toDP(32, context));
 
         this.setOnClickListener(new OnClickListener() {
             @Override

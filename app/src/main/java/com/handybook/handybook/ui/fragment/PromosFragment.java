@@ -13,7 +13,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.widget.MenuButton;
-import com.handybook.handybook.util.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,13 +31,11 @@ public final class PromosFragment extends BookingFlowFragment {
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_promos,container, false);
+                .inflate(R.layout.fragment_promos, container, false);
 
         ButterKnife.inject(this, view);
 
-        final MenuButton menuButton = new MenuButton(getActivity());
-        menuButton.setColor(getResources().getColor(R.color.black_pressed));
-        Utils.extendHitArea(menuButton, menuButtonLayout, Utils.toDP(32, getActivity()));
+        final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);
 
         applyButton.setOnClickListener(new View.OnClickListener() {

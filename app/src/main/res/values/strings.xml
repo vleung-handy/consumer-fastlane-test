@@ -101,4 +101,7 @@
     <string name="onboard_msg_pro">We\'ll match you with\n a highly rated professional</string>
     <string name="onboard_msg_manage">Manage your bookings\n on the go</string>
     <string name="onboard_msg_rate">Rate to help us\n maintain quality service</string>
+    <string name="always_here_help">We\'re always here to help!</string>
+    <string name="web_help">help.handy.com</string>
+    <string name="phone_help">1-888-847-6036</string>
 </resources>

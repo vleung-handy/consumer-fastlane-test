@@ -18,7 +18,6 @@ import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.ServiceCategoryView;
-import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +72,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
             }
         });
 
-        final MenuButton menuButton = new MenuButton(getActivity());
-        Utils.extendHitArea(menuButton, menuButtonLayout, Utils.toDP(32, getActivity()));
+        final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
+        menuButton.setColor(getResources().getColor(R.color.white));
         menuButtonLayout.addView(menuButton);
 
         return view;

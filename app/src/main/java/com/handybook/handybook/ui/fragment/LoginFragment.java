@@ -31,7 +31,6 @@ import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
-import com.handybook.handybook.util.Utils;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
@@ -123,9 +122,7 @@ public final class LoginFragment extends BookingFlowFragment
             bookingRequest.setEmail(bookingUserEmail);
         }
         else {
-            final MenuButton menuButton = new MenuButton(getActivity());
-            menuButton.setColor(getResources().getColor(R.color.black_pressed));
-            Utils.extendHitArea(menuButton, menuButtonLayout, Utils.toDP(32, getActivity()));
+            final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
             menuButtonLayout.addView(menuButton);
         }
 

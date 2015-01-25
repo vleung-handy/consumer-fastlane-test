@@ -43,7 +43,8 @@
                 android:layout_centerHorizontal="true"
                 android:padding="16dp"
                 android:layout_marginBottom="16dp"
-                android:src="@drawable/ic_price_tag" />
+                android:src="@drawable/ic_price_tag"
+                android:contentDescription="promotions" />
 
             <EditText
                 android:id="@+id/promo_text"

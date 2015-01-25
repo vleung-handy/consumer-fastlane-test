@@ -16,7 +16,6 @@ import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PinnedSectionListView;
 import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,9 +51,7 @@ public final class BookingsFragment extends InjectedFragment {
 
         listView.setAdapter(new BookingsListAdapter());
 
-        final MenuButton menuButton = new MenuButton(getActivity());
-        menuButton.setColor(getResources().getColor(R.color.black_pressed));
-        Utils.extendHitArea(menuButton, menuButtonLayout, Utils.toDP(32, getActivity()));
+        final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);
 
         return view;
