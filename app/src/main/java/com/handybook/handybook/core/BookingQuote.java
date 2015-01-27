@@ -120,7 +120,7 @@ public final class BookingQuote extends Observable {
         this.hourlyAmount = hourlyAmount;
     }
 
-    final ArrayList<BookingPriceInfo> getPriceTable() {
+    public final ArrayList<BookingPriceInfo> getPriceTable() {
         return priceTable;
     }
 

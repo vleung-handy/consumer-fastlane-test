@@ -288,6 +288,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                             @Override
                             public void onSuccess(final BookingCoupon coupon) {
                                 handlePromoSuccess(coupon, quote, bookingTransaction, null);
+                                bookingManager.setPromoTabCoupon(null);
                             }
 
                             @Override

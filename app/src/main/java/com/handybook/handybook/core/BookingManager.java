@@ -121,6 +121,14 @@ public final class BookingManager implements Observer {
         securePrefs.put("BOOKING_POST", postInfo.toJson());
     }
 
+    public final void setPromoTabCoupon(final String code) {
+        securePrefs.put("BOOKING_PROMO_TAB_COUPON", code);
+    }
+
+    public final String getPromoTabCoupon() {
+        return securePrefs.getString("BOOKING_PROMO_TAB_COUPON");
+    }
+
     @Override
     public void update(final Observable observable, final Object data) {
         if (observable instanceof BookingRequest) setCurrentRequest((BookingRequest)observable);
@@ -133,13 +141,17 @@ public final class BookingManager implements Observer {
             setCurrentPostInfo((BookingPostInfo)observable);
     }
 
-    public void clearAll() {
+    public void clear() {
         setCurrentRequest(null);
         setCurrentQuote(null);
         setCurrentTransaction(null);
         setCurrentPostInfo(null);
         securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", null);
         bus.post(new BookingFlowClearedEvent());
+    }
+    public void clearAll() {
+        securePrefs.put("BOOKING_PROMO_TAB_COUPON", null);
+        clear();
     }
 
     @Subscribe

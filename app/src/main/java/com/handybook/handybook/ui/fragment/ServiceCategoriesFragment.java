@@ -86,6 +86,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
         loadServices();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //TODO show coupon tab here (allow remove?)
+    }
+
     private void displayServices() {
         categoryLayout.removeAllViews();
         int pos = 0;

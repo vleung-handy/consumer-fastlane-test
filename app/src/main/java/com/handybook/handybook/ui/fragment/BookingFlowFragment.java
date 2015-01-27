@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.util.Pair;
 
 import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
@@ -42,7 +43,7 @@ public class BookingFlowFragment extends InjectedFragment {
         final User user = userManager.getCurrentUser();
         if (user != null) request.setEmail(user.getEmail());
 
-        bookingManager.clearAll();
+        bookingManager.clear();
         bookingManager.setCurrentRequest(request);
 
         final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
@@ -187,6 +188,7 @@ public class BookingFlowFragment extends InjectedFragment {
         transaction.setZipCode(quote.getZipCode());
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
+        transaction.setPromoApplied(bookingManager.getPromoTabCoupon());
 
         if (user != null) {
             transaction.setEmail(user.getEmail());
@@ -328,6 +330,27 @@ public class BookingFlowFragment extends InjectedFragment {
         }
 
         bookingManager.setCurrentQuote(quote);
-        continueFlow();
+
+        final User user = userManager.getCurrentUser();
+        final String coupon = bookingManager.getPromoTabCoupon();
+
+        if (coupon != null) {
+            dataManager.applyPromo(coupon, quote.getBookingId(), user.getId(), user.getEmail(),
+                    user.getAuthToken(), new DataManager.Callback<BookingCoupon>() {
+                        @Override
+                        public void onSuccess(final BookingCoupon response) {
+                            if (!allowCallbacks) return;
+                            quote.setPriceTable(response.getPriceTable());
+                            if (transaction != null) transaction.setPromoApplied(coupon);
+                            continueFlow();
+                        }
+
+                        @Override
+                        public void onError(final DataManager.DataManagerError error) {
+                            handleBookingQuoteError(error);
+                        }
+                    });
+        }
+        else continueFlow();
     }
 }

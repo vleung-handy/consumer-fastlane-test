@@ -105,6 +105,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
                 j++;
             }
 
+            //TODO integrate put call into booking manager like promo tab coupon
             securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", selected);
             bookingTransaction.setExtraHours(extraHours);
             bookingTransaction.setExtraCleaningText(extraText.length() > 0 ? extraText : null);

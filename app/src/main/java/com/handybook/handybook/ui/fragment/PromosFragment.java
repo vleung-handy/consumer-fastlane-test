@@ -12,12 +12,17 @@ import android.widget.EditText;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
+
+import net.simonvt.menudrawer.MenuDrawer;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public final class PromosFragment extends BookingFlowFragment {
+public final class PromosFragment extends BookingFlowFragment
+        implements MenuDrawerActivity.OnDrawerStateChangeListener {
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
     @InjectView(R.id.apply_button) Button applyButton;
@@ -58,9 +63,14 @@ public final class PromosFragment extends BookingFlowFragment {
                             if (code.getType() == PromoCode.Type.VOUCHER) {
                                 startBookingFlow(code.getServiceId(), code.getUniq(), code);
                             }
-                            else {
-                                toast.setText(getString(R.string.coupon_on_payment_screen));
-                                toast.show();
+                            else if (code.getType() == PromoCode.Type.COUPON){
+                                bookingManager.setPromoTabCoupon(code.getCode());
+
+                                final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+                                activity.setOnDrawerStateChangedListener(PromosFragment.this);
+
+                                final MenuDrawer menuDrawer = activity.getMenuDrawer();
+                                menuDrawer.openMenu(true);
                             }
                         }
 
@@ -99,5 +109,14 @@ public final class PromosFragment extends BookingFlowFragment {
     protected final void enableInputs() {
         super.enableInputs();
         applyButton.setClickable(true);
+    }
+
+    @Override
+    public void onDrawerStateChange(final MenuDrawer menuDrawer, final int oldState,
+                                    final int newState) {
+        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+        if (newState == MenuDrawer.STATE_OPEN) {
+            activity.navigateToActivity(ServiceCategoriesActivity.class);
+        }
     }
 }
