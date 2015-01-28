@@ -2,7 +2,9 @@ package com.handybook.handybook.ui.fragment;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -46,10 +48,17 @@ public final class OnboardFragment extends BookingFlowFragment {
 
         mixpanel.trackOnboardingShown();
 
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        final SharedPreferences.Editor edit = prefs.edit();
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 mixpanel.trackOnboardingActionSkip(currentIndex + 1);
+
+                edit.putBoolean("APP_ONBOARD_SHOWN", true);
+                edit.apply();
+
                 getActivity().finish();
             }
         });
@@ -58,6 +67,9 @@ public final class OnboardFragment extends BookingFlowFragment {
             @Override
             public void onClick(final View v) {
                 mixpanel.trackOnboardingActionLogin(currentIndex + 1);
+
+                edit.putBoolean("APP_ONBOARD_SHOWN", true);
+                edit.apply();
 
                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK

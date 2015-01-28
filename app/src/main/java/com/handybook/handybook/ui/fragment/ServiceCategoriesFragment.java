@@ -50,19 +50,20 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
         super.onCreate(savedInstanceState);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        final SharedPreferences.Editor edit = prefs.edit();
 
         if (!prefs.getBoolean("APP_OPENED_PREV", false)) {
             mixpanel.trackEventFirstTimeUse();
-
-            final Intent intent = new Intent(getActivity(), OnboardActivity.class);
-            startActivity(intent);
-
-            final SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("APP_OPENED_PREV", true);
             edit.apply();
         }
+
+        if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false)) {
+            final Intent intent = new Intent(getActivity(), OnboardActivity.class);
+            startActivity(intent);
+        }
     }
-    
+
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
