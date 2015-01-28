@@ -2,14 +2,19 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
@@ -32,6 +37,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
     @InjectView(R.id.category_layout) LinearLayout categoryLayout;
     @InjectView(R.id.logo) ImageView logo;
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
+    @InjectView(R.id.coupon_layout) View couponLayout;
+    @InjectView(R.id.promo_img) ImageView promoImage;
+    @InjectView(R.id.promo_text) TextView promoText;
 
     public static ServiceCategoriesFragment newInstance() {
         return new ServiceCategoriesFragment();
@@ -76,6 +84,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
         menuButton.setColor(getResources().getColor(R.color.white));
         menuButtonLayout.addView(menuButton);
 
+        promoImage.setColorFilter(getResources().getColor(R.color.handy_blue), PorterDuff.Mode.SRC_ATOP);
         return view;
     }
 
@@ -89,7 +98,21 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
     @Override
     public void onStart() {
         super.onStart();
-        //TODO show coupon tab here (allow remove?)
+
+        final String coupon = bookingManager.getPromoTabCoupon();
+
+        if (coupon != null) {
+            final Spannable text
+                    = new SpannableString(String.format(getString(R.string.using_promo), coupon));
+
+            final int index = text.toString().indexOf(coupon);
+            text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.handy_blue)),
+                    index, index + coupon.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            promoText.setText(text, TextView.BufferType.SPANNABLE);
+            couponLayout.setVisibility(View.VISIBLE);
+        }
+        else couponLayout.setVisibility(View.GONE);
     }
 
     private void displayServices() {

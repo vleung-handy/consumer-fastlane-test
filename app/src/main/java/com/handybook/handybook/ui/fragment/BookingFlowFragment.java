@@ -332,11 +332,14 @@ public class BookingFlowFragment extends InjectedFragment {
         bookingManager.setCurrentQuote(quote);
 
         final User user = userManager.getCurrentUser();
+        final String userId = user != null ? user.getId() : null;
+        final String email = user != null ? user.getEmail() : null;
+        final String authToken = user != null ? user.getAuthToken() : null;
         final String coupon = bookingManager.getPromoTabCoupon();
 
         if (coupon != null) {
-            dataManager.applyPromo(coupon, quote.getBookingId(), user.getId(), user.getEmail(),
-                    user.getAuthToken(), new DataManager.Callback<BookingCoupon>() {
+            dataManager.applyPromo(coupon, quote.getBookingId(), userId, email, authToken,
+                    new DataManager.Callback<BookingCoupon>() {
                         @Override
                         public void onSuccess(final BookingCoupon response) {
                             if (!allowCallbacks) return;

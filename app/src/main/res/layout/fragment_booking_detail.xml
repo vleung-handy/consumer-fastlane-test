@@ -34,7 +34,7 @@
                         android:layout_width="144dp"
                         android:layout_height="wrap_content"
                         android:text="@string/service"
-                        style="@style/TextView.Medium"/>
+                        style="@style/TextView.Med"/>
 
                     <TextView
                         android:id="@+id/service_text"
@@ -55,7 +55,7 @@
                         android:layout_width="144dp"
                         android:layout_height="wrap_content"
                         android:text="@string/job_num"
-                        style="@style/TextView.Medium"/>
+                        style="@style/TextView.Med"/>
 
                     <TextView
                         android:id="@+id/job_text"
@@ -85,7 +85,7 @@
                     android:layout_width="144dp"
                     android:layout_height="wrap_content"
                     android:text="@string/address"
-                    style="@style/TextView.Medium"/>
+                    style="@style/TextView.Med"/>
 
                 <TextView
                     android:id="@+id/address_text"
@@ -118,7 +118,7 @@
                         android:layout_width="144dp"
                         android:layout_height="wrap_content"
                         android:text="@string/date"
-                        style="@style/TextView.Medium"/>
+                        style="@style/TextView.Med"/>
 
                     <TextView
                         android:id="@+id/date_text"
@@ -141,7 +141,7 @@
                         android:layout_width="144dp"
                         android:layout_height="wrap_content"
                         android:text="@string/duration"
-                        style="@style/TextView.Medium"/>
+                        style="@style/TextView.Med"/>
 
                     <TextView
                         android:id="@+id/duration_text"
@@ -162,7 +162,7 @@
                         android:layout_width="144dp"
                         android:layout_height="wrap_content"
                         android:text="@string/price"
-                        style="@style/TextView.Medium"/>
+                        style="@style/TextView.Med"/>
 
                     <TextView
                         android:id="@+id/price_text"
@@ -191,7 +191,7 @@
                     android:layout_width="144dp"
                     android:layout_height="wrap_content"
                     android:text="@string/professional"
-                    style="@style/TextView.Medium"/>
+                    style="@style/TextView.Med"/>
 
                 <TextView
                     android:id="@+id/pro_text"

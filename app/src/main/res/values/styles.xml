@@ -249,6 +249,10 @@
         <item name="android:freezesText">true</item>
     </style>
 
+    <style name="TextView.Medium">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+    </style>
+
     <style name="TextView.Small">
         <item name="android:textSize">@dimen/small_text_size</item>
     </style>
@@ -257,7 +261,7 @@
         <item name="android:textSize">@dimen/xsmall_text_size</item>
     </style>
 
-    <style name="TextView.Medium">
+    <style name="TextView.Med">
         <item name="fontPath">fonts/CircularStd-Medium.otf</item>
     </style>
 

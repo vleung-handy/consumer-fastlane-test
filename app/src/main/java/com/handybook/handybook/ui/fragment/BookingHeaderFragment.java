@@ -85,7 +85,6 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
 
         final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
         final String currChar = quote.getCurrencyChar();
-        final String currSuffix = quote.getCurrencySuffix();
 
         if (pricing[0] == pricing[1]) {
             priceText.setText(TextUtils.formatPrice(pricing[0], currChar, null));

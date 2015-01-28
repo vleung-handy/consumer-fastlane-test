@@ -10,7 +10,7 @@
         android:padding="16dp"
         android:text="Nav Item"
         android:textColor="@color/white"
-        style="@style/TextView.Medium"/>
+        style="@style/TextView.Med"/>
 
 </FrameLayout>
 

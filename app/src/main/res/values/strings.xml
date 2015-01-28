@@ -104,4 +104,5 @@
     <string name="always_here_help">We\'re always here to help!</string>
     <string name="web_help">help.handy.com</string>
     <string name="phone_help">1-888-847-6036</string>
+    <string name="using_promo">USING PROMO CODE %s</string>
 </resources>

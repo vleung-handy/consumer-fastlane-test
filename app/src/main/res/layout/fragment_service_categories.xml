@@ -21,9 +21,43 @@
         android:contentDescription="@string/app_name" />
 
     <LinearLayout
+        android:id="@+id/coupon_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_padding"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/black"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/promo_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_price_tag"
+            android:contentDescription="promotion" />
+
+        <TextView
+            android:id="@+id/promo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:singleLine="true"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:text="@string/using_promo"
+            style="@style/TextView.Medium"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/category_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/coupon_layout"
         android:orientation="vertical"
         android:layout_below="@id/logo"
         android:background="@android:color/white" />
