@@ -45,6 +45,12 @@
             android:text="@string/phone_help"
             style="@style/Button.Blue" />
 
+        <!--Used to fix margin on older devices-->
+        <View
+            android:layout_below="@id/phone_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
     </RelativeLayout>
 
     <RelativeLayout
