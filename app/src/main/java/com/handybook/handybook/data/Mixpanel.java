@@ -174,6 +174,12 @@ public class Mixpanel {
         addProps(props, metaData);
         mixpanel.track("Yozio Install", props);
     }
+
+    public void trackEventYozioOpen(final HashMap<String, Object> metaData) {
+        final JSONObject props = new JSONObject();
+        addProps(props, metaData);
+        mixpanel.track("Yozio Open", props);
+    }
     
     public void trackEventFirstTimeUse() {
         mixpanel.track("first time use", null);

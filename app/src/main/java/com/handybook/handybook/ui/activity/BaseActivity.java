@@ -1,7 +1,9 @@
 package com.handybook.handybook.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -35,6 +37,13 @@ public abstract class BaseActivity extends FragmentActivity {
                 && !BuildConfig.BUILD_TYPE.equals("debug")) {
             setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
+        }
+
+        final Intent intent = getIntent();
+        final Uri data = intent.getData();
+
+        if (data != null && data.getHost() != null && data.getHost().equals("deeplink.yoz.io")) {
+            mixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
         }
     }
 

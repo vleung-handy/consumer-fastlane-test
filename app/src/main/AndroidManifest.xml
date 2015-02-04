@@ -26,10 +26,17 @@
             </intent-filter>
 
             <intent-filter>
+
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="com.handy.handy" android:host="home" />
+                <data android:scheme="handy" android:host="yozio" android:path="/"/>
+
+                <data
+                    android:scheme="http"
+                    android:host="deeplink.yoz.io"
+                    android:pathPrefix="/ea269dcf-ff3c-435a-bdc6-55b4c7904493" />
+
             </intent-filter>
 
         </activity>

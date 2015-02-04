@@ -29,8 +29,5 @@ public class YozioMetaDataCallback implements YozioMetaDataCallbackable {
         if (targetActivityClassName != null) {
             Yozio.startActivityWithMetaData(context, targetActivityClassName, metaData);
         }
-
-        // you can later retrieve the meta data from your started activity via Yozio.getMetaData(intent);
-        // see SecondActivity class for example.
     }
 }
