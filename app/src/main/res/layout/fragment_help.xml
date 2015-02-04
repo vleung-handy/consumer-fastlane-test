@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_below="@id/nav_layout"
         android:layout_above="@id/buttons"
-        android:paddingTop="@dimen/default_padding">
+        android:paddingTop="@dimen/default_margin_x2">
 
         <ImageView
             android:id="@+id/help_img"
