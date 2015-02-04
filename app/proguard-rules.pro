@@ -61,3 +61,8 @@
 #Crashlytics
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
+
+#GSON
+-keepclassmembers class com.handybook.handybook.** {
+    <fields>;
+}
