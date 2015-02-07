@@ -5,6 +5,7 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.urbanairship.UAirship;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -44,7 +45,10 @@ public final class UserManager implements Observer {
 
         user = newUser;
         user.addObserver(this);
+
         securePrefs.put("USER_OBJ", user.toJson());
+        UAirship.shared().getPushManager().setAlias(user.getId());
+
         bus.post(new UserLoggedInEvent(true));
     }
 

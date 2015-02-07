@@ -2,12 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.handybook.handybook">
 
+    <uses-feature android:name="android.hardware.location" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="${PACKAGE_NAME}.permission.UA_DATA" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE" />
 
-    <uses-feature android:name="android.hardware.location" android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <permission android:name="${PACKAGE_NAME}.permission.UA_DATA" android:protectionLevel="signature" />
+    <permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 
     <application
         android:name=".core.BaseApplication"
@@ -60,7 +69,26 @@
         <activity android:name=".ui.activity.PromosActivity" />
         <activity android:name=".ui.activity.OnboardActivity" />
         <activity android:name=".ui.activity.HelpActivity" />
+
         <activity android:name="com.facebook.LoginActivity" />
+        <activity android:name="com.urbanairship.CoreActivity" />
+
+        <activity
+            android:name="com.urbanairship.google.PlayServicesErrorActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <service android:name="com.urbanairship.push.PushService" android:label="Push Notification Service" />
+        <service android:name="com.urbanairship.analytics.EventService" android:label="Event Service" />
+        <service android:name="com.urbanairship.actions.ActionService" />
+        <service android:name="com.urbanairship.richpush.RichPushUpdateService" />
+        <service android:name="com.urbanairship.location.LocationService" android:label="Segments Service" />
+
+        <provider
+            android:name="com.urbanairship.UrbanAirshipProvider"
+            android:authorities="${PACKAGE_NAME}.urbanairship.provider"
+            android:permission="${PACKAGE_NAME}.permission.UA_DATA"
+            android:exported="true"
+            android:multiprocess="true" />
 
         <receiver
             android:name=".receiver.InstallReferrerReceiver"
@@ -71,6 +99,27 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
 
+        </receiver>
+
+        <receiver
+            android:name="com.urbanairship.CoreReceiver"
+            android:exported="false">
+
+            <intent-filter android:priority="-999">
+                <action android:name="com.urbanairship.push.OPENED" />
+                <category android:name="${PACKAGE_NAME}" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.urbanairship.push.GCMPushReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="${PACKAGE_NAME}" />
+            </intent-filter>
         </receiver>
 
         <meta-data

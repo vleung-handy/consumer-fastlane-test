@@ -9,6 +9,9 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.newrelic.agent.android.NewRelic;
+import com.urbanairship.AirshipConfigOptions;
+import com.urbanairship.UAirship;
+import com.urbanairship.push.notifications.DefaultNotificationFactory;
 
 import javax.inject.Inject;
 
@@ -32,6 +35,24 @@ public final class BaseApplication extends Application {
         super.onCreate();
         graph = ObjectGraph.create(new ApplicationModule(this));
         inject(this);
+
+        final AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
+        options.inProduction = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD);
+
+        UAirship.takeOff(this, options, new UAirship.OnReadyCallback() {
+            @Override
+            public void onAirshipReady(final UAirship airship) {
+                final DefaultNotificationFactory defaultNotificationFactory =
+                        new DefaultNotificationFactory(getApplicationContext());
+
+                defaultNotificationFactory.setColor(getResources().getColor(R.color.handy_blue));
+                defaultNotificationFactory.setSmallIconId(R.drawable.ic_notification);
+
+                airship.getPushManager().setNotificationFactory(defaultNotificationFactory);
+                airship.getPushManager().setPushEnabled(true);
+                airship.getPushManager().setUserNotificationsEnabled(true);
+            }
+        });
 
         CalligraphyConfig.initDefault("fonts/CircularStd-Book.otf", R.attr.fontPath);
 

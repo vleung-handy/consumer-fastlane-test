@@ -11,6 +11,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.data.Mixpanel;
+import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
 import javax.inject.Inject;
@@ -44,6 +45,15 @@ public abstract class BaseActivity extends FragmentActivity {
 
         if (data != null && data.getHost() != null && data.getHost().equals("deeplink.yoz.io")) {
             mixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (PlayServicesUtils.isGooglePlayStoreAvailable()) {
+            PlayServicesUtils.handleAnyPlayServicesError(this);
         }
     }
 

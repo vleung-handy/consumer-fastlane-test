@@ -12,6 +12,9 @@ buildscript {
 repositories {
     mavenCentral()
     maven { url 'http://download.crashlytics.com/maven' }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 apply plugin: 'com.android.application'
@@ -56,10 +59,12 @@ android {
         stage {
             applicationId 'com.handy.handy.stage'
             signingConfig signingConfigs.stage
+            manifestPlaceholders = [PACKAGE_NAME: "com.handy.handy.stage"]
         }
         prod {
             applicationId 'com.handy.handy.prod'
             signingConfig signingConfigs.prod
+            manifestPlaceholders = [PACKAGE_NAME: "com.handy.handy.prod"]
         }
     }
     compileOptions {
@@ -87,6 +92,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
     compile 'com.crashlytics.android:crashlytics:1.1.13'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
+    compile 'com.urbanairship:urbanairship-lib:1.5.1@aar'
     compile files('../libs/yozio-android-sdk.jar')
     compile project(':facebook')
     compile project(':simplealertdialog')

@@ -16,12 +16,12 @@
 #   public *;
 #}
 
-# Butterknife
+#Butterknife
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
 -keepnames class * { @butterknife.InjectView *; }
 
-# Dagger
+#Dagger
 -dontwarn dagger.internal.codegen.**
 -keep class * extends dagger.internal.Binding
 -keep class * extends dagger.internal.ModuleAdapter
@@ -66,3 +66,13 @@
 -keepclassmembers class com.handybook.handybook.** {
     <fields>;
 }
+
+#Urban Airship
+-keepnames class * implements android.os.Parcelable {
+  public static final ** CREATOR;
+}
+-dontwarn com.amazon.device.messaging.**
+-keepclassmembers class com.urbanairship.js.UAJavascriptInterface {
+   public *;
+}
+-keep public class * extends com.urbanairship.Autopilot
