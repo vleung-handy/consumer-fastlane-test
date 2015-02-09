@@ -122,7 +122,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                 @Override
                 public void onDateChanged(final DatePicker view, final int year,
                                           final int monthOfYear, final int dayOfMonth) {
-                    updateRequestDate();
+                    updateRequestDate(view);
                 }
         });
 
@@ -151,7 +151,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(final TimePicker view, final int hourOfDay, final int minute) {
-                updateRequestDate();
+                updateRequestDate(datePicker);
             }
         });
 
@@ -165,7 +165,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
         datePicker.setMaxDate(today.getTimeInMillis());
 
         nextButton.setOnClickListener(nextClicked);
-        updateRequestDate();
+        updateRequestDate(datePicker);
         return view;
     }
 
@@ -258,7 +258,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
         return cal;
     }
 
-    private void updateRequestDate() {
+    private void updateRequestDate(final DatePicker datePicker) {
         final Calendar date = Calendar.getInstance();
 
         date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
