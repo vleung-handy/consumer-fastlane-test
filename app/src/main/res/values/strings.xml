@@ -105,4 +105,9 @@
     <string name="web_help">help.handy.com</string>
     <string name="phone_help">1-888-847-6036</string>
     <string name="using_promo">USING PROMO CODE %s</string>
+    <string name="how_was_service">How was your service?</string>
+    <string name="please_rate_pro">Please rate your professional.</string>
+    <string name="awful">Awful</string>
+    <string name="amazing">Amazing!</string>
+    <string name="submit">Submit</string>
 </resources>

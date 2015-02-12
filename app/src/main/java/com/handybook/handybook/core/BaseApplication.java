@@ -3,11 +3,13 @@ package com.handybook.handybook.core;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.newrelic.agent.android.NewRelic;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -25,6 +27,7 @@ public final class BaseApplication extends Application {
     private ObjectGraph graph;
     private int started;
     private boolean savedInstance;
+    private RateServiceDialogFragment rateServiceDialog;
 
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
@@ -78,6 +81,13 @@ public final class BaseApplication extends Application {
                     if (!savedInstance) mixpanel.trackEventAppOpened(true);
                     else mixpanel.trackEventAppOpened(false);
                     updateUser();
+                }
+
+                if (rateServiceDialog == null) rateServiceDialog = new RateServiceDialogFragment();
+
+                if (!rateServiceDialog.isVisible()) {
+                    rateServiceDialog.show(((FragmentActivity)activity)
+                            .getSupportFragmentManager(), "RateServiceDialogFragment");
                 }
             }
 
