@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
     @InjectView(R.id.title_text) TextView titleText;
     @InjectView(R.id.message_text) TextView messageText;
     @InjectView(R.id.submit_button) Button submitButton;
+    @InjectView(R.id.submit_progress) ProgressBar submitProgress;
     @InjectView(R.id.ratings_layout) LinearLayout ratingsLayout;
     @InjectView(R.id.star_1) ImageView star1;
     @InjectView(R.id.star_2) ImageView star2;
@@ -186,21 +188,21 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
         @Override
         public void onClick(final View v) {
             disableInputs();
-            //progressDialog.show();
+            submitProgress.setVisibility(View.VISIBLE);
+            submitButton.setText(null);
 
             dataManager.ratePro(booking, rating + 1, null, new DataManager.Callback<Void>() {
                 @Override
                 public void onSuccess(final Void response) {
                     if (!allowCallbacks) return;
-                    //progressDialog.dismiss();
-                    enableInputs();
                     dismiss();
                 }
 
                 @Override
                 public void onError(final DataManager.DataManagerError error) {
                     if (!allowCallbacks) return;
-                    //progressDialog.dismiss();
+                    submitProgress.setVisibility(View.INVISIBLE);
+                    submitButton.setText(R.string.submit);
                     enableInputs();
                     dataManagerErrorHandler.handleError(getActivity(), error);
                 }
@@ -211,4 +213,4 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
 
 //TODO fix dismiss on rotation
 //TODO find way to show loading progress
-//TODO review on small screens
+//TODO fix on small screens
