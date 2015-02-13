@@ -57,6 +57,11 @@ public interface HandyRetrofitService {
     @GET("/bookings/promo_prebooking")
     void getPreBookingPromo(@Query("code") String promoCode, HandyRetrofitCallback cb);
 
+    @FormUrlEncoded
+    @POST("/bookings/{booking}/rate_pro")
+    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating, @Field("review_text") String review,
+                 HandyRetrofitCallback cb);
+
     @POST("/transactions")
     void completeBooking(@Body BookingTransaction req, HandyRetrofitCallback cb);
 

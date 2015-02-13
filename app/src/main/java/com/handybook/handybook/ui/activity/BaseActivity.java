@@ -130,8 +130,8 @@ public abstract class BaseActivity extends FragmentActivity {
                     if (!allowCallbacks) return;
 
                     if (user.getBookingRatePro() != null) {
-                        if (rateServiceDialog == null) rateServiceDialog
-                                = RateServiceDialogFragment.newInstance(serviceRating);
+                        if (rateServiceDialog == null) rateServiceDialog = RateServiceDialogFragment
+                                .newInstance(user.getBookingRateId(), serviceRating);
 
                         if (!rateServiceDialog.isVisible()) {
                             rateServiceDialog.show(BaseActivity.this.getSupportFragmentManager(),

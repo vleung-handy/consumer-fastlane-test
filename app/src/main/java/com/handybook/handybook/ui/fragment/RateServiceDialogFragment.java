@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,18 +19,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.data.DataManager;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class RateServiceDialogFragment extends DialogFragment {
+public class RateServiceDialogFragment extends InjectedDialogFragment {
+    static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
 
     private ArrayList<ImageView> stars = new ArrayList<>();
+    private int booking;
     private int rating;
+
+    @Inject DataManager dataManager;
 
     @InjectView(R.id.service_icon) ImageView serviceIcon;
     @InjectView(R.id.title_text) TextView titleText;
@@ -44,11 +50,13 @@ public class RateServiceDialogFragment extends DialogFragment {
     @InjectView(R.id.star_4) ImageView star4;
     @InjectView(R.id.star_5) ImageView star5;
 
-    public static RateServiceDialogFragment newInstance(final int rating) {
+    public static RateServiceDialogFragment newInstance(final int bookindId, final int rating) {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
         final Bundle bundle = new Bundle();
 
+        bundle.putInt(EXTRA_BOOKING, bookindId);
         bundle.putInt(EXTRA_RATING, rating);
+
         rateServiceDialogFragment .setArguments(bundle);
         return rateServiceDialogFragment;
     }
@@ -85,14 +93,11 @@ public class RateServiceDialogFragment extends DialogFragment {
         final View view = inflater.inflate(R.layout.dialog_rate_service, container, true);
         ButterKnife.inject(this, view);
 
-        if (savedInstanceState != null) {
-            rating = savedInstanceState.getInt(STATE_RATING , -1);
-        }
-        else {
-            final Bundle args = getArguments();
-            if (args != null) rating = args.getInt(EXTRA_RATING, -1);
-            else rating = -1;
-        }
+        final Bundle args = getArguments();
+        booking = args.getInt(EXTRA_BOOKING);
+
+        if (savedInstanceState != null) rating = savedInstanceState.getInt(STATE_RATING , -1);
+        else rating = args.getInt(EXTRA_RATING, -1);
 
         initStars();
         setRating(rating);
@@ -103,13 +108,7 @@ public class RateServiceDialogFragment extends DialogFragment {
         titleText.setText(getResources().getString(R.string.how_was_service));
         messageText.setText(getResources().getString(R.string.please_rate_pro));
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                dismiss();
-            }
-        });
-
+        submitButton.setOnClickListener(submitListener);
         return view;
     }
 
@@ -117,6 +116,18 @@ public class RateServiceDialogFragment extends DialogFragment {
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_RATING, rating);
+    }
+
+    @Override
+    protected void enableInputs() {
+        super.enableInputs();
+        submitButton.setClickable(true);
+    }
+
+    @Override
+    protected void disableInputs() {
+        super.disableInputs();
+        submitButton.setClickable(false);
     }
 
     public int getCurrentRating() {
@@ -170,8 +181,34 @@ public class RateServiceDialogFragment extends DialogFragment {
 
         if (rating > 0) submitButton.setVisibility(View.VISIBLE);
     }
+
+    private View.OnClickListener submitListener = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            disableInputs();
+            //progressDialog.show();
+
+            dataManager.ratePro(booking, rating + 1, null, new DataManager.Callback<Void>() {
+                @Override
+                public void onSuccess(final Void response) {
+                    if (!allowCallbacks) return;
+                    //progressDialog.dismiss();
+                    enableInputs();
+                    dismiss();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    //progressDialog.dismiss();
+                    enableInputs();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
+            });
+        }
+    };
 }
 
 //TODO fix dismiss on rotation
-//TODO integrate submit call
+//TODO find way to show loading progress
 //TODO review on small screens

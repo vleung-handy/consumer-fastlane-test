@@ -75,6 +75,8 @@ public abstract class DataManager {
 
     public abstract void addBookingPostInfo(int bookingId, BookingPostInfo postInfo, Callback<Void> cb);
 
+    public abstract void ratePro(int bookingId, int rating, String review, Callback<Void> cb);
+
     public abstract void authUser(String email, String password, Callback<User> cb);
 
     public abstract void getUser(String userId, String authToken, Callback<User> cb);
