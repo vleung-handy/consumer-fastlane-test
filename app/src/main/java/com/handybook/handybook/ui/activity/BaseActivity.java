@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentActivity;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.urbanairship.google.PlayServicesUtils;
@@ -22,12 +25,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class BaseActivity extends FragmentActivity {
     private static final String STATE_SERVICE_RATING = "SERVICE_RATING";
 
+    private boolean allowCallbacks;
     private OnBackPressedListener onBackPressedListener;
     private RateServiceDialogFragment rateServiceDialog;
     private int serviceRating = -1;
 
-    @Inject
-    Mixpanel mixpanel;
+    @Inject Mixpanel mixpanel;
+    @Inject UserManager userManager;
+    @Inject DataManager dataManager;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -63,24 +68,31 @@ public abstract class BaseActivity extends FragmentActivity {
         if (PlayServicesUtils.isGooglePlayStoreAvailable()) {
             PlayServicesUtils.handleAnyPlayServicesError(this);
         }
+
+        allowCallbacks = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        allowCallbacks = false;
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
 
-        if (rateServiceDialog == null) rateServiceDialog
-                = RateServiceDialogFragment.newInstance(serviceRating);
-
-        if (!rateServiceDialog.isVisible()) {
-            rateServiceDialog.show(this.getSupportFragmentManager(), "RateServiceDialogFragment");
-        }
+        // check if user has a booking to rate
+        checkRequiredRatings();
     }
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SERVICE_RATING, rateServiceDialog.getCurrentRating());
+
+        if (rateServiceDialog !=null) {
+            outState.putInt(STATE_SERVICE_RATING, rateServiceDialog.getCurrentRating());
+        }
     }
 
     @Override
@@ -106,5 +118,31 @@ public abstract class BaseActivity extends FragmentActivity {
 
     public interface OnBackPressedListener {
         void onBack();
+    }
+
+    private void checkRequiredRatings() {
+        final User user = userManager.getCurrentUser();
+
+        if (user != null) {
+            dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
+                @Override
+                public void onSuccess(final User user) {
+                    if (!allowCallbacks) return;
+
+                    if (user.getBookingRatePro() != null) {
+                        if (rateServiceDialog == null) rateServiceDialog
+                                = RateServiceDialogFragment.newInstance(serviceRating);
+
+                        if (!rateServiceDialog.isVisible()) {
+                            rateServiceDialog.show(BaseActivity.this.getSupportFragmentManager(),
+                                    "RateServiceDialogFragment");
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(DataManager.DataManagerError error) {}
+            });
+        }
     }
 }

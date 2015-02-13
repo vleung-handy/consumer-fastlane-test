@@ -32,6 +32,8 @@ public final class User extends Observable {
     @SerializedName("first_address") private Address address;
     @SerializedName("card_info") private CreditCard creditCard;
     @SerializedName("analytics") private Analytics analytics;
+    @SerializedName("booking_to_rate_id") private int bookingRateId;
+    @SerializedName("booking_to_rate_pro_name") private String bookingRatePro;
 
     public final String getAuthToken() {
         return authToken;
@@ -180,6 +182,14 @@ public final class User extends Observable {
         triggerObservers();
     }
 
+    public int getBookingRateId() {
+        return bookingRateId;
+    }
+
+    public String getBookingRatePro() {
+        return bookingRatePro;
+    }
+
     private void triggerObservers() {
         setChanged();
         notifyObservers();
@@ -233,6 +243,8 @@ public final class User extends Observable {
             jsonObj.add("password", context.serialize(value.getPassword()));
             jsonObj.add("current_password", context.serialize(value.getCurrentPassword()));
             jsonObj.add("password_confirmation", context.serialize(value.getPasswordConfirmation()));
+            jsonObj.add("booking_to_rate_id", context.serialize(value.getBookingRateId()));
+            jsonObj.add("booking_to_rate_pro_name", context.serialize(value.getBookingRatePro()));
 
             return jsonObj;
         }

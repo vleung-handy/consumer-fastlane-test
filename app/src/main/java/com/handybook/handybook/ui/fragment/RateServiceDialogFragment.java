@@ -171,3 +171,7 @@ public class RateServiceDialogFragment extends DialogFragment {
         if (rating > 0) submitButton.setVisibility(View.VISIBLE);
     }
 }
+
+//TODO fix dismiss on rotation
+//TODO integrate submit call
+//TODO review on small screens
