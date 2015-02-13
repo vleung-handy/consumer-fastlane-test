@@ -11,6 +11,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
@@ -19,8 +20,11 @@ import javax.inject.Inject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends FragmentActivity {
+    private static final String STATE_SERVICE_RATING = "SERVICE_RATING";
 
     private OnBackPressedListener onBackPressedListener;
+    private RateServiceDialogFragment rateServiceDialog;
+    private int serviceRating = -1;
 
     @Inject
     Mixpanel mixpanel;
@@ -46,6 +50,10 @@ public abstract class BaseActivity extends FragmentActivity {
         if (data != null && data.getHost() != null && data.getHost().equals("deeplink.yoz.io")) {
             mixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
         }
+
+        if (savedInstanceState != null) {
+            serviceRating = savedInstanceState.getInt(STATE_SERVICE_RATING , -1);
+        }
     }
 
     @Override
@@ -55,6 +63,24 @@ public abstract class BaseActivity extends FragmentActivity {
         if (PlayServicesUtils.isGooglePlayStoreAvailable()) {
             PlayServicesUtils.handleAnyPlayServicesError(this);
         }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        if (rateServiceDialog == null) rateServiceDialog
+                = RateServiceDialogFragment.newInstance(serviceRating);
+
+        if (!rateServiceDialog.isVisible()) {
+            rateServiceDialog.show(this.getSupportFragmentManager(), "RateServiceDialogFragment");
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SERVICE_RATING, rateServiceDialog.getCurrentRating());
     }
 
     @Override

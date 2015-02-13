@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,8 +27,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class RateServiceDialogFragment extends DialogFragment {
+    static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
+    private static final String STATE_RATING = "RATING";
 
     private ArrayList<ImageView> stars = new ArrayList<>();
+    private int rating;
 
     @InjectView(R.id.service_icon) ImageView serviceIcon;
     @InjectView(R.id.title_text) TextView titleText;
@@ -39,6 +43,21 @@ public class RateServiceDialogFragment extends DialogFragment {
     @InjectView(R.id.star_3) ImageView star3;
     @InjectView(R.id.star_4) ImageView star4;
     @InjectView(R.id.star_5) ImageView star5;
+
+    public static RateServiceDialogFragment newInstance(final int rating) {
+        final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
+        final Bundle bundle = new Bundle();
+
+        bundle.putInt(EXTRA_RATING, rating);
+        rateServiceDialogFragment .setArguments(bundle);
+        return rateServiceDialogFragment;
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
+    }
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -66,7 +85,17 @@ public class RateServiceDialogFragment extends DialogFragment {
         final View view = inflater.inflate(R.layout.dialog_rate_service, container, true);
         ButterKnife.inject(this, view);
 
+        if (savedInstanceState != null) {
+            rating = savedInstanceState.getInt(STATE_RATING , -1);
+        }
+        else {
+            final Bundle args = getArguments();
+            if (args != null) rating = args.getInt(EXTRA_RATING, -1);
+            else rating = -1;
+        }
+
         initStars();
+        setRating(rating);
 
         serviceIcon.setColorFilter(getResources().getColor(R.color.handy_green),
                 PorterDuff.Mode.SRC_ATOP);
@@ -82,6 +111,16 @@ public class RateServiceDialogFragment extends DialogFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_RATING, rating);
+    }
+
+    public int getCurrentRating() {
+        return rating;
     }
 
     private void initStars() {
@@ -107,30 +146,28 @@ public class RateServiceDialogFragment extends DialogFragment {
                             layout.getRight(), layout.getBottom());
 
                     if (outRect.contains((int)event.getX(), (int)event.getY())) {
-                        final int starIndex = stars.indexOf((ImageView)layout.getChildAt(0));
-
-                        for (int j = 0; j < stars.size(); j++) {
-                            final ImageView star = stars.get(j);
-
-                            System.out.println(starIndex);
-                            System.out.println(j);
-
-                            if (j <= starIndex) star.clearColorFilter();
-                            else star.setColorFilter(getResources().getColor(R.color.light_grey),
-                                    PorterDuff.Mode.SRC_ATOP);
-                        }
-
-                        submitButton.setVisibility(View.VISIBLE);
+                        final int starsIndex = stars.indexOf((ImageView)layout.getChildAt(0));
+                        setRating(starsIndex);
                         break;
                     }
                 }
 
-                //TODO handle case when going into background and returning (double dialogs / crash sometimes)
-                //TODO make dialog keep state across roations
-                //TODO hookup backend logic to rate and detect if rating needed
-                
                 return true;
             }
         });
+    }
+
+    private void setRating(final int rating) {
+        this.rating = rating;
+
+        for (int j = 0; j < stars.size(); j++) {
+            final ImageView star = stars.get(j);
+
+            if (j <= rating) star.clearColorFilter();
+            else star.setColorFilter(getResources().getColor(R.color.light_grey),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+
+        if (rating > 0) submitButton.setVisibility(View.VISIBLE);
     }
 }
