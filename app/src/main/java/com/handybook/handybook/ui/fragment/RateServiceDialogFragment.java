@@ -1,13 +1,8 @@
 package com.handybook.handybook.ui.fragment;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +24,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class RateServiceDialogFragment extends InjectedDialogFragment {
+public class RateServiceDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
@@ -52,11 +47,11 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
     @InjectView(R.id.star_4) ImageView star4;
     @InjectView(R.id.star_5) ImageView star5;
 
-    public static RateServiceDialogFragment newInstance(final int bookindId, final int rating) {
+    public static RateServiceDialogFragment newInstance(final int bookingId, final int rating) {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
         final Bundle bundle = new Bundle();
 
-        bundle.putInt(EXTRA_BOOKING, bookindId);
+        bundle.putInt(EXTRA_BOOKING, bookingId);
         bundle.putInt(EXTRA_RATING, rating);
 
         rateServiceDialogFragment .setArguments(bundle);
@@ -64,33 +59,9 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
-    }
-
-    @Override
-    public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        this.setStyle(DialogFragment.STYLE_NO_FRAME, 0);
-        return new Dialog(getActivity());
-    }
-
-    @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        getDialog().setCancelable(false);
-        getDialog().setCanceledOnTouchOutside(false);
-
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(final DialogInterface dialog, final int keyCode,
-                                 final KeyEvent event) {
-                return true;
-            }
-        });
+        super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_rate_service, container, true);
         ButterKnife.inject(this, view);
@@ -107,7 +78,7 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
         serviceIcon.setColorFilter(getResources().getColor(R.color.handy_green),
                 PorterDuff.Mode.SRC_ATOP);
 
-        titleText.setText(getResources().getString(R.string.how_was_service));
+        titleText.setText(getResources().getString(R.string.how_was_last_service));
         messageText.setText(getResources().getString(R.string.please_rate_pro));
 
         submitButton.setOnClickListener(submitListener);
@@ -181,7 +152,7 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
                     PorterDuff.Mode.SRC_ATOP);
         }
 
-        if (rating > 0) submitButton.setVisibility(View.VISIBLE);
+        if (rating >= 0) submitButton.setVisibility(View.VISIBLE);
     }
 
     private View.OnClickListener submitListener = new View.OnClickListener() {
@@ -196,6 +167,9 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
                 public void onSuccess(final Void response) {
                     if (!allowCallbacks) return;
                     dismiss();
+
+                    RateServiceConfirmDialogFragment.newInstance().show(getActivity()
+                                .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
                 }
 
                 @Override
@@ -211,6 +185,7 @@ public class RateServiceDialogFragment extends InjectedDialogFragment {
     };
 }
 
-//TODO fix dismiss on rotation
-//TODO find way to show loading progress
+//TODO dont show if in booking flow (only on main screen?)
+//TODO show cancel button if onsubmit throws error
+//TODO clean up UI according to spec
 //TODO fix on small screens

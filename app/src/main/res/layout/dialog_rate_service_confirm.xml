@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:text="Title"
+            style="@style/TextView.Large.Bold" />
+
+        <TextView
+            android:id="@+id/message_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_below="@id/title_text"
+            android:layout_marginBottom="16dp"
+            android:text="Message"
+            android:textColor="@color/dark_grey_pressed"
+            style="@style/TextView.Medium" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/message_text">
+
+            <Button
+                android:id="@+id/submit_button"
+                android:text="@string/close"
+                android:animateLayoutChanges="true"
+                android:visibility="visible"
+                style="@style/Button.Green"/>
+
+            <ProgressBar
+                android:id="@+id/submit_progress"
+                android:layout_gravity="center"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-24dp">
+
+        <ImageView
+            android:id="@+id/service_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/circle"
+            android:layout_centerInParent="true"
+            android:contentDescription="rate" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_clean"
+            android:layout_centerInParent="true"
+            android:contentDescription="rate" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

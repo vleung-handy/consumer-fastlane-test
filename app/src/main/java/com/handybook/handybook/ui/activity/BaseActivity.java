@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
@@ -23,12 +24,9 @@ import javax.inject.Inject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends FragmentActivity {
-    private static final String STATE_SERVICE_RATING = "SERVICE_RATING";
-
     private boolean allowCallbacks;
     private OnBackPressedListener onBackPressedListener;
     private RateServiceDialogFragment rateServiceDialog;
-    private int serviceRating = -1;
 
     @Inject Mixpanel mixpanel;
     @Inject UserManager userManager;
@@ -55,10 +53,6 @@ public abstract class BaseActivity extends FragmentActivity {
         if (data != null && data.getHost() != null && data.getHost().equals("deeplink.yoz.io")) {
             mixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
         }
-
-        if (savedInstanceState != null) {
-            serviceRating = savedInstanceState.getInt(STATE_SERVICE_RATING , -1);
-        }
     }
 
     @Override
@@ -84,15 +78,6 @@ public abstract class BaseActivity extends FragmentActivity {
 
         // check if user has a booking to rate
         checkRequiredRatings();
-    }
-
-    @Override
-    protected void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (rateServiceDialog !=null) {
-            outState.putInt(STATE_SERVICE_RATING, rateServiceDialog.getCurrentRating());
-        }
     }
 
     @Override
@@ -124,25 +109,29 @@ public abstract class BaseActivity extends FragmentActivity {
         final User user = userManager.getCurrentUser();
 
         if (user != null) {
-            dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
-                @Override
-                public void onSuccess(final User user) {
-                    if (!allowCallbacks) return;
+            final FragmentManager fm = getSupportFragmentManager();
 
-                    if (user.getBookingRatePro() != null) {
-                        if (rateServiceDialog == null) rateServiceDialog = RateServiceDialogFragment
-                                .newInstance(user.getBookingRateId(), serviceRating);
+            rateServiceDialog
+                    = (RateServiceDialogFragment)fm.findFragmentByTag("RateServiceDialogFragment");
 
-                        if (!rateServiceDialog.isVisible()) {
+            if (rateServiceDialog == null) {
+                dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
+                    @Override
+                    public void onSuccess(final User user) {
+                        if (!allowCallbacks) return;
+                        if (user.getBookingRatePro() != null) {
+                            rateServiceDialog = RateServiceDialogFragment
+                                    .newInstance(user.getBookingRateId(), -1);
+
                             rateServiceDialog.show(BaseActivity.this.getSupportFragmentManager(),
                                     "RateServiceDialogFragment");
                         }
                     }
-                }
 
-                @Override
-                public void onError(DataManager.DataManagerError error) {}
-            });
+                    @Override
+                    public void onError(DataManager.DataManagerError error) {}
+                });
+            }
         }
     }
 }
