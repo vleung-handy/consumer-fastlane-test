@@ -120,13 +120,20 @@ public abstract class BaseActivity extends FragmentActivity {
                     public void onSuccess(final User user) {
                         if (!allowCallbacks) return;
 
-                        if (user.getBookingRatePro() != null
+                        final String proName = user.getBookingRatePro();
+
+                        if (proName != null
                                 && BaseActivity.this instanceof ServiceCategoriesActivity) {
+                            final int bookingId = user.getBookingRateId();
+
                             rateServiceDialog = RateServiceDialogFragment
-                                    .newInstance(user.getBookingRateId(), -1);
+                                    .newInstance(bookingId, proName, -1);
 
                             rateServiceDialog.show(BaseActivity.this.getSupportFragmentManager(),
                                     "RateServiceDialogFragment");
+
+                            mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
+                                    proName, 0);
                         }
                     }
 

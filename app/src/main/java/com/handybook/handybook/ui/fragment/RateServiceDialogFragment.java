@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.Mixpanel;
 
 import java.util.ArrayList;
 
@@ -26,11 +27,13 @@ import butterknife.InjectView;
 
 public class RateServiceDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
+    static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
 
     private ArrayList<ImageView> stars = new ArrayList<>();
     private int booking;
+    private String proName;
     private int rating;
 
     @Inject DataManager dataManager;
@@ -48,11 +51,13 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     @InjectView(R.id.star_4) ImageView star4;
     @InjectView(R.id.star_5) ImageView star5;
 
-    public static RateServiceDialogFragment newInstance(final int bookingId, final int rating) {
+    public static RateServiceDialogFragment newInstance(final int bookingId, final String proName,
+                                                        final int rating) {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
         final Bundle bundle = new Bundle();
 
         bundle.putInt(EXTRA_BOOKING, bookingId);
+        bundle.putString(EXTRA_PRO_NAME, proName);
         bundle.putInt(EXTRA_RATING, rating);
 
         rateServiceDialogFragment.setArguments(bundle);
@@ -69,6 +74,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
 
         final Bundle args = getArguments();
         booking = args.getInt(EXTRA_BOOKING);
+        proName = args.getString(EXTRA_PRO_NAME);
 
         if (savedInstanceState != null) rating = savedInstanceState.getInt(STATE_RATING , -1);
         else rating = args.getInt(EXTRA_RATING, -1);
@@ -163,13 +169,18 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
             submitProgress.setVisibility(View.VISIBLE);
             submitButton.setText(null);
 
-            dataManager.ratePro(booking, rating + 1, null, new DataManager.Callback<Void>() {
+            final int finalRating = rating + 1;
+
+            dataManager.ratePro(booking, finalRating, null, new DataManager.Callback<Void>() {
                 @Override
                 public void onSuccess(final Void response) {
                     if (!allowCallbacks) return;
                     dismiss();
 
-                    RateServiceConfirmDialogFragment.newInstance(rating + 1).show(getActivity()
+                    mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, booking,
+                            proName, finalRating);
+
+                    RateServiceConfirmDialogFragment.newInstance(finalRating).show(getActivity()
                                 .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
                 }
 
@@ -186,10 +197,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     };
 }
 
-//TODO add tracking
+//TODO add new flow from email (cancel button, etc)
 //TODO add checkmark icon
 //TODO add api call to submit feedback
-//TODO show cancel button if onsubmit throws error
 //TODO fix on small screens
-
-//TODO integrate with new api (Scott)

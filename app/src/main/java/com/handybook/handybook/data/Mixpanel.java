@@ -113,13 +113,13 @@ public class Mixpanel {
         mixpanel.track("log in page view", null);
     }
 
-    public void trackEventLoginSuccess(LoginType type) {
+    public void trackEventLoginSuccess(final LoginType type) {
         final JSONObject props = new JSONObject();
         addProps(props, "log_in_type", type.getValue());
         mixpanel.track("log in successful", props);
     }
 
-    public void trackEventLoginFailure(LoginType type) {
+    public void trackEventLoginFailure(final LoginType type) {
         final JSONObject props = new JSONObject();
         addProps(props, "log_in_type", type.getValue());
         mixpanel.track("log in failure", props);
@@ -189,6 +189,19 @@ public class Mixpanel {
         final JSONObject props = new JSONObject();
         addProps(props, "new_open", newOpen);
         mixpanel.track("app had been opened", props);
+    }
+
+    public void trackEventProRate(final ProRateEventType type, final int bookingId,
+                                  final String proName, final int rating) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "dialog_event", type.getValue());
+        addProps(props, "booking_id", bookingId);
+        addProps(props, "provider_name", proName);
+        addProps(props, "rating_range", "1 to 5");
+
+        if (type == ProRateEventType.SUBMIT) addProps(props, "app_rating", rating);
+
+        mixpanel.track("app pro rate event", props);
     }
 
     private void addProps(final JSONObject object, final String key, final Object value) {
@@ -331,6 +344,20 @@ public class Mixpanel {
         private String value;
 
         private LoginType(final String value) {
+            this.value = value;
+        }
+
+        String getValue() {
+            return value;
+        }
+    }
+
+    public enum ProRateEventType {
+        SHOW("show"), SUBMIT("submit");
+
+        private String value;
+
+        private ProRateEventType(final String value) {
             this.value = value;
         }
 
