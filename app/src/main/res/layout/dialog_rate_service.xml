@@ -183,15 +183,16 @@
         </LinearLayout>
 
         <FrameLayout
+            android:id="@+id/submit_button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ratings_layout">
+            android:layout_below="@+id/ratings_layout"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/submit_button"
                 android:text="@string/submit"
                 android:animateLayoutChanges="true"
-                android:visibility="gone"
                 style="@style/Button.Green"/>
 
             <ProgressBar

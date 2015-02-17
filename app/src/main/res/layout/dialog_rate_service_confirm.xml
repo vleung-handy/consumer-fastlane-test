@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:layout_below="@id/title_text"
@@ -35,16 +35,29 @@
             android:textColor="@color/dark_grey_pressed"
             style="@style/TextView.Medium" />
 
-        <FrameLayout
+        <com.handybook.handybook.ui.widget.LimitedEditText
+            android:id="@+id/feedback_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/message_text">
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/message_text"
+            android:visibility="visible"
+            android:hint="@string/feedback_hint"
+            android:textColorHint="@color/dark_grey_pressed"
+            style="@style/TextView.Medium" />
+
+        <FrameLayout
+            android:id="@+id/submit_button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/feedback_text">
 
             <Button
                 android:id="@+id/submit_button"
                 android:text="@string/close"
                 android:animateLayoutChanges="true"
-                android:visibility="visible"
                 style="@style/Button.Green"/>
 
             <ProgressBar
@@ -73,6 +86,7 @@
             android:contentDescription="rate" />
 
         <ImageView
+            android:id="@+id/service_icon_img"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_clean"

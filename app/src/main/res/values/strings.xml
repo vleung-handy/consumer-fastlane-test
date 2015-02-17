@@ -113,4 +113,8 @@
     <string name="thanks_for_feedback">Thanks for your feedback!</string>
     <string name="were_sorry_feedback">We\'re sorry to hear that you had a less than perfect experience. Your feedback will help us improve the service for next time.</string>
     <string name="close">Close</string>
+    <string name="glad_you_enjoy">Glad you enjoyed it!</string>
+    <string name="good_vibes">We\'d love to pass on the good vibes.</string>
+    <string name="send">Send</string>
+    <string name="feedback_hint">\"Great work! Loved the kitchen.\"</string>
 </resources>

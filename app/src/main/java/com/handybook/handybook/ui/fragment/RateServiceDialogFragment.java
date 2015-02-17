@@ -41,6 +41,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     @InjectView(R.id.submit_button) Button submitButton;
     @InjectView(R.id.submit_progress) ProgressBar submitProgress;
     @InjectView(R.id.ratings_layout) LinearLayout ratingsLayout;
+    @InjectView(R.id.submit_button_layout) View submitButtonLayout;
     @InjectView(R.id.star_1) ImageView star1;
     @InjectView(R.id.star_2) ImageView star2;
     @InjectView(R.id.star_3) ImageView star3;
@@ -54,7 +55,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         bundle.putInt(EXTRA_BOOKING, bookingId);
         bundle.putInt(EXTRA_RATING, rating);
 
-        rateServiceDialogFragment .setArguments(bundle);
+        rateServiceDialogFragment.setArguments(bundle);
         return rateServiceDialogFragment;
     }
 
@@ -152,7 +153,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
                     PorterDuff.Mode.SRC_ATOP);
         }
 
-        if (rating >= 0) submitButton.setVisibility(View.VISIBLE);
+        if (rating >= 0) submitButtonLayout.setVisibility(View.VISIBLE);
     }
 
     private View.OnClickListener submitListener = new View.OnClickListener() {
@@ -168,7 +169,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
                     if (!allowCallbacks) return;
                     dismiss();
 
-                    RateServiceConfirmDialogFragment.newInstance().show(getActivity()
+                    RateServiceConfirmDialogFragment.newInstance(rating + 1).show(getActivity()
                                 .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
                 }
 
@@ -185,7 +186,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     };
 }
 
-//TODO dont show if in booking flow (only on main screen?)
+//TODO add tracking
+//TODO add checkmark icon
+//TODO add api call to submit feedback
 //TODO show cancel button if onsubmit throws error
-//TODO clean up UI according to spec
 //TODO fix on small screens
+
+//TODO integrate with new api (Scott)
