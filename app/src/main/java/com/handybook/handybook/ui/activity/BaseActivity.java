@@ -119,7 +119,9 @@ public abstract class BaseActivity extends FragmentActivity {
                     @Override
                     public void onSuccess(final User user) {
                         if (!allowCallbacks) return;
-                        if (user.getBookingRatePro() != null) {
+
+                        if (user.getBookingRatePro() != null
+                                && BaseActivity.this instanceof ServiceCategoriesActivity) {
                             rateServiceDialog = RateServiceDialogFragment
                                     .newInstance(user.getBookingRateId(), -1);
 
