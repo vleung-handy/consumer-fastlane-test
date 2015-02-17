@@ -197,6 +197,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     };
 }
 
+//TODO add cancel button for submit api call fail
+//TODO disable push notifcations
 //TODO add new flow from email (cancel button, etc)
 //TODO add checkmark icon
 //TODO add api call to submit feedback

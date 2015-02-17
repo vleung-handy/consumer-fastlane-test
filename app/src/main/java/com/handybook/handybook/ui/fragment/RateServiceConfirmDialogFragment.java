@@ -28,6 +28,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
     @InjectView(R.id.message_text) TextView messageText;
     @InjectView(R.id.feedback_text) LimitedEditText feedbackText;
     @InjectView(R.id.submit_button) Button submitButton;
+    @InjectView(R.id.skip_button) Button skipButton;
     @InjectView(R.id.submit_button_layout) View submitButtonLayout;
 
     public static RateServiceConfirmDialogFragment newInstance(final int rating) {
@@ -60,6 +61,13 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
 
         initLayout(rating);
         submitButton.setOnClickListener(submitListener);
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                dismiss();
+            }
+        });
 
         return view;
     }
@@ -116,6 +124,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
                 feedbackText.setMaxLines(3);
                 feedbackText.setVisibility(View.VISIBLE);
                 submitButton.setText(getResources().getString(R.string.send));
+                skipButton.setVisibility(View.VISIBLE);
             }
         }
         else {
