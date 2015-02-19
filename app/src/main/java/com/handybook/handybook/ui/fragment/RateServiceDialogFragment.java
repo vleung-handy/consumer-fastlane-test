@@ -171,7 +171,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
 
             final int finalRating = rating + 1;
 
-            dataManager.ratePro(booking, finalRating, null, new DataManager.Callback<Void>() {
+            dataManager.ratePro(booking, finalRating, new DataManager.Callback<Void>() {
                 @Override
                 public void onSuccess(final Void response) {
                     if (!allowCallbacks) return;
@@ -180,14 +180,14 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
                     mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, booking,
                             proName, finalRating);
 
-                    RateServiceConfirmDialogFragment.newInstance(finalRating).show(getActivity()
+                    RateServiceConfirmDialogFragment.newInstance(booking, finalRating).show(getActivity()
                                 .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
                 }
 
                 @Override
                 public void onError(final DataManager.DataManagerError error) {
                     if (!allowCallbacks) return;
-                    submitProgress.setVisibility(View.INVISIBLE);
+                    submitProgress.setVisibility(View.GONE);
                     submitButton.setText(R.string.submit);
                     enableInputs();
                     dataManagerErrorHandler.handleError(getActivity(), error);
@@ -197,9 +197,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     };
 }
 
-//TODO add cancel button for submit api call fail
-//TODO disable push notifcations
-//TODO add new flow from email (cancel button, etc)
+//TODO PM review
+
 //TODO add checkmark icon
-//TODO add api call to submit feedback
+//TODO add cancel button for submit api call fail
 //TODO fix on small screens
+
+//TODO disable push notifcations

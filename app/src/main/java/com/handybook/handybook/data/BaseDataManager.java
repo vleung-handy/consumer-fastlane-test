@@ -187,7 +187,8 @@ public final class BaseDataManager extends DataManager {
     public final void validateBookingZip(final int serviceId, final String zipCode, final String userId,
                                          final String authToken, final String promoCode,
                                          final Callback<Void> cb) {
-        service.validateBookingZip(serviceId, zipCode, userId, authToken, promoCode, new HandyRetrofitCallback(cb) {
+        service.validateBookingZip(serviceId, zipCode, userId, authToken, promoCode,
+                new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 cb.onSuccess(null);
@@ -397,11 +398,24 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public void ratePro(final int bookingId, final int rating, final String review, final Callback<Void> cb) {
-        service.ratePro(bookingId, rating, review, new HandyRetrofitCallback(cb) {
+    public void ratePro(final int bookingId, final int rating, final Callback<Void> cb) {
+        service.ratePro(bookingId, rating, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 cb.onSuccess(null);
+            }
+        });
+    }
+
+    @Override
+    public void submitProRatingDetails(final int bookingId, final String positiveFeedback,
+                                       final Callback<Void> cb) {
+        service.submitProRatingDetails(bookingId, new HandyRetrofitService
+                .RateProRequest(positiveFeedback), new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                if (response.optBoolean("success", false)) cb.onSuccess(null);
+                else cb.onError(new DataManagerError(Type.SERVER));
             }
         });
     }

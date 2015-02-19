@@ -65,20 +65,26 @@
                     android:visibility="gone"
                     style="@style/Button.Grey"/>
 
-                <Button
-                    android:id="@+id/submit_button"
-                    android:text="@string/close"
-                    android:layout_weight="1"
-                    style="@style/Button.Green"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/submit_button"
+                        android:text="@string/close"
+                        style="@style/Button.Green"/>
+
+                    <ProgressBar
+                        android:id="@+id/submit_progress"
+                        android:layout_gravity="center"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:visibility="gone" />
+
+                </FrameLayout>
 
             </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/submit_progress"
-                android:layout_gravity="center"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:visibility="invisible" />
 
         </FrameLayout>
 

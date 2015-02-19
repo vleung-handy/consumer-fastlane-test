@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.widget.LimitedEditText;
 import com.handybook.handybook.util.Utils;
 
@@ -18,9 +20,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
+    static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
 
     private int rating;
+    private int booking;
 
     @InjectView(R.id.service_icon) ImageView serviceIcon;
     @InjectView(R.id.service_icon_img) ImageView serviceIconImage;
@@ -28,14 +32,16 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
     @InjectView(R.id.message_text) TextView messageText;
     @InjectView(R.id.feedback_text) LimitedEditText feedbackText;
     @InjectView(R.id.submit_button) Button submitButton;
+    @InjectView(R.id.submit_progress) ProgressBar submitProgress;
     @InjectView(R.id.skip_button) Button skipButton;
     @InjectView(R.id.submit_button_layout) View submitButtonLayout;
 
-    public static RateServiceConfirmDialogFragment newInstance(final int rating) {
+    public static RateServiceConfirmDialogFragment newInstance(final int bookingId, final int rating) {
         final RateServiceConfirmDialogFragment rateServiceConfirmDialogFragment
                 = new RateServiceConfirmDialogFragment();
 
         final Bundle bundle = new Bundle();
+        bundle.putInt(EXTRA_BOOKING, bookingId);
         bundle.putInt(EXTRA_RATING, rating);
         rateServiceConfirmDialogFragment.setArguments(bundle);
 
@@ -47,6 +53,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
+        booking = args.getInt(EXTRA_BOOKING);
         rating = args.getInt(EXTRA_RATING);
     }
 
@@ -91,12 +98,14 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
     protected void enableInputs() {
         super.enableInputs();
         submitButton.setClickable(true);
+        skipButton.setClickable(true);
     }
 
     @Override
     protected void disableInputs() {
         super.disableInputs();
         submitButton.setClickable(false);
+        skipButton.setClickable(false);
     }
 
     private void initLayout(final int rating) {
@@ -136,7 +145,31 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
     private View.OnClickListener submitListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            dismiss();
+            final String positiveFeedback = feedbackText.getText().toString();
+            if (positiveFeedback.length() > 0) {
+                disableInputs();
+                submitProgress.setVisibility(View.VISIBLE);
+                submitButton.setText(null);
+
+                dataManager.submitProRatingDetails(booking, positiveFeedback,
+                        new DataManager.Callback<Void>() {
+                    @Override
+                    public void onSuccess(final Void response) {
+                        if (!allowCallbacks) return;
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onError(DataManager.DataManagerError error) {
+                        if (!allowCallbacks) return;
+                        submitProgress.setVisibility(View.GONE);
+                        submitButton.setText(R.string.send);
+                        enableInputs();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                });
+            }
+            else dismiss();
         }
     };
 }

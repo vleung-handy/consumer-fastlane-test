@@ -59,8 +59,12 @@ public interface HandyRetrofitService {
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/rate_pro")
-    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating, @Field("review_text") String review,
+    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating,
                  HandyRetrofitCallback cb);
+
+    @POST("/bookings/{booking}/rating_flow")
+    void submitProRatingDetails(@Path("booking") int bookingId, @Body RateProRequest req,
+                        HandyRetrofitCallback cb);
 
     @POST("/transactions")
     void completeBooking(@Body BookingTransaction req, HandyRetrofitCallback cb);
@@ -134,6 +138,14 @@ public interface HandyRetrofitService {
 
         BookingCreateRequest(final BookingRequest bookingRequest) {
             this.bookingRequest = bookingRequest;
+        }
+    }
+
+    static final class RateProRequest {
+        @SerializedName("positive_feedback") private String positiveFeedback;
+
+        RateProRequest(final String positiveFeedback) {
+            this.positiveFeedback = positiveFeedback;
         }
     }
 }
