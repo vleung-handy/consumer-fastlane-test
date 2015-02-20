@@ -203,7 +203,3 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         }
     };
 }
-
-//TODO fix on small screens
-//TODO disable push notifcations
-//TODO merge branch
