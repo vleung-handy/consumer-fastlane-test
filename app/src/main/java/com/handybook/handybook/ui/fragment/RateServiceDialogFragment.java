@@ -42,6 +42,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     @InjectView(R.id.title_text) TextView titleText;
     @InjectView(R.id.message_text) TextView messageText;
     @InjectView(R.id.submit_button) Button submitButton;
+    @InjectView(R.id.skip_button) Button skipButton;
     @InjectView(R.id.submit_progress) ProgressBar submitProgress;
     @InjectView(R.id.ratings_layout) LinearLayout ratingsLayout;
     @InjectView(R.id.submit_button_layout) View submitButtonLayout;
@@ -89,6 +90,13 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         messageText.setText(getResources().getString(R.string.please_rate_pro));
 
         submitButton.setOnClickListener(submitListener);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                dismiss();
+            }
+        });
+
         return view;
     }
 
@@ -102,12 +110,14 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     protected void enableInputs() {
         super.enableInputs();
         submitButton.setClickable(true);
+        skipButton.setClickable(true);
     }
 
     @Override
     protected void disableInputs() {
         super.disableInputs();
         submitButton.setClickable(false);
+        skipButton.setClickable(false);
     }
 
     public int getCurrentRating() {
@@ -189,6 +199,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
                     if (!allowCallbacks) return;
                     submitProgress.setVisibility(View.GONE);
                     submitButton.setText(R.string.submit);
+                    skipButton.setVisibility(View.VISIBLE);
                     enableInputs();
                     dataManagerErrorHandler.handleError(getActivity(), error);
                 }
@@ -197,10 +208,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     };
 }
 
-//TODO PM review
-
-//TODO add checkmark icon
-//TODO add cancel button for submit api call fail
 //TODO fix on small screens
-
 //TODO disable push notifcations
+//TODO merge branch
