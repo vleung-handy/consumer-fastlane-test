@@ -49,8 +49,8 @@ public final class BaseApplication extends Application {
                 defaultNotificationFactory.setSmallIconId(R.drawable.ic_notification);
 
                 airship.getPushManager().setNotificationFactory(defaultNotificationFactory);
-                airship.getPushManager().setPushEnabled(true);
-                airship.getPushManager().setUserNotificationsEnabled(true);
+                airship.getPushManager().setPushEnabled(false);
+                airship.getPushManager().setUserNotificationsEnabled(false);
             }
         });
 
