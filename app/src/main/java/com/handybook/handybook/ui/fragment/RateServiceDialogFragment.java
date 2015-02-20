@@ -120,10 +120,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         skipButton.setClickable(false);
     }
 
-    public int getCurrentRating() {
-        return rating;
-    }
-
     private void initStars() {
         stars.add(star1);
         stars.add(star2);
