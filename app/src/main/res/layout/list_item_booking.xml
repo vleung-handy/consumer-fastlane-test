@@ -1,34 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cell_layout"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     style="@style/BookingsCell">
 
-    <TextView
-        android:id="@+id/service"
-        android:layout_width="match_parent"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cell_layout"
+        android:layout_weight="5"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:singleLine="true"
-        android:text="SERVICE"
-        style="@style/TextView.Headline.Blue" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:singleLine="true"
-        android:text="DATE"
-        style="@style/TextView.Headline.Small" />
+        <TextView
+            android:id="@+id/service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:singleLine="true"
+            android:text="SERVICE"
+            style="@style/TextView.Headline.Blue" />
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/date"
+            android:layout_below="@id/service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:singleLine="true"
+            android:text="DATE"
+            style="@style/TextView.Headline.Small" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_below="@id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textSize="@dimen/small_text_size"
+            android:text="TIME"
+            style="@style/TextView.Headline.Small.Light" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/laundry_layout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:textSize="@dimen/small_text_size"
-        android:text="TIME"
-        style="@style/TextView.Headline.Small.Light" />
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/laundry_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/circle_teal"
+                android:contentDescription="laundry" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_hanger"
+                android:contentDescription="laundry" />
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_below="@id/laundry_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:text="@string/laundry"
+            android:textColor="@color/light_grey"
+            style="@style/TextView.XSmall" />
+
+    </RelativeLayout>
 
 </LinearLayout>
