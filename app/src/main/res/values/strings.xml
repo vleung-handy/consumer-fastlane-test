@@ -118,4 +118,6 @@
     <string name="send">Send</string>
     <string name="feedback_hint">\"Great work! Loved the kitchen.\"</string>
     <string name="laundry">Laundry</string>
+    <string name="dry_cleaning_laundry"><![CDATA[Dry Cleaning & Laundry]]></string>
+    <string name="pickup_occur">Pick-up will occur during your cleaning.</string>
 </resources>

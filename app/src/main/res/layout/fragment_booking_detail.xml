@@ -191,7 +191,7 @@
                     android:layout_width="144dp"
                     android:layout_height="wrap_content"
                     android:text="@string/professional"
-                    style="@style/TextView.Med"/>
+                    style="@style/TextView.Med" />
 
                 <TextView
                     android:id="@+id/pro_text"
@@ -199,14 +199,43 @@
                     android:layout_height="wrap_content"
                     android:text="Professional"
                     android:textColorLink="@color/handy_blue"
-                    style="@style/TextView"/>
+                    style="@style/TextView" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@id/pro_layout"
+                android:background="@color/cell_sep" />
+
+            <LinearLayout
+                android:id="@+id/laundry_layout"
+                android:layout_below="@id/pro_layout"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                style="@style/ContentLayoutCell">
+
+                <TextView
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dry_cleaning_laundry"
+                    style="@style/TextView.Med" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pickup_occur"
+                    android:textColorLink="@color/handy_blue"
+                    style="@style/TextView" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/end_sep"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@id/laundry_layout"
                 android:background="@color/nav_sep" />
 
             <!--empty view needed for bottom layout margin bug on older APIs-->
@@ -214,7 +243,7 @@
                 android:id="@+id/end_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@id/pro_layout" />
+                android:layout_below="@id/end_sep" />
 
             <RelativeLayout
                 android:id="@+id/options_layout"
