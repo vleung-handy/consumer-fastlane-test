@@ -1,12 +1,14 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -264,9 +266,16 @@ public final class BookingsFragment extends InjectedFragment {
                 }
 
                 final View laundryIcon = convertView.findViewById(R.id.laundry_layout);
+                final ImageView laundryImg = (ImageView)convertView.findViewById(R.id.laundry_icon_bg);
+                final TextView laundryText = (TextView)convertView.findViewById(R.id.laundry_icon_text);
 
                 if (booking.getLaundryStatus() == Booking.LaundryStatus.ACTIVE) {
                     laundryIcon.setVisibility(View.VISIBLE);
+                }
+                else if (booking.getLaundryStatus() == Booking.LaundryStatus.SKIPPED) {
+                    laundryImg.setColorFilter(getResources().getColor(R.color.disabled),
+                            PorterDuff.Mode.SRC_ATOP);
+                    laundryText.setTextColor(getResources().getColor(R.color.disabled));
                 }
                 else laundryIcon.setVisibility(View.GONE);
             }

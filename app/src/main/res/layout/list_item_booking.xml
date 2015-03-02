@@ -54,6 +54,7 @@
             android:layout_centerHorizontal="true">
 
             <ImageView
+                android:id="@+id/laundry_icon_bg"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/circle_teal"
@@ -69,6 +70,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/laundry_icon_text"
             android:layout_below="@id/laundry_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
