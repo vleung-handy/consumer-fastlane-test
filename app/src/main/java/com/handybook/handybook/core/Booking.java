@@ -15,6 +15,7 @@ public final class Booking implements Parcelable {
     @SerializedName("hours") private float hours;
     @SerializedName("price") private float price;
     @SerializedName("recurring") private int isRecurring;
+    @SerializedName("laundry_status") private LaundryStatus laundryStatus;
     @SerializedName("address") private Address address;
     @SerializedName("provider") private Provider provider;
 
@@ -87,11 +88,18 @@ public final class Booking implements Parcelable {
         this.provider = provider;
     }
 
+    public final LaundryStatus getLaundryStatus() {
+        return laundryStatus;
+    }
+
     private Booking(final Parcel in) {
-        final String[] stringData = new String[2];
+        final String[] stringData = new String[3];
         in.readStringArray(stringData);
         id = stringData[0];
         service = stringData[1];
+
+        try { laundryStatus = LaundryStatus.valueOf(stringData[2]); }
+        catch (IllegalArgumentException x) { laundryStatus = null; }
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -103,7 +111,6 @@ public final class Booking implements Parcelable {
         hours = floatData[0];
         price = floatData[1];
 
-
         startDate = new Date(in.readLong());
         address = in.readParcelable(Address.class.getClassLoader());
         provider = in.readParcelable(Provider.class.getClassLoader());
@@ -111,7 +118,7 @@ public final class Booking implements Parcelable {
 
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
-        out.writeStringArray(new String[]{ id, service});
+        out.writeStringArray(new String[]{ id, service, laundryStatus != null ? laundryStatus.name() : ""});
         out.writeIntArray(new int[]{ isPast, isRecurring });
         out.writeFloatArray(new float[]{ hours, price });
         out.writeLong(startDate.getTime());
@@ -279,5 +286,10 @@ public final class Booking implements Parcelable {
                 return new Provider[size];
             }
         };
+    }
+
+    public enum LaundryStatus {
+        @SerializedName("active") ACTIVE,
+        @SerializedName("skipped") SKIPPED
     }
 }

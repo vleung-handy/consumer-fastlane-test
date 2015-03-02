@@ -44,7 +44,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.options_layout) View optionsLayout;
     @InjectView(R.id.reschedule_button) Button rescheduleButton;
     @InjectView(R.id.cancel_button) Button cancelButton;
-
+    @InjectView(R.id.laundry_layout) View laundryInfo;
 
     public static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -107,6 +107,11 @@ public final class BookingDetailFragment extends BookingFlowFragment {
             rescheduleButton.setOnClickListener(rescheduleClicked);
             cancelButton.setOnClickListener(cancelClicked);
         }
+
+        if (booking.getLaundryStatus() == Booking.LaundryStatus.ACTIVE) {
+            laundryInfo.setVisibility(View.VISIBLE);
+        }
+        else laundryInfo.setVisibility(View.GONE);
 
         return view;
     }

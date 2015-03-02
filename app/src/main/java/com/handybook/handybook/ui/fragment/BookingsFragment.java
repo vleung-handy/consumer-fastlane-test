@@ -262,6 +262,13 @@ public final class BookingsFragment extends InjectedFragment {
                     layout.setBackgroundResource((R.drawable.cell_booking_last));
                     layout.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 }
+
+                final View laundryIcon = convertView.findViewById(R.id.laundry_layout);
+
+                if (booking.getLaundryStatus() == Booking.LaundryStatus.ACTIVE) {
+                    laundryIcon.setVisibility(View.VISIBLE);
+                }
+                else laundryIcon.setVisibility(View.GONE);
             }
             return convertView;
         }
