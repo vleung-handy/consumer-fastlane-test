@@ -96,6 +96,10 @@ public interface HandyRetrofitService {
     void cancelBooking(@Path("booking") String bookingId, @Field("user_id") String userId,
                        @Field("auth_token") String authToken, HandyRetrofitCallback cb);
 
+    @GET("/bookings/{booking}/schedule_laundry")
+    void getLaundryScheduleInfo(@Path("booking") int bookingId, @Query("auth_token") String authToken,
+                                HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,

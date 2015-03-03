@@ -13,6 +13,7 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
+import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.User;
@@ -395,6 +396,17 @@ public final class BaseDataManager extends DataManager {
 
         if (reasonCode >= 0) service.cancelBooking(bookingId,reasonCode, userId, authToken, callback);
         else service.cancelBooking(bookingId, userId, authToken, callback);
+    }
+
+    @Override
+    public void getLaundryScheduleInfo(final int bookingId, final String authToken,
+                                       final Callback<LaundryDropInfo> cb) {
+        service.getLaundryScheduleInfo(bookingId, authToken, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(LaundryDropInfo.fromJson(response.toString()));
+            }
+        });
     }
 
     @Override
