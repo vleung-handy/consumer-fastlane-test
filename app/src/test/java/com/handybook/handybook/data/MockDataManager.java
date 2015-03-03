@@ -26,7 +26,7 @@ import javax.inject.Inject;
 public class MockDataManager extends DataManager {
 
     @Inject
-    public MockDataManager(final HandyEndpoint endpoint, final HandyRetrofitService service, final Bus bus) {
+    public MockDataManager(final HandyRetrofitService service, final HandyEndpoint endpoint, final Bus bus) {
         super(bus);
     }
 

@@ -3,12 +3,16 @@ package com.handybook.handybook.core;
 import android.content.Context;
 
 import com.handybook.handybook.data.BaseDataManager;
+import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
+import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.MockDataManager;
 import com.handybook.handybook.data.MockHandyRetrofitService;
 import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.ui.activity.BookingsActivityTest;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
 import com.squareup.otto.Bus;
 
@@ -22,7 +26,7 @@ import dagger.Provides;
  */
 @Module (
 
-        injects = { MockDataManager.class, BookingsFragment.class
+        injects = { MockDataManager.class, BookingsFragment.class, BookingsActivityTest.class
 
         })
 
@@ -66,15 +70,22 @@ public class TestModule {
         return null;
     }
 
-    @Provides @Singleton final SecurePreferences provideMockSecurePreferences() {
-        return null;
+    @Provides @Singleton final SecurePreferences provideSecurePreferences() { return null; }
+
+    @Provides @Singleton final Mixpanel provideMixpanel(final UserManager userManager,
+                                                        final BookingManager bookingManager,
+                                                        final Bus bus) {
+        return new Mixpanel(context, userManager, bookingManager, bus);
     }
 
     @Provides @Singleton final DataManager provideDataManager(final HandyRetrofitService service,
                                                               final HandyEndpoint endpoint,
-                                                              final Bus bus,
-                                                              final SecurePreferences prefs) {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);
+                                                              final Bus bus) {
+        final MockDataManager dataManager = new MockDataManager(service, endpoint, bus);
         return dataManager;
+    }
+
+    @Provides final DataManagerErrorHandler provideDataManagerErrorHandler() {
+        return new BaseDataManagerErrorHandler();
     }
 }
