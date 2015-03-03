@@ -51,14 +51,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:spinnerMode="dialog" />
+                android:spinnerMode="dropdown" />
 
             <Spinner
                 android:id="@+id/time_spinner"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:spinnerMode="dialog" />
+                android:spinnerMode="dropdown" />
 
         </LinearLayout>
 

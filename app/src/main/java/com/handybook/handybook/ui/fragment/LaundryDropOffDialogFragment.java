@@ -150,30 +150,44 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
         final List<Date> dates;
 
         DropDateAdapter(final Context context, final List<Date> dates) {
-            super(context, android.R.layout.simple_spinner_item, dates);
+            super(context, R.layout.list_item_drop_down, dates);
             this.context = context;
             this.dates = dates;
         }
 
         @Override
         public View getView(final int position, final View convertView, final ViewGroup parent) {
-            return buildRow(position, convertView, parent);
+            return buildRow(position, convertView, parent, false);
         }
 
         @Override
         public View getDropDownView(final int position, final View convertView, final ViewGroup parent) {
-            return buildRow(position, convertView, parent);
+            return buildRow(position, convertView, parent, true);
         }
 
-        private View buildRow(final int position, final View convertView, final ViewGroup parent) {
-            TextView row = (TextView)convertView;
+        private View buildRow(final int position, final View convertView, final ViewGroup parent,
+                              final boolean isDropDown) {
+            final LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+            View row = convertView;
+            TextView textView;
 
-            if (row == null) {
-                final LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-                row = (TextView)inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
+            if (!isDropDown) {
+                if (row == null) {
+                    row = inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
+                }
+
+                textView = (TextView)row;
+                textView.setTextColor(context.getResources().getColor(R.color.black));
+            }
+            else {
+                if (row == null) {
+                    row = inflater.inflate(R.layout.list_item_drop_down, parent, false);
+                }
+
+                textView = (TextView)row.findViewById(R.id.text);
             }
 
-            row.setText(TextUtils.formatDate(dates.get(position), "MM/dd/yy"));
+            textView.setText(TextUtils.formatDate(dates.get(position), "MM/dd/yy"));
             return row;
         }
     }
@@ -183,30 +197,45 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
         final List<LaundryDropInfo.DropTime> times;
 
         DropTimeAdapter(final Context context, final List<LaundryDropInfo.DropTime> times) {
-            super(context, android.R.layout.simple_spinner_item, times);
+            super(context, R.layout.list_item_drop_down, times);
             this.context = context;
             this.times = times;
         }
 
         @Override
         public View getView(final int position, final View convertView, final ViewGroup parent) {
-            return buildRow(position, convertView, parent);
+            return buildRow(position, convertView, parent, false);
         }
 
         @Override
         public View getDropDownView(final int position, final View convertView, final ViewGroup parent) {
-            return buildRow(position, convertView, parent);
+            return buildRow(position, convertView, parent, true);
         }
 
-        private View buildRow(final int position, final View convertView, final ViewGroup parent) {
-            TextView row = (TextView)convertView;
+        private View buildRow(final int position, final View convertView, final ViewGroup parent,
+                              final boolean isDropDown) {
 
-            if (row == null) {
-                final LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-                row = (TextView)inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
+            final LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+            View row = convertView;
+            TextView textView;
+
+            if (!isDropDown) {
+                if (row == null) {
+                    row = inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
+                }
+
+                textView = (TextView)row;
+                textView.setTextColor(context.getResources().getColor(R.color.black));
+            }
+            else {
+                if (row == null) {
+                    row = inflater.inflate(R.layout.list_item_drop_down, parent, false);
+                }
+
+                textView = (TextView)row.findViewById(R.id.text);
             }
 
-            row.setText(times.get(position).getDisplayTime());
+            textView.setText(times.get(position).getDisplayTime());
             return row;
         }
     }
