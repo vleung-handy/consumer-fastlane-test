@@ -101,6 +101,13 @@ public interface HandyRetrofitService {
                                 HandyRetrofitCallback cb);
 
     @FormUrlEncoded
+    @POST("/bookings/{booking}/schedule_laundry")
+    void setLaundryDropOff(@Path("booking") int bookingId, @Field("auth_token") String authToken,
+                           @Field("date") String date, @Field("hour") int hour,
+                           @Field("minute") int minute, @Field("type") String type,
+                           HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,
                            HandyRetrofitCallback cb);

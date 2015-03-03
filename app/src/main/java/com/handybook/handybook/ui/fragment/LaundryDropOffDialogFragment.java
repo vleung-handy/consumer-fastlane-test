@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.LaundryDropInfo;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.util.TextUtils;
 
@@ -114,34 +115,35 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
     private View.OnClickListener submitListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            dismiss();
-//            disableInputs();
-//            submitProgress.setVisibility(View.VISIBLE);
-//            submitButton.setText(null);
-//
-//            dataManager.ratePro(booking, finalRating, new DataManager.Callback<Void>() {
-//                @Override
-//                public void onSuccess(final Void response) {
-//                    if (!allowCallbacks) return;
-//                    dismiss();
-//
-//                    mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, booking,
-//                            proName, finalRating);
-//
-//                    RateServiceConfirmDialogFragment.newInstance(booking, finalRating).show(getActivity()
-//                                .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
-//                }
-//
-//                @Override
-//                public void onError(final DataManager.DataManagerError error) {
-//                    if (!allowCallbacks) return;
-//                    submitProgress.setVisibility(View.GONE);
-//                    submitButton.setText(R.string.submit);
-//                    skipButton.setVisibility(View.VISIBLE);
-//                    enableInputs();
-//                    dataManagerErrorHandler.handleError(getActivity(), error);
-//                }
-//            });
+            disableInputs();
+            submitProgress.setVisibility(View.VISIBLE);
+            submitButton.setText(null);
+
+            final User user = userManager.getCurrentUser();
+            final String date = TextUtils.formatDate((Date) dateSpinner.getSelectedItem(), "dd/MM/yyyy");
+
+            final LaundryDropInfo.DropTime dropTime
+                    = (LaundryDropInfo.DropTime)timeSpinner.getSelectedItem();
+
+
+
+            dataManager.setLaundryDropOff(booking, user.getAuthToken(), date, dropTime.getHour(),
+                    dropTime.getMinute(), dropInfo.getType(), new DataManager.Callback<Void>() {
+                @Override
+                public void onSuccess(final Void response) {
+                    if (!allowCallbacks) return;
+                    dismiss();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    submitProgress.setVisibility(View.GONE);
+                    submitButton.setText(R.string.submit);
+                    enableInputs();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
+            });
         }
     };
 

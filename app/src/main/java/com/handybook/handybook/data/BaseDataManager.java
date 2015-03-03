@@ -410,6 +410,19 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public void setLaundryDropOff(final int bookingId, final String authToken, final String date,
+                                  final int hour, final int minute, final String type,
+                                  final Callback<Void> cb) {
+        service.setLaundryDropOff(bookingId, authToken, date, hour, minute, type,
+                new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(null);
+            }
+        });
+    }
+
+    @Override
     public void ratePro(final int bookingId, final int rating, final Callback<Void> cb) {
         service.ratePro(bookingId, rating, new HandyRetrofitCallback(cb) {
             @Override
