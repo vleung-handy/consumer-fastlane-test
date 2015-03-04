@@ -24,7 +24,7 @@ public final class Booking implements Parcelable {
         return id;
     }
 
-    final void setId(final String id) {
+    public final void setId(final String id) {
         this.id = id;
     }
 

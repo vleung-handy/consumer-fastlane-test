@@ -170,10 +170,10 @@ public abstract class BaseActivity extends FragmentActivity {
     private void showLaundryInfoModal(final int bookingId, final String authToken) {
         dataManager.getAddLaundryInfo(bookingId, authToken, new DataManager.Callback<Booking>() {
             @Override
-            public void onSuccess(final Booking bookingInfo) {
+            public void onSuccess(final Booking booking) {
                 if (!allowCallbacks) return;
 
-                LaundryInfoDialogFragment.newInstance(bookingId)
+                LaundryInfoDialogFragment.newInstance(booking)
                         .show(BaseActivity.this.getSupportFragmentManager(), "LaundryInfoDialogFragment");
             }
 

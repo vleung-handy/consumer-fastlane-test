@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.util.TextUtils;
 
@@ -25,7 +26,7 @@ import butterknife.InjectView;
 public class LaundryInfoDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
 
-    private int booking;
+    private Booking booking;
 
     @Inject DataManager dataManager;
 
@@ -33,12 +34,12 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment {
     @InjectView(R.id.price_link) TextView priceLink;
     @InjectView(R.id.close_img) ImageView closeImage;
 
-    public static LaundryInfoDialogFragment newInstance(final int bookingId) {
+    public static LaundryInfoDialogFragment newInstance(final Booking booking) {
         final LaundryInfoDialogFragment laundryDropOffDialogFragment
                 = new LaundryInfoDialogFragment();
 
         final Bundle bundle = new Bundle();
-        bundle.putInt(EXTRA_BOOKING, bookingId);
+        bundle.putParcelable(EXTRA_BOOKING, booking);
 
         laundryDropOffDialogFragment.setArguments(bundle);
         return laundryDropOffDialogFragment;
@@ -49,7 +50,7 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
-        booking = args.getInt(EXTRA_BOOKING);
+        booking = args.getParcelable(EXTRA_BOOKING);
 
         this.canDismiss = true;
     }

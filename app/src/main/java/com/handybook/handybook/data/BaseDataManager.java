@@ -428,7 +428,9 @@ public final class BaseDataManager extends DataManager {
         service.getAddLaundryInfo(bookingId, authToken, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
-                cb.onSuccess(Booking.fromJson(response.optJSONObject("booking").toString()));
+                final Booking booking = Booking.fromJson(response.optJSONObject("booking").toString());
+                booking.setId(Integer.toString(bookingId));
+                cb.onSuccess(booking);
             }
         });
     }
