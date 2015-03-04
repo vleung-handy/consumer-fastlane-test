@@ -35,6 +35,7 @@ public final class User extends Observable {
     @SerializedName("booking_to_rate_id") private int bookingRateId;
     @SerializedName("booking_to_rate_pro_name") private String bookingRatePro;
     @SerializedName("schedule_laundry_booking_id") private int laundryBookingId;
+    @SerializedName("add_laundry_booking_id") private int addLaundryBookingId;
 
     public final String getAuthToken() {
         return authToken;
@@ -195,6 +196,10 @@ public final class User extends Observable {
         return laundryBookingId;
     }
 
+    public final int getAddLaundryBookingId() {
+        return addLaundryBookingId;
+    }
+
     private void triggerObservers() {
         setChanged();
         notifyObservers();
@@ -251,6 +256,7 @@ public final class User extends Observable {
             jsonObj.add("booking_to_rate_id", context.serialize(value.getBookingRateId()));
             jsonObj.add("booking_to_rate_pro_name", context.serialize(value.getBookingRatePro()));
             jsonObj.add("schedule_laundry_booking_id", context.serialize(value.getLaundryBookingId()));
+            jsonObj.add("add_laundry_booking_id", context.serialize(value.getAddLaundryBookingId()));
 
             return jsonObj;
         }

@@ -2,21 +2,25 @@ package com.handybook.handybook.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
+import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
@@ -111,6 +115,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
         if (user == null || fm.findFragmentByTag("RateServiceDialogFragment") != null
                 || fm.findFragmentByTag("LaundryDropOffDialogFragment") != null
+                || fm.findFragmentByTag("LaundryInfoDialogFragment") != null
                 || !(BaseActivity.this instanceof ServiceCategoriesActivity)) return;
 
         dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
@@ -119,9 +124,14 @@ public abstract class BaseActivity extends FragmentActivity {
                 if (!allowCallbacks) return;
 
                 final int laundryBookingId = user.getLaundryBookingId();
+                final int addLaundryBookingId = user.getAddLaundryBookingId();
                 final String proName = user.getBookingRatePro();
+                final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
 
-                if (laundryBookingId > 0) showLaundryDropOffModal(laundryBookingId, user.getAuthToken());
+                if (addLaundryBookingId > 0 && !prefs.getBoolean("APP_LAUNDRY_INFO_SHOWN", false)) {
+                    showLaundryInfoModal(addLaundryBookingId, user.getAuthToken());
+                }
+                else if (laundryBookingId > 0) showLaundryDropOffModal(laundryBookingId, user.getAuthToken());
                 else if (proName != null) {
                     final int bookingId = user.getBookingRateId();
 
@@ -142,11 +152,29 @@ public abstract class BaseActivity extends FragmentActivity {
     }
 
     private void showLaundryDropOffModal(final int bookingId, final String authToken) {
-        dataManager.getLaundryScheduleInfo(bookingId, authToken, new DataManager.Callback<LaundryDropInfo>() {
+        dataManager.getLaundryScheduleInfo(bookingId, authToken,
+                new DataManager.Callback<LaundryDropInfo>() {
             @Override
             public void onSuccess(final LaundryDropInfo info) {
+                if (!allowCallbacks) return;
+
                 LaundryDropOffDialogFragment.newInstance(bookingId, info)
                         .show(BaseActivity.this.getSupportFragmentManager(), "LaundryDropOffDialogFragment");
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error) {}
+        });
+    }
+
+    private void showLaundryInfoModal(final int bookingId, final String authToken) {
+        dataManager.getAddLaundryInfo(bookingId, authToken, new DataManager.Callback<Booking>() {
+            @Override
+            public void onSuccess(final Booking bookingInfo) {
+                if (!allowCallbacks) return;
+
+                LaundryInfoDialogFragment.newInstance(bookingId)
+                        .show(BaseActivity.this.getSupportFragmentManager(), "LaundryInfoDialogFragment");
             }
 
             @Override

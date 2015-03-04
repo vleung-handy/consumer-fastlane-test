@@ -80,6 +80,12 @@ public abstract class DataManager {
     public abstract void setLaundryDropOff(int bookingId, String authToken, String date, int hour,
                                            int minute, String type, Callback<Void> cb);
 
+    public abstract void getAddLaundryInfo(int bookingId, String authToken,
+                                                Callback<Booking> cb);
+
+    public abstract void addLaundry(int bookingId, String authToken,
+                                           Callback<Void> cb);
+
     public abstract void addBookingPostInfo(int bookingId, BookingPostInfo postInfo, Callback<Void> cb);
 
     public abstract void ratePro(int bookingId, int rating, Callback<Void> cb);

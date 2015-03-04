@@ -3,6 +3,7 @@ package com.handybook.handybook.core;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -114,6 +115,11 @@ public final class Booking implements Parcelable {
         startDate = new Date(in.readLong());
         address = in.readParcelable(Address.class.getClassLoader());
         provider = in.readParcelable(Provider.class.getClassLoader());
+    }
+
+    public static Booking fromJson(final String json) {
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+                .fromJson(json, Booking.class);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +80,17 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment {
                 dismiss();
             }
         });
+
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        final SharedPreferences.Editor edit = prefs.edit();
+        edit.putBoolean("APP_LAUNDRY_INFO_SHOWN", true);
+        edit.apply();
     }
 }

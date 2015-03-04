@@ -107,6 +107,15 @@ public interface HandyRetrofitService {
                            @Field("minute") int minute, @Field("type") String type,
                            HandyRetrofitCallback cb);
 
+    @GET("/bookings/{booking}/add_laundry")
+    void getAddLaundryInfo(@Path("booking") int bookingId, @Query("auth_token") String authToken,
+                                HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
+    @POST("/bookings/{booking}/add_laundry")
+    void addLaundry(@Path("booking") int bookingId, @Field("auth_token") String authToken,
+                    HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,
