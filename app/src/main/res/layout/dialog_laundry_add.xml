@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/close_img"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="-24dp"
+            android:visibility="visible"
+            android:contentDescription="laundry" />
+
+        <TextView
+            android:id="@+id/pickup_title"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:text="@string/pickup_title"
+            style="@style/TextView.Medium.Bold" />
+
+        <TextView
+            android:id="@+id/pickup_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_below="@id/pickup_title"
+            android:layout_marginBottom="8dp"
+            android:text="@string/pickup_info"
+            style="@style/TextView.Medium" />
+
+        <TextView
+            android:id="@+id/booking_info"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pickup_info"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:text="Info"
+            style="@style/TextView.Medium.Bold" />
+
+        <View
+            android:id="@+id/line_sep"
+            android:layout_below="@id/booking_info"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_height="1px"
+            android:background="@color/cell_sep"/>
+
+        <TextView
+            android:id="@+id/dropoff_title"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line_sep"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:text="@string/dropoff_title"
+            style="@style/TextView.Medium.Bold" />
+
+        <TextView
+            android:id="@+id/dropoff_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_below="@id/dropoff_title"
+            android:layout_marginBottom="12dp"
+            android:text="@string/dropoff_info"
+            style="@style/TextView.Medium" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_below="@id/dropoff_info"
+            android:layout_marginBottom="16dp"
+            android:text="@string/addtional_laundry_info"
+            android:textColor="@color/black_pressed"
+            style="@style/TextView.XSmall" />
+
+        <!--Used to fix margin on older devices-->
+        <View
+            android:layout_below="@id/info"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/info">
+
+            <Button
+                android:id="@+id/submit_button"
+                android:text="@string/add_laundry"
+                style="@style/Button.Green"/>
+
+            <ProgressBar
+                android:id="@+id/submit_progress"
+                android:layout_gravity="center"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-24dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/circle_teal"
+            android:layout_centerInParent="true"
+            android:contentDescription="laundry" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_hanger"
+            android:layout_centerInParent="true"
+            android:contentDescription="laundry" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

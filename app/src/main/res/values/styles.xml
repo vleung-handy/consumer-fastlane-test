@@ -253,6 +253,10 @@
         <item name="android:textSize">@dimen/medium_text_size</item>
     </style>
 
+    <style name="TextView.Medium.Bold">
+        <item name="fontPath">fonts/CircularStd-Bold.otf</item>
+    </style>
+
     <style name="TextView.Small">
         <item name="android:textSize">@dimen/small_text_size</item>
     </style>
