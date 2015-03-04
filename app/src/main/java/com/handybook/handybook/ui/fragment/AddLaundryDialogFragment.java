@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.Calendar;
@@ -92,6 +94,11 @@ public class AddLaundryDialogFragment extends BaseDialogFragment {
                     public void onSuccess(final Void response) {
                         if (!allowCallbacks) return;
                         dismiss();
+
+                        final Intent intent = new Intent(getActivity(), BookingsActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                     }
 
                     @Override
