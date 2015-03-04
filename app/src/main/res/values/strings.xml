@@ -120,4 +120,7 @@
     <string name="laundry">Laundry</string>
     <string name="dry_cleaning_laundry"><![CDATA[Dry Cleaning & Laundry]]></string>
     <string name="pickup_occur">Pick-up will occur during your cleaning.</string>
+    <string name="get_started_laundry">Get Started with Laundry</string>
+    <string name="laundry_info"><![CDATA[Take care of home cleaning and laundry at the same time! Turn on dry cleaning & laundry pick-up service for your future home cleanings.]]></string>
+    <string name="see_pricing">See Pricing</string>
 </resources>

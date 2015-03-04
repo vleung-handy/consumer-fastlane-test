@@ -15,6 +15,8 @@ import com.handybook.handybook.data.DataManager;
 import javax.inject.Inject;
 
 public class BaseDialogFragment extends InjectedDialogFragment {
+    boolean canDismiss;
+
     @Inject DataManager dataManager;
 
     @Override
@@ -32,13 +34,13 @@ public class BaseDialogFragment extends InjectedDialogFragment {
         getDialog().getWindow().setBackgroundDrawable(
                 new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        getDialog().setCancelable(false);
-        getDialog().setCanceledOnTouchOutside(false);
+        getDialog().setCancelable(canDismiss);
+        getDialog().setCanceledOnTouchOutside(canDismiss);
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(final DialogInterface dialog, final int keyCode,
                                  final KeyEvent event) {
-                return true;
+                return !canDismiss;
             }
         });
 

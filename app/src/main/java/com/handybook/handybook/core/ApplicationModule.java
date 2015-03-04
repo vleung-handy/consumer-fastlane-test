@@ -52,6 +52,7 @@ import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
 import com.handybook.handybook.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
+import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
@@ -100,7 +101,7 @@ import retrofit.converter.GsonConverter;
         YozioMetaDataCallback.class, OnboardActivity.class, OnboardFragment.class,
         OnboardPageFragment.class, HelpActivity.class, HelpFragment.class,
         RateServiceDialogFragment.class, RateServiceConfirmDialogFragment.class,
-        LaundryDropOffDialogFragment.class
+        LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class
 })
 public final class ApplicationModule {
     private final Context context;
