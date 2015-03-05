@@ -1,9 +1,5 @@
 package com.handybook.handybook.ui.activity;
 
-import android.os.Bundle;
-import android.test.AndroidTestCase;
-import android.widget.ListView;
-
 import com.handybook.handybook.HandyRobolectricTestRunner;
 import com.handybook.handybook.core.TestModule;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
@@ -13,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
 import dagger.ObjectGraph;
@@ -21,11 +19,8 @@ import dagger.ObjectGraph;
  * Created by jwilliams on 2/25/15.
  */
 @RunWith(HandyRobolectricTestRunner.class)
+@Config(emulateSdk = 18)
 public class BookingsActivityTest {
-
-    @Before public void setUp() {
-        ObjectGraph.create(new TestModule(Robolectric.application)).inject(this);
-    }
 
     @Test
     public void testLoadUserBookings() {

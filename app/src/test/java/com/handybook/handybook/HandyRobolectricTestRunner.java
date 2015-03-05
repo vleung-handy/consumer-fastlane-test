@@ -7,6 +7,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.res.Fs;
 import org.robolectric.res.FsFile;
 
+import java.io.File;
+import java.util.Properties;
+
 /**
  * Created by jwilliams on 3/2/15.
  */
@@ -18,19 +21,27 @@ public class HandyRobolectricTestRunner extends RobolectricTestRunner {
 
     @Override
     protected AndroidManifest getAppManifest(Config config) {
+        String manifestPath = "../app/src/main/AndroidManifest.xml";
+        String resPath = "../../build/intermediates/res/prod/"+BuildConfig.BUILD_TYPE;
 
-        String myAppPath = HandyRobolectricTestRunner.class.getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .getPath();
-        String manifestPath = myAppPath + "../../../manifests/full/prod/debug/AndroidManifest.xml";
-        String resPath = myAppPath + "../../../res/prod/debug";
-//        String assetPath = myAppPath + "../../../assets/debug";
-        return new AndroidManifest(Fs.fileFromPath(manifestPath), Fs.fileFromPath(resPath)) {
-            @Override
-            public int getTargetSdkVersion() {
-                return 18;
-            }
-        };
+        // android studio has a different execution root for tests than pure gradle
+        // so we avoid here manual effort to get them running inside android studio
+        if (!new File(manifestPath).exists()) {
+            manifestPath = "app/" + manifestPath;
+        }
+
+        config = overwriteConfig(config, "manifest", manifestPath);
+        config = overwriteConfig(config, "resourceDir", resPath);
+        AndroidManifest manifest = super.getAppManifest(config);
+        manifest.setPackageName("com.handybook.handybook");
+        return manifest;
+    }
+
+    private Config.Implementation overwriteConfig(
+            Config config, String key, String value) {
+        Properties properties = new Properties();
+        properties.setProperty(key, value);
+        return new Config.Implementation(config,
+                Config.Implementation.fromProperties(properties));
     }
 }
