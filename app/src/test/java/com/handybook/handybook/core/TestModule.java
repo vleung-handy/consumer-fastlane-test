@@ -47,7 +47,7 @@ public class TestModule {
                 .getProperties(context, "config.properties");
     }
 
-    @Provides @Singleton final HandyEndpoint provideHandyEnpoint() {
+    @Provides @Singleton final HandyEndpoint provideMockHandyEnpoint() {
         return new HandyEndpoint() {
             @Override
             public Environment getEnv() {
@@ -84,25 +84,25 @@ public class TestModule {
                 configs.getProperty("secure_prefs_key"), true);
     }
 
-    @Provides @Singleton final Mixpanel provideMixpanel(final UserManager userManager,
+    @Provides @Singleton final Mixpanel provideMockMixpanel(final UserManager userManager,
                                                         final BookingManager bookingManager,
                                                         final Bus bus) {
         return new Mixpanel(context, userManager, bookingManager, bus);
     }
 
-    @Provides @Singleton final DataManager provideDataManager(final HandyRetrofitService service,
+    @Provides @Singleton final DataManager provideMockDataManager(final HandyRetrofitService service,
                                                               final HandyEndpoint endpoint,
                                                               final Bus bus) {
         final MockDataManager dataManager = new MockDataManager(service, endpoint, bus);
         return dataManager;
     }
 
-    @Provides @Singleton final UserManager provideUserManager(final Bus bus,
+    @Provides @Singleton final UserManager provideMockUserManager(final Bus bus,
                                                               final SecurePreferences prefs) {
         return new MockUserManager(bus, prefs);
     }
 
-    @Provides final DataManagerErrorHandler provideDataManagerErrorHandler() {
+    @Provides final DataManagerErrorHandler provideMockDataManagerErrorHandler() {
         return new BaseDataManagerErrorHandler();
     }
 }
