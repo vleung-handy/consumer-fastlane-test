@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.regex.Pattern;
@@ -53,6 +54,8 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment {
         booking = args.getParcelable(EXTRA_BOOKING);
 
         this.canDismiss = true;
+
+        mixpanel.trackPageAddLaundryIntro(Mixpanel.LaundryEventSource.APP_OPEN);
     }
 
     @Override

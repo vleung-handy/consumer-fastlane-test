@@ -204,6 +204,40 @@ public class Mixpanel {
         mixpanel.track("app pro rate event", props);
     }
 
+    public void trackPageAddLaundryIntro(final LaundryEventSource source) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "source", source.getValue());
+        mixpanel.track("show add laundry intro page", props);
+    }
+
+    public void trackPageAddLaundryConfirm(final LaundryEventSource source) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "source", source.getValue());
+        addProps(props, "only_confirm_page", true);
+        mixpanel.track("show add laundry confirm page", props);
+    }
+
+    public void trackEventLaundryAdded(final LaundryEventSource source) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "source", source.getValue());
+        addProps(props, "only_confirm_page", true);
+        mixpanel.track("submit add laundry confirm page", props);
+    }
+
+    public void trackPageScheduleLaundry(final LaundryEventSource source, final String type) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "source", source.getValue());
+        addProps(props, "type", type);
+        mixpanel.track("show schedule laundry page", props);
+    }
+
+    public void trackEventLaundryScheduled(final LaundryEventSource source, final String type) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "source", source.getValue());
+        addProps(props, "type", type);
+        mixpanel.track("submit schedule laundry page", props);
+    }
+
     private void addProps(final JSONObject object, final String key, final Object value) {
         try { object.put(key, value); }
         catch (final JSONException e) { throw new RuntimeException(e); }
@@ -358,6 +392,20 @@ public class Mixpanel {
         private String value;
 
         private ProRateEventType(final String value) {
+            this.value = value;
+        }
+
+        String getValue() {
+            return value;
+        }
+    }
+
+    public enum LaundryEventSource {
+        APP_OPEN("app_open");
+
+        private String value;
+
+        private LaundryEventSource(final String value) {
             this.value = value;
         }
 

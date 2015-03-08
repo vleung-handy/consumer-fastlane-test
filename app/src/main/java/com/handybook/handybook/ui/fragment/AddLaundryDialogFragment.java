@@ -14,6 +14,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.util.TextUtils;
 
@@ -55,6 +56,8 @@ public class AddLaundryDialogFragment extends BaseDialogFragment {
         booking = args.getParcelable(EXTRA_BOOKING);
 
         this.canDismiss = true;
+
+        mixpanel.trackPageAddLaundryConfirm(Mixpanel.LaundryEventSource.APP_OPEN);
     }
 
     @Override
@@ -92,6 +95,8 @@ public class AddLaundryDialogFragment extends BaseDialogFragment {
                         new DataManager.Callback<Void>() {
                     @Override
                     public void onSuccess(final Void response) {
+                        mixpanel.trackEventLaundryAdded(Mixpanel.LaundryEventSource.APP_OPEN);
+
                         if (!allowCallbacks) return;
                         dismiss();
 

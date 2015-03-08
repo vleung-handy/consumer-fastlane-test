@@ -17,6 +17,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.Date;
@@ -63,6 +64,8 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
         final Bundle args = getArguments();
         booking = args.getInt(EXTRA_BOOKING);
         dropInfo = args.getParcelable(EXTRA_DROP_INFO);
+
+        mixpanel.trackPageScheduleLaundry(Mixpanel.LaundryEventSource.APP_OPEN, dropInfo.getType());
     }
 
     @Override
@@ -125,12 +128,12 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
             final LaundryDropInfo.DropTime dropTime
                     = (LaundryDropInfo.DropTime)timeSpinner.getSelectedItem();
 
-
-
             dataManager.setLaundryDropOff(booking, user.getAuthToken(), date, dropTime.getHour(),
                     dropTime.getMinute(), dropInfo.getType(), new DataManager.Callback<Void>() {
                 @Override
                 public void onSuccess(final Void response) {
+                    mixpanel.trackEventLaundryScheduled(Mixpanel.LaundryEventSource.APP_OPEN, dropInfo.getType());
+
                     if (!allowCallbacks) return;
                     dismiss();
                 }
