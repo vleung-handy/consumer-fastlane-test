@@ -36,8 +36,7 @@ public final class BaseApplication extends Application {
         graph = ObjectGraph.create(new ApplicationModule(this));
         inject(this);
 
-        final AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
-        options.inProduction = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD);
+        final AirshipConfigOptions options = setupUrbanAirshipConfig();
 
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback() {
             @Override
@@ -103,7 +102,7 @@ public final class BaseApplication extends Application {
         graph.inject(object);
     }
 
-    private void updateUser() {
+    protected void updateUser() {
         final User user = userManager.getCurrentUser();
 
         if (user != null) {
@@ -117,5 +116,16 @@ public final class BaseApplication extends Application {
                 public void onError(final DataManager.DataManagerError error) {}
             });
         }
+    }
+
+    protected AirshipConfigOptions setupUrbanAirshipConfig() {
+        AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
+        options.inProduction = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD);
+        return options;
+    }
+
+    protected void createObjectGraph() {
+        graph = ObjectGraph.create(new ApplicationModule(this));
+        inject(this);
     }
 }

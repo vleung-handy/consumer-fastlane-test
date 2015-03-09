@@ -104,4 +104,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:2.4'
     testCompile 'com.squareup.retrofit:retrofit-mock:1.6.1'
+    testCompile 'com.squareup.okhttp:mockwebserver:2.1.0'
 }

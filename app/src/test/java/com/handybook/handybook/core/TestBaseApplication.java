@@ -1,6 +1,13 @@
 package com.handybook.handybook.core;
 
 import android.app.Application;
+
+import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.R;
+import com.urbanairship.AirshipConfigOptions;
+import com.urbanairship.UAirship;
+import com.urbanairship.push.notifications.DefaultNotificationFactory;
+
 import dagger.ObjectGraph;
 
 /**
@@ -20,6 +27,13 @@ public class TestBaseApplication extends BaseApplication {
     }
 
     @Override
-    protected void setupUrbanAirship() {
+    protected AirshipConfigOptions setupUrbanAirshipConfig() {
+        AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
+        options.inProduction = true;
+        return options;
+    }
+
+    @Override
+    protected void updateUser() {
     }
 }

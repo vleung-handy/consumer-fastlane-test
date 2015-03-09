@@ -2,14 +2,13 @@ package com.handybook.handybook.core;
 
 import android.content.Context;
 
+import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
-import com.handybook.handybook.data.MockDataManager;
-import com.handybook.handybook.data.MockHandyRetrofitService;
 import com.handybook.handybook.data.MockSecurePreferences;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
@@ -17,14 +16,18 @@ import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.BookingsActivityTest;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
+import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.otto.Bus;
 
+import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit.RestAdapter;
 
 /**
  * Created by jwilliams on 2/17/15.
@@ -32,7 +35,7 @@ import dagger.Provides;
 @Module (
 
         injects = {
-                TestBaseApplication.class, MockDataManager.class, BookingsFragment.class,
+                TestBaseApplication.class, BaseDataManager.class, BookingsFragment.class,
                 BookingsActivityTest.class, BookingsActivity.class, NavigationFragment.class
         })
 
@@ -47,7 +50,7 @@ public class TestModule {
                 .getProperties(context, "config.properties");
     }
 
-    @Provides @Singleton final HandyEndpoint provideMockHandyEnpoint() {
+    @Provides @Singleton final HandyEndpoint provideMockHandyEnpoint(final MockWebServer server) {
         return new HandyEndpoint() {
             @Override
             public Environment getEnv() {
@@ -56,23 +59,44 @@ public class TestModule {
 
             @Override
             public void setEnv(Environment env) {
-
             }
 
             @Override
             public String getUrl() {
-                return null;
+                return server.getUrl("/").toString();
             }
 
             @Override
             public String getName() {
-                return null;
+                return "Test";
             }
         };
     }
 
-    @Provides @Singleton final HandyRetrofitService provideMockHandyRetrofitService() {
-        return new MockHandyRetrofitService();
+    @Provides @Singleton final MockWebServer provideMockWebServer() {
+        MockWebServer server = new MockWebServer();
+        try {
+            server.play();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        return server;
+    }
+
+    @Provides @Singleton final HandyRetrofitService provideMockHandyRetrofitService(HandyEndpoint endpoint) {
+        return new RestAdapter.Builder().setEndpoint(endpoint)
+                // Override executors so all server calls our mocked synchronously
+                .setExecutors(new Executor() {
+                    @Override
+                    public void execute(Runnable command) {
+                        command.run();
+                    }
+                }, new Executor() {
+                    @Override
+                    public void execute(Runnable command) {
+                        command.run();
+                    }
+                }).build().create(HandyRetrofitService.class);
     }
 
     @Provides @Singleton final Bus provideMockBus() {
@@ -92,8 +116,9 @@ public class TestModule {
 
     @Provides @Singleton final DataManager provideMockDataManager(final HandyRetrofitService service,
                                                               final HandyEndpoint endpoint,
-                                                              final Bus bus) {
-        final MockDataManager dataManager = new MockDataManager(service, endpoint, bus);
+                                                              final Bus bus,
+                                                              final SecurePreferences prefs) {
+        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);
         return dataManager;
     }
 
