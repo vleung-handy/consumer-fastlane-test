@@ -35,6 +35,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
 
     @InjectView(R.id.service_text) TextView serviceText;
     @InjectView(R.id.frequency_text) TextView frequencyText;
+    @InjectView(R.id.frequency_section) View frequencySection;
     @InjectView(R.id.job_text) TextView jobText;
     @InjectView(R.id.address_text) TextView addrText;
     @InjectView(R.id.date_text) TextView dateText;
@@ -82,7 +83,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         final String recurringInfo = booking.getRecurringInfo();
         if (recurringInfo != null) {
             frequencyText.setText(recurringInfo);
-            frequencyText.setVisibility(View.VISIBLE);
+            frequencySection.setVisibility(View.VISIBLE);
         }
 
         jobText.setText(booking.getId());
