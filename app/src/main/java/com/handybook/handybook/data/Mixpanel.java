@@ -213,14 +213,12 @@ public class Mixpanel {
     public void trackPageAddLaundryConfirm(final LaundryEventSource source) {
         final JSONObject props = new JSONObject();
         addProps(props, "source", source.getValue());
-        addProps(props, "only_confirm_page", true);
         mixpanel.track("show add laundry confirm page", props);
     }
 
     public void trackEventLaundryAdded(final LaundryEventSource source) {
         final JSONObject props = new JSONObject();
         addProps(props, "source", source.getValue());
-        addProps(props, "only_confirm_page", true);
         mixpanel.track("submit add laundry confirm page", props);
     }
 
