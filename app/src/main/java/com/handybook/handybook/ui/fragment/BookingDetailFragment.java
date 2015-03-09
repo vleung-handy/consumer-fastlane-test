@@ -49,6 +49,8 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.laundry_layout) View laundryInfo;
     @InjectView(R.id.entry_layout) View entryLayout;
     @InjectView(R.id.entry_text) TextView entryText;
+    @InjectView(R.id.prefs_layout) View prefsLayout;
+    @InjectView(R.id.prefs_text) TextView prefsText;
 
     public static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -105,6 +107,12 @@ public final class BookingDetailFragment extends BookingFlowFragment {
                     + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
 
             entryLayout.setVisibility(View.VISIBLE);
+        }
+
+        final String proNote = booking.getProNote();
+        if (proNote != null) {
+            prefsText.setText(proNote);
+            prefsLayout.setVisibility(View.VISIBLE);
         }
 
         final User user = userManager.getCurrentUser();

@@ -131,4 +131,5 @@
     <string name="add_laundry">Add to Future Cleanings</string>
     <string name="frequency">Frequency</string>
     <string name="entry_info">Entry Info</string>
+    <string name="preferences">Preferences</string>
 </resources>
