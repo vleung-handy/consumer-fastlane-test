@@ -54,9 +54,6 @@ public class AddLaundryDialogFragment extends BaseDialogFragment {
 
         final Bundle args = getArguments();
         booking = args.getParcelable(EXTRA_BOOKING);
-
-        this.canDismiss = true;
-
         mixpanel.trackPageAddLaundryConfirm(Mixpanel.LaundryEventSource.APP_OPEN);
     }
 
