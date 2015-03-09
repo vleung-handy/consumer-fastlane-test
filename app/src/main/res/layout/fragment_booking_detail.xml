@@ -233,27 +233,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/duration_section"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="144dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/price"
-                        style="@style/TextView.Med"/>
-
-                    <TextView
-                        android:id="@+id/price_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Price"
-                        style="@style/TextView"/>
-
-                </LinearLayout>
-
             </RelativeLayout>
 
             <View
@@ -263,8 +242,35 @@
                 android:background="@color/cell_sep" />
 
             <LinearLayout
-                android:id="@+id/pro_layout"
+                android:id="@+id/payment_layout"
                 android:layout_below="@id/date_layout"
+                android:orientation="horizontal"
+                style="@style/ContentLayoutCell">
+
+                <TextView
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment"
+                    style="@style/TextView.Med"/>
+
+                <TextView
+                    android:id="@+id/price_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$0"
+                    style="@style/TextView.Med"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@id/payment_layout"
+                android:background="@color/cell_sep" />
+
+            <LinearLayout
+                android:id="@+id/pro_layout"
+                android:layout_below="@id/payment_layout"
                 android:orientation="horizontal"
                 style="@style/ContentLayoutCell">
 
