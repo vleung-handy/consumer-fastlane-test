@@ -34,6 +34,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     private boolean updatedBooking;
 
     @InjectView(R.id.service_text) TextView serviceText;
+    @InjectView(R.id.frequency_text) TextView frequencyText;
     @InjectView(R.id.job_text) TextView jobText;
     @InjectView(R.id.address_text) TextView addrText;
     @InjectView(R.id.date_text) TextView dateText;
@@ -75,6 +76,13 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         ButterKnife.inject(this, view);
 
         serviceText.setText(booking.getService());
+
+        final String recurringInfo = booking.getRecurringInfo();
+        if (recurringInfo != null) {
+            frequencyText.setText(recurringInfo);
+            frequencyText.setVisibility(View.VISIBLE);
+        }
+
         jobText.setText(booking.getId());
 
         final Booking.Address address = booking.getAddress();

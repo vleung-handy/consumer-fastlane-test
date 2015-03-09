@@ -16,6 +16,7 @@ public final class Booking implements Parcelable {
     @SerializedName("hours") private float hours;
     @SerializedName("price") private float price;
     @SerializedName("recurring") private int isRecurring;
+    @SerializedName("recurring_string") private String recurringInfo;
     @SerializedName("laundry_status") private LaundryStatus laundryStatus;
     @SerializedName("address") private Address address;
     @SerializedName("provider") private Provider provider;
@@ -39,6 +40,10 @@ public final class Booking implements Parcelable {
 
     public final boolean isRecurring() {
         return isRecurring == 1;
+    }
+
+    public final String getRecurringInfo() {
+        return recurringInfo;
     }
 
     public final String getService() {
@@ -94,13 +99,15 @@ public final class Booking implements Parcelable {
     }
 
     private Booking(final Parcel in) {
-        final String[] stringData = new String[3];
+        final String[] stringData = new String[4];
         in.readStringArray(stringData);
         id = stringData[0];
         service = stringData[1];
 
         try { laundryStatus = LaundryStatus.valueOf(stringData[2]); }
         catch (IllegalArgumentException x) { laundryStatus = null; }
+
+        recurringInfo = stringData[3];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -124,7 +131,9 @@ public final class Booking implements Parcelable {
 
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
-        out.writeStringArray(new String[]{ id, service, laundryStatus != null ? laundryStatus.name() : ""});
+        out.writeStringArray(new String[]{ id, service, laundryStatus != null
+                ? laundryStatus.name() : "", recurringInfo});
+
         out.writeIntArray(new int[]{ isPast, isRecurring });
         out.writeFloatArray(new float[]{ hours, price });
         out.writeLong(startDate.getTime());

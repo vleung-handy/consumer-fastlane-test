@@ -46,9 +46,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/job_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/service_section"
+                    android:layout_marginBottom="4dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -66,6 +68,29 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/frequency_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/job_section"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="144dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/frequency"
+                        style="@style/TextView.Med"/>
+
+                    <TextView
+                        android:id="@+id/frequency_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Frequency"
+                        style="@style/TextView"/>
+
+                </LinearLayout>
 
             </RelativeLayout>
 
