@@ -17,6 +17,8 @@ public final class Booking implements Parcelable {
     @SerializedName("price") private float price;
     @SerializedName("recurring") private int isRecurring;
     @SerializedName("recurring_string") private String recurringInfo;
+    @SerializedName("getin_string") private String entryInfo;
+    @SerializedName("getintxt") private String extraEntryInfo;
     @SerializedName("laundry_status") private LaundryStatus laundryStatus;
     @SerializedName("address") private Address address;
     @SerializedName("provider") private Provider provider;
@@ -44,6 +46,14 @@ public final class Booking implements Parcelable {
 
     public final String getRecurringInfo() {
         return recurringInfo;
+    }
+
+    public final String getEntryInfo() {
+        return entryInfo;
+    }
+
+    public final String getExtraEntryInfo() {
+        return extraEntryInfo;
     }
 
     public final String getService() {
@@ -99,7 +109,7 @@ public final class Booking implements Parcelable {
     }
 
     private Booking(final Parcel in) {
-        final String[] stringData = new String[4];
+        final String[] stringData = new String[6];
         in.readStringArray(stringData);
         id = stringData[0];
         service = stringData[1];
@@ -108,6 +118,8 @@ public final class Booking implements Parcelable {
         catch (IllegalArgumentException x) { laundryStatus = null; }
 
         recurringInfo = stringData[3];
+        entryInfo = stringData[4];
+        extraEntryInfo = stringData[5];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -132,7 +144,7 @@ public final class Booking implements Parcelable {
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
         out.writeStringArray(new String[]{ id, service, laundryStatus != null
-                ? laundryStatus.name() : "", recurringInfo});
+                ? laundryStatus.name() : "", recurringInfo, entryInfo, extraEntryInfo});
 
         out.writeIntArray(new int[]{ isPast, isRecurring });
         out.writeFloatArray(new float[]{ hours, price });

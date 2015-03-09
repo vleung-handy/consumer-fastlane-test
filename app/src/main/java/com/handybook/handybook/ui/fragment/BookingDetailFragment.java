@@ -46,6 +46,8 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.reschedule_button) Button rescheduleButton;
     @InjectView(R.id.cancel_button) Button cancelButton;
     @InjectView(R.id.laundry_layout) View laundryInfo;
+    @InjectView(R.id.entry_layout) View entryLayout;
+    @InjectView(R.id.entry_text) TextView entryText;
 
     public static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -94,6 +96,15 @@ public final class BookingDetailFragment extends BookingFlowFragment {
 
         durationText.setText(TextUtils.formatDecimal(booking.getHours(), "#.#") + " "
                 + getString(R.string.hours).toLowerCase());
+
+        final String entryInfo = booking.getEntryInfo();
+
+        if (entryInfo != null) {
+            entryText.setText(entryInfo + " "
+                    + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
+
+            entryLayout.setVisibility(View.VISIBLE);
+        }
 
         final User user = userManager.getCurrentUser();
         priceText.setText(TextUtils.formatPrice(booking.getPrice(),

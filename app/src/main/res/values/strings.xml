@@ -130,4 +130,5 @@
     <string name="addtional_laundry_info">Adding dry cleaning and laundry is free. You will only be charged if you give us laundry. Skip anytime from your booking.</string>
     <string name="add_laundry">Add to Future Cleanings</string>
     <string name="frequency">Frequency</string>
+    <string name="entry_info">Entry Info</string>
 </resources>
