@@ -143,7 +143,7 @@
             android:value="243eee8e-5ae7-47f8-9739-e11cad7f57c0" />
 
         <meta-data
-            android:name="YozioMetaDataCallback"
+            android:name="YozioNewInstallMetaDataCallback"
             android:value="com.handybook.handybook.yozio.YozioMetaDataCallback" />
 
     </application>
