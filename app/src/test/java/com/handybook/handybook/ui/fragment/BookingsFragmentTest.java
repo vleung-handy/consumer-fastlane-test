@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.activity;
+package com.handybook.handybook.ui.fragment;
 
 import android.widget.ListView;
 
@@ -27,7 +27,7 @@ import javax.inject.Inject;
  */
 @RunWith(HandyRobolectricTestRunner.class)
 @Config(emulateSdk = 18)
-public class BookingsActivityTest {
+public class BookingsFragmentTest {
 
     @Inject MockWebServer server;
 
@@ -36,19 +36,8 @@ public class BookingsActivityTest {
         ((BaseApplication)Robolectric.application).inject(this);
     }
 
-    public void testLoadUserBookings() {
-        ActivityController controller = Robolectric.buildActivity(BookingsActivity.class);
-        BookingsActivity activity = (BookingsActivity)controller.get();
-        BookingsFragment fragment = (BookingsFragment)activity.createFragment();
-        controller.create().start().resume();
-        assertNotNull(fragment.getView());
-        ListView listView = (ListView)fragment.getView().findViewById(android.R.id.list);
-        assertEquals(3, listView.getAdapter().getCount());
-    }
-
     @Test
     public void testLoadUpcomingBookings() throws IOException {
-        // Schedule some responses.
         server.enqueue(new MockResponse().setBody(getUpcomingBookingsJsonResponse()));
 
         BookingsFragment fragment = BookingsFragment.newInstance();
@@ -63,7 +52,6 @@ public class BookingsActivityTest {
 
     @Test
     public void testLoadPastBookings() throws IOException {
-        // Schedule some responses.
         server.enqueue(new MockResponse().setBody(getPastBookingsJsonResponse()));
 
         BookingsFragment fragment = BookingsFragment.newInstance();
@@ -78,7 +66,6 @@ public class BookingsActivityTest {
 
     @Test
     public void testLoadUpcomingAndPastBookings() throws IOException {
-        // Schedule some responses.
         server.enqueue(new MockResponse().setBody(getUpcomingAndPastBookingsJsonResponse()));
 
         BookingsFragment fragment = BookingsFragment.newInstance();
