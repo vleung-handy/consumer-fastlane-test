@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public final class Booking implements Parcelable {
@@ -23,6 +24,8 @@ public final class Booking implements Parcelable {
     @SerializedName("laundry_status") private LaundryStatus laundryStatus;
     @SerializedName("address") private Address address;
     @SerializedName("provider") private Provider provider;
+    @SerializedName("billed_status") private String billedStatus;
+    @SerializedName("payment_hash") private ArrayList<LineItem> paymentInfo;
 
     public final String getId() {
         return id;
@@ -113,8 +116,16 @@ public final class Booking implements Parcelable {
         return laundryStatus;
     }
 
+    public final String getBilledStatus() {
+        return billedStatus;
+    }
+
+    public final ArrayList<LineItem> getPaymentInfo() {
+        return paymentInfo;
+    }
+
     private Booking(final Parcel in) {
-        final String[] stringData = new String[7];
+        final String[] stringData = new String[8];
         in.readStringArray(stringData);
         id = stringData[0];
         service = stringData[1];
@@ -126,6 +137,7 @@ public final class Booking implements Parcelable {
         entryInfo = stringData[4];
         extraEntryInfo = stringData[5];
         proNote = stringData[6];
+        billedStatus = stringData[7];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -140,6 +152,9 @@ public final class Booking implements Parcelable {
         startDate = new Date(in.readLong());
         address = in.readParcelable(Address.class.getClassLoader());
         provider = in.readParcelable(Provider.class.getClassLoader());
+
+        paymentInfo = new ArrayList<LineItem>();
+        in.readTypedList(paymentInfo, LineItem.CREATOR);
     }
 
     public static Booking fromJson(final String json) {
@@ -150,13 +165,15 @@ public final class Booking implements Parcelable {
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
         out.writeStringArray(new String[]{ id, service, laundryStatus != null
-                ? laundryStatus.name() : "", recurringInfo, entryInfo, extraEntryInfo, proNote});
+                ? laundryStatus.name() : "", recurringInfo, entryInfo, extraEntryInfo, proNote,
+                billedStatus});
 
         out.writeIntArray(new int[]{ isPast, isRecurring });
-        out.writeFloatArray(new float[]{ hours, price });
+        out.writeFloatArray(new float[]{hours, price});
         out.writeLong(startDate.getTime());
         out.writeParcelable(address, 0);
         out.writeParcelable(provider, 0);
+        out.writeTypedList(paymentInfo);
     }
 
     @Override
@@ -317,6 +334,55 @@ public final class Booking implements Parcelable {
             }
             public Provider[] newArray(final int size) {
                 return new Provider[size];
+            }
+        };
+    }
+
+    public static final class LineItem implements Parcelable {
+        @SerializedName("order") private int order;
+        @SerializedName("label") private String label;
+        @SerializedName("amount") private String amount;
+
+        public final int getOrder() {
+            return order;
+        }
+
+        public final String getLabel() {
+            return label;
+        }
+
+        public final String getAmount() {
+            return amount;
+        }
+
+        private LineItem(final Parcel in) {
+            final int[] intData = new int[1];
+            in.readIntArray(intData);
+            order = intData[0];
+
+            final String[] stringData = new String[2];
+            in.readStringArray(stringData);
+            label = stringData[0];
+            amount = stringData[1];
+        }
+
+        @Override
+        public final void writeToParcel(final Parcel out, final int flags) {
+            out.writeIntArray(new int[]{order});
+            out.writeStringArray(new String[]{label, amount});
+        }
+
+        @Override
+        public final int describeContents(){
+            return 0;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public LineItem createFromParcel(final Parcel in) {
+                return new LineItem(in);
+            }
+            public LineItem[] newArray(final int size) {
+                return new LineItem[size];
             }
         };
     }
