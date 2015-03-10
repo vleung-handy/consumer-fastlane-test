@@ -26,12 +26,10 @@ public class TextUtilsTest {
 
     @Test
     public void creditCardDateFormatterShouldBeautify() {
-
-    }
-
-    @Test
-    public void phoneNumberFormatterShouldBeautify() {
-
+        assertEquals("0", TextUtils.formatCreditCardExpDate("0"));
+        assertEquals("11", TextUtils.formatCreditCardExpDate("11"));
+        assertEquals("10/1", TextUtils.formatCreditCardExpDate("101"));
+        assertEquals("09/18", TextUtils.formatCreditCardExpDate("0918"));
     }
 
 }
