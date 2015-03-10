@@ -51,6 +51,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.entry_text) TextView entryText;
     @InjectView(R.id.prefs_layout) View prefsLayout;
     @InjectView(R.id.prefs_text) TextView prefsText;
+    @InjectView(R.id.billed_text) TextView billedText;
 
     public static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -118,6 +119,10 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         final User user = userManager.getCurrentUser();
         priceText.setText(TextUtils.formatPrice(booking.getPrice(),
                 user.getCurrencyChar(), null));
+
+        final String billedStatus = booking.getBilledStatus();
+        if (billedStatus != null)  billedText.setText(billedStatus);
+        else billedText.setVisibility(View.GONE);
 
         final Booking.Provider pro = booking.getProvider();
         if (pro.getStatus() == 3) {

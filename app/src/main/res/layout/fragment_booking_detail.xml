@@ -241,26 +241,44 @@
                 android:layout_below="@id/date_layout"
                 android:background="@color/cell_sep" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/payment_layout"
                 android:layout_below="@id/date_layout"
-                android:orientation="horizontal"
                 style="@style/ContentLayoutCell">
 
-                <TextView
-                    android:layout_width="144dp"
+                <LinearLayout
+                    android:id="@+id/payment_section"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/payment"
-                    style="@style/TextView.Med"/>
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/payment"
+                        style="@style/TextView.Med"/>
+
+                    <TextView
+                        android:id="@+id/price_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$0"
+                        style="@style/TextView.Med"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/price_text"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/billed_text"
+                    android:layout_below="@id/payment_section"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="$0"
+                    android:text="Billed Status"
+                    android:textColor="@color/black_pressed"
                     style="@style/TextView.Med"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
