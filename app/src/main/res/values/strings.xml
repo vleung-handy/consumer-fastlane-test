@@ -132,4 +132,5 @@
     <string name="frequency">Frequency</string>
     <string name="entry_info">Entry Info</string>
     <string name="preferences">Preferences</string>
+    <string name="total">TOTAL</string>
 </resources>

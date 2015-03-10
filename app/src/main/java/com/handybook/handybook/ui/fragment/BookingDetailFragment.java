@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -18,8 +19,11 @@ import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +56,9 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.prefs_layout) View prefsLayout;
     @InjectView(R.id.prefs_text) TextView prefsText;
     @InjectView(R.id.billed_text) TextView billedText;
+    @InjectView(R.id.total_text) TextView totalText;
+    @InjectView(R.id.payment_info_section) View paymentInfoSection;
+    @InjectView(R.id.pay_lines_section) LinearLayout paymentLinesSection;
 
     public static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -77,7 +84,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_detail,container, false);
+                .inflate(R.layout.fragment_booking_detail, container, false);
 
         ButterKnife.inject(this, view);
 
@@ -117,8 +124,41 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         }
 
         final User user = userManager.getCurrentUser();
-        priceText.setText(TextUtils.formatPrice(booking.getPrice(),
-                user.getCurrencyChar(), null));
+        final String price = TextUtils.formatPrice(booking.getPrice(),
+                user.getCurrencyChar(), null);
+
+        final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
+        Collections.sort(paymentInfo, new Comparator<Booking.LineItem>() {
+            @Override
+            public int compare(final Booking.LineItem lhs, final Booking.LineItem rhs) {
+                return lhs.getOrder() - rhs.getOrder();
+            }
+        });
+
+        if (paymentInfo != null && paymentInfo.size() > 0) {
+            priceText.setVisibility(View.INVISIBLE);
+            totalText.setText(price);
+            paymentInfoSection.setVisibility(View.VISIBLE);
+
+            View lineView;
+
+            for (int i = 0; i < paymentInfo.size(); i++) {
+                lineView = getActivity().getLayoutInflater()
+                        .inflate(R.layout.view_payment_line, container, false);
+
+                final TextView labelText = (TextView)lineView.findViewById(R.id.label_text);
+                final TextView amountText = (TextView)lineView.findViewById(R.id.amount_text);
+                final Booking.LineItem line = paymentInfo.get(i);
+
+                labelText.setText(line.getLabel());
+                amountText.setText(line.getAmount());
+
+                if (i < paymentInfo.size() - 1) lineView.setPadding(0, 0, 0, Utils.toDP(4, getActivity()));
+
+                paymentLinesSection.addView(lineView);
+            }
+        }
+        else priceText.setText(price);
 
         final String billedStatus = booking.getBilledStatus();
         if (billedStatus != null)  billedText.setText(billedStatus);

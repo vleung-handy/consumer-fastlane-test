@@ -254,7 +254,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/payment"
@@ -269,14 +269,63 @@
 
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/payment_info_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_below="@id/payment_section"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/pay_lines_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/total_sep"
+                        android:layout_below="@id/pay_lines_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@color/nav_sep" />
+
+                    <LinearLayout
+                        android:layout_below="@id/total_sep"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/total"
+                            style="@style/TextView"/>
+
+                        <TextView
+                            android:id="@+id/total_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$0"
+                            style="@style/TextView.Med"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/billed_text"
-                    android:layout_below="@id/payment_section"
+                    android:layout_below="@id/payment_info_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Billed Status"
                     android:textColor="@color/black_pressed"
-                    style="@style/TextView.Med"/>
+                    style="@style/TextView"/>
 
             </RelativeLayout>
 
