@@ -18,11 +18,11 @@ import javax.inject.Inject;
 import dagger.ObjectGraph;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
-public final class BaseApplication extends Application {
+public class BaseApplication extends Application {
     public static final String FLAVOR_PROD = "prod";
     public static final String FLAVOR_STAGE = "stage";
 
-    private ObjectGraph graph;
+    protected ObjectGraph graph;
     private int started;
     private boolean savedInstance;
 
@@ -31,13 +31,12 @@ public final class BaseApplication extends Application {
     @Inject Mixpanel mixpanel;
 
     @Override
-    public final void onCreate() {
+    public void onCreate() {
         super.onCreate();
-        graph = ObjectGraph.create(new ApplicationModule(this));
-        inject(this);
+
+        createObjectGraph();
 
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
-
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback() {
             @Override
             public void onAirshipReady(final UAirship airship) {
