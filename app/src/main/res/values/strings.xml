@@ -30,7 +30,7 @@
     <string name="env_format" formatted="false">%s: v%s (%s)</string>
     <string name="upcoming">Upcoming</string>
     <string name="past">Past</string>
-    <string name="no_upcoming_bookings">You don\'t have any upcoming bookings</string>
+    <string name="no_upcoming_bookings">You don’t have any upcoming bookings</string>
     <string name="hours">Hours</string>
     <string name="booking">Booking</string>
     <string name="service">Service</string>
@@ -64,14 +64,14 @@
     <string name="welcome_back" formatted="false">Welcome back, %s!</string>
     <string name="skip">Skip</string>
     <string name="peak_price_info">Due to high demand, peak pricing is in \neffect at this time. If you’d like, you can \npick a different time.</string>
-    <string name="peak_price_info_recur">Due to high demand, \nwe don\'t have availability at that time. \nPlease select a different time.</string>
+    <string name="peak_price_info_recur">Due to high demand, \nwe don’t have availability at that time. \nPlease select a different time.</string>
     <string name="unavailable">Unavailable</string>
     <string name="confirmation">Confirmation</string>
     <string name="payment_confirmed">Your payment has been confirmed.\nHow will your professional get in?</string>
-    <string name="will_be_home">I\'ll be home</string>
+    <string name="will_be_home">I’ll be home</string>
     <string name="doorman">Doorman</string>
-    <string name="will_hide_key">I\'ll hide the key</string>
-    <string name="pro_to_know">Anything you\'d like your \nprofessional to know?</string>
+    <string name="will_hide_key">I’ll hide the key</string>
+    <string name="pro_to_know">Anything you’d like your \nprofessional to know?</string>
     <string name="finish">Finish</string>
     <string name="additional_pro_info">e.g, Focus on or skip specific rooms or surfaces, or other special requests.</string>
     <string name="where_hide_key">Where will you hide the key?</string>
@@ -98,10 +98,10 @@
     <string name="why_cancel">Why are you canceling?</string>
     <string name="get_started">Get Started</string>
     <string name="onboard_msg">Book trusted cleaners\n &amp; handymen instantly</string>
-    <string name="onboard_msg_pro">We\'ll match you with\n a highly rated professional</string>
+    <string name="onboard_msg_pro">We’ll match you with\n a highly rated professional</string>
     <string name="onboard_msg_manage">Manage your bookings\n on the go</string>
     <string name="onboard_msg_rate">Rate to help us\n maintain quality service</string>
-    <string name="always_here_help">We\'re always here to help!</string>
+    <string name="always_here_help">We’re always here to help!</string>
     <string name="web_help">help.handy.com</string>
     <string name="phone_help">1-888-847-6036</string>
     <string name="using_promo">USING PROMO CODE %s</string>
@@ -111,7 +111,7 @@
     <string name="amazing">Amazing!</string>
     <string name="submit">Submit</string>
     <string name="thanks_for_feedback">Thanks for your feedback!</string>
-    <string name="were_sorry_feedback">We\'re sorry to hear that you had a less than perfect experience. Your feedback will help us improve the service for next time.</string>
+    <string name="were_sorry_feedback">We’re sorry to hear that you had a less than perfect experience. Your feedback will help us improve the service for next time.</string>
     <string name="close">Close</string>
     <string name="glad_you_enjoy">Glad you enjoyed it!</string>
     <string name="good_vibes">We love to pass on the good vibes.</string>
@@ -125,7 +125,7 @@
     <string name="see_pricing">See Pricing</string>
     <string name="pickup_title">YOUR FIRST PICK-UP</string>
     <string name="dropoff_title">DELIVERY</string>
-    <string name="dropoff_info">When laundry is ready in 48 hours, we\'ll ask for a delivery time.</string>
+    <string name="dropoff_info">When laundry is ready in 48 hours, we’ll ask for a delivery time.</string>
     <string name="addtional_laundry_info">Adding dry cleaning &amp; laundry is free. You will only be charged if you give us laundry. Skip anytime.</string>
     <string name="add_laundry">Add to Future Cleanings</string>
     <string name="frequency">Frequency</string>
