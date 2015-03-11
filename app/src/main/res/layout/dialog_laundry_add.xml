@@ -35,28 +35,16 @@
             style="@style/TextView.Medium.Bold" />
 
         <TextView
-            android:id="@+id/pickup_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_below="@id/pickup_title"
-            android:layout_marginBottom="8dp"
-            android:text="@string/pickup_info"
-            style="@style/TextView.Medium" />
-
-        <TextView
             android:id="@+id/booking_info"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pickup_info"
+            android:layout_below="@id/pickup_title"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:text="Info"
-            style="@style/TextView.Medium.Bold" />
+            style="@style/TextView.Medium" />
 
         <View
             android:id="@+id/line_sep"
@@ -82,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:layout_below="@id/dropoff_title"

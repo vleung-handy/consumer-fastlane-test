@@ -54,11 +54,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:layout_below="@id/message_text"
-            android:layout_marginBottom="16dp"
             android:text="@string/see_pricing"
             android:textColorLink="@color/handy_blue"
             style="@style/TextView.Medium" />
