@@ -305,7 +305,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/total"
-                            style="@style/TextView"/>
+                            style="@style/TextView.Med"/>
 
                         <TextView
                             android:id="@+id/total_text"
