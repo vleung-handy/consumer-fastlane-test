@@ -26,6 +26,7 @@ public final class Booking implements Parcelable {
     @SerializedName("provider") private Provider provider;
     @SerializedName("billed_status") private String billedStatus;
     @SerializedName("payment_hash") private ArrayList<LineItem> paymentInfo;
+    @SerializedName("extras_info") private ArrayList<ExtraInfo> extrasInfo;
 
     public final String getId() {
         return id;
@@ -124,6 +125,10 @@ public final class Booking implements Parcelable {
         return paymentInfo;
     }
 
+    public final ArrayList<ExtraInfo> getExtrasInfo() {
+        return extrasInfo;
+    }
+
     private Booking(final Parcel in) {
         final String[] stringData = new String[8];
         in.readStringArray(stringData);
@@ -155,6 +160,9 @@ public final class Booking implements Parcelable {
 
         paymentInfo = new ArrayList<LineItem>();
         in.readTypedList(paymentInfo, LineItem.CREATOR);
+
+        extrasInfo = new ArrayList<ExtraInfo>();
+        in.readTypedList(extrasInfo, ExtraInfo.CREATOR);
     }
 
     public static Booking fromJson(final String json) {
@@ -174,6 +182,7 @@ public final class Booking implements Parcelable {
         out.writeParcelable(address, 0);
         out.writeParcelable(provider, 0);
         out.writeTypedList(paymentInfo);
+        out.writeTypedList(extrasInfo);
     }
 
     @Override
@@ -383,6 +392,45 @@ public final class Booking implements Parcelable {
             }
             public LineItem[] newArray(final int size) {
                 return new LineItem[size];
+            }
+        };
+    }
+
+    public static final class ExtraInfo implements Parcelable {
+        @SerializedName("label") private String label;
+        @SerializedName("image_name") private String image;
+
+        public final String getLabel() {
+            return label;
+        }
+
+        public final String getImage() {
+            return image;
+        }
+
+        private ExtraInfo(final Parcel in) {
+            final String[] stringData = new String[2];
+            in.readStringArray(stringData);
+            label = stringData[0];
+            image = stringData[1];
+        }
+
+        @Override
+        public final void writeToParcel(final Parcel out, final int flags) {
+            out.writeStringArray(new String[]{label, image});
+        }
+
+        @Override
+        public final int describeContents(){
+            return 0;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public ExtraInfo createFromParcel(final Parcel in) {
+                return new ExtraInfo(in);
+            }
+            public ExtraInfo[] newArray(final int size) {
+                return new ExtraInfo[size];
             }
         };
     }

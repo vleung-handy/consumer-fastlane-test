@@ -183,9 +183,37 @@
                 android:layout_below="@id/prefs_layout"
                 android:background="@color/cell_sep" />
 
+            <LinearLayout
+                android:id="@+id/extras_layout"
+                android:layout_below="@id/prefs_layout"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                style="@style/ContentLayoutCell">
+
+                <TextView
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/extras"
+                    style="@style/TextView.Med"/>
+
+                <TextView
+                    android:id="@+id/extras_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Extras"
+                    style="@style/TextView"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@id/extras_layout"
+                android:background="@color/cell_sep" />
+
             <RelativeLayout
                 android:id="@+id/date_layout"
-                android:layout_below="@id/prefs_layout"
+                android:layout_below="@id/extras_layout"
                 style="@style/ContentLayoutCell">
 
                 <LinearLayout

@@ -55,6 +55,8 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.entry_text) TextView entryText;
     @InjectView(R.id.prefs_layout) View prefsLayout;
     @InjectView(R.id.prefs_text) TextView prefsText;
+    @InjectView(R.id.extras_layout) View extrasLayout;
+    @InjectView(R.id.extras_text) TextView extrasText;
     @InjectView(R.id.billed_text) TextView billedText;
     @InjectView(R.id.total_text) TextView totalText;
     @InjectView(R.id.payment_info_section) View paymentInfoSection;
@@ -121,6 +123,21 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         if (proNote != null) {
             prefsText.setText(proNote);
             prefsLayout.setVisibility(View.VISIBLE);
+        }
+
+        final ArrayList<Booking.ExtraInfo> extras = booking.getExtrasInfo();
+        if (extras != null && extras.size() > 0) {
+            String extraInfo = "";
+
+            for (int i = 0; i < extras.size(); i++) {
+                final Booking.ExtraInfo info = extras.get(i);
+                extraInfo += info.getLabel();
+
+                if (i < extras.size() - 1) extraInfo += ", ";
+            }
+
+            extrasText.setText(extraInfo);
+            extrasLayout.setVisibility(View.VISIBLE);
         }
 
         final User user = userManager.getCurrentUser();
