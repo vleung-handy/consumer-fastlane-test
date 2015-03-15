@@ -20,310 +20,305 @@
             android:background="@color/white">
 
             <RelativeLayout
-                android:id="@+id/service_layout"
-                style="@style/ContentLayoutCell">
+                android:id="@+id/date_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_padding">
 
-                <LinearLayout
-                    android:id="@+id/service_section"
+                <TextView
+                    android:id="@+id/date_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="8dp"
+                    android:text="Date"
+                    style="@style/TextView.Large.Bold"/>
 
-                    <TextView
-                        android:layout_width="144dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/service"
-                        style="@style/TextView.Med"/>
-
-                    <TextView
-                        android:id="@+id/service_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Service"
-                        style="@style/TextView"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/job_section"
+                <TextView
+                    android:id="@+id/time_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/service_section"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/date_text"
+                    android:text="Time"
+                    style="@style/TextView"/>
 
-                    <TextView
-                        android:layout_width="144dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/job_num"
-                        style="@style/TextView.Med"/>
-
-                    <TextView
-                        android:id="@+id/job_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Job #"
-                        style="@style/TextView"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/frequency_section"
+                <TextView
+                    android:id="@+id/freq_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/job_section"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="144dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/frequency"
-                        style="@style/TextView.Med"/>
-
-                    <TextView
-                        android:id="@+id/frequency_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Frequency"
-                        style="@style/TextView"/>
-
-                </LinearLayout>
+                    android:layout_below="@id/time_text"
+                    android:text="Freq"
+                    android:textColor="@color/steel"
+                    style="@style/TextView"/>
 
             </RelativeLayout>
 
-            <View
+            <RelativeLayout
+                android:id="@+id/pro_section"
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/service_layout"
-                android:background="@color/cell_sep" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/date_section"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding">
 
-            <LinearLayout
-                android:id="@+id/address_layout"
-                android:layout_below="@id/service_layout"
-                android:orientation="horizontal"
-                style="@style/ContentLayoutCell">
-
-                <TextView
-                    android:layout_width="144dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/address"
-                    style="@style/TextView.Med"/>
+                <View
+                    android:id="@+id/pro_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/cell_sep" />
 
                 <TextView
-                    android:id="@+id/address_text"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/pro_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Address"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/pro_sep"
+                    android:text="@string/professional"
+                    android:textAllCaps="true"
+                    android:textColor="@color/steel"
+                    style="@style/TextView.Small.Bold"/>
+
+                <TextView
+                    android:id="@+id/pro_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pro_title"
+                    android:text="Professional"
                     style="@style/TextView"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <View
+            <RelativeLayout
+                android:id="@+id/laundry_section"
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/address_layout"
-                android:background="@color/cell_sep" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pro_section"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding">
 
-            <LinearLayout
-                android:id="@+id/entry_layout"
-                android:layout_below="@id/address_layout"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                style="@style/ContentLayoutCell">
+                <View
+                    android:id="@+id/laundry_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/cell_sep" />
 
                 <TextView
-                    android:layout_width="144dp"
+                    android:id="@+id/laundry_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/laundry_sep"
+                    android:text="@string/dry_cleaning_laundry"
+                    android:textAllCaps="true"
+                    android:textColor="@color/steel"
+                    style="@style/TextView.Small.Bold"/>
+
+                <TextView
+                    android:id="@+id/laundry_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/laundry_title"
+                    android:text="@string/pickup_occur"
+                    style="@style/TextView"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/entry_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/laundry_section"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding">
+
+                <View
+                    android:id="@+id/entry_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/cell_sep" />
+
+                <TextView
+                    android:id="@+id/entry_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/entry_sep"
                     android:text="@string/entry_info"
-                    style="@style/TextView.Med"/>
+                    android:textAllCaps="true"
+                    android:textColor="@color/steel"
+                    style="@style/TextView.Small.Bold"/>
 
                 <TextView
                     android:id="@+id/entry_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/entry_title"
                     android:text="Entry Info"
                     style="@style/TextView"/>
 
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/entry_layout"
-                android:background="@color/cell_sep" />
-
-            <LinearLayout
-                android:id="@+id/prefs_layout"
-                android:layout_below="@id/entry_layout"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                style="@style/ContentLayoutCell">
-
-                <TextView
-                    android:layout_width="144dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/preferences"
-                    style="@style/TextView.Med"/>
-
-                <TextView
-                    android:id="@+id/prefs_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Preferences"
-                    style="@style/TextView"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/prefs_layout"
-                android:background="@color/cell_sep" />
-
-            <LinearLayout
-                android:id="@+id/extras_layout"
-                android:layout_below="@id/prefs_layout"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                style="@style/ContentLayoutCell">
-
-                <TextView
-                    android:layout_width="144dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/extras"
-                    style="@style/TextView.Med"/>
-
-                <TextView
-                    android:id="@+id/extras_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Extras"
-                    style="@style/TextView"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/extras_layout"
-                android:background="@color/cell_sep" />
+            </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/date_layout"
-                android:layout_below="@id/extras_layout"
-                style="@style/ContentLayoutCell">
+                android:id="@+id/pro_note_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/entry_section"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding">
 
-                <LinearLayout
-                    android:id="@+id/date_section"
+                <View
+                    android:id="@+id/pro_note_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/cell_sep" />
+
+                <TextView
+                    android:id="@+id/pro_note_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/pro_note_sep"
+                    android:text="@string/pro_note"
+                    android:textAllCaps="true"
+                    android:textColor="@color/steel"
+                    style="@style/TextView.Small.Bold"/>
 
-                    <TextView
-                        android:layout_width="144dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/date"
-                        style="@style/TextView.Med"/>
-
-                    <TextView
-                        android:id="@+id/date_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Date"
-                        style="@style/TextView"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/duration_section"
+                <TextView
+                    android:id="@+id/pro_note_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_below="@id/date_section"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="144dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/duration"
-                        style="@style/TextView.Med"/>
-
-                    <TextView
-                        android:id="@+id/duration_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Duration"
-                        style="@style/TextView"/>
-
-                </LinearLayout>
+                    android:layout_below="@id/pro_note_title"
+                    android:text="Note"
+                    style="@style/TextView"/>
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/date_layout"
-                android:background="@color/cell_sep" />
-
             <RelativeLayout
-                android:id="@+id/payment_layout"
-                android:layout_below="@id/date_layout"
-                style="@style/ContentLayoutCell">
+                android:id="@+id/extras_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pro_note_section"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding">
 
-                <LinearLayout
-                    android:id="@+id/payment_section"
+                <View
+                    android:id="@+id/extras_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/cell_sep" />
+
+                <TextView
+                    android:id="@+id/extras_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/extras_sep"
+                    android:text="@string/extras"
+                    android:textAllCaps="true"
+                    android:textColor="@color/steel"
+                    style="@style/TextView.Small.Bold"/>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/payment"
-                        style="@style/TextView.Med"/>
+                <TextView
+                    android:id="@+id/extras_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/extras_title"
+                    android:text="Extras"
+                    style="@style/TextView"/>
 
-                    <TextView
-                        android:id="@+id/price_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$0"
-                        style="@style/TextView.Med"/>
+            </RelativeLayout>
 
-                </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/addr_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/extras_section"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding">
+
+                <View
+                    android:id="@+id/addr_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/cell_sep" />
+
+                <TextView
+                    android:id="@+id/addr_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/addr_sep"
+                    android:text="@string/address"
+                    android:textAllCaps="true"
+                    android:textColor="@color/steel"
+                    style="@style/TextView.Small.Bold"/>
+
+                <TextView
+                    android:id="@+id/addr_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/addr_title"
+                    android:text="Address"
+                    style="@style/TextView"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/payment_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addr_section"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding">
+
+                <View
+                    android:id="@+id/payment_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/cell_sep" />
+
+                <TextView
+                    android:id="@+id/payment_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/payment_sep"
+                    android:text="@string/payment"
+                    android:textAllCaps="true"
+                    android:textColor="@color/steel"
+                    style="@style/TextView.Small.Bold"/>
 
                 <RelativeLayout
                     android:id="@+id/payment_info_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_below="@id/payment_section"
-                    android:visibility="gone">
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/payment_title">
 
                     <LinearLayout
                         android:id="@+id/pay_lines_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/total_sep"
-                        android:layout_below="@id/pay_lines_section"
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:layout_marginBottom="12dp"
-                        android:layout_marginTop="12dp"
-                        android:background="@color/nav_sep" />
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"
+                        android:orientation="vertical" />
 
                     <LinearLayout
-                        android:layout_below="@id/total_sep"
+                        android:layout_below="@id/pay_lines_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -358,66 +353,10 @@
             </RelativeLayout>
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/payment_layout"
-                android:background="@color/cell_sep" />
-
-            <LinearLayout
-                android:id="@+id/pro_layout"
-                android:layout_below="@id/payment_layout"
-                android:orientation="horizontal"
-                style="@style/ContentLayoutCell">
-
-                <TextView
-                    android:layout_width="144dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/professional"
-                    style="@style/TextView.Med" />
-
-                <TextView
-                    android:id="@+id/pro_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Professional"
-                    android:textColorLink="@color/handy_blue"
-                    style="@style/TextView" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/pro_layout"
-                android:background="@color/cell_sep" />
-
-            <LinearLayout
-                android:id="@+id/laundry_layout"
-                android:layout_below="@id/pro_layout"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                style="@style/ContentLayoutCell">
-
-                <TextView
-                    android:layout_width="144dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dry_cleaning_laundry"
-                    style="@style/TextView.Med" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pickup_occur"
-                    android:textColorLink="@color/handy_blue"
-                    style="@style/TextView" />
-
-            </LinearLayout>
-
-            <View
                 android:id="@+id/end_sep"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_below="@id/laundry_layout"
+                android:layout_below="@id/payment_section"
                 android:background="@color/nav_sep" />
 
             <!--empty view needed for bottom layout margin bug on older APIs-->

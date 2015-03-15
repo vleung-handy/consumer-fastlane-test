@@ -129,7 +129,13 @@
     <string name="addtional_laundry_info">Adding dry cleaning &amp; laundry is free. You will only be charged if you give us laundry. Skip anytime.</string>
     <string name="add_laundry">Add to Future Cleanings</string>
     <string name="frequency">Frequency</string>
-    <string name="entry_info">Entry Info</string>
+    <string name="entry_info">Entry Information</string>
     <string name="preferences">Preferences</string>
-    <string name="total">TOTAL</string>
+    <string name="total">Total</string>
+    <string name="pro_note">Note to Professional</string>
+
+    <plurals name="hour">
+        <item quantity="one">hour</item>
+        <item quantity="other">hours</item>
+    </plurals>
 </resources>

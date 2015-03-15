@@ -20,6 +20,7 @@
     <color name="dark_grey">#B1B1B1</color>
     <color name="dark_grey_pressed">#949494</color>
     <color name="xdark_grey">#434343</color>
+    <color name="steel">#8B9BA6</color>
     <color name="service_sep">#D6D6D6</color>
     <color name="cell_sep">#D6D6D6</color>
     <color name="cell_selected">#D6D6D6</color>

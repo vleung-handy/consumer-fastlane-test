@@ -22,6 +22,7 @@ import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -37,30 +38,25 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     private Booking booking;
     private boolean updatedBooking;
 
-    @InjectView(R.id.service_text) TextView serviceText;
-    @InjectView(R.id.frequency_text) TextView frequencyText;
-    @InjectView(R.id.frequency_section) View frequencySection;
-    @InjectView(R.id.job_text) TextView jobText;
-    @InjectView(R.id.address_text) TextView addrText;
     @InjectView(R.id.date_text) TextView dateText;
-    @InjectView(R.id.duration_text) TextView durationText;
-    @InjectView(R.id.price_text) TextView priceText;
+    @InjectView(R.id.time_text) TextView timeText;
+    @InjectView(R.id.freq_text) TextView freqText;
+    @InjectView(R.id.pro_section) View proSection;
     @InjectView(R.id.pro_text) TextView proText;
-    @InjectView(R.id.pro_layout) View proView;
+    @InjectView(R.id.laundry_section) View laundrySection;
+    @InjectView(R.id.entry_section) View entrySection;
+    @InjectView(R.id.entry_text) TextView entryText;
+    @InjectView(R.id.pro_note_section) View proNoteSection;
+    @InjectView(R.id.pro_note_text) TextView proNoteText;
+    @InjectView(R.id.extras_section) View extrasSection;
+    @InjectView(R.id.extras_text) TextView extrasText;
+    @InjectView(R.id.addr_text) TextView addrText;
+    @InjectView(R.id.total_text) TextView totalText;
+    @InjectView(R.id.pay_lines_section) LinearLayout paymentLinesSection;
+    @InjectView(R.id.billed_text) TextView billedText;
     @InjectView(R.id.options_layout) View optionsLayout;
     @InjectView(R.id.reschedule_button) Button rescheduleButton;
     @InjectView(R.id.cancel_button) Button cancelButton;
-    @InjectView(R.id.laundry_layout) View laundryInfo;
-    @InjectView(R.id.entry_layout) View entryLayout;
-    @InjectView(R.id.entry_text) TextView entryText;
-    @InjectView(R.id.prefs_layout) View prefsLayout;
-    @InjectView(R.id.prefs_text) TextView prefsText;
-    @InjectView(R.id.extras_layout) View extrasLayout;
-    @InjectView(R.id.extras_text) TextView extrasText;
-    @InjectView(R.id.billed_text) TextView billedText;
-    @InjectView(R.id.total_text) TextView totalText;
-    @InjectView(R.id.payment_info_section) View paymentInfoSection;
-    @InjectView(R.id.pay_lines_section) LinearLayout paymentLinesSection;
 
     public static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -90,40 +86,37 @@ public final class BookingDetailFragment extends BookingFlowFragment {
 
         ButterKnife.inject(this, view);
 
-        serviceText.setText(booking.getService());
+        updateDateTimeInfoText(booking.getStartDate());
 
         final String recurringInfo = booking.getRecurringInfo();
-        if (recurringInfo != null) {
-            frequencyText.setText(recurringInfo);
-            frequencySection.setVisibility(View.VISIBLE);
+        if (recurringInfo == null) freqText.setVisibility(View.GONE);
+        else freqText.setText(booking.getRecurringInfo());
+
+        final User user = userManager.getCurrentUser();
+        final Booking.Provider pro = booking.getProvider();
+        if (pro.getStatus() == 3) {
+            proText.setText(pro.getFirstName() + " " + pro.getLastName() +
+                    (pro.getPhone() != null ? "\n" + TextUtils.formatPhone(pro.getPhone(),
+                            user.getPhonePrefix()) : ""));
+
+            Linkify.addLinks(proText, Linkify.PHONE_NUMBERS);
+            TextUtils.stripUnderlines(proText);
         }
+        else proSection.setVisibility(View.GONE);
 
-        jobText.setText(booking.getId());
-
-        final Booking.Address address = booking.getAddress();
-
-        addrText.setText(TextUtils.formatAddress(address.getAddress1(), address.getAddress2(),
-                address.getCity(), address.getState(), address.getZip()));
-
-        dateText.setText(TextUtils.formatDate(booking.getStartDate(), "MMM d',' h:mm aaa"));
-
-        durationText.setText(TextUtils.formatDecimal(booking.getHours(), "#.#") + " "
-                + getString(R.string.hours).toLowerCase());
+        if (booking.getLaundryStatus() != Booking.LaundryStatus.ACTIVE)
+            laundrySection.setVisibility(View.GONE);
 
         final String entryInfo = booking.getEntryInfo();
-
         if (entryInfo != null) {
             entryText.setText(entryInfo + " "
                     + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
-
-            entryLayout.setVisibility(View.VISIBLE);
         }
+        else entrySection.setVisibility(View.GONE);
 
         final String proNote = booking.getProNote();
-        if (proNote != null) {
-            prefsText.setText(proNote);
-            prefsLayout.setVisibility(View.VISIBLE);
-        }
+        if (proNote != null) proNoteText.setText(proNote);
+        else proNoteSection.setVisibility(View.GONE);
 
         final ArrayList<Booking.ExtraInfo> extras = booking.getExtrasInfo();
         if (extras != null && extras.size() > 0) {
@@ -137,12 +130,16 @@ public final class BookingDetailFragment extends BookingFlowFragment {
             }
 
             extrasText.setText(extraInfo);
-            extrasLayout.setVisibility(View.VISIBLE);
         }
+        else extrasSection.setVisibility(View.GONE);
 
-        final User user = userManager.getCurrentUser();
+        final Booking.Address address = booking.getAddress();
+        addrText.setText(TextUtils.formatAddress(address.getAddress1(), address.getAddress2(),
+                address.getCity(), address.getState(), address.getZip()));
+
         final String price = TextUtils.formatPrice(booking.getPrice(),
                 user.getCurrencyChar(), null);
+        totalText.setText(price);
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
         Collections.sort(paymentInfo, new Comparator<Booking.LineItem>() {
@@ -153,9 +150,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         });
 
         if (paymentInfo != null && paymentInfo.size() > 0) {
-            priceText.setVisibility(View.INVISIBLE);
-            totalText.setText(price);
-            paymentInfoSection.setVisibility(View.VISIBLE);
+            paymentLinesSection.setVisibility(View.VISIBLE);
 
             View lineView;
 
@@ -175,33 +170,16 @@ public final class BookingDetailFragment extends BookingFlowFragment {
                 paymentLinesSection.addView(lineView);
             }
         }
-        else priceText.setText(price);
 
         final String billedStatus = booking.getBilledStatus();
         if (billedStatus != null)  billedText.setText(billedStatus);
         else billedText.setVisibility(View.GONE);
-
-        final Booking.Provider pro = booking.getProvider();
-        if (pro.getStatus() == 3) {
-            proText.setText(pro.getFirstName() + " " + pro.getLastName() +
-                    (pro.getPhone() != null ? "\n" + TextUtils.formatPhone(pro.getPhone(),
-                            user.getPhonePrefix()) : ""));
-
-            Linkify.addLinks(proText, Linkify.PHONE_NUMBERS);
-            TextUtils.stripUnderlines(proText);
-        }
-        else proView.setVisibility(View.GONE);
 
         if (booking.isPast()) optionsLayout.setVisibility(View.GONE);
         else {
             rescheduleButton.setOnClickListener(rescheduleClicked);
             cancelButton.setOnClickListener(cancelClicked);
         }
-
-        if (booking.getLaundryStatus() == Booking.LaundryStatus.ACTIVE) {
-            laundryInfo.setVisibility(View.VISIBLE);
-        }
-        else laundryInfo.setVisibility(View.GONE);
 
         return view;
     }
@@ -224,9 +202,8 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE) {
-            booking.setStartDate(new Date(data
+            updateDateTimeInfoText(new Date(data
                     .getLongExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, 0)));
-            dateText.setText(TextUtils.formatDate(booking.getStartDate(), "MMM d',' h:mm aaa"));
             setUpdatedBookingResult();
         }
 
@@ -280,31 +257,31 @@ public final class BookingDetailFragment extends BookingFlowFragment {
 
             dataManager.getPreCancelationInfo(booking.getId(),
                     new DataManager.Callback<Pair<String, List<String>>>() {
-                @Override
-                public void onSuccess(final Pair<String, List<String>> result) {
-                    if (!allowCallbacks) return;
-                    enableInputs();
-                    progressDialog.dismiss();
+                        @Override
+                        public void onSuccess(final Pair<String, List<String>> result) {
+                            if (!allowCallbacks) return;
+                            enableInputs();
+                            progressDialog.dismiss();
 
-                    final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
+                            final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
 
-                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
-                            new ArrayList<>(result.second));
+                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
+                                    new ArrayList<>(result.second));
 
-                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
-                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
+                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
+                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
 
-                    startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
-                }
+                            startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
+                        }
 
-                @Override
-                public void onError(final DataManager.DataManagerError error) {
-                    if (!allowCallbacks) return;
-                    enableInputs();
-                    progressDialog.dismiss();
-                    dataManagerErrorHandler.handleError(getActivity(), error);
-                }
-            });
+                        @Override
+                        public void onError(final DataManager.DataManagerError error) {
+                            if (!allowCallbacks) return;
+                            enableInputs();
+                            progressDialog.dismiss();
+                            dataManagerErrorHandler.handleError(getActivity(), error);
+                        }
+                    });
         }
     };
 
@@ -320,5 +297,19 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         final Intent intent = new Intent();
         intent.putExtra(BookingDetailActivity.EXTRA_CANCELED_BOOKING, booking);
         getActivity().setResult(BookingDetailActivity.RESULT_BOOKING_CANCELED, intent);
+    }
+
+    private void updateDateTimeInfoText(final Date date) {
+        final float hours = booking.getHours();
+        final Calendar endDate = Calendar.getInstance();
+        endDate.setTime(date);
+        endDate.add(Calendar.MINUTE, (int)(60 * hours));
+
+        timeText.setText(TextUtils.formatDate(date, "h:mmaaa - ")
+                + TextUtils.formatDate(endDate.getTime(), "h:mmaaa (") + TextUtils.formatDecimal(hours, "#.#") + " "
+                + getResources().getQuantityString(R.plurals.hour,
+                (int)Math.ceil(hours)) + ")");
+
+        dateText.setText(TextUtils.formatDate(date, "EEEE',' MMM d',' yyyy"));
     }
 }
