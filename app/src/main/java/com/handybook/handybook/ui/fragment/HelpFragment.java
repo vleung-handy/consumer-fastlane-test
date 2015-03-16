@@ -17,7 +17,6 @@ import butterknife.InjectView;
 public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
     @InjectView(R.id.web_button) Button webButton;
-    @InjectView(R.id.phone_button) Button phoneButton;
 
     public static HelpFragment newInstance() {
         return new HelpFragment();
@@ -40,16 +39,6 @@ public final class HelpFragment extends InjectedFragment {
                 final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"
                         + getString(R.string.web_help)));
 
-                startActivity(intent);
-            }
-        });
-
-        phoneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                final Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
-                        + getString(R.string.phone_help)));
-                
                 startActivity(intent);
             }
         });

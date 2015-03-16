@@ -21,43 +21,9 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/web_button"
-            android:layout_alignParentBottom="false"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginBottom="16dp"
-            android:text="@string/web_help"
-            style="@style/Button.Blue" />
-
-        <Button
-            android:id="@+id/phone_button"
-            android:layout_below="@id/web_button"
-            android:layout_alignParentBottom="false"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:text="@string/phone_help"
-            style="@style/Button.Blue" />
-
-        <!--Used to fix margin on older devices-->
-        <View
-            android:layout_below="@id/phone_button"
-            android:layout_width="0dp"
-            android:layout_height="0dp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_below="@id/nav_layout"
-        android:layout_above="@id/buttons"
         android:paddingTop="@dimen/default_margin_x2">
 
         <ImageView
@@ -70,13 +36,24 @@
             android:contentDescription="help" />
 
         <TextView
+            android:id="@+id/help_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/help_img"
+            android:layout_marginBottom="16dp"
             android:text="@string/always_here_help"
             android:gravity="center"
             android:padding="@dimen/default_padding"
             style="@style/TextView"/>
+
+        <Button
+            android:id="@+id/web_button"
+            android:layout_alignParentBottom="false"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_below="@id/help_text"
+            android:text="@string/web_help"
+            style="@style/Button.Blue" />
 
     </RelativeLayout>
 
