@@ -104,8 +104,10 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         }
         else proSection.setVisibility(View.GONE);
 
-        if (booking.getLaundryStatus() != Booking.LaundryStatus.ACTIVE)
+        if (booking.getLaundryStatus() == null
+                || booking.getLaundryStatus() == Booking.LaundryStatus.SKIPPED) {
             laundrySection.setVisibility(View.GONE);
+        }
 
         final String entryInfo = booking.getEntryInfo();
         if (entryInfo != null) {

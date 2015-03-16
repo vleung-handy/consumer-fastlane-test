@@ -436,7 +436,10 @@ public final class Booking implements Parcelable {
     }
 
     public enum LaundryStatus {
-        @SerializedName("active") ACTIVE,
+        @SerializedName("ready_for_pickup") READY_FOR_PICKUP,
+        @SerializedName("in_progress") IN_PROGRESS,
+        @SerializedName("out_for_delivery") OUT_FOR_DELIVERY,
+        @SerializedName("delivered") DELIVERED,
         @SerializedName("skipped") SKIPPED
     }
 }

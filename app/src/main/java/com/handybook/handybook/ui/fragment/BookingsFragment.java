@@ -269,13 +269,13 @@ public final class BookingsFragment extends InjectedFragment {
                 final ImageView laundryImg = (ImageView)convertView.findViewById(R.id.laundry_icon_bg);
                 final TextView laundryText = (TextView)convertView.findViewById(R.id.laundry_icon_text);
 
-                if (booking.getLaundryStatus() == Booking.LaundryStatus.ACTIVE) {
-                    laundryIcon.setVisibility(View.VISIBLE);
-                }
-                else if (booking.getLaundryStatus() == Booking.LaundryStatus.SKIPPED) {
+                if (booking.getLaundryStatus() == Booking.LaundryStatus.SKIPPED) {
                     laundryImg.setColorFilter(getResources().getColor(R.color.disabled),
                             PorterDuff.Mode.SRC_ATOP);
                     laundryText.setTextColor(getResources().getColor(R.color.disabled));
+                }
+                else if (booking.getLaundryStatus() != null) {
+                    laundryIcon.setVisibility(View.VISIBLE);
                 }
                 else laundryIcon.setVisibility(View.GONE);
             }

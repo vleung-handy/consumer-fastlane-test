@@ -42,7 +42,7 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 48
+        versionCode 49
         versionName '1.5'
     }
     buildTypes {
