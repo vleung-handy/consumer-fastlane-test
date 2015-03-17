@@ -50,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="Date"
+                    android:textSize="23sp"
                     style="@style/TextView.Large.Bold"/>
 
                 <TextView
