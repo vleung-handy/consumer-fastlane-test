@@ -4,15 +4,34 @@
     android:layout_height="match_parent"
     android:background="@color/handy_bg">
 
-    <TextView
-        android:id="@+id/nav_text"
-        android:text="@string/booking"
-        style="@style/TextView.Navbar" />
+    <RelativeLayout
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextView.Navbar">
+
+        <TextView
+            android:id="@+id/service_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Service"
+            style="@style/TextView.Med"/>
+
+        <TextView
+            android:id="@+id/booking_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/service_text"
+            android:text="Service"
+            android:textColor="@color/black_pressed"
+            style="@style/TextView.Small"/>
+
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/nav_text">
+        android:layout_below="@id/nav_bar">
 
         <RelativeLayout
             android:layout_width="match_parent"
