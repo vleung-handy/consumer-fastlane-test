@@ -57,8 +57,8 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.options_layout) View optionsLayout;
     @InjectView(R.id.reschedule_button) Button rescheduleButton;
     @InjectView(R.id.cancel_button) Button cancelButton;
-    @InjectView(R.id.service_text) TextView serviceText;
     @InjectView(R.id.booking_text) TextView bookingText;
+    @InjectView(R.id.nav_text) TextView navText;
 
     public static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -88,7 +88,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
 
         ButterKnife.inject(this, view);
 
-        serviceText.setText(booking.getService());
+        navText.setText(booking.getService());
         bookingText.setText("Booking #" + booking.getId());
 
         updateDateTimeInfoText(booking.getStartDate());
@@ -172,7 +172,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
                 labelText.setText(line.getLabel());
                 amountText.setText(line.getAmount());
 
-                if (i < paymentInfo.size() - 1) lineView.setPadding(0, 0, 0, Utils.toDP(4, getActivity()));
+                if (i < paymentInfo.size() - 1) lineView.setPadding(0, 0, 0, Utils.toDP(10, getActivity()));
 
                 paymentLinesSection.addView(lineView);
             }

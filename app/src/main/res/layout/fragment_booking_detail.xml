@@ -5,33 +5,33 @@
     android:background="@color/handy_bg">
 
     <RelativeLayout
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/nav"
         style="@style/TextView.Navbar">
 
         <TextView
-            android:id="@+id/service_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/nav_text"
             android:text="Service"
-            style="@style/TextView.Med"/>
+            android:textSize="18sp"
+            style="@style/TextView" />
 
         <TextView
-            android:id="@+id/booking_text"
+            android:layout_below="@id/nav_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/service_text"
+            android:id="@+id/booking_text"
             android:text="Service"
+            android:textSize="12sp"
             android:textColor="@color/black_pressed"
-            style="@style/TextView.Small"/>
+            style="@style/TextView" />
 
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/nav_bar">
+        android:layout_below="@id/nav">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,34 +42,53 @@
                 android:id="@+id/date_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/default_padding">
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding">
 
                 <TextView
                     android:id="@+id/date_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="3dp"
                     android:text="Date"
-                    android:textSize="23sp"
+                    android:textSize="24sp"
                     style="@style/TextView.Large.Bold"/>
 
                 <TextView
                     android:id="@+id/time_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_below="@id/date_text"
                     android:text="Time"
                     style="@style/TextView"/>
 
-                <TextView
-                    android:id="@+id/freq_text"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/time_text"
-                    android:text="Freq"
-                    android:textColor="@color/steel"
-                    style="@style/TextView"/>
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/icon_recur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_recurring" />
+
+                    <TextView
+                        android:id="@+id/freq_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
+                        android:text="Freq"
+                        android:textColor="@color/steel"
+                        style="@style/TextView"/>
+
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -80,25 +99,25 @@
                 android:layout_below="@id/date_section"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding">
+                android:paddingBottom="20dp">
 
                 <View
                     android:id="@+id/pro_sep"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/cell_sep" />
 
                 <TextView
                     android:id="@+id/pro_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_below="@id/pro_sep"
                     android:text="@string/professional"
                     android:textAllCaps="true"
                     android:textColor="@color/steel"
-                    style="@style/TextView.Small.Bold"/>
+                    style="@style/TextView.XSmall.Bold"/>
 
                 <TextView
                     android:id="@+id/pro_text"
@@ -117,25 +136,25 @@
                 android:layout_below="@id/pro_section"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding">
+                android:paddingBottom="20dp">
 
                 <View
                     android:id="@+id/laundry_sep"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/cell_sep" />
 
                 <TextView
                     android:id="@+id/laundry_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_below="@id/laundry_sep"
                     android:text="@string/dry_cleaning_laundry"
                     android:textAllCaps="true"
                     android:textColor="@color/steel"
-                    style="@style/TextView.Small.Bold"/>
+                    style="@style/TextView.XSmall.Bold"/>
 
                 <TextView
                     android:id="@+id/laundry_text"
@@ -154,25 +173,25 @@
                 android:layout_below="@id/laundry_section"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding">
+                android:paddingBottom="20dp">
 
                 <View
                     android:id="@+id/entry_sep"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/cell_sep" />
 
                 <TextView
                     android:id="@+id/entry_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_below="@id/entry_sep"
                     android:text="@string/entry_info"
                     android:textAllCaps="true"
                     android:textColor="@color/steel"
-                    style="@style/TextView.Small.Bold"/>
+                    style="@style/TextView.XSmall.Bold"/>
 
                 <TextView
                     android:id="@+id/entry_text"
@@ -191,25 +210,25 @@
                 android:layout_below="@id/entry_section"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding">
+                android:paddingBottom="20dp">
 
                 <View
                     android:id="@+id/pro_note_sep"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/cell_sep" />
 
                 <TextView
                     android:id="@+id/pro_note_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_below="@id/pro_note_sep"
                     android:text="@string/pro_note"
                     android:textAllCaps="true"
                     android:textColor="@color/steel"
-                    style="@style/TextView.Small.Bold"/>
+                    style="@style/TextView.XSmall.Bold"/>
 
                 <TextView
                     android:id="@+id/pro_note_text"
@@ -228,25 +247,25 @@
                 android:layout_below="@id/pro_note_section"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding">
+                android:paddingBottom="20dp">
 
                 <View
                     android:id="@+id/extras_sep"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/cell_sep" />
 
                 <TextView
                     android:id="@+id/extras_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_below="@id/extras_sep"
                     android:text="@string/extras"
                     android:textAllCaps="true"
                     android:textColor="@color/steel"
-                    style="@style/TextView.Small.Bold"/>
+                    style="@style/TextView.XSmall.Bold"/>
 
                 <TextView
                     android:id="@+id/extras_text"
@@ -265,25 +284,25 @@
                 android:layout_below="@id/extras_section"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding">
+                android:paddingBottom="20dp">
 
                 <View
                     android:id="@+id/addr_sep"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/cell_sep" />
 
                 <TextView
                     android:id="@+id/addr_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_below="@id/addr_sep"
                     android:text="@string/address"
                     android:textAllCaps="true"
                     android:textColor="@color/steel"
-                    style="@style/TextView.Small.Bold"/>
+                    style="@style/TextView.XSmall.Bold"/>
 
                 <TextView
                     android:id="@+id/addr_text"
@@ -302,38 +321,38 @@
                 android:layout_below="@id/addr_section"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding">
+                android:paddingBottom="20dp">
 
                 <View
                     android:id="@+id/payment_sep"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/cell_sep" />
 
                 <TextView
                     android:id="@+id/payment_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_below="@id/payment_sep"
                     android:text="@string/payment"
                     android:textAllCaps="true"
                     android:textColor="@color/steel"
-                    style="@style/TextView.Small.Bold"/>
+                    style="@style/TextView.XSmall.Bold"/>
 
                 <RelativeLayout
                     android:id="@+id/payment_info_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="3dp"
                     android:layout_below="@id/payment_title">
 
                     <LinearLayout
                         android:id="@+id/pay_lines_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="20dp"
                         android:visibility="gone"
                         android:orientation="vertical" />
 
@@ -348,14 +367,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/total"
-                            style="@style/TextView.Med"/>
+                            style="@style/TextView.Bold"/>
 
                         <TextView
                             android:id="@+id/total_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="$0"
-                            style="@style/TextView.Med"/>
+                            style="@style/TextView.Bold"/>
 
                     </LinearLayout>
 
@@ -368,7 +387,7 @@
                     android:layout_height="wrap_content"
                     android:text="Billed Status"
                     android:textColor="@color/black_pressed"
-                    style="@style/TextView"/>
+                    style="@style/TextView.Small"/>
 
             </RelativeLayout>
 
@@ -393,7 +412,7 @@
                 android:layout_below="@id/end_view"
                 android:background="@color/handy_bg"
                 android:paddingBottom="16dp"
-                android:paddingTop="16dp">
+                android:paddingTop="15dp">
 
                 <Button
                     android:id="@+id/reschedule_button"
@@ -405,7 +424,7 @@
 
                 <Button
                     android:id="@+id/cancel_button"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="@dimen/default_margin"
                     android:layout_marginRight="@dimen/default_margin"
                     android:layout_alignParentBottom="false"
