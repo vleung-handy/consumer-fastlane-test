@@ -333,7 +333,7 @@
     <style name="TextView.Navbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:gravity">center</item>
         <item name="android:singleLine">true</item>
         <item name="android:background">@drawable/nav_bar</item>
         <item name="android:textColor">@color/black</item>

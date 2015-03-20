@@ -12,7 +12,6 @@
         <TextView
             android:id="@+id/nav_text"
             android:text="@string/log_in"
-            android:paddingLeft="48dp"
             style="@style/TextView.Navbar" />
 
         <RelativeLayout

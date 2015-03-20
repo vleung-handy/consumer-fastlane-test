@@ -41,6 +41,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     @InjectView(R.id.date_text) TextView dateText;
     @InjectView(R.id.time_text) TextView timeText;
     @InjectView(R.id.freq_text) TextView freqText;
+    @InjectView(R.id.freq_layout) View freqLayout;
     @InjectView(R.id.pro_section) View proSection;
     @InjectView(R.id.pro_text) TextView proText;
     @InjectView(R.id.laundry_section) View laundrySection;
@@ -94,7 +95,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         updateDateTimeInfoText(booking.getStartDate());
 
         final String recurringInfo = booking.getRecurringInfo();
-        if (recurringInfo == null) freqText.setVisibility(View.GONE);
+        if (recurringInfo == null) freqLayout.setVisibility(View.GONE);
         else freqText.setText(booking.getRecurringInfo());
 
         final User user = userManager.getCurrentUser();

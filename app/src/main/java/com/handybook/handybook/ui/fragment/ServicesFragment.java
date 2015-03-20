@@ -16,6 +16,8 @@ import com.handybook.handybook.core.BookingManager;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.ui.activity.ServicesActivity;
+import com.handybook.handybook.util.TextUtils;
+import com.mixpanel.android.util.StringUtils;
 
 import java.util.ArrayList;
 
@@ -60,7 +62,7 @@ public final class ServicesFragment extends BookingFlowFragment {
                 .inflate(R.layout.fragment_services,container, false);
 
         ButterKnife.inject(this, view);
-        navText.setText(service.getName());
+        navText.setText(TextUtils.toTitleCase(service.getName()));
 
         return view;
     }
