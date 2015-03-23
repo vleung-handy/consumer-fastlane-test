@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 public abstract class DataManager {
-    public static enum Environment {P, S, Q1, Q2, Q3, Q4}
+    public static enum Environment {P, S, Q1, Q2, Q3, Q4, Q6}
     private Environment env = Environment.S;
     private final Bus bus;
 
