@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:text="Title"
             android:freezesText="false"
-            android:singleLine="true"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="@color/black_pressed"
             style="@style/TextView" />
 
