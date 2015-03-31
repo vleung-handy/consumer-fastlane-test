@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.simplealertdialog.SimpleAlertDialog;
 
@@ -132,6 +133,13 @@ public abstract class MenuDrawerActivity extends BaseActivity  implements Simple
         final Intent intent = new Intent(this, clazz);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
+
+        if (clazz == HelpActivity.class) {
+            //TODO load help nodes then display
+            final HelpNode node = new HelpNode();
+            intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
+        }
+
         startActivity(intent);
         this.overridePendingTransition(0, 0);
         this.finish();
