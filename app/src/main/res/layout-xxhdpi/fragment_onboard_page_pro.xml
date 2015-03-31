@@ -36,7 +36,7 @@
         android:gravity="center"
         android:text="@string/onboard_msg_pro"
         android:textColor="@color/white"
-        style="@style/TextView.Large.Bold"/>
+        style="@style/TextView.XLarge.Bold"/>
 
     <RelativeLayout
         android:id="@+id/image"
