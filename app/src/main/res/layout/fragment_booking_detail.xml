@@ -58,7 +58,7 @@
                     android:layout_marginBottom="3dp"
                     android:text="Date"
                     android:textSize="24sp"
-                    style="@style/TextView.Large.Bold"/>
+                    style="@style/TextView.XLarge.Bold"/>
 
                 <TextView
                     android:id="@+id/time_text"

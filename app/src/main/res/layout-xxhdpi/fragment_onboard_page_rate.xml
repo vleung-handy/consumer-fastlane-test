@@ -35,7 +35,7 @@
         android:gravity="center"
         android:text="@string/onboard_msg_rate"
         android:textColor="@color/white"
-        style="@style/TextView.Large.Bold"/>
+        style="@style/TextView.XLarge.Bold"/>
 
     <ImageView
         android:id="@+id/image"

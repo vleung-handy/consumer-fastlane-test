@@ -20,7 +20,7 @@
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:text="Title"
-            style="@style/TextView.Large.Bold" />
+            style="@style/TextView.XLarge.Bold" />
 
         <TextView
             android:id="@+id/message_text"

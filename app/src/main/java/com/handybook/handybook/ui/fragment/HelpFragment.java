@@ -21,7 +21,6 @@ public final class HelpFragment extends InjectedFragment {
     private HelpNode node;
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
-    @InjectView(R.id.web_button) Button webButton;
 
     public static HelpFragment newInstance(final HelpNode node) {
         final HelpFragment fragment = new HelpFragment();
@@ -47,16 +46,6 @@ public final class HelpFragment extends InjectedFragment {
 
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);
-
-        webButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"
-                        + getString(R.string.web_help)));
-
-                startActivity(intent);
-            }
-        });
 
         return view;
     }

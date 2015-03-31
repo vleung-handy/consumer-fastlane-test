@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="@string/onboard_msg"
-        style="@style/TextView.Large.Bold"/>
+        style="@style/TextView.XLarge.Bold"/>
 
     <ImageView
         android:id="@+id/pros_img"

@@ -24,36 +24,22 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_below="@id/nav_layout"
-        android:paddingTop="@dimen/default_margin_x2">
+        android:padding="@dimen/default_margin">
 
-        <ImageView
-            android:id="@+id/help_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:padding="16dp"
-            android:src="@drawable/ic_help"
-            android:contentDescription="help" />
-
-        <TextView
-            android:id="@+id/help_text"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/help_img"
-            android:layout_marginBottom="16dp"
-            android:text="@string/always_here_help"
-            android:gravity="center"
-            android:padding="@dimen/default_padding"
-            style="@style/TextView"/>
+            android:layout_height="150dp"
+            android:background="@drawable/help_header">
 
-        <Button
-            android:id="@+id/web_button"
-            android:layout_alignParentBottom="false"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_below="@id/help_text"
-            android:text="@string/web_help"
-            style="@style/Button.Blue" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:text="Header Title"
+                style="@style/TextView.Large.Med" />
+
+        </FrameLayout>
 
     </RelativeLayout>
 

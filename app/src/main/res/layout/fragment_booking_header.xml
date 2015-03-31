@@ -62,7 +62,7 @@
             android:layout_toRightOf="@id/discount_text"
             android:singleLine="true"
             android:text="$0"
-            style="@style/TextView.XLarge.Bold" />
+            style="@style/TextView.XXLarge.Bold" />
 
     </RelativeLayout>
 
