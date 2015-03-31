@@ -17,7 +17,6 @@ import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.util.TextUtils;
-import com.mixpanel.android.util.StringUtils;
 
 import java.util.ArrayList;
 

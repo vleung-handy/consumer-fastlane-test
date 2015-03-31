@@ -9,17 +9,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.ui.widget.MenuButton;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class HelpFragment extends InjectedFragment {
+    static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
+
+    private HelpNode node;
+
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
     @InjectView(R.id.web_button) Button webButton;
 
-    public static HelpFragment newInstance() {
-        return new HelpFragment();
+    public static HelpFragment newInstance(final HelpNode node) {
+        final HelpFragment fragment = new HelpFragment();
+        final Bundle args = new Bundle();
+        args.putParcelable(EXTRA_HELP_NODE, node);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public final void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        node = getArguments().getParcelable(EXTRA_HELP_NODE);
     }
 
     @Override
