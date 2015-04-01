@@ -6,8 +6,8 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-public final class HandyRetrofitEndpoint implements HandyEndpoint {
-
+public final class HandyRetrofitEndpoint implements Endpoint {
+    static enum Environment {P, S, Q1, Q2, Q3, Q4, Q6, D1}
     private Environment env = Environment.S;
     private Context context;
     private final String apiEndpoint;
@@ -49,6 +49,9 @@ public final class HandyRetrofitEndpoint implements HandyEndpoint {
             case Q6:
                 return apiEndpointInternal.replace("#", "q6");
 
+            case D1:
+                return apiEndpointInternal.replace("#", "d1");
+
             default:
                 return apiEndpointInternal.replace("#", "s");
         }
@@ -74,6 +77,9 @@ public final class HandyRetrofitEndpoint implements HandyEndpoint {
 
             case Q6:
                 return "Q6";
+
+            case D1:
+                return "D1";
 
             default:
                 return "Stage";
