@@ -10,6 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.simplealertdialog.SimpleAlertDialog;
 
@@ -135,14 +137,31 @@ public abstract class MenuDrawerActivity extends BaseActivity  implements Simple
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
 
         if (clazz == HelpActivity.class) {
-            //TODO load help nodes then display
-            final HelpNode node = new HelpNode();
-            intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
-        }
+            final User user = userManager.getCurrentUser();
+            final String authToken = user != null ? user.getAuthToken() : null;
 
-        startActivity(intent);
-        this.overridePendingTransition(0, 0);
-        this.finish();
+            dataManager.getHelpInfo(null, authToken, new DataManager.Callback<HelpNode>() {
+                @Override
+                public void onSuccess(final HelpNode node) {
+                    if (!allowCallbacks) return;
+                    intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
+                    startActivity(intent);
+                    MenuDrawerActivity.this.overridePendingTransition(0, 0);
+                    MenuDrawerActivity.this.finish();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    dataManagerErrorHandler.handleError(MenuDrawerActivity.this, error);
+                }
+            });
+        }
+        else {
+            startActivity(intent);
+            this.overridePendingTransition(0, 0);
+            this.finish();
+        }
     }
     
     public final void setDrawerDisabled(final boolean disableDrawer) {

@@ -18,6 +18,7 @@ import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
@@ -30,13 +31,14 @@ import javax.inject.Inject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends FragmentActivity {
-    private boolean allowCallbacks;
+    protected boolean allowCallbacks;
     private OnBackPressedListener onBackPressedListener;
     private RateServiceDialogFragment rateServiceDialog;
 
     @Inject Mixpanel mixpanel;
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
+    @Inject DataManagerErrorHandler dataManagerErrorHandler;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

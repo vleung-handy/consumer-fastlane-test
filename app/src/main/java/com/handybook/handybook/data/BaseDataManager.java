@@ -13,6 +13,7 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
+import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
@@ -71,6 +72,10 @@ public final class BaseDataManager extends DataManager {
 
             case Q6:
                 endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q6);
+                break;
+
+            case D1:
+                endpoint.setEnv(HandyRetrofitEndpoint.Environment.D1);
                 break;
 
             default:
@@ -503,6 +508,7 @@ public final class BaseDataManager extends DataManager {
         });
     }
 
+    @Override
     public final void getUser(final String email, final Callback<String> cb) {
         service.getUserInfo(email, new HandyRetrofitCallback(cb) {
             @Override
@@ -511,7 +517,8 @@ public final class BaseDataManager extends DataManager {
             }
         });
     }
-    
+
+    @Override
     public final void updateUser(final User user, final Callback<User> cb) {
         service.updateUserInfo(user.getId(), new HandyRetrofitService.UserUpdateRequest(user,
                 user.getAuthToken()), new HandyRetrofitCallback(cb) {
@@ -530,6 +537,17 @@ public final class BaseDataManager extends DataManager {
                 final JSONArray array = response.optJSONArray("messages");
                 cb.onSuccess(array != null && array.length() > 0 ?
                         (array.isNull(0) ? null : array.optString(0)) : null);
+            }
+        });
+    }
+
+    @Override
+    public final void getHelpInfo(final String nodeId, final String authToken, final Callback<HelpNode> cb) {
+        service.getHelpInfo(nodeId, authToken, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                final JSONObject node = response.optJSONObject("node");
+                cb.onSuccess(HelpNode.fromJson(node.toString()));
             }
         });
     }

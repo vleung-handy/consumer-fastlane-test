@@ -10,6 +10,7 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
+import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
@@ -21,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 public abstract class DataManager {
-    public static enum Environment {P, S, Q1, Q2, Q3, Q4, Q6}
+    public static enum Environment {P, S, Q1, Q2, Q3, Q4, Q6, D1}
     private Environment env = Environment.S;
     private final Bus bus;
 
@@ -105,6 +106,8 @@ public abstract class DataManager {
                                     String lastName, Callback<User> cb);
 
     public abstract void requestPasswordReset(String email, Callback<String> cb);
+
+    public abstract void getHelpInfo(String nodeId, String authToken, Callback<HelpNode> cb);
 
     public static interface Callback<T> {
         void onSuccess(T response);
