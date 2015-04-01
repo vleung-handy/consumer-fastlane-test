@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
@@ -18,6 +19,7 @@ public final class HelpFragment extends InjectedFragment {
     private HelpNode node;
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
+    @InjectView(R.id.info_text) TextView infoText;
 
     public static HelpFragment newInstance(final HelpNode node) {
         final HelpFragment fragment = new HelpFragment();

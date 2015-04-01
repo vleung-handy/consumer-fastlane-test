@@ -20,27 +20,43 @@
 
     </FrameLayout>
 
-    <RelativeLayout
-        android:layout_height="wrap_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_below="@id/nav_layout"
-        android:padding="@dimen/default_margin">
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_layout">
 
-        <FrameLayout
+        <RelativeLayout
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/help_header">
+            android:padding="@dimen/default_margin">
+
+            <FrameLayout
+                android:id="@+id/help_header"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/help_header">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:text="@string/what_need_help_with"
+                    style="@style/TextView.Large.Med" />
+
+            </FrameLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/info_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/white"
-                android:text="Header Title"
-                style="@style/TextView.Large.Med" />
+                android:layout_below="@id/help_header"
+                android:padding="@dimen/default_padding"
+                android:background="@color/white"
+                style="@style/TextView" />
 
-        </FrameLayout>
+        </RelativeLayout>
 
-    </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
