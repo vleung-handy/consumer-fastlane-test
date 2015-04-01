@@ -55,6 +55,16 @@
                 android:background="@color/white"
                 style="@style/TextView" />
 
+
+            <LinearLayout
+                android:id="@+id/nav_options_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/help_header"
+                android:orientation="vertical"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
     </ScrollView>
