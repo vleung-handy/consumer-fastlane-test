@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
+import com.handybook.handybook.util.TextUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,6 +35,7 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.help_header_title) TextView headerTitle;
     @InjectView(R.id.info_text) TextView infoText;
     @InjectView(R.id.nav_options_layout) LinearLayout navList;
+    @InjectView(R.id.info_layout) View infoLayout;
 
     public static HelpFragment newInstance(final HelpNode node) {
         final HelpFragment fragment = new HelpFragment();
@@ -61,11 +64,20 @@ public final class HelpFragment extends InjectedFragment {
 
         switch (node.getType()) {
             case "root":
-                layoutForRoot(inflater, container);
+                layoutForRoot(container);
                 break;
 
             case "navigation":
-                layoutForNavigation(inflater, container);
+                layoutForNavigation(container);
+                menuButtonLayout.setVisibility(View.GONE);
+                ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
+                break;
+
+            case "article":
+                layoutForArticle();
+                menuButtonLayout.setVisibility(View.GONE);
+                ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
+                break;
 
             default:
                 menuButtonLayout.setVisibility(View.GONE);
@@ -76,38 +88,46 @@ public final class HelpFragment extends InjectedFragment {
         return view;
     }
 
-    private void layoutForRoot(final LayoutInflater inflater, final ViewGroup container) {
-        layoutNavList(inflater, container);
+    private void layoutForRoot(final ViewGroup container) {
+        headerTitle.setText(getResources().getString(R.string.what_need_help_with));
+        setHeaderColor(getResources().getColor(R.color.handy_blue));
+        layoutNavList(container);
     }
 
-    private void layoutForNavigation(final LayoutInflater inflater, final ViewGroup container) {
+    private void layoutForNavigation(final ViewGroup container) {
         navText.setText(node.getLabel());
-        headerTitle.setText(getResources().getString(R.string.what_can_help_with));
-
-        final Drawable header = getResources().getDrawable(R.drawable.help_header);
-        header.setColorFilter(getResources().getColor(R.color.handy_purple), PorterDuff.Mode.SRC_ATOP);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) helpHeader.setBackgroundDrawable(header);
-        else helpHeader.setBackground(header);
-
-        layoutNavList(inflater, container);
+        layoutNavList(container);
     }
 
-    private void layoutNavList(final LayoutInflater inflater, final ViewGroup container) {
-        infoText.setVisibility(View.GONE);
+    private void layoutForArticle() {
+        navText.setText(node.getLabel());
+        setHeaderColor(getResources().getColor(R.color.handy_yellow));
+
+        for (final HelpNode child : node.getChildren()) {
+            if (child.getType().equals("help-text")) {
+                infoText.setText(Html.fromHtml(child.getContent()));
+            }
+        }
+    }
+
+    private void layoutNavList(final ViewGroup container) {
+        infoLayout.setVisibility(View.GONE);
         navList.setVisibility(View.VISIBLE);
 
         int count = 0;
-        int size = node.getContent().size();
+        int size = node.getChildren().size();
 
-        for (final HelpNode helpNode : node.getContent()) {
-            final View navView = inflater
+        for (final HelpNode helpNode : node.getChildren()) {
+            final View navView = getActivity().getLayoutInflater()
                     .inflate(R.layout.list_item_help_nav, container, false);
 
             final TextView textView = (TextView)navView.findViewById(R.id.nav_item_text);
             textView.setText(helpNode.getLabel());
 
-            if (node.getType().equals("root")) textView.setTextAppearance(getActivity(), R.style.TextView_Large);
+            if (node.getType().equals("root")) {
+                textView.setTextAppearance(getActivity(), R.style.TextView_Large);
+                textView.setTypeface(TextUtils.get(getActivity(), "CircularStd-Book.otf"));
+            }
 
             if (count == size - 1) navView.setBackgroundResource((R.drawable.cell_booking_last_rounded));
 
@@ -148,5 +168,13 @@ public final class HelpFragment extends InjectedFragment {
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
         });
+    }
+
+    private void setHeaderColor(final int color) {
+        final Drawable header = getResources().getDrawable(R.drawable.help_header);
+        header.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) helpHeader.setBackgroundDrawable(header);
+        else helpHeader.setBackground(header);
     }
 }
