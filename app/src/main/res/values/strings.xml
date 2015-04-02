@@ -134,6 +134,7 @@
     <string name="total">Total</string>
     <string name="pro_note">Note to Professional</string>
     <string name="what_need_help_with">What do you need help with?</string>
+    <string name="what_can_help_with">What can we help with?</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>

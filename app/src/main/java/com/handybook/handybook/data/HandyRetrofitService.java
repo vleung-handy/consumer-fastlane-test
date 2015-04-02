@@ -144,7 +144,7 @@ public interface HandyRetrofitService {
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
 
     @GET("/self_service/node_details")
-    void getHelpInfo(@Query("node_id") String nodeId, @Query("auth_token") String authToken,
+    void getHelpInfo(@Query("id") String nodeId, @Query("auth_token") String authToken,
                            HandyRetrofitCallback cb);
 
     static final class UserUpdateRequest {

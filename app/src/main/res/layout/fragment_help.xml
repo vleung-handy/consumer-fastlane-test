@@ -37,6 +37,7 @@
                 android:background="@drawable/help_header">
 
                 <TextView
+                    android:id="@+id/help_header_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
