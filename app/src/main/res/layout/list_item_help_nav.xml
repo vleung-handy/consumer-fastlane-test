@@ -26,6 +26,6 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:freezesText="false"
-        style="@style/TextView.Large" />
+        style="@style/TextView" />
 
 </LinearLayout>
