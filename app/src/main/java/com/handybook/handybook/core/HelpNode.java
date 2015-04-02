@@ -12,7 +12,8 @@ public final class HelpNode implements Parcelable {
     @SerializedName("id") private int id;
     @SerializedName("type") private String type;
     @SerializedName("label") private String label;
-    @SerializedName("content") private ArrayList<HelpNode> content;
+    @SerializedName("content") private String content;
+    @SerializedName("children") private ArrayList<HelpNode> children;
 
     public HelpNode(){}
 
@@ -28,8 +29,12 @@ public final class HelpNode implements Parcelable {
         return label;
     }
 
-    public final ArrayList<HelpNode> getContent() {
+    public final String getContent() {
         return content;
+    }
+
+    public final ArrayList<HelpNode> getChildren() {
+        return children;
     }
 
     private HelpNode(final Parcel in) {
@@ -37,13 +42,14 @@ public final class HelpNode implements Parcelable {
         in.readIntArray(intData);
         id = intData[0];
 
-        final String[] stringData = new String[2];
+        final String[] stringData = new String[3];
         in.readStringArray(stringData);
         type = stringData[0];
         label = stringData[1];
+        content = stringData[2];
 
-        content = new ArrayList<HelpNode>();
-        in.readTypedList(content, HelpNode.CREATOR);
+        children = new ArrayList<HelpNode>();
+        in.readTypedList(children, HelpNode.CREATOR);
     }
 
     public static HelpNode fromJson(final String json) {
@@ -54,8 +60,8 @@ public final class HelpNode implements Parcelable {
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
         out.writeIntArray(new int[]{id});
-        out.writeStringArray(new String[]{type, label});
-        out.writeTypedList(content);
+        out.writeStringArray(new String[]{type, label, content});
+        out.writeTypedList(children);
     }
 
     @Override
