@@ -552,6 +552,18 @@ public final class BaseDataManager extends DataManager {
         });
     }
 
+    @Override
+    public final void getHelpBookingsInfo(final String nodeId, final String authToken,
+                                          final Callback<HelpNode> cb) {
+        service.getHelpBookingsInfo(nodeId, authToken, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                final JSONObject node = response.optJSONObject("node");
+                cb.onSuccess(HelpNode.fromJson(node.toString()));
+            }
+        });
+    }
+
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb) {
         final User user = new User();
         user.setAuthToken(response.isNull("auth_token") ? null : response.optString("auth_token"));

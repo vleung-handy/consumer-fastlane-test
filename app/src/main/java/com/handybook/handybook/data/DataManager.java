@@ -109,6 +109,8 @@ public abstract class DataManager {
 
     public abstract void getHelpInfo(String nodeId, String authToken, Callback<HelpNode> cb);
 
+    public abstract void getHelpBookingsInfo(String nodeId, String authToken, Callback<HelpNode> cb);
+
     public static interface Callback<T> {
         void onSuccess(T response);
         void onError(DataManagerError error);

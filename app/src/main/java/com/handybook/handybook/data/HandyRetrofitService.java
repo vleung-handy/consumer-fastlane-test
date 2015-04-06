@@ -147,6 +147,10 @@ public interface HandyRetrofitService {
     void getHelpInfo(@Query("id") String nodeId, @Query("auth_token") String authToken,
                            HandyRetrofitCallback cb);
 
+    @GET("/self_service/booking_node_details")
+    void getHelpBookingsInfo(@Query("id") String nodeId, @Query("auth_token") String authToken,
+                     HandyRetrofitCallback cb);
+
     static final class UserUpdateRequest {
         @SerializedName("user") private User user;
         @SerializedName("auth_token") private String authToken;
