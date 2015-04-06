@@ -102,10 +102,17 @@ public final class HelpFragment extends InjectedFragment {
     private void layoutForArticle() {
         navText.setText(node.getLabel());
         setHeaderColor(getResources().getColor(R.color.handy_yellow));
+        infoText.setText(node.getContent());
 
         for (final HelpNode child : node.getChildren()) {
-            if (child.getType().equals("help-text")) {
-                infoText.setText(Html.fromHtml(child.getContent()));
+            if (child.getType().equals("help-faq-container")) {
+                infoText.setText(infoText.getText() + "\n\n HAS FAQ LINKS");
+            }
+            else if (child.getType().equals("help-cta")) {
+                infoText.setText(infoText.getText() + "\n\n HAS CTA BUTTONS");
+            }
+            else if (child.getType().equals("help-contact-form")) {
+                infoText.setText(infoText.getText() + "\n\n HAS CONTACT FORM");
             }
         }
     }
