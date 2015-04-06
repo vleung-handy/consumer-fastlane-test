@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,19 +103,27 @@ public final class HelpFragment extends InjectedFragment {
     private void layoutForArticle() {
         navText.setText(node.getLabel());
         setHeaderColor(getResources().getColor(R.color.handy_yellow));
-        infoText.setText(node.getContent());
+
+        String info = node.getContent();
 
         for (final HelpNode child : node.getChildren()) {
             if (child.getType().equals("help-faq-container")) {
-                infoText.setText(infoText.getText() + "\n\n HAS FAQ LINKS");
+                info += "<br/><br/><b>" + getResources().getString(R.string.related_faq) + ":</b>";
+
+                for (final HelpNode faqChild : child.getChildren()) {
+                    info += "<br/><a href=" + faqChild.getContent() + ">" + faqChild.getLabel() + "</a>";
+                }
             }
             else if (child.getType().equals("help-cta")) {
-                infoText.setText(infoText.getText() + "\n\n HAS CTA BUTTONS");
+                info += "<br/><br/>HAS CTA BUTTONS";
             }
             else if (child.getType().equals("help-contact-form")) {
-                infoText.setText(infoText.getText() + "\n\n HAS CONTACT FORM");
+                info += "<br/><br/>HAS CONTACT FORM";
             }
         }
+
+        infoText.setText(Html.fromHtml(info));
+        infoText.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void layoutNavList(final ViewGroup container) {
