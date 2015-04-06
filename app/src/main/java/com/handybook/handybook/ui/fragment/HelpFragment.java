@@ -69,6 +69,8 @@ public final class HelpFragment extends InjectedFragment {
                 break;
 
             case "navigation":
+            case "dynamic-bookings-navigation":
+            case "booking":
                 layoutForNavigation(container);
                 menuButtonLayout.setVisibility(View.GONE);
                 ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
@@ -96,7 +98,8 @@ public final class HelpFragment extends InjectedFragment {
     }
 
     private void layoutForNavigation(final ViewGroup container) {
-        navText.setText(node.getLabel());
+        if (node.getType().equals("booking")) navText.setText(getString(R.string.help));
+        else navText.setText(node.getLabel());
         layoutNavList(container);
     }
 
@@ -108,7 +111,7 @@ public final class HelpFragment extends InjectedFragment {
 
         for (final HelpNode child : node.getChildren()) {
             if (child.getType().equals("help-faq-container")) {
-                info += "<br/><br/><b>" + getResources().getString(R.string.related_faq) + ":</b>";
+                info += "<br/><br/><b>" + getString(R.string.related_faq) + ":</b>";
 
                 for (final HelpNode faqChild : child.getChildren()) {
                     info += "<br/><a href=" + faqChild.getContent() + ">" + faqChild.getLabel() + "</a>";
@@ -134,15 +137,29 @@ public final class HelpFragment extends InjectedFragment {
         int size = node.getChildren().size();
 
         for (final HelpNode helpNode : node.getChildren()) {
-            final View navView = getActivity().getLayoutInflater()
-                    .inflate(R.layout.list_item_help_nav, container, false);
+            final View navView;
 
-            final TextView textView = (TextView)navView.findViewById(R.id.nav_item_text);
-            textView.setText(helpNode.getLabel());
+            if (node.getType().equals("dynamic-bookings-navigation")) {
+                navView = getActivity().getLayoutInflater()
+                        .inflate(R.layout.list_item_help_booking_nav, container, false);
 
-            if (node.getType().equals("root")) {
-                textView.setTextAppearance(getActivity(), R.style.TextView_Large);
-                textView.setTypeface(TextUtils.get(getActivity(), "CircularStd-Book.otf"));
+                TextView textView = (TextView)navView.findViewById(R.id.service_text);
+                textView.setText(helpNode.getService());
+
+                textView = (TextView)navView.findViewById(R.id.date_text);
+                textView.setText(helpNode.getDateInfo());
+            }
+            else {
+                navView = getActivity().getLayoutInflater()
+                        .inflate(R.layout.list_item_help_nav, container, false);
+
+                final TextView textView = (TextView)navView.findViewById(R.id.nav_item_text);
+                textView.setText(helpNode.getLabel());
+
+                if (node.getType().equals("root")) {
+                    textView.setTextAppearance(getActivity(), R.style.TextView_Large);
+                    textView.setTypeface(TextUtils.get(getActivity(), "CircularStd-Book.otf"));
+                }
             }
 
             if (count == size - 1) navView.setBackgroundResource((R.drawable.cell_booking_last_rounded));
@@ -150,7 +167,7 @@ public final class HelpFragment extends InjectedFragment {
             navView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    displayNode(Integer.toString(helpNode.getId()));
+                    displayNextNode(helpNode);
                 }
             });
 
@@ -159,31 +176,16 @@ public final class HelpFragment extends InjectedFragment {
         }
     }
 
-    private void displayNode(final String nodeId) {
+    private void displayNextNode(final HelpNode node) {
         progressDialog.show();
 
         final User user = userManager.getCurrentUser();
         final String authToken = user != null ? user.getAuthToken() : null;
 
-        dataManager.getHelpInfo(nodeId, authToken, new DataManager.Callback<HelpNode>() {
-            @Override
-            public void onSuccess(final HelpNode helpNode) {
-                if (!allowCallbacks) return;
-
-                final Intent intent = new Intent(getActivity(), HelpActivity.class);
-                intent.putExtra(HelpActivity.EXTRA_HELP_NODE, helpNode);
-                startActivity(intent);
-
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onError(final DataManager.DataManagerError error) {
-                if (!allowCallbacks) return;
-                progressDialog.dismiss();
-                dataManagerErrorHandler.handleError(getActivity(), error);
-            }
-        });
+        if (node.getType().equals("booking")) {
+            dataManager.getHelpBookingsInfo(Integer.toString(node.getId()), authToken, helpNodeCallback);
+        }
+        else dataManager.getHelpInfo(Integer.toString(node.getId()), authToken, helpNodeCallback);
     }
 
     private void setHeaderColor(final int color) {
@@ -193,4 +195,24 @@ public final class HelpFragment extends InjectedFragment {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) helpHeader.setBackgroundDrawable(header);
         else helpHeader.setBackground(header);
     }
+
+    private DataManager.Callback<HelpNode> helpNodeCallback = new DataManager.Callback<HelpNode>() {
+        @Override
+        public void onSuccess(final HelpNode helpNode) {
+            if (!allowCallbacks) return;
+
+            final Intent intent = new Intent(getActivity(), HelpActivity.class);
+            intent.putExtra(HelpActivity.EXTRA_HELP_NODE, helpNode);
+            startActivity(intent);
+
+            progressDialog.dismiss();
+        }
+
+        @Override
+        public void onError(final DataManager.DataManagerError error) {
+            if (!allowCallbacks) return;
+            progressDialog.dismiss();
+            dataManagerErrorHandler.handleError(getActivity(), error);
+        }
+    };
 }
