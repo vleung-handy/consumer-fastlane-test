@@ -33,6 +33,10 @@ public interface HandyRetrofitService {
     @GET("/bookings")
     void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
+    @GET("/bookings/{id}")
+    void getBooking(@Path("id") String bookingId, @Query("auth_token") String authToken,
+                    HandyRetrofitCallback cb);
+
     @GET("/bookings/new")
     void getBookingOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
                            HandyRetrofitCallback cb);

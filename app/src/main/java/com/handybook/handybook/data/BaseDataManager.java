@@ -103,7 +103,7 @@ public final class BaseDataManager extends DataManager {
                     return;
                 }
 
-                for (int i = 0; i <= array.length(); i ++) {
+                for (int i = 0; i <= array.length(); i++) {
                     final JSONObject obj = array.optJSONObject(i);
 
                     if (obj != null) {
@@ -133,7 +133,7 @@ public final class BaseDataManager extends DataManager {
                             return;
                         }
 
-                        for (int i = 0; i <= array.length(); i ++) {
+                        for (int i = 0; i <= array.length(); i++) {
                             final JSONObject obj = array.optJSONObject(i);
 
                             if (obj != null && obj.optBoolean("no_show", true)) {
@@ -199,18 +199,18 @@ public final class BaseDataManager extends DataManager {
                                          final Callback<Void> cb) {
         service.validateBookingZip(serviceId, zipCode, userId, authToken, promoCode,
                 new HandyRetrofitCallback(cb) {
-            @Override
-            void success(final JSONObject response) {
-                cb.onSuccess(null);
-            }
-        });
+                    @Override
+                    void success(final JSONObject response) {
+                        cb.onSuccess(null);
+                    }
+                });
     }
 
     @Override
     public final void getBookings(final User user, final Callback<List<Booking>> cb) {
         service.getBookings(user.getAuthToken(), new HandyRetrofitCallback(cb) {
             @Override
-            void success(JSONObject response) {
+            void success(final JSONObject response) {
                 final JSONArray array = response.optJSONArray("user_bookings");
 
                 if (array == null) {
@@ -220,8 +220,19 @@ public final class BaseDataManager extends DataManager {
 
                 final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
                 final List<Booking> bookings = gson.fromJson(array.toString(),
-                        new TypeToken<List<Booking>>(){}.getType());
+                        new TypeToken<List<Booking>>() {
+                        }.getType());
                 cb.onSuccess(bookings);
+            }
+        });
+    }
+
+    @Override
+    public void getBooking(final String bookingId, final String authToken, final Callback<Booking> cb) {
+        service.getBooking(bookingId, authToken, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(Booking.fromJson(response.optJSONObject("booking").toString()));
             }
         });
     }
