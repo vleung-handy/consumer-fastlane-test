@@ -46,6 +46,8 @@ public abstract class DataManager {
 
     public abstract void getBookings(User user, Callback<List<Booking>> cb);
 
+    public abstract void getBooking(String bookingId, String authToken, Callback<Booking> cb);
+
     public abstract void getBookingOptions(int serviceId, String userId, Callback<List<BookingOption>> cb);
 
     public abstract void getBookingQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
