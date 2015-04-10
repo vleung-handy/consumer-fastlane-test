@@ -7,14 +7,14 @@
                 <shape android:shape="rectangle">
                     <stroke android:width="1px" android:color="@color/white" />
                     <solid android:color="@color/white" />
-                    <corners android:radius="8dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
+                    <corners android:radius="10dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
                 </shape>
             </item>
             <item android:bottom="1px">
                 <shape android:shape="rectangle">
                     <stroke android:width="1px" android:color="@color/white" />
                     <solid android:color="@color/white" />
-                    <corners android:radius="8dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
+                    <corners android:radius="10dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
                 </shape>
             </item>
         </layer-list>
@@ -26,18 +26,17 @@
                 <shape android:shape="rectangle">
                     <stroke android:width="1px" android:color="@color/cell_sep" />
                     <solid android:color="@color/cell_selected" />
-                    <corners android:radius="8dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
+                    <corners android:radius="10dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
                 </shape>
             </item>
             <item android:bottom="1px">
                 <shape android:shape="rectangle">
                     <stroke android:width="1px" android:color="@color/cell_selected" />
                     <solid android:color="@color/cell_selected" />
-                    <corners android:radius="8dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
+                    <corners android:radius="10dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
                 </shape>
             </item>
         </layer-list>
     </item>
 
 </selector>
-

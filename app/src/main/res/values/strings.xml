@@ -133,7 +133,7 @@
     <string name="preferences">Preferences</string>
     <string name="total">Total</string>
     <string name="pro_note">Note to Professional</string>
-    <string name="what_need_help_with">What do you need help with?</string>
+    <string name="what_need_help_with">What do you need \nhelp with?</string>
     <string name="what_can_help_with">What can we help with?</string>
     <string name="related_faq">Related FAQs</string>
 

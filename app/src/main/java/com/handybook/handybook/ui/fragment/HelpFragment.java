@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,6 +38,8 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.info_text) TextView infoText;
     @InjectView(R.id.nav_options_layout) LinearLayout navList;
     @InjectView(R.id.info_layout) View infoLayout;
+    @InjectView(R.id.help_icon) ImageView helpIcon;
+    @InjectView(R.id.help_triangle) ImageView helpTriangleView;
 
     public static HelpFragment newInstance(final HelpNode node) {
         final HelpFragment fragment = new HelpFragment();
@@ -94,6 +97,7 @@ public final class HelpFragment extends InjectedFragment {
     private void layoutForRoot(final ViewGroup container) {
         headerTitle.setText(getResources().getString(R.string.what_need_help_with));
         setHeaderColor(getResources().getColor(R.color.handy_blue));
+        helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_smiley));
         layoutNavList(container);
     }
 
@@ -106,6 +110,8 @@ public final class HelpFragment extends InjectedFragment {
     private void layoutForArticle() {
         navText.setText(node.getLabel());
         setHeaderColor(getResources().getColor(R.color.handy_yellow));
+        helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_bulb));
+        helpTriangleView.setVisibility(View.VISIBLE);
 
         String info = node.getContent();
 
