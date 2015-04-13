@@ -88,7 +88,7 @@
                     android:layout_below="@id/info_text"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="20dp"
-                    android:visibility="gone">
+                    >
 
                     <Button
                         android:id="@+id/cta_button"
@@ -96,7 +96,9 @@
                         android:layout_marginRight="@dimen/default_margin"
                         android:layout_alignParentBottom="false"
                         android:text="CTA"
-                        style="@style/Button.Green.Round" />
+                        style="@style/Button.Green.Round"
+                        android:visibility="gone"
+                        />
 
                     <Button
                         android:id="@+id/contact_button"
@@ -106,7 +108,9 @@
                         android:layout_below="@id/cta_button"
                         android:text="@string/i_still_need_help"
                         android:layout_marginTop="10dp"
-                        style="@style/Button.Green.Round" />
+                        style="@style/Button.Green.Round"
+                        android:visibility="gone"
+                        />
 
                 </RelativeLayout>
 
