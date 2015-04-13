@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,7 +49,11 @@ public class SplashActivity extends BaseActivity {
                     break;
 
                 case "profile/":
-                    openProfileActivity();
+                    openActivity(ProfileActivity.class, true);
+                    break;
+
+                case "bookings/":
+                    openActivity(BookingsActivity.class, true);
                     break;
 
                 default:
@@ -92,9 +97,9 @@ public class SplashActivity extends BaseActivity {
         startActivity(new Intent(this, ServiceCategoriesActivity.class));
     }
 
-    private void openProfileActivity() {
-        if (user == null) openServiceCategoriesActivity();
-        else startActivity(new Intent(SplashActivity.this, ProfileActivity.class));
+    private void openActivity(final Class<? extends Activity> clazz, final boolean requiresUser) {
+        if (requiresUser && user == null)  openServiceCategoriesActivity();
+        startActivity(new Intent(this, clazz));
     }
 
     private void openRescheduleActivity(final String bookingId) {
