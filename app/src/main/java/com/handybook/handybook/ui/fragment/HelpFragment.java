@@ -134,10 +134,10 @@ public final class HelpFragment extends InjectedFragment {
                 }
             }
             else if (child.getType().equals("help-cta")) {
-                info += "<br/><br/>HAS CTA BUTTONS";
+                //info += "<br/><br/>HAS CTA";
             }
             else if (child.getType().equals("help-contact-form")) {
-                info += "<br/><br/>HAS CONTACT FORM";
+                contactButton.setVisibility(View.VISIBLE);
             }
         }
 
