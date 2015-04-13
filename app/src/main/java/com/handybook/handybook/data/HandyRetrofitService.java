@@ -16,6 +16,7 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.mime.TypedInput;
 
 public interface HandyRetrofitService {
 
@@ -154,6 +155,9 @@ public interface HandyRetrofitService {
     @GET("/self_service/booking_node_details")
     void getHelpBookingsInfo(@Query("id") String nodeId, @Query("auth_token") String authToken,
                      HandyRetrofitCallback cb);
+
+    @POST("/help/create_case")
+    void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
     static final class UserUpdateRequest {
         @SerializedName("user") private User user;

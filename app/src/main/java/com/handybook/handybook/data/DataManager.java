@@ -21,6 +21,8 @@ import com.squareup.otto.Bus;
 import java.util.Date;
 import java.util.List;
 
+import retrofit.mime.TypedInput;
+
 public abstract class DataManager {
     public static enum Environment {P, S, Q1, Q2, Q3, Q4, Q6, D1}
     private Environment env = Environment.S;
@@ -112,6 +114,8 @@ public abstract class DataManager {
     public abstract void getHelpInfo(String nodeId, String authToken, Callback<HelpNode> cb);
 
     public abstract void getHelpBookingsInfo(String nodeId, String authToken, Callback<HelpNode> cb);
+
+    public abstract void createHelpCase(TypedInput body,  Callback<Void> cb);
 
     public static interface Callback<T> {
         void onSuccess(T response);
