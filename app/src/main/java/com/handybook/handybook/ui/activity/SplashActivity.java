@@ -47,6 +47,10 @@ public class SplashActivity extends BaseActivity {
                     openRescheduleActivity(data.getQueryParameter("booking_id"));
                     break;
 
+                case "profile/":
+                    openProfileActivity();
+                    break;
+
                 default:
                     openServiceCategoriesActivity();
             }
@@ -86,6 +90,11 @@ public class SplashActivity extends BaseActivity {
 
     private void openServiceCategoriesActivity() {
         startActivity(new Intent(this, ServiceCategoriesActivity.class));
+    }
+
+    private void openProfileActivity() {
+        if (user == null) openServiceCategoriesActivity();
+        else startActivity(new Intent(SplashActivity.this, ProfileActivity.class));
     }
 
     private void openRescheduleActivity(final String bookingId) {
