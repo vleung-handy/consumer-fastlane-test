@@ -141,6 +141,13 @@
         <item name="android:maxLength">100</item>
     </style>
 
+    <style name="EditText.FirstName">
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/name</item>
+        <item name="android:maxLength">50</item>
+    </style>
+
     <style name="EditText.FullName">
         <item name="android:inputType">textCapWords</item>
         <item name="android:singleLine">true</item>
@@ -424,4 +431,5 @@
         <item name="snap">true</item>
     </style>
 
+    <string name="name">Name</string>
 </resources>

@@ -30,6 +30,7 @@ import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.HelpActivity;
+import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
@@ -53,6 +54,7 @@ import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
+import com.handybook.handybook.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
@@ -105,6 +107,7 @@ import retrofit.converter.GsonConverter;
         OnboardPageFragment.class, HelpActivity.class, HelpFragment.class,
         RateServiceDialogFragment.class, RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class, AddLaundryDialogFragment.class,
+        HelpContactFragment.class, HelpContactActivity.class,
         SplashActivity.class
 })
 public final class ApplicationModule {

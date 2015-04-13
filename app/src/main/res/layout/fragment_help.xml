@@ -36,7 +36,7 @@
                 android:layout_height="142dp"
                 android:gravity="center"
                 android:padding="@dimen/default_padding"
-                android:background="@drawable/help_header">
+                android:background="@drawable/help_header_purple">
 
                 <ImageView
                     android:id="@+id/help_icon"
@@ -96,6 +96,16 @@
                         android:layout_marginRight="@dimen/default_margin"
                         android:layout_alignParentBottom="false"
                         android:text="CTA"
+                        style="@style/Button.Green.Round" />
+
+                    <Button
+                        android:id="@+id/contact_button"
+                        android:layout_marginLeft="@dimen/default_margin"
+                        android:layout_marginRight="@dimen/default_margin"
+                        android:layout_alignParentBottom="false"
+                        android:layout_below="@id/cta_button"
+                        android:text="@string/i_still_need_help"
+                        android:layout_marginTop="10dp"
                         style="@style/Button.Green.Round" />
 
                 </RelativeLayout>
