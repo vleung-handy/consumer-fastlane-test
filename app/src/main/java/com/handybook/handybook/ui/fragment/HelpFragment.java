@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.HelpActivity;
+import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
@@ -40,6 +42,7 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.info_layout) View infoLayout;
     @InjectView(R.id.help_icon) ImageView helpIcon;
     @InjectView(R.id.help_triangle) ImageView helpTriangleView;
+    @InjectView(R.id.contact_button) Button contactButton;
 
     public static HelpFragment newInstance(final HelpNode node) {
         final HelpFragment fragment = new HelpFragment();
@@ -83,6 +86,13 @@ public final class HelpFragment extends InjectedFragment {
                 layoutForArticle();
                 menuButtonLayout.setVisibility(View.GONE);
                 ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
+                contactButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Intent intent = new Intent(getActivity(), HelpContactActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
 
             default:
@@ -195,7 +205,7 @@ public final class HelpFragment extends InjectedFragment {
     }
 
     private void setHeaderColor(final int color) {
-        final Drawable header = getResources().getDrawable(R.drawable.help_header);
+        final Drawable header = getResources().getDrawable(R.drawable.help_header_purple);
         header.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) helpHeader.setBackgroundDrawable(header);
