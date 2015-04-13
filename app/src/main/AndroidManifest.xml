@@ -56,6 +56,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="handy"  android:host="booking"  android:path="/reschedule"/>
+                <data android:scheme="handy"  android:host="profile"  android:path="/"/>
             </intent-filter>
         </activity>
 
