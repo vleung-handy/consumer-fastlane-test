@@ -32,6 +32,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import retrofit.mime.TypedInput;
+
 public final class BaseDataManager extends DataManager {
     private final HandyRetrofitService service;
     private final HandyRetrofitEndpoint endpoint;
@@ -571,6 +573,17 @@ public final class BaseDataManager extends DataManager {
             void success(final JSONObject response) {
                 final JSONObject node = response.optJSONObject("node");
                 cb.onSuccess(HelpNode.fromJson(node.toString()));
+            }
+        });
+    }
+
+    @Override
+    public final void createHelpCase(TypedInput body, final Callback<Void> cb)
+    {
+        service.createHelpCase(body, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(null);
             }
         });
     }
