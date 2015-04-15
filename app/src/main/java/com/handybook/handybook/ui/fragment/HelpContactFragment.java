@@ -21,6 +21,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FirstNameInputTextView;
@@ -94,19 +95,16 @@ public final class HelpContactFragment extends InjectedFragment {
                     progressDialog.show();
 
                     //Generates params from the Help nodes
-                    Dictionary<String, String> contactFormInfo = parseHelpNode(associatedNode);
-                    String contactFormInfoString = contactFormInfo.toString();
+                    HashMap<String, String> contactFormInfo = parseHelpNode(associatedNode);
 
                     //add contact form information
                     contactFormInfo.put(HELP_CONTACT_FORM_NAME, nameText.getText().toString());
                     contactFormInfo.put(HELP_CONTACT_FORM_EMAIL, emailText.getText().toString());
                     contactFormInfo.put(HELP_CONTACT_FORM_DESCRIPTION, commentText.getText().toString());
 
-                    contactFormInfoString = contactFormInfo.toString();
-
                     JSONObject salesforceWrapper =  new JSONObject();
                     try {
-                        salesforceWrapper.put(SALESFORCE_DATA_WRAPPER_KEY, contactFormInfoString);
+                        salesforceWrapper.put(SALESFORCE_DATA_WRAPPER_KEY, new JSONObject(contactFormInfo));
                     }
                     catch (Exception e)
                     {}
@@ -126,9 +124,9 @@ public final class HelpContactFragment extends InjectedFragment {
         return view;
     }
 
-    private Dictionary<String, String> parseHelpNode(HelpNode node)
+    private HashMap<String, String> parseHelpNode(HelpNode node)
     {
-        Dictionary<String, String> params = new Hashtable<String, String>();
+        HashMap<String, String> params = new HashMap<String, String>();
         for(HelpNode childNode : node.getChildren())
         {
             if(childNode.getType().equals(HELP_CONTACT_FORM_DISPOSITION))
@@ -139,12 +137,19 @@ public final class HelpContactFragment extends InjectedFragment {
         return params;
     }
 
+    private void returnToHelpScreenStart()
+    {
+        final Intent toHomeScreenIntent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+        toHomeScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        startActivity(toHomeScreenIntent);
+    }
+
     private DataManager.Callback<Void> createCaseCallback = new DataManager.Callback<Void>() {
         @Override
         public void onSuccess(final Void v) {
             if (!allowCallbacks) return;
-            //TODO: Inform user that we have received their feedback and offer navigation options
             progressDialog.dismiss();
+            returnToHelpScreenStart();
         }
 
         @Override
