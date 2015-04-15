@@ -30,6 +30,7 @@ import butterknife.InjectView;
 
 public final class HelpFragment extends InjectedFragment {
     static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
+    private static String HELP_CONTACT_FORM_NODE_TYPE = "help-contact-form";
 
     private HelpNode node;
 
@@ -90,6 +91,14 @@ public final class HelpFragment extends InjectedFragment {
                     @Override
                     public void onClick(View v) {
                         final Intent intent = new Intent(getActivity(), HelpContactActivity.class);
+                        for(HelpNode n : node.getChildren())
+                        {
+                            if(n.getType().equals(HELP_CONTACT_FORM_NODE_TYPE))
+                            {
+                                intent.putExtra(HelpContactActivity.EXTRA_HELP_NODE, n);
+                                break;
+                            }
+                        }
                         startActivity(intent);
                     }
                 });
