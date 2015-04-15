@@ -9,9 +9,12 @@ import com.handybook.handybook.ui.fragment.HelpFragment;
 
 public final class HelpContactActivity extends MenuDrawerActivity {
 
+    public static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
+
     @Override
     protected final Fragment createFragment() {
-        return HelpContactFragment.newInstance();
+        final HelpNode node = getIntent().getParcelableExtra(EXTRA_HELP_NODE);
+        return HelpContactFragment.newInstance(node);
     }
 
     @Override
