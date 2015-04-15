@@ -156,7 +156,7 @@ public interface HandyRetrofitService {
     void getHelpBookingsInfo(@Query("id") String nodeId, @Query("auth_token") String authToken,
                      HandyRetrofitCallback cb);
 
-    @POST("/help/create_case")
+    @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
     static final class UserUpdateRequest {
