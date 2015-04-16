@@ -12,8 +12,9 @@
         <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleStageDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileStageDebugSources" />
-        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleStageDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateStageDebugSources" />
+        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleStageDebugTest" />
+        <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileStageDebugTestSources" />
         <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateStageDebugTestSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
@@ -141,4 +142,3 @@
     <orderEntry type="module" module-name="simplealertdialog" exported="" />
   </component>
 </module>
-
