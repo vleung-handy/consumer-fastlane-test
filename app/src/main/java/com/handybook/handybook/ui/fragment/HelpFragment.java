@@ -161,13 +161,17 @@ public final class HelpFragment extends InjectedFragment {
         infoLayout.setVisibility(View.GONE);
         navList.setVisibility(View.VISIBLE);
 
+        if (node.getType().equals("dynamic-bookings-navigation")) {
+            setHeaderColor(getResources().getColor(R.color.handy_teal));
+        }
+
         int count = 0;
         int size = node.getChildren().size();
 
         for (final HelpNode helpNode : node.getChildren()) {
             final View navView;
 
-            if (node.getType().equals("dynamic-bookings-navigation")) {
+            if (helpNode.getType().equals("booking")) {
                 navView = getActivity().getLayoutInflater()
                         .inflate(R.layout.list_item_help_booking_nav, container, false);
 

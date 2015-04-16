@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
-    android:paddingLeft="@dimen/default_padding"
-    android:paddingRight="@dimen/default_padding"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:background="@drawable/cell_booking">
@@ -32,7 +31,7 @@
             android:freezesText="false"
             android:textColor="@color/steel"
             android:textAllCaps="true"
-            style="@style/TextView.Med" />
+            style="@style/TextView.Small.Med" />
 
         <TextView
             android:id="@+id/date_text"
@@ -50,11 +49,10 @@
             android:layout_below="@id/date_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Help Nav Item"
+            android:text="Time"
             android:ellipsize="end"
             android:maxLines="1"
             android:freezesText="false"
-            android:visibility="gone"
             style="@style/TextView" />
 
     </RelativeLayout>
