@@ -43,6 +43,7 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.info_layout) View infoLayout;
     @InjectView(R.id.help_icon) ImageView helpIcon;
     @InjectView(R.id.help_triangle) ImageView helpTriangleView;
+    @InjectView(R.id.cta_layout) View ctaLayout;
     @InjectView(R.id.contact_button) Button contactButton;
 
     public static HelpFragment newInstance(final HelpNode node) {
@@ -87,6 +88,7 @@ public final class HelpFragment extends InjectedFragment {
                 layoutForArticle();
                 menuButtonLayout.setVisibility(View.GONE);
                 ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
+
                 contactButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -146,6 +148,7 @@ public final class HelpFragment extends InjectedFragment {
                 //info += "<br/><br/>HAS CTA";
             }
             else if (child.getType().equals("help-contact-form")) {
+                ctaLayout.setVisibility(View.VISIBLE);
                 contactButton.setVisibility(View.VISIBLE);
             }
         }
