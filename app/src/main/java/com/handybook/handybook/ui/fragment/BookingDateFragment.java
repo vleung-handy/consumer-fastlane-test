@@ -155,7 +155,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
             }
         });
 
-        // subtracting 1s to avoid illegal state excpetion being thrown
+        // subtracting 1s to avoid illegal state exception being thrown
         final Calendar today = Calendar.getInstance();
         datePicker.setMinDate(today.getTimeInMillis() - 1000);
 
@@ -253,6 +253,13 @@ public final class BookingDateFragment extends BookingFlowFragment {
             cal.set(Calendar.HOUR_OF_DAY, random.nextInt(8) + 10);
             cal.set(Calendar.MINUTE, 0);
             cal.add(Calendar.DATE, 3);
+
+            // if suggested day is on a weekend, suggest new date during the following week
+            final int day = cal.get(Calendar.DAY_OF_WEEK);
+            if (day == Calendar.FRIDAY || day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
+                if (day != Calendar.SUNDAY) cal.add(Calendar.WEEK_OF_YEAR, 1);
+                cal.set(Calendar.DAY_OF_WEEK, random.nextInt(4) + 2);
+            }
         }
 
         return cal;
