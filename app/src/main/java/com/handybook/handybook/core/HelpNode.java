@@ -65,7 +65,8 @@ public final class HelpNode implements Parcelable {
         in.readTypedList(children, HelpNode.CREATOR);
     }
 
-    public static HelpNode fromJson(final String json) {
+    public static HelpNode fromJson(final String json)
+    {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
                 .fromJson(json, HelpNode.class);
     }

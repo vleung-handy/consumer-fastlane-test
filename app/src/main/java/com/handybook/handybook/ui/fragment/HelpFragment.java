@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -22,6 +23,8 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.widget.CTAButton;
+import com.handybook.handybook.ui.widget.CTAButtonNavigationData;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
 
@@ -44,8 +47,11 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.info_layout) View infoLayout;
     @InjectView(R.id.help_icon) ImageView helpIcon;
     @InjectView(R.id.help_triangle) ImageView helpTriangleView;
-    @InjectView(R.id.cta_layout) View ctaLayout;
+    @InjectView(R.id.cta_layout) ViewGroup ctaLayout;
     @InjectView(R.id.contact_button) Button contactButton;
+
+
+    //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
 
     public static HelpFragment newInstance(final HelpNode node) {
         final HelpFragment fragment = new HelpFragment();
@@ -159,7 +165,8 @@ public final class HelpFragment extends InjectedFragment {
                 }
             }
             else if (child.getType().equals("help-cta")) {
-                //info += "<br/><br/>HAS CTA";
+                ctaLayout.setVisibility(View.VISIBLE);
+                addCtaButton(child);
             }
             else if (child.getType().equals("help-contact-form")) {
                 ctaLayout.setVisibility(View.VISIBLE);
@@ -169,6 +176,20 @@ public final class HelpFragment extends InjectedFragment {
 
         infoText.setText(Html.fromHtml(info));
         infoText.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void addCtaButton(HelpNode node)
+    {
+        int newChildIndex = ctaLayout.getChildCount(); //index is equal to the old count since the new count is +1
+        CTAButton ctaButton = (CTAButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
+        CTAButtonNavigationData navData = new CTAButtonNavigationData();
+
+        //Temp values while waiting for backend to send us the right stuff
+        navData.backupWebURL = "http://handy.com";
+        navData.appNavigationId = "";
+
+        ctaButton.setText(node.getLabel());
+        ctaButton.setNavigationData(navData);
     }
 
     private void layoutNavList(final ViewGroup container) {

@@ -91,18 +91,15 @@ public final class HelpContactFragment extends InjectedFragment {
 
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                onSendMessageButtonClick();
+            public void onClick(View v) { onSendMessageButtonClick();
             }
         });
-
         closeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onCloseImageClick();
             }
         });
-
 
         return view;
     }
@@ -141,7 +138,7 @@ public final class HelpContactFragment extends InjectedFragment {
     }
 
     private void onCloseImageClick() {
-        returnToHelpStartScreen();
+        returnToHelpRootScreen();
     }
 
     private HashMap<String, String> parseHelpNode(HelpNode node) {
@@ -160,10 +157,10 @@ public final class HelpContactFragment extends InjectedFragment {
         startActivity(toHomeScreenIntent);
     }
 
-    private void returnToHelpStartScreen() {
-        final Intent toHelpStartScreenIntent = new Intent(getActivity(), HelpActivity.class);
-        toHelpStartScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-        startActivity(toHelpStartScreenIntent);
+    private void returnToHelpRootScreen() {
+        final Intent toHelpRootScreenIntent = new Intent(getActivity(), HelpActivity.class);
+        toHelpRootScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        startActivity(toHelpRootScreenIntent);
     }
 
     private DataManager.Callback<Void> createCaseCallback = new DataManager.Callback<Void>() {
