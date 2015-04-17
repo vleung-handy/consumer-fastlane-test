@@ -59,6 +59,10 @@ public final class HelpFragment extends InjectedFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         node = getArguments().getParcelable(EXTRA_HELP_NODE);
+
+        if (savedInstanceState == null && node.getType().equals("root")) {
+            mixpanel.trackEventHelpCenterOpened();
+        }
     }
 
     @Override
