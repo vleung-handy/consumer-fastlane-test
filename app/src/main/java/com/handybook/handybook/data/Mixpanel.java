@@ -196,6 +196,12 @@ public class Mixpanel {
         mixpanel.track("ssc_open", props);
     }
 
+    public void trackEventHelpCenterNavigation(final String location) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "selection", location);
+        mixpanel.track("ssc_navigation_enter", props);
+    }
+
     public void trackEventProRate(final ProRateEventType type, final int bookingId,
                                   final String proName, final int rating) {
         final JSONObject props = new JSONObject();
