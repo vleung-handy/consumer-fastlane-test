@@ -252,6 +252,7 @@ public final class HelpFragment extends InjectedFragment {
             startActivity(intent);
 
             progressDialog.dismiss();
+            mixpanel.trackEventHelpCenterNavigation(helpNode.getLabel());
         }
 
         @Override
