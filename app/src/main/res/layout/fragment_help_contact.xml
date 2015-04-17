@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/handy_bg">
 
+
+
     <Button
         android:id="@+id/send_message_button"
         android:text="Send Message"
@@ -18,11 +20,24 @@
         <TextView
             android:id="@+id/nav_text"
             android:text="@string/help"
-            style="@style/TextView.Navbar" />
+            style="@style/TextView.Navbar"
+            />
 
         <RelativeLayout
             android:id="@+id/menu_button_layout"
-            style="@style/MenuButtonLayout" />
+            style="@style/MenuButtonLayout"
+            android:layout_gravity="left|center_vertical" >
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/close_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_x"
+            android:visibility="visible"
+            android:contentDescription="@string/close"
+            android:layout_gravity="right|center_vertical" />
 
     </FrameLayout>
 
@@ -45,7 +60,8 @@
                 android:layout_height="142dp"
                 android:gravity="center"
                 android:padding="@dimen/default_padding"
-                android:background="@drawable/help_header_blue">
+                android:background="@drawable/help_header_blue"
+                >
 
                 <ImageView
                     android:id="@+id/help_icon"
@@ -63,6 +79,7 @@
                     android:textColor="@color/white"
                     android:gravity="center"
                     android:text="@string/contact_us"
+                    android:textSize="36dp"
                     style="@style/TextView.Large.Med" />
 
             </RelativeLayout>
