@@ -33,6 +33,7 @@ public final class HelpFragment extends InjectedFragment {
     private static String HELP_CONTACT_FORM_NODE_TYPE = "help-contact-form";
 
     private HelpNode node;
+    private static HelpNode rootNode;
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
     @InjectView(R.id.nav_text) TextView navText;
@@ -71,8 +72,17 @@ public final class HelpFragment extends InjectedFragment {
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);
 
-        switch (node.getType()) {
+        //May return to root of help screen without re-downloading root navigation node
+        if(node == null)
+        {
+            node = rootNode;
+        }
+
+        switch (node.getType())
+        {
             case "root":
+                //cache the root node so we can navigate back to it from anywhere in our flow
+                rootNode = node;
                 layoutForRoot(container);
                 break;
 
