@@ -191,6 +191,11 @@ public class Mixpanel {
         mixpanel.track("app had been opened", props);
     }
 
+    public void trackEventHelpCenterOpened() {
+        final JSONObject props = new JSONObject();
+        mixpanel.track("ssc_open", props);
+    }
+
     public void trackEventProRate(final ProRateEventType type, final int bookingId,
                                   final String proName, final int rating) {
         final JSONObject props = new JSONObject();
