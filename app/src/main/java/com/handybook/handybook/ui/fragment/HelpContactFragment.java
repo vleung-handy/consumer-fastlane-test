@@ -141,7 +141,7 @@ public final class HelpContactFragment extends InjectedFragment {
     }
 
     private void onCloseImageClick() {
-        returnToHomeScreen();
+        returnToHelpStartScreen();
     }
 
     private HashMap<String, String> parseHelpNode(HelpNode node) {
@@ -158,6 +158,12 @@ public final class HelpContactFragment extends InjectedFragment {
         final Intent toHomeScreenIntent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         toHomeScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         startActivity(toHomeScreenIntent);
+    }
+
+    private void returnToHelpStartScreen() {
+        final Intent toHelpStartScreenIntent = new Intent(getActivity(), HelpActivity.class);
+        toHelpStartScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        startActivity(toHelpStartScreenIntent);
     }
 
     private DataManager.Callback<Void> createCaseCallback = new DataManager.Callback<Void>() {
