@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class HelpFragment extends InjectedFragment {
+    private final String STATE_SCROLL_POSITION = "SCROLL_POSITION";
     static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
     private static String HELP_CONTACT_FORM_NODE_TYPE = "help-contact-form";
 
@@ -49,6 +51,7 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.help_triangle) ImageView helpTriangleView;
     @InjectView(R.id.cta_layout) ViewGroup ctaLayout;
     @InjectView(R.id.contact_button) Button contactButton;
+    @InjectView(R.id.scroll_view) ScrollView scrollView;
 
 
     //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
@@ -89,6 +92,17 @@ public final class HelpFragment extends InjectedFragment {
 
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);
+
+        if (savedInstanceState != null) {
+            final int[] position = savedInstanceState.getIntArray(STATE_SCROLL_POSITION);
+            if (position != null) {
+                scrollView.post(new Runnable() {
+                    public void run() {
+                        scrollView.scrollTo(position[0], position[1]);
+                    }
+                });
+            }
+        }
 
         //May return to root of help screen without re-downloading root navigation node
         if(node == null)
@@ -144,6 +158,14 @@ public final class HelpFragment extends InjectedFragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putIntArray(STATE_SCROLL_POSITION,
+                new int[]{ scrollView.getScrollX(), scrollView.getScrollY()});
     }
 
     private void layoutForRoot(final ViewGroup container) {
