@@ -227,6 +227,10 @@ public final class ApplicationModule {
         return new Mixpanel(context, userManager, bookingManager, bus);
     }
 
+    @Provides @Singleton final NavigationManager provideNavigationManager() {
+        return new NavigationManager(this.context);
+    }
+
     private String getDeviceId() {
         return Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);

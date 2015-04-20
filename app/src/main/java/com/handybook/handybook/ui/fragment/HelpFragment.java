@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -25,7 +24,6 @@ import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.CTAButton;
-import com.handybook.handybook.ui.widget.CTAButtonNavigationData;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
 
@@ -214,8 +212,17 @@ public final class HelpFragment extends InjectedFragment {
     private void addCtaButton(HelpNode node)
     {
         int newChildIndex = ctaLayout.getChildCount(); //index is equal to the old count since the new count is +1
-        CTAButton ctaButton = (CTAButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
+        final CTAButton ctaButton = (CTAButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
         ctaButton.initFromHelpNode(node);
+
+        //can't inject into buttons so need to set the on click listner here to take advantage of fragments injection
+        ctaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Boolean success = navigationManager.navigateTo(ctaButton.navigationData);
+                mixpanel.trackEventHelpCenterDeepLinkClicked(Integer.toString(ctaButton.nodeId), ctaButton.nodeLabel);
+            }
+        });
     }
 
     private void layoutNavList(final ViewGroup container) {
