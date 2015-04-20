@@ -66,8 +66,16 @@ public final class HelpFragment extends InjectedFragment {
         super.onCreate(savedInstanceState);
         node = getArguments().getParcelable(EXTRA_HELP_NODE);
 
-        if (savedInstanceState == null && node.getType().equals("root")) {
-            mixpanel.trackEventHelpCenterOpened();
+        if (savedInstanceState == null) {
+            switch (node.getType()) {
+                case "root":
+                    mixpanel.trackEventHelpCenterOpened();
+                    break;
+
+                case "article":
+                    mixpanel.trackEventHelpCenterLeaf(Integer.toString(node.getId()), node.getLabel());
+                    break;
+            }
         }
     }
 
@@ -112,6 +120,9 @@ public final class HelpFragment extends InjectedFragment {
                 contactButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mixpanel.trackEventHelpCenterNeedHelpClicked(Integer
+                                .toString(node.getId()), node.getLabel());
+
                         final Intent intent = new Intent(getActivity(), HelpContactActivity.class);
                         for(HelpNode n : node.getChildren())
                         {
