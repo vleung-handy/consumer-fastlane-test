@@ -24,11 +24,13 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.inject(this);
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
+        {
             launchedNext = savedInstanceState.getBoolean(STATE_LAUNCHED_NEXT, false);
         }
 
-        if (!launchedNext) {
+        if (!launchedNext)
+        {
             user = userManager.getCurrentUser();
 
             final Intent intent = this.getIntent();
@@ -43,24 +45,21 @@ public class SplashActivity extends BaseActivity {
             final String host = data.getHost();
             final String path = data.getPath();
 
-            switch (host + path) {
-                case "booking/reschedule":
-                    openRescheduleActivity(data.getQueryParameter("booking_id"));
-                    break;
-
-                case "profile/":
-                    openActivity(ProfileActivity.class, true);
-                    break;
-
-                case "bookings/":
-                    openActivity(BookingsActivity.class, true);
-                    break;
-
-                default:
-                    openServiceCategoriesActivity();
+            if((host+path).equals("booking/reschedule"))
+            {
+                //Reschedule activity is complex leaving it here for now, todo move to navigation manager
+                openRescheduleActivity(data.getQueryParameter("booking_id"));
+            }
+            else
+            {
+                navigationManager.handleSplashScreenLaunch(this.getIntent());
+                launchedNext = true;
             }
         }
-        else openServiceCategoriesActivity();
+        else
+        {
+            openServiceCategoriesActivity();
+        }
     }
 
     @Override
@@ -95,11 +94,6 @@ public class SplashActivity extends BaseActivity {
 
     private void openServiceCategoriesActivity() {
         startActivity(new Intent(this, ServiceCategoriesActivity.class));
-    }
-
-    private void openActivity(final Class<? extends Activity> clazz, final boolean requiresUser) {
-        if (requiresUser && user == null)  openServiceCategoriesActivity();
-        startActivity(new Intent(this, clazz));
     }
 
     private void openRescheduleActivity(final String bookingId) {

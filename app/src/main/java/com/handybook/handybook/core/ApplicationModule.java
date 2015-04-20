@@ -226,8 +226,8 @@ public final class ApplicationModule {
         return new Mixpanel(context, userManager, bookingManager, bus);
     }
 
-    @Provides @Singleton final NavigationManager provideNavigationManager() {
-        return new NavigationManager(this.context);
+    @Provides @Singleton final NavigationManager provideNavigationManager(final UserManager userManager) {
+        return new NavigationManager(this.context, userManager);
     }
 
     private String getDeviceId() {

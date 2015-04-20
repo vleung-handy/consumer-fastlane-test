@@ -18,6 +18,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.LaundryDropInfo;
+import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
@@ -45,6 +46,7 @@ public abstract class BaseActivity extends FragmentActivity {
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject NavigationManager navigationManager;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
