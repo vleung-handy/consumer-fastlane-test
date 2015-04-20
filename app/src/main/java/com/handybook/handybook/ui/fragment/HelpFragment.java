@@ -201,6 +201,8 @@ public final class HelpFragment extends InjectedFragment {
 
         ctaButton.setText(node.getLabel());
         ctaButton.setNavigationData(navData);
+
+        //TODO call mixpanel deep link event on click here
     }
 
     private void layoutNavList(final ViewGroup container) {

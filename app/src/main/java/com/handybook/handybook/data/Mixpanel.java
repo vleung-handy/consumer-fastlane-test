@@ -216,6 +216,20 @@ public class Mixpanel {
         mixpanel.track("ssc_still_need_help_clicked", props);
     }
 
+    public void trackEventHelpCenterSubmitTicket(final String nodeId, final String label) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "node_id", nodeId);
+        addProps(props, "label", label);
+        mixpanel.track("ssc_submit_ticket", props);
+    }
+
+    public void trackEventHelpCenterDeepLinkClicked(final String nodeId, final String label) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "node_id", nodeId);
+        addProps(props, "label", label);
+        mixpanel.track("ssc_deep_link_clicked", props);
+    }
+
     public void trackEventProRate(final ProRateEventType type, final int bookingId,
                                   final String proName, final int rating) {
         final JSONObject props = new JSONObject();

@@ -169,6 +169,9 @@ public final class HelpContactFragment extends InjectedFragment {
             if (!allowCallbacks) return;
             progressDialog.dismiss();
             returnToHomeScreen();
+
+            mixpanel.trackEventHelpCenterSubmitTicket(Integer
+                    .toString(associatedNode.getId()), associatedNode.getLabel());
         }
 
         @Override
