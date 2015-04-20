@@ -54,16 +54,11 @@ public final class HelpContactFragment extends InjectedFragment {
     private static final String HELP_CONTACT_FORM_DESCRIPTION = "description";
     private static final String SALESFORCE_DATA_WRAPPER_KEY = "salesforce_data";
 
-    @InjectView(R.id.send_message_button)
-    Button sendMessageButton;
-    @InjectView(R.id.user_name_text)
-    FirstNameInputTextView nameText;
-    @InjectView(R.id.email_text)
-    EmailInputTextView emailText;
-    @InjectView(R.id.comment_text)
-    BasicInputTextView commentText;
-    @InjectView(R.id.close_img)
-    ImageView closeImage;
+    @InjectView(R.id.send_message_button) Button sendMessageButton;
+    @InjectView(R.id.user_name_text) FirstNameInputTextView nameText;
+    @InjectView(R.id.email_text) EmailInputTextView emailText;
+    @InjectView(R.id.comment_text) BasicInputTextView commentText;
+    @InjectView(R.id.close_img) ImageView closeImage;
 
     private HelpNode associatedNode;
 
@@ -91,12 +86,13 @@ public final class HelpContactFragment extends InjectedFragment {
 
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { onSendMessageButtonClick();
+            public void onClick(final View v) { onSendMessageButtonClick();
             }
         });
+
         closeImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 onCloseImageClick();
             }
         });
