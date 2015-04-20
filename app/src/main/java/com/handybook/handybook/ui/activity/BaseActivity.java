@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.LaundryDropInfo;
@@ -23,6 +26,7 @@ import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
@@ -34,6 +38,8 @@ public abstract class BaseActivity extends FragmentActivity {
     protected boolean allowCallbacks;
     private OnBackPressedListener onBackPressedListener;
     private RateServiceDialogFragment rateServiceDialog;
+    protected ProgressDialog progressDialog;
+    protected Toast toast;
 
     @Inject Mixpanel mixpanel;
     @Inject UserManager userManager;
@@ -61,6 +67,14 @@ public abstract class BaseActivity extends FragmentActivity {
         if (data != null && data.getHost() != null && data.getHost().equals("deeplink.yoz.io")) {
             mixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
         }
+
+        toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setDelay(400);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(getString(R.string.loading));
     }
 
     @Override

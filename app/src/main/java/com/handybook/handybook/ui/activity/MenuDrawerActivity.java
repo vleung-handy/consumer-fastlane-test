@@ -140,6 +140,8 @@ public abstract class MenuDrawerActivity extends BaseActivity  implements Simple
             final User user = userManager.getCurrentUser();
             final String authToken = user != null ? user.getAuthToken() : null;
 
+            progressDialog.show();
+
             dataManager.getHelpInfo(null, authToken, new DataManager.Callback<HelpNode>() {
                 @Override
                 public void onSuccess(final HelpNode node) {
@@ -148,11 +150,14 @@ public abstract class MenuDrawerActivity extends BaseActivity  implements Simple
                     startActivity(intent);
                     MenuDrawerActivity.this.overridePendingTransition(0, 0);
                     MenuDrawerActivity.this.finish();
+
+                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onError(final DataManager.DataManagerError error) {
                     if (!allowCallbacks) return;
+                    progressDialog.dismiss();
                     dataManagerErrorHandler.handleError(MenuDrawerActivity.this, error);
                 }
             });
