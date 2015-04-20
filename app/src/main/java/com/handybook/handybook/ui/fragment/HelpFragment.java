@@ -215,16 +215,7 @@ public final class HelpFragment extends InjectedFragment {
     {
         int newChildIndex = ctaLayout.getChildCount(); //index is equal to the old count since the new count is +1
         CTAButton ctaButton = (CTAButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
-        CTAButtonNavigationData navData = new CTAButtonNavigationData();
-
-        //Temp values while waiting for backend to send us the right stuff
-        navData.backupWebURL = "http://handy.com";
-        navData.appNavigationId = "";
-
-        ctaButton.setText(node.getLabel());
-        ctaButton.setNavigationData(navData);
-
-        //TODO call mixpanel deep link event on click here
+        ctaButton.initFromHelpNode(node);
     }
 
     private void layoutNavList(final ViewGroup container) {

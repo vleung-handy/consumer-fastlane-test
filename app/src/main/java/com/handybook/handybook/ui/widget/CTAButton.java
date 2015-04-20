@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.util.Utils;
 
@@ -41,7 +42,21 @@ public final class CTAButton extends Button
         this.setOnClickListener(new OnClickListener() { @Override public void onClick(final View v) { onCtaButtonClick(v); }});
     }
 
-    public void setNavigationData(CTAButtonNavigationData navData)
+    public void initFromHelpNode(HelpNode node)
+    {
+        this.setText(node.getLabel());
+
+        CTAButtonNavigationData navData = new CTAButtonNavigationData();
+        //Temp values while waiting for backend to send us the right stuff
+        navData.backupWebURL = "http://handy.com";
+        navData.appNavigationId = "";
+        this.setNavigationData(navData);
+
+        //TODO call mixpanel deep link event on click here
+    }
+
+
+    private void setNavigationData(CTAButtonNavigationData navData)
     {
         this.navigationData = navData;
     }
