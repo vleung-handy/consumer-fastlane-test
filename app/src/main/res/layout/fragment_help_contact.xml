@@ -26,18 +26,18 @@
         <RelativeLayout
             android:id="@+id/menu_button_layout"
             style="@style/MenuButtonLayout"
-            android:layout_gravity="left|center_vertical" >
+            android:layout_gravity="start|center_vertical" >
         </RelativeLayout>
 
         <ImageView
             android:id="@+id/close_img"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="10dp"
+            android:padding="15dp"
             android:src="@drawable/ic_x"
             android:visibility="visible"
             android:contentDescription="@string/close"
-            android:layout_gravity="right|center_vertical" />
+            android:layout_gravity="end|center_vertical" />
 
     </FrameLayout>
 
@@ -49,7 +49,7 @@
         >
 
         <RelativeLayout
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:padding="@dimen/default_margin"
             >
@@ -79,7 +79,7 @@
                     android:textColor="@color/white"
                     android:gravity="center"
                     android:text="@string/contact_us"
-                    android:textSize="36dp"
+                    android:textSize="20sp"
                     style="@style/TextView.Large.Med" />
 
             </RelativeLayout>
@@ -91,7 +91,8 @@
                 android:layout_alignBottom="@id/help_header"
                 android:layout_centerHorizontal="true"
                 android:visibility="gone"
-                android:src="@drawable/triangle" />
+                android:src="@drawable/triangle"
+                android:contentDescription="help" />
 
             <RelativeLayout
                 android:id="@+id/info_layout"
@@ -99,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/help_header"
                 android:background="@drawable/cell_booking_last_rounded"
-                android:paddingBottom="16dp"
+                android:paddingBottom="5dp"
                 >
 
                 <RelativeLayout
@@ -107,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    >
+                    style="@style/BookingsCell">
 
                     <ImageView
                         android:id="@+id/name_icon"
@@ -117,13 +118,19 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_marginLeft="16dp"/>
+                        android:contentDescription="icon" />
 
                     <com.handybook.handybook.ui.widget.FirstNameInputTextView
                         android:id="@+id/user_name_text"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
                         android:layout_toRightOf="@id/name_icon"
+                        android:layout_toEndOf="@id/name_icon"
+                        android:layout_centerVertical="true"
+                        android:padding="0dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@null"
                         style="@style/EditText.FirstName" />
 
                 </RelativeLayout>
@@ -134,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_below="@id/name_layout"
-                    >
+                    style="@style/BookingsCell">
 
                     <ImageView
                         android:id="@+id/email_icon"
@@ -144,13 +151,19 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_marginLeft="16dp"/>
+                        android:contentDescription="icon" />
 
                     <com.handybook.handybook.ui.widget.EmailInputTextView
                         android:id="@+id/email_text"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
                         android:layout_toRightOf="@id/email_icon"
+                        android:layout_toEndOf="@id/email_icon"
+                        android:layout_centerVertical="true"
+                        android:padding="0dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@null"
                         style="@style/EditText.Email" />
 
                 </RelativeLayout>
@@ -158,32 +171,31 @@
                 <LinearLayout
                     android:id="@+id/comment_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_below="@id/email_layout"
                     android:gravity="top"
-                    >
+                    style="@style/BookingsCell.End">
 
                     <ImageView
                         android:id="@+id/comment_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_pencil"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="13dp"
-                        />
+                        android:contentDescription="icon"
+                        android:layout_marginTop="-4dp"/>
 
                     <com.handybook.handybook.ui.widget.BasicInputTextView
                         android:id="@+id/comment_text"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:layout_toRightOf="@id/comment_icon"
                         android:hint="@string/ask_us_anything"
                         android:gravity="top"
                         app:minLength="1"
+                        android:padding="0dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@null"
                         style="@style/EditText.Last.Comment" />
 
                 </LinearLayout>
