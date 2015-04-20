@@ -101,7 +101,19 @@
                         android:visibility="gone"
                         />
 
+                    <!--empty view needed for bottom layout margin bug on older APIs-->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_below="@id/contact_button" />
+
                 </RelativeLayout>
+
+                <!--empty view needed for bottom layout margin bug on older APIs-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/cta_layout" />
 
             </RelativeLayout>
 
