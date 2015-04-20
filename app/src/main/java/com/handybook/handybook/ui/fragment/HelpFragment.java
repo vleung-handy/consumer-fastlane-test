@@ -165,7 +165,7 @@ public final class HelpFragment extends InjectedFragment {
         super.onSaveInstanceState(outState);
 
         outState.putIntArray(STATE_SCROLL_POSITION,
-                new int[]{ scrollView.getScrollX(), scrollView.getScrollY()});
+                new int[]{scrollView.getScrollX(), scrollView.getScrollY()});
     }
 
     private void layoutForRoot(final ViewGroup container) {
@@ -207,7 +207,7 @@ public final class HelpFragment extends InjectedFragment {
             }
         }
 
-        infoText.setText(Html.fromHtml(info));
+        infoText.setText(TextUtils.trim(Html.fromHtml(info)));
         infoText.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
