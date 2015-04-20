@@ -243,8 +243,14 @@ public final class HelpFragment extends InjectedFragment {
                 textView.setText(helpNode.getDateInfo());
             }
             else {
-                navView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_item_help_nav, container, false);
+                if (node.getType().equals("root")) {
+                    navView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_help_nav_main, container, false);
+                }
+                else {
+                    navView = getActivity().getLayoutInflater()
+                            .inflate(R.layout.list_item_help_nav, container, false);
+                }
 
                 final TextView textView = (TextView)navView.findViewById(R.id.nav_item_text);
                 textView.setText(helpNode.getLabel());
