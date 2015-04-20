@@ -145,6 +145,16 @@ public final class TextUtils {
         return builder.toString();
     }
 
+    public static CharSequence trim(final CharSequence s) {
+        int start = 0;
+        int end = s.length();
+
+        while (start < end && Character.isWhitespace(s.charAt(start))) start++;
+        while (end > start && Character.isWhitespace(s.charAt(end - 1))) end--;
+
+        return s.subSequence(start, end);
+    }
+
     public static void stripUnderlines(final TextView textView) {
         final Spannable s = new SpannableString(textView.getText());
         final URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
