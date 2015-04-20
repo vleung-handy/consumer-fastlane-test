@@ -16,9 +16,9 @@ public final class CTANavigationData
         initData("", "");
     }
 
-    public CTANavigationData(String nodeContentWebUrl, String navigationActionId)
+    public CTANavigationData(String navigationActionId, String nodeContentWebUrl)
     {
-        initData(nodeContentWebUrl, navigationActionId);
+        initData(navigationActionId, nodeContentWebUrl);
     }
 
     public CTANavigationData(HelpNode node)
@@ -26,7 +26,7 @@ public final class CTANavigationData
         JSONObject nodeContentData;
         try {
             nodeContentData = new JSONObject(node.getContent());
-            initData(nodeContentData.getString("web_url"), nodeContentData.getString("action"));
+            initData(nodeContentData.getString("action"), nodeContentData.getString("web_url"));
         }
         catch (Exception e)
         {
@@ -34,9 +34,9 @@ public final class CTANavigationData
         }
     }
 
-    private void initData(String nodeContentWebUrl, String navigationActionId)
+    private void initData(String navigationActionId, String nodeContentWebUrl)
     {
-        this.nodeContentWebUrl = nodeContentWebUrl;
         this.navigationActionId = navigationActionId;
+        this.nodeContentWebUrl = nodeContentWebUrl;
     }
 }
