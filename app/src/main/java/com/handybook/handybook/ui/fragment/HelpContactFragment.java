@@ -1,44 +1,25 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.activity.HelpActivity;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FirstNameInputTextView;
-import com.handybook.handybook.ui.widget.InputTextField;
-import com.handybook.handybook.ui.widget.MenuButton;
-import com.handybook.handybook.util.TextUtils;
-import com.simplealertdialog.SimpleAlertDialog;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -134,7 +115,7 @@ public final class HelpContactFragment extends InjectedFragment {
     }
 
     private void onCloseImageClick() {
-        returnToHelpRootScreen();
+        returnToHomeScreen();
     }
 
     private HashMap<String, String> parseHelpNode(HelpNode node) {
@@ -151,12 +132,6 @@ public final class HelpContactFragment extends InjectedFragment {
         final Intent toHomeScreenIntent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         toHomeScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         startActivity(toHomeScreenIntent);
-    }
-
-    private void returnToHelpRootScreen() {
-        final Intent toHelpRootScreenIntent = new Intent(getActivity(), HelpActivity.class);
-        toHelpRootScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-        startActivity(toHelpRootScreenIntent);
     }
 
     private DataManager.Callback<Void> createCaseCallback = new DataManager.Callback<Void>() {
