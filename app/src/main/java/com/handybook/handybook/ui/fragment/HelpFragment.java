@@ -35,9 +35,12 @@ public final class HelpFragment extends InjectedFragment {
     private final String STATE_SCROLL_POSITION = "SCROLL_POSITION";
     static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
     private static String HELP_CONTACT_FORM_NODE_TYPE = "help-contact-form";
+    static final String EXTRA_BOOKING_ID = "com.handy.handy.EXTRA_BOOKING_ID";
 
     private HelpNode node;
     private static HelpNode rootNode;
+    private String currentBookingId;
+
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
     @InjectView(R.id.nav_text) TextView navText;
@@ -56,19 +59,22 @@ public final class HelpFragment extends InjectedFragment {
 
     //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
 
-    public static HelpFragment newInstance(final HelpNode node) {
+    public static HelpFragment newInstance(final HelpNode node, final String bookingId) {
         final HelpFragment fragment = new HelpFragment();
         final Bundle args = new Bundle();
         args.putParcelable(EXTRA_HELP_NODE, node);
+        args.putString(EXTRA_BOOKING_ID, bookingId);
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         node = getArguments().getParcelable(EXTRA_HELP_NODE);
-
+        currentBookingId = getArguments().getString(EXTRA_BOOKING_ID);
         if (savedInstanceState == null) {
             switch (node.getType()) {
                 case "root":
@@ -309,10 +315,15 @@ public final class HelpFragment extends InjectedFragment {
         final User user = userManager.getCurrentUser();
         final String authToken = user != null ? user.getAuthToken() : null;
 
-        if (node.getType().equals("booking")) {
-            dataManager.getHelpBookingsInfo(Integer.toString(node.getId()), authToken, helpNodeCallback);
+        if (node.getType().equals("booking"))
+        {
+            this.currentBookingId = Integer.toString(node.getId());
+            dataManager.getHelpBookingsInfo(Integer.toString(node.getId()), authToken, this.currentBookingId, helpNodeCallback);
         }
-        else dataManager.getHelpInfo(Integer.toString(node.getId()), authToken, helpNodeCallback);
+        else
+        {
+            dataManager.getHelpInfo(Integer.toString(node.getId()), authToken, this.currentBookingId, helpNodeCallback);
+        }
     }
 
     private void setHeaderColor(final int color) {
@@ -330,6 +341,7 @@ public final class HelpFragment extends InjectedFragment {
 
             final Intent intent = new Intent(getActivity(), HelpActivity.class);
             intent.putExtra(HelpActivity.EXTRA_HELP_NODE, helpNode);
+            intent.putExtra(HelpActivity.EXTRA_BOOKING_ID, currentBookingId);
             startActivity(intent);
 
             progressDialog.dismiss();

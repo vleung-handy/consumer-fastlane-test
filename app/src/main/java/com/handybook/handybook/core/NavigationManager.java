@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.google.android.gms.analytics.ecommerce.Promotion;
+import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
+import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
@@ -33,6 +35,8 @@ public final class NavigationManager {
 
     //Injected params
     private UserManager userManager;
+    private DataManager dataManager;
+    private DataManagerErrorHandler dataManagerErrorHandler;
 
     //Valid Action Ids
     private static final String ACTION_ID_SERVICES = "services";
@@ -60,24 +64,21 @@ public final class NavigationManager {
     private static final String DEEP_LINK_ID_PROFILE = "profile/";
     private static final String DEEP_LINK_ID_BOOKINGS = "bookings/";
     private static final String DEEP_LINK_ID_PROMOTIONS = "promotions/";
-
+    private static final String DEEP_LINK_ID_BOOKINGS_RESCHEDULE = "bookings/reschedule";
 
     //Action Id to Deeplink Id Mapping
     public static final Map<String, String> ACTION_ID_TO_DEEP_LINK_ID;
     static {
         Map<String, String> map = new HashMap<String, String>();
-
         map.put(ACTION_ID_SERVICES, DEEP_LINK_ID_SERVICES);
         map.put(ACTION_ID_GO_TO_MY_PROFILE, DEEP_LINK_ID_PROFILE);
         map.put(ACTION_ID_GO_TO_MY_BOOKINGS, DEEP_LINK_ID_BOOKINGS);
-
+        map.put(ACTION_ID_RATE_PRO, DEEP_LINK_ID_SERVICES); //HACK: The services page will auto detect if a rating is required and direct user to that flow
         ACTION_ID_TO_DEEP_LINK_ID = Collections.unmodifiableMap(map);
     }
 
     //Member fields
     private final Properties config;
-    private final String baseUrl;
-    private final String baseUrlInternal;
     private final Context context;
 
     ///////
@@ -85,13 +86,13 @@ public final class NavigationManager {
     ///////
 
     @Inject
-    public NavigationManager(Context context, UserManager userManager)
+    public NavigationManager(Context context, UserManager userManager, DataManager dataManager, DataManagerErrorHandler dataManagerErrorHandler)
     {
         this.config = PropertiesReader.getProperties(context, "config.properties");
-        baseUrl = config.getProperty("base_url");
-        baseUrlInternal = config.getProperty("base_url_internal");
         this.context = context;
         this.userManager = userManager;
+        this.dataManager = dataManager;
+        this.dataManagerErrorHandler = dataManagerErrorHandler;
     }
 
     //Use navigation data to attempt to navigate to a deep link, using web url as fallback if deeplink is not mapped
@@ -101,6 +102,9 @@ public final class NavigationManager {
 
         String deepLinkId = actionIdToDeepLinkId(navData.navigationActionId);
         String constructedUrl = constructWebUrlFromNodeUrl(navData.nodeContentWebUrl);
+
+        System.out.println("Deep:"+deepLinkId);
+        System.out.println("Web:" + constructedUrl);
 
         //Deep links have priority over web links
         if(validateDeepLink(deepLinkId))
@@ -117,8 +121,8 @@ public final class NavigationManager {
         return success;
     }
 
-    //Handle splash screen deep links
-    public void handleSplashScreenLaunch(Intent splashScreenIntent)
+    //Handle splash screen deep links, these may require additional callback functionality
+    public void handleSplashScreenLaunch(Intent splashScreenIntent, BaseActivity callingActivity)
     {
         final String action = splashScreenIntent.getAction();
         final Uri data = splashScreenIntent.getData();
@@ -129,7 +133,16 @@ public final class NavigationManager {
         }
 
         final String deepLinkId = data.getHost() + data.getPath();
-        navigateToDeepLink(deepLinkId);
+
+        //TODO: Stop having reschedule be a special case, setup a generic params + callback handling system
+        if(deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_RESCHEDULE))
+        {
+            openRescheduleActivity(data.getQueryParameter("booking_id"), callingActivity);
+        }
+        else
+        {
+            navigateToDeepLink(deepLinkId);
+        }
     }
 
     ///////
@@ -138,8 +151,11 @@ public final class NavigationManager {
 
     private String constructWebUrlFromNodeUrl(String partialWebUrl)
     {
-        //TODO: Update this, need the real formatting
-        return this.baseUrl + partialWebUrl + getAuthToken();
+        String baseUrl =  this.dataManager.getBaseUrl();
+        String separatorCharacter = (partialWebUrl.contains("?") ? "&" : "?");
+
+        //TODO: Don't pass the user's auth token, pass along the one time login slt from the node "slt" data
+        return (baseUrl + partialWebUrl + separatorCharacter + "slt=" + getAuthToken());
     }
 
     private String getAuthToken()
@@ -211,7 +227,7 @@ public final class NavigationManager {
         }
     }
 
-    public void startActivity(final Intent intent)
+    private void startActivity(final Intent intent)
     {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -234,6 +250,61 @@ public final class NavigationManager {
 
     private void openServiceCategoriesActivity() {
         startActivity(new Intent(this.context, ServiceCategoriesActivity.class));
+    }
+
+    //TODO: refactor once we add param+callback support to our other deep links
+    private void openRescheduleActivity(final String bookingId, final BaseActivity callingActivity) {
+        User user = userManager.getCurrentUser();
+        dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
+                new DataManager.Callback<Booking>()
+                {
+                    @Override
+                    public void onSuccess(final Booking booking)
+                    {
+                        if (!checkAllowCallbacks(callingActivity)) return;
+
+                        dataManager.getPreRescheduleInfo(bookingId,
+                            new DataManager.Callback<String>()
+                            {
+                                @Override
+                                public void onSuccess(final String notice)
+                                {
+                                    if (!checkAllowCallbacks(callingActivity)) return;
+
+                                    final Intent intent = new Intent(callingActivity, BookingDateActivity.class);
+                                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
+                                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
+                                    startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, callingActivity);
+                                }
+
+                                @Override
+                                public void onError(final DataManager.DataManagerError error)
+                                {
+                                    if (!checkAllowCallbacks(callingActivity)) return;
+                                    dataManagerErrorHandler.handleError(callingActivity, error);
+                                    openServiceCategoriesActivity();
+                                }
+                            }
+                        );
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        if (!checkAllowCallbacks(callingActivity)) return;
+                        dataManagerErrorHandler.handleError(callingActivity, error);
+                        openServiceCategoriesActivity();
+                    }
+                });
+    }
+
+    private Boolean checkAllowCallbacks(BaseActivity callingActivity)
+    {
+       return callingActivity.getAllowCallbacks();
+    }
+
+    private void startActivityForResult(final Intent intent, final int resultCode, Activity callingActivity) {
+        callingActivity.startActivityForResult(intent, resultCode);
     }
 
 }

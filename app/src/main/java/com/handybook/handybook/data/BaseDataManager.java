@@ -86,6 +86,12 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public String getBaseUrl()
+    {
+        return endpoint.getBaseUrl();
+    }
+
+    @Override
     public final void getServices(final CacheResponse<List<Service>> cache,
                                   final Callback<List<Service>> cb) {
         final List<Service> cachedServices = new Gson().fromJson(prefs.getString("CACHED_SERVICES"),
@@ -555,8 +561,8 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void getHelpInfo(final String nodeId, final String authToken, final Callback<HelpNode> cb) {
-        service.getHelpInfo(nodeId, authToken, new HandyRetrofitCallback(cb) {
+    public final void getHelpInfo(final String nodeId, final String authToken, final String bookingId, final Callback<HelpNode> cb) {
+        service.getHelpInfo(nodeId, authToken, bookingId, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 final JSONObject node = response.optJSONObject("node");
@@ -566,9 +572,9 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
-    public final void getHelpBookingsInfo(final String nodeId, final String authToken,
+    public final void getHelpBookingsInfo(final String nodeId, final String authToken, final String bookingId,
                                           final Callback<HelpNode> cb) {
-        service.getHelpBookingsInfo(nodeId, authToken, new HandyRetrofitCallback(cb) {
+        service.getHelpBookingsInfo(nodeId, authToken, bookingId, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
                 final JSONObject node = response.optJSONObject("node");
@@ -611,4 +617,5 @@ public final class BaseDataManager extends DataManager {
         }
         else return null;
     }
+
 }
