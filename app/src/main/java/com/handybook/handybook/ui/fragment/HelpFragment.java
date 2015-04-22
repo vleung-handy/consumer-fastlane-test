@@ -290,7 +290,11 @@ public final class HelpFragment extends InjectedFragment {
             navView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    displayNextNode(helpNode);
+                    if (helpNode.getType().equals("help-log-in-form")) {
+                        toast.setText(getString(R.string.please_login));
+                        toast.show();
+                    }
+                    else displayNextNode(helpNode);
                 }
             });
 
