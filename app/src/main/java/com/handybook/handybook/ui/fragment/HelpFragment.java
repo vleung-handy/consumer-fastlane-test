@@ -259,7 +259,12 @@ public final class HelpFragment extends InjectedFragment {
                 textView.setText(helpNode.getService());
 
                 textView = (TextView)navView.findViewById(R.id.date_text);
-                textView.setText(helpNode.getDateInfo());
+                textView.setText(TextUtils.formatDate(helpNode.getStartDate(), "EEEE',' MMMM d"));
+
+                textView = (TextView)navView.findViewById(R.id.time_text);
+                textView.setText(TextUtils.formatDate(helpNode.getStartDate(), "h:mmaaa \u2013 ")
+                        + TextUtils.formatDecimal(helpNode.getHours(), "#.# ")
+                        + getResources().getQuantityString(R.plurals.hour, (int)helpNode.getHours()));
             }
             else {
                 if (node.getType().equals("root")) {
