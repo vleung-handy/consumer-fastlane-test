@@ -149,12 +149,16 @@ public interface HandyRetrofitService {
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
 
     @GET("/self_service/node_details")
-    void getHelpInfo(@Query("id") String nodeId, @Query("auth_token") String authToken,
-                           HandyRetrofitCallback cb);
+    void getHelpInfo(@Query("id") String nodeId,
+                     @Query("auth_token") String authToken,
+                     @Query("booking_id") String bookingId,
+                     HandyRetrofitCallback cb);
 
     @GET("/self_service/booking_node_details")
-    void getHelpBookingsInfo(@Query("id") String nodeId, @Query("auth_token") String authToken,
-                     HandyRetrofitCallback cb);
+    void getHelpBookingsInfo(@Query("id") String nodeId,
+                             @Query("auth_token") String authToken,
+                             @Query("booking_id") String bookingId,
+                             HandyRetrofitCallback cb);
 
     @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);

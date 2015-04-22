@@ -42,19 +42,8 @@ public class SplashActivity extends BaseActivity {
                 return;
             }
 
-            final String host = data.getHost();
-            final String path = data.getPath();
-
-            if((host+path).equals("booking/reschedule"))
-            {
-                //Reschedule activity is complex leaving it here for now, todo move to navigation manager
-                openRescheduleActivity(data.getQueryParameter("booking_id"));
-            }
-            else
-            {
-                navigationManager.handleSplashScreenLaunch(this.getIntent());
-                launchedNext = true;
-            }
+            navigationManager.handleSplashScreenLaunch(this.getIntent(), this);
+            launchedNext = true;
         }
         else
         {

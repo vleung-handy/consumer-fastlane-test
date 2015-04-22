@@ -8,6 +8,10 @@ import java.util.Dictionary;
 
 public final class CTANavigationData
 {
+    private static final String NODE_CONTENT_DATA_ACTION = "action";
+    private static final String NODE_CONTENT_DATA_WEB_URL = "web_url";
+
+
     public String nodeContentWebUrl;
     public String navigationActionId;
 
@@ -24,13 +28,27 @@ public final class CTANavigationData
     public CTANavigationData(HelpNode node)
     {
         JSONObject nodeContentData;
-        try {
+        try
+        {
             nodeContentData = new JSONObject(node.getContent());
-            initData(nodeContentData.getString("action"), nodeContentData.getString("web_url"));
+
+            String action = "";
+            if(nodeContentData.has(NODE_CONTENT_DATA_ACTION))
+            {
+                action = nodeContentData.getString(NODE_CONTENT_DATA_ACTION);
+            }
+
+            String webUrl = "";
+            if(nodeContentData.has(NODE_CONTENT_DATA_WEB_URL))
+            {
+                webUrl = nodeContentData.getString(NODE_CONTENT_DATA_WEB_URL);
+            }
+
+            initData(action, webUrl);
         }
         catch (Exception e)
         {
-            System.err.println("initFromHelpNode : Could not parse node content into JSON");
+            System.err.println("initFromHelpNode : Could not parse node content into JSON : " + e);
         }
     }
 

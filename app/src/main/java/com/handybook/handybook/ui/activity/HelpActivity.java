@@ -8,11 +8,13 @@ import com.handybook.handybook.ui.fragment.HelpFragment;
 
 public final class HelpActivity extends MenuDrawerActivity {
     public static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
+    public static final String EXTRA_BOOKING_ID = "com.handy.handy.EXTRA_BOOKING_ID";
 
     @Override
     protected final Fragment createFragment() {
         final HelpNode node = getIntent().getParcelableExtra(EXTRA_HELP_NODE);
-        return HelpFragment.newInstance(node);
+        final String bookingId = getIntent().getStringExtra(EXTRA_BOOKING_ID);
+        return HelpFragment.newInstance(node, bookingId);
     }
 
     @Override

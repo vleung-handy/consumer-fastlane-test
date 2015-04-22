@@ -36,11 +36,16 @@ import javax.inject.Inject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends FragmentActivity {
+
+
     protected boolean allowCallbacks;
     private OnBackPressedListener onBackPressedListener;
     private RateServiceDialogFragment rateServiceDialog;
     protected ProgressDialog progressDialog;
     protected Toast toast;
+
+    //Public Properties
+    public boolean getAllowCallbacks() { return this.allowCallbacks; }
 
     @Inject Mixpanel mixpanel;
     @Inject UserManager userManager;

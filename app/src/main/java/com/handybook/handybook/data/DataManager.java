@@ -111,11 +111,13 @@ public abstract class DataManager {
 
     public abstract void requestPasswordReset(String email, Callback<String> cb);
 
-    public abstract void getHelpInfo(String nodeId, String authToken, Callback<HelpNode> cb);
+    public abstract void getHelpInfo(String nodeId, String authToken, String bookingId, Callback<HelpNode> cb);
 
-    public abstract void getHelpBookingsInfo(String nodeId, String authToken, Callback<HelpNode> cb);
+    public abstract void getHelpBookingsInfo(String nodeId, String authToken, String bookingId, Callback<HelpNode> cb);
 
     public abstract void createHelpCase(TypedInput body,  Callback<Void> cb);
+
+    public abstract String getBaseUrl();
 
     public static interface Callback<T> {
         void onSuccess(T response);

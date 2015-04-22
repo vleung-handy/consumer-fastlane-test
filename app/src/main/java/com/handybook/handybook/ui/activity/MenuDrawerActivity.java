@@ -142,7 +142,7 @@ public abstract class MenuDrawerActivity extends BaseActivity  implements Simple
 
             progressDialog.show();
 
-            dataManager.getHelpInfo(null, authToken, new DataManager.Callback<HelpNode>() {
+            dataManager.getHelpInfo(null, authToken, "", new DataManager.Callback<HelpNode>() {
                 @Override
                 public void onSuccess(final HelpNode node) {
                     if (!allowCallbacks) return;
