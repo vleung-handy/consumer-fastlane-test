@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public final class HelpNode implements Parcelable {
     @SerializedName("id") private int id;
@@ -14,9 +15,9 @@ public final class HelpNode implements Parcelable {
     @SerializedName("label") private String label;
     @SerializedName("content") private String content;
     @SerializedName("children") private ArrayList<HelpNode> children;
-
     @SerializedName("service_name") private String service;
-    @SerializedName("date_of_booking") private String dateInfo;
+    @SerializedName("date_start") private Date startDate;
+    @SerializedName("hrs") private float hours;
 
     public HelpNode(){}
 
@@ -44,8 +45,12 @@ public final class HelpNode implements Parcelable {
         return service;
     }
 
-    public final String getDateInfo() {
-        return dateInfo;
+    public final Date getStartDate() {
+        return startDate;
+    }
+
+    public final float getHours() {
+        return hours;
     }
 
     private HelpNode(final Parcel in) {
@@ -53,13 +58,18 @@ public final class HelpNode implements Parcelable {
         in.readIntArray(intData);
         id = intData[0];
 
-        final String[] stringData = new String[5];
+        final String[] stringData = new String[4];
         in.readStringArray(stringData);
         type = stringData[0];
         label = stringData[1];
         content = stringData[2];
         service = stringData[3];
-        dateInfo = stringData[4];
+
+        final float[] floatData = new float[1];
+        in.readFloatArray(floatData);
+        hours = floatData[0];
+
+        startDate = new Date(in.readLong());
 
         children = new ArrayList<>();
         in.readTypedList(children, HelpNode.CREATOR);
@@ -74,7 +84,9 @@ public final class HelpNode implements Parcelable {
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
         out.writeIntArray(new int[]{id});
-        out.writeStringArray(new String[]{type, label, content, service, dateInfo});
+        out.writeStringArray(new String[]{type, label, content, service});
+        out.writeFloatArray(new float[]{hours});
+        out.writeLong(startDate != null ? startDate.getTime(): 0);
         out.writeTypedList(children);
     }
 
