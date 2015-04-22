@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.google.android.gms.analytics.ecommerce.Promotion;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
@@ -12,6 +13,7 @@ import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
+import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.widget.CTANavigationData;
@@ -57,6 +59,8 @@ public final class NavigationManager {
     private static final String DEEP_LINK_ID_SERVICES = "services/";
     private static final String DEEP_LINK_ID_PROFILE = "profile/";
     private static final String DEEP_LINK_ID_BOOKINGS = "bookings/";
+    private static final String DEEP_LINK_ID_PROMOTIONS = "promotions/";
+
 
     //Action Id to Deeplink Id Mapping
     public static final Map<String, String> ACTION_ID_TO_DEEP_LINK_ID;
@@ -98,6 +102,7 @@ public final class NavigationManager {
         String deepLinkId = actionIdToDeepLinkId(navData.navigationActionId);
         String constructedUrl = constructWebUrlFromNodeUrl(navData.nodeContentWebUrl);
 
+        //Deep links have priority over web links
         if(validateDeepLink(deepLinkId))
         {
             navigateToDeepLink(deepLinkId);
@@ -197,6 +202,10 @@ public final class NavigationManager {
                 openServiceCategoriesActivity();
                 break;
 
+            case DEEP_LINK_ID_PROMOTIONS:
+                openActivity(PromosActivity.class, true);
+                break;
+
             default:
                 openServiceCategoriesActivity();
         }
@@ -214,6 +223,12 @@ public final class NavigationManager {
         if (requiresUser && userManager.getCurrentUser() == null) {
             openServiceCategoriesActivity();
         }
+        startActivity(new Intent(this.context, targetClass));
+    }
+
+    private void openActivity(final Class<? extends Activity> targetClass, final HashMap<String, String> params) {
+        Intent navIntent = new Intent(this.context, targetClass);
+
         startActivity(new Intent(this.context, targetClass));
     }
 
