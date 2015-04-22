@@ -20,6 +20,8 @@
         <TextView
             android:id="@+id/nav_text"
             android:text="@string/help"
+            android:paddingRight="44dp"
+            android:paddingLeft="44dp"
             style="@style/TextView.Navbar"
             />
 

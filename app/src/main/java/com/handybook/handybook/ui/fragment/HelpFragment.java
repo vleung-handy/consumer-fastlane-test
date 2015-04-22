@@ -23,6 +23,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.CTAButton;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
@@ -50,6 +51,7 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.cta_layout) ViewGroup ctaLayout;
     @InjectView(R.id.contact_button) Button contactButton;
     @InjectView(R.id.scroll_view) ScrollView scrollView;
+    @InjectView(R.id.close_img) ImageView closeImage;
 
 
     //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
@@ -90,6 +92,15 @@ public final class HelpFragment extends InjectedFragment {
 
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);
+
+        closeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final Intent toHomeScreenIntent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+                toHomeScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                startActivity(toHomeScreenIntent);
+            }
+        });
 
         if (savedInstanceState != null) {
             final int[] position = savedInstanceState.getIntArray(STATE_SCROLL_POSITION);
@@ -167,6 +178,7 @@ public final class HelpFragment extends InjectedFragment {
     }
 
     private void layoutForRoot(final ViewGroup container) {
+        closeImage.setVisibility(View.GONE);
         headerTitle.setText(getResources().getString(R.string.what_need_help_with));
         setHeaderColor(getResources().getColor(R.color.handy_blue));
         helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_smiley));

@@ -11,12 +11,24 @@
 
         <TextView
             android:id="@+id/nav_text"
+            android:paddingRight="44dp"
+            android:paddingLeft="44dp"
             android:text="@string/help"
             style="@style/TextView.Navbar" />
 
         <RelativeLayout
             android:id="@+id/menu_button_layout"
             style="@style/MenuButtonLayout" />
+
+        <ImageView
+            android:id="@+id/close_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="15dp"
+            android:src="@drawable/ic_x"
+            android:visibility="visible"
+            android:contentDescription="@string/close"
+            android:layout_gravity="end|center_vertical" />
 
     </FrameLayout>
 
