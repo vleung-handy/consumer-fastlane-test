@@ -11,21 +11,22 @@ public final class CTANavigationData
     private static final String NODE_CONTENT_DATA_ACTION = "action";
     private static final String NODE_CONTENT_DATA_WEB_URL = "web_url";
 
-
     public String nodeContentWebUrl;
     public String navigationActionId;
+    public String loginToken;
 
     public CTANavigationData()
     {
-        initData("", "");
+        initData("", ""); this.loginToken = "";
     }
 
-    public CTANavigationData(String navigationActionId, String nodeContentWebUrl)
+    public CTANavigationData(String navigationActionId, String nodeContentWebUrl, String loginToken)
     {
         initData(navigationActionId, nodeContentWebUrl);
+        this.loginToken = loginToken;
     }
 
-    public CTANavigationData(HelpNode node)
+    public CTANavigationData(HelpNode node, String loginToken)
     {
         JSONObject nodeContentData;
         try
@@ -50,6 +51,8 @@ public final class CTANavigationData
         {
             System.err.println("initFromHelpNode : Could not parse node content into JSON : " + e);
         }
+
+        this.loginToken = (loginToken != null ? loginToken : "");
     }
 
     private void initData(String navigationActionId, String nodeContentWebUrl)

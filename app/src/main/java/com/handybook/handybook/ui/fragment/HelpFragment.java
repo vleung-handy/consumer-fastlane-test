@@ -32,15 +32,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public final class HelpFragment extends InjectedFragment {
+
     private final String STATE_SCROLL_POSITION = "SCROLL_POSITION";
     static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
     private static String HELP_CONTACT_FORM_NODE_TYPE = "help-contact-form";
     static final String EXTRA_BOOKING_ID = "com.handy.handy.EXTRA_BOOKING_ID";
+    static final String EXTRA_LOGIN_TOKEN = "com.handy.handy.EXTRA_LOGIN_TOKEN";
 
-    private HelpNode node;
+    private HelpNode currentNode;
     private static HelpNode rootNode;
     private String currentBookingId;
-
+    private String currentLoginToken;
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
     @InjectView(R.id.nav_text) TextView navText;
@@ -59,11 +61,14 @@ public final class HelpFragment extends InjectedFragment {
 
     //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
 
-    public static HelpFragment newInstance(final HelpNode node, final String bookingId) {
+    public static HelpFragment newInstance(final HelpNode node,
+                                           final String bookingId,
+                                           final String loginToken) {
         final HelpFragment fragment = new HelpFragment();
         final Bundle args = new Bundle();
         args.putParcelable(EXTRA_HELP_NODE, node);
         args.putString(EXTRA_BOOKING_ID, bookingId);
+        args.putString(EXTRA_LOGIN_TOKEN, loginToken);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,16 +78,17 @@ public final class HelpFragment extends InjectedFragment {
     @Override
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        node = getArguments().getParcelable(EXTRA_HELP_NODE);
+        currentNode = getArguments().getParcelable(EXTRA_HELP_NODE);
         currentBookingId = getArguments().getString(EXTRA_BOOKING_ID);
+        currentLoginToken = getArguments().getString(EXTRA_LOGIN_TOKEN);
         if (savedInstanceState == null) {
-            switch (node.getType()) {
+            switch (currentNode.getType()) {
                 case "root":
                     mixpanel.trackEventHelpCenterOpened();
                     break;
 
                 case "article":
-                    mixpanel.trackEventHelpCenterLeaf(Integer.toString(node.getId()), node.getLabel());
+                    mixpanel.trackEventHelpCenterLeaf(Integer.toString(currentNode.getId()), currentNode.getLabel());
                     break;
             }
         }
@@ -119,17 +125,17 @@ public final class HelpFragment extends InjectedFragment {
             }
         }
 
-        //May return to root of help screen without re-downloading root navigation node
-        if(node == null)
+        //May return to root of help screen without re-downloading root navigation currentNode
+        if(currentNode == null)
         {
-            node = rootNode;
+            currentNode = rootNode;
         }
 
-        switch (node.getType())
+        switch (currentNode.getType())
         {
             case "root":
-                //cache the root node so we can navigate back to it from anywhere in our flow
-                rootNode = node;
+                //cache the root currentNode so we can navigate back to it from anywhere in our flow
+                rootNode = currentNode;
                 layoutForRoot(container);
                 break;
 
@@ -150,10 +156,10 @@ public final class HelpFragment extends InjectedFragment {
                     @Override
                     public void onClick(View v) {
                         mixpanel.trackEventHelpCenterNeedHelpClicked(Integer
-                                .toString(node.getId()), node.getLabel());
+                                .toString(currentNode.getId()), currentNode.getLabel());
 
                         final Intent intent = new Intent(getActivity(), HelpContactActivity.class);
-                        for(HelpNode n : node.getChildren())
+                        for(HelpNode n : currentNode.getChildren())
                         {
                             if(n.getType().equals(HELP_CONTACT_FORM_NODE_TYPE))
                             {
@@ -192,20 +198,20 @@ public final class HelpFragment extends InjectedFragment {
     }
 
     private void layoutForNavigation(final ViewGroup container) {
-        if (node.getType().equals("booking")) navText.setText(getString(R.string.help));
-        else navText.setText(node.getLabel());
+        if (currentNode.getType().equals("booking")) navText.setText(getString(R.string.help));
+        else navText.setText(currentNode.getLabel());
         layoutNavList(container);
     }
 
     private void layoutForArticle() {
-        navText.setText(node.getLabel());
+        navText.setText(currentNode.getLabel());
         setHeaderColor(getResources().getColor(R.color.handy_yellow));
         helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_bulb));
         helpTriangleView.setVisibility(View.VISIBLE);
 
-        String info = node.getContent();
+        String info = currentNode.getContent();
 
-        for (final HelpNode child : node.getChildren()) {
+        for (final HelpNode child : currentNode.getChildren()) {
             if (child.getType().equals("help-faq-container")) {
                 info += "<br/><br/><b>" + getString(R.string.related_faq) + ":</b>";
 
@@ -229,11 +235,10 @@ public final class HelpFragment extends InjectedFragment {
 
     private void addCtaButton(HelpNode node)
     {
-        int newChildIndex = ctaLayout.getChildCount(); //index is equal to the old count since the new count is +1
+        int newChildIndex = ctaLayout.getChildCount(); //new index is equal to the old count since the new count is +1
         final CTAButton ctaButton = (CTAButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
-        ctaButton.initFromHelpNode(node);
-
-        //can't inject into buttons so need to set the on click listner here to take advantage of fragments injection
+        ctaButton.initFromHelpNode(node, currentLoginToken);
+        //can't inject into buttons so need to set the on click listener here to take advantage of fragments injection
         ctaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -247,14 +252,14 @@ public final class HelpFragment extends InjectedFragment {
         infoLayout.setVisibility(View.GONE);
         navList.setVisibility(View.VISIBLE);
 
-        if (node.getType().equals("dynamic-bookings-navigation")) {
+        if (currentNode.getType().equals("dynamic-bookings-navigation")) {
             setHeaderColor(getResources().getColor(R.color.handy_teal));
         }
 
         int count = 0;
-        int size = node.getChildren().size();
+        int size = currentNode.getChildren().size();
 
-        for (final HelpNode helpNode : node.getChildren()) {
+        for (final HelpNode helpNode : currentNode.getChildren()) {
             final View navView;
 
             if (helpNode.getType().equals("booking")) {
@@ -273,7 +278,7 @@ public final class HelpFragment extends InjectedFragment {
                         + getResources().getQuantityString(R.plurals.hour, (int)helpNode.getHours()));
             }
             else {
-                if (node.getType().equals("root")) {
+                if (currentNode.getType().equals("root")) {
                     navView = getActivity().getLayoutInflater()
                             .inflate(R.layout.list_item_help_nav_main, container, false);
                 }
@@ -285,7 +290,7 @@ public final class HelpFragment extends InjectedFragment {
                 final TextView textView = (TextView)navView.findViewById(R.id.nav_item_text);
                 textView.setText(helpNode.getLabel());
 
-                if (node.getType().equals("root")) {
+                if (currentNode.getType().equals("root")) {
                     textView.setTextAppearance(getActivity(), R.style.TextView_Large);
                     textView.setTypeface(TextUtils.get(getActivity(), "CircularStd-Book.otf"));
                 }
@@ -310,19 +315,21 @@ public final class HelpFragment extends InjectedFragment {
     }
 
     private void displayNextNode(final HelpNode node) {
+
         progressDialog.show();
 
         final User user = userManager.getCurrentUser();
         final String authToken = user != null ? user.getAuthToken() : null;
 
+        //Why are we assigning currentBookingId here but we need to wait on the CB for loginToken to come back correctly?
         if (node.getType().equals("booking"))
         {
-            this.currentBookingId = Integer.toString(node.getId());
-            dataManager.getHelpBookingsInfo(Integer.toString(node.getId()), authToken, this.currentBookingId, helpNodeCallback);
+            currentBookingId = Integer.toString(node.getId());
+            dataManager.getHelpBookingsInfo(Integer.toString(node.getId()), authToken, currentBookingId, helpNodeCallback);
         }
         else
         {
-            dataManager.getHelpInfo(Integer.toString(node.getId()), authToken, this.currentBookingId, helpNodeCallback);
+            dataManager.getHelpInfo(Integer.toString(node.getId()), authToken, currentBookingId, helpNodeCallback);
         }
     }
 
@@ -336,12 +343,19 @@ public final class HelpFragment extends InjectedFragment {
 
     private DataManager.Callback<HelpNode> helpNodeCallback = new DataManager.Callback<HelpNode>() {
         @Override
-        public void onSuccess(final HelpNode helpNode) {
+        public void onSuccess(final HelpNode helpNode)
+        {
+            if(helpNode.getType().equals("article"))
+            {
+                currentLoginToken = helpNode.getLoginToken();
+            }
+
             if (!allowCallbacks) return;
 
             final Intent intent = new Intent(getActivity(), HelpActivity.class);
             intent.putExtra(HelpActivity.EXTRA_HELP_NODE, helpNode);
             intent.putExtra(HelpActivity.EXTRA_BOOKING_ID, currentBookingId);
+            intent.putExtra(HelpActivity.EXTRA_LOGIN_TOKEN, currentLoginToken);
             startActivity(intent);
 
             progressDialog.dismiss();

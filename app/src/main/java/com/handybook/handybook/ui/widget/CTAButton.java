@@ -35,13 +35,11 @@ public final class CTAButton extends Button
         super(context);
     }
 
-    public void initFromHelpNode(HelpNode node)
+    public void initFromHelpNode(HelpNode node, String loginToken)
     {
         this.nodeLabel = node.getLabel();
         this.nodeId = node.getId();
-
         this.setText(this.nodeLabel);
-
-        this.navigationData = new CTANavigationData(node);
+        this.navigationData = new CTANavigationData(node, loginToken);
     }
 }
