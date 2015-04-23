@@ -33,6 +33,11 @@ import javax.inject.Inject;
  */
 public final class NavigationManager {
 
+    //String consts
+    private static final String WEB_AUTH_TOKEN ="slt=";
+    private static final String WEB_PARAM_TOKEN ="?";
+    private static final String WEB_ADDITIONAL_PARAM_TOKEN ="&";
+
     //Injected params
     private UserManager userManager;
     private DataManager dataManager;
@@ -74,6 +79,7 @@ public final class NavigationManager {
         map.put(ACTION_ID_GO_TO_MY_PROFILE, DEEP_LINK_ID_PROFILE);
         map.put(ACTION_ID_GO_TO_MY_BOOKINGS, DEEP_LINK_ID_BOOKINGS);
         map.put(ACTION_ID_RATE_PRO, DEEP_LINK_ID_SERVICES); //HACK: The services page will auto detect if a rating is required and direct user to that flow
+        map.put(ACTION_ID_RESCHEDULE, DEEP_LINK_ID_BOOKINGS_RESCHEDULE);
         ACTION_ID_TO_DEEP_LINK_ID = Collections.unmodifiableMap(map);
     }
 
@@ -121,6 +127,7 @@ public final class NavigationManager {
         return success;
     }
 
+    //Want to remove this once and make this functionality generic
     //Handle splash screen deep links, these may require additional callback functionality
     public void handleSplashScreenLaunch(Intent splashScreenIntent, BaseActivity callingActivity)
     {
@@ -152,10 +159,10 @@ public final class NavigationManager {
     private String constructWebUrlFromNodeUrl(String partialWebUrl)
     {
         String baseUrl =  this.dataManager.getBaseUrl();
-        String separatorCharacter = (partialWebUrl.contains("?") ? "&" : "?");
-
+        String separatorCharacter = (partialWebUrl.contains(WEB_PARAM_TOKEN) ? WEB_ADDITIONAL_PARAM_TOKEN : WEB_PARAM_TOKEN);
+        String fullUrl = (baseUrl + partialWebUrl + separatorCharacter + WEB_AUTH_TOKEN + getAuthToken());
         //TODO: Don't pass the user's auth token, pass along the one time login slt from the node "slt" data
-        return (baseUrl + partialWebUrl + separatorCharacter + "slt=" + getAuthToken());
+        return fullUrl;
     }
 
     private String getAuthToken()
@@ -167,7 +174,6 @@ public final class NavigationManager {
     private void navigateToWeb(String webUrl)
     {
         //System.out.println("NAVIGATE TO WEB : " + webUrl);
-
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl));
         browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(browserIntent);
@@ -206,24 +212,12 @@ public final class NavigationManager {
 
         switch (deepLinkId)
         {
-            case DEEP_LINK_ID_PROFILE:
-                openActivity(ProfileActivity.class, true);
-                break;
-
-            case DEEP_LINK_ID_BOOKINGS:
-                openActivity(BookingsActivity.class, true);
-                break;
-
-            case DEEP_LINK_ID_SERVICES:
-                openServiceCategoriesActivity();
-                break;
-
-            case DEEP_LINK_ID_PROMOTIONS:
-                openActivity(PromosActivity.class, true);
-                break;
-
-            default:
-                openServiceCategoriesActivity();
+            case DEEP_LINK_ID_PROFILE: {openActivity(ProfileActivity.class, true);}break;
+            case DEEP_LINK_ID_BOOKINGS:{openActivity(BookingsActivity.class, true);}break;
+            case DEEP_LINK_ID_SERVICES:{openServiceCategoriesActivity();}break;
+            case DEEP_LINK_ID_PROMOTIONS:{openActivity(PromosActivity.class, true);}break;
+            //case DEEP_LINK_ID_BOOKINGS_RESCHEDULE:{}break;
+            default:{openServiceCategoriesActivity();}
         }
     }
 
