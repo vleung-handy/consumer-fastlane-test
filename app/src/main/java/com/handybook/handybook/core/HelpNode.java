@@ -18,6 +18,7 @@ public final class HelpNode implements Parcelable {
     @SerializedName("service_name") private String service;
     @SerializedName("date_start") private Date startDate;
     @SerializedName("hrs") private float hours;
+    @SerializedName("slt") private String loginToken;
 
     public HelpNode(){}
 
@@ -28,6 +29,8 @@ public final class HelpNode implements Parcelable {
     public final String getType() {
         return type;
     }
+
+    public final String getLoginToken() { return loginToken;}
 
     public final String getLabel() {
         return label;
@@ -58,12 +61,13 @@ public final class HelpNode implements Parcelable {
         in.readIntArray(intData);
         id = intData[0];
 
-        final String[] stringData = new String[4];
+        final String[] stringData = new String[5];
         in.readStringArray(stringData);
         type = stringData[0];
         label = stringData[1];
         content = stringData[2];
         service = stringData[3];
+        loginToken = stringData[4];
 
         final float[] floatData = new float[1];
         in.readFloatArray(floatData);
@@ -84,7 +88,7 @@ public final class HelpNode implements Parcelable {
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
         out.writeIntArray(new int[]{id});
-        out.writeStringArray(new String[]{type, label, content, service});
+        out.writeStringArray(new String[]{type, label, content, service, loginToken});
         out.writeFloatArray(new float[]{hours});
         out.writeLong(startDate != null ? startDate.getTime(): 0);
         out.writeTypedList(children);

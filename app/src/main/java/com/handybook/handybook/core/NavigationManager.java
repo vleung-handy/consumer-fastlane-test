@@ -5,11 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.google.android.gms.analytics.ecommerce.Promotion;
-import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
@@ -17,11 +14,9 @@ import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
 import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.widget.CTANavigationData;
 
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -107,10 +102,10 @@ public final class NavigationManager {
         Boolean success = false;
 
         String deepLinkId = actionIdToDeepLinkId(navData.navigationActionId);
-        String constructedUrl = constructWebUrlFromNodeUrl(navData.nodeContentWebUrl);
+        String constructedUrl = constructWebUrlFromNavData(navData);
 
-        System.out.println("Deep:"+deepLinkId);
-        System.out.println("Web:" + constructedUrl);
+        //System.out.println("Deep:"+deepLinkId);
+        //System.out.println("Web:" + constructedUrl);
 
         //Deep links have priority over web links
         if(validateDeepLink(deepLinkId))
@@ -156,18 +151,26 @@ public final class NavigationManager {
     //Private
     ///////
 
-    private String constructWebUrlFromNodeUrl(String partialWebUrl)
+    private String constructWebUrlFromNavData(CTANavigationData data)
     {
         String baseUrl =  this.dataManager.getBaseUrl();
-        String separatorCharacter = (partialWebUrl.contains(WEB_PARAM_TOKEN) ? WEB_ADDITIONAL_PARAM_TOKEN : WEB_PARAM_TOKEN);
-        String fullUrl = (baseUrl + partialWebUrl + separatorCharacter + WEB_AUTH_TOKEN + getAuthToken());
-        //TODO: Don't pass the user's auth token, pass along the one time login slt from the node "slt" data
+        String separatorCharacter = (data.nodeContentWebUrl.contains(WEB_PARAM_TOKEN) ? WEB_ADDITIONAL_PARAM_TOKEN : WEB_PARAM_TOKEN);
+        String fullUrl = (baseUrl + data.nodeContentWebUrl + separatorCharacter + WEB_AUTH_TOKEN + getAuthToken(data));
         return fullUrl;
     }
 
-    private String getAuthToken()
+    private String getAuthToken(CTANavigationData data)
     {
-        return (userManager.getCurrentUser() != null ? userManager.getCurrentUser().getAuthToken() : "");
+        String authToken = "";
+        if(data.loginToken != null && !data.loginToken.isEmpty())
+        {
+            authToken = data.loginToken;
+        }
+        else if(userManager.getCurrentUser() != null)
+        {
+            authToken = userManager.getCurrentUser().getAuthToken();
+        }
+        return authToken;
     }
 
     //Open external web page
