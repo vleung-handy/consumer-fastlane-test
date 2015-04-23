@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.HelpActivity;
@@ -27,6 +28,8 @@ import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.CTAButton;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
+
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -242,7 +245,11 @@ public final class HelpFragment extends InjectedFragment {
         ctaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Boolean success = navigationManager.navigateTo(ctaButton.navigationData);
+                HashMap<String, String> params = new HashMap<String, String>();
+                if(currentBookingId != null && !currentBookingId.isEmpty()) {
+                    params.put(NavigationManager.PARAM_BOOKING_ID, currentBookingId);
+                }
+                Boolean success = navigationManager.navigateTo(ctaButton.navigationData, params);
                 mixpanel.trackEventHelpCenterDeepLinkClicked(Integer.toString(ctaButton.nodeId), ctaButton.nodeLabel);
             }
         });

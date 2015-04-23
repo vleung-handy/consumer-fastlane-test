@@ -18,6 +18,7 @@ import com.handybook.handybook.ui.widget.CTANavigationData;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -40,7 +41,7 @@ public final class NavigationManager {
 
     //Valid Action Ids
     private static final String ACTION_ID_SERVICES = "services";
-    private static final String ACTION_ID_RESCHEDULE = "reschedule";
+    private static final String ACTION_ID_RESCHEDULE = "reschedule_booking";
     private static final String ACTION_ID_CANCEL_BOOKING = "cancel_booking";
     private static final String ACTION_ID_RATE_PRO = "rate_pro";
     private static final String ACTION_ID_REQUEST_PRO = "request_pro";
@@ -82,6 +83,12 @@ public final class NavigationManager {
     private final Properties config;
     private final Context context;
 
+
+    //Move somewhere else
+
+    public static final String PARAM_BOOKING_ID = "booking_id";
+
+
     ///////
     //Public
     ///////
@@ -97,20 +104,34 @@ public final class NavigationManager {
     }
 
     //Use navigation data to attempt to navigate to a deep link, using web url as fallback if deeplink is not mapped
+
     public Boolean navigateTo(CTANavigationData navData)
+    {
+        return navigateTo(navData, new HashMap<String, String>());
+    }
+
+    public Boolean navigateTo(CTANavigationData navData, Map<String, String> params)
     {
         Boolean success = false;
 
         String deepLinkId = actionIdToDeepLinkId(navData.navigationActionId);
         String constructedUrl = constructWebUrlFromNavData(navData);
 
-        //System.out.println("Deep:"+deepLinkId);
-        //System.out.println("Web:" + constructedUrl);
+//        System.out.println("Deep:"+deepLinkId);
+//        System.out.println("Web:" + constructedUrl);
+//        System.out.println("Params:");
+//        Iterator it = params.entrySet().iterator();
+//        while (it.hasNext()) {
+//            Map.Entry pair = (Map.Entry)it.next();
+//            System.out.println(pair.getKey() + " = " + pair.getValue());
+//            //it.remove(); // avoids a ConcurrentModificationException
+//        }
+//        System.out.println("EndParams");
 
         //Deep links have priority over web links
         if(validateDeepLink(deepLinkId))
         {
-            navigateToDeepLink(deepLinkId);
+            navigateToDeepLink(deepLinkId, params);
             success = true;
         }
         else if(validateUrl(constructedUrl))
@@ -143,7 +164,7 @@ public final class NavigationManager {
         }
         else
         {
-            navigateToDeepLink(deepLinkId);
+            navigateToDeepLink(deepLinkId, null); //if we convert data and callbacks to standard form we can standardize this
         }
     }
 
@@ -209,7 +230,7 @@ public final class NavigationManager {
         return true;
     }
 
-    private void navigateToDeepLink(String deepLinkId)
+    private void navigateToDeepLink(String deepLinkId, Map<String, String> params)
     {
         //System.out.println("NAVIGATE TO DEEP LINK : " + deepLinkId);
 
@@ -219,7 +240,12 @@ public final class NavigationManager {
             case DEEP_LINK_ID_BOOKINGS:{openActivity(BookingsActivity.class, true);}break;
             case DEEP_LINK_ID_SERVICES:{openServiceCategoriesActivity();}break;
             case DEEP_LINK_ID_PROMOTIONS:{openActivity(PromosActivity.class, true);}break;
-            //case DEEP_LINK_ID_BOOKINGS_RESCHEDULE:{}break;
+            case DEEP_LINK_ID_BOOKINGS_RESCHEDULE:
+            {
+                String bookingId = params.get(PARAM_BOOKING_ID);
+                openRescheduleActivity(bookingId);
+            }
+            break;
             default:{openServiceCategoriesActivity();}
         }
     }
@@ -249,9 +275,53 @@ public final class NavigationManager {
         startActivity(new Intent(this.context, ServiceCategoriesActivity.class));
     }
 
+    private void openRescheduleActivity(final String bookingId) {
+        User user = userManager.getCurrentUser();
+        final Context intentContext = this.context;
+        dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
+                new DataManager.Callback<Booking>()
+                {
+                    @Override
+                    public void onSuccess(final Booking booking)
+                    {
+                        dataManager.getPreRescheduleInfo(bookingId,
+                                new DataManager.Callback<String>()
+                                {
+                                    @Override
+                                    public void onSuccess(final String notice)
+                                    {
+                                        final Intent intent = new Intent(intentContext, BookingDateActivity.class);
+                                        intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
+                                        intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
+                                        //startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intentContext);
+
+                                        //TODO: the reschedule activity is currently killing itself when done, so we need to throw something into the stack for it to return to?
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onError(final DataManager.DataManagerError error)
+                                    {
+                                        dataManagerErrorHandler.handleError(intentContext, error);
+                                        openServiceCategoriesActivity();
+                                    }
+                                }
+                        );
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        dataManagerErrorHandler.handleError(intentContext, error);
+                        openServiceCategoriesActivity();
+                    }
+                });
+    }
+
     //TODO: refactor once we add param+callback support to our other deep links
     private void openRescheduleActivity(final String bookingId, final BaseActivity callingActivity) {
         User user = userManager.getCurrentUser();
+
         dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
                 new DataManager.Callback<Booking>()
                 {
