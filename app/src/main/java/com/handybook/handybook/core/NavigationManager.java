@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.util.Pair;
 
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
@@ -16,9 +18,11 @@ import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.CTANavigationData;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -66,6 +70,7 @@ public final class NavigationManager {
     private static final String DEEP_LINK_ID_BOOKINGS = "bookings/";
     private static final String DEEP_LINK_ID_PROMOTIONS = "promotions/";
     private static final String DEEP_LINK_ID_BOOKINGS_RESCHEDULE = "bookings/reschedule";
+    private static final String DEEP_LINK_ID_BOOKINGS_CANCEL = "bookings/cancel";
 
     //Action Id to Deeplink Id Mapping
     public static final Map<String, String> ACTION_ID_TO_DEEP_LINK_ID;
@@ -76,6 +81,7 @@ public final class NavigationManager {
         map.put(ACTION_ID_GO_TO_MY_BOOKINGS, DEEP_LINK_ID_BOOKINGS);
         map.put(ACTION_ID_RATE_PRO, DEEP_LINK_ID_SERVICES); //HACK: The services page will auto detect if a rating is required and direct user to that flow
         map.put(ACTION_ID_RESCHEDULE, DEEP_LINK_ID_BOOKINGS_RESCHEDULE);
+        map.put(ACTION_ID_CANCEL_BOOKING, DEEP_LINK_ID_BOOKINGS_CANCEL);
         ACTION_ID_TO_DEEP_LINK_ID = Collections.unmodifiableMap(map);
     }
 
@@ -117,16 +123,15 @@ public final class NavigationManager {
         String deepLinkId = actionIdToDeepLinkId(navData.navigationActionId);
         String constructedUrl = constructWebUrlFromNavData(navData);
 
-//        System.out.println("Deep:"+deepLinkId);
-//        System.out.println("Web:" + constructedUrl);
-//        System.out.println("Params:");
-//        Iterator it = params.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry pair = (Map.Entry)it.next();
-//            System.out.println(pair.getKey() + " = " + pair.getValue());
-//            //it.remove(); // avoids a ConcurrentModificationException
-//        }
-//        System.out.println("EndParams");
+        System.out.println("Deep:"+deepLinkId);
+        System.out.println("Web:" + constructedUrl);
+        System.out.println("Params:");
+        Iterator it = params.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+        }
+        System.out.println("EndParams");
 
         //Deep links have priority over web links
         if(validateDeepLink(deepLinkId))
@@ -176,7 +181,19 @@ public final class NavigationManager {
     {
         String baseUrl =  this.dataManager.getBaseUrl();
         String separatorCharacter = (data.nodeContentWebUrl.contains(WEB_PARAM_TOKEN) ? WEB_ADDITIONAL_PARAM_TOKEN : WEB_PARAM_TOKEN);
-        String fullUrl = (baseUrl + data.nodeContentWebUrl + separatorCharacter + WEB_AUTH_TOKEN + getAuthToken(data));
+
+        String[] tokens = data.nodeContentWebUrl.split("#");
+        String fullUrl;
+        //user/booking targeted URLs need to be split at # to insert params like auth token
+        if(tokens.length == 2)
+        {
+            fullUrl = (baseUrl + tokens[0] + separatorCharacter + getAuthToken(data) + "#" + tokens[1]);
+        }
+        else
+        {
+            fullUrl = (baseUrl + data.nodeContentWebUrl + separatorCharacter + getAuthToken(data));
+        }
+
         return fullUrl;
     }
 
@@ -185,11 +202,11 @@ public final class NavigationManager {
         String authToken = "";
         if(data.loginToken != null && !data.loginToken.isEmpty())
         {
-            authToken = data.loginToken;
+            authToken = WEB_AUTH_TOKEN + data.loginToken;
         }
         else if(userManager.getCurrentUser() != null)
         {
-            authToken = userManager.getCurrentUser().getAuthToken();
+            authToken = WEB_AUTH_TOKEN + userManager.getCurrentUser().getAuthToken();
         }
         return authToken;
     }
@@ -246,6 +263,12 @@ public final class NavigationManager {
                 openRescheduleActivity(bookingId);
             }
             break;
+            case DEEP_LINK_ID_BOOKINGS_CANCEL:
+            {
+                String bookingId = params.get(PARAM_BOOKING_ID);
+                openCancelActivity(bookingId);
+            }
+            break;
             default:{openServiceCategoriesActivity();}
         }
     }
@@ -273,6 +296,40 @@ public final class NavigationManager {
 
     private void openServiceCategoriesActivity() {
         startActivity(new Intent(this.context, ServiceCategoriesActivity.class));
+    }
+
+
+
+    //WANT TO PASS IN ACTUAL BOOKING? Or use booking ID to get a Booking object
+    private void openCancelActivity(final String bookingId) {
+        User user = userManager.getCurrentUser();
+        final Context intentContext = this.context;
+        final Booking booking = null; //get the booking info based on the booking id?
+
+        dataManager.getPreCancelationInfo(booking.getId(),
+                new DataManager.Callback<Pair<String, List<String>>>() {
+                    @Override
+                    public void onSuccess(final Pair<String, List<String>> result)
+                    {
+                        final Intent intent = new Intent(context, BookingCancelOptionsActivity.class);
+
+                        intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
+                                new ArrayList<>(result.second));
+
+                        intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
+                        intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
+
+                        //startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        dataManagerErrorHandler.handleError(intentContext, error);
+                        openServiceCategoriesActivity();
+                    }
+                });
     }
 
     private void openRescheduleActivity(final String bookingId) {
