@@ -37,6 +37,7 @@ public final class NavigationManager {
     private static final String WEB_AUTH_TOKEN ="slt=";
     private static final String WEB_PARAM_TOKEN ="?";
     private static final String WEB_ADDITIONAL_PARAM_TOKEN ="&";
+    private static final String WEB_PARAM_DISABLE_MOBILE_SPLASH="&disable_mobile_splash=1";
 
     //Injected params
     private UserManager userManager;
@@ -187,11 +188,11 @@ public final class NavigationManager {
         //user/booking targeted URLs need to be split at # to insert params like auth token
         if(tokens.length == 2)
         {
-            fullUrl = (baseUrl + tokens[0] + separatorCharacter + getAuthToken(data) + "#" + tokens[1]);
+            fullUrl = (baseUrl + tokens[0] + separatorCharacter + getAuthToken(data) + WEB_PARAM_DISABLE_MOBILE_SPLASH + "#" + tokens[1]);
         }
         else
         {
-            fullUrl = (baseUrl + data.nodeContentWebUrl + separatorCharacter + getAuthToken(data));
+            fullUrl = (baseUrl + data.nodeContentWebUrl + separatorCharacter + getAuthToken(data) + WEB_PARAM_DISABLE_MOBILE_SPLASH);
         }
 
         return fullUrl;
@@ -358,9 +359,6 @@ public final class NavigationManager {
                                         final Intent intent = new Intent(intentContext, BookingDateActivity.class);
                                         intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
                                         intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
-                                        //startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intentContext);
-
-                                        //TODO: the reschedule activity is currently killing itself when done, so we need to throw something into the stack for it to return to?
                                         startActivity(intent);
                                     }
 
