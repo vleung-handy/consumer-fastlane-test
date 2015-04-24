@@ -214,7 +214,10 @@ public final class HelpFragment extends InjectedFragment {
 
         String info = currentNode.getContent();
 
-        for (final HelpNode child : currentNode.getChildren()) {
+        for (final HelpNode child : currentNode.getChildren())
+        {
+            if(child.getType() == null) { System.err.println("HelpNode " + child.getId() + " has null data"); continue; }
+
             if (child.getType().equals("help-faq-container")) {
                 info += "<br/><br/><b>" + getString(R.string.related_faq) + ":</b>";
 
@@ -245,13 +248,13 @@ public final class HelpFragment extends InjectedFragment {
         ctaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                HashMap<String, String> params = new HashMap<String, String>();
-                if(currentBookingId != null && !currentBookingId.isEmpty())
-                {
-                    params.put(NavigationManager.PARAM_BOOKING_ID, currentBookingId);
-                }
-                Boolean success = navigationManager.navigateTo(ctaButton.navigationData, params);
-                mixpanel.trackEventHelpCenterDeepLinkClicked(Integer.toString(ctaButton.nodeId), ctaButton.nodeLabel);
+            HashMap<String, String> params = new HashMap<String, String>();
+            if(currentBookingId != null && !currentBookingId.isEmpty())
+            {
+                params.put(NavigationManager.PARAM_BOOKING_ID, currentBookingId);
+            }
+            Boolean success = navigationManager.navigateTo(ctaButton.navigationData, params);
+            mixpanel.trackEventHelpCenterDeepLinkClicked(Integer.toString(ctaButton.nodeId), ctaButton.nodeLabel);
             }
         });
     }

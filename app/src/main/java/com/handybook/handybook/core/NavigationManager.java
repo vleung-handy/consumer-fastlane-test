@@ -47,7 +47,7 @@ public final class NavigationManager {
     private static final String ACTION_ID_SERVICES = "services";
     private static final String ACTION_ID_RESCHEDULE = "reschedule_booking";
     private static final String ACTION_ID_CANCEL_BOOKING = "cancel_booking";
-    private static final String ACTION_ID_RATE_PRO = "rate_pro";
+    private static final String ACTION_ID_RATE_PRO = "rate_confirmation";
     private static final String ACTION_ID_REQUEST_PRO = "request_pro";
     private static final String ACTION_ID_GO_TO_MY_BOOKINGS = "go_to_my_bookings";
     private static final String ACTION_ID_GO_TO_MY_PROFILE = "go_to_my_profile";
@@ -275,8 +275,8 @@ public final class NavigationManager {
 
     private void startActivity(final Intent intent)
     {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //Don't clear the stack, will return to help page when activity completes
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.context.startActivity(intent);
     }
 
@@ -298,38 +298,46 @@ public final class NavigationManager {
         startActivity(new Intent(this.context, ServiceCategoriesActivity.class));
     }
 
-
-
-    //WANT TO PASS IN ACTUAL BOOKING? Or use booking ID to get a Booking object
+    //to merge with reschedule activity code, currently copy pasta
     private void openCancelActivity(final String bookingId) {
+
         User user = userManager.getCurrentUser();
         final Context intentContext = this.context;
-        final Booking booking = null; //get the booking info based on the booking id?
+        dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
+            new DataManager.Callback<Booking>()
+            {
+                @Override
+                public void onSuccess(final Booking booking)
+                {
+                    dataManager.getPreCancelationInfo(booking.getId(),
+                            new DataManager.Callback<Pair<String, List<String>>>() {
+                                @Override
+                                public void onSuccess(final Pair<String, List<String>> result)
+                                {
+                                    final Intent intent = new Intent(context, BookingCancelOptionsActivity.class);
+                                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
+                                            new ArrayList<>(result.second));
+                                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
+                                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
+                                    startActivity(intent);
+                                }
 
-        dataManager.getPreCancelationInfo(booking.getId(),
-                new DataManager.Callback<Pair<String, List<String>>>() {
-                    @Override
-                    public void onSuccess(final Pair<String, List<String>> result)
-                    {
-                        final Intent intent = new Intent(context, BookingCancelOptionsActivity.class);
+                                @Override
+                                public void onError(final DataManager.DataManagerError error)
+                                {
+                                    dataManagerErrorHandler.handleError(intentContext, error);
+                                    openServiceCategoriesActivity();
+                                }
+                            });
+                }
 
-                        intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
-                                new ArrayList<>(result.second));
-
-                        intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
-                        intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
-
-                        //startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
-                        dataManagerErrorHandler.handleError(intentContext, error);
-                        openServiceCategoriesActivity();
-                    }
-                });
+                @Override
+                public void onError(final DataManager.DataManagerError error)
+                {
+                    dataManagerErrorHandler.handleError(intentContext, error);
+                    openServiceCategoriesActivity();
+                }
+            });
     }
 
     private void openRescheduleActivity(final String bookingId) {
