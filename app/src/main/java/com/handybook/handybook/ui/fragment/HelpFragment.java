@@ -246,7 +246,8 @@ public final class HelpFragment extends InjectedFragment {
             @Override
             public void onClick(final View v) {
                 HashMap<String, String> params = new HashMap<String, String>();
-                if(currentBookingId != null && !currentBookingId.isEmpty()) {
+                if(currentBookingId != null && !currentBookingId.isEmpty())
+                {
                     params.put(NavigationManager.PARAM_BOOKING_ID, currentBookingId);
                 }
                 Boolean success = navigationManager.navigateTo(ctaButton.navigationData, params);
