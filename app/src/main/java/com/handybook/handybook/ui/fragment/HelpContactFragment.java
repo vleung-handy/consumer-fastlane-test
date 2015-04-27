@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
@@ -21,6 +22,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -44,6 +47,8 @@ public final class HelpContactFragment extends InjectedFragment {
     @InjectView(R.id.back_img) ImageView backImage;
 
     private HelpNode associatedNode;
+
+    @Inject UserManager userManager;
 
     public static HelpContactFragment newInstance(final HelpNode node) {
         final HelpContactFragment fragment = new HelpContactFragment();
@@ -88,7 +93,18 @@ public final class HelpContactFragment extends InjectedFragment {
             }
         });
 
+        prepopulateUserData();
+
         return view;
+    }
+
+    private void prepopulateUserData()
+    {
+        if(this.userManager.getCurrentUser() != null)
+        {
+            this.nameText.setText(this.userManager.getCurrentUser().getFullName());
+            this.emailText.setText(this.userManager.getCurrentUser().getEmail());
+        }
     }
 
     private void onSendMessageButtonClick() {
