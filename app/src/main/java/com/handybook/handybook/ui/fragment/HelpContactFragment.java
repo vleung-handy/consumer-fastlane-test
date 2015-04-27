@@ -136,6 +136,7 @@ public final class HelpContactFragment extends InjectedFragment {
             } catch (UnsupportedEncodingException e) {
                 body = null;
             }
+
             dataManager.createHelpCase(body, createCaseCallback);
         }
     }
@@ -166,6 +167,9 @@ public final class HelpContactFragment extends InjectedFragment {
             if (!allowCallbacks) return;
             progressDialog.dismiss();
             returnToHomeScreen();
+
+            toast.setText(getString(R.string.contact_received));
+            toast.show();
 
             mixpanel.trackEventHelpCenterSubmitTicket(Integer
                     .toString(associatedNode.getId()), associatedNode.getLabel());
