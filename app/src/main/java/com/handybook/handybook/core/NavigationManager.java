@@ -124,16 +124,6 @@ public final class NavigationManager {
         String deepLinkId = actionIdToDeepLinkId(navData.navigationActionId);
         String constructedUrl = constructWebUrlFromNavData(navData);
 
-        System.out.println("Deep:"+deepLinkId);
-        System.out.println("Web:" + constructedUrl);
-        System.out.println("Params:");
-        Iterator it = params.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            System.out.println(pair.getKey() + " = " + pair.getValue());
-        }
-        System.out.println("EndParams");
-
         //Deep links have priority over web links
         if(validateDeepLink(deepLinkId))
         {
@@ -215,7 +205,6 @@ public final class NavigationManager {
     //Open external web page
     private void navigateToWeb(String webUrl)
     {
-        //System.out.println("NAVIGATE TO WEB : " + webUrl);
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl));
         browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(browserIntent);
@@ -250,8 +239,6 @@ public final class NavigationManager {
 
     private void navigateToDeepLink(String deepLinkId, Map<String, String> params)
     {
-        //System.out.println("NAVIGATE TO DEEP LINK : " + deepLinkId);
-
         switch (deepLinkId)
         {
             case DEEP_LINK_ID_PROFILE: {openActivity(ProfileActivity.class, true);}break;
