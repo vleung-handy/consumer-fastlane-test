@@ -63,7 +63,6 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.close_img) ImageView closeImage;
     @InjectView(R.id.back_img) ImageView backImage;
 
-
     //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
 
     public static HelpFragment newInstance(final HelpNode node,
