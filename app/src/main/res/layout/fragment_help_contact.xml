@@ -191,7 +191,7 @@
                         android:id="@+id/comment_text"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:hint="@string/ask_us_anything"
+                        android:hint="@string/contact_form_hint"
                         android:gravity="top"
                         app:minLength="1"
                         android:padding="0dp"
