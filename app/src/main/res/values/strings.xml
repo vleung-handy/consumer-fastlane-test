@@ -141,6 +141,7 @@
     <string name="send_message">Send Message</string>
     <string name="contact_form_hint">Tell us how we can help</string>
     <string name="please_login">Please log in</string>
+    <string name="back">Back</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>

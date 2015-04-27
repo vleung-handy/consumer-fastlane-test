@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ public final class HelpContactFragment extends InjectedFragment {
     @InjectView(R.id.email_text) EmailInputTextView emailText;
     @InjectView(R.id.comment_text) BasicInputTextView commentText;
     @InjectView(R.id.close_img) ImageView closeImage;
+    @InjectView(R.id.back_img) ImageView backImage;
 
     private HelpNode associatedNode;
 
@@ -75,6 +77,14 @@ public final class HelpContactFragment extends InjectedFragment {
             @Override
             public void onClick(final View v) {
                 onCloseImageClick();
+            }
+        });
+
+        final Activity fragmentActivity = this.getActivity();
+        backImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                fragmentActivity.onBackPressed();
             }
         });
 
