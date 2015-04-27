@@ -12,10 +12,10 @@ import java.util.Observer;
 
 import javax.inject.Inject;
 
-public final class UserManager implements Observer {
-    private final Bus bus;
-    private User user;
-    private final SecurePreferences securePrefs;
+public class UserManager implements Observer {
+    private Bus bus;
+    protected User user;
+    private SecurePreferences securePrefs;
 
     @Inject
     UserManager(final Bus bus, final SecurePreferences prefs) {
@@ -24,7 +24,7 @@ public final class UserManager implements Observer {
         this.bus.register(this);
     }
 
-    public final User getCurrentUser() {
+    public User getCurrentUser() {
         if (user != null) return user;
         else {
             if ((user = User.fromJson(securePrefs.getString("USER_OBJ"))) != null)
@@ -33,7 +33,7 @@ public final class UserManager implements Observer {
         }
     }
 
-    public final void setCurrentUser(final User newUser) {
+    public void setCurrentUser(final User newUser) {
         if (user != null) user.deleteObserver(this);
 
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null) {
