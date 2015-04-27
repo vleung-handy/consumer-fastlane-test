@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -60,6 +61,7 @@ public final class HelpFragment extends InjectedFragment {
     @InjectView(R.id.contact_button) Button contactButton;
     @InjectView(R.id.scroll_view) ScrollView scrollView;
     @InjectView(R.id.close_img) ImageView closeImage;
+    @InjectView(R.id.back_img) ImageView backImage;
 
 
     //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
@@ -117,6 +119,14 @@ public final class HelpFragment extends InjectedFragment {
             }
         });
 
+        final Activity fragmentActivity = this.getActivity();
+        backImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                fragmentActivity.onBackPressed();
+            }
+        });
+
         if (savedInstanceState != null) {
             final int[] position = savedInstanceState.getIntArray(STATE_SCROLL_POSITION);
             if (position != null) {
@@ -140,19 +150,25 @@ public final class HelpFragment extends InjectedFragment {
                 //cache the root currentNode so we can navigate back to it from anywhere in our flow
                 rootNode = currentNode;
                 layoutForRoot(container);
+                backImage.setVisibility(View.GONE);
                 break;
 
             case "navigation":
             case "dynamic-bookings-navigation":
             case "booking":
                 layoutForNavigation(container);
+
                 menuButtonLayout.setVisibility(View.GONE);
+                backImage.setVisibility(View.VISIBLE);
+
                 ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
                 break;
 
             case "article":
                 layoutForArticle();
+
                 menuButtonLayout.setVisibility(View.GONE);
+                backImage.setVisibility(View.VISIBLE);
                 ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
 
                 contactButton.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +192,9 @@ public final class HelpFragment extends InjectedFragment {
                 break;
 
             default:
+
                 menuButtonLayout.setVisibility(View.GONE);
+                backImage.setVisibility(View.VISIBLE);
                 ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
                 break;
         }
