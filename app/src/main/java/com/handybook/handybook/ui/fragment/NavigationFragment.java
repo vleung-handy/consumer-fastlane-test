@@ -244,8 +244,6 @@ public final class NavigationFragment extends InjectedFragment
 
         items.add(getString(R.string.help));
 
-        //if (userLoggedIn) items.add(getString(R.string.share));
-
         items.add(getString(R.string.promotions));
 
         if (userManager.getCurrentUser() != null) items.add(getString(R.string.log_out));

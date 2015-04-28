@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.simplealertdialog.SimpleAlertDialog;
 
@@ -132,9 +135,38 @@ public abstract class MenuDrawerActivity extends BaseActivity  implements Simple
         final Intent intent = new Intent(this, clazz);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
-        startActivity(intent);
-        this.overridePendingTransition(0, 0);
-        this.finish();
+
+        if (clazz == HelpActivity.class) {
+            final User user = userManager.getCurrentUser();
+            final String authToken = user != null ? user.getAuthToken() : null;
+
+            progressDialog.show();
+
+            dataManager.getHelpInfo(null, authToken, "", new DataManager.Callback<HelpNode>() {
+                @Override
+                public void onSuccess(final HelpNode node) {
+                    if (!allowCallbacks) return;
+                    intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
+                    startActivity(intent);
+                    MenuDrawerActivity.this.overridePendingTransition(0, 0);
+                    MenuDrawerActivity.this.finish();
+
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error) {
+                    if (!allowCallbacks) return;
+                    progressDialog.dismiss();
+                    dataManagerErrorHandler.handleError(MenuDrawerActivity.this, error);
+                }
+            });
+        }
+        else {
+            startActivity(intent);
+            this.overridePendingTransition(0, 0);
+            this.finish();
+        }
     }
     
     public final void setDrawerDisabled(final boolean disableDrawer) {

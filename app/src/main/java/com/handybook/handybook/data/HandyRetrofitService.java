@@ -16,6 +16,7 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.mime.TypedInput;
 
 public interface HandyRetrofitService {
 
@@ -32,6 +33,10 @@ public interface HandyRetrofitService {
     
     @GET("/bookings")
     void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
+
+    @GET("/bookings/{id}")
+    void getBooking(@Path("id") String bookingId, @Query("auth_token") String authToken,
+                    HandyRetrofitCallback cb);
 
     @GET("/bookings/new")
     void getBookingOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
@@ -142,6 +147,21 @@ public interface HandyRetrofitService {
 
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
+
+    @GET("/self_service/node_details")
+    void getHelpInfo(@Query("id") String nodeId,
+                     @Query("auth_token") String authToken,
+                     @Query("booking_id") String bookingId,
+                     HandyRetrofitCallback cb);
+
+    @GET("/self_service/booking_node_details")
+    void getHelpBookingsInfo(@Query("id") String nodeId,
+                             @Query("auth_token") String authToken,
+                             @Query("booking_id") String bookingId,
+                             HandyRetrofitCallback cb);
+
+    @POST("/self_service/create_case")
+    void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
     static final class UserUpdateRequest {
         @SerializedName("user") private User user;

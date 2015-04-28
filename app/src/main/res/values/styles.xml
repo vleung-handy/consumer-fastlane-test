@@ -42,7 +42,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="android:textSize">@dimen/xlarge_text_size</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingLeft">16dp</item>
@@ -62,6 +62,10 @@
     <style name="Button.Green">
         <item name="android:background">@drawable/button_green</item>
         <item name="android:textColor">@drawable/button_text_white</item>
+    </style>
+
+    <style name="Button.Green.Round">
+        <item name="android:background">@drawable/button_green_round</item>
     </style>
 
     <style name="Button.White">
@@ -135,6 +139,13 @@
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/password</item>
         <item name="android:maxLength">100</item>
+    </style>
+
+    <style name="EditText.FirstName">
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:hint">@string/name</item>
+        <item name="android:maxLength">50</item>
     </style>
 
     <style name="EditText.FullName">
@@ -269,6 +280,10 @@
         <item name="fontPath">fonts/CircularStd-Bold.otf</item>
     </style>
 
+    <style name="TextView.Small.Med">
+        <item name="fontPath">fonts/CircularStd-Medium.otf</item>
+    </style>
+
     <style name="TextView.XSmall">
         <item name="android:textSize">@dimen/xsmall_text_size</item>
     </style>
@@ -285,8 +300,8 @@
         <item name="android:textSize">@dimen/large_text_size</item>
     </style>
 
-    <style name="TextView.Large.Bold">
-        <item name="fontPath">fonts/CircularStd-Bold.otf</item>
+    <style name="TextView.Large.Med">
+        <item name="fontPath">fonts/CircularStd-Medium.otf</item>
     </style>
 
     <style name="TextView.XLarge">
@@ -294,6 +309,14 @@
     </style>
 
     <style name="TextView.XLarge.Bold">
+        <item name="fontPath">fonts/CircularStd-Bold.otf</item>
+    </style>
+
+    <style name="TextView.XXLarge">
+        <item name="android:textSize">@dimen/xxlarge_text_size</item>
+    </style>
+
+    <style name="TextView.XXLarge.Bold">
         <item name="fontPath">fonts/CircularStd-Bold.otf</item>
     </style>
 
@@ -412,4 +435,5 @@
         <item name="snap">true</item>
     </style>
 
+    <string name="name">Name</string>
 </resources>

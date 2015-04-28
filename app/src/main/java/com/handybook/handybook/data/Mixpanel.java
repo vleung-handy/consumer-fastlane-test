@@ -191,6 +191,45 @@ public class Mixpanel {
         mixpanel.track("app had been opened", props);
     }
 
+    public void trackEventHelpCenterOpened() {
+        final JSONObject props = new JSONObject();
+        mixpanel.track("ssc_open", props);
+    }
+
+    public void trackEventHelpCenterNavigation(final String location) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "selection", location);
+        mixpanel.track("ssc_navigation_enter", props);
+    }
+
+    public void trackEventHelpCenterLeaf(final String nodeId, final String label) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "node_id", nodeId);
+        addProps(props, "label", label);
+        mixpanel.track("ssc_enter_leaf", props);
+    }
+
+    public void trackEventHelpCenterNeedHelpClicked(final String nodeId, final String label) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "node_id", nodeId);
+        addProps(props, "label", label);
+        mixpanel.track("ssc_still_need_help_clicked", props);
+    }
+
+    public void trackEventHelpCenterSubmitTicket(final String nodeId, final String label) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "node_id", nodeId);
+        addProps(props, "label", label);
+        mixpanel.track("ssc_submit_ticket", props);
+    }
+
+    public void trackEventHelpCenterDeepLinkClicked(final String nodeId, final String label) {
+        final JSONObject props = new JSONObject();
+        addProps(props, "node_id", nodeId);
+        addProps(props, "label", label);
+        mixpanel.track("ssc_deep_link_clicked", props);
+    }
+
     public void trackEventProRate(final ProRateEventType type, final int bookingId,
                                   final String proName, final int rating) {
         final JSONObject props = new JSONObject();

@@ -10,6 +10,7 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
+import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
@@ -20,8 +21,10 @@ import com.squareup.otto.Bus;
 import java.util.Date;
 import java.util.List;
 
+import retrofit.mime.TypedInput;
+
 public abstract class DataManager {
-    public static enum Environment {P, S, Q1, Q2, Q3, Q4}
+    public static enum Environment {P, S, Q1, Q2, Q3, Q4, Q6, D1}
     private Environment env = Environment.S;
     private final Bus bus;
 
@@ -44,6 +47,8 @@ public abstract class DataManager {
                                             String promoCode, Callback<Void> cb);
 
     public abstract void getBookings(User user, Callback<List<Booking>> cb);
+
+    public abstract void getBooking(String bookingId, String authToken, Callback<Booking> cb);
 
     public abstract void getBookingOptions(int serviceId, String userId, Callback<List<BookingOption>> cb);
 
@@ -105,6 +110,14 @@ public abstract class DataManager {
                                     String lastName, Callback<User> cb);
 
     public abstract void requestPasswordReset(String email, Callback<String> cb);
+
+    public abstract void getHelpInfo(String nodeId, String authToken, String bookingId, Callback<HelpNode> cb);
+
+    public abstract void getHelpBookingsInfo(String nodeId, String authToken, String bookingId, Callback<HelpNode> cb);
+
+    public abstract void createHelpCase(TypedInput body,  Callback<Void> cb);
+
+    public abstract String getBaseUrl();
 
     public static interface Callback<T> {
         void onSuccess(T response);

@@ -128,7 +128,7 @@ public final class ProfileFragment extends InjectedFragment {
         text = text.replace("#", amount);
 
         final SpannableString spanText = new SpannableString(text);
-        spanText.setSpan(new TextAppearanceSpan(getActivity(), R.style.TextView_XLarge_Bold),
+        spanText.setSpan(new TextAppearanceSpan(getActivity(), R.style.TextView_XXLarge_Bold),
                 replaceIndex, replaceIndex + amount.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         spanText.setSpan(new CalligraphyTypefaceSpan(TextUtils.get(getActivity(),

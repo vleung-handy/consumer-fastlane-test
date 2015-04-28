@@ -9,19 +9,25 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.LaundryDropInfo;
+import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
@@ -30,13 +36,22 @@ import javax.inject.Inject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends FragmentActivity {
-    private boolean allowCallbacks;
+
+
+    protected boolean allowCallbacks;
     private OnBackPressedListener onBackPressedListener;
     private RateServiceDialogFragment rateServiceDialog;
+    protected ProgressDialog progressDialog;
+    protected Toast toast;
+
+    //Public Properties
+    public boolean getAllowCallbacks() { return this.allowCallbacks; }
 
     @Inject Mixpanel mixpanel;
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
+    @Inject DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject NavigationManager navigationManager;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -59,6 +74,14 @@ public abstract class BaseActivity extends FragmentActivity {
         if (data != null && data.getHost() != null && data.getHost().equals("deeplink.yoz.io")) {
             mixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
         }
+
+        toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setDelay(400);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(getString(R.string.loading));
     }
 
     @Override

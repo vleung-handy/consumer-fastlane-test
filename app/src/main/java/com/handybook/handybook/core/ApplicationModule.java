@@ -29,6 +29,7 @@ import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.HelpActivity;
+import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
@@ -37,6 +38,7 @@ import com.handybook.handybook.ui.activity.ProfileActivity;
 import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
+import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.fragment.AddLaundryDialogFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingCancelOptionsFragment;
@@ -51,6 +53,7 @@ import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
+import com.handybook.handybook.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
@@ -102,7 +105,9 @@ import retrofit.converter.GsonConverter;
         YozioMetaDataCallback.class, OnboardActivity.class, OnboardFragment.class,
         OnboardPageFragment.class, HelpActivity.class, HelpFragment.class,
         RateServiceDialogFragment.class, RateServiceConfirmDialogFragment.class,
-        LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class, AddLaundryDialogFragment.class
+        LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class, AddLaundryDialogFragment.class,
+        HelpContactFragment.class, HelpContactActivity.class,
+        SplashActivity.class
 })
 public final class ApplicationModule {
     private final Context context;
@@ -219,6 +224,12 @@ public final class ApplicationModule {
                                                         final BookingManager bookingManager,
                                                         final Bus bus) {
         return new Mixpanel(context, userManager, bookingManager, bus);
+    }
+
+    @Provides @Singleton final NavigationManager provideNavigationManager(final UserManager userManager,
+                                                                          final DataManager dataManager,
+                                                                          final DataManagerErrorHandler dataManagerErrorHandler) {
+        return new NavigationManager(this.context, userManager, dataManager, dataManagerErrorHandler);
     }
 
     private String getDeviceId() {
