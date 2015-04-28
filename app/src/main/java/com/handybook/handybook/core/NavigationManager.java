@@ -31,6 +31,7 @@ import javax.inject.Inject;
 /**
  * Created by cdavis on 4/20/15.
  */
+
 public final class NavigationManager {
 
     //String consts
@@ -153,19 +154,22 @@ public final class NavigationManager {
 
         final String deepLinkId = data.getHost() + data.getPath();
 
-        //TODO: Stop having reschedule be a special case, setup a generic params + callback handling system
-        if(deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_RESCHEDULE))
+        HashMap<String, String> params = new HashMap<String, String>();
+        if(deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_RESCHEDULE) || deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_CANCEL))
         {
-            openRescheduleActivity(data.getQueryParameter("booking_id"), callingActivity);
+            String bookingId = data.getQueryParameter("booking_id");
+            params.put(PARAM_BOOKING_ID, (bookingId != null ? bookingId : ""));
         }
-        else
-        {
-            navigateToDeepLink(deepLinkId, null); //if we convert data and callbacks to standard form we can standardize this
-        }
+
+        navigateToDeepLink(deepLinkId, params);
     }
 
     ///////
     //Private
+    ///////
+
+    ///////
+    //Web
     ///////
 
     private String constructWebUrlFromNavData(CTANavigationData data)
@@ -210,27 +214,31 @@ public final class NavigationManager {
         startActivity(browserIntent);
     }
 
-    private String actionIdToDeepLinkId(String actionId)
+    private Boolean validateUrl (String webUrl)
     {
-       if(ACTION_ID_TO_DEEP_LINK_ID.containsKey(actionId))
-       {
-           return ACTION_ID_TO_DEEP_LINK_ID.get(actionId);
-       }
-       return "";
-    }
-
-    private Boolean validateDeepLink (String deepLinkId)
-    {
-        if(deepLinkId == null || deepLinkId.isEmpty())
+        if(webUrl == null || webUrl.isEmpty())
         {
             return false;
         }
         return true;
     }
 
-    private Boolean validateUrl (String webUrl)
+    ///////
+    //Deeplinks
+    ///////
+
+    private String actionIdToDeepLinkId(String actionId)
     {
-        if(webUrl == null || webUrl.isEmpty())
+        if(ACTION_ID_TO_DEEP_LINK_ID.containsKey(actionId))
+        {
+            return ACTION_ID_TO_DEEP_LINK_ID.get(actionId);
+        }
+        return "";
+    }
+
+    private Boolean validateDeepLink (String deepLinkId)
+    {
+        if(deepLinkId == null || deepLinkId.isEmpty())
         {
             return false;
         }
@@ -245,25 +253,28 @@ public final class NavigationManager {
             case DEEP_LINK_ID_BOOKINGS:{openActivity(BookingsActivity.class, true);}break;
             case DEEP_LINK_ID_SERVICES:{openServiceCategoriesActivity();}break;
             case DEEP_LINK_ID_PROMOTIONS:{openActivity(PromosActivity.class, true);}break;
+
             case DEEP_LINK_ID_BOOKINGS_RESCHEDULE:
             {
                 String bookingId = params.get(PARAM_BOOKING_ID);
-                openRescheduleActivity(bookingId);
+                openBookingRequiredActivity(bookingId, BookingDateActivity.class);
             }
             break;
+
             case DEEP_LINK_ID_BOOKINGS_CANCEL:
             {
                 String bookingId = params.get(PARAM_BOOKING_ID);
-                openCancelActivity(bookingId);
+                openBookingRequiredActivity(bookingId, BookingCancelOptionsActivity.class);
             }
             break;
+
             default:{openServiceCategoriesActivity();}
         }
     }
 
     private void startActivity(final Intent intent)
     {
-        //Don't clear the stack, will return to help page when activity completes
+        //Don't clear the stack, currently designed to return to entry point on back
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.context.startActivity(intent);
     }
@@ -286,49 +297,7 @@ public final class NavigationManager {
         startActivity(new Intent(this.context, ServiceCategoriesActivity.class));
     }
 
-    //to merge with reschedule activity code, currently copy pasta
-    private void openCancelActivity(final String bookingId) {
-
-        User user = userManager.getCurrentUser();
-        final Context intentContext = this.context;
-        dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
-            new DataManager.Callback<Booking>()
-            {
-                @Override
-                public void onSuccess(final Booking booking)
-                {
-                    dataManager.getPreCancelationInfo(booking.getId(),
-                            new DataManager.Callback<Pair<String, List<String>>>() {
-                                @Override
-                                public void onSuccess(final Pair<String, List<String>> result)
-                                {
-                                    final Intent intent = new Intent(context, BookingCancelOptionsActivity.class);
-                                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
-                                            new ArrayList<>(result.second));
-                                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
-                                    intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
-                                    startActivity(intent);
-                                }
-
-                                @Override
-                                public void onError(final DataManager.DataManagerError error)
-                                {
-                                    dataManagerErrorHandler.handleError(intentContext, error);
-                                    openServiceCategoriesActivity();
-                                }
-                            });
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-                    dataManagerErrorHandler.handleError(intentContext, error);
-                    openServiceCategoriesActivity();
-                }
-            });
-    }
-
-    private void openRescheduleActivity(final String bookingId) {
+    private void openBookingRequiredActivity(final String bookingId, final Class targetClass) {
         User user = userManager.getCurrentUser();
         final Context intentContext = this.context;
         dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
@@ -337,91 +306,66 @@ public final class NavigationManager {
                     @Override
                     public void onSuccess(final Booking booking)
                     {
-                        dataManager.getPreRescheduleInfo(bookingId,
-                                new DataManager.Callback<String>()
-                                {
-                                    @Override
-                                    public void onSuccess(final String notice)
-                                    {
-                                        final Intent intent = new Intent(intentContext, BookingDateActivity.class);
-                                        intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
-                                        intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
-                                        startActivity(intent);
-                                    }
-
-                                    @Override
-                                    public void onError(final DataManager.DataManagerError error)
-                                    {
-                                        dataManagerErrorHandler.handleError(intentContext, error);
-                                        openServiceCategoriesActivity();
-                                    }
-                                }
-                        );
+                        onBookingRetrieved(booking, context, targetClass);
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
-                        dataManagerErrorHandler.handleError(intentContext, error);
-                        openServiceCategoriesActivity();
+                        onBookingDataError(error, intentContext);
                     }
                 });
     }
 
-    //TODO: refactor once we add param+callback support to our other deep links
-    private void openRescheduleActivity(final String bookingId, final BaseActivity callingActivity) {
-        User user = userManager.getCurrentUser();
-
-        dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
-                new DataManager.Callback<Booking>()
-                {
-                    @Override
-                    public void onSuccess(final Booking booking)
-                    {
-                        if (!checkAllowCallbacks(callingActivity)) return;
-
-                        dataManager.getPreRescheduleInfo(bookingId,
-                            new DataManager.Callback<String>()
-                            {
-                                @Override
-                                public void onSuccess(final String notice)
-                                {
-                                    if (!checkAllowCallbacks(callingActivity)) return;
-
-                                    final Intent intent = new Intent(callingActivity, BookingDateActivity.class);
-                                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
-                                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
-                                    startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, callingActivity);
-                                }
-
-                                @Override
-                                public void onError(final DataManager.DataManagerError error)
-                                {
-                                    if (!checkAllowCallbacks(callingActivity)) return;
-                                    dataManagerErrorHandler.handleError(callingActivity, error);
-                                    openServiceCategoriesActivity();
-                                }
-                            }
-                        );
-                    }
-
-                    @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
-                        if (!checkAllowCallbacks(callingActivity)) return;
-                        dataManagerErrorHandler.handleError(callingActivity, error);
-                        openServiceCategoriesActivity();
-                    }
-                });
-    }
-
-    private Boolean checkAllowCallbacks(BaseActivity callingActivity)
+    //Not necessary yet, but we could implement deeplink classes that implement their onBookingRetrieved instead of adding if statements
+    private void onBookingRetrieved(final Booking booking, final Context intentContext, Class targetClass)
     {
-       return callingActivity.getAllowCallbacks();
+        if (targetClass == BookingCancelOptionsActivity.class)
+        {
+            dataManager.getPreCancelationInfo(booking.getId(),
+                    new DataManager.Callback<Pair<String, List<String>>>() {
+                        @Override
+                        public void onSuccess(final Pair<String, List<String>> result)
+                        {
+                            final Intent intent = new Intent(context, BookingCancelOptionsActivity.class);
+                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
+                                    new ArrayList<>(result.second));
+                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
+                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError(final DataManager.DataManagerError error)
+                        {
+                            onBookingDataError(error, intentContext);
+                        }
+                    });
+        }
+        else if (targetClass == BookingDateActivity.class)
+        {
+            dataManager.getPreRescheduleInfo(booking.getId(),
+                    new DataManager.Callback<String>() {
+                        @Override
+                        public void onSuccess(final String notice) {
+                            final Intent intent = new Intent(intentContext, BookingDateActivity.class);
+                            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
+                            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError(final DataManager.DataManagerError error) {
+                            onBookingDataError(error, intentContext);
+                        }
+                    }
+            );
+        }
     }
 
-    private void startActivityForResult(final Intent intent, final int resultCode, Activity callingActivity) {
-        callingActivity.startActivityForResult(intent, resultCode);
+    private void onBookingDataError(final DataManager.DataManagerError error, final Context intentContext)
+    {
+        dataManagerErrorHandler.handleError(intentContext, error);
+        openServiceCategoriesActivity();
     }
-
 }
