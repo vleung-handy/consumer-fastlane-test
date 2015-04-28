@@ -23,7 +23,7 @@ public final class CTANavigationData
     public CTANavigationData(String navigationActionId, String nodeContentWebUrl, String loginToken)
     {
         initData(navigationActionId, nodeContentWebUrl);
-        this.loginToken = loginToken;
+        this.loginToken = (loginToken != null ? loginToken : "");
     }
 
     public CTANavigationData(HelpNode node, String loginToken)

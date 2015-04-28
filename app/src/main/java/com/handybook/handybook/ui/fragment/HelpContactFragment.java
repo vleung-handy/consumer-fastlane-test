@@ -81,7 +81,7 @@ public final class HelpContactFragment extends InjectedFragment {
         closeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                onCloseImageClick();
+                returnToHomeScreen();
             }
         });
 
@@ -139,10 +139,6 @@ public final class HelpContactFragment extends InjectedFragment {
 
             dataManager.createHelpCase(body, createCaseCallback);
         }
-    }
-
-    private void onCloseImageClick() {
-        returnToHomeScreen();
     }
 
     private HashMap<String, String> parseHelpNode(HelpNode node) {
