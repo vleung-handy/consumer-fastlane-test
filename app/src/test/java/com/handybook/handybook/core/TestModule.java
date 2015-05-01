@@ -13,7 +13,6 @@ import com.handybook.handybook.data.MockSecurePreferences;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.ui.activity.BookingsActivity;
-import com.handybook.handybook.ui.activity.BookingsActivityTest;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
@@ -36,7 +35,7 @@ import retrofit.RestAdapter;
 
         injects = {
                 TestBaseApplication.class, BaseDataManager.class, BookingsFragment.class,
-                BookingsActivityTest.class, BookingsActivity.class, NavigationFragment.class
+                BookingsActivity.class, NavigationFragment.class
         })
 
 public class TestModule {
@@ -64,6 +63,11 @@ public class TestModule {
             @Override
             public String getUrl() {
                 return server.getUrl("/").toString();
+            }
+
+            @Override
+            public String getBaseUrl() {
+                return null;
             }
 
             @Override
@@ -129,5 +133,9 @@ public class TestModule {
 
     @Provides final DataManagerErrorHandler provideMockDataManagerErrorHandler() {
         return new BaseDataManagerErrorHandler();
+    }
+
+    @Provides final Context provideContext() {
+        return this.context;
     }
 }
