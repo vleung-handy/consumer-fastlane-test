@@ -33,10 +33,12 @@ import retrofit.mime.TypedInput;
 public final class HelpContactFragment extends InjectedFragment {
 
     public static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
+    public static final String EXTRA_HELP_PATH = "com.handy.handy.EXTRA_HELP_PATH";
     private static final String HELP_CONTACT_FORM_DISPOSITION = "help-contact-form-disposition";
     private static final String HELP_CONTACT_FORM_NAME = "name";
     private static final String HELP_CONTACT_FORM_EMAIL = "email";
     private static final String HELP_CONTACT_FORM_DESCRIPTION = "description";
+    private static final String HELP_CONTACT_FORM_PATH = "path";
     private static final String SALESFORCE_DATA_WRAPPER_KEY = "salesforce_data";
 
     @InjectView(R.id.send_message_button) Button sendMessageButton;
@@ -47,13 +49,15 @@ public final class HelpContactFragment extends InjectedFragment {
     @InjectView(R.id.back_img) ImageView backImage;
 
     private HelpNode associatedNode;
+    private String path;
 
     @Inject UserManager userManager;
 
-    public static HelpContactFragment newInstance(final HelpNode node) {
+    public static HelpContactFragment newInstance(final HelpNode node, final String path) {
         final HelpContactFragment fragment = new HelpContactFragment();
         final Bundle args = new Bundle();
         args.putParcelable(EXTRA_HELP_NODE, node);
+        args.putString(EXTRA_HELP_PATH, path);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,8 +66,9 @@ public final class HelpContactFragment extends InjectedFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         associatedNode = getArguments().getParcelable(EXTRA_HELP_NODE);
-    }
+        path = getArguments().getString(EXTRA_HELP_PATH);
 
+    }
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
@@ -123,6 +128,7 @@ public final class HelpContactFragment extends InjectedFragment {
             contactFormInfo.put(HELP_CONTACT_FORM_NAME, nameText.getText().toString());
             contactFormInfo.put(HELP_CONTACT_FORM_EMAIL, emailText.getText().toString());
             contactFormInfo.put(HELP_CONTACT_FORM_DESCRIPTION, commentText.getText().toString());
+            contactFormInfo.put(HELP_CONTACT_FORM_PATH, path);
 
             JSONObject salesforceWrapper = new JSONObject();
             try {
