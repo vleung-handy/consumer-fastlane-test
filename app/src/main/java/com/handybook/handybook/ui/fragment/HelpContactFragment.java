@@ -3,11 +3,13 @@ package com.handybook.handybook.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
@@ -47,6 +49,10 @@ public final class HelpContactFragment extends InjectedFragment {
     @InjectView(R.id.comment_text) BasicInputTextView commentText;
     @InjectView(R.id.close_img) ImageView closeImage;
     @InjectView(R.id.back_img) ImageView backImage;
+
+    @InjectView(R.id.name_layout) ViewGroup nameLayout;
+    @InjectView(R.id.email_layout) ViewGroup emailLayout;
+
 
     private HelpNode associatedNode;
     private String path;
@@ -109,6 +115,15 @@ public final class HelpContactFragment extends InjectedFragment {
         {
             this.nameText.setText(this.userManager.getCurrentUser().getFullName());
             this.emailText.setText(this.userManager.getCurrentUser().getEmail());
+
+            //Hide the name and email fields if they are prepopulated so the user can not alter them
+                //Validating them off prepopulated data, not hiding if the prepop data would prevent validation
+            if(nameText.validate()) {
+                this.nameLayout.setVisibility(View.GONE);
+            }
+            if(emailText.validate()) {
+                this.emailLayout.setVisibility(View.GONE);
+            }
         }
     }
 
