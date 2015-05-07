@@ -42,11 +42,13 @@ public final class HelpFragment extends InjectedFragment {
     private static String HELP_CONTACT_FORM_NODE_TYPE = "help-contact-form";
     static final String EXTRA_BOOKING_ID = "com.handy.handy.EXTRA_BOOKING_ID";
     static final String EXTRA_LOGIN_TOKEN = "com.handy.handy.EXTRA_LOGIN_TOKEN";
+    static final String EXTRA_PATH = "com.handy.handy.EXTRA_PATH";
 
     private HelpNode currentNode;
     private static HelpNode rootNode;
     private String currentBookingId;
     private String currentLoginToken;
+    private String path;
 
     @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
     @InjectView(R.id.nav_text) TextView navText;
@@ -67,12 +69,14 @@ public final class HelpFragment extends InjectedFragment {
 
     public static HelpFragment newInstance(final HelpNode node,
                                            final String bookingId,
-                                           final String loginToken) {
+                                           final String loginToken,
+                                           final String path) {
         final HelpFragment fragment = new HelpFragment();
         final Bundle args = new Bundle();
         args.putParcelable(EXTRA_HELP_NODE, node);
         args.putString(EXTRA_BOOKING_ID, bookingId);
         args.putString(EXTRA_LOGIN_TOKEN, loginToken);
+        args.putString(EXTRA_PATH, path);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,6 +89,8 @@ public final class HelpFragment extends InjectedFragment {
         currentNode = getArguments().getParcelable(EXTRA_HELP_NODE);
         currentBookingId = getArguments().getString(EXTRA_BOOKING_ID);
         currentLoginToken = getArguments().getString(EXTRA_LOGIN_TOKEN);
+        path = getArguments().getString(EXTRA_PATH, "");
+
         if (savedInstanceState == null) {
             switch (currentNode.getType()) {
                 case "root":
@@ -182,6 +188,7 @@ public final class HelpFragment extends InjectedFragment {
                             if(n.getType().equals(HELP_CONTACT_FORM_NODE_TYPE))
                             {
                                 intent.putExtra(HelpContactActivity.EXTRA_HELP_NODE, n);
+                                intent.putExtra(HelpContactActivity.EXTRA_HELP_PATH, path);
                                 break;
                             }
                         }
@@ -384,6 +391,10 @@ public final class HelpFragment extends InjectedFragment {
             intent.putExtra(HelpActivity.EXTRA_HELP_NODE, helpNode);
             intent.putExtra(HelpActivity.EXTRA_BOOKING_ID, currentBookingId);
             intent.putExtra(HelpActivity.EXTRA_LOGIN_TOKEN, currentLoginToken);
+
+            intent.putExtra(HelpActivity.EXTRA_PATH, path.length() > 0 ? path += " -> "
+                    + helpNode.getLabel() : helpNode.getLabel());
+
             startActivity(intent);
 
             progressDialog.dismiss();

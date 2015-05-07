@@ -11,6 +11,7 @@ import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
+import com.handybook.handybook.data.HandyEndpoint;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
@@ -119,12 +120,12 @@ public final class ApplicationModule {
                 .getProperties(context, "config.properties");
     }
 
-    @Provides @Singleton final HandyRetrofitEndpoint provideHandyEnpoint() {
+    @Provides @Singleton final HandyEndpoint provideHandyEnpoint() {
         return new HandyRetrofitEndpoint(context);
     }
 
-    @Provides @Singleton final HandyRetrofitService provideHandyService(
-            final HandyRetrofitEndpoint endpoint, final UserManager userManager) {
+    @Provides @Singleton final HandyRetrofitService provideHandyService(final HandyEndpoint endpoint,
+                                                                        final UserManager userManager) {
 
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
@@ -182,7 +183,7 @@ public final class ApplicationModule {
     }
 
     @Provides @Singleton final DataManager provideDataManager(final HandyRetrofitService service,
-                                                              final HandyRetrofitEndpoint endpoint,
+                                                              final HandyEndpoint endpoint,
                                                               final Bus bus,
                                                               final SecurePreferences prefs) {
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);

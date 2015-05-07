@@ -36,11 +36,11 @@ import retrofit.mime.TypedInput;
 
 public final class BaseDataManager extends DataManager {
     private final HandyRetrofitService service;
-    private final HandyRetrofitEndpoint endpoint;
+    private final HandyEndpoint endpoint;
     private final SecurePreferences prefs;
 
     @Inject
-    public BaseDataManager(final HandyRetrofitService service, final HandyRetrofitEndpoint endpoint,
+    public BaseDataManager(final HandyRetrofitService service, final HandyEndpoint endpoint,
                     final Bus bus, final SecurePreferences prefs) {
         super(bus);
         this.service = service;
@@ -53,23 +53,23 @@ public final class BaseDataManager extends DataManager {
         super.setEnvironment(env, notify);
         switch (env) {
             case P:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.P);
+                endpoint.setEnv(HandyEndpoint.Environment.P);
                 break;
 
             case Q1:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q1);
+                endpoint.setEnv(HandyEndpoint.Environment.Q1);
                 break;
 
             case Q2:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q2);
+                endpoint.setEnv(HandyEndpoint.Environment.Q2);
                 break;
 
             case Q3:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q3);
+                endpoint.setEnv(HandyEndpoint.Environment.Q3);
                 break;
 
             case Q4:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q4);
+                endpoint.setEnv(HandyEndpoint.Environment.Q4);
                 break;
 
             case Q6:
@@ -81,7 +81,7 @@ public final class BaseDataManager extends DataManager {
                 break;
 
             default:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.S);
+                endpoint.setEnv(HandyEndpoint.Environment.S);
         }
     }
 
