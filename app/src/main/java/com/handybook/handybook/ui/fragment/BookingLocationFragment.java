@@ -270,8 +270,8 @@ public final class BookingLocationFragment extends BookingFlowFragment
         final User user = userManager.getCurrentUser();
         if (user != null) userId = user.getId();
 
-        dataManager.getBookingOptions(request.getServiceId(), userId,
-                new DataManager.Callback<List<BookingOption>>() {
+        dataManager.getQuoteOptions(request.getServiceId(), userId,
+                new DataManager.Callback<List<BookingOption>> () {
             @Override
             public void onSuccess(final List<BookingOption> options) {
                 if (!allowCallbacks) return;

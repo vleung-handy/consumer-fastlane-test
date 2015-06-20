@@ -43,6 +43,8 @@ public abstract class DataManager {
 
     public abstract void getServices(CacheResponse<List<Service>> cache, Callback<List<Service>> cb);
 
+    public abstract void getQuoteOptions(int serviceId, String userId,  Callback<List<BookingOption>> cb);
+
     public abstract void validateBookingZip(int serviceId, String zipCode, String userId, String authToken,
                                             String promoCode, Callback<Void> cb);
 

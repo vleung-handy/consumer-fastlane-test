@@ -26,6 +26,10 @@ public interface HandyRetrofitService {
     @GET("/services")
     void getServices(HandyRetrofitCallback cb);
 
+    @GET("/quotes/new")
+    void getQuoteOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
+                           HandyRetrofitCallback cb);
+    
     @GET("/bookings/zipcode_validation")
     void validateBookingZip(@Query("service_id") int serviceId, @Query("zipcode") String zipCode,
                             @Query("user_id") String userId, @Query("auth_token") String authToken,
