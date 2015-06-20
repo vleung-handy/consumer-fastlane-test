@@ -95,7 +95,7 @@ public class BookingFlowFragment extends InjectedFragment {
 
         disableInputs();
         progressDialog.show();
-        dataManager.getBookingQuote(request, bookingQuoteCallback);
+        dataManager.createQuote(request, bookingQuoteCallback);
     }
 
     protected void rescheduleBooking(final Booking booking, final Date date, final boolean rescheduleAll) {

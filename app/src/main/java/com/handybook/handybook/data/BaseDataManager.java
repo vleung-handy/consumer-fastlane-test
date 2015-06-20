@@ -165,7 +165,7 @@ public final class BaseDataManager extends DataManager {
                                 if ((list = servicesMap.get(service.getParentId())) != null)
                                     list.add(service);
                                 else {
-                                    list = new ArrayList<Service>();
+                                    list = new ArrayList<>();
                                     list.add(service);
                                     servicesMap.put(service.getParentId(), list);
                                 }
@@ -223,6 +223,16 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public void createQuote(final BookingRequest bookingRequest, final Callback<BookingQuote> cb) {
+        service.createQuote(bookingRequest, new HandyRetrofitCallback(cb) {
+                    @Override
+                    void success(final JSONObject response) {
+                        cb.onSuccess(BookingQuote.fromJson(response.toString()));
+                    }
+                });
+    }
+
+    @Override
     public final void validateBookingZip(final int serviceId, final String zipCode, final String userId,
                                          final String authToken, final String promoCode,
                                          final Callback<Void> cb) {
@@ -262,38 +272,6 @@ public final class BaseDataManager extends DataManager {
             @Override
             void success(final JSONObject response) {
                 cb.onSuccess(Booking.fromJson(response.optJSONObject("booking").toString()));
-            }
-        });
-    }
-
-    @Override
-    public final void getBookingOptions(final int serviceId, final String userId,
-                                        final Callback<List<BookingOption>> cb) {
-        service.getBookingOptions(serviceId, userId, new HandyRetrofitCallback(cb) {
-            @Override
-            void success(final JSONObject response) {
-                final JSONArray array = response.optJSONArray("booking_options");
-
-                if (array == null) {
-                    cb.onError(new DataManagerError(Type.SERVER));
-                    return;
-                }
-
-                final Gson gson = new Gson();
-                final List<BookingOption> bookingOptions = gson.fromJson(array.toString(),
-                        new TypeToken<List<BookingOption>>(){}.getType());
-                cb.onSuccess(bookingOptions);
-            }
-        });
-    }
-
-    @Override
-    public void getBookingQuote(final BookingRequest bookingRequest, final Callback<BookingQuote> cb) {
-        service.createBooking(new HandyRetrofitService.BookingCreateRequest(bookingRequest),
-                new HandyRetrofitCallback(cb) {
-            @Override
-            void success(final JSONObject response) {
-                cb.onSuccess(BookingQuote.fromJson(response.toString()));
             }
         });
     }

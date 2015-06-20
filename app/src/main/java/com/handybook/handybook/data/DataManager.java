@@ -45,16 +45,14 @@ public abstract class DataManager {
 
     public abstract void getQuoteOptions(int serviceId, String userId,  Callback<List<BookingOption>> cb);
 
+    public abstract void createQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
+
     public abstract void validateBookingZip(int serviceId, String zipCode, String userId, String authToken,
                                             String promoCode, Callback<Void> cb);
 
     public abstract void getBookings(User user, Callback<List<Booking>> cb);
 
     public abstract void getBooking(String bookingId, String authToken, Callback<Booking> cb);
-
-    public abstract void getBookingOptions(int serviceId, String userId, Callback<List<BookingOption>> cb);
-
-    public abstract void getBookingQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
 
     public abstract void updateBookingDate(int bookingId, Date date,
                                            Callback<BookingQuote> cb);

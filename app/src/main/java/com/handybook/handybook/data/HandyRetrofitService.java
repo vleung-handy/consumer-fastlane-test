@@ -29,7 +29,10 @@ public interface HandyRetrofitService {
     @GET("/quotes/new")
     void getQuoteOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
                            HandyRetrofitCallback cb);
-    
+
+    @POST("/quotes")
+    void createQuote(@Body BookingRequest req, HandyRetrofitCallback cb);
+
     @GET("/bookings/zipcode_validation")
     void validateBookingZip(@Query("service_id") int serviceId, @Query("zipcode") String zipCode,
                             @Query("user_id") String userId, @Query("auth_token") String authToken,
@@ -41,13 +44,6 @@ public interface HandyRetrofitService {
     @GET("/bookings/{id}")
     void getBooking(@Path("id") String bookingId, @Query("auth_token") String authToken,
                     HandyRetrofitCallback cb);
-
-    @GET("/bookings/new")
-    void getBookingOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
-                           HandyRetrofitCallback cb);
-
-    @POST("/bookings")
-    void createBooking(@Body BookingCreateRequest req, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/set_new_date")
@@ -174,14 +170,6 @@ public interface HandyRetrofitService {
         UserUpdateRequest(final User user, final String authToken) {
             this.user = user;
             this.authToken = authToken;
-        }
-    }
-
-    static final class BookingCreateRequest {
-        @SerializedName("booking") private BookingRequest bookingRequest;
-
-        BookingCreateRequest(final BookingRequest bookingRequest) {
-            this.bookingRequest = bookingRequest;
         }
     }
 
