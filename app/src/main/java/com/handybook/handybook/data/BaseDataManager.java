@@ -233,6 +233,17 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public void updateQuoteDate(final int quoteId, final Date date,
+                                  final Callback<BookingQuote> cb) {
+        service.updateQuoteDate(quoteId, date, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(BookingQuote.fromJson(response.toString()));
+            }
+        });
+    }
+
+    @Override
     public final void validateBookingZip(final int serviceId, final String zipCode, final String userId,
                                          final String authToken, final String promoCode,
                                          final Callback<Void> cb) {
@@ -272,17 +283,6 @@ public final class BaseDataManager extends DataManager {
             @Override
             void success(final JSONObject response) {
                 cb.onSuccess(Booking.fromJson(response.optJSONObject("booking").toString()));
-            }
-        });
-    }
-
-    @Override
-    public void updateBookingDate(final int bookingId, final Date date,
-                                  final Callback<BookingQuote> cb) {
-        service.updateBookingDate(bookingId, date, new HandyRetrofitCallback(cb) {
-            @Override
-            void success(final JSONObject response) {
-                cb.onSuccess(BookingQuote.fromJson(response.toString()));
             }
         });
     }

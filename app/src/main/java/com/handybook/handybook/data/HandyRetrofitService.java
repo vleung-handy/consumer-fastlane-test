@@ -33,6 +33,11 @@ public interface HandyRetrofitService {
     @POST("/quotes")
     void createQuote(@Body BookingRequest req, HandyRetrofitCallback cb);
 
+    @FormUrlEncoded
+    @POST("/quotes/{quote}/select_new_time")
+    void updateQuoteDate(@Path("quote") int quoteId, @Field("date_start") Date date,
+                           HandyRetrofitCallback cb);
+
     @GET("/bookings/zipcode_validation")
     void validateBookingZip(@Query("service_id") int serviceId, @Query("zipcode") String zipCode,
                             @Query("user_id") String userId, @Query("auth_token") String authToken,
@@ -44,11 +49,6 @@ public interface HandyRetrofitService {
     @GET("/bookings/{id}")
     void getBooking(@Path("id") String bookingId, @Query("auth_token") String authToken,
                     HandyRetrofitCallback cb);
-
-    @FormUrlEncoded
-    @POST("/bookings/{booking}/set_new_date")
-    void updateBookingDate(@Path("booking") int bookingId, @Field("date_start") Date date,
-                           HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/set_coupon")

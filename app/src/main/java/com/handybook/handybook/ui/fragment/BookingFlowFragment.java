@@ -74,7 +74,7 @@ public class BookingFlowFragment extends InjectedFragment {
             progressDialog.show();
 
             final BookingQuote quote = bookingManager.getCurrentQuote();
-            dataManager.updateBookingDate(quote.getBookingId(), quote.getStartDate(),
+            dataManager.updateQuoteDate(quote.getBookingId(), quote.getStartDate(),
                     bookingQuoteUpdateCallback);
             return;
         }
