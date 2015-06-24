@@ -185,7 +185,7 @@ public class BookingFlowFragment extends InjectedFragment {
         transaction.setBookingId(quote.getBookingId());
         transaction.setHours(quote.getHours());
         transaction.setStartDate(quote.getStartDate());
-        transaction.setZipCode(quote.getZipCode());
+        transaction.setZipCode(quote.getAddress().getZip());
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
         transaction.setPromoApplied(bookingManager.getPromoTabCoupon());
@@ -193,6 +193,7 @@ public class BookingFlowFragment extends InjectedFragment {
         if (user != null) {
             transaction.setEmail(user.getEmail());
             transaction.setAuthToken(user.getAuthToken());
+            transaction.setUserId(user.getId());
         }
         else transaction.setEmail(request.getEmail());
 

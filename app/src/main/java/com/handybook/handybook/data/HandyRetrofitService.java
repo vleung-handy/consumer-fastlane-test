@@ -38,6 +38,9 @@ public interface HandyRetrofitService {
     void updateQuoteDate(@Path("quote") int quoteId, @Field("date_start") Date date,
                            HandyRetrofitCallback cb);
 
+    @POST("/quotes/{quote}/create_booking")
+    void createBooking(@Path("quote") int quoteId, @Body BookingTransaction req, HandyRetrofitCallback cb);
+
     @GET("/bookings/zipcode_validation")
     void validateBookingZip(@Query("service_id") int serviceId, @Query("zipcode") String zipCode,
                             @Query("user_id") String userId, @Query("auth_token") String authToken,
@@ -70,9 +73,6 @@ public interface HandyRetrofitService {
     @POST("/bookings/{booking}/rating_flow")
     void submitProRatingDetails(@Path("booking") int bookingId, @Body RateProRequest req,
                         HandyRetrofitCallback cb);
-
-    @POST("/transactions")
-    void completeBooking(@Body BookingTransaction req, HandyRetrofitCallback cb);
 
     @POST("/bookings/{booking}/after_booking_update")
     void addBookingPostInfo(@Path("booking") int bookingId, @Body BookingPostInfo info,
