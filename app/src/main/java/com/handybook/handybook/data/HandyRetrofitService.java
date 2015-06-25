@@ -38,6 +38,15 @@ public interface HandyRetrofitService {
     void updateQuoteDate(@Path("quote") int quoteId, @Field("date_start") Date date,
                            HandyRetrofitCallback cb);
 
+    @FormUrlEncoded
+    @POST("/quotes/{quote}/set_coupon")
+    void applyPromo(@Field("coupon") String promoCode, @Path("quote") int quoteId,
+                    @Field("user_id") String userId, @Field("email") String email,
+                    @Field("auth_token") String authToken, HandyRetrofitCallback cb);
+
+    @POST("/quotes/{quote}/remove_coupon")
+    void removePromo(@Path("quote") int quoteId, HandyRetrofitCallback cb);
+
     @POST("/quotes/{quote}/create_booking")
     void createBooking(@Path("quote") int quoteId, @Body BookingTransaction req, HandyRetrofitCallback cb);
 
@@ -52,15 +61,6 @@ public interface HandyRetrofitService {
     @GET("/bookings/{id}")
     void getBooking(@Path("id") String bookingId, @Query("auth_token") String authToken,
                     HandyRetrofitCallback cb);
-
-    @FormUrlEncoded
-    @POST("/bookings/{booking}/set_coupon")
-    void applyPromo(@Field("coupon") String promoCode, @Path("booking") int bookingId,
-                    @Field("user_id") String userId, @Field("email") String email,
-                    @Field("auth_token") String authToken, HandyRetrofitCallback cb);
-
-    @POST("/bookings/{booking}/remove_coupon")
-    void removePromo(@Path("booking") int bookingId, HandyRetrofitCallback cb);
 
     @GET("/bookings/promo_prebooking")
     void getPreBookingPromo(@Query("code") String promoCode, HandyRetrofitCallback cb);

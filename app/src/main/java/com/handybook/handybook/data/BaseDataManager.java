@@ -244,6 +244,28 @@ public final class BaseDataManager extends DataManager {
     }
 
     @Override
+    public void applyPromo(final String promoCode, final int quoteId, final String userId,
+                           final String email, final String authToken, final Callback<BookingCoupon> cb) {
+        service.applyPromo(promoCode, quoteId, userId, email, authToken,
+                new HandyRetrofitCallback(cb) {
+                    @Override
+                    void success(final JSONObject response) {
+                        cb.onSuccess(BookingCoupon.fromJson(response.toString()));
+                    }
+                });
+    }
+
+    @Override
+    public void removePromo(final int quoteId, final Callback<BookingCoupon> cb) {
+        service.removePromo(quoteId, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response) {
+                cb.onSuccess(BookingCoupon.fromJson(response.toString()));
+            }
+        });
+    }
+
+    @Override
     public void createBooking(final BookingTransaction bookingTransaction,
                                 final Callback<BookingCompleteTransaction> cb) {
         service.createBooking(bookingTransaction.getBookingId(), bookingTransaction, new HandyRetrofitCallback(cb) {
@@ -294,28 +316,6 @@ public final class BaseDataManager extends DataManager {
             @Override
             void success(final JSONObject response) {
                 cb.onSuccess(Booking.fromJson(response.optJSONObject("booking").toString()));
-            }
-        });
-    }
-
-    @Override
-    public void applyPromo(final String promoCode, final int bookingId, final String userId,
-                           final String email, final String authToken, final Callback<BookingCoupon> cb) {
-        service.applyPromo(promoCode, bookingId, userId, email, authToken,
-                new HandyRetrofitCallback(cb) {
-            @Override
-            void success(final JSONObject response) {
-                cb.onSuccess(BookingCoupon.fromJson(response.toString()));
-            }
-        });
-    }
-
-    @Override
-    public void removePromo(final int bookingId, final Callback<BookingCoupon> cb) {
-        service.removePromo(bookingId, new HandyRetrofitCallback(cb) {
-            @Override
-            void success(final JSONObject response) {
-                cb.onSuccess(BookingCoupon.fromJson(response.toString()));
             }
         });
     }

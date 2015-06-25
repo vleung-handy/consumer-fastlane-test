@@ -50,6 +50,11 @@ public abstract class DataManager {
     public abstract void updateQuoteDate(int quoteId, Date date,
                                            Callback<BookingQuote> cb);
 
+    public abstract void applyPromo(String promoCode, int quoteId, String userId, String email,
+                                    String authToken, Callback<BookingCoupon> cb);
+
+    public abstract void removePromo(int quoteId, Callback<BookingCoupon> cb);
+
     public abstract void createBooking(BookingTransaction bookingTransaction,
                                          Callback<BookingCompleteTransaction> cb);
 
@@ -59,11 +64,6 @@ public abstract class DataManager {
     public abstract void getBookings(User user, Callback<List<Booking>> cb);
 
     public abstract void getBooking(String bookingId, String authToken, Callback<Booking> cb);
-
-    public abstract void applyPromo(String promoCode, int bookingId, String userId, String email,
-                                    String authToken, Callback<BookingCoupon> cb);
-
-    public abstract void removePromo(int bookingId, Callback<BookingCoupon> cb);
 
     public abstract void getPreBookingPromo(String promoCode, Callback<PromoCode> cb);
 
