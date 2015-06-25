@@ -329,6 +329,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                     mixpanel.trackEventBookingMade();
                     if (!allowCallbacks) return;
 
+                    bookingManager.getCurrentTransaction().setBookingId(trans.getId());
+
                     boolean isNewUser = false;
 
                     if (userManager.getCurrentUser() == null) {

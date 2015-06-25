@@ -11,7 +11,16 @@ import com.google.gson.annotations.SerializedName;
 import java.lang.reflect.Type;
 
 public final class BookingCompleteTransaction {
+    @SerializedName("id") private int id;
     @SerializedName("user_info") private User user;
+
+    public final int getId() {
+        return id;
+    }
+
+    public final void setId(final int id) {
+        this.id = id;
+    }
 
     public final User getUser() {
         return user;
@@ -40,6 +49,7 @@ public final class BookingCompleteTransaction {
         public final JsonElement serialize(final BookingCompleteTransaction value, final Type type,
                                            final JsonSerializationContext context) {
             final JsonObject jsonObj = new JsonObject();
+            jsonObj.add("id", context.serialize(value.getId()));
             jsonObj.add("user_info", context.serialize(value.getUser()));
             return jsonObj;
         }
