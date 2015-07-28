@@ -43,6 +43,21 @@ public abstract class DataManager {
 
     public abstract void getServices(CacheResponse<List<Service>> cache, Callback<List<Service>> cb);
 
+    public abstract void getQuoteOptions(int serviceId, String userId,  Callback<List<BookingOption>> cb);
+
+    public abstract void createQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
+
+    public abstract void updateQuoteDate(int quoteId, Date date,
+                                           Callback<BookingQuote> cb);
+
+    public abstract void applyPromo(String promoCode, int quoteId, String userId, String email,
+                                    String authToken, Callback<BookingCoupon> cb);
+
+    public abstract void removePromo(int quoteId, Callback<BookingCoupon> cb);
+
+    public abstract void createBooking(BookingTransaction bookingTransaction,
+                                         Callback<BookingCompleteTransaction> cb);
+
     public abstract void validateBookingZip(int serviceId, String zipCode, String userId, String authToken,
                                             String promoCode, Callback<Void> cb);
 
@@ -50,22 +65,7 @@ public abstract class DataManager {
 
     public abstract void getBooking(String bookingId, String authToken, Callback<Booking> cb);
 
-    public abstract void getBookingOptions(int serviceId, String userId, Callback<List<BookingOption>> cb);
-
-    public abstract void getBookingQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
-
-    public abstract void updateBookingDate(int bookingId, Date date,
-                                           Callback<BookingQuote> cb);
-
-    public abstract void applyPromo(String promoCode, int bookingId, String userId, String email,
-                                    String authToken, Callback<BookingCoupon> cb);
-
-    public abstract void removePromo(int bookingId, Callback<BookingCoupon> cb);
-
     public abstract void getPreBookingPromo(String promoCode, Callback<PromoCode> cb);
-
-    public abstract void completeBooking(BookingTransaction bookingTransaction,
-                                         Callback<BookingCompleteTransaction> cb);
 
     public abstract void getPreRescheduleInfo(String bookingId, Callback<String> cb);
 

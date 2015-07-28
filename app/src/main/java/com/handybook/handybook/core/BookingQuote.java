@@ -27,7 +27,7 @@ public final class BookingQuote extends Observable {
     @SerializedName("user_id") private String userId;
     @SerializedName("hrs") private float hours;
     @SerializedName("date_start") private Date startDate;
-    @SerializedName("zipcode") private String zipCode;
+    @SerializedName("address") private Address address;
     @SerializedName("currency_char") private String currencyChar;
     @SerializedName("currency_suffix") private String currencySuffix;
     @SerializedName("hourly_amount") private float hourlyAmount;
@@ -85,12 +85,12 @@ public final class BookingQuote extends Observable {
         triggerObservers();
     }
 
-    public final String getZipCode() {
-        return zipCode;
+    public final Address getAddress() {
+        return address;
     }
 
-    final void setZipCode(final String zipCode) {
-        this.zipCode = zipCode;
+    final void setAddress(final Address address) {
+        this.address = address;
         triggerObservers();
     }
 
@@ -298,7 +298,7 @@ public final class BookingQuote extends Observable {
             jsonObj.add("user_id", context.serialize(value.getUserId()));
             jsonObj.add("hrs", context.serialize(value.getHours()));
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
-            jsonObj.add("zipcode", context.serialize(value.getZipCode()));
+            jsonObj.add("address", context.serialize(value.getAddress()));
             jsonObj.add("currency_char", context.serialize(value.getCurrencyChar()));
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("phone_country_prefix", context.serialize(value.getPhonePrefix()));
@@ -326,6 +326,14 @@ public final class BookingQuote extends Observable {
 
         public final float getPrice() {
             return price;
+        }
+    }
+
+    public static final class Address {
+        @SerializedName("zipcode") private String zip;
+
+        public final String getZip() {
+            return zip;
         }
     }
 }

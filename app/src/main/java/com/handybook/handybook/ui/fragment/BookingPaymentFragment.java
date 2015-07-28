@@ -321,13 +321,15 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     };
 
     private void completeBooking() {
-        dataManager.completeBooking(bookingManager.getCurrentTransaction(),
+        dataManager.createBooking(bookingManager.getCurrentTransaction(),
             new DataManager.Callback<BookingCompleteTransaction>() {
                 @Override
                 public void onSuccess(final BookingCompleteTransaction trans) {
                     mixpanel.trackEventSubmitPayment();
                     mixpanel.trackEventBookingMade();
                     if (!allowCallbacks) return;
+
+                    bookingManager.getCurrentTransaction().setBookingId(trans.getId());
 
                     boolean isNewUser = false;
 

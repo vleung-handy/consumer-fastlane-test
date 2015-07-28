@@ -74,7 +74,7 @@ public class BookingFlowFragment extends InjectedFragment {
             progressDialog.show();
 
             final BookingQuote quote = bookingManager.getCurrentQuote();
-            dataManager.updateBookingDate(quote.getBookingId(), quote.getStartDate(),
+            dataManager.updateQuoteDate(quote.getBookingId(), quote.getStartDate(),
                     bookingQuoteUpdateCallback);
             return;
         }
@@ -95,7 +95,7 @@ public class BookingFlowFragment extends InjectedFragment {
 
         disableInputs();
         progressDialog.show();
-        dataManager.getBookingQuote(request, bookingQuoteCallback);
+        dataManager.createQuote(request, bookingQuoteCallback);
     }
 
     protected void rescheduleBooking(final Booking booking, final Date date, final boolean rescheduleAll) {
@@ -185,7 +185,7 @@ public class BookingFlowFragment extends InjectedFragment {
         transaction.setBookingId(quote.getBookingId());
         transaction.setHours(quote.getHours());
         transaction.setStartDate(quote.getStartDate());
-        transaction.setZipCode(quote.getZipCode());
+        transaction.setZipCode(quote.getAddress().getZip());
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
         transaction.setPromoApplied(bookingManager.getPromoTabCoupon());
@@ -193,6 +193,7 @@ public class BookingFlowFragment extends InjectedFragment {
         if (user != null) {
             transaction.setEmail(user.getEmail());
             transaction.setAuthToken(user.getAuthToken());
+            transaction.setUserId(user.getId());
         }
         else transaction.setEmail(request.getEmail());
 

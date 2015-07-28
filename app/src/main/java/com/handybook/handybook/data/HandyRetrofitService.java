@@ -26,6 +26,30 @@ public interface HandyRetrofitService {
     @GET("/services")
     void getServices(HandyRetrofitCallback cb);
 
+    @GET("/quotes/new")
+    void getQuoteOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
+                           HandyRetrofitCallback cb);
+
+    @POST("/quotes")
+    void createQuote(@Body BookingRequest req, HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
+    @POST("/quotes/{quote}/select_new_time")
+    void updateQuoteDate(@Path("quote") int quoteId, @Field("date_start") Date date,
+                           HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
+    @POST("/quotes/{quote}/set_coupon")
+    void applyPromo(@Field("coupon") String promoCode, @Path("quote") int quoteId,
+                    @Field("user_id") String userId, @Field("email") String email,
+                    @Field("auth_token") String authToken, HandyRetrofitCallback cb);
+
+    @POST("/quotes/{quote}/remove_coupon")
+    void removePromo(@Path("quote") int quoteId, HandyRetrofitCallback cb);
+
+    @POST("/quotes/{quote}/create_booking")
+    void createBooking(@Path("quote") int quoteId, @Body BookingTransaction req, HandyRetrofitCallback cb);
+
     @GET("/bookings/zipcode_validation")
     void validateBookingZip(@Query("service_id") int serviceId, @Query("zipcode") String zipCode,
                             @Query("user_id") String userId, @Query("auth_token") String authToken,
@@ -38,27 +62,6 @@ public interface HandyRetrofitService {
     void getBooking(@Path("id") String bookingId, @Query("auth_token") String authToken,
                     HandyRetrofitCallback cb);
 
-    @GET("/bookings/new")
-    void getBookingOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
-                           HandyRetrofitCallback cb);
-
-    @POST("/bookings")
-    void createBooking(@Body BookingCreateRequest req, HandyRetrofitCallback cb);
-
-    @FormUrlEncoded
-    @POST("/bookings/{booking}/set_new_date")
-    void updateBookingDate(@Path("booking") int bookingId, @Field("date_start") Date date,
-                           HandyRetrofitCallback cb);
-
-    @FormUrlEncoded
-    @POST("/bookings/{booking}/set_coupon")
-    void applyPromo(@Field("coupon") String promoCode, @Path("booking") int bookingId,
-                    @Field("user_id") String userId, @Field("email") String email,
-                    @Field("auth_token") String authToken, HandyRetrofitCallback cb);
-
-    @POST("/bookings/{booking}/remove_coupon")
-    void removePromo(@Path("booking") int bookingId, HandyRetrofitCallback cb);
-
     @GET("/bookings/promo_prebooking")
     void getPreBookingPromo(@Query("code") String promoCode, HandyRetrofitCallback cb);
 
@@ -70,9 +73,6 @@ public interface HandyRetrofitService {
     @POST("/bookings/{booking}/rating_flow")
     void submitProRatingDetails(@Path("booking") int bookingId, @Body RateProRequest req,
                         HandyRetrofitCallback cb);
-
-    @POST("/transactions")
-    void completeBooking(@Body BookingTransaction req, HandyRetrofitCallback cb);
 
     @POST("/bookings/{booking}/after_booking_update")
     void addBookingPostInfo(@Path("booking") int bookingId, @Body BookingPostInfo info,
@@ -170,14 +170,6 @@ public interface HandyRetrofitService {
         UserUpdateRequest(final User user, final String authToken) {
             this.user = user;
             this.authToken = authToken;
-        }
-    }
-
-    static final class BookingCreateRequest {
-        @SerializedName("booking") private BookingRequest bookingRequest;
-
-        BookingCreateRequest(final BookingRequest bookingRequest) {
-            this.bookingRequest = bookingRequest;
         }
     }
 
