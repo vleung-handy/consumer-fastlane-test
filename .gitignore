@@ -1,7 +1,6 @@
 ### Custom Rules
 app/src/main/res/values/com_crashlytics_export_strings.xml
 app/src/main/assets/crashlytics-build.properties
-*.iml
 
 
 ### Generic Android
@@ -74,9 +73,6 @@ proguard/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
-
-# JIRA plugin
-atlassian-ide-plugin.xml
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
