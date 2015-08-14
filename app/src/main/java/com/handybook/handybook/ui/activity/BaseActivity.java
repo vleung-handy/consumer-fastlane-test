@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
@@ -57,7 +56,6 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Crashlytics.start(this);
         Yozio.initialize(this);
 
         ((BaseApplication)this.getApplication()).inject(this);
