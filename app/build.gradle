@@ -7,7 +7,6 @@ buildscript {
     dependencies {
         classpath 'com.newrelic.agent.android:agent-gradle-plugin:4.98.0'
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.7'
-        classpath 'org.robolectric:robolectric-gradle-plugin:1.0.0'
     }
 }
 repositories {
@@ -21,7 +20,6 @@ repositories {
 apply plugin: 'com.android.application'
 apply plugin: 'crashlytics'
 apply plugin: 'newrelic'
-apply plugin: 'org.robolectric'
 
 android {
     signingConfigs {
@@ -102,7 +100,7 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:2.4'
+    testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'com.squareup.retrofit:retrofit-mock:1.6.1'
     testCompile 'com.squareup.okhttp:mockwebserver:2.1.0'
 }
