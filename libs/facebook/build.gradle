@@ -1,17 +1,21 @@
 apply plugin: 'com.android.library'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    compile 'com.android.support:support-v4:21.0.0'
-    compile 'com.parse.bolts:bolts-android:1.1.2'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.parse.bolts:bolts-android:1.2.1'
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.1.1'
+    compileSdkVersion 22
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 22
     }
 
     lintOptions {
