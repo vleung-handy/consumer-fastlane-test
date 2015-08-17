@@ -107,7 +107,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
     @Override
     protected final void attachBaseContext(final Context newBase) {
-        super.attachBaseContext(new CalligraphyContextWrapper(newBase));
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override

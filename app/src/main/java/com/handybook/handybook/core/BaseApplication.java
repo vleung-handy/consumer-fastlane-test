@@ -40,9 +40,11 @@ public class BaseApplication extends Application {
         createObjectGraph();
 
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
-        UAirship.takeOff(this, options, new UAirship.OnReadyCallback() {
+        UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
+        {
             @Override
-            public void onAirshipReady(final UAirship airship) {
+            public void onAirshipReady(final UAirship airship)
+            {
                 final DefaultNotificationFactory defaultNotificationFactory =
                         new DefaultNotificationFactory(getApplicationContext());
 
@@ -55,7 +57,11 @@ public class BaseApplication extends Application {
             }
         });
 
-        CalligraphyConfig.initDefault("fonts/CircularStd-Book.otf", R.attr.fontPath);
+        CalligraphyConfig.initDefault(
+                new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/CircularStd-Book.otf")
+                        .build()
+        );
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
             NewRelic.withApplicationToken("AA7a37dccf925fd1e474142399691d1b6b3f84648b").start(this);
