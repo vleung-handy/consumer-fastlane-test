@@ -37,8 +37,8 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.CardException;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingPaymentFragment extends BookingFlowFragment {
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
@@ -48,18 +48,30 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
 
     private boolean useExistingCard;
 
-    @InjectView(R.id.next_button) Button nextButton;
-    @InjectView(R.id.change_button) Button changeButton;
-    @InjectView(R.id.promo_button) Button promoButton;
-    @InjectView(R.id.credit_card_text) CreditCardNumberInputTextView creditCardText;
-    @InjectView(R.id.exp_text) CreditCardExpDateInputTextView expText;
-    @InjectView(R.id.cvc_text) CreditCardCVCInputTextView cvcText;
-    @InjectView(R.id.promo_text) FreezableInputTextView promoText;
-    @InjectView(R.id.lock_icon) ImageView lockIcon;
-    @InjectView(R.id.card_icon) ImageView creditCardIcon;
-    @InjectView(R.id.card_extras_layout) LinearLayout cardExtrasLayout;
-    @InjectView(R.id.promo_progress) ProgressBar promoProgress;
-    @InjectView(R.id.promo_layout) LinearLayout promoLayout;
+    @Bind(R.id.next_button)
+    Button nextButton;
+    @Bind(R.id.change_button)
+    Button changeButton;
+    @Bind(R.id.promo_button)
+    Button promoButton;
+    @Bind(R.id.credit_card_text)
+    CreditCardNumberInputTextView creditCardText;
+    @Bind(R.id.exp_text)
+    CreditCardExpDateInputTextView expText;
+    @Bind(R.id.cvc_text)
+    CreditCardCVCInputTextView cvcText;
+    @Bind(R.id.promo_text)
+    FreezableInputTextView promoText;
+    @Bind(R.id.lock_icon)
+    ImageView lockIcon;
+    @Bind(R.id.card_icon)
+    ImageView creditCardIcon;
+    @Bind(R.id.card_extras_layout)
+    LinearLayout cardExtrasLayout;
+    @Bind(R.id.promo_progress)
+    ProgressBar promoProgress;
+    @Bind(R.id.promo_layout)
+    LinearLayout promoLayout;
 
     public static BookingPaymentFragment newInstance() {
         return new BookingPaymentFragment();
@@ -80,7 +92,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_payment,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

@@ -32,8 +32,8 @@ import com.handybook.handybook.util.TextUtils;
 
 import java.util.HashMap;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class HelpFragment extends InjectedFragment {
 
@@ -50,22 +50,36 @@ public final class HelpFragment extends InjectedFragment {
     private String currentLoginToken;
     private String path;
 
-    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
-    @InjectView(R.id.nav_text) TextView navText;
-    @InjectView(R.id.help_header) View helpHeader;
-    @InjectView(R.id.help_header_title) TextView headerTitle;
-    @InjectView(R.id.info_text) TextView infoText;
-    @InjectView(R.id.nav_options_layout) LinearLayout navList;
-    @InjectView(R.id.info_layout) View infoLayout;
-    @InjectView(R.id.help_icon) ImageView helpIcon;
-    @InjectView(R.id.help_triangle) ImageView helpTriangleView;
-    @InjectView(R.id.cta_layout) ViewGroup ctaLayout;
-    @InjectView(R.id.contact_button) Button contactButton;
-    @InjectView(R.id.scroll_view) ScrollView scrollView;
-    @InjectView(R.id.close_img) ImageView closeImage;
-    @InjectView(R.id.back_img) ImageView backImage;
+    @Bind(R.id.menu_button_layout)
+    ViewGroup menuButtonLayout;
+    @Bind(R.id.nav_text)
+    TextView navText;
+    @Bind(R.id.help_header)
+    View helpHeader;
+    @Bind(R.id.help_header_title)
+    TextView headerTitle;
+    @Bind(R.id.info_text)
+    TextView infoText;
+    @Bind(R.id.nav_options_layout)
+    LinearLayout navList;
+    @Bind(R.id.info_layout)
+    View infoLayout;
+    @Bind(R.id.help_icon)
+    ImageView helpIcon;
+    @Bind(R.id.help_triangle)
+    ImageView helpTriangleView;
+    @Bind(R.id.cta_layout)
+    ViewGroup ctaLayout;
+    @Bind(R.id.contact_button)
+    Button contactButton;
+    @Bind(R.id.scroll_view)
+    ScrollView scrollView;
+    @Bind(R.id.close_img)
+    ImageView closeImage;
+    @Bind(R.id.back_img)
+    ImageView backImage;
 
-    //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
+    //@Bind(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
 
     public static HelpFragment newInstance(final HelpNode node,
                                            final String bookingId,
@@ -110,7 +124,7 @@ public final class HelpFragment extends InjectedFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_help, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);

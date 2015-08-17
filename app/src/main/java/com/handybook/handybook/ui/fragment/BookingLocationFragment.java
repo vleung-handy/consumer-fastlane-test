@@ -35,8 +35,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -51,11 +51,15 @@ public final class BookingLocationFragment extends BookingFlowFragment
     private boolean isPromoFlow;
 
     @Inject ReactiveLocationProvider locationProvider;
-    
-    @InjectView(R.id.zip_text) ZipCodeInputTextView zipText;
-    @InjectView(R.id.zip_progress) ProgressBar zipProgress;
-    @InjectView(R.id.location_button) ImageButton locationButton;
-    @InjectView(R.id.next_button) Button nextButton;
+
+    @Bind(R.id.zip_text)
+    ZipCodeInputTextView zipText;
+    @Bind(R.id.zip_progress)
+    ProgressBar zipProgress;
+    @Bind(R.id.location_button)
+    ImageButton locationButton;
+    @Bind(R.id.next_button)
+    Button nextButton;
 
     public static BookingLocationFragment newInstance() {
         return new BookingLocationFragment();
@@ -77,7 +81,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_location,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final User.Address address;
         final User user = userManager.getCurrentUser();

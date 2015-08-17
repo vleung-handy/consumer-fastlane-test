@@ -28,8 +28,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingDateFragment extends BookingFlowFragment {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
@@ -44,11 +44,16 @@ public final class BookingDateFragment extends BookingFlowFragment {
     private Date rescheduleDate;
     private String notice;
 
-    @InjectView(R.id.next_button) Button nextButton;
-    @InjectView(R.id.date_picker) DatePicker datePicker;
-    @InjectView(R.id.time_picker) TimePicker timePicker;
-    @InjectView(R.id.nav_text) TextView navText;
-    @InjectView(R.id.notice_text) TextView noticeText;
+    @Bind(R.id.next_button)
+    Button nextButton;
+    @Bind(R.id.date_picker)
+    DatePicker datePicker;
+    @Bind(R.id.time_picker)
+    TimePicker timePicker;
+    @Bind(R.id.nav_text)
+    TextView navText;
+    @Bind(R.id.notice_text)
+    TextView noticeText;
 
     public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
         final BookingDateFragment fragment = new BookingDateFragment();
@@ -103,7 +108,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_date,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         if (rescheduleBooking != null) {
             navText.setText(getString(R.string.reschedule));

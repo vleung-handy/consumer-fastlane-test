@@ -36,8 +36,8 @@ import net.simonvt.menudrawer.MenuDrawer;
 
 import java.util.HashMap;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class LoginFragment extends BookingFlowFragment
         implements MenuDrawerActivity.OnDrawerStateChangeListener {
@@ -56,16 +56,26 @@ public final class LoginFragment extends BookingFlowFragment
 
     private enum AuthType {EMAIL, FACEBOOK}
 
-    @InjectView(R.id.nav_text) TextView navText;
-    @InjectView(R.id.login_button) Button loginButton;
-    @InjectView(R.id.forgot_button) Button forgotButton;
-    @InjectView(R.id.email_text) EmailInputTextView emailText;
-    @InjectView(R.id.password_text) PasswordInputTextView passwordText;
-    @InjectView(R.id.fb_button) LoginButton fbButton;
-    @InjectView(R.id.fb_layout) View fbLayout;
-    @InjectView(R.id.or_text) TextView orText;
-    @InjectView(R.id.welcome_text) TextView welcomeText;
-    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
+    @Bind(R.id.nav_text)
+    TextView navText;
+    @Bind(R.id.login_button)
+    Button loginButton;
+    @Bind(R.id.forgot_button)
+    Button forgotButton;
+    @Bind(R.id.email_text)
+    EmailInputTextView emailText;
+    @Bind(R.id.password_text)
+    PasswordInputTextView passwordText;
+    @Bind(R.id.fb_button)
+    LoginButton fbButton;
+    @Bind(R.id.fb_layout)
+    View fbLayout;
+    @Bind(R.id.or_text)
+    TextView orText;
+    @Bind(R.id.welcome_text)
+    TextView welcomeText;
+    @Bind(R.id.menu_button_layout)
+    ViewGroup menuButtonLayout;
 
     public static LoginFragment newInstance(final boolean findUser, final String bookingUserName,
                                      final String bookingUserEmail) {
@@ -100,7 +110,7 @@ public final class LoginFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_login,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
 

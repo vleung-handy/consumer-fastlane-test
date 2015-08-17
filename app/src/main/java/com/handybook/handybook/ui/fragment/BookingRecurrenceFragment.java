@@ -15,15 +15,17 @@ import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingRecurrenceFragment extends BookingFlowFragment {
     private BookingTransaction bookingTransaction;
     private int[] recurValues;
 
-    @InjectView(R.id.options_layout) LinearLayout optionsLayout;
-    @InjectView(R.id.next_button) Button nextButton;
+    @Bind(R.id.options_layout)
+    LinearLayout optionsLayout;
+    @Bind(R.id.next_button)
+    Button nextButton;
 
     public static BookingRecurrenceFragment newInstance() {
         final BookingRecurrenceFragment fragment = new BookingRecurrenceFragment();
@@ -42,7 +44,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_recurrence, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
