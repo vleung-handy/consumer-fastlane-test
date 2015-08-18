@@ -104,7 +104,7 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     compile files('../libs/yozio-android-sdk.jar')
-    compile project(':facebook')
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
     compile project(':simplealertdialog')
     compile project(':androidspinner')
 
