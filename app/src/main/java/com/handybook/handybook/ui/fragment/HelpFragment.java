@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
@@ -376,11 +377,18 @@ public final class HelpFragment extends InjectedFragment {
         else helpHeader.setBackground(header);
     }
 
-    private DataManager.Callback<HelpNode> helpNodeCallback = new DataManager.Callback<HelpNode>() {
+    private DataManager.Callback<HelpNodeWrapper> helpNodeCallback = new DataManager.Callback<HelpNodeWrapper>() {
         @Override
-        public void onSuccess(final HelpNode helpNode)
+        public void onSuccess(final HelpNodeWrapper helpNodeWrapper)
         {
-            if(helpNode.getType().equals("article"))
+            HelpNode helpNode = helpNodeWrapper.getHelpNode();
+
+            if(helpNode == null)
+            {
+                return;
+            }
+
+            if( helpNode.getType() != null && helpNode.getType().equals("article"))
             {
                 currentLoginToken = helpNode.getLoginToken();
             }

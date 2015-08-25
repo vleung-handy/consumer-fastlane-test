@@ -312,7 +312,9 @@ public class BookingFlowFragment extends InjectedFragment {
     private void handleBookingQuoteSuccess(final BookingQuote quote, final boolean isUpdate) {
         if (BookingFlowFragment.this instanceof BookingDateFragment
                 || BookingFlowFragment.this instanceof BookingOptionsFragment)
-            mixpanel.trackEventWhenPageSubmitted();
+        {
+            mixpanel.trackEventWhenPageSubmitted(bookingManager.getCurrentRequest());
+        }
 
         if (!allowCallbacks) return;
 

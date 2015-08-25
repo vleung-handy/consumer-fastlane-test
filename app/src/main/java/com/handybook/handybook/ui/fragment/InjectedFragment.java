@@ -13,6 +13,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
@@ -23,12 +24,17 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     protected ProgressDialog progressDialog;
     protected Toast toast;
 
+    //UPGRADE: Move away from direct calls to these and go through the bus
     @Inject BookingManager bookingManager;
     @Inject UserManager userManager;
     @Inject Mixpanel mixpanel;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
     @Inject NavigationManager navigationManager;
+
+    @Inject
+    Bus bus;
+
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -62,7 +68,44 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
         allowCallbacks = false;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        this.bus.register(this);
+    }
+
+    @Override
+    public void onPause()
+    {
+        this.bus.unregister(this);
+        super.onPause();
+    }
+
     protected void disableInputs() {}
 
     protected void enableInputs() {}
+
+    //Helpers
+    protected void showToast(int stringId)
+    {
+        showToast(getString(stringId));
+    }
+
+    protected void showToast(String message)
+    {
+        showToast(message, Toast.LENGTH_SHORT);
+    }
+
+    protected void showToast(int stringId, int length)
+    {
+        showToast(getString(stringId), length);
+    }
+
+    protected void showToast(String message, int length)
+    {
+        toast = Toast.makeText(getActivity().getApplicationContext(), message, length);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
 }

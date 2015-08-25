@@ -5,12 +5,12 @@ import android.support.v4.util.Pair;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
-import com.handybook.handybook.core.BookingOption;
+import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
@@ -43,7 +43,7 @@ public abstract class DataManager {
 
     public abstract void getServices(CacheResponse<List<Service>> cache, Callback<List<Service>> cb);
 
-    public abstract void getQuoteOptions(int serviceId, String userId,  Callback<List<BookingOption>> cb);
+    public abstract void getQuoteOptions(int serviceId, String userId,  Callback<BookingOptionsWrapper> cb);
 
     public abstract void createQuote(BookingRequest bookingRequest, Callback<BookingQuote> cb);
 
@@ -111,9 +111,9 @@ public abstract class DataManager {
 
     public abstract void requestPasswordReset(String email, Callback<String> cb);
 
-    public abstract void getHelpInfo(String nodeId, String authToken, String bookingId, Callback<HelpNode> cb);
+    public abstract void getHelpInfo(String nodeId, String authToken, String bookingId, Callback<HelpNodeWrapper> cb);
 
-    public abstract void getHelpBookingsInfo(String nodeId, String authToken, String bookingId, Callback<HelpNode> cb);
+    public abstract void getHelpBookingsInfo(String nodeId, String authToken, String bookingId, Callback<HelpNodeWrapper> cb);
 
     public abstract void createHelpCase(TypedInput body,  Callback<Void> cb);
 
