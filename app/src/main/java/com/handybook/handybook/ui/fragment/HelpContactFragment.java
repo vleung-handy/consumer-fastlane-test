@@ -3,13 +3,11 @@ package com.handybook.handybook.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
@@ -44,9 +42,9 @@ public final class HelpContactFragment extends InjectedFragment {
     private static final String SALESFORCE_DATA_WRAPPER_KEY = "salesforce_data";
 
     @InjectView(R.id.send_message_button) Button sendMessageButton;
-    @InjectView(R.id.user_name_text) FirstNameInputTextView nameText;
+    @InjectView(R.id.help_contact_user_name_text) FirstNameInputTextView nameText;
     @InjectView(R.id.email_text) EmailInputTextView emailText;
-    @InjectView(R.id.comment_text) BasicInputTextView commentText;
+    @InjectView(R.id.help_contact_comment_text) BasicInputTextView commentText;
     @InjectView(R.id.close_img) ImageView closeImage;
     @InjectView(R.id.back_img) ImageView backImage;
 

@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.HelpNode;
-import com.handybook.handybook.core.HelpNodeWrapper;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.simplealertdialog.SimpleAlertDialog;
 
@@ -167,30 +165,49 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
 
             progressDialog.show();
 
-            dataManager.getHelpInfo(null, authToken, "", new DataManager.Callback<HelpNodeWrapper>()
             {
-                @Override
-                public void onSuccess(final HelpNodeWrapper helpNodeWrapper)
-                {
-                    if (!allowCallbacks) return;
-                    HelpNode node = helpNodeWrapper.getHelpNode();
-                    intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
-                    startActivity(intent);
-                    MenuDrawerActivity.this.overridePendingTransition(0, 0);
-                    MenuDrawerActivity.this.finish();
+                String nodeId = null;
+                //intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
+                intent.putExtra(BundleKeys.HELP_NODE_ID, nodeId);
 
-                    progressDialog.dismiss();
-                }
+                startActivity(intent);
 
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-                    if (!allowCallbacks) return;
-                    progressDialog.dismiss();
-                    dataManagerErrorHandler.handleError(MenuDrawerActivity.this, error);
-                }
-            });
-        } else
+                MenuDrawerActivity.this.overridePendingTransition(0, 0);
+                MenuDrawerActivity.this.finish();
+
+                progressDialog.dismiss();
+            }
+
+
+//            dataManager.getHelpInfo(null, authToken, "", new DataManager.Callback<HelpNodeWrapper>()
+//            {
+//                @Override
+//                public void onSuccess(final HelpNodeWrapper helpNodeWrapper)
+//                {
+//                    if (!allowCallbacks) return;
+//                    HelpNode node = helpNodeWrapper.getHelpNode();
+//                    String nodeId = Integer.toString(node.getId());
+//                    //intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
+//                    intent.putExtra(BundleKeys.HELP_NODE_ID, nodeId);
+//
+//                    startActivity(intent);
+//
+//                    MenuDrawerActivity.this.overridePendingTransition(0, 0);
+//                    MenuDrawerActivity.this.finish();
+//
+//                    progressDialog.dismiss();
+//                }
+//
+//                @Override
+//                public void onError(final DataManager.DataManagerError error)
+//                {
+//                    if (!allowCallbacks) return;
+//                    progressDialog.dismiss();
+//                    dataManagerErrorHandler.handleError(MenuDrawerActivity.this, error);
+//                }
+//            });
+        }
+        else
         {
             startActivity(intent);
             this.overridePendingTransition(0, 0);

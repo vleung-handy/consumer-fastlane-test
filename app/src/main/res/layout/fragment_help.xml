@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     android:background="@color/handy_bg">
 
+    <include
+        android:id="@+id/help_banner_view"
+        layout="@layout/element_help_node_banner"/>
+
+    <include layout="@layout/layout_fetch_error"/>
+
     <FrameLayout
         android:id="@+id/nav_layout"
         android:layout_width="match_parent"
@@ -50,9 +56,8 @@
         android:layout_below="@id/nav_layout">
 
         <RelativeLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:padding="@dimen/default_margin">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/help_header"
@@ -92,66 +97,10 @@
                 android:visibility="gone"
                 android:src="@drawable/triangle" />
 
-            <RelativeLayout
-                android:id="@+id/info_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/help_header"
-                android:background="@drawable/cell_booking_last_rounded">
 
-                <TextView
-                    android:id="@+id/info_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/default_padding"
-                    style="@style/TextView" />
-
-                <LinearLayout
-                    android:id="@+id/cta_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/info_text"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="10dp"
-                    android:visibility="gone"
-                    android:orientation="vertical"
-                    >
-                    <Button
-                        android:id="@+id/contact_button"
-                        android:layout_marginLeft="@dimen/default_margin"
-                        android:layout_marginRight="@dimen/default_margin"
-                        android:text="@string/i_still_need_help"
-                        android:layout_marginBottom="10dp"
-                        style="@style/Button.Green.Round"
-                        android:visibility="gone"
-                        />
-                    <!--empty view needed for bottom layout margin bug on older APIs-->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                    />
-
-                </LinearLayout>
-
-                <!--empty view needed for bottom layout margin bug on older APIs-->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_below="@id/cta_layout" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/nav_options_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/help_header"
-                android:orientation="vertical"
-                android:background="@android:color/transparent"
-                android:visibility="gone" />
-
+            <include
+                android:id="@+id/help_node_view"
+                layout="@layout/element_help_node"/>
         </RelativeLayout>
-
     </ScrollView>
-
 </RelativeLayout>

@@ -149,4 +149,9 @@
         <item quantity="one">hour</item>
         <item quantity="other">hours</item>
     </plurals>
+
+    <string name="help_center_subject">Subject: </string>
+    <string name="try_again">Try Again</string>
+    <string name="error_fetching_connectivity_issue">Oops! There was an error with your internet connection</string>
+
 </resources>
