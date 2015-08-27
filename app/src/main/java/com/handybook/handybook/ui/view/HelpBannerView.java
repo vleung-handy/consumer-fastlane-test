@@ -3,22 +3,29 @@ package com.handybook.handybook.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.widget.MenuButton;
 
 import butterknife.InjectView;
 
 public final class HelpBannerView extends InjectedRelativeLayout
 {
+    @InjectView(R.id.menu_button_layout)
+    ViewGroup menuButtonLayout;
     @InjectView(R.id.back_img)
     public ImageView backImage;
-
+    @InjectView(R.id.close_img)
+    public ImageView closeImage;
     @InjectView(R.id.nav_text)
     public TextView navText;
+
 
     public HelpBannerView(final Context context)
     {
@@ -35,12 +42,6 @@ public final class HelpBannerView extends InjectedRelativeLayout
         super(context, attrs, defStyle);
     }
 
-    public void updateDisplay()
-    {
-        backImage.setVisibility(View.VISIBLE);
-        navText.setText(R.string.contact_us);
-    }
-
     public void updateDisplay(HelpNode helpNode)
     {
         if (helpNode == null)
@@ -49,12 +50,21 @@ public final class HelpBannerView extends InjectedRelativeLayout
             return;
         }
 
+        //Add the menu drawer button
+        final MenuButton menuButton = new MenuButton(getContext(), menuButtonLayout);
+        menuButtonLayout.addView(menuButton);
+
+        backImage.setVisibility(View.VISIBLE);
+        navText.setText(R.string.contact_us);
+
         switch (helpNode.getType())
         {
             case HelpNode.HelpNodeType.ROOT:
             {
                 layoutForRoot();
                 backImage.setVisibility(View.GONE);
+                menuButtonLayout.setVisibility(View.VISIBLE);
+                ((MenuDrawerActivity) getContext()).setDrawerDisabled(false);
             }
             break;
 
@@ -64,6 +74,10 @@ public final class HelpBannerView extends InjectedRelativeLayout
             {
                 layoutForNavigation(helpNode);
                 backImage.setVisibility(View.VISIBLE);
+
+                menuButtonLayout.setVisibility(View.GONE);
+                ((MenuDrawerActivity) getContext()).setDrawerDisabled(true);
+
             }
             break;
 
@@ -71,6 +85,9 @@ public final class HelpBannerView extends InjectedRelativeLayout
             {
                 layoutForArticle(helpNode);
                 backImage.setVisibility(View.VISIBLE);
+
+                menuButtonLayout.setVisibility(View.GONE);
+                ((MenuDrawerActivity) getContext()).setDrawerDisabled(true);
             }
             break;
 
@@ -78,6 +95,9 @@ public final class HelpBannerView extends InjectedRelativeLayout
             {
                 Crashlytics.log("Unrecognized node type : " + helpNode.getType());
                 backImage.setVisibility(View.VISIBLE);
+
+                menuButtonLayout.setVisibility(View.GONE);
+                ((MenuDrawerActivity) getContext()).setDrawerDisabled(true);
             }
             break;
         }
@@ -97,7 +117,7 @@ public final class HelpBannerView extends InjectedRelativeLayout
 
     private void layoutForArticle(final HelpNode node)
     {
-        navText.setText(node.getLabel());
+        navText.setText(R.string.help);
     }
 
     private void layoutForRoot()

@@ -1,14 +1,11 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -16,19 +13,14 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.HelpNode;
-import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.NavigationManager;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.HelpContactActivity;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.view.HelpBannerView;
 import com.handybook.handybook.ui.view.HelpNodeView;
 import com.handybook.handybook.ui.widget.CTAButton;
-import com.handybook.handybook.ui.widget.MenuButton;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
@@ -54,7 +46,7 @@ public final class HelpFragment extends InjectedFragment
     HelpBannerView helpBannerView;
 
 
-//    @InjectView(R.id.scroll_view)
+    //    @InjectView(R.id.scroll_view)
 //    ScrollView scrollView;
     @InjectView(R.id.fetch_error_view)
     View errorView;
@@ -78,10 +70,10 @@ public final class HelpFragment extends InjectedFragment
     private String currentLoginToken;
     private String path;
 
-    @InjectView(R.id.menu_button_layout)
-    ViewGroup menuButtonLayout;
-    @InjectView(R.id.help_header)
-    View helpHeader;
+//    @InjectView(R.id.menu_button_layout)
+//    ViewGroup menuButtonLayout;
+//    @InjectView(R.id.help_header)
+//    View helpHeader;
 
     /*
     @InjectView(R.id.help_header_title)
@@ -104,10 +96,10 @@ public final class HelpFragment extends InjectedFragment
 
     @InjectView(R.id.scroll_view)
     ScrollView scrollView;
-    @InjectView(R.id.close_img)
-    ImageView closeImage;
-    @InjectView(R.id.back_img)
-    ImageView backImage;
+//    @InjectView(R.id.close_img)
+//    ImageView closeImage;
+//    @InjectView(R.id.back_img)
+//    ImageView backImage;
 
     //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
 
@@ -195,7 +187,6 @@ public final class HelpFragment extends InjectedFragment
         updateDisplay(helpNode);
 
 
-
         //todo: move this out to its own function / mixpanel tracking shouold be wrangled into the navigation events
         //if (savedInstanceState == null)
         {
@@ -254,12 +245,6 @@ public final class HelpFragment extends InjectedFragment
 
         ButterKnife.inject(this, view);
 
-        //Add the menu drawer button
-        final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
-        menuButtonLayout.addView(menuButton);
-
-
-
         //Restore saved scroll position
         if (savedInstanceState != null)
         {
@@ -281,11 +266,6 @@ public final class HelpFragment extends InjectedFragment
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
 
-        if (nodeIdToRequest == null)
-        {
-            helpBannerView.navText.setText(R.string.help);
-        }
-
         if (getArguments() != null && getArguments().containsKey(BundleKeys.PATH))
         {
             path = getArguments().getString(BundleKeys.PATH);
@@ -295,7 +275,6 @@ public final class HelpFragment extends InjectedFragment
         }
 
         setupBackClickListeners();
-        updateButtonAndDrawerVisiblity(null);
 
         return view;
     }
@@ -303,7 +282,7 @@ public final class HelpFragment extends InjectedFragment
     private void updateDisplay(final HelpNode node)
     {
         helpBannerView.updateDisplay(node);
-        helpNodeView.updateDisplay(node);
+        helpNodeView.updateDisplay(node, currentLoginToken);
         setupClickListeners(node);
     }
 
@@ -349,14 +328,9 @@ public final class HelpFragment extends InjectedFragment
                     if (childNode.getType().equals(HelpNode.HelpNodeType.LOG_IN_FORM))
                     {
                         showToast(R.string.please_login);
-                    } else
+                    }
+                    else
                     {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(BundleKeys.HELP_NODE_ID, Integer.toString(childNode.getId()));
-                        arguments.putString(BundleKeys.PATH, path);
-
-                        //TODO: Replace with activity based navigation
-                        //bus.post(new HandyEvent.NavigateToTab(MainViewTab.HELP, arguments));
                         navigateToHelpPage(childNode);
                     }
                 }
@@ -389,13 +363,6 @@ public final class HelpFragment extends InjectedFragment
                         @Override
                         public void onClick(View v)
                         {
-                            Bundle arguments = new Bundle();
-                            arguments.putString(BundleKeys.PATH, path);
-                            arguments.putParcelable(BundleKeys.HELP_NODE, childNode);
-
-                            //TODO: Replace with activity based navigation
-                            //HandyEvent.NavigateToTab navigateEvent = new HandyEvent.NavigateToTab(MainViewTab.HELP_CONTACT, arguments);
-                            //bus.post(navigateEvent);
                             navigateToHelpContactPage(childNode);
                         }
                     });
@@ -415,7 +382,7 @@ public final class HelpFragment extends InjectedFragment
             }
         });
 
-        closeImage.setOnClickListener(new View.OnClickListener()
+        helpBannerView.closeImage.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
@@ -427,40 +394,6 @@ public final class HelpFragment extends InjectedFragment
         });
     }
 
-    private void updateButtonAndDrawerVisiblity(HelpNode node)
-    {
-        if (node == null)
-        {
-            helpBannerView.backImage.setVisibility(View.INVISIBLE);
-            closeImage.setVisibility(View.INVISIBLE);
-        } else
-        {
-            switch (node.getType())
-            {
-                case "root":
-                {
-                    backImage.setVisibility(View.GONE);
-                    menuButtonLayout.setVisibility(View.VISIBLE);
-                    ((MenuDrawerActivity) getActivity()).setDrawerDisabled(false);
-                }
-                break;
-
-                case "navigation":
-                case "dynamic-bookings-navigation":
-                case "booking":
-                case "article":
-                default:
-                {
-                    backImage.setVisibility(View.VISIBLE);
-                    menuButtonLayout.setVisibility(View.GONE);
-                    ((MenuDrawerActivity) getActivity()).setDrawerDisabled(true);
-                }
-                break;
-            }
-        }
-    }
-
-
     @Override
     public void onSaveInstanceState(final Bundle outState)
     {
@@ -470,46 +403,19 @@ public final class HelpFragment extends InjectedFragment
                 new int[]{scrollView.getScrollX(), scrollView.getScrollY()});
     }
 
-
-
-
-//    private void addCtaButton(HelpNode node)
-//    {
-//        int newChildIndex = ctaLayout.getChildCount(); //new index is equal to the old count since the new count is +1
-//        final CTAButton ctaButton = (CTAButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
-//        ctaButton.initFromHelpNode(node, currentLoginToken);
-//        //can't inject into buttons so need to set the on click listener here to take advantage of fragments injection
-//        ctaButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(final View v)
-//            {
-//                HashMap<String, String> params = new HashMap<String, String>();
-//                if (currentBookingId != null && !currentBookingId.isEmpty())
-//                {
-//                    params.put(NavigationManager.PARAM_BOOKING_ID, currentBookingId);
-//                }
-//                Boolean success = navigationManager.navigateTo(ctaButton.navigationData, params);
-//                mixpanel.trackEventHelpCenterDeepLinkClicked(Integer.toString(ctaButton.nodeId), ctaButton.nodeLabel);
-//            }
-//        });
-//    }
-
     private void addCtaButtonListeners()
     {
-        //int newChildIndex = ctaLayout.getChildCount(); //new index is equal to the old count since the new count is +1
-          //     (CTAButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
-        //ctaButton.initFromHelpNode(node, currentLoginToken);
-        //can't inject into buttons so need to set the on click listener here to take advantage of fragments injection
-
-        if(helpNodeView.ctaLayout.getVisibility() != View.VISIBLE)
+        if (helpNodeView.ctaLayout.getVisibility() != View.VISIBLE)
         {
             return;
         }
 
-        for(int i = 0; i < helpNodeView.ctaLayout.getChildCount(); i++)
+        for (int i = 0; i < helpNodeView.ctaLayout.getChildCount(); i++)
         {
             final CTAButton ctaButton = (CTAButton) helpNodeView.ctaLayout.getChildAt(i);
+
+            //ctaButton.initFromHelpNode(node, currentLoginToken);
+
             ctaButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -526,156 +432,6 @@ public final class HelpFragment extends InjectedFragment
             });
         }
     }
-
-
-//    private void layoutNavList(final ViewGroup container)
-//    {
-//        infoLayout.setVisibility(View.GONE);
-//        navList.setVisibility(View.VISIBLE);
-//
-//        if (currentNode.getType().equals("dynamic-bookings-navigation"))
-//        {
-//            setHeaderColor(getResources().getColor(R.color.handy_teal));
-//        }
-//
-//        int count = 0;
-//        int size = currentNode.getChildren().size();
-//
-//        for (final HelpNode helpNode : currentNode.getChildren())
-//        {
-//            final View navView;
-//
-//            if (helpNode.getType().equals("booking"))
-//            {
-//                navView = getActivity().getLayoutInflater()
-//                        .inflate(R.layout.list_item_help_booking_nav, container, false);
-//
-//                TextView textView = (TextView) navView.findViewById(R.id.service_text);
-//                textView.setText(helpNode.getService());
-//
-//                textView = (TextView) navView.findViewById(R.id.date_text);
-//                textView.setText(TextUtils.formatDate(helpNode.getStartDate(), "EEEE',' MMMM d"));
-//
-//                textView = (TextView) navView.findViewById(R.id.time_text);
-//                textView.setText(TextUtils.formatDate(helpNode.getStartDate(), "h:mmaaa \u2013 ")
-//                        + TextUtils.formatDecimal(helpNode.getHours(), "#.# ")
-//                        + getResources().getQuantityString(R.plurals.hour, (int) helpNode.getHours()));
-//            } else
-//            {
-//                if (currentNode.getType().equals("root"))
-//                {
-//                    navView = getActivity().getLayoutInflater()
-//                            .inflate(R.layout.list_item_help_nav_main, container, false);
-//                } else
-//                {
-//                    navView = getActivity().getLayoutInflater()
-//                            .inflate(R.layout.list_item_help_nav, container, false);
-//                }
-//
-//                final TextView textView = (TextView) navView.findViewById(R.id.nav_item_text);
-//                textView.setText(helpNode.getLabel());
-//
-//                if (currentNode.getType().equals("root"))
-//                {
-//                    textView.setTextAppearance(getActivity(), R.style.TextView_Large);
-//                    textView.setTypeface(TextUtils.get(getActivity(), "CircularStd-Book.otf"));
-//                }
-//            }
-//
-//            if (count == size - 1)
-//            {
-//                navView.setBackgroundResource((R.drawable.cell_booking_last_rounded));
-//            }
-//
-//            navView.setOnClickListener(new View.OnClickListener()
-//            {
-//                @Override
-//                public void onClick(final View v)
-//                {
-//                    if (helpNode.getType().equals("help-log-in-form"))
-//                    {
-//                        toast.setText(getString(R.string.please_login));
-//                        toast.show();
-//                    } else
-//                    {
-//                        displayNextNode(helpNode);
-//                    }
-//                }
-//            });
-//
-//            navList.addView(navView);
-//            count++;
-//        }
-//    }
-
-    private void ZZZZ_displayNextNode(final HelpNode node)
-    {
-
-        progressDialog.show();
-
-        final User user = userManager.getCurrentUser();
-        final String authToken = user != null ? user.getAuthToken() : null;
-
-        //Why are we assigning currentBookingId here but we need to wait on the CB for loginToken to come back correctly?
-        if (node.getType().equals("booking"))
-        {
-            currentBookingId = Integer.toString(node.getId());
-            dataManager.getHelpBookingsInfo(Integer.toString(node.getId()), authToken, currentBookingId, helpNodeCallback);
-        } else
-        {
-            dataManager.getHelpInfo(Integer.toString(node.getId()), authToken, currentBookingId, helpNodeCallback);
-        }
-    }
-
-    private void ZZZZZ_setHeaderColor(final int color)
-    {
-        final Drawable header = getResources().getDrawable(R.drawable.help_header_purple);
-        header.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            helpHeader.setBackgroundDrawable(header);
-        else helpHeader.setBackground(header);
-    }
-
-    private DataManager.Callback<HelpNodeWrapper> helpNodeCallback = new DataManager.Callback<HelpNodeWrapper>()
-    {
-        @Override
-        public void onSuccess(final HelpNodeWrapper helpNodeWrapper)
-        {
-            HelpNode helpNode = helpNodeWrapper.getHelpNode();
-
-            if (helpNode == null)
-            {
-                return;
-            }
-
-            if (helpNode.getType() != null && helpNode.getType().equals("article"))
-            {
-                currentLoginToken = helpNode.getLoginToken();
-            }
-
-            if (!allowCallbacks) return;
-
-            final Intent intent = new Intent(getActivity(), HelpActivity.class);
-            //intent.putExtra(HelpActivity.EXTRA_HELP_NODE, helpNode);
-            intent.putExtra(HelpActivity.EXTRA_BOOKING_ID, currentBookingId);
-            intent.putExtra(HelpActivity.EXTRA_LOGIN_TOKEN, currentLoginToken);
-            intent.putExtra(HelpActivity.EXTRA_PATH, path.length() > 0 ? path += " -> "
-                    + helpNode.getLabel() : helpNode.getLabel());
-            startActivity(intent);
-
-            progressDialog.dismiss();
-            mixpanel.trackEventHelpCenterNavigation(helpNode.getLabel());
-        }
-
-        @Override
-        public void onError(final DataManager.DataManagerError error)
-        {
-            if (!allowCallbacks) return;
-            progressDialog.dismiss();
-            dataManagerErrorHandler.handleError(getActivity(), error);
-        }
-    };
 
     private void navigateToHelpPage(HelpNode helpNode)
     {
@@ -708,8 +464,6 @@ public final class HelpFragment extends InjectedFragment
 
         startActivity(intent);
     }
-
-
 
 
 }

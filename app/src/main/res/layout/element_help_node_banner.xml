@@ -6,30 +6,47 @@
     android:background="@color/handy_blue"
     android:orientation="horizontal"
     style="@style/Banner"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
     >
 
-    <ImageView
-        android:id="@+id/back_img"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingRight="16dp"
-        android:background="@color/transparent"
-        android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
-        android:visibility="gone"/>
+    <FrameLayout
+        android:id="@+id/nav_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/nav_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_toEndOf="@id/back_img"
-        android:layout_toRightOf="@id/back_img"
-        android:textColor="@color/white"
-        android:layout_centerVertical="true"
-        android:singleLine="true"
-        android:ellipsize="end"
-        />
+        <TextView
+            android:id="@+id/nav_text"
+            android:paddingRight="44dp"
+            android:paddingLeft="44dp"
+            android:text="@string/help"
+            style="@style/TextView.Navbar" />
+
+        <RelativeLayout
+            android:id="@+id/menu_button_layout"
+            style="@style/MenuButtonLayout" />
+
+        <ImageView
+            android:id="@+id/close_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="15dp"
+            android:src="@drawable/ic_x"
+            android:visibility="visible"
+            android:contentDescription="@string/close"
+            android:layout_gravity="end|center_vertical" />
+
+        <ImageView
+            android:id="@+id/back_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleX="-1"
+            android:padding="15dp"
+            android:src="@drawable/ic_chevron"
+            android:visibility="gone"
+            android:contentDescription="@string/back"
+            android:layout_gravity="start|center_vertical" />
+
+    </FrameLayout>
 
 </com.handybook.handybook.ui.view.HelpBannerView>

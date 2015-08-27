@@ -1,10 +1,14 @@
 package com.handybook.handybook.ui.view;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +36,39 @@ public final class HelpNodeView extends InjectedRelativeLayout
     public LinearLayout ctaLayout;
 
 
+    @InjectView(R.id.help_header)
+    View helpHeader;
+    @InjectView(R.id.help_header_title)
+    TextView headerTitle;
+    @InjectView(R.id.help_icon)
+    ImageView helpIcon;
+    @InjectView(R.id.help_triangle)
+    ImageView helpTriangleView;
+
+
+
+    /*
+    @InjectView(R.id.help_header_title)
+    TextView headerTitle;
+    @InjectView(R.id.info_text)
+    TextView infoText;
+    @InjectView(R.id.nav_options_layout)
+    LinearLayout navList;
+    @InjectView(R.id.info_layout)
+    View infoLayout;
+    @InjectView(R.id.help_icon)
+    ImageView helpIcon;
+    @InjectView(R.id.help_triangle)
+    ImageView helpTriangleView;
+    @InjectView(R.id.cta_layout)
+    ViewGroup ctaLayout;
+    @InjectView(R.id.contact_button)
+    Button contactButton;
+    */
+
+
+    private String currentLoginToken;
+
     public HelpNodeView(final Context context)
     {
         super(context);
@@ -47,8 +84,30 @@ public final class HelpNodeView extends InjectedRelativeLayout
         super(context, attrs, defStyle);
     }
 
-    public void updateDisplay(final HelpNode node)
+
+
+
+
+    private void setHeaderColor(final int color)
     {
+        final Drawable header = getResources().getDrawable(R.drawable.help_header_purple);
+        header.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+        {
+            helpHeader.setBackgroundDrawable(header);
+        }
+        else
+        {
+            helpHeader.setBackground(header);
+        }
+    }
+
+
+    public void updateDisplay(final HelpNode node, final String currentLoginToken)
+    {
+        this.currentLoginToken = currentLoginToken;
+
         //clear out the existing ctas and navigation buttons
         navOptionsLayout.removeAllViews();
         helpWebView.clearHtml();//prevent user from seeing previous article's content
@@ -62,11 +121,16 @@ public final class HelpNodeView extends InjectedRelativeLayout
         switch (node.getType())
         {
             case HelpNode.HelpNodeType.ROOT:
+            {
+                layoutForRoot(node);
+            }
+            break;
+
             case HelpNode.HelpNodeType.NAVIGATION:
             case HelpNode.HelpNodeType.BOOKINGS_NAV:
             case HelpNode.HelpNodeType.BOOKING:
             {
-                layoutNavList(node);
+                layoutForNavigation(node);
             }
             break;
 
@@ -84,8 +148,30 @@ public final class HelpNodeView extends InjectedRelativeLayout
         }
     }
 
+    private void layoutForRoot(final HelpNode node)
+    {
+        headerTitle.setText(getResources().getString(R.string.what_need_help_with));
+        setHeaderColor(getResources().getColor(R.color.handy_blue));
+        helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_smiley));
+
+        layoutNavList(node);
+    }
+
+    private void layoutForNavigation(final HelpNode node)
+    {
+
+        layoutNavList(node);
+    }
+
     private void layoutForArticle(final HelpNode node)
     {
+        headerTitle.setText(node.getLabel());
+
+        setHeaderColor(getResources().getColor(R.color.handy_yellow));
+        helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_bulb));
+        helpTriangleView.setVisibility(View.VISIBLE);
+
+
         contactButton.setVisibility(GONE);
         //Turn these off, children nodes can turn them on
 
@@ -104,7 +190,7 @@ public final class HelpNodeView extends InjectedRelativeLayout
 
         for (final HelpNode childNode : node.getChildren())
         {
-            if(childNode == null)
+            if (childNode == null)
             {
                 continue;
             }
@@ -116,14 +202,14 @@ public final class HelpNodeView extends InjectedRelativeLayout
             }
 
             //todo: info not being used anymore just showing webviews, does that work with the faq pages?
-            String info = childNode.getContent();
+            //String info = childNode.getContent();
             if (childNode.getType().equals("help-faq-container"))
             {
-                info += "<br/><br/><b>" + getContext().getString(R.string.related_faq) + ":</b>";
-                for (final HelpNode faqChild : childNode.getChildren())
-                {
-                    info += "<br/><a href=" + faqChild.getContent() + ">" + faqChild.getLabel() + "</a>";
-                }
+//                info += "<br/><br/><b>" + getContext().getString(R.string.related_faq) + ":</b>";
+//                for (final HelpNode faqChild : childNode.getChildren())
+//                {
+//                    info += "<br/><a href=" + faqChild.getContent() + ">" + faqChild.getLabel() + "</a>";
+//                }
             }
             else if (childNode.getType().equals("help-cta"))
             {
@@ -149,14 +235,13 @@ public final class HelpNodeView extends InjectedRelativeLayout
 
     private void addCtaButton(HelpNode node)
     {
-        String currentLoginToken = "foofwefefwefwefwefwewfewfefwwef";
 
 
-        int newChildIndex = ctaLayout.getChildCount(); //new index is equal to the old count since the new count is +1
+        //int newChildIndex = ctaLayout.getChildCount(); //new index is equal to the old count since the new count is +1
         final CTAButton ctaButton = (CTAButton) inflate(R.layout.fragment_cta_button_template, ctaLayout);
-                //((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
+        //((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
 
-        ctaButton.initFromHelpNode(node, currentLoginToken);
+        ctaButton.initFromHelpNode(node, this.currentLoginToken);
 
         //can't inject into buttons so need to set the on click listener here to take advantage of fragments injection
 //        ctaButton.setOnClickListener(new View.OnClickListener()
@@ -176,16 +261,22 @@ public final class HelpNodeView extends InjectedRelativeLayout
     }
 
 
+
     private void layoutNavList(final HelpNode node)
     {
         infoLayout.setVisibility(GONE);
         navOptionsLayout.setVisibility(VISIBLE);
 
+        if (node.getType().equals("dynamic-bookings-navigation"))
+        {
+            setHeaderColor(getResources().getColor(R.color.handy_teal));
+        }
+
         for (final HelpNode childNode : node.getChildren())
         {
             final View navView;
 
-            if(childNode == null || childNode.getType() == null)
+            if (childNode == null || childNode.getType() == null)
             {
                 continue;
             }

@@ -1,106 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg">
 
     <include
         android:id="@+id/help_banner_view"
         layout="@layout/element_help_node_banner"/>
 
-    <include layout="@layout/layout_fetch_error"/>
-
-    <FrameLayout
-        android:id="@+id/nav_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/help_banner_view"
+        android:layout_marginTop="5dp"
+        >
 
-        <TextView
-            android:id="@+id/nav_text"
-            android:paddingRight="44dp"
-            android:paddingLeft="44dp"
-            android:text="@string/help"
-            style="@style/TextView.Navbar" />
+        <include layout="@layout/layout_fetch_error"/>
 
-        <RelativeLayout
-            android:id="@+id/menu_button_layout"
-            style="@style/MenuButtonLayout" />
-
-        <ImageView
-            android:id="@+id/close_img"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="15dp"
-            android:src="@drawable/ic_x"
-            android:visibility="visible"
-            android:contentDescription="@string/close"
-            android:layout_gravity="end|center_vertical" />
-
-        <ImageView
-            android:id="@+id/back_img"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleX="-1"
-            android:padding="15dp"
-            android:src="@drawable/ic_chevron"
-            android:visibility="gone"
-            android:contentDescription="@string/back"
-            android:layout_gravity="start|center_vertical" />
-
-    </FrameLayout>
-
-    <ScrollView
-        android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/nav_layout">
-
-        <RelativeLayout
+        <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:id="@+id/help_header"
-                android:layout_width="match_parent"
-                android:layout_height="142dp"
-                android:gravity="center"
-                android:padding="@dimen/default_padding"
-                android:background="@drawable/help_header_purple">
-
-                <ImageView
-                    android:id="@+id/help_icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:src="@drawable/ic_help_lifesaver"
-                    android:contentDescription="help" />
-
-                <TextView
-                    android:id="@+id/help_header_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/help_icon"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:text="@string/what_can_help_with"
-                    style="@style/TextView.Large.Med" />
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/help_triangle"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignBottom="@id/help_header"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone"
-                android:src="@drawable/triangle" />
-
+            android:layout_height="match_parent"
+            android:layout_below="@id/nav_layout">
 
             <include
                 android:id="@+id/help_node_view"
                 layout="@layout/element_help_node"/>
-        </RelativeLayout>
-    </ScrollView>
+
+        </ScrollView>
+    </LinearLayout>
 </RelativeLayout>
