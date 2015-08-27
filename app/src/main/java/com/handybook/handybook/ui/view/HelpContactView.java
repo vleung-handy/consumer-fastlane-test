@@ -62,17 +62,19 @@ public final class HelpContactView extends InjectedRelativeLayout
 
     public void prepopulateProviderData(User user)
     {
-        if(user != null)
+        if (user != null)
         {
             this.nameText.setText(user.getFullName());
             this.emailText.setText(user.getEmail());
 
             //Hide the name and email fields if they are prepopulated so the user can not alter them
             //Validating them off prepopulated data, not hiding if the prepop data would prevent validation
-            if(nameText.validate()) {
+            if (nameText.validate())
+            {
                 this.nameLayout.setVisibility(View.GONE);
             }
-            if(emailText.validate()) {
+            if (emailText.validate())
+            {
                 this.emailLayout.setVisibility(View.GONE);
             }
         }

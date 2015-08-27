@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.simplealertdialog.SimpleAlertDialog;
 
@@ -156,63 +154,9 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
         final Intent intent = new Intent(this, clazz);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
-
-        //UPGRADE: Don't get the node then go in, go in, get the node, display it or disply an error, the menudrawer should not know about help
-        if (clazz == HelpActivity.class)
-        {
-            final User user = userManager.getCurrentUser();
-            final String authToken = user != null ? user.getAuthToken() : null;
-
-            progressDialog.show();
-
-            {
-                String nodeId = null;
-                //intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
-                intent.putExtra(BundleKeys.HELP_NODE_ID, nodeId);
-
-                startActivity(intent);
-
-                MenuDrawerActivity.this.overridePendingTransition(0, 0);
-                MenuDrawerActivity.this.finish();
-
-                progressDialog.dismiss();
-            }
-
-
-//            dataManager.getHelpInfo(null, authToken, "", new DataManager.Callback<HelpNodeWrapper>()
-//            {
-//                @Override
-//                public void onSuccess(final HelpNodeWrapper helpNodeWrapper)
-//                {
-//                    if (!allowCallbacks) return;
-//                    HelpNode node = helpNodeWrapper.getHelpNode();
-//                    String nodeId = Integer.toString(node.getId());
-//                    //intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
-//                    intent.putExtra(BundleKeys.HELP_NODE_ID, nodeId);
-//
-//                    startActivity(intent);
-//
-//                    MenuDrawerActivity.this.overridePendingTransition(0, 0);
-//                    MenuDrawerActivity.this.finish();
-//
-//                    progressDialog.dismiss();
-//                }
-//
-//                @Override
-//                public void onError(final DataManager.DataManagerError error)
-//                {
-//                    if (!allowCallbacks) return;
-//                    progressDialog.dismiss();
-//                    dataManagerErrorHandler.handleError(MenuDrawerActivity.this, error);
-//                }
-//            });
-        }
-        else
-        {
-            startActivity(intent);
-            this.overridePendingTransition(0, 0);
-            this.finish();
-        }
+        startActivity(intent);
+        MenuDrawerActivity.this.overridePendingTransition(0, 0);
+        MenuDrawerActivity.this.finish();
     }
 
     public final void setDrawerDisabled(final boolean disableDrawer)

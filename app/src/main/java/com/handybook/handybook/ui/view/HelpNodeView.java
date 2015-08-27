@@ -23,19 +23,7 @@ import butterknife.InjectView;
 
 public final class HelpNodeView extends InjectedRelativeLayout
 {
-    @InjectView(R.id.help_webview)
-    protected HandyWebView helpWebView;
-    @InjectView(R.id.info_layout)
-    protected RelativeLayout infoLayout;
-    @InjectView(R.id.contact_button)
-    public Button contactButton;
-    @InjectView(R.id.nav_options_layout)
-    public LinearLayout navOptionsLayout;
-
-    @InjectView(R.id.cta_layout)
-    public LinearLayout ctaLayout;
-
-
+    //Help header block
     @InjectView(R.id.help_header)
     View helpHeader;
     @InjectView(R.id.help_header_title)
@@ -45,28 +33,25 @@ public final class HelpNodeView extends InjectedRelativeLayout
     @InjectView(R.id.help_triangle)
     ImageView helpTriangleView;
 
-
-
-    /*
-    @InjectView(R.id.help_header_title)
-    TextView headerTitle;
-    @InjectView(R.id.info_text)
-    TextView infoText;
-    @InjectView(R.id.nav_options_layout)
-    LinearLayout navList;
+    //Main content webview
     @InjectView(R.id.info_layout)
-    View infoLayout;
-    @InjectView(R.id.help_icon)
-    ImageView helpIcon;
-    @InjectView(R.id.help_triangle)
-    ImageView helpTriangleView;
-    @InjectView(R.id.cta_layout)
-    ViewGroup ctaLayout;
+    protected RelativeLayout infoLayout;
+    @InjectView(R.id.help_webview)
+    protected HandyWebView helpWebView;
+
+    //Contact Us
     @InjectView(R.id.contact_button)
-    Button contactButton;
-    */
+    public Button contactButton;
 
+    //Help Node Navigation Links
+    @InjectView(R.id.nav_options_layout)
+    public LinearLayout navOptionsLayout;
 
+    //CTAs
+    @InjectView(R.id.cta_layout)
+    public LinearLayout ctaLayout;
+
+    //Currently passing this around, could get it from a service if that would be cleaner
     private String currentLoginToken;
 
     public HelpNodeView(final Context context)
@@ -84,32 +69,14 @@ public final class HelpNodeView extends InjectedRelativeLayout
         super(context, attrs, defStyle);
     }
 
-
-
-
-
-    private void setHeaderColor(final int color)
-    {
-        final Drawable header = getResources().getDrawable(R.drawable.help_header_purple);
-        header.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-        {
-            helpHeader.setBackgroundDrawable(header);
-        }
-        else
-        {
-            helpHeader.setBackground(header);
-        }
-    }
-
-
     public void updateDisplay(final HelpNode node, final String currentLoginToken)
     {
         this.currentLoginToken = currentLoginToken;
 
-        //clear out the existing ctas and navigation buttons
+        //clear out any existing ctas and navigation buttons
         navOptionsLayout.removeAllViews();
+        ctaLayout.removeAllViews();
+
         helpWebView.clearHtml();//prevent user from seeing previous article's content
 
         if (node == null)
@@ -171,9 +138,7 @@ public final class HelpNodeView extends InjectedRelativeLayout
         helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_bulb));
         helpTriangleView.setVisibility(View.VISIBLE);
 
-
         contactButton.setVisibility(GONE);
-        //Turn these off, children nodes can turn them on
 
         helpWebView.loadHtml(node.getContent(), new HandyWebView.InvalidateCallback()
         {
@@ -201,73 +166,30 @@ public final class HelpNodeView extends InjectedRelativeLayout
                 continue;
             }
 
-            //todo: info not being used anymore just showing webviews, does that work with the faq pages?
-            //String info = childNode.getContent();
-            if (childNode.getType().equals("help-faq-container"))
-            {
-//                info += "<br/><br/><b>" + getContext().getString(R.string.related_faq) + ":</b>";
-//                for (final HelpNode faqChild : childNode.getChildren())
-//                {
-//                    info += "<br/><a href=" + faqChild.getContent() + ">" + faqChild.getLabel() + "</a>";
-//                }
-            }
-            else if (childNode.getType().equals("help-cta"))
+            if (childNode.getType().equals(HelpNode.HelpNodeType.CTA))
             {
                 ctaLayout.setVisibility(View.VISIBLE);
                 addCtaButton(childNode);
             }
-            else if (childNode.getType().equals("help-contact-form"))
+            else if (childNode.getType().equals(HelpNode.HelpNodeType.CONTACT))
             {
-                ctaLayout.setVisibility(View.VISIBLE);
                 contactButton.setVisibility(View.VISIBLE);
             }
-
-            if (childNode.getType().equals(HelpNode.HelpNodeType.CONTACT))
-            {
-                contactButton.setVisibility(VISIBLE);
-            }
-
-//            infoText.setText(TextUtils.trim(Html.fromHtml(info)));
-//            infoText.setMovementMethod(LinkMovementMethod.getInstance());
-
         }
     }
 
     private void addCtaButton(HelpNode node)
     {
-
-
-        //int newChildIndex = ctaLayout.getChildCount(); //new index is equal to the old count since the new count is +1
         final CTAButton ctaButton = (CTAButton) inflate(R.layout.fragment_cta_button_template, ctaLayout);
-        //((ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_cta_button_template, ctaLayout)).getChildAt(newChildIndex);
-
         ctaButton.initFromHelpNode(node, this.currentLoginToken);
-
-        //can't inject into buttons so need to set the on click listener here to take advantage of fragments injection
-//        ctaButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(final View v)
-//            {
-//                HashMap<String, String> params = new HashMap<String, String>();
-//                if (currentBookingId != null && !currentBookingId.isEmpty())
-//                {
-//                    params.put(NavigationManager.PARAM_BOOKING_ID, currentBookingId);
-//                }
-//                Boolean success = navigationManager.navigateTo(ctaButton.navigationData, params);
-//                mixpanel.trackEventHelpCenterDeepLinkClicked(Integer.toString(ctaButton.nodeId), ctaButton.nodeLabel);
-//            }
-//        });
     }
-
-
 
     private void layoutNavList(final HelpNode node)
     {
         infoLayout.setVisibility(GONE);
         navOptionsLayout.setVisibility(VISIBLE);
 
-        if (node.getType().equals("dynamic-bookings-navigation"))
+        if (node.getType().equals(HelpNode.HelpNodeType.BOOKINGS_NAV))
         {
             setHeaderColor(getResources().getColor(R.color.handy_teal));
         }
@@ -276,12 +198,12 @@ public final class HelpNodeView extends InjectedRelativeLayout
         {
             final View navView;
 
-            if (childNode == null || childNode.getType() == null)
+            if (childNode == null)
             {
                 continue;
             }
 
-            if (childNode.getType().equals(HelpNode.HelpNodeType.BOOKING))
+            if (childNode.getType() != null && childNode.getType().equals(HelpNode.HelpNodeType.BOOKING))
             {
                 navView = inflate(R.layout.list_item_help_booking_nav, navOptionsLayout);
 
@@ -299,10 +221,27 @@ public final class HelpNodeView extends InjectedRelativeLayout
             else
             {
                 navView = inflate(R.layout.list_item_help_nav, navOptionsLayout);
-
                 final TextView textView = (TextView) navView.findViewById(R.id.nav_item_text);
                 textView.setText(childNode.getLabel());
             }
+        }
+    }
+
+    private void setHeaderColor(final int color)
+    {
+        final Drawable header = getResources().getDrawable(R.drawable.help_header_purple);
+        if(header != null)
+        {
+            header.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+        {
+            helpHeader.setBackgroundDrawable(header);
+        }
+        else
+        {
+            helpHeader.setBackground(header);
         }
     }
 

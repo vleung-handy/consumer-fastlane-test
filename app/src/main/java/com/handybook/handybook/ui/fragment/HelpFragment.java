@@ -32,91 +32,44 @@ import butterknife.OnClick;
 public final class HelpFragment extends InjectedFragment
 {
 
-
-    //private String currentBookingId; //optional param, if help request is associated with a booking
-    //private String currentPathNodeLabels; //what nodes have we traversed to get to the current node
-    private String nodeIdToRequest = null;
-
-
-    private final static String PATH_SEPARATOR = " > ";
-
     @InjectView(R.id.help_node_view)
     HelpNodeView helpNodeView;
     @InjectView(R.id.help_banner_view)
     HelpBannerView helpBannerView;
-
-
-    //    @InjectView(R.id.scroll_view)
-//    ScrollView scrollView;
     @InjectView(R.id.fetch_error_view)
     View errorView;
     @InjectView(R.id.fetch_error_text)
     TextView errorText;
-
-
-//*******************
-
-
-    private final String STATE_SCROLL_POSITION = "SCROLL_POSITION";
-    static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
-    private static String HELP_CONTACT_FORM_NODE_TYPE = "help-contact-form";
-    static final String EXTRA_BOOKING_ID = "com.handy.handy.EXTRA_BOOKING_ID";
-    static final String EXTRA_LOGIN_TOKEN = "com.handy.handy.EXTRA_LOGIN_TOKEN";
-    static final String EXTRA_PATH = "com.handy.handy.EXTRA_PATH";
-
-    //private HelpNode currentNode;
-    //private static HelpNode rootNode;
-    private String currentBookingId;
-    private String currentLoginToken;
-    private String path;
-
-//    @InjectView(R.id.menu_button_layout)
-//    ViewGroup menuButtonLayout;
-//    @InjectView(R.id.help_header)
-//    View helpHeader;
-
-    /*
-    @InjectView(R.id.help_header_title)
-    TextView headerTitle;
-    @InjectView(R.id.info_text)
-    TextView infoText;
-    @InjectView(R.id.nav_options_layout)
-    LinearLayout navList;
-    @InjectView(R.id.info_layout)
-    View infoLayout;
-    @InjectView(R.id.help_icon)
-    ImageView helpIcon;
-    @InjectView(R.id.help_triangle)
-    ImageView helpTriangleView;
-    @InjectView(R.id.cta_layout)
-    ViewGroup ctaLayout;
-    @InjectView(R.id.contact_button)
-    Button contactButton;
-    */
-
     @InjectView(R.id.scroll_view)
     ScrollView scrollView;
-//    @InjectView(R.id.close_img)
-//    ImageView closeImage;
-//    @InjectView(R.id.back_img)
-//    ImageView backImage;
 
-    //@InjectView(R.id.cta_button_template_layout) ViewGroup ctaButtonTemplateLayout;
+    private final String STATE_SCROLL_POSITION = "SCROLL_POSITION";
+
+    private String nodeIdToRequest = null;
+    private boolean nodeIsBooking = false;
+    private final static String PATH_SEPARATOR = " > ";
+    private String currentBookingId = "";
+    private String currentLoginToken = "";
+    private String path = "";
 
     public static HelpFragment newInstance(final String bookingId,
                                            final String loginToken,
                                            final String path,
-                                           final String nodeId
+                                           final String nodeId,
+                                           final boolean nodeIsBooking
     )
     {
         final HelpFragment fragment = new HelpFragment();
         final Bundle args = new Bundle();
-        //args.putParcelable(EXTRA_HELP_NODE, node);
-        args.putString(EXTRA_BOOKING_ID, bookingId);
-        args.putString(EXTRA_LOGIN_TOKEN, loginToken);
-        args.putString(EXTRA_PATH, path);
+
+        args.putString(BundleKeys.BOOKING_ID, bookingId);
+        args.putString(BundleKeys.LOGIN_TOKEN, loginToken);
+        args.putString(BundleKeys.PATH, path);
         args.putString(BundleKeys.HELP_NODE_ID, nodeId);
+        args.putBoolean(BundleKeys.HELP_NODE_IS_BOOKING, nodeIsBooking);
+
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -126,123 +79,25 @@ public final class HelpFragment extends InjectedFragment
     {
         super.onCreate(savedInstanceState);
 
-        //NORTAL
-        if (getArguments() != null && getArguments().containsKey(BundleKeys.BOOKING_ID))
+        if (getArguments() == null)
         {
-            currentBookingId = getArguments().getString(BundleKeys.BOOKING_ID);
-        } else
-        {
-            currentBookingId = "";
+            return;
         }
 
-        if (getArguments() != null && getArguments().containsKey(BundleKeys.HELP_NODE_ID))
-        {
-            nodeIdToRequest = getArguments().getString(BundleKeys.HELP_NODE_ID);
-        }
-
-
-        System.out.println("ZZZZ Node id to request : " + nodeIdToRequest);
-
-        //ORIGINAL
-
-
-        //currentNode = getArguments().getParcelable(EXTRA_HELP_NODE);
-        currentBookingId = getArguments().getString(EXTRA_BOOKING_ID);
-        currentLoginToken = getArguments().getString(EXTRA_LOGIN_TOKEN);
-        path = getArguments().getString(EXTRA_PATH, "");
-
-
-        System.out.println("ZZZZ current path : " + path);
-
+        nodeIdToRequest = getArguments().getString(BundleKeys.HELP_NODE_ID, null);
+        nodeIsBooking = getArguments().getBoolean(BundleKeys.HELP_NODE_IS_BOOKING, false);
+        currentBookingId = getArguments().getString(BundleKeys.BOOKING_ID, "");
+        currentBookingId = getArguments().getString(BundleKeys.BOOKING_ID, "");
+        currentLoginToken = getArguments().getString(BundleKeys.LOGIN_TOKEN, "");
+        path = getArguments().getString(BundleKeys.PATH, "");
     }
-
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        //if (!MainActivityFragment.clearingBackStack)
-        {
-            //bus.post(new HandyEvent.SetLoadingOverlayVisibility(true));  //TODO: what is the relevant analogue?
-            progressDialog.show();
-            System.out.println("Requesting node : " + nodeIdToRequest);
-            bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
-        }
-    }
-
-
-    //Event Listeners
-
-    @Subscribe
-    public void onReceiveHelpNodeSuccess(HandyEvent.ReceiveHelpNodeSuccess event)
-    {
-        //bus.post(new HandyEvent.SetLoadingOverlayVisibility(false));
-
-        System.out.println("Received help node " + (event != null ? event.helpNode.getId() : " is null"));
-
-        progressDialog.dismiss();
-        scrollView.setVisibility(View.VISIBLE);
-        HelpNode helpNode = event.helpNode;
-        trackPath(helpNode);
-        updateDisplay(helpNode);
-
-
-        //todo: move this out to its own function / mixpanel tracking shouold be wrangled into the navigation events
-        //if (savedInstanceState == null)
-        {
-            switch (helpNode.getType())
-            {
-                case HelpNode.HelpNodeType.ROOT:
-                    mixpanel.trackEventHelpCenterOpened();
-                    break;
-
-                case HelpNode.HelpNodeType.ARTICLE:
-                    mixpanel.trackEventHelpCenterLeaf(Integer.toString(helpNode.getId()), helpNode.getLabel());
-                    break;
-            }
-        }
-
-    }
-
-    //TODO: Make this smarter and recognize back tracking
-    private void trackPath(HelpNode node)
-    {
-        //Don't add the root node to the path as per CX spec
-        if (!node.getType().equals(HelpNode.HelpNodeType.ROOT))
-        {
-            path += (!path.isEmpty() ? PATH_SEPARATOR : "") + node.getLabel();
-        }
-    }
-
-    @Subscribe
-    public void onReceiveHelpNodeError(HandyEvent.ReceiveHelpNodeError event)
-    {
-        // bus.post(new HandyEvent.SetLoadingOverlayVisibility(false));
-        progressDialog.dismiss();
-        scrollView.setVisibility(View.GONE);
-        errorView.setVisibility(View.VISIBLE);
-        errorText.setText(R.string.error_fetching_connectivity_issue);
-    }
-
-    @OnClick(R.id.try_again_button)
-    public void doTryAgain()
-    {
-        errorView.setVisibility(View.GONE);
-        //bus.post(new HandyEvent.SetLoadingOverlayVisibility(true));
-        progressDialog.show();
-        bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
-    }
-
 
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState)
     {
-        //TODO: Should we bother inflating if we're popping the fragment stack?
-
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_help, container, false);
-
         ButterKnife.inject(this, view);
 
         //Restore saved scroll position
@@ -269,14 +124,138 @@ public final class HelpFragment extends InjectedFragment
         if (getArguments() != null && getArguments().containsKey(BundleKeys.PATH))
         {
             path = getArguments().getString(BundleKeys.PATH);
-        } else
+        }
+        else
         {
             path = "";
         }
 
         setupBackClickListeners();
 
+        //wait for node to come back before showing, maybe we should have some default background "waiting" image?
+        view.setVisibility(View.INVISIBLE);
+
         return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        System.out.println("ZZZZZ HEY WE ARE ON RESUMING A HELP FRAGMENT WITH NODE ID : " + nodeIdToRequest);
+
+        //if (!MainActivityFragment.clearingBackStack)  //TODO: Do we need to worry about this for activity based when popping the stack?
+        {
+            //bus.post(new HandyEvent.SetLoadingOverlayVisibility(true));  //TODO: what is the relevant analogue?
+            progressDialog.show();
+            System.out.println("Requesting node : " + nodeIdToRequest);
+
+            if(nodeIsBooking)
+            {
+                bus.post(new HandyEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
+            }
+            else
+            {
+                bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
+            }
+
+        }
+    }
+
+
+    //Event Listeners
+
+    @Subscribe
+    public void onReceiveHelpNodeSuccess(HandyEvent.ReceiveHelpNodeSuccess event)
+    {
+        onHelpNodeSuccess(event.helpNode);
+    }
+
+    @Subscribe
+    public void onReceiveHelpNodeError(HandyEvent.ReceiveHelpNodeError event)
+    {
+        onHelpNodeError();
+    }
+
+    @Subscribe
+    public void onReceiveHelpBookingNodeSuccess(HandyEvent.ReceiveHelpBookingNodeSuccess event)
+    {
+        onHelpNodeSuccess(event.helpNode);
+    }
+
+    @Subscribe
+    public void onReceiveHelpBookingNodeError(HandyEvent.ReceiveHelpBookingNodeError event)
+    {
+        onHelpNodeError();
+    }
+
+    private void onHelpNodeSuccess(HelpNode helpNode)
+    {
+        getView().setVisibility(View.VISIBLE);
+        progressDialog.dismiss();
+        scrollView.setVisibility(View.VISIBLE);
+        trackPath(helpNode);
+        updateDisplay(helpNode);
+
+        //todo: move this out to its own function / mixpanel tracking shouold be wrangled into the navigation events
+        //if (savedInstanceState == null)
+        {
+            switch (helpNode.getType())
+            {
+                case HelpNode.HelpNodeType.ROOT:
+                    mixpanel.trackEventHelpCenterOpened();
+                    break;
+
+                case HelpNode.HelpNodeType.ARTICLE:
+                    mixpanel.trackEventHelpCenterLeaf(Integer.toString(helpNode.getId()), helpNode.getLabel());
+                    break;
+            }
+        }
+    }
+
+    private void onHelpNodeError()
+    {
+        getView().setVisibility(View.VISIBLE);
+        progressDialog.dismiss();
+        scrollView.setVisibility(View.GONE);
+        errorView.setVisibility(View.VISIBLE);
+        errorText.setText(R.string.error_fetching_connectivity_issue);
+    }
+
+    @OnClick(R.id.try_again_button)
+    public void doTryAgain()
+    {
+        errorView.setVisibility(View.GONE);
+        progressDialog.show();
+        if(nodeIsBooking)
+        {
+            bus.post(new HandyEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
+        }
+        else
+        {
+            bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
+        }
+    }
+
+    //TODO: Make this smarter and recognize back tracking
+    private void trackPath(HelpNode node)
+    {
+        if(node == null)
+        {
+            return;
+        }
+
+        if(path == null)
+        {
+            path = "";
+        }
+
+        //Don't add the root node to the path as per CX spec
+        if (!node.getType().equals(HelpNode.HelpNodeType.ROOT))
+        {
+            path += (!path.isEmpty() ? PATH_SEPARATOR : "") + node.getLabel();
+        }
     }
 
     private void updateDisplay(final HelpNode node)
@@ -436,33 +415,26 @@ public final class HelpFragment extends InjectedFragment
     private void navigateToHelpPage(HelpNode helpNode)
     {
         final Intent intent = new Intent(getActivity(), HelpActivity.class);
-        //intent.putExtra(HelpActivity.EXTRA_HELP_NODE, helpNode);
-        intent.putExtra(HelpActivity.EXTRA_BOOKING_ID, currentBookingId);
-        intent.putExtra(HelpActivity.EXTRA_LOGIN_TOKEN, currentLoginToken);
-        intent.putExtra(HelpActivity.EXTRA_PATH, path.length() > 0 ? path += " -> "
-                + helpNode.getLabel() : helpNode.getLabel());
-
-        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNode.getId()));
-
+        addIntentExtras(intent, helpNode);
         System.out.println("ZZZ navigate ot help page : " + helpNode.getId());
-
         startActivity(intent);
     }
 
     private void navigateToHelpContactPage(HelpNode helpNode)
     {
         final Intent intent = new Intent(getActivity(), HelpContactActivity.class);
-        //intent.putExtra(HelpActivity.EXTRA_HELP_NODE, helpNode);
-        intent.putExtra(HelpActivity.EXTRA_BOOKING_ID, currentBookingId);
-        intent.putExtra(HelpActivity.EXTRA_LOGIN_TOKEN, currentLoginToken);
-        intent.putExtra(HelpActivity.EXTRA_PATH, path.length() > 0 ? path += " -> "
-                + helpNode.getLabel() : helpNode.getLabel());
-
-        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNode.getId()));
-
-        System.out.println("ZZZ navigate ot help page : " + helpNode.getId());
-
+        addIntentExtras(intent, helpNode);
+        System.out.println("ZZZ navigate ot help contact page : " + helpNode.getId());
         startActivity(intent);
+    }
+
+    private void addIntentExtras(Intent intent, HelpNode helpNode)
+    {
+        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNode.getId()));
+        intent.putExtra(BundleKeys.HELP_NODE_IS_BOOKING, helpNode.getType().equals(HelpNode.HelpNodeType.BOOKING));
+        intent.putExtra(BundleKeys.BOOKING_ID, currentBookingId);
+        intent.putExtra(BundleKeys.LOGIN_TOKEN, currentLoginToken);
+        intent.putExtra(BundleKeys.PATH, path);
     }
 
 

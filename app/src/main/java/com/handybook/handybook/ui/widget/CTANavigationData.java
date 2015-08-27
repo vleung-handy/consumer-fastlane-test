@@ -1,10 +1,9 @@
 package com.handybook.handybook.ui.widget;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.core.HelpNode;
 
 import org.json.JSONObject;
-
-import java.util.Dictionary;
 
 public final class CTANavigationData
 {
@@ -13,7 +12,7 @@ public final class CTANavigationData
 
     public String nodeContentWebUrl;
     public String navigationActionId;
-    public String loginToken;
+    public String loginToken; //TODO: May remove this from the class and have relevant requestors go through the service for their login tokens
 
     public CTANavigationData()
     {
@@ -49,7 +48,7 @@ public final class CTANavigationData
         }
         catch (Exception e)
         {
-            System.err.println("initFromHelpNode : Could not parse node content into JSON : " + e);
+            Crashlytics.log("initFromHelpNode : Could not parse node content into JSON : " + e);
         }
 
         this.loginToken = (loginToken != null ? loginToken : "");
