@@ -2,9 +2,12 @@ package com.handybook.handybook.event;
 
 import android.app.Activity;
 
+import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.data.DataManager;
+
+import retrofit.mime.TypedInput;
 
 public abstract class HandyEvent
 {
@@ -97,6 +100,33 @@ public abstract class HandyEvent
     public static class ReceiveHelpBookingNodeError extends ReceiveErrorEvent
     {
         public ReceiveHelpBookingNodeError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    //Help Contact Message
+    @Track("pro help contact form submitted")
+    public static class RequestNotifyHelpContact extends HandyEvent
+    {
+        public TypedInput body;
+
+        public RequestNotifyHelpContact(TypedInput body)
+        {
+            this.body = body;
+        }
+    }
+
+    public static class ReceiveNotifyHelpContactSuccess extends ReceiveSuccessEvent
+    {
+        public ReceiveNotifyHelpContactSuccess()
+        {
+        }
+    }
+
+    public static class ReceiveNotifyHelpContactError extends ReceiveErrorEvent
+    {
+        public ReceiveNotifyHelpContactError(DataManager.DataManagerError error)
         {
             this.error = error;
         }

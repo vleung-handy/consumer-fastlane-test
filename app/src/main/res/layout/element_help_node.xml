@@ -72,7 +72,7 @@
         <Button
             android:id="@+id/contact_button"
             style="@style/Button.Green.Round"
-            android:layout_below="@id/help_webview"
+            android:layout_below="@id/cta_layout"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:text="@string/i_still_need_help"

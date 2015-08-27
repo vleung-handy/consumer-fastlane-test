@@ -147,9 +147,7 @@ public final class HelpFragment extends InjectedFragment
 
         //if (!MainActivityFragment.clearingBackStack)  //TODO: Do we need to worry about this for activity based when popping the stack?
         {
-            //bus.post(new HandyEvent.SetLoadingOverlayVisibility(true));  //TODO: what is the relevant analogue?
             progressDialog.show();
-            System.out.println("Requesting node : " + nodeIdToRequest);
 
             if(nodeIsBooking)
             {
@@ -198,8 +196,10 @@ public final class HelpFragment extends InjectedFragment
         trackPath(helpNode);
         updateDisplay(helpNode);
 
-        //todo: move this out to its own function / mixpanel tracking shouold be wrangled into the navigation events
+        //UPGRADE: move this out to its own function / mixpanel tracking shouold be wrangled into the navigation events
         //if (savedInstanceState == null)
+
+        if(helpNode != null)
         {
             switch (helpNode.getType())
             {
@@ -415,27 +415,21 @@ public final class HelpFragment extends InjectedFragment
     private void navigateToHelpPage(HelpNode helpNode)
     {
         final Intent intent = new Intent(getActivity(), HelpActivity.class);
-        addIntentExtras(intent, helpNode);
-        System.out.println("ZZZ navigate ot help page : " + helpNode.getId());
+        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNode.getId()));
+        intent.putExtra(BundleKeys.HELP_NODE_IS_BOOKING, helpNode.getType().equals(HelpNode.HelpNodeType.BOOKING));
+        intent.putExtra(BundleKeys.BOOKING_ID, currentBookingId);
+        intent.putExtra(BundleKeys.LOGIN_TOKEN, currentLoginToken);
+        intent.putExtra(BundleKeys.PATH, path);
         startActivity(intent);
     }
 
     private void navigateToHelpContactPage(HelpNode helpNode)
     {
         final Intent intent = new Intent(getActivity(), HelpContactActivity.class);
-        addIntentExtras(intent, helpNode);
-        System.out.println("ZZZ navigate ot help contact page : " + helpNode.getId());
+        intent.putExtra(BundleKeys.HELP_NODE, helpNode);
+        intent.putExtra(BundleKeys.PATH, path);
+        intent.putExtra(BundleKeys.BOOKING_ID, currentBookingId);
         startActivity(intent);
     }
-
-    private void addIntentExtras(Intent intent, HelpNode helpNode)
-    {
-        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNode.getId()));
-        intent.putExtra(BundleKeys.HELP_NODE_IS_BOOKING, helpNode.getType().equals(HelpNode.HelpNodeType.BOOKING));
-        intent.putExtra(BundleKeys.BOOKING_ID, currentBookingId);
-        intent.putExtra(BundleKeys.LOGIN_TOKEN, currentLoginToken);
-        intent.putExtra(BundleKeys.PATH, path);
-    }
-
 
 }

@@ -9,7 +9,9 @@ import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
+import com.handybook.handybook.manager.PrefsManager;
 import com.newrelic.agent.android.NewRelic;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -37,6 +39,11 @@ public class BaseApplication extends Application {
     //We are injecting all of our event bus listening managers in BaseApplication to start them up for event listening
     @Inject
     HelpManager helpManager;
+    @Inject
+    HelpContactManager helpContactManager;
+    @Inject
+    PrefsManager prefsManager;
+
 
     @Override
     public void onCreate() {

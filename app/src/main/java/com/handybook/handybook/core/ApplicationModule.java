@@ -17,6 +17,7 @@ import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
@@ -275,6 +276,15 @@ public final class ApplicationModule
                                          )
     {
         return new HelpManager(bus, dataManager, userManager);
+    }
+
+    @Provides
+    @Singleton
+    final HelpContactManager provideHelpContactManager(final Bus bus,
+                                         final DataManager dataManager
+    )
+    {
+        return new HelpContactManager(bus, dataManager);
     }
 
     private String getDeviceId()

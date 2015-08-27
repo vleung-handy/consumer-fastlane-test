@@ -60,7 +60,7 @@ public final class HelpContactView extends InjectedRelativeLayout
         subjectText.setText(node.getLabel());
     }
 
-    public void prepopulateProviderData(User user)
+    public void prepopulateUserData(User user)
     {
         if (user != null)
         {

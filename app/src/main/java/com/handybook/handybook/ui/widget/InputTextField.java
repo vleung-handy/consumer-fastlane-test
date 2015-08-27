@@ -30,21 +30,25 @@ public abstract class InputTextField extends EditText {
     }
 
     void init() {
-        this.addTextChangedListener(new TextWatcher() {
+        this.addTextChangedListener(new TextWatcher()
+        {
             @Override
             public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                          final int count, final int after) {
+                                          final int count, final int after)
+            {
 
             }
 
             @Override
             public void onTextChanged(final CharSequence charSequence, final int start,
-                                      final int before, final int count) {
+                                      final int before, final int count)
+            {
                 if (start != 0 || before != 0) unHighlight();
             }
 
             @Override
-            public void afterTextChanged(final Editable editable) {
+            public void afterTextChanged(final Editable editable)
+            {
             }
         });
     }
@@ -66,4 +70,9 @@ public abstract class InputTextField extends EditText {
     }
 
     abstract boolean validate();
+
+    public String getString()
+    {
+        return this.getText().toString();
+    }
 }
