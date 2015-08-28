@@ -5,6 +5,7 @@ import android.support.v4.util.Pair;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
@@ -18,6 +19,7 @@ import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.manager.PrefsManager;
 import com.squareup.otto.Bus;
 
 import org.json.JSONArray;
@@ -38,16 +40,16 @@ public final class BaseDataManager extends DataManager
 {
     private final HandyRetrofitService service;
     private final HandyEndpoint endpoint;
-    private final SecurePreferences prefs;
+    private final PrefsManager prefsManager;
 
     @Inject
     public BaseDataManager(final HandyRetrofitService service, final HandyEndpoint endpoint,
-                           final Bus bus, final SecurePreferences prefs)
+                           final Bus bus, final PrefsManager prefsManager)
     {
         super(bus);
         this.service = service;
         this.endpoint = endpoint;
-        this.prefs = prefs;
+        this.prefsManager = prefsManager;
     }
 
     //UPGRADE: Grab the HandyRetrofitEndpoint and EnvironmentManagers from Nortal
@@ -101,7 +103,7 @@ public final class BaseDataManager extends DataManager
     public final void getServices(final CacheResponse<List<Service>> cache,
                                   final Callback<List<Service>> cb)
     {
-        final List<Service> cachedServices = new Gson().fromJson(prefs.getString("CACHED_SERVICES"),
+        final List<Service> cachedServices = new Gson().fromJson(prefsManager.getString(PrefsKey.CACHED_SERVICES),
                 new TypeToken<List<Service>>()
                 {
                 }.getType());
@@ -219,7 +221,7 @@ public final class BaseDataManager extends DataManager
                             }
                         });
 
-                        prefs.put("CACHED_SERVICES", new Gson()
+                        prefsManager.setString(PrefsKey.CACHED_SERVICES, new Gson()
                                 .toJsonTree(servicesMenu).getAsJsonArray().toString());
                         cb.onSuccess(servicesMenu);
                     }

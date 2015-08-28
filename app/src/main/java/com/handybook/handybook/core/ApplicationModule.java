@@ -19,6 +19,7 @@ import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
+import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
@@ -138,13 +139,15 @@ public final class ApplicationModule
     {
 
         final OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
 
         final String username = configs.getProperty("api_username");
         String password = configs.getProperty("api_password_internal");
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
             password = configs.getProperty("api_password");
+        }
 
         final String pwd = password;
 
@@ -167,7 +170,10 @@ public final class ApplicationModule
                         request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
 
                         final User user = userManager.getCurrentUser();
-                        if (user != null) request.addQueryParam("app_user_id", user.getId());
+                        if (user != null)
+                        {
+                            request.addQueryParam("app_user_id", user.getId());
+                        }
                     }
                 }).setConverter(new GsonConverter(new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -189,7 +195,9 @@ public final class ApplicationModule
 
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
+        {
             restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
+        }
 
         return restAdapter.create(HandyRetrofitService.class);
     }
@@ -199,12 +207,14 @@ public final class ApplicationModule
     final DataManager provideDataManager(final HandyRetrofitService service,
                                          final HandyEndpoint endpoint,
                                          final Bus bus,
-                                         final SecurePreferences prefs)
+                                         final PrefsManager prefsManager)
     {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);
+        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefsManager);
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
             dataManager.setEnvironment(DataManager.Environment.P, false);
+        }
 
         return dataManager;
     }
@@ -233,17 +243,17 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final BookingManager provideBookingManager(final Bus bus,
-                                               final SecurePreferences prefs)
+                                               final PrefsManager prefsManager)
     {
-        return new BookingManager(bus, prefs);
+        return new BookingManager(bus, prefsManager);
     }
 
     @Provides
     @Singleton
     final UserManager provideUserManager(final Bus bus,
-                                         final SecurePreferences prefs)
+                                         final PrefsManager prefsManager)
     {
-        return new UserManager(bus, prefs);
+        return new UserManager(bus, prefsManager);
     }
 
     @Provides
@@ -254,9 +264,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final Mixpanel provideMixpanel(final SecurePreferences securePrefs)
+    final Mixpanel provideMixpanel(final PrefsManager prefsManager)
     {
-        return new Mixpanel(context, securePrefs);
+        return new Mixpanel(context, prefsManager);
     }
 
     @Provides
@@ -273,7 +283,7 @@ public final class ApplicationModule
     final HelpManager provideHelpManager(final Bus bus,
                                          final DataManager dataManager,
                                          final UserManager userManager
-                                         )
+    )
     {
         return new HelpManager(bus, dataManager, userManager);
     }
@@ -281,7 +291,7 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final HelpContactManager provideHelpContactManager(final Bus bus,
-                                         final DataManager dataManager
+                                                       final DataManager dataManager
     )
     {
         return new HelpContactManager(bus, dataManager);
@@ -289,8 +299,7 @@ public final class ApplicationModule
 
     private String getDeviceId()
     {
-        return Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     private String getDeviceName()
@@ -298,7 +307,13 @@ public final class ApplicationModule
         final String manufacturer = Build.MANUFACTURER;
         final String model = Build.MODEL;
 
-        if (model.startsWith(manufacturer)) return model;
-        else return manufacturer + " " + model;
+        if (model.startsWith(manufacturer))
+        {
+            return model;
+        }
+        else
+        {
+            return manufacturer + " " + model;
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.annotation.TrackField;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
@@ -12,6 +13,7 @@ import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
+import com.handybook.handybook.manager.PrefsManager;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Subscribe;
 
@@ -26,25 +28,24 @@ import javax.inject.Inject;
 public class Mixpanel
 {
     private MixpanelAPI mixpanelAPI;
+    private PrefsManager prefsManager;
     private HashMap<String, Boolean> calledMap;
-    private SecurePreferences securePrefs;
 
     @Inject
     public Mixpanel(final Context context,
-                    final SecurePreferences securePrefs
-    )
+                    final PrefsManager prefsManager)
     {
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
             mixpanelAPI = MixpanelAPI.getInstance(context, "864ccb52b900de546bb1bba717ab4fac");
-        } else
+        }
+        else
         {
             mixpanelAPI = MixpanelAPI.getInstance(context, "5b31021d4a78ed7d57d9f19fd796f1cd");
         }
 
-        this.securePrefs = securePrefs;
         this.calledMap = new HashMap<>();
-
+        this.prefsManager = prefsManager;
         setSuperProps();
     }
 
@@ -62,14 +63,14 @@ public class Mixpanel
         addProps(props, "client", "android");
         addProps(props, "impersonating", false);
 
-        // final User user = userManager.getCurrentUser();
+        //UPGRADE: This is a change, previously we talked to the UserManager, make sure that the prefs user_obj is always updated properly in secureprefs
+        final User user = User.fromJson(prefsManager.getString(PrefsKey.USER));
 
-        final User user;
-        //UPGRADE: This is a change, make sure that the prefs user_obj is always updated properly in secureprefs
-        if ((user = User.fromJson(securePrefs.getString("USER_OBJ"))) != null)
+        if (user == null)
         {
             addProps(props, "user_logged_in", false);
-        } else
+        }
+        else
         {
             addProps(props, "user_logged_in", true);
 
@@ -155,7 +156,10 @@ public class Mixpanel
     {
         final String event = "payment page";
         final Boolean called = calledMap.get(event);
-        if (called != null && called) return;
+        if (called != null && called)
+        {
+            return;
+        }
 
         final JSONObject props = new JSONObject();
         addPaymentFlowProps(props, request, quote, transaction);
@@ -168,7 +172,10 @@ public class Mixpanel
     {
         final String event = "submit payment";
         final Boolean called = calledMap.get(event);
-        if (called != null && called) return;
+        if (called != null && called)
+        {
+            return;
+        }
 
         final JSONObject props = new JSONObject();
         addSubmitPaymentFlowProps(props, request, quote, transaction);
@@ -181,7 +188,10 @@ public class Mixpanel
     {
         final String event = "booking made";
         final Boolean called = calledMap.get(event);
-        if (called != null && called) return;
+        if (called != null && called)
+        {
+            return;
+        }
 
         final JSONObject props = new JSONObject();
         addBookingMadeFlowProps(props, request, quote, transaction);
@@ -270,7 +280,10 @@ public class Mixpanel
         addProps(props, "provider_name", proName);
         addProps(props, "rating_range", "1 to 5");
 
-        if (type == ProRateEventType.SUBMIT) addProps(props, "app_rating", rating);
+        if (type == ProRateEventType.SUBMIT)
+        {
+            addProps(props, "app_rating", rating);
+        }
 
         mixpanelAPI.track("app pro rate event", props);
     }
@@ -327,7 +340,10 @@ public class Mixpanel
     {
         try
         {
-            for (final String key : props.keySet()) object.put(key, props.get(key));
+            for (final String key : props.keySet())
+            {
+                object.put(key, props.get(key));
+            }
         } catch (final JSONException e)
         {
             throw new RuntimeException(e);
@@ -373,7 +389,10 @@ public class Mixpanel
         float hours = 0, price = 0;
         boolean hasDynamicPricing = false, isRepeat = false;
 
-        if (request != null) email = request.getEmail();
+        if (request != null)
+        {
+            email = request.getEmail();
+        }
 
         if (quote != null)
         {
@@ -386,7 +405,10 @@ public class Mixpanel
         {
             repeatFreq = transaction.getRecurringFrequency();
             isRepeat = repeatFreq > 0;
-            if (quote != null) price = quote.getPricing(hours, repeatFreq)[0];
+            if (quote != null)
+            {
+                price = quote.getPricing(hours, repeatFreq)[0];
+            }
         }
 
         addProps(props, "booking_id", bookingId);
@@ -395,7 +417,10 @@ public class Mixpanel
         addProps(props, "price_before_discount", price);
         addProps(props, "repeat", isRepeat);
         addProps(props, "dynamic_price", hasDynamicPricing);
-        if (repeatFreq > 0) addProps(props, "repeat_freq", repeatFreq);
+        if (repeatFreq > 0)
+        {
+            addProps(props, "repeat_freq", repeatFreq);
+        }
     }
 
     private void addSubmitPaymentFlowProps(final JSONObject props, BookingRequest request, BookingQuote quote, BookingTransaction transaction)
@@ -413,15 +438,24 @@ public class Mixpanel
             if (cleaningExtras != null)
             {
                 final String[] extrasList = cleaningExtras.split(",");
-                if (extrasList.length > 0) cleaningExtrasSelected = true;
+                if (extrasList.length > 0)
+                {
+                    cleaningExtrasSelected = true;
+                }
             }
 
             hours = transaction.getExtraHours();
         }
 
         addProps(props, "cleaning_extras_tapped", cleaningExtrasSelected);
-        if (cleaningExtrasSelected) addProps(props, "extra_hours", hours);
-        if (cleaningExtrasSelected) addProps(props, "extras", cleaningExtras);
+        if (cleaningExtrasSelected)
+        {
+            addProps(props, "extra_hours", hours);
+        }
+        if (cleaningExtrasSelected)
+        {
+            addProps(props, "extras", cleaningExtras);
+        }
     }
 
     private void addBookingMadeFlowProps(final JSONObject props, BookingRequest request, BookingQuote quote, BookingTransaction transaction)
@@ -431,7 +465,10 @@ public class Mixpanel
         float hourlyPrice = 0, totalPrice = 0;
         boolean isRepeating = false;
 
-        if (quote != null) hourlyPrice = quote.getHourlyAmount();
+        if (quote != null)
+        {
+            hourlyPrice = quote.getHourlyAmount();
+        }
 
         if (transaction != null)
         {
@@ -441,9 +478,17 @@ public class Mixpanel
             float[] pricing = new float[]{0, 0};
 
             if (quote != null)
+            {
                 pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
-            if (pricing[0] == pricing[1]) totalPrice = pricing[0];
-            else totalPrice = pricing[1];
+            }
+            if (pricing[0] == pricing[1])
+            {
+                totalPrice = pricing[0];
+            }
+            else
+            {
+                totalPrice = pricing[1];
+            }
         }
 
         addProps(props, "price_per_hour", hourlyPrice);

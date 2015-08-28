@@ -1,8 +1,9 @@
 package com.handybook.handybook.core;
 
-import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
+import com.handybook.handybook.manager.PrefsManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.urbanairship.UAirship;
@@ -16,12 +17,12 @@ public class UserManager implements Observer
 {
     private Bus bus;
     protected User user;
-    private SecurePreferences securePrefs;
+    private PrefsManager prefsManager;
 
     @Inject
-    UserManager(final Bus bus, final SecurePreferences prefs)
+    UserManager(final Bus bus, final PrefsManager prefsManager)
     {
-        this.securePrefs = prefs;
+        this.prefsManager = prefsManager;
         this.bus = bus;
         this.bus.register(this);
     }
@@ -34,7 +35,7 @@ public class UserManager implements Observer
         }
         else
         {
-            if ((user = User.fromJson(securePrefs.getString("USER_OBJ"))) != null)
+            if ((user = User.fromJson(prefsManager.getString(PrefsKey.USER))) != null)
             {
                 user.addObserver(this);
             }
@@ -52,7 +53,7 @@ public class UserManager implements Observer
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
         {
             user = null;
-            securePrefs.put("USER_OBJ", null);
+            prefsManager.setString(PrefsKey.USER, null);
             bus.post(new UserLoggedInEvent(false));
             return;
         }
@@ -60,7 +61,8 @@ public class UserManager implements Observer
         user = newUser;
         user.addObserver(this);
 
-        securePrefs.put("USER_OBJ", user.toJson());
+        prefsManager.setString(PrefsKey.USER, user.toJson());
+
         UAirship.shared().getPushManager().setAlias(user.getId());
 
         bus.post(new UserLoggedInEvent(true));
