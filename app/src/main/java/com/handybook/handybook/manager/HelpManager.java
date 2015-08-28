@@ -82,18 +82,7 @@ public class HelpManager
         String nodeId = event.nodeId;
         String bookingId = event.bookingId;
 
-        //TODO: Currently we send null to request root on the server, this is a bit hacky and does not allow us to cache the root node which is silly
-
-        if (nodeId != null) //nulls will crash our cache on the getIfPresentCall
-        {
-            final HelpNode cachedHelpNode = helpNodeCache.getIfPresent(nodeId);
-            if (cachedHelpNode != null)
-            {
-                bus.post(new HandyEvent.ReceiveHelpBookingNodeSuccess(cachedHelpNode));
-                return;
-            }
-        }
-
+        //DO NOT CACHE BOOKING NODES
         dataManager.getHelpBookingsInfo(nodeId, getAuthToken(), bookingId, new DataManager.Callback<HelpNodeWrapper>()
         {
             @Override

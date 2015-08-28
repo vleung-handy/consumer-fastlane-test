@@ -52,9 +52,12 @@ public final class HelpFragment extends InjectedFragment
     private String currentLoginToken = "";
     private String path = "";
 
+    private HelpNode associatedNode = null;
+
     public static HelpFragment newInstance(final String bookingId,
                                            final String loginToken,
                                            final String path,
+                                           final HelpNode helpNode,
                                            final String nodeId,
                                            final boolean nodeIsBooking
     )
@@ -66,6 +69,7 @@ public final class HelpFragment extends InjectedFragment
         args.putString(BundleKeys.LOGIN_TOKEN, loginToken);
         args.putString(BundleKeys.PATH, path);
         args.putString(BundleKeys.HELP_NODE_ID, nodeId);
+        args.putParcelable(BundleKeys.HELP_NODE, helpNode);
         args.putBoolean(BundleKeys.HELP_NODE_IS_BOOKING, nodeIsBooking);
 
         fragment.setArguments(args);
@@ -79,10 +83,37 @@ public final class HelpFragment extends InjectedFragment
     {
         super.onCreate(savedInstanceState);
 
+        System.out.println("ZZZZZ WE ARE ONCREATING THE HELP FRAGMENT");
+
         if (getArguments() == null)
         {
             return;
         }
+
+        if(this.associatedNode == null)
+        {
+            System.out.println("PRE CREATION : ZZZ While creating we see a null associated node");
+        }
+        else
+        {
+            System.out.println("PRE CREATION :  ZZZ While creating we see a GOOD associated node : " + this.associatedNode.getId());
+        }
+
+
+        if(getArguments().getParcelable(BundleKeys.HELP_NODE) == null)
+        {
+            System.out.println("PRE CREATION : ZZZ in arguments help node null");
+        }
+        else
+        {
+            System.out.println("PRE CREATION :  ZZZ in arguments help node not null : " + ((HelpNode)getArguments().getParcelable(BundleKeys.HELP_NODE)).getId());
+        }
+
+        if(associatedNode == null)
+        {
+            associatedNode = getArguments().getParcelable(BundleKeys.HELP_NODE);
+        }
+
 
         nodeIdToRequest = getArguments().getString(BundleKeys.HELP_NODE_ID, null);
         nodeIsBooking = getArguments().getBoolean(BundleKeys.HELP_NODE_IS_BOOKING, false);
@@ -90,6 +121,17 @@ public final class HelpFragment extends InjectedFragment
         currentBookingId = getArguments().getString(BundleKeys.BOOKING_ID, "");
         currentLoginToken = getArguments().getString(BundleKeys.LOGIN_TOKEN, "");
         path = getArguments().getString(BundleKeys.PATH, "");
+
+
+        if(this.associatedNode == null)
+        {
+            System.out.println("While creating we see a null associated node");
+        }
+        else
+        {
+            System.out.println("ZZZ While creating we see a GOOD associated node");
+        }
+
     }
 
     @Override
@@ -121,21 +163,20 @@ public final class HelpFragment extends InjectedFragment
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
 
-        if (getArguments() != null && getArguments().containsKey(BundleKeys.PATH))
-        {
-            path = getArguments().getString(BundleKeys.PATH);
-        }
-        else
-        {
-            path = "";
-        }
-
         setupBackClickListeners();
 
-        //wait for node to come back before showing, maybe we should have some default background "waiting" image?
+        //wait for node to come back before showing, maybe we should have some default background "waiting" image? this just makes it grey
         view.setVisibility(View.INVISIBLE);
 
         return view;
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        System.out.println("ZZZZZ DER ON STARTYNEESSSS");
+
     }
 
     @Override
@@ -146,7 +187,12 @@ public final class HelpFragment extends InjectedFragment
         System.out.println("ZZZZZ HEY WE ARE ON RESUMING A HELP FRAGMENT WITH NODE ID : " + nodeIdToRequest);
 
         //if (!MainActivityFragment.clearingBackStack)  //TODO: Do we need to worry about this for activity based when popping the stack?
+
+        if(this.associatedNode == null)
         {
+
+            System.out.println("ZZZZZ Making the call to request da node : " + nodeIdToRequest);
+
             progressDialog.show();
 
             if(nodeIsBooking)
@@ -158,6 +204,11 @@ public final class HelpFragment extends InjectedFragment
                 bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
             }
 
+        }
+        else
+        {
+            System.out.println("ZZZZ ITS COOL WE DONT NEED TO REQUEST A NODE WE HAVE ONE, LIKELY FROM BEFORE");
+            helpNodeReceivedForPage(this.associatedNode);
         }
     }
 
@@ -188,18 +239,22 @@ public final class HelpFragment extends InjectedFragment
         onHelpNodeError();
     }
 
-    private void onHelpNodeSuccess(HelpNode helpNode)
+
+    private void helpNodeReceivedForPage(HelpNode helpNode)
     {
+        //TODO: Make a better default view while waiting for the data to come back? Or maybe we should move to a pass whole node in system?
         getView().setVisibility(View.VISIBLE);
-        progressDialog.dismiss();
+
         scrollView.setVisibility(View.VISIBLE);
         trackPath(helpNode);
         updateDisplay(helpNode);
 
+
+        this.associatedNode = helpNode;
+
         //UPGRADE: move this out to its own function / mixpanel tracking shouold be wrangled into the navigation events
         //if (savedInstanceState == null)
-
-        if(helpNode != null)
+        if (helpNode != null)
         {
             switch (helpNode.getType())
             {
@@ -211,6 +266,42 @@ public final class HelpFragment extends InjectedFragment
                     mixpanel.trackEventHelpCenterLeaf(Integer.toString(helpNode.getId()), helpNode.getLabel());
                     break;
             }
+        }
+    }
+
+    private void helpNodeReceivedForNextPage(HelpNode helpNode)
+    {
+        if(helpNode.getType().equals(HelpNode.HelpNodeType.CONTACT))
+        {
+            navigateToHelpContactPage(helpNode);
+        }
+        else
+        {
+            navigateToHelpPage(helpNode);
+        }
+    }
+
+
+    private void onHelpNodeSuccess(HelpNode helpNode)
+    {
+        progressDialog.dismiss();
+
+        if(this.associatedNode == null)
+        {
+            System.out.println("This help node is for us, display it");
+
+            //add to our arguments so if we get recreated we have it
+            getArguments().putParcelable(BundleKeys.HELP_NODE, helpNode);
+
+            helpNodeReceivedForPage(helpNode);
+
+        }
+        else
+        {
+            System.out.println("ZZZZ This help node is for our next page, pass it along");
+
+            helpNodeReceivedForNextPage(helpNode);
+
         }
     }
 
@@ -310,7 +401,16 @@ public final class HelpFragment extends InjectedFragment
                     }
                     else
                     {
-                        navigateToHelpPage(childNode);
+                        //navigateToHelpPage(childNode);
+                        progressDialog.show();
+                        if(childNode.getType().equals(HelpNode.HelpNodeType.BOOKING))
+                        {
+                            bus.post(new HandyEvent.RequestHelpBookingNode(Integer.toString(childNode.getId()), currentBookingId));
+                        }
+                        else
+                        {
+                            bus.post(new HandyEvent.RequestHelpNode(Integer.toString(childNode.getId()), currentBookingId));
+                        }
                     }
                 }
             });
@@ -328,7 +428,7 @@ public final class HelpFragment extends InjectedFragment
                     continue;
                 }
 
-                String childNodeType = childNode.getType();
+                final String childNodeType = childNode.getType();
                 if (childNodeType == null)
                 {
                     Crashlytics.log("HelpNode " + childNode.getId() + " has null data");
@@ -342,7 +442,9 @@ public final class HelpFragment extends InjectedFragment
                         @Override
                         public void onClick(View v)
                         {
-                            navigateToHelpContactPage(childNode);
+                            //navigateToHelpContactPage(childNode);
+                            progressDialog.show();
+                            bus.post(new HandyEvent.RequestHelpNode(Integer.toString(childNode.getId()), currentBookingId));
                         }
                     });
                 }
@@ -415,6 +517,7 @@ public final class HelpFragment extends InjectedFragment
     private void navigateToHelpPage(HelpNode helpNode)
     {
         final Intent intent = new Intent(getActivity(), HelpActivity.class);
+        intent.putExtra(BundleKeys.HELP_NODE, helpNode);
         intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNode.getId()));
         intent.putExtra(BundleKeys.HELP_NODE_IS_BOOKING, helpNode.getType().equals(HelpNode.HelpNodeType.BOOKING));
         intent.putExtra(BundleKeys.BOOKING_ID, currentBookingId);

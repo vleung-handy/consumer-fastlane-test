@@ -82,6 +82,15 @@ public abstract class BaseActivity extends FragmentActivity {
         progressDialog.setMessage(getString(R.string.loading));
     }
 
+    //Lifecycle
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        System.out.println("ZZZZZ WE BE RESTARTING3 DA ACTIVITY " + this.toString());
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -91,12 +100,15 @@ public abstract class BaseActivity extends FragmentActivity {
         }
 
         allowCallbacks = true;
+
+        System.out.println("ZZZZZ WE BE STARTING1 DA ACTIVITY " + this.toString());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         allowCallbacks = false;
+        System.out.println("ZZZZZ WE BE STOPPING2 DA ACTIVITY " + this.toString());
     }
 
     @Override
