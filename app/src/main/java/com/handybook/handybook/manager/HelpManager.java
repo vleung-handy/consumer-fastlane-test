@@ -17,11 +17,12 @@ import javax.inject.Inject;
 
 public class HelpManager
 {
+    public static final String ROOT_NODE_ID = "root"; //server still expects us to send null in the request but we can cache by assuming null means root
+
     private final Bus bus;
     private final DataManager dataManager;
     private final UserManager userManager;
 
-    // will change type when we want access to bookings for a specific day, right now, we're just dumping all
     private final Cache<String, HelpNode> helpNodeCache;
 
     @Inject
@@ -45,8 +46,6 @@ public class HelpManager
         String nodeId = event.nodeId;
         String bookingId = event.bookingId;
 
-        //TODO: Currently we send null to request root on the server, this is a bit hacky and does not allow us to cache the root node which is silly
-
         if (nodeId != null) //nulls will crash our cache on the getIfPresentCall
         {
             final HelpNode cachedHelpNode = helpNodeCache.getIfPresent(nodeId);
@@ -55,6 +54,12 @@ public class HelpManager
                 bus.post(new HandyEvent.ReceiveHelpNodeSuccess(cachedHelpNode));
                 return;
             }
+        }
+
+        //Server expects us to request will a null node ID if we want root
+        if(nodeId != null && nodeId.equals(ROOT_NODE_ID))
+        {
+            nodeId = null;
         }
 
         dataManager.getHelpInfo(nodeId, getAuthToken(), bookingId, new DataManager.Callback<HelpNodeWrapper>()
@@ -104,7 +109,6 @@ public class HelpManager
     private String getAuthToken()
     {
         final User user = userManager.getCurrentUser();
-        final String authToken = (user != null ? user.getAuthToken() : null);
-        return authToken;
+        return (user != null ? user.getAuthToken() : null);
     }
 }

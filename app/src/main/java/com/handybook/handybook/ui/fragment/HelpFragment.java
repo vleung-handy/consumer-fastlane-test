@@ -15,6 +15,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
@@ -77,61 +78,27 @@ public final class HelpFragment extends InjectedFragment
         return fragment;
     }
 
-
     @Override
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        System.out.println("ZZZZZ WE ARE ONCREATING THE HELP FRAGMENT");
 
         if (getArguments() == null)
         {
             return;
         }
 
-        if(this.associatedNode == null)
-        {
-            System.out.println("PRE CREATION : ZZZ While creating we see a null associated node");
-        }
-        else
-        {
-            System.out.println("PRE CREATION :  ZZZ While creating we see a GOOD associated node : " + this.associatedNode.getId());
-        }
-
-
-        if(getArguments().getParcelable(BundleKeys.HELP_NODE) == null)
-        {
-            System.out.println("PRE CREATION : ZZZ in arguments help node null");
-        }
-        else
-        {
-            System.out.println("PRE CREATION :  ZZZ in arguments help node not null : " + ((HelpNode)getArguments().getParcelable(BundleKeys.HELP_NODE)).getId());
-        }
-
-        if(associatedNode == null)
+        //optional parcelable param, can't pass a default value
+        if (getArguments().containsKey(BundleKeys.HELP_NODE))
         {
             associatedNode = getArguments().getParcelable(BundleKeys.HELP_NODE);
         }
 
-
-        nodeIdToRequest = getArguments().getString(BundleKeys.HELP_NODE_ID, null);
+        nodeIdToRequest = getArguments().getString(BundleKeys.HELP_NODE_ID, HelpManager.ROOT_NODE_ID);
         nodeIsBooking = getArguments().getBoolean(BundleKeys.HELP_NODE_IS_BOOKING, false);
-        currentBookingId = getArguments().getString(BundleKeys.BOOKING_ID, "");
         currentBookingId = getArguments().getString(BundleKeys.BOOKING_ID, "");
         currentLoginToken = getArguments().getString(BundleKeys.LOGIN_TOKEN, "");
         path = getArguments().getString(BundleKeys.PATH, "");
-
-
-        if(this.associatedNode == null)
-        {
-            System.out.println("While creating we see a null associated node");
-        }
-        else
-        {
-            System.out.println("ZZZ While creating we see a GOOD associated node");
-        }
-
     }
 
     @Override
@@ -165,18 +132,16 @@ public final class HelpFragment extends InjectedFragment
 
         setupBackClickListeners();
 
-        //wait for node to come back before showing, maybe we should have some default background "waiting" image? this just makes it grey
-        view.setVisibility(View.INVISIBLE);
-
         return view;
     }
 
     @Override
-    public void onStart()
+    public void onSaveInstanceState(final Bundle outState)
     {
-        super.onStart();
-        System.out.println("ZZZZZ DER ON STARTYNEESSSS");
+        super.onSaveInstanceState(outState);
 
+        outState.putIntArray(STATE_SCROLL_POSITION,
+                new int[]{scrollView.getScrollX(), scrollView.getScrollY()});
     }
 
     @Override
@@ -184,18 +149,12 @@ public final class HelpFragment extends InjectedFragment
     {
         super.onResume();
 
-        System.out.println("ZZZZZ HEY WE ARE ON RESUMING A HELP FRAGMENT WITH NODE ID : " + nodeIdToRequest);
-
-        //if (!MainActivityFragment.clearingBackStack)  //TODO: Do we need to worry about this for activity based when popping the stack?
-
-        if(this.associatedNode == null)
+        //If we don't have a node to display ask for one based on our requested node id
+        //if we had node data passed in to us we can just use it
+        if (this.associatedNode == null)
         {
-
-            System.out.println("ZZZZZ Making the call to request da node : " + nodeIdToRequest);
-
             progressDialog.show();
-
-            if(nodeIsBooking)
+            if (nodeIsBooking)
             {
                 bus.post(new HandyEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
             }
@@ -203,18 +162,14 @@ public final class HelpFragment extends InjectedFragment
             {
                 bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
             }
-
         }
         else
         {
-            System.out.println("ZZZZ ITS COOL WE DONT NEED TO REQUEST A NODE WE HAVE ONE, LIKELY FROM BEFORE");
             helpNodeReceivedForPage(this.associatedNode);
         }
     }
 
-
     //Event Listeners
-
     @Subscribe
     public void onReceiveHelpNodeSuccess(HandyEvent.ReceiveHelpNodeSuccess event)
     {
@@ -239,21 +194,30 @@ public final class HelpFragment extends InjectedFragment
         onHelpNodeError();
     }
 
+    private void onHelpNodeSuccess(HelpNode helpNode)
+    {
+        progressDialog.dismiss();
+
+        if (this.associatedNode == null)
+        {
+            //add to our arguments so if we get recreated we have it
+            this.associatedNode = helpNode;
+            getArguments().putParcelable(BundleKeys.HELP_NODE, helpNode);
+            helpNodeReceivedForPage(helpNode);
+        }
+        else
+        {
+            helpNodeReceivedForNextPage(helpNode);
+        }
+    }
 
     private void helpNodeReceivedForPage(HelpNode helpNode)
     {
-        //TODO: Make a better default view while waiting for the data to come back? Or maybe we should move to a pass whole node in system?
-        getView().setVisibility(View.VISIBLE);
-
         scrollView.setVisibility(View.VISIBLE);
         trackPath(helpNode);
         updateDisplay(helpNode);
 
-
-        this.associatedNode = helpNode;
-
         //UPGRADE: move this out to its own function / mixpanel tracking shouold be wrangled into the navigation events
-        //if (savedInstanceState == null)
         if (helpNode != null)
         {
             switch (helpNode.getType())
@@ -271,7 +235,7 @@ public final class HelpFragment extends InjectedFragment
 
     private void helpNodeReceivedForNextPage(HelpNode helpNode)
     {
-        if(helpNode.getType().equals(HelpNode.HelpNodeType.CONTACT))
+        if (helpNode.getType().equals(HelpNode.HelpNodeType.CONTACT))
         {
             navigateToHelpContactPage(helpNode);
         }
@@ -281,33 +245,8 @@ public final class HelpFragment extends InjectedFragment
         }
     }
 
-
-    private void onHelpNodeSuccess(HelpNode helpNode)
-    {
-        progressDialog.dismiss();
-
-        if(this.associatedNode == null)
-        {
-            System.out.println("This help node is for us, display it");
-
-            //add to our arguments so if we get recreated we have it
-            getArguments().putParcelable(BundleKeys.HELP_NODE, helpNode);
-
-            helpNodeReceivedForPage(helpNode);
-
-        }
-        else
-        {
-            System.out.println("ZZZZ This help node is for our next page, pass it along");
-
-            helpNodeReceivedForNextPage(helpNode);
-
-        }
-    }
-
     private void onHelpNodeError()
     {
-        getView().setVisibility(View.VISIBLE);
         progressDialog.dismiss();
         scrollView.setVisibility(View.GONE);
         errorView.setVisibility(View.VISIBLE);
@@ -319,7 +258,7 @@ public final class HelpFragment extends InjectedFragment
     {
         errorView.setVisibility(View.GONE);
         progressDialog.show();
-        if(nodeIsBooking)
+        if (nodeIsBooking)
         {
             bus.post(new HandyEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
         }
@@ -329,18 +268,28 @@ public final class HelpFragment extends InjectedFragment
         }
     }
 
+    private void requestChildNodeDetails(HelpNode childNode)
+    {
+        progressDialog.show();
+        if (childNode.getType().equals(HelpNode.HelpNodeType.BOOKING))
+        {
+            bus.post(new HandyEvent.RequestHelpBookingNode(Integer.toString(childNode.getId()), currentBookingId));
+        }
+        else
+        {
+            bus.post(new HandyEvent.RequestHelpNode(Integer.toString(childNode.getId()), currentBookingId));
+        }
+    }
+
     //TODO: Make this smarter and recognize back tracking
     private void trackPath(HelpNode node)
     {
-        if(node == null)
+        if (node == null)
         {
             return;
         }
 
-        if(path == null)
-        {
-            path = "";
-        }
+        path = (path == null ? "" : path);
 
         //Don't add the root node to the path as per CX spec
         if (!node.getType().equals(HelpNode.HelpNodeType.ROOT))
@@ -401,16 +350,7 @@ public final class HelpFragment extends InjectedFragment
                     }
                     else
                     {
-                        //navigateToHelpPage(childNode);
-                        progressDialog.show();
-                        if(childNode.getType().equals(HelpNode.HelpNodeType.BOOKING))
-                        {
-                            bus.post(new HandyEvent.RequestHelpBookingNode(Integer.toString(childNode.getId()), currentBookingId));
-                        }
-                        else
-                        {
-                            bus.post(new HandyEvent.RequestHelpNode(Integer.toString(childNode.getId()), currentBookingId));
-                        }
+                        requestChildNodeDetails(childNode);
                     }
                 }
             });
@@ -442,9 +382,7 @@ public final class HelpFragment extends InjectedFragment
                         @Override
                         public void onClick(View v)
                         {
-                            //navigateToHelpContactPage(childNode);
-                            progressDialog.show();
-                            bus.post(new HandyEvent.RequestHelpNode(Integer.toString(childNode.getId()), currentBookingId));
+                            requestChildNodeDetails(childNode);
                         }
                     });
                 }
@@ -475,15 +413,6 @@ public final class HelpFragment extends InjectedFragment
         });
     }
 
-    @Override
-    public void onSaveInstanceState(final Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-
-        outState.putIntArray(STATE_SCROLL_POSITION,
-                new int[]{scrollView.getScrollX(), scrollView.getScrollY()});
-    }
-
     private void addCtaButtonListeners()
     {
         if (helpNodeView.ctaLayout.getVisibility() != View.VISIBLE)
@@ -494,9 +423,6 @@ public final class HelpFragment extends InjectedFragment
         for (int i = 0; i < helpNodeView.ctaLayout.getChildCount(); i++)
         {
             final CTAButton ctaButton = (CTAButton) helpNodeView.ctaLayout.getChildAt(i);
-
-            //ctaButton.initFromHelpNode(node, currentLoginToken);
-
             ctaButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override
