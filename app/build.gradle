@@ -79,44 +79,72 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    //UPGRADE: TODO: Update these dependencies and remove old ones
 
+    //Android Support Libraries
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
+
+    //Google Play
     compile 'com.google.android.gms:play-services-location:7.8.0'
+
+    //Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
         transitive = true;
     }
+
+    //New Relic
     compile 'com.newrelic.agent.android:android-agent:5.2.1'
-    compile 'com.netflix.rxjava:rxjava-android:0.18.4'
+
+    //Awesome Square libraries
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.dagger:dagger:1.2.2'
     compile 'com.squareup:otto:1.3.5'
     compile 'com.squareup.okhttp:okhttp:2.1.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'com.jakewharton:butterknife:5.1.2'
+
+    //Stripe payment processing
     compile 'com.stripe:stripe-android:1.0.0'
+
+    //Mixpanel
     compile 'com.mixpanel.android:mixpanel-android:4.4.1@aar'
+
+    //Menu drawer for navigation
     compile 'net.simonvt.menudrawer:menudrawer:3.0.6'
+
+    //Calligraphy for fonts
     compile 'uk.co.chrisjenx:calligraphy:1.2.0'
-    compile 'pl.charmas.android:android-reactive-location:0.2@aar'
-    compile 'com.viewpagerindicator:library:2.4.1@aar'
+
+    //Urban airship
     compile 'com.urbanairship:urbanairship-lib:1.5.1@aar'
 
-    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+    //Guava
+    compile 'com.google.guava:guava:18.0'
+
+    //SecurePrefs storage
+    compile 'com.scottyab:secure-preferences-lib:0.1.1'
 
     compile files('../libs/yozio-android-sdk.jar')
     compile project(':facebook')
     compile project(':simplealertdialog')
     compile project(':androidspinner')
 
+    //Testing with juint and robolectric
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'com.squareup.retrofit:retrofit-mock:1.6.1'
     testCompile 'com.squareup.okhttp:mockwebserver:2.1.0'
 
 
-    //Guava
-    compile 'com.google.guava:guava:18.0'
 
+
+//STILL NEEDED? - not sure what this is
+    compile 'com.viewpagerindicator:library:2.4.1@aar'
+
+//STILL NEEDED? - reactive location
+    compile 'pl.charmas.android:android-reactive-location:0.2@aar'
+
+//STILL NEEDED? - Netflix RX Java
+    compile 'com.netflix.rxjava:rxjava-android:0.18.4'
 }

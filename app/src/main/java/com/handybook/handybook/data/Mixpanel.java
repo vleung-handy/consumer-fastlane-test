@@ -65,7 +65,7 @@ public class Mixpanel
         // final User user = userManager.getCurrentUser();
 
         final User user;
-        //UPGRADE: This is a change, make sure that the prefs user_obj is always updated properly
+        //UPGRADE: This is a change, make sure that the prefs user_obj is always updated properly in secureprefs
         if ((user = User.fromJson(securePrefs.getString("USER_OBJ"))) != null)
         {
             addProps(props, "user_logged_in", false);
@@ -368,10 +368,6 @@ public class Mixpanel
     {
         addWhenFlowProps(props, request);
 
-//        final BookingRequest request = bookingManager.getCurrentRequest();
-//        final BookingQuote quote = bookingManager.getCurrentQuote();
-//        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-
         String email = null;
         int bookingId = 0, repeatFreq = 0;
         float hours = 0, price = 0;
@@ -406,7 +402,6 @@ public class Mixpanel
     {
         addPaymentFlowProps(props, request, quote, transaction);
 
-        //final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         String cleaningExtras = null;
         boolean cleaningExtrasSelected = false;
         float hours = 0;
@@ -432,9 +427,6 @@ public class Mixpanel
     private void addBookingMadeFlowProps(final JSONObject props, BookingRequest request, BookingQuote quote, BookingTransaction transaction)
     {
         addSubmitPaymentFlowProps(props, request, quote, transaction);
-
-//        final BookingQuote quote = bookingManager.getCurrentQuote();
-//        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
 
         float hourlyPrice = 0, totalPrice = 0;
         boolean isRepeating = false;
@@ -524,20 +516,12 @@ public class Mixpanel
     }
 
 
-    //UPGRADE: Bringing over from Nortal
+    //UPGRADE: Bringing over from Nortal to track events
 
     public void track(String eventName)
     {
         track(eventName, null);
     }
-
-//    public void trackEventAppOpened(final boolean newOpen)
-//    {
-//        String eventName = "provider portal";
-//        final JSONObject props = new JSONObject();
-//        addProps(props, "new_open", newOpen);
-//        mixpanelAPI.track(eventName, props);
-//    }
 
     public void trackEvent(Object event)
     {

@@ -1,5 +1,7 @@
 package com.handybook.handybook.data;
 
+//UPGRADE: REPLACE THIS WITH THE GRADLED VERSION
+
 /*
 Copyright (C) 2012 Sveinung Kval Bakken, sveinung.bakken@gmail.com
 
@@ -42,11 +44,9 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurePreferences {
 
     public static class SecurePreferencesException extends RuntimeException {
-
         public SecurePreferencesException(Throwable e) {
             super(e);
         }
-
     }
 
     private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
