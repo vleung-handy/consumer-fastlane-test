@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -35,6 +36,10 @@ public final class MenuButton extends ImageButton {
         this.setBackgroundResource(0);
         this.setPadding(0, 0, 0, 0);
         this.setColor(getResources().getColor(R.color.black_pressed));
+
+        RelativeLayout.LayoutParams testLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        testLP.addRule(RelativeLayout.CENTER_IN_PARENT);
+        this.setLayoutParams(testLP);
 
         Utils.extendHitArea(this, parent, Utils.toDP(32, context));
 

@@ -4,18 +4,22 @@
     android:id="@+id/help_node_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="60dp"
+    android:layout_height="64dp"
+    android:background="#ffffff"
     >
 
     <TextView
         android:id="@+id/nav_text"
-        style="@style/TextView.Navbar"
-        android:text="@string/help"/>
+        style="@style/TextView.HelpHeader"
+        android:text="@string/help"
+        android:layout_centerInParent="true"
+        />
 
     <RelativeLayout
         android:id="@+id/menu_button_layout"
         style="@style/MenuButtonLayout"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         />
 
     <ImageView
@@ -23,6 +27,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:contentDescription="@string/close"
         android:padding="15dp"
         android:src="@drawable/ic_x"
@@ -33,11 +38,11 @@
         android:id="@+id/back_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:contentDescription="@string/back"
         android:scaleX="-1"
         android:src="@drawable/ic_chevron"
-        android:visibility="gone"
+        android:layout_marginLeft="16dp"
         />
 
 </com.handybook.handybook.ui.view.HelpBannerView>
