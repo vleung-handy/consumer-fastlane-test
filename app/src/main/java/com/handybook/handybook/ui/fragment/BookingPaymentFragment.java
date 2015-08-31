@@ -76,7 +76,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        mixpanel.trackEventPaymentPage();
+
+        mixpanel.trackEventPaymentPage(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_payment,container, false);
 
@@ -325,8 +326,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
             new DataManager.Callback<BookingCompleteTransaction>() {
                 @Override
                 public void onSuccess(final BookingCompleteTransaction trans) {
-                    mixpanel.trackEventSubmitPayment();
-                    mixpanel.trackEventBookingMade();
+
+                    //UPGRADE: Should we use this trans or ask the manager for current trans? So much inconsistency....
+
+                    mixpanel.trackEventSubmitPayment(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
+                    mixpanel.trackEventBookingMade(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
+
                     if (!allowCallbacks) return;
 
                     bookingManager.getCurrentTransaction().setBookingId(trans.getId());

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handybook.handybook.ui.view.HelpNodeView
+    android:id="@+id/help_node_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/help_header"
+        android:layout_width="match_parent"
+        android:layout_height="142dp"
+        android:background="@drawable/help_header_purple"
+        android:gravity="center"
+        android:padding="@dimen/default_padding">
+
+        <ImageView
+            android:id="@+id/help_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:contentDescription="help"
+            android:src="@drawable/ic_help_lifesaver"/>
+
+        <TextView
+            android:id="@+id/help_header_title"
+            style="@style/TextView.Large.Med"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/help_icon"
+            android:gravity="center"
+            android:text="@string/what_can_help_with"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/help_triangle"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignBottom="@id/help_header"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/triangle"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/help_header"
+        android:background="@drawable/cell_booking_last_rounded"
+        android:paddingBottom="26dp"
+        android:visibility="invisible">
+
+        <com.handybook.handybook.ui.view.HandyWebView
+            android:id="@+id/help_webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/cta_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/help_webview"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="4dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/contact_button"
+            style="@style/Button.Green.Round"
+            android:layout_below="@id/cta_layout"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:text="@string/i_still_need_help"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/nav_options_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/info_layout"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        android:visibility="gone"/>
+
+</com.handybook.handybook.ui.view.HelpNodeView>

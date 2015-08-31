@@ -1,202 +1,230 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.HelpNode;
-import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.ui.widget.BasicInputTextView;
-import com.handybook.handybook.ui.widget.EmailInputTextView;
-import com.handybook.handybook.ui.widget.FirstNameInputTextView;
+import com.handybook.handybook.ui.view.HelpBannerView;
+import com.handybook.handybook.ui.view.HelpContactView;
+import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedInput;
 
-public final class HelpContactFragment extends InjectedFragment {
-
-    public static final String EXTRA_HELP_NODE = "com.handy.handy.EXTRA_HELP_NODE";
-    public static final String EXTRA_HELP_PATH = "com.handy.handy.EXTRA_HELP_PATH";
+public final class HelpContactFragment extends InjectedFragment
+{
     private static final String HELP_CONTACT_FORM_DISPOSITION = "help-contact-form-disposition";
     private static final String HELP_CONTACT_FORM_NAME = "name";
     private static final String HELP_CONTACT_FORM_EMAIL = "email";
     private static final String HELP_CONTACT_FORM_DESCRIPTION = "description";
     private static final String HELP_CONTACT_FORM_PATH = "path";
+    private static final String HELP_CONTACT_FORM_BOOKING_ID = "booking_id";
+
     private static final String SALESFORCE_DATA_WRAPPER_KEY = "salesforce_data";
 
-    @InjectView(R.id.send_message_button) Button sendMessageButton;
-    @InjectView(R.id.user_name_text) FirstNameInputTextView nameText;
-    @InjectView(R.id.email_text) EmailInputTextView emailText;
-    @InjectView(R.id.comment_text) BasicInputTextView commentText;
-    @InjectView(R.id.close_img) ImageView closeImage;
-    @InjectView(R.id.back_img) ImageView backImage;
+    @InjectView(R.id.help_contact_view)
+    HelpContactView helpContactView;
 
-    @InjectView(R.id.name_layout) ViewGroup nameLayout;
-    @InjectView(R.id.email_layout) ViewGroup emailLayout;
-
+    @InjectView(R.id.help_banner_view)
+    HelpBannerView helpBannerView;
 
     private HelpNode associatedNode;
     private String path;
+    private String bookingId;
 
-    @Inject UserManager userManager;
-
-    public static HelpContactFragment newInstance(final HelpNode node, final String path) {
+    public static HelpContactFragment newInstance(final HelpNode node, final String path, final String bookingId) {
         final HelpContactFragment fragment = new HelpContactFragment();
         final Bundle args = new Bundle();
-        args.putParcelable(EXTRA_HELP_NODE, node);
-        args.putString(EXTRA_HELP_PATH, path);
+        args.putParcelable(BundleKeys.HELP_NODE, node);
+        args.putString(BundleKeys.PATH, path);
+        args.putString(BundleKeys.BOOKING_ID, bookingId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        associatedNode = getArguments().getParcelable(EXTRA_HELP_NODE);
-        path = getArguments().getString(EXTRA_HELP_PATH);
-
-    }
-    @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+                                   final Bundle savedInstanceState)
+    {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_help_contact, container, false);
 
         ButterKnife.inject(this, view);
 
-        sendMessageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) { onSendMessageButtonClick();
-            }
-        });
+        //required arguments
+        this.associatedNode = getArguments().getParcelable(BundleKeys.HELP_NODE);
+        this.path = getArguments().getString(BundleKeys.PATH);
 
-        closeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                returnToHomeScreen();
-            }
-        });
+        //optional argument booking id
+        if (getArguments() != null && getArguments().containsKey(BundleKeys.BOOKING_ID))
+        {
+            this.bookingId = getArguments().getString(BundleKeys.BOOKING_ID);
+        }
+        else
+        {
+            this.bookingId = "";
+        }
 
-        final Activity fragmentActivity = this.getActivity();
-        backImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                fragmentActivity.onBackPressed();
-            }
-        });
+        helpContactView.updateDisplay(this.associatedNode);
+        if(this.userManager.getCurrentUser() != null)
+        {
+            helpContactView.prepopulateUserData(this.userManager.getCurrentUser());
+        }
+        helpBannerView.updateDisplay(this.associatedNode); //TODO: can we call this inside updateDisplay(HelpNode) instead?
 
-        prepopulateUserData();
+        assignClickListeners(view);
 
         return view;
     }
 
-    private void prepopulateUserData()
+    private void assignClickListeners(View view)
     {
-        if(this.userManager.getCurrentUser() != null)
+        helpContactView.sendMessageButton.setOnClickListener(new View.OnClickListener()
         {
-            this.nameText.setText(this.userManager.getCurrentUser().getFullName());
-            this.emailText.setText(this.userManager.getCurrentUser().getEmail());
+            @Override
+            public void onClick(final View v)
+            {
+                onSendMessageButtonClick();
+            }
+        });
 
-            //Hide the name and email fields if they are prepopulated so the user can not alter them
-                //Validating them off prepopulated data, not hiding if the prepop data would prevent validation
-            if(nameText.validate()) {
-                this.nameLayout.setVisibility(View.GONE);
+        final Activity activity = this.getActivity();
+        helpBannerView.backImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                dismissKeyboard();
+                activity.onBackPressed();
             }
-            if(emailText.validate()) {
-                this.emailLayout.setVisibility(View.GONE);
-            }
-        }
+        });
     }
 
-    private void onSendMessageButtonClick() {
+    private void onSendMessageButtonClick()
+    {
         Boolean allValid = true;
-        allValid &= nameText.validate();
-        allValid &= emailText.validate();
-        allValid &= commentText.validate();
 
-        if (allValid) {
-            progressDialog.show();
+        allValid &= helpContactView.nameText.validate();
+        allValid &= helpContactView.emailText.validate();
+        allValid &= helpContactView.commentText.validate();
 
-            //Generates params from the Help nodes
-            HashMap<String, String> contactFormInfo = parseHelpNode(associatedNode);
-
-            //add contact form information
-            contactFormInfo.put(HELP_CONTACT_FORM_NAME, nameText.getText().toString());
-            contactFormInfo.put(HELP_CONTACT_FORM_EMAIL, emailText.getText().toString());
-            contactFormInfo.put(HELP_CONTACT_FORM_DESCRIPTION, commentText.getText().toString());
-            contactFormInfo.put(HELP_CONTACT_FORM_PATH, path);
-
-            JSONObject salesforceWrapper = new JSONObject();
-            try {
-                salesforceWrapper.put(SALESFORCE_DATA_WRAPPER_KEY, new JSONObject(contactFormInfo));
-            } catch (Exception e) {
-            }
-
-            TypedInput body;
-            try {
-                body = new TypedByteArray("application/json", salesforceWrapper.toString().getBytes("UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                body = null;
-            }
-
-            dataManager.createHelpCase(body, createCaseCallback);
+        if (allValid)
+        {
+            dismissKeyboard();
+            sendContactFormData(helpContactView.nameText.getString(), helpContactView.emailText.getString(), helpContactView.commentText.getString(), this.associatedNode);
+        }
+        else
+        {
+            showToast(R.string.ensure_fields_valid);
         }
     }
 
-    private HashMap<String, String> parseHelpNode(HelpNode node) {
-        HashMap<String, String> params = new HashMap<String, String>();
-        for (HelpNode childNode : node.getChildren()) {
-            if (childNode.getType().equals(HELP_CONTACT_FORM_DISPOSITION)) {
+    private void dismissKeyboard()
+    {
+        View currentFocus = getActivity().getCurrentFocus();
+        if (currentFocus != null)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
+    }
+
+    private void sendContactFormData(String name, String email, String comment, HelpNode associatedNode)
+    {
+        HashMap<String, String> contactFormInfo = extractDispositions(associatedNode);
+
+        //add contact form information
+        contactFormInfo.put(HELP_CONTACT_FORM_NAME, name);
+        contactFormInfo.put(HELP_CONTACT_FORM_EMAIL, email);
+        contactFormInfo.put(HELP_CONTACT_FORM_DESCRIPTION, comment);
+        contactFormInfo.put(HELP_CONTACT_FORM_PATH, path);
+        contactFormInfo.put(HELP_CONTACT_FORM_BOOKING_ID, bookingId);
+
+        JSONObject salesforceWrapper = new JSONObject();
+        try
+        {
+            salesforceWrapper.put(SALESFORCE_DATA_WRAPPER_KEY, new JSONObject(contactFormInfo));
+        } catch (Exception e)
+        {
+        }
+
+        TypedInput body;
+        try
+        {
+            body = new TypedByteArray("application/json", salesforceWrapper.toString().getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e)
+        {
+            body = null;
+        }
+
+        progressDialog.show();
+
+        bus.post(new HandyEvent.RequestNotifyHelpContact(body));
+    }
+
+    private HashMap<String, String> extractDispositions(HelpNode node)
+    {
+        HashMap<String, String> params = new HashMap<>();
+        for (HelpNode childNode : node.getChildren())
+        {
+            if (childNode == null || childNode.getType() == null)
+            {
+                continue;
+            }
+
+            if (childNode.getType().equals(HELP_CONTACT_FORM_DISPOSITION))
+            {
                 params.put(childNode.getLabel(), childNode.getContent());
             }
         }
         return params;
     }
 
-    private void returnToHomeScreen() {
+    private void returnToHomeScreen()
+    {
         final Intent toHomeScreenIntent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         toHomeScreenIntent.addFlags((Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         startActivity(toHomeScreenIntent);
     }
 
-    private DataManager.Callback<Void> createCaseCallback = new DataManager.Callback<Void>() {
-        @Override
-        public void onSuccess(final Void v) {
-            if (!allowCallbacks) return;
-            progressDialog.dismiss();
+    //Event Listeners
+    @Subscribe
+    public void onReceiveNotifyHelpContactSuccess(HandyEvent.ReceiveNotifyHelpContactSuccess event)
+    {
+        progressDialog.dismiss();
+//        if (bookingId == null || bookingId.isEmpty())
+        {
             returnToHomeScreen();
-
-            toast.setText(getString(R.string.contact_received));
-            toast.show();
-
-            mixpanel.trackEventHelpCenterSubmitTicket(Integer
-                    .toString(associatedNode.getId()), associatedNode.getLabel());
         }
+//        else
+//        {
+//            returnToBookingDetails(bookingId);
+//        }
 
-        @Override
-        public void onError(final DataManager.DataManagerError error) {
-            if (!allowCallbacks) return;
-            progressDialog.dismiss();
-            dataManagerErrorHandler.handleError(getActivity(), error);
-        }
-    };
+        showToast(getString(R.string.contact_received));
+    }
+
+    @Subscribe
+    public void onReceiveNotifyHelpContactError(HandyEvent.ReceiveNotifyHelpContactError event)
+    {
+        progressDialog.dismiss();
+        showToast(getString(R.string.an_error_has_occurred));
+    }
 }
