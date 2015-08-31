@@ -127,7 +127,7 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HandyEndpoint provideHandyEnpoint()
+    final HandyEndpoint provideHandyEndpoint()
     {
         return new HandyRetrofitEndpoint(context);
     }
