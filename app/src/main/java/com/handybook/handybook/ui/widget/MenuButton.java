@@ -29,6 +29,8 @@ public final class MenuButton extends ImageButton {
     }
 
     void init(final Context context, final View parent) {
+
+        //UPGRADE: this stuff should be in an xml not in code
         this.setImageResource(R.drawable.ic_menu);
         this.setBackgroundResource(0);
         this.setPadding(0, 0, 0, 0);
@@ -44,6 +46,9 @@ public final class MenuButton extends ImageButton {
             }
         });
     }
+
+
+
 
     public void setColor(final int id) {
         this.setColorFilter(id, PorterDuff.Mode.SRC_ATOP);

@@ -51,7 +51,7 @@ public final class HelpNodeView extends InjectedRelativeLayout
     @InjectView(R.id.cta_layout)
     public LinearLayout ctaLayout;
 
-    //Currently passing this around, could get it from a service if that would be cleaner
+    //TODO: Currently passing this around, could get it from a service if that would be cleaner
     private String currentLoginToken;
 
     public HelpNodeView(final Context context)
@@ -71,6 +71,7 @@ public final class HelpNodeView extends InjectedRelativeLayout
 
     public void updateDisplay(final HelpNode node, final String currentLoginToken)
     {
+        //TODO: Ugh, this should not be here, ugh
         this.currentLoginToken = currentLoginToken;
 
         //clear out any existing ctas and navigation buttons
@@ -120,13 +121,11 @@ public final class HelpNodeView extends InjectedRelativeLayout
         headerTitle.setText(getResources().getString(R.string.what_need_help_with));
         setHeaderColor(getResources().getColor(R.color.handy_blue));
         helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_smiley));
-
         layoutNavList(node);
     }
 
     private void layoutForNavigation(final HelpNode node)
     {
-
         layoutNavList(node);
     }
 
@@ -222,7 +221,14 @@ public final class HelpNodeView extends InjectedRelativeLayout
             {
                 navView = inflate(R.layout.list_item_help_nav, navOptionsLayout);
                 final TextView textView = (TextView) navView.findViewById(R.id.nav_item_text);
+
+                //if the type/label is null we still inflate to keep our click listeners in sync but we hide the inflated view since it is empty
                 textView.setText(childNode.getLabel());
+
+                if(childNode.getLabel() == null)
+                {
+                    navView.setVisibility(View.GONE);
+                }
             }
         }
     }
