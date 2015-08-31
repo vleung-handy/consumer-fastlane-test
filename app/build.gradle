@@ -137,14 +137,12 @@ dependencies {
     testCompile 'com.squareup.okhttp:mockwebserver:2.1.0'
 
 
-
-
-//STILL NEEDED? - not sure what this is
+//This is for a view page indicator : http://viewpagerindicator.com/ : We are not using that but we do have some style / theme dependencies, to remove in future
     compile 'com.viewpagerindicator:library:2.4.1@aar'
 
-//STILL NEEDED? - reactive location
+//STILL NEEDED? - reactive location : https://github.com/mcharmas/Android-ReactiveLocation : RxJava wrapper for google play services
     compile 'pl.charmas.android:android-reactive-location:0.2@aar'
 
-//STILL NEEDED? - Netflix RX Java
+//STILL NEEDED? - Netflix RX Java : https://github.com/ReactiveX/RxJava/wiki : Reactive library, to investigate for adoption or removal
     compile 'com.netflix.rxjava:rxjava-android:0.18.4'
 }
