@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
@@ -75,7 +76,7 @@ public final class BookingsFragment extends InjectedFragment {
             public void onItemClick(final AdapterView<?> adapterView, final View view,
                                     final int i, final long l) {
                 final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
-                intent.putExtra(BookingDetailActivity.EXTRA_BOOKING, getBooking(i));
+                intent.putExtra(BundleKeys.BOOKING, getBooking(i));
                 startActivityForResult(intent, BookingDetailActivity.RESULT_BOOKING_UPDATED);
             }
         });
@@ -113,10 +114,10 @@ public final class BookingsFragment extends InjectedFragment {
             final Booking booking;
 
             if (isCancel) {
-                booking = data.getParcelableExtra(BookingDetailActivity.EXTRA_CANCELED_BOOKING);
+                booking = data.getParcelableExtra(BundleKeys.CANCELLED_BOOKING);
             }
             else {
-                booking = data.getParcelableExtra(BookingDetailActivity.EXTRA_UPDATED_BOOKING);
+                booking = data.getParcelableExtra(BundleKeys.UPDATED_BOOKING);
             }
 
             final String bookingId = booking.getId();

@@ -345,6 +345,9 @@ public final class Booking implements Parcelable {
                 return new Provider[size];
             }
         };
+
+        public static final int PROVIDER_STATUS_ASSIGNED = 3; //TODO: Not sure what this is, just conjecturing based on code
+
     }
 
     public static final class LineItem implements Parcelable {

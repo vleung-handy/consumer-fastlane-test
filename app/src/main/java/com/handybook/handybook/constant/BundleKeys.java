@@ -15,4 +15,6 @@ public class BundleKeys
     public static final String PATH = "path";
     public static final String TAB = "tab";
     public static final String LOGIN_TOKEN = "login_token";
+    public static final String CANCELLED_BOOKING = "cancelled_booking";
+    public static final String UPDATED_BOOKING = "updated_booking";
 }
