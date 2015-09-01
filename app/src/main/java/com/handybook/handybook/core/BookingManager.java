@@ -1,13 +1,18 @@
 package com.handybook.handybook.core;
 
+import android.support.v4.util.Pair;
+
 import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,15 +25,81 @@ public final class BookingManager implements Observer
     private BookingTransaction transaction;
     private BookingPostInfo postInfo;
     private final PrefsManager prefsManager;
+    private final DataManager dataManager;
     private final Bus bus;
 
     @Inject
-    BookingManager(final Bus bus, final PrefsManager prefsManager)
+    BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
     {
         this.prefsManager = prefsManager;
+        this.dataManager = dataManager;
         this.bus = bus;
         this.bus.register(this);
     }
+
+
+    //Event listening sending, half way to updating our managers to work like nortal's managers and provide a layer for data access
+
+    @Subscribe
+    public void onRequestPreRescheduleInfo(HandyEvent.RequestPreRescheduleInfo event)
+    {
+        dataManager.getPreRescheduleInfo(event.bookingId, new DataManager.Callback<String>()
+        {
+            @Override
+            public void onSuccess(String notice)
+            {
+                bus.post(new HandyEvent.ReceivePreRescheduleInfoSuccess(notice));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceivePreRescheduleInfoError(error));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onRequestPreCancelationInfo(HandyEvent.RequestPreCancelationInfo event)
+    {
+        dataManager.getPreCancelationInfo(event.bookingId, new DataManager.Callback<Pair<String, List<String>>>()
+        {
+            @Override
+            public void onSuccess(final Pair<String, List<String>> result)
+            {
+                bus.post(new HandyEvent.ReceivePreCancelationInfoSuccess(result));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceivePreCancelationInfoError(error));
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public final BookingRequest getCurrentRequest()
     {

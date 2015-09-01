@@ -4,10 +4,8 @@
                 android:layout_height="match_parent"
                 android:background="@color/handy_bg">
 
-    <com.handybook.handybook.ui.view.BookingDetailView
+    <include
         android:id="@+id/booking_detail_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        layout="@layout/element_booking_detail"/>
 
 </RelativeLayout>

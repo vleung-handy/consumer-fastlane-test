@@ -17,4 +17,13 @@ public class BundleKeys
     public static final String LOGIN_TOKEN = "login_token";
     public static final String CANCELLED_BOOKING = "cancelled_booking";
     public static final String UPDATED_BOOKING = "updated_booking";
+
+    public static final String RESCHEDULE_BOOKING = "reschedule_booking";
+    public static final String RESCHEDULE_NOTICE = "reschedule_notice";
+    public static final String RESCHEDULE_NEW_DATE = "reschedule_new_date";
+    public static final String POST_OPTIONS = "post_options";
+
+    public static final String OPTIONS = "options";
+    public static final String NOTICE = "notice";
+
 }

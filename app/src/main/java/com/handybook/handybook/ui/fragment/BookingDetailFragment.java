@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.view.BookingDetailView;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,6 +67,8 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
         ButterKnife.inject(this, view);
 
+        bookingDetailView.updateDisplay(this.booking, userManager.getCurrentUser());
+
         setupClickListeners(this.booking);
 
         return view;
@@ -107,7 +110,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
         if (resultCode == BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE)
         {
-           Date newDate = new Date(data.getLongExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, 0));
+           Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
            bookingDetailView.updateDateTimeInfoText(booking, newDate);
            setUpdatedBookingResult();
         }
@@ -125,6 +128,26 @@ public final class BookingDetailFragment extends BookingFlowFragment
         outState.putBoolean(STATE_UPDATED_BOOKING, updatedBooking);
     }
 
+    @Subscribe
+    public void onReceivePreRescheduleInfoSuccess(HandyEvent.ReceivePreRescheduleInfoSuccess event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+
+        final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, this.booking);
+        intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, event.notice);
+        startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE);
+    }
+
+    @Subscribe
+    public void onReceivePreRescheduleInfoError(HandyEvent.ReceivePreRescheduleInfoError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
+
     private View.OnClickListener rescheduleClicked = new View.OnClickListener()
     {
         @Override
@@ -132,40 +155,33 @@ public final class BookingDetailFragment extends BookingFlowFragment
         {
             disableInputs();
             progressDialog.show();
-
-            dataManager.getPreRescheduleInfo(booking.getId(), new DataManager.Callback<String>()
-            {
-                @Override
-                public void onSuccess(final String notice)
-                {
-                    if (!allowCallbacks)
-                    {
-                        return;
-                    }
-
-                    enableInputs();
-                    progressDialog.dismiss();
-
-                    final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
-                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
-                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
-                    startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE);
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-                    if (!allowCallbacks)
-                    {
-                        return;
-                    }
-                    enableInputs();
-                    progressDialog.dismiss();
-                    dataManagerErrorHandler.handleError(getActivity(), error);
-                }
-            });
+            bus.post(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
         }
     };
+
+    @Subscribe
+    public void onReceivePreCancelationInfoSuccess(HandyEvent.ReceivePreCancelationInfoSuccess event)
+    {
+        Pair<String, List<String>> result = event.result;
+
+        enableInputs();
+        progressDialog.dismiss();
+
+        final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
+        intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
+        intent.putExtra(BundleKeys.NOTICE, result.first);
+        intent.putExtra(BundleKeys.BOOKING, booking);
+        startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
+    }
+
+    @Subscribe
+    public void onReceivePreCancelationInfoError(HandyEvent.ReceivePreCancelationInfoError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
+
 
     private View.OnClickListener cancelClicked = new View.OnClickListener()
     {
@@ -175,45 +191,11 @@ public final class BookingDetailFragment extends BookingFlowFragment
             disableInputs();
             progressDialog.show();
 
-            dataManager.getPreCancelationInfo(booking.getId(),
-                    new DataManager.Callback<Pair<String, List<String>>>()
-                    {
-                        @Override
-                        public void onSuccess(final Pair<String, List<String>> result)
-                        {
-                            if (!allowCallbacks)
-                            {
-                                return;
-                            }
-
-                            enableInputs();
-                            progressDialog.dismiss();
-
-                            final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
-
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
-                                    new ArrayList<>(result.second));
-
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
-
-                            startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
-                        }
-
-                        @Override
-                        public void onError(final DataManager.DataManagerError error)
-                        {
-                            if (!allowCallbacks)
-                            {
-                                return;
-                            }
-                            enableInputs();
-                            progressDialog.dismiss();
-                            dataManagerErrorHandler.handleError(getActivity(), error);
-                        }
-                    });
+            bus.post(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
         }
     };
+
+
 
     private final void setUpdatedBookingResult()
     {

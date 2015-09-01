@@ -1,11 +1,11 @@
 package com.handybook.handybook.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
@@ -98,8 +98,8 @@ public class SplashActivity extends BaseActivity {
                                 if (!allowCallbacks) return;
 
                                 final Intent intent = new Intent(SplashActivity.this, BookingDateActivity.class);
-                                intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
-                                intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
+                                intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
+                                intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
                                 startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE);
                             }
 

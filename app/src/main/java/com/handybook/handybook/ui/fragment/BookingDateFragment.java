@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.BookingRequest;
@@ -204,7 +205,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                     .getLongExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
 
             final Intent intent = new Intent();
-            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, date);
+            intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
 
             getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();
@@ -214,7 +215,7 @@ public final class BookingDateFragment extends BookingFlowFragment {
                     .getLongExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
 
             final Intent intent = new Intent();
-            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, date);
+            intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
 
             getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();

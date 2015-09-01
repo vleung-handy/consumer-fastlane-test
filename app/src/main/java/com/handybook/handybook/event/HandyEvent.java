@@ -1,11 +1,14 @@
 package com.handybook.handybook.event;
 
 import android.app.Activity;
+import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.data.DataManager;
+
+import java.util.List;
 
 import retrofit.mime.TypedInput;
 
@@ -40,10 +43,68 @@ public abstract class HandyEvent
     }
 
 
+//Booking Details
 
-    //UPGRADE: Moving over a couple of events from Nortal
+    public static class RequestPreRescheduleInfo extends RequestEvent
+    {
+        public String bookingId;
 
-    //Help Node
+        public RequestPreRescheduleInfo(String bookingId)
+        {
+            this.bookingId = bookingId;
+        }
+    }
+
+    public static class ReceivePreRescheduleInfoSuccess extends ReceiveSuccessEvent
+    {
+        public String notice;
+
+        public ReceivePreRescheduleInfoSuccess(String notice)
+        {
+            this.notice = notice;
+        }
+
+    }
+
+    public static class ReceivePreRescheduleInfoError extends ReceiveErrorEvent
+    {
+        public ReceivePreRescheduleInfoError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class RequestPreCancelationInfo extends RequestEvent
+    {
+        public String bookingId;
+
+        public RequestPreCancelationInfo(String bookingId)
+        {
+            this.bookingId = bookingId;
+        }
+    }
+
+    public static class ReceivePreCancelationInfoSuccess extends ReceiveSuccessEvent
+    {
+        public Pair<String, List<String>> result;
+
+        public ReceivePreCancelationInfoSuccess(Pair<String, List<String>> result)
+        {
+            this.result = result;
+        }
+
+    }
+
+    public static class ReceivePreCancelationInfoError extends ReceiveErrorEvent
+    {
+        public ReceivePreCancelationInfoError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
+//Help Self Service Center
     public static class RequestHelpNode extends HandyEvent
     {
         public String nodeId;
@@ -74,7 +135,7 @@ public abstract class HandyEvent
         }
     }
 
-    //Help Booking Node
+    //Help Booking Node - help node associated with a particular booking
     public static class RequestHelpBookingNode extends HandyEvent
     {
         public String nodeId;
@@ -131,5 +192,9 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
+
+
+
 
 }
