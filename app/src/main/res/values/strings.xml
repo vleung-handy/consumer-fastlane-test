@@ -156,4 +156,6 @@
     <string name="ensure_fields_valid">Please ensure all fields are filled out correctly</string>
     <string name="an_error_has_occurred">An error has occurred, please try again</string>
 
+    <string name="edit">Edit</string>
+
 </resources>

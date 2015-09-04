@@ -440,6 +440,17 @@
 
             </RelativeLayout>
 
+
+            <RelativeLayout
+                android:id="@+id/sub_fragment_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/options_layout">
+            </RelativeLayout>
+
+
+
+
         </RelativeLayout>
 
     </ScrollView>

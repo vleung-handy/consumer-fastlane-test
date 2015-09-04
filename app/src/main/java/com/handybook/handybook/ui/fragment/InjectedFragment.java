@@ -30,7 +30,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
 
     //UPGRADE: Move away from direct calls to these and go through the bus
     @Inject BookingManager bookingManager;
-    @Inject UserManager userManager;
+    @Inject protected UserManager userManager;
     @Inject Mixpanel mixpanel;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;

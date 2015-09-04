@@ -5,8 +5,7 @@
                 android:background="@color/handy_bg">
 
     <include
-        android:id="@+id/booking_detail_view"
-        layout="@layout/element_booking_detail"/>
-
+        android:id="@+id/booking_detail_section_view"
+        layout="@layout/element_booking_section"/>
 
 </RelativeLayout>

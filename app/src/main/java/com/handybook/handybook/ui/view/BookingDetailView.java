@@ -89,12 +89,57 @@ public final class BookingDetailView extends InjectedRelativeLayout
     {
         final ViewGroup container = this;
 
-
         navText.setText(booking.getService());
         bookingText.setText("Booking #" + booking.getId());
 
         updateDateTimeInfoText(booking);
 
+        updateFrequencySectionDisplay(booking);
+
+        updateProSectionDisplay(booking, user);
+
+        updateLaundrySectionDisplay(booking);
+
+        updateEntryInformation(booking);
+
+        updateProNoteSectionDisplay(booking);
+
+        updateExtraSectionDisplay(booking);
+
+        updatePaymentDisplay(booking, user, container);
+
+        final Booking.Address address = booking.getAddress();
+        addrText.setText(TextUtils.formatAddress(address.getAddress1(), address.getAddress2(),
+                address.getCity(), address.getState(), address.getZip()));
+
+        if (booking.isPast())
+        {
+            optionsLayout.setVisibility(View.GONE);
+        }
+    }
+
+    //TODO: don't like having an exception the fragment should talk to the view in as few ways as possible
+    public void updateDateTimeInfoText(final Booking booking)
+    {
+        updateDateTimeInfoText(booking, booking.getStartDate());
+    }
+
+    public void updateDateTimeInfoText(final Booking booking, final Date startDate)
+    {
+        final float hours = booking.getHours();
+        final Calendar endDate = Calendar.getInstance();
+        endDate.setTime(startDate);
+        endDate.add(Calendar.HOUR, (int) hours);
+
+        timeText.setText(TextUtils.formatDate(startDate, "h:mmaaa - ")
+                + TextUtils.formatDate(endDate.getTime(), "h:mmaaa (") + TextUtils.formatDecimal(hours, "#.#") + " "
+                + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours)) + ")");
+
+        dateText.setText(TextUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy"));
+    }
+
+    private void updateFrequencySectionDisplay(final Booking booking)
+    {
         final String recurringInfo = booking.getRecurringInfo();
         if (recurringInfo == null)
         {
@@ -104,9 +149,11 @@ public final class BookingDetailView extends InjectedRelativeLayout
         {
             freqText.setText(booking.getRecurringInfo());
         }
+    }
 
-        //final User user = userManager.getCurrentUser();
 
+    private void updateProSectionDisplay(final Booking booking, final User user)
+    {
         final Booking.Provider pro = booking.getProvider();
         if (pro.getStatus() == Booking.Provider.PROVIDER_STATUS_ASSIGNED)
         {
@@ -121,24 +168,32 @@ public final class BookingDetailView extends InjectedRelativeLayout
         {
             proSection.setVisibility(View.GONE);
         }
+    }
 
+    private void updateLaundrySectionDisplay(final Booking booking)
+    {
         if (booking.getLaundryStatus() == null
                 || booking.getLaundryStatus() == Booking.LaundryStatus.SKIPPED)
         {
             laundrySection.setVisibility(View.GONE);
         }
+    }
 
+    private void updateEntryInformation(final Booking booking)
+    {
         final String entryInfo = booking.getEntryInfo();
         if (entryInfo != null)
         {
-            entryText.setText(entryInfo + " "
-                    + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
+            entryText.setText(entryInfo + " " + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
         }
         else
         {
             entrySection.setVisibility(View.GONE);
         }
+    }
 
+    private void updateProNoteSectionDisplay(final Booking booking)
+    {
         final String proNote = booking.getProNote();
         if (proNote != null)
         {
@@ -148,7 +203,10 @@ public final class BookingDetailView extends InjectedRelativeLayout
         {
             proNoteSection.setVisibility(View.GONE);
         }
+    }
 
+    private void updateExtraSectionDisplay(final Booking booking)
+    {
         final ArrayList<Booking.ExtraInfo> extras = booking.getExtrasInfo();
         if (extras != null && extras.size() > 0)
         {
@@ -171,11 +229,10 @@ public final class BookingDetailView extends InjectedRelativeLayout
         {
             extrasSection.setVisibility(View.GONE);
         }
+    }
 
-        final Booking.Address address = booking.getAddress();
-        addrText.setText(TextUtils.formatAddress(address.getAddress1(), address.getAddress2(),
-                address.getCity(), address.getState(), address.getZip()));
-
+    private void updatePaymentDisplay(final Booking booking, final User user, final ViewGroup container)
+    {
         final String price = TextUtils.formatPrice(booking.getPrice(),
                 user.getCurrencyChar(), null);
         totalText.setText(price);
@@ -226,30 +283,6 @@ public final class BookingDetailView extends InjectedRelativeLayout
         {
             billedText.setVisibility(View.GONE);
         }
-
-        if (booking.isPast())
-        {
-            optionsLayout.setVisibility(View.GONE);
-        }
     }
 
-
-//TODO: don't like having an exception the fragment should talk to the view in as few ways as possible
-    public void updateDateTimeInfoText(final Booking booking)
-    {
-        updateDateTimeInfoText(booking, booking.getStartDate());
-    }
-    public void updateDateTimeInfoText(final Booking booking, final Date startDate)
-    {
-        final float hours = booking.getHours();
-        final Calendar endDate = Calendar.getInstance();
-        endDate.setTime(startDate);
-        endDate.add(Calendar.HOUR, (int) hours);
-
-        timeText.setText(TextUtils.formatDate(startDate, "h:mmaaa - ")
-                + TextUtils.formatDate(endDate.getTime(), "h:mmaaa (") + TextUtils.formatDecimal(hours, "#.#") + " "
-                + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours)) + ")");
-
-        dateText.setText(TextUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy"));
-    }
 }

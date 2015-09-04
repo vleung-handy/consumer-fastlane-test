@@ -49,6 +49,9 @@ import com.handybook.handybook.ui.fragment.BookingCancelOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingConfirmationFragment;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessional;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
@@ -111,7 +114,11 @@ import retrofit.converter.GsonConverter;
         RateServiceDialogFragment.class, RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class, AddLaundryDialogFragment.class,
         HelpContactFragment.class, HelpContactActivity.class,
-        SplashActivity.class
+        SplashActivity.class,
+        BookingDetailSectionFragment.class,
+        BookingDetailSectionFragmentProfessional.class,
+        BookingDetailSectionFragmentEntryInformation.class,
+
 })
 public final class ApplicationModule
 {

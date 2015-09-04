@@ -2,6 +2,8 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessional;
 import com.handybook.handybook.ui.view.BookingDetailView;
 import com.squareup.otto.Subscribe;
 
@@ -67,11 +71,51 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
         ButterKnife.inject(this, view);
 
+
+
+
+
         bookingDetailView.updateDisplay(this.booking, userManager.getCurrentUser());
 
         setupClickListeners(this.booking);
 
+
+        addSubFragments();
+
+
+
+
+
+
+
+
         return view;
+    }
+
+    private void addSubFragments()
+    {
+        {
+            Fragment subFragment = new BookingDetailSectionFragmentProfessional();
+            Bundle args = new Bundle();
+            args.putParcelable(BundleKeys.BOOKING, this.booking);
+            subFragment.setArguments(args);
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.add(R.id.sub_fragment_container, subFragment).commit();
+        }
+
+
+        {
+            Fragment subFragment = new BookingDetailSectionFragmentEntryInformation();
+            Bundle args = new Bundle();
+            args.putParcelable(BundleKeys.BOOKING, this.booking);
+            subFragment.setArguments(args);
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.add(R.id.sub_fragment_container, subFragment).commit();
+        }
+
+
+
+
     }
 
     private void setupClickListeners(Booking booking)
