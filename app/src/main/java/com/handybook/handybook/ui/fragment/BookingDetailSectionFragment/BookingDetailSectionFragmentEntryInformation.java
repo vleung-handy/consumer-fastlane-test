@@ -12,28 +12,24 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     @Override
     protected void updateDisplay(Booking booking, User user)
     {
-        System.out.println("This update display WAS overridden, it is of fragment entry information type");
+        System.out.println("dbqwdubdwqbuidqwbiudqwbuiwdqbiudqw");
 
         final String entryInfo = booking.getEntryInfo();
         if (entryInfo != null)
         {
-            bookingDetailSectionView.entryTitle.setText(R.string.entry_info);
-            bookingDetailSectionView.entryText.setText(entryInfo + " " + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
-            bookingDetailSectionView.entryActionText.setText(R.string.edit);
+            view.entryTitle.setText(R.string.entry_info);
+            view.entryText.setText(entryInfo + " " + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
+            view.entryActionText.setText(R.string.edit);
         }
         else
         {
-            bookingDetailSectionView.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
         }
-
     }
 
-
     @Override
-    protected void testDoThing()
+    protected void onActionClick()
     {
         System.out.println("entry information fragment on click");
     }
-
-
 }

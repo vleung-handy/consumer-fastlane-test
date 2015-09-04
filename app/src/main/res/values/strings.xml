@@ -157,5 +157,7 @@
     <string name="an_error_has_occurred">An error has occurred, please try again</string>
 
     <string name="edit">Edit</string>
-
+    <string name="add">Add</string>
+    <string name="set_dropoff">Set Drop-Off</string>
+    <string name="email_receipt">Email Receipt</string>
 </resources>

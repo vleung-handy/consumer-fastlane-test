@@ -50,8 +50,13 @@ import com.handybook.handybook.ui.fragment.BookingConfirmationFragment;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
-import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessional;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessionalInformation;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
@@ -116,8 +121,13 @@ import retrofit.converter.GsonConverter;
         HelpContactFragment.class, HelpContactActivity.class,
         SplashActivity.class,
         BookingDetailSectionFragment.class,
-        BookingDetailSectionFragmentProfessional.class,
+        BookingDetailSectionFragmentAddress.class,
         BookingDetailSectionFragmentEntryInformation.class,
+        BookingDetailSectionFragmentExtras.class,
+        BookingDetailSectionFragmentLaundry.class,
+        BookingDetailSectionFragmentNoteToPro.class,
+        BookingDetailSectionFragmentPayment.class,
+        BookingDetailSectionFragmentProfessionalInformation.class,
 
 })
 public final class ApplicationModule

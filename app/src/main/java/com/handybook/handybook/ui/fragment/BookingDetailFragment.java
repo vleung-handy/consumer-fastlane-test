@@ -2,13 +2,13 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
@@ -16,8 +16,14 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
-import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessional;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessionalInformation;
 import com.handybook.handybook.ui.view.BookingDetailView;
 import com.squareup.otto.Subscribe;
 
@@ -72,50 +78,45 @@ public final class BookingDetailFragment extends BookingFlowFragment
         ButterKnife.inject(this, view);
 
 
-
-
-
         bookingDetailView.updateDisplay(this.booking, userManager.getCurrentUser());
 
         setupClickListeners(this.booking);
 
-
-        addSubFragments();
-
-
-
-
-
-
-
+        addSectionFragments();
 
         return view;
     }
 
-    private void addSubFragments()
+
+    //In display order
+    protected List<BookingDetailSectionFragment> constructSectionFragments(Booking booking)
     {
+        return Lists.newArrayList(
+                new BookingDetailSectionFragmentProfessionalInformation(),
+                new BookingDetailSectionFragmentLaundry(),
+                new BookingDetailSectionFragmentEntryInformation(),
+                new BookingDetailSectionFragmentNoteToPro(),
+                new BookingDetailSectionFragmentExtras(),
+                new BookingDetailSectionFragmentAddress(),
+                new BookingDetailSectionFragmentPayment()
+                );
+    }
+
+    private void addSectionFragments()
+    {
+        List<BookingDetailSectionFragment> sectionFragments = constructSectionFragments(this.booking);
+
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        for (BookingDetailSectionFragment sectionFragment : sectionFragments)
         {
-            Fragment subFragment = new BookingDetailSectionFragmentProfessional();
             Bundle args = new Bundle();
             args.putParcelable(BundleKeys.BOOKING, this.booking);
-            subFragment.setArguments(args);
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.add(R.id.sub_fragment_container, subFragment).commit();
+            sectionFragment.setArguments(args);
+            transaction.add(R.id.section_fragment_container, sectionFragment);
         }
 
-
-        {
-            Fragment subFragment = new BookingDetailSectionFragmentEntryInformation();
-            Bundle args = new Bundle();
-            args.putParcelable(BundleKeys.BOOKING, this.booking);
-            subFragment.setArguments(args);
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.add(R.id.sub_fragment_container, subFragment).commit();
-        }
-
-
-
-
+        transaction.commit();
     }
 
     private void setupClickListeners(Booking booking)

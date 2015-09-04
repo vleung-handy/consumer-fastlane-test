@@ -14,13 +14,17 @@ import com.handybook.handybook.ui.widget.BookingDetailSectionView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.Optional;
 
 public class BookingDetailSectionFragment extends InjectedFragment
 {
     protected Booking booking;
 
+    @Optional
     @InjectView(R.id.booking_detail_section_view)
-    protected BookingDetailSectionView bookingDetailSectionView;
+    protected BookingDetailSectionView view;
+
+    protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section; }
 
     public static BookingDetailSectionFragment newInstance(final Booking booking)
     {
@@ -43,12 +47,9 @@ public class BookingDetailSectionFragment extends InjectedFragment
                                    final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_detail_section, container, false);
+                .inflate(getFragmentResourceId(), container, false);
 
         ButterKnife.inject(this, view);
-
-        //bookingDetailView.updateDisplay(this.booking, userManager.getCurrentUser());
-        //bookingDetailSectionView.updateDisplay(booking);
 
         updateDisplay(this.booking, userManager.getCurrentUser());
 
@@ -57,25 +58,22 @@ public class BookingDetailSectionFragment extends InjectedFragment
         return view;
     }
 
-
+    //anything universal?
     protected void updateDisplay(Booking booking, User user)
     {
-        System.out.println("This update display should get overridden");
-
     }
 
 
     protected void setupClickListeners(Booking booking)
     {
+        //TODO: Probably some additional constraints on this for certain edit actions
         if (!booking.isPast())
         {
-          //bookingDetailView.rescheduleButton.setOnClickListener(rescheduleClicked);
-          //bookingDetailView.cancelButton.setOnClickListener(cancelClicked);
-          bookingDetailSectionView.entryActionText.setOnClickListener(actionClicked);
+          view.entryActionText.setOnClickListener(actionClicked);
         }
     }
 
-    protected void testDoThing()
+    protected void onActionClick()
     {
         System.out.println("ZZZZ test do thing is a go!");
     }
@@ -84,14 +82,14 @@ public class BookingDetailSectionFragment extends InjectedFragment
     protected void disableInputs()
     {
         super.disableInputs();
-        bookingDetailSectionView.entryActionText.setClickable(false);
+        view.entryActionText.setClickable(false);
     }
 
     @Override
     protected final void enableInputs()
     {
         super.enableInputs();
-        bookingDetailSectionView.entryActionText.setClickable(true);
+        view.entryActionText.setClickable(true);
     }
 
 //    @Override
@@ -197,7 +195,7 @@ public class BookingDetailSectionFragment extends InjectedFragment
 //            bus.post(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
 
             System.out.println("ZZZZ Clicked on action, do the thing");
-            testDoThing();
+            onActionClick();
         }
     };
 
