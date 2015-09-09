@@ -5,7 +5,13 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class BookingOption implements Parcelable {
+public final class BookingOption implements Parcelable
+{
+
+    //todo: auto serialized enums for type see : Booking.LaundryStatus
+
+
+
     @SerializedName("uniq") private String uniq;
     @SerializedName("type") private String type;
     @SerializedName("title") private String title;

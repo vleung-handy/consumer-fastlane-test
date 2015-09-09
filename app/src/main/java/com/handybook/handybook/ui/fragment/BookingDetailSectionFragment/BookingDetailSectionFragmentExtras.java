@@ -1,10 +1,12 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 
 import java.util.ArrayList;
 
@@ -46,6 +48,11 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
     @Override
     protected void onActionClick()
     {
-        //TODO:
+        //TODO: Launch an activity / fragment to edit the extras on a booking , send the request, and return to the booking detail when request is acked
+
+        final Intent intent = new Intent(getActivity(), BookingExtrasActivity.class);
+        startActivity(intent);
+
+
     }
 }
