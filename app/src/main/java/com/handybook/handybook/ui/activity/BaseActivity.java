@@ -82,14 +82,13 @@ public abstract class BaseActivity extends FragmentActivity {
         progressDialog.setMessage(getString(R.string.loading));
     }
 
+    //Lifecycle
     @Override
     protected void onStart() {
         super.onStart();
-
         if (PlayServicesUtils.isGooglePlayStoreAvailable()) {
             PlayServicesUtils.handleAnyPlayServicesError(this);
         }
-
         allowCallbacks = true;
     }
 

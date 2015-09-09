@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -29,10 +30,16 @@ public final class MenuButton extends ImageButton {
     }
 
     void init(final Context context, final View parent) {
+
+        //UPGRADE: this stuff should be in an xml not in code
         this.setImageResource(R.drawable.ic_menu);
         this.setBackgroundResource(0);
         this.setPadding(0, 0, 0, 0);
         this.setColor(getResources().getColor(R.color.black_pressed));
+
+        RelativeLayout.LayoutParams testLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        testLP.addRule(RelativeLayout.CENTER_IN_PARENT);
+        this.setLayoutParams(testLP);
 
         Utils.extendHitArea(this, parent, Utils.toDP(32, context));
 
@@ -44,6 +51,9 @@ public final class MenuButton extends ImageButton {
             }
         });
     }
+
+
+
 
     public void setColor(final int id) {
         this.setColorFilter(id, PorterDuff.Mode.SRC_ATOP);

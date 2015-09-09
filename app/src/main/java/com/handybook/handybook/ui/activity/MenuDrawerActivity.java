@@ -9,16 +9,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.HelpNode;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.simplealertdialog.SimpleAlertDialog;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
 
-public abstract class MenuDrawerActivity extends BaseActivity  implements SimpleAlertDialog.OnClickListener {
+public abstract class MenuDrawerActivity extends BaseActivity implements SimpleAlertDialog.OnClickListener
+{
     private static final String STATE_MENU_DRAWER = "MENU_DRAWER";
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
 
@@ -28,10 +26,12 @@ public abstract class MenuDrawerActivity extends BaseActivity  implements Simple
     private OnDrawerStateChangeListener onDrawerStateChangeListener;
 
     protected abstract Fragment createFragment();
+
     protected abstract String getNavItemTitle();
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT,
@@ -44,158 +44,153 @@ public abstract class MenuDrawerActivity extends BaseActivity  implements Simple
         final FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
-        if (fragment == null) {
+        if (fragment == null)
+        {
             fragment = createFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
 
         NavigationFragment navFragment
-                = (NavigationFragment)fm.findFragmentById(R.id.nav_fragment_container);
+                = (NavigationFragment) fm.findFragmentById(R.id.nav_fragment_container);
 
-        if (navFragment == null) {
+        if (navFragment == null)
+        {
             navFragment = NavigationFragment.newInstance(getNavItemTitle());
             fm.beginTransaction().add(R.id.nav_fragment_container, navFragment).commit();
         }
 
         if (savedInstanceState == null && (showNavForTransition
-                = getIntent().getBooleanExtra(EXTRA_SHOW_NAV_FOR_TRANSITION, false))) {
+                = getIntent().getBooleanExtra(EXTRA_SHOW_NAV_FOR_TRANSITION, false)))
+        {
             menuDrawer.openMenu(false);
         }
 
-        menuDrawer.setOnInterceptMoveEventListener(new MenuDrawer.OnInterceptMoveEventListener() {
+        menuDrawer.setOnInterceptMoveEventListener(new MenuDrawer.OnInterceptMoveEventListener()
+        {
             @Override
-            public boolean isViewDraggable(final View view, final int i, final int i2, final int i3) {
+            public boolean isViewDraggable(final View view, final int i, final int i2, final int i3)
+            {
                 return disableDrawer;
             }
         });
 
         menuDrawer.setOnDrawerStateChangeListener(
-            new MenuDrawer.OnDrawerStateChangeListener() {
-                @Override
-                public void onDrawerStateChange(final int oldState, final int newState) {
-                    if (newState == MenuDrawer.STATE_OPENING
-                            || newState == MenuDrawer.STATE_CLOSING
-                            || newState == MenuDrawer.STATE_DRAGGING) {
+                new MenuDrawer.OnDrawerStateChangeListener()
+                {
+                    @Override
+                    public void onDrawerStateChange(final int oldState, final int newState)
+                    {
+                        if (newState == MenuDrawer.STATE_OPENING
+                                || newState == MenuDrawer.STATE_CLOSING
+                                || newState == MenuDrawer.STATE_DRAGGING)
+                        {
 
-                        InputMethodManager imm = (InputMethodManager)MenuDrawerActivity.this
-                                .getSystemService(INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) MenuDrawerActivity.this
+                                    .getSystemService(INPUT_METHOD_SERVICE);
 
-                        final View focus = MenuDrawerActivity.this.getCurrentFocus();
-                        if (focus != null) {
-                            imm.hideSoftInputFromWindow(focus.getWindowToken(), 0);
+                            final View focus = MenuDrawerActivity.this.getCurrentFocus();
+                            if (focus != null)
+                            {
+                                imm.hideSoftInputFromWindow(focus.getWindowToken(), 0);
+                            }
                         }
+
+                        if (onDrawerStateChangeListener != null)
+                            onDrawerStateChangeListener.onDrawerStateChange(menuDrawer, oldState, newState);
                     }
 
-                    if (onDrawerStateChangeListener != null)
-                        onDrawerStateChangeListener.onDrawerStateChange(menuDrawer, oldState, newState);
-                }
-
-                @Override
-                public void onDrawerSlide(float openRatio, int offsetPixels) {}
-        });
+                    @Override
+                    public void onDrawerSlide(float openRatio, int offsetPixels)
+                    {
+                    }
+                });
     }
 
     @Override
-    protected final void onStart() {
+    protected final void onStart()
+    {
         super.onStart();
 
-        if (showNavForTransition) {
+        if (showNavForTransition)
+        {
             menuDrawer.closeMenu();
             showNavForTransition = false;
         }
     }
 
     @Override
-    protected final void onRestoreInstanceState(final Bundle inState) {
+    protected final void onRestoreInstanceState(final Bundle inState)
+    {
         super.onRestoreInstanceState(inState);
         menuDrawer.restoreState(inState.getParcelable(STATE_MENU_DRAWER));
     }
 
     @Override
-    protected final void onSaveInstanceState(final Bundle outState) {
+    protected final void onSaveInstanceState(final Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putParcelable(STATE_MENU_DRAWER, menuDrawer.saveState());
     }
 
     @Override
-    public final void onBackPressed() {
+    public final void onBackPressed()
+    {
         final int drawerState = menuDrawer.getDrawerState();
-        if (drawerState == MenuDrawer.STATE_OPEN || drawerState == MenuDrawer.STATE_OPENING) {
+        if (drawerState == MenuDrawer.STATE_OPEN || drawerState == MenuDrawer.STATE_OPENING)
+        {
             menuDrawer.closeMenu();
             return;
         }
         super.onBackPressed();
     }
 
-    public final MenuDrawer getMenuDrawer() {
+    public final MenuDrawer getMenuDrawer()
+    {
         return menuDrawer;
     }
 
-    public final void navigateToActivity(final Class<? extends Activity> clazz) {
+    public final void navigateToActivity(final Class<? extends Activity> clazz)
+    {
         final Intent intent = new Intent(this, clazz);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
-
-        if (clazz == HelpActivity.class) {
-            final User user = userManager.getCurrentUser();
-            final String authToken = user != null ? user.getAuthToken() : null;
-
-            progressDialog.show();
-
-            dataManager.getHelpInfo(null, authToken, "", new DataManager.Callback<HelpNode>() {
-                @Override
-                public void onSuccess(final HelpNode node) {
-                    if (!allowCallbacks) return;
-                    intent.putExtra(HelpActivity.EXTRA_HELP_NODE, node);
-                    startActivity(intent);
-                    MenuDrawerActivity.this.overridePendingTransition(0, 0);
-                    MenuDrawerActivity.this.finish();
-
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error) {
-                    if (!allowCallbacks) return;
-                    progressDialog.dismiss();
-                    dataManagerErrorHandler.handleError(MenuDrawerActivity.this, error);
-                }
-            });
-        }
-        else {
-            startActivity(intent);
-            this.overridePendingTransition(0, 0);
-            this.finish();
-        }
+        startActivity(intent);
+        MenuDrawerActivity.this.overridePendingTransition(0, 0);
+        MenuDrawerActivity.this.finish();
     }
-    
-    public final void setDrawerDisabled(final boolean disableDrawer) {
+
+    public final void setDrawerDisabled(final boolean disableDrawer)
+    {
         this.disableDrawer = disableDrawer;
     }
 
     @Override
     public final void onDialogPositiveButtonClicked(final SimpleAlertDialog dialog,
-                                              final int requestCode, final View view) {
+                                                    final int requestCode, final View view)
+    {
         final FragmentManager fm = getSupportFragmentManager();
         final NavigationFragment navFragment
-                = (NavigationFragment)fm.findFragmentById(R.id.nav_fragment_container);
+                = (NavigationFragment) fm.findFragmentById(R.id.nav_fragment_container);
         if (requestCode == 1) navFragment.onDialogPositiveButtonClicked(dialog, requestCode, view);
     }
 
     @Override
     public final void onDialogNegativeButtonClicked(final SimpleAlertDialog dialog,
-                                              final int requestCode, final View view) {
+                                                    final int requestCode, final View view)
+    {
         final FragmentManager fm = getSupportFragmentManager();
         final NavigationFragment navFragment
-                = (NavigationFragment)fm.findFragmentById(R.id.nav_fragment_container);
+                = (NavigationFragment) fm.findFragmentById(R.id.nav_fragment_container);
         if (requestCode == 1) navFragment.onDialogNegativeButtonClicked(dialog, requestCode, view);
     }
 
-    public void setOnDrawerStateChangedListener(final OnDrawerStateChangeListener onDrawerStateChangedListener) {
+    public void setOnDrawerStateChangedListener(final OnDrawerStateChangeListener onDrawerStateChangedListener)
+    {
         this.onDrawerStateChangeListener = onDrawerStateChangedListener;
     }
 
-    public interface OnDrawerStateChangeListener {
+    public interface OnDrawerStateChangeListener
+    {
         void onDrawerStateChange(final MenuDrawer menuDrawer, final int oldState, final int newState);
     }
 }

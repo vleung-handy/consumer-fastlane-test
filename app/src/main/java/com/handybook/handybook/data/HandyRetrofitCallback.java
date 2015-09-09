@@ -13,7 +13,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 abstract class HandyRetrofitCallback implements retrofit.Callback<Response> {
-    private final DataManager.Callback callback;
+    protected final DataManager.Callback callback;
 
     HandyRetrofitCallback(DataManager.Callback callback) {
         this.callback = callback;

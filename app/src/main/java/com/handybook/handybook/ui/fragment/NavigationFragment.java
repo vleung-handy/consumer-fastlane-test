@@ -113,13 +113,11 @@ public final class NavigationFragment extends InjectedFragment
     public final void onResume() {
         super.onResume();
         loadNavItems();
-        bus.register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        bus.unregister(this);
     }
 
     @Override
