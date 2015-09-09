@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
@@ -25,8 +22,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,24 +39,9 @@ public final class HelpContactFragment extends InjectedFragment
 
     private static final String SALESFORCE_DATA_WRAPPER_KEY = "salesforce_data";
 
-    @Bind(R.id.send_message_button)
-    Button sendMessageButton;
-    @Bind(R.id.user_name_text)
-    FirstNameInputTextView nameText;
-    @Bind(R.id.email_text)
-    EmailInputTextView emailText;
-    @Bind(R.id.comment_text)
-    BasicInputTextView commentText;
-    @Bind(R.id.close_img)
-    ImageView closeImage;
-    @Bind(R.id.back_img)
-    ImageView backImage;
     @Bind(R.id.help_contact_view)
     HelpContactView helpContactView;
-    @Bind(R.id.name_layout)
-    ViewGroup nameLayout;
-    @Bind(R.id.email_layout)
-    ViewGroup emailLayout;
+
     @Bind(R.id.help_banner_view)
     HelpBannerView helpBannerView;
 

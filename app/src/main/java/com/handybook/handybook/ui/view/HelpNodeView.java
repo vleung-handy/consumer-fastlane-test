@@ -19,36 +19,36 @@ import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.ui.widget.CTAButton;
 import com.handybook.handybook.util.TextUtils;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public final class HelpNodeView extends InjectedRelativeLayout
 {
     //Help header block
-    @InjectView(R.id.help_header)
+    @Bind(R.id.help_header)
     View helpHeader;
-    @InjectView(R.id.help_header_title)
+    @Bind(R.id.help_header_title)
     TextView headerTitle;
-    @InjectView(R.id.help_icon)
+    @Bind(R.id.help_icon)
     ImageView helpIcon;
-    @InjectView(R.id.help_triangle)
+    @Bind(R.id.help_triangle)
     ImageView helpTriangleView;
 
     //Main content webview
-    @InjectView(R.id.info_layout)
+    @Bind(R.id.info_layout)
     protected RelativeLayout infoLayout;
-    @InjectView(R.id.help_webview)
+    @Bind(R.id.help_webview)
     protected HandyWebView helpWebView;
 
     //Contact Us
-    @InjectView(R.id.contact_button)
+    @Bind(R.id.contact_button)
     public Button contactButton;
 
     //Help Node Navigation Links
-    @InjectView(R.id.nav_options_layout)
+    @Bind(R.id.nav_options_layout)
     public LinearLayout navOptionsLayout;
 
     //CTAs
-    @InjectView(R.id.cta_layout)
+    @Bind(R.id.cta_layout)
     public LinearLayout ctaLayout;
 
     //TODO: Currently passing this around, could get it from a service if that would be cleaner

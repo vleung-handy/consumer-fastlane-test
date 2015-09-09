@@ -13,17 +13,18 @@ import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+
 
 public final class HelpBannerView extends InjectedRelativeLayout
 {
-    @InjectView(R.id.menu_button_layout)
+    @Bind(R.id.menu_button_layout)
     ViewGroup menuButtonLayout;
-    @InjectView(R.id.back_img)
+    @Bind(R.id.back_img)
     public ImageView backImage;
-    @InjectView(R.id.close_img)
+    @Bind(R.id.close_img)
     public ImageView closeImage;
-    @InjectView(R.id.nav_text)
+    @Bind(R.id.nav_text)
     public TextView navText;
 
 
