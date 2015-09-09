@@ -79,9 +79,11 @@ public final class BookingDetailView extends InjectedRelativeLayout
     public void updateDateTimeInfoText(final Booking booking, final Date startDate)
     {
         final float hours = booking.getHours();
+        final int minutes = (int) (60 * hours); //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
         final Calendar endDate = Calendar.getInstance();
+
         endDate.setTime(startDate);
-        endDate.add(Calendar.HOUR, (int) hours);
+        endDate.add(Calendar.MINUTE, minutes);
 
         timeText.setText(TextUtils.formatDate(startDate, "h:mmaaa - ")
                 + TextUtils.formatDate(endDate.getTime(), "h:mmaaa (") + TextUtils.formatDecimal(hours, "#.#") + " "
