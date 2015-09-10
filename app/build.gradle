@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.newrelic.agent.android:agent-gradle-plugin:5.2.1'
+        classpath 'com.newrelic.agent.android:agent-gradle-plugin:5.+'
         classpath 'io.fabric.tools:gradle:1.19.2'
     }
 }
@@ -13,6 +13,7 @@ buildscript {
 repositories {
     maven { url 'https://maven.fabric.io/public' }
     maven { url "http://dl.bintray.com/populov/maven" }
+    maven { url "http://dl.bintray.com/urbanairship/android" }
     flatDir {
         dirs 'libs'
         dirs 'aars'
@@ -86,63 +87,65 @@ dependencies {
 
     //Google Play
     compile 'com.google.android.gms:play-services-location:7.8.0'
+    compile 'com.google.android.gms:play-services-gcm:7.8.0'
 
     //Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
         transitive = true;
     }
-
+    
     //New Relic
-    compile 'com.newrelic.agent.android:android-agent:5.2.1'
-
-    //Awesome Square libraries
-    compile 'com.squareup.retrofit:retrofit:1.6.1'
+    compile 'com.newrelic.agent.android:android-agent:5.+'
+    
+    //Awesome Square Libraries
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.dagger:dagger:1.2.2'
-    compile 'com.squareup:otto:1.3.5'
-    compile 'com.squareup.okhttp:okhttp:2.1.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+    compile 'com.squareup:otto:1.3.8'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-    compile 'com.jakewharton:butterknife:5.1.2'
 
     //Stripe payment processing
     compile 'com.stripe:stripe-android:1.0.0'
-
-    //Mixpanel
-    compile 'com.mixpanel.android:mixpanel-android:4.4.1@aar'
-
+    
     //Menu drawer for navigation
     compile 'net.simonvt.menudrawer:menudrawer:3.0.6'
 
     //Calligraphy for fonts
-    compile 'uk.co.chrisjenx:calligraphy:1.2.0'
+    compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
-    //Urban airship
-    compile 'com.urbanairship:urbanairship-lib:1.5.1@aar'
-
+    // Urban Airship for cloud messaging
+    compile 'com.urbanairship.android:urbanairship-sdk:6.1.+'
+    
     //Guava
     compile 'com.google.guava:guava:18.0'
 
     //SecurePrefs storage
     compile 'com.scottyab:secure-preferences-lib:0.1.1'
 
+    //Facebook (just for login)
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    
+    //Mixpanel
+    compile 'com.mixpanel.android:mixpanel-android:4.6.3'
+
+    //STILL NEEDED? - Netflix RX Java : https://github.com/ReactiveX/RxJava/wiki : Reactive library, to investigate for adoption or removal
+    compile 'com.netflix.rxjava:rxjava-android:0.18.4' //TODO: Update to RxAndroid
+
+    //STILL NEEDED? - reactive location : https://github.com/mcharmas/Android-ReactiveLocation : RxJava wrapper for google play services
+    compile 'pl.charmas.android:android-reactive-location:0.2@aar' //TODO: Update after RxJava updtd
+
+    //This is for a view page indicator : http://viewpagerindicator.com/ : We are not using that but we do have some style / theme dependencies, to remove in future
+    compile 'com.viewpagerindicator:library:2.4.1'
+
     compile files('../libs/yozio-android-sdk.jar')
-    compile project(':facebook')
     compile project(':simplealertdialog')
     compile project(':androidspinner')
 
     //Testing with juint and robolectric
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0'
-    testCompile 'com.squareup.retrofit:retrofit-mock:1.6.1'
-    testCompile 'com.squareup.okhttp:mockwebserver:2.1.0'
-
-
-//This is for a view page indicator : http://viewpagerindicator.com/ : We are not using that but we do have some style / theme dependencies, to remove in future
-    compile 'com.viewpagerindicator:library:2.4.1@aar'
-
-//STILL NEEDED? - reactive location : https://github.com/mcharmas/Android-ReactiveLocation : RxJava wrapper for google play services
-    compile 'pl.charmas.android:android-reactive-location:0.2@aar'
-
-//STILL NEEDED? - Netflix RX Java : https://github.com/ReactiveX/RxJava/wiki : Reactive library, to investigate for adoption or removal
-    compile 'com.netflix.rxjava:rxjava-android:0.18.4'
+    testCompile 'org.robolectric:robolectric:2.4' //TODO: Update to 3.0 (and fix 6 tests)
+    testCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
+    testCompile 'com.squareup.okhttp:mockwebserver:2.3.0'
 }

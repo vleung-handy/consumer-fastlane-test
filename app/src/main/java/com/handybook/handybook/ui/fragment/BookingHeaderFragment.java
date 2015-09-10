@@ -16,18 +16,22 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingHeaderFragment extends BookingFlowFragment implements Observer {
 
     private BookingTransaction transaction;
     private BookingQuote quote;
 
-    @InjectView(R.id.date_text) TextView dateText;
-    @InjectView(R.id.time_text) TextView timeText;
-    @InjectView(R.id.price_text) TextView priceText;
-    @InjectView(R.id.discount_text) TextView discountText;
+    @Bind(R.id.date_text)
+    TextView dateText;
+    @Bind(R.id.time_text)
+    TextView timeText;
+    @Bind(R.id.price_text)
+    TextView priceText;
+    @Bind(R.id.discount_text)
+    TextView discountText;
 
     static BookingHeaderFragment newInstance() {
         return new BookingHeaderFragment();
@@ -46,7 +50,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_header,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         discountText.setPaintFlags(discountText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         return view;

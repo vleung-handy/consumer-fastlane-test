@@ -18,8 +18,8 @@ import com.handybook.handybook.ui.widget.BookingOptionsView;
 
 import java.util.Date;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingRescheduleOptionsFragment extends BookingFlowFragment {
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
@@ -30,8 +30,10 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
     private Booking booking;
     private Date date;
 
-    @InjectView(R.id.options_layout) FrameLayout optionsLayout;
-    @InjectView(R.id.reschedule_button) Button rescheduleButton;
+    @Bind(R.id.options_layout)
+    FrameLayout optionsLayout;
+    @Bind(R.id.reschedule_button)
+    Button rescheduleButton;
 
     public static BookingRescheduleOptionsFragment newInstance(final Booking booking, final Date date) {
         final BookingRescheduleOptionsFragment fragment = new BookingRescheduleOptionsFragment();
@@ -61,7 +63,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_reschedule_options, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingOption options = new BookingOption();
         options.setType("option");

@@ -14,25 +14,26 @@ import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FirstNameInputTextView;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+
 
 public final class HelpContactView extends InjectedRelativeLayout
 {
-    @InjectView(R.id.send_message_button)
+    @Bind(R.id.send_message_button)
     public Button sendMessageButton;
 
-    @InjectView(R.id.subject_text)
+    @Bind(R.id.subject_text)
     public TextView subjectText;
-    @InjectView(R.id.help_contact_user_name_text)
+    @Bind(R.id.help_contact_user_name_text)
     public FirstNameInputTextView nameText;
-    @InjectView(R.id.help_contact_email_text)
+    @Bind(R.id.help_contact_email_text)
     public EmailInputTextView emailText;
-    @InjectView(R.id.help_contact_comment_text)
+    @Bind(R.id.help_contact_comment_text)
     public BasicInputTextView commentText;
 
-    @InjectView(R.id.name_layout)
+    @Bind(R.id.name_layout)
     ViewGroup nameLayout;
-    @InjectView(R.id.email_layout)
+    @Bind(R.id.email_layout)
     ViewGroup emailLayout;
 
     public HelpContactView(final Context context)

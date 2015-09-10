@@ -23,8 +23,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedInput;
 
@@ -39,10 +39,10 @@ public final class HelpContactFragment extends InjectedFragment
 
     private static final String SALESFORCE_DATA_WRAPPER_KEY = "salesforce_data";
 
-    @InjectView(R.id.help_contact_view)
+    @Bind(R.id.help_contact_view)
     HelpContactView helpContactView;
 
-    @InjectView(R.id.help_banner_view)
+    @Bind(R.id.help_banner_view)
     HelpBannerView helpBannerView;
 
     private HelpNode associatedNode;
@@ -66,7 +66,7 @@ public final class HelpContactFragment extends InjectedFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_help_contact, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         //required arguments
         this.associatedNode = getArguments().getParcelable(BundleKeys.HELP_NODE);

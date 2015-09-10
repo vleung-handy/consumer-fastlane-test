@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class ServicesFragment extends BookingFlowFragment {
     static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
@@ -35,8 +35,10 @@ public final class ServicesFragment extends BookingFlowFragment {
     @Inject BookingManager bookingManager;
     @Inject UserManager userManager;
 
-    @InjectView(R.id.nav_text) TextView navText;
-    @InjectView(android.R.id.list) ListView listView;
+    @Bind(R.id.nav_text)
+    TextView navText;
+    @Bind(android.R.id.list)
+    ListView listView;
 
     public static ServicesFragment newInstance(final Service service, final int navHeight) {
         final ServicesFragment fragment = new ServicesFragment();
@@ -60,7 +62,7 @@ public final class ServicesFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_services,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         navText.setText(TextUtils.toTitleCase(service.getName()));
 
         return view;
