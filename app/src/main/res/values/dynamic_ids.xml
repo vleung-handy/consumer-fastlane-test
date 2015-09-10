@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="nav_menu_home" />
+    <item type="id" name="nav_menu_profile" />
+    <item type="id" name="nav_menu_my_bookings" />
+    <item type="id" name="nav_menu_help" />
+    <item type="id" name="nav_menu_promotions" />
+    <item type="id" name="nav_menu_log_out" />
+    <item type="id" name="nav_menu_log_in" />
+</resources>
