@@ -11,14 +11,32 @@ import com.handybook.handybook.util.TextUtils;
 public class BookingDetailSectionFragmentProfessionalInformation extends BookingDetailSectionFragment
 {
     @Override
+    protected int getEntryTitleTextResourceId()
+    {
+        return R.string.professional;
+    }
+
+    @Override
+    protected int getEntryActionTextResourceId()
+    {
+        return R.string.contact;
+    }
+
+    @Override
+    protected boolean hasEnabledAction()
+    {
+        return false;
+    }
+
+    @Override
     protected void updateDisplay(Booking booking, User user)
     {
+        super.updateDisplay(booking, user);
+
         final Booking.Provider pro = booking.getProvider();
 
         if (pro.getStatus() == Booking.Provider.PROVIDER_STATUS_ASSIGNED)
         {
-            view.entryTitle.setText(R.string.professional);
-
             view.entryText.setText(pro.getFirstName() + " "
                     + pro.getLastName()
                     + (pro.getPhone() != null ? "\n"
@@ -27,9 +45,6 @@ public class BookingDetailSectionFragmentProfessionalInformation extends Booking
             //TODO WHAT IS THIS LINKIFY THING DOING, IS THIS REPLACED BY OUR ACTION TEXT LINKS?
             Linkify.addLinks(view.entryText, Linkify.PHONE_NUMBERS);
             TextUtils.stripUnderlines(view.entryText);
-
-            view.entryActionText.setText(R.string.contact);
-
         }
         else
         {
@@ -41,7 +56,7 @@ public class BookingDetailSectionFragmentProfessionalInformation extends Booking
     @Override
     protected void onActionClick()
     {
-        System.out.println("Professional fragment on click should not exist");
+        //TODO: Contact pro? Check the booking for business logic about when can contact / edit
     }
 
 

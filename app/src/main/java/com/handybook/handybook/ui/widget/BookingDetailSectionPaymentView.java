@@ -5,13 +5,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.Utils;
 
@@ -24,18 +22,8 @@ import butterknife.InjectView;
 /**
  * Created by cdavis on 9/1/15.
  */
-public class BookingDetailSectionPaymentView extends InjectedRelativeLayout
+public class BookingDetailSectionPaymentView extends BookingDetailSectionView
 {
-    @InjectView(R.id.entry_title)
-    public TextView entryTitle;
-    @InjectView(R.id.entry_text)
-    public TextView entryText;
-    @InjectView(R.id.entry_action_text)
-    public TextView entryActionText;
-
-    @InjectView(R.id.payment_info_section)
-    public RelativeLayout paymentInfoSection;
-
     @InjectView(R.id.pay_lines_section)
     public LinearLayout paymentLinesSection;
 
@@ -60,9 +48,6 @@ public class BookingDetailSectionPaymentView extends InjectedRelativeLayout
     //TODO: Clean this up
     public void updatePaymentDisplay(final Booking booking, final User user, final ViewGroup container)
     {
-        entryTitle.setText(R.string.payment);
-        entryActionText.setText(R.string.email_receipt);
-
         final String price = TextUtils.formatPrice(booking.getPrice(),
                 user.getCurrencyChar(), null);
         totalText.setText(price);

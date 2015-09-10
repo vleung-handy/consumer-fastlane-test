@@ -10,10 +10,27 @@ public class BookingDetailSectionFragmentLaundry extends BookingDetailSectionFra
 {
 
     @Override
+    protected int getEntryTitleTextResourceId()
+    {
+        return R.string.laundry;
+    }
+
+    @Override
+    protected int getEntryActionTextResourceId()
+    {
+        return R.string.set_dropoff;
+    }
+
+    @Override
+    protected boolean hasEnabledAction()
+    {
+        return false;
+    }
+
+    @Override
     protected void updateDisplay(Booking booking, User user)
     {
-        view.entryTitle.setText(R.string.laundry);
-        view.entryActionText.setText(R.string.set_dropoff);
+        super.updateDisplay(booking, user);
 
         if (booking.getLaundryStatus() == null
                 || booking.getLaundryStatus() == Booking.LaundryStatus.SKIPPED)
@@ -29,6 +46,6 @@ public class BookingDetailSectionFragmentLaundry extends BookingDetailSectionFra
     @Override
     protected void onActionClick()
     {
-        //TODO:
+        //TODO: Edit laundry drop off associated with booking
     }
 }

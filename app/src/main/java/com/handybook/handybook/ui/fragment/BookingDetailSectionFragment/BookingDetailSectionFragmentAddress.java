@@ -7,13 +7,28 @@ import com.handybook.handybook.util.TextUtils;
 
 public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFragment
 {
+    @Override
+    protected int getEntryTitleTextResourceId()
+    {
+        return R.string.address;
+    }
+
+    @Override
+    protected int getEntryActionTextResourceId()
+    {
+        return R.string.edit;
+    }
+
+    @Override
+    protected boolean hasEnabledAction()
+    {
+        return false;
+    }
 
     @Override
     protected void updateDisplay(Booking booking, User user)
     {
-        view.entryTitle.setText(R.string.address);
-        view.entryActionText.setText(R.string.edit);
-
+        super.updateDisplay(booking, user);
         final Booking.Address address = booking.getAddress();
         view.entryText.setText(TextUtils.formatAddress(address.getAddress1(), address.getAddress2(),
                 address.getCity(), address.getState(), address.getZip()));
@@ -22,6 +37,6 @@ public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFra
     @Override
     protected void onActionClick()
     {
-        //TODO:
+        //TODO: Be able to edit the address
     }
 }

@@ -10,14 +10,31 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
 {
 
     @Override
+    protected int getEntryTitleTextResourceId()
+    {
+        return R.string.entry_info;
+    }
+
+    @Override
+    protected int getEntryActionTextResourceId()
+    {
+        return R.string.edit;
+    }
+
+    @Override
+    protected boolean hasEnabledAction()
+    {
+        return true;
+    }
+
+    @Override
     protected void updateDisplay(Booking booking, User user)
     {
+        super.updateDisplay(booking, user);
         final String entryInfo = booking.getEntryInfo();
         if (entryInfo != null)
         {
-            view.entryTitle.setText(R.string.entry_info);
             view.entryText.setText(entryInfo + " " + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
-            view.entryActionText.setText(R.string.edit);
         }
         else
         {
@@ -28,6 +45,6 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     @Override
     protected void onActionClick()
     {
-        System.out.println("entry information fragment on click");
+        //TODO: edit entry info
     }
 }

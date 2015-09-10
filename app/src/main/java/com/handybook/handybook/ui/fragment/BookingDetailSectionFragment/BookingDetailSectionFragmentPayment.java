@@ -9,8 +9,26 @@ import butterknife.InjectView;
 
 public class BookingDetailSectionFragmentPayment extends BookingDetailSectionFragment
 {
-    @InjectView(R.id.booking_detail_section_payment_view)
+    @InjectView(R.id.booking_detail_section_view)
     protected BookingDetailSectionPaymentView view;
+
+    @Override
+    protected int getEntryTitleTextResourceId()
+    {
+        return R.string.payment;
+    }
+
+    @Override
+    protected int getEntryActionTextResourceId()
+    {
+        return R.string.email_receipt;
+    }
+
+    @Override
+    protected boolean hasEnabledAction()
+    {
+        return false;
+    }
 
     @Override
     protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section_payment; }
@@ -19,6 +37,7 @@ public class BookingDetailSectionFragmentPayment extends BookingDetailSectionFra
     protected void updateDisplay(Booking booking, User user)
     {
         //This one is worth having a different view for
+        super.updateDisplay(booking, user);
         view.updatePaymentDisplay(booking, user, view);
     }
 
@@ -36,6 +55,6 @@ public class BookingDetailSectionFragmentPayment extends BookingDetailSectionFra
     @Override
     protected void onActionClick()
     {
-        //TODO:
+        //TODO: request an emailed receipt
     }
 }

@@ -10,11 +10,27 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
 {
 
     @Override
+    protected int getEntryTitleTextResourceId()
+    {
+        return R.string.pro_note;
+    }
+
+    @Override
+    protected int getEntryActionTextResourceId()
+    {
+        return R.string.add;
+    }
+
+    @Override
+    protected boolean hasEnabledAction()
+    {
+        return true;
+    }
+
+    @Override
     protected void updateDisplay(Booking booking, User user)
     {
-        view.entryTitle.setText(R.string.pro_note);
-        view.entryActionText.setText(R.string.add);
-
+        super.updateDisplay(booking, user);
         final String proNote = booking.getProNote();
         if (proNote != null)
         {
@@ -29,6 +45,6 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
     @Override
     protected void onActionClick()
     {
-        //TODO:
+        //TODO: Edit the note to pro
     }
 }

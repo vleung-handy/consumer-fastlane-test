@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.Optional;
 
-public class BookingDetailSectionFragment extends InjectedFragment
+public abstract class BookingDetailSectionFragment extends InjectedFragment
 {
     protected Booking booking;
 
@@ -24,16 +24,14 @@ public class BookingDetailSectionFragment extends InjectedFragment
     @InjectView(R.id.booking_detail_section_view)
     protected BookingDetailSectionView view;
 
-    protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section; }
-
-    public static BookingDetailSectionFragment newInstance(final Booking booking)
+    protected int getFragmentResourceId()
     {
-        final BookingDetailSectionFragment fragment = new BookingDetailSectionFragment();
-        final Bundle args = new Bundle();
-        args.putParcelable(BundleKeys.BOOKING, booking);
-        fragment.setArguments(args);
-        return fragment;
+        return R.layout.fragment_booking_detail_section;
     }
+
+    protected abstract int getEntryTitleTextResourceId();
+    protected abstract int getEntryActionTextResourceId();
+    protected abstract boolean hasEnabledAction();
 
     @Override
     public final void onCreate(final Bundle savedInstanceState)
@@ -58,10 +56,14 @@ public class BookingDetailSectionFragment extends InjectedFragment
         return view;
     }
 
-    //anything universal?
     protected void updateDisplay(Booking booking, User user)
     {
-
+        view.entryTitle.setText(getEntryTitleTextResourceId());
+        view.entryActionText.setText(getEntryActionTextResourceId());
+        if(!hasEnabledAction())
+        {
+            view.entryActionText.setVisibility(View.GONE);
+        }
     }
 
 
@@ -76,7 +78,6 @@ public class BookingDetailSectionFragment extends InjectedFragment
 
     protected void onActionClick()
     {
-        System.out.println("ZZZZ test do thing is a go!");
     }
 
     @Override

@@ -9,33 +9,49 @@ import butterknife.InjectView;
 
 public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFragment
 {
-
-    @InjectView(R.id.booking_detail_section_extras_view)
+    @InjectView(R.id.booking_detail_section_view)
     protected BookingDetailSectionExtrasView view;
 
     @Override
     protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section_extras; }
 
     @Override
+    protected int getEntryTitleTextResourceId()
+    {
+        return R.string.extras;
+    }
+
+    @Override
+    protected int getEntryActionTextResourceId()
+    {
+        return R.string.edit;
+    }
+
+    @Override
+    protected boolean hasEnabledAction()
+    {
+        return false;
+    }
+
+    @Override
     protected void updateDisplay(Booking booking, User user)
     {
+        super.updateDisplay(booking, user);
         view.updateExtrasDisplay(booking);
     }
 
     @Override
     protected void setupClickListeners(Booking booking)
     {
-        //TODO: Probably some additional constraints on this for certain edit actions
         if (!booking.isPast())
         {
             view.entryActionText.setOnClickListener(actionClicked);
         }
     }
 
-
     @Override
     protected void onActionClick()
     {
-        //TODO:
+        //TODO: Don't support editing extras yet, will probably pop up some variant of the edit extras booking flow
     }
 }

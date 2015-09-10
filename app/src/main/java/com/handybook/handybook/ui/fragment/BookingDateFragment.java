@@ -362,11 +362,6 @@ public final class BookingDateFragment extends BookingFlowFragment
         {
             if (rescheduleBooking != null)
             {
-
-
-                System.out.println("Have a reschedule booking : is recurring ? " + rescheduleBooking.isRecurring());
-
-
                 final Calendar date = Calendar.getInstance();
                 date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
                 date.set(Calendar.MONTH, datePicker.getMonth());
