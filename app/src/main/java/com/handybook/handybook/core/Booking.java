@@ -3,11 +3,15 @@ package com.handybook.handybook.core;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.R;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Booking implements Parcelable
 {
@@ -525,16 +529,57 @@ public final class Booking implements Parcelable
         @SerializedName("label")
         private String label;
         @SerializedName("image_name")
-        private String image;
+        private ExtraInfoImageName imageName;
+
+        public enum ExtraInfoImageName
+        {
+            //TODO: Why is the server sending a full imageName name for something that is supposed to be bundled as part of the app? Should just send an identifier or nothing and use label
+                //They are always coming back as _disabled in booking details, not sure why, to investigate? Possibly a hold over from web?
+            @SerializedName("inside_cabinets_extras_disabled.png")INSIDE_CABINETS_DISABLED,
+            @SerializedName("inside_fridge_extras_disabled.png")INSIDE_FRIDGE_DISABLED,
+            @SerializedName("inside_oven_extras_disabled.png")INSIDE_OVEN_DISABLED,
+            @SerializedName("laundry_extras_disabled.png")LAUNDRY_DISABLED,
+            @SerializedName("interior_windows_extras_disabled.png")WINDOWS_DISABLED,
+        }
+
+        private static final Map<ExtraInfoImageName, Integer> EXTRAS_ICONS;
+        static
+        {
+            EXTRAS_ICONS = new HashMap<>();
+            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_CABINETS_DISABLED, R.drawable.ic_booking_extra_cabinets);
+            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_FRIDGE_DISABLED, R.drawable.ic_booking_extra_fridge);
+            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_OVEN_DISABLED, R.drawable.ic_booking_detail_oven);
+            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.LAUNDRY_DISABLED, R.drawable.ic_booking_extra_laundry);
+            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.WINDOWS_DISABLED, R.drawable.ic_booking_extra_window);
+        }
+
 
         public final String getLabel()
         {
             return label;
         }
 
-        public final String getImage()
+        public final ExtraInfoImageName getImageName()
         {
-            return image;
+            return imageName;
+        }
+
+        public final int getImageResource()
+        {
+            return getImageResource(imageName);
+        }
+
+        private final int getImageResource(ExtraInfoImageName extraInfoImageName)
+        {
+            if(EXTRAS_ICONS.containsKey(extraInfoImageName))
+            {
+                return EXTRAS_ICONS.get(extraInfoImageName);
+            }
+            else
+            {
+                Crashlytics.log("ExtraInfo::getImageResource unsupported image name : " + extraInfoImageName.toString());
+                return 0;
+            }
         }
 
         private ExtraInfo(final Parcel in)
@@ -542,13 +587,13 @@ public final class Booking implements Parcelable
             final String[] stringData = new String[2];
             in.readStringArray(stringData);
             label = stringData[0];
-            image = stringData[1];
+            imageName = ExtraInfoImageName.valueOf(stringData[1]);
         }
 
         @Override
         public final void writeToParcel(final Parcel out, final int flags)
         {
-            out.writeStringArray(new String[]{label, image});
+            out.writeStringArray(new String[]{label, imageName.toString()});
         }
 
         @Override

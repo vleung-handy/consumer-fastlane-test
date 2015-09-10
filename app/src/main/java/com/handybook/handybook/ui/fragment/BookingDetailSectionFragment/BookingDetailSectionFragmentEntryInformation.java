@@ -12,8 +12,6 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     @Override
     protected void updateDisplay(Booking booking, User user)
     {
-        System.out.println("dbqwdubdwqbuidqwbiudqwbuiwdqbiudqw");
-
         final String entryInfo = booking.getEntryInfo();
         if (entryInfo != null)
         {

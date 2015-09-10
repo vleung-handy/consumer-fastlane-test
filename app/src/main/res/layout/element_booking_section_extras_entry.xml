@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handybook.handybook.ui.widget.BookingDetailSectionExtrasEntryView
+    android:id="@+id/help_node_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/default_padding"
+    android:paddingRight="@dimen/default_padding"
+    >
+
+    <ImageView
+        android:id="@+id/extra_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        android:id="@+id/extra_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/extra_image"
+        android:layout_centerVertical="true"
+        />
+
+</com.handybook.handybook.ui.widget.BookingDetailSectionExtrasEntryView>

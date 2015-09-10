@@ -1,58 +1,41 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
-import android.content.Intent;
-import android.view.View;
-
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.ui.activity.BookingExtrasActivity;
+import com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView;
 
-import java.util.ArrayList;
+import butterknife.InjectView;
 
 public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFragment
 {
 
+    @InjectView(R.id.booking_detail_section_extras_view)
+    protected BookingDetailSectionExtrasView view;
+
+    @Override
+    protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section_extras; }
+
     @Override
     protected void updateDisplay(Booking booking, User user)
     {
-        view.entryTitle.setText(R.string.extras);
-        view.entryActionText.setText(R.string.edit);
+        view.updateExtrasDisplay(booking);
+    }
 
-        //TODO: Add gfx, the extras data has the relevant gfx
-
-        final ArrayList<Booking.ExtraInfo> extras = booking.getExtrasInfo();
-        if (extras != null && extras.size() > 0)
+    @Override
+    protected void setupClickListeners(Booking booking)
+    {
+        //TODO: Probably some additional constraints on this for certain edit actions
+        if (!booking.isPast())
         {
-            String extraInfo = "";
-
-            for (int i = 0; i < extras.size(); i++)
-            {
-                final Booking.ExtraInfo info = extras.get(i);
-                extraInfo += info.getLabel();
-
-                if (i < extras.size() - 1)
-                {
-                    extraInfo += ", ";
-                }
-            }
-
-            view.entryText.setText(extraInfo);
-        }
-        else
-        {
-            view.setVisibility(View.GONE);
+            view.entryActionText.setOnClickListener(actionClicked);
         }
     }
+
 
     @Override
     protected void onActionClick()
     {
-        //TODO: Launch an activity / fragment to edit the extras on a booking , send the request, and return to the booking detail when request is acked
-
-        final Intent intent = new Intent(getActivity(), BookingExtrasActivity.class);
-        startActivity(intent);
-
-
+        //TODO:
     }
 }

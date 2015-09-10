@@ -12,6 +12,7 @@ public class BookingDetailSectionFragmentPayment extends BookingDetailSectionFra
     @InjectView(R.id.booking_detail_section_payment_view)
     protected BookingDetailSectionPaymentView view;
 
+    @Override
     protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section_payment; }
 
     @Override

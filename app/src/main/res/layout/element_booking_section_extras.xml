@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView
+    android:id="@+id/help_node_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/default_padding"
+    android:paddingLeft="@dimen/default_padding"
+    android:paddingRight="@dimen/default_padding"
+    >
+
+    <View
+        android:id="@+id/entry_sep"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginBottom="20dp"
+        android:background="@color/cell_sep"/>
+
+    <TextView
+        android:id="@+id/entry_title"
+        style="@style/TextView.XSmall.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entry_sep"
+        android:layout_marginBottom="10dp"
+        android:text="@string/payment"
+        android:textAllCaps="true"
+        android:textColor="@color/steel"/>
+
+    <TextView
+        android:id="@+id/entry_action_text"
+        style="@style/TextView.XSmall.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entry_sep"
+        android:layout_marginBottom="10dp"
+        android:text="XX action text XX"
+        android:textAllCaps="true"
+        android:textColor="@color/handy_blue"
+        android:gravity="right"/>
+
+    <LinearLayout
+        android:id="@+id/extras_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entry_title"
+        android:layout_marginBottom="3dp"
+        android:orientation="vertical"
+        >
+
+    </LinearLayout>
+
+</com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView>
