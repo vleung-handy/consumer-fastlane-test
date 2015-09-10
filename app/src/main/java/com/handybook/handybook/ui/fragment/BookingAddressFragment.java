@@ -18,20 +18,26 @@ import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingAddressFragment extends BookingFlowFragment {
     private static final String STATE_FULLNAME_HIGHLIGHT = "FULLNAME_HIGHLIGHT";
     private static final String STATE_ADDR1_HIGHLIGHT = "ADDR1_HIGHLIGHT";
     private static final String STATE_PHONE_HIGHLIGHT = "PHONE_HIGHLIGHT";
 
-    @InjectView(R.id.next_button) Button nextButton;
-    @InjectView(R.id.fullname_text) FullNameInputTextView fullNameText;
-    @InjectView(R.id.street_addr_text) StreetAddressInputTextView streetAddrText;
-    @InjectView(R.id.other_addr_text) EditText otherAddrText;
-    @InjectView(R.id.phone_prefix_text) TextView phonePrefixText;
-    @InjectView(R.id.phone_text) PhoneInputTextView phoneText;
+    @Bind(R.id.next_button)
+    Button nextButton;
+    @Bind(R.id.fullname_text)
+    FullNameInputTextView fullNameText;
+    @Bind(R.id.street_addr_text)
+    StreetAddressInputTextView streetAddrText;
+    @Bind(R.id.other_addr_text)
+    EditText otherAddrText;
+    @Bind(R.id.phone_prefix_text)
+    TextView phonePrefixText;
+    @Bind(R.id.phone_text)
+    PhoneInputTextView phoneText;
 
     public static BookingAddressFragment newInstance() {
         final BookingAddressFragment fragment = new BookingAddressFragment();
@@ -44,7 +50,7 @@ public final class BookingAddressFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_address,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

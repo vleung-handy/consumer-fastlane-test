@@ -36,8 +36,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -46,8 +46,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public final class BookingLocationFragment extends BookingFlowFragment
-        implements BaseActivity.OnBackPressedListener
-{
+        implements BaseActivity.OnBackPressedListener {
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
 
     private boolean isPromoFlow;
@@ -55,23 +54,21 @@ public final class BookingLocationFragment extends BookingFlowFragment
     @Inject
     ReactiveLocationProvider locationProvider;
 
-    @InjectView(R.id.zip_text)
+    @Bind(R.id.zip_text)
     ZipCodeInputTextView zipText;
-    @InjectView(R.id.zip_progress)
+    @Bind(R.id.zip_progress)
     ProgressBar zipProgress;
-    @InjectView(R.id.location_button)
+    @Bind(R.id.location_button)
     ImageButton locationButton;
-    @InjectView(R.id.next_button)
+    @Bind(R.id.next_button)
     Button nextButton;
 
-    public static BookingLocationFragment newInstance()
-    {
+    public static BookingLocationFragment newInstance() {
         return new BookingLocationFragment();
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final BookingRequest request = bookingManager.getCurrentRequest();
@@ -88,7 +85,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_location, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final User.Address address;
         final User user = userManager.getCurrentUser();
@@ -308,8 +305,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
         }
     };
 
-    private void displayBookingOptions()
-    {
+    private void displayBookingOptions() {
         final BookingRequest request = bookingManager.getCurrentRequest();
 
         String userId = null;
@@ -346,25 +342,23 @@ public final class BookingLocationFragment extends BookingFlowFragment
                 });
     }
 
-    private final TextWatcher zipTextWatcher = new TextWatcher()
-    {
+    private final TextWatcher zipTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                      final int count, final int after)
-        {
+                                      final int count, final int after) {
 
         }
 
         @Override
         public void onTextChanged(final CharSequence charSequence, final int start,
-                                  final int before, final int count)
-        {
+                                  final int before, final int count) {
         }
 
         @Override
-        public void afterTextChanged(final Editable editable)
-        {
+        public void afterTextChanged(final Editable editable) {
             locationButton.setPressed(false);
         }
     };
+
+
 }

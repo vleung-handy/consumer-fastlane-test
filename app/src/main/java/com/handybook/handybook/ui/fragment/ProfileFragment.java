@@ -24,8 +24,8 @@ import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.util.TextUtils;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class ProfileFragment extends InjectedFragment {
@@ -40,15 +40,24 @@ public final class ProfileFragment extends InjectedFragment {
     private boolean loadedUserInfo;
     private boolean updatingInfo;
 
-    @InjectView(R.id.credits_text) TextView creditsText;
-    @InjectView(R.id.update_button) Button updateButton;
-    @InjectView(R.id.fullname_text) FullNameInputTextView fullNameText;
-    @InjectView(R.id.email_text) EmailInputTextView emailText;
-    @InjectView(R.id.phone_prefix_text) TextView phonePrefixText;
-    @InjectView(R.id.phone_text) PhoneInputTextView phoneText;
-    @InjectView(R.id.old_password_text) PasswordInputTextView oldPasswordtext;
-    @InjectView(R.id.new_password_text) PasswordInputTextView newPasswordtext;
-    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
+    @Bind(R.id.credits_text)
+    TextView creditsText;
+    @Bind(R.id.update_button)
+    Button updateButton;
+    @Bind(R.id.fullname_text)
+    FullNameInputTextView fullNameText;
+    @Bind(R.id.email_text)
+    EmailInputTextView emailText;
+    @Bind(R.id.phone_prefix_text)
+    TextView phonePrefixText;
+    @Bind(R.id.phone_text)
+    PhoneInputTextView phoneText;
+    @Bind(R.id.old_password_text)
+    PasswordInputTextView oldPasswordtext;
+    @Bind(R.id.new_password_text)
+    PasswordInputTextView newPasswordtext;
+    @Bind(R.id.menu_button_layout)
+    ViewGroup menuButtonLayout;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -66,7 +75,7 @@ public final class ProfileFragment extends InjectedFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_profile,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         phoneText.setCountryCode(user.getPhonePrefix());
         oldPasswordtext.addTextChangedListener(passwordTextWatcher);

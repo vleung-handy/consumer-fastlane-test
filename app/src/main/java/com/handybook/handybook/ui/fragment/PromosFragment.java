@@ -18,15 +18,18 @@ import com.handybook.handybook.ui.widget.MenuButton;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class PromosFragment extends BookingFlowFragment
         implements MenuDrawerActivity.OnDrawerStateChangeListener {
 
-    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
-    @InjectView(R.id.apply_button) Button applyButton;
-    @InjectView(R.id.promo_text) EditText promoText;
+    @Bind(R.id.menu_button_layout)
+    ViewGroup menuButtonLayout;
+    @Bind(R.id.apply_button)
+    Button applyButton;
+    @Bind(R.id.promo_text)
+    EditText promoText;
 
     public static PromosFragment newInstance() {
         return new PromosFragment();
@@ -38,7 +41,7 @@ public final class PromosFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_promos, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);

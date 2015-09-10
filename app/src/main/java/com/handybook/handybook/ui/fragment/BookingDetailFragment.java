@@ -28,8 +28,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingDetailFragment extends BookingFlowFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -38,28 +38,50 @@ public final class BookingDetailFragment extends BookingFlowFragment {
     private Booking booking;
     private boolean updatedBooking;
 
-    @InjectView(R.id.date_text) TextView dateText;
-    @InjectView(R.id.time_text) TextView timeText;
-    @InjectView(R.id.freq_text) TextView freqText;
-    @InjectView(R.id.freq_layout) View freqLayout;
-    @InjectView(R.id.pro_section) View proSection;
-    @InjectView(R.id.pro_text) TextView proText;
-    @InjectView(R.id.laundry_section) View laundrySection;
-    @InjectView(R.id.entry_section) View entrySection;
-    @InjectView(R.id.entry_text) TextView entryText;
-    @InjectView(R.id.pro_note_section) View proNoteSection;
-    @InjectView(R.id.pro_note_text) TextView proNoteText;
-    @InjectView(R.id.extras_section) View extrasSection;
-    @InjectView(R.id.extras_text) TextView extrasText;
-    @InjectView(R.id.addr_text) TextView addrText;
-    @InjectView(R.id.total_text) TextView totalText;
-    @InjectView(R.id.pay_lines_section) LinearLayout paymentLinesSection;
-    @InjectView(R.id.billed_text) TextView billedText;
-    @InjectView(R.id.options_layout) View optionsLayout;
-    @InjectView(R.id.reschedule_button) Button rescheduleButton;
-    @InjectView(R.id.cancel_button) Button cancelButton;
-    @InjectView(R.id.booking_text) TextView bookingText;
-    @InjectView(R.id.nav_text) TextView navText;
+    @Bind(R.id.date_text)
+    TextView dateText;
+    @Bind(R.id.time_text)
+    TextView timeText;
+    @Bind(R.id.freq_text)
+    TextView freqText;
+    @Bind(R.id.freq_layout)
+    View freqLayout;
+    @Bind(R.id.pro_section)
+    View proSection;
+    @Bind(R.id.pro_text)
+    TextView proText;
+    @Bind(R.id.laundry_section)
+    View laundrySection;
+    @Bind(R.id.entry_section)
+    View entrySection;
+    @Bind(R.id.entry_text)
+    TextView entryText;
+    @Bind(R.id.pro_note_section)
+    View proNoteSection;
+    @Bind(R.id.pro_note_text)
+    TextView proNoteText;
+    @Bind(R.id.extras_section)
+    View extrasSection;
+    @Bind(R.id.extras_text)
+    TextView extrasText;
+    @Bind(R.id.addr_text)
+    TextView addrText;
+    @Bind(R.id.total_text)
+    TextView totalText;
+    @Bind(R.id.pay_lines_section)
+    LinearLayout paymentLinesSection;
+    @Bind(R.id.billed_text)
+    TextView billedText;
+    @Bind(R.id.options_layout)
+    View optionsLayout;
+    @Bind(R.id.reschedule_button)
+    Button rescheduleButton;
+    @Bind(R.id.cancel_button)
+    Button cancelButton;
+    @Bind(R.id.booking_text)
+    TextView bookingText;
+    @Bind(R.id.nav_text)
+    TextView navText;
 
     public static BookingDetailFragment newInstance(final Booking booking) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
@@ -87,7 +109,7 @@ public final class BookingDetailFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_detail, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         navText.setText(booking.getService());
         bookingText.setText("Booking #" + booking.getId());

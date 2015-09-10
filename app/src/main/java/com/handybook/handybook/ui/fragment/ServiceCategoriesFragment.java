@@ -27,19 +27,25 @@ import com.handybook.handybook.ui.widget.ServiceCategoryView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment {
     private List<Service> services = new ArrayList<>();
     private boolean usedCache;
 
-    @InjectView(R.id.category_layout) LinearLayout categoryLayout;
-    @InjectView(R.id.logo) ImageView logo;
-    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
-    @InjectView(R.id.coupon_layout) View couponLayout;
-    @InjectView(R.id.promo_img) ImageView promoImage;
-    @InjectView(R.id.promo_text) TextView promoText;
+    @Bind(R.id.category_layout)
+    LinearLayout categoryLayout;
+    @Bind(R.id.logo)
+    ImageView logo;
+    @Bind(R.id.menu_button_layout)
+    ViewGroup menuButtonLayout;
+    @Bind(R.id.coupon_layout)
+    View couponLayout;
+    @Bind(R.id.promo_img)
+    ImageView promoImage;
+    @Bind(R.id.promo_text)
+    TextView promoText;
 
     public static ServiceCategoriesFragment newInstance() {
         return new ServiceCategoriesFragment();
@@ -70,7 +76,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_service_categories,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override

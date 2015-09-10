@@ -22,8 +22,8 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class AddLaundryDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -32,10 +32,14 @@ public class AddLaundryDialogFragment extends BaseDialogFragment {
 
     @Inject DataManager dataManager;
 
-    @InjectView(R.id.submit_button) Button submitButton;
-    @InjectView(R.id.close_img) ImageView closeImage;
-    @InjectView(R.id.submit_progress) ProgressBar submitProgress;
-    @InjectView(R.id.booking_info) TextView bookingInfo;
+    @Bind(R.id.submit_button)
+    Button submitButton;
+    @Bind(R.id.close_img)
+    ImageView closeImage;
+    @Bind(R.id.submit_progress)
+    ProgressBar submitProgress;
+    @Bind(R.id.booking_info)
+    TextView bookingInfo;
 
     public static AddLaundryDialogFragment newInstance(final Booking booking) {
         final AddLaundryDialogFragment addLaundryDialogFragment
@@ -63,7 +67,7 @@ public class AddLaundryDialogFragment extends BaseDialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_laundry_add, container, true);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final Calendar endDate = Calendar.getInstance();
         endDate.setTime(booking.getStartDate());

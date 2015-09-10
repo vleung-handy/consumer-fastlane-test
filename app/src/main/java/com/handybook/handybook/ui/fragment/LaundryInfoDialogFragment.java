@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class LaundryInfoDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -31,9 +31,12 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment {
 
     @Inject DataManager dataManager;
 
-    @InjectView(R.id.submit_button) Button submitButton;
-    @InjectView(R.id.price_link) TextView priceLink;
-    @InjectView(R.id.close_img) ImageView closeImage;
+    @Bind(R.id.submit_button)
+    Button submitButton;
+    @Bind(R.id.price_link)
+    TextView priceLink;
+    @Bind(R.id.close_img)
+    ImageView closeImage;
 
     public static LaundryInfoDialogFragment newInstance(final Booking booking) {
         final LaundryInfoDialogFragment laundryDropOffDialogFragment
@@ -61,7 +64,7 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_laundry_info, container, true);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         Linkify.addLinks(priceLink, Pattern.compile(getResources().getString(R.string.see_pricing))
                 , "http://help.handy.com/customer/portal/articles/1809526-dry-cleaning-and-laundry-on-demand?text=");

@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class RateServiceDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -38,19 +38,32 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
 
     @Inject DataManager dataManager;
 
-    @InjectView(R.id.service_icon) ImageView serviceIcon;
-    @InjectView(R.id.title_text) TextView titleText;
-    @InjectView(R.id.message_text) TextView messageText;
-    @InjectView(R.id.submit_button) Button submitButton;
-    @InjectView(R.id.skip_button) Button skipButton;
-    @InjectView(R.id.submit_progress) ProgressBar submitProgress;
-    @InjectView(R.id.ratings_layout) LinearLayout ratingsLayout;
-    @InjectView(R.id.submit_button_layout) View submitButtonLayout;
-    @InjectView(R.id.star_1) ImageView star1;
-    @InjectView(R.id.star_2) ImageView star2;
-    @InjectView(R.id.star_3) ImageView star3;
-    @InjectView(R.id.star_4) ImageView star4;
-    @InjectView(R.id.star_5) ImageView star5;
+    @Bind(R.id.service_icon)
+    ImageView serviceIcon;
+    @Bind(R.id.title_text)
+    TextView titleText;
+    @Bind(R.id.message_text)
+    TextView messageText;
+    @Bind(R.id.submit_button)
+    Button submitButton;
+    @Bind(R.id.skip_button)
+    Button skipButton;
+    @Bind(R.id.submit_progress)
+    ProgressBar submitProgress;
+    @Bind(R.id.ratings_layout)
+    LinearLayout ratingsLayout;
+    @Bind(R.id.submit_button_layout)
+    View submitButtonLayout;
+    @Bind(R.id.star_1)
+    ImageView star1;
+    @Bind(R.id.star_2)
+    ImageView star2;
+    @Bind(R.id.star_3)
+    ImageView star3;
+    @Bind(R.id.star_4)
+    ImageView star4;
+    @Bind(R.id.star_5)
+    ImageView star5;
 
     public static RateServiceDialogFragment newInstance(final int bookingId, final String proName,
                                                         final int rating) {
@@ -71,7 +84,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_rate_service, container, true);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final Bundle args = getArguments();
         booking = args.getInt(EXTRA_BOOKING);

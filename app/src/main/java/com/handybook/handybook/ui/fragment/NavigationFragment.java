@@ -37,8 +37,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class NavigationFragment extends InjectedFragment
         implements SimpleAlertDialog.OnClickListener, SimpleAlertDialog.OnItemClickListener {
@@ -51,8 +51,10 @@ public final class NavigationFragment extends InjectedFragment
     private String selectedItem;
     private MenuDrawer menuDrawer;
 
-    @InjectView(R.id.env_button) Button envButton;
-    @InjectView(android.R.id.list) ListView listView;
+    @Bind(R.id.env_button)
+    Button envButton;
+    @Bind(android.R.id.list)
+    ListView listView;
 
     @Inject UserManager userManager;
     @Inject DataManager dataManager;
@@ -87,7 +89,7 @@ public final class NavigationFragment extends InjectedFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_navigation,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
             envButton.setVisibility(View.GONE);

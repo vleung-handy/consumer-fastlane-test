@@ -16,8 +16,8 @@ import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class PeakPricingTableFragment extends BookingFlowFragment {
     static final String EXTRA_PEAK_PRICE_INDEX = "com.handy.handy.EXTRA_PEAK_PRICE_INDEX";
@@ -33,7 +33,8 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
     private boolean rescheduleAll;
     private boolean forVoucher;
 
-    @InjectView(R.id.table_layout) LinearLayout tableLayout;
+    @Bind(R.id.table_layout)
+    LinearLayout tableLayout;
 
     public static PeakPricingTableFragment newInstance(final int index,
                                                 final ArrayList<ArrayList<BookingQuote
@@ -78,7 +79,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
         final View view = layoutInflater.inflate(R.layout.fragment_peak_pricing_table,
                 container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingQuote quote = bookingManager.getCurrentQuote();
         final User user = userManager.getCurrentUser();
