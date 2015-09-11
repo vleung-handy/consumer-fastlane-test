@@ -49,6 +49,7 @@ android {
         targetSdkVersion 22
         versionCode 51
         versionName '1.7'
+        multiDexEnabled true
     }
     buildTypes {
         release {
