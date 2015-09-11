@@ -36,8 +36,6 @@ public final class BookingManager implements Observer
         this.bus = bus;
         this.bus.register(this);
     }
-
-
     //Event listening sending, half way to updating our managers to work like nortal's managers and provide a layer for data access
 
     @Subscribe
@@ -79,25 +77,24 @@ public final class BookingManager implements Observer
     }
 
 
+    @Subscribe
+    public void onRequestUpdateBookingNoteToPro(HandyEvent.RequestUpdateBookingNoteToPro event)
+    {
+        dataManager.updateBookingNoteToPro(event.bookingId, event.descriptionTransaction, new DataManager.Callback<Void>()
+        {
+            @Override
+            public void onSuccess(final Void response)
+            {
+                bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProSuccess());
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProError(error));
+            }
+        });
+    }
 
 
 

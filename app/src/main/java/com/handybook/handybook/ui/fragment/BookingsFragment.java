@@ -73,6 +73,10 @@ public final class BookingsFragment extends InjectedFragment {
             upBookings = savedInstanceState.getParcelableArrayList(STATE_UP_BOOKINGS);
         }
 
+
+
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view,

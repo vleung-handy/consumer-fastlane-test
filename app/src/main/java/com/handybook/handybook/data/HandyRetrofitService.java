@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
+import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
 import com.handybook.handybook.core.User;
 
 import java.util.Date;
@@ -18,7 +19,8 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.mime.TypedInput;
 
-public interface HandyRetrofitService {
+public interface HandyRetrofitService
+{
 
     @GET("/services/most_common")
     void getServicesMenu(HandyRetrofitCallback cb);
@@ -28,7 +30,7 @@ public interface HandyRetrofitService {
 
     @GET("/quotes/new")
     void getQuoteOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
-                           HandyRetrofitCallback cb);
+                         HandyRetrofitCallback cb);
 
     @POST("/quotes")
     void createQuote(@Body BookingRequest req, HandyRetrofitCallback cb);
@@ -36,7 +38,7 @@ public interface HandyRetrofitService {
     @FormUrlEncoded
     @POST("/quotes/{quote}/select_new_time")
     void updateQuoteDate(@Path("quote") int quoteId, @Field("date_start") Date date,
-                           HandyRetrofitCallback cb);
+                         HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/quotes/{quote}/set_coupon")
@@ -54,7 +56,7 @@ public interface HandyRetrofitService {
     void validateBookingZip(@Query("service_id") int serviceId, @Query("zipcode") String zipCode,
                             @Query("user_id") String userId, @Query("auth_token") String authToken,
                             @Query("entered_code") String promoCode, HandyRetrofitCallback cb);
-    
+
     @GET("/bookings")
     void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
@@ -72,11 +74,18 @@ public interface HandyRetrofitService {
 
     @POST("/bookings/{booking}/rating_flow")
     void submitProRatingDetails(@Path("booking") int bookingId, @Body RateProRequest req,
-                        HandyRetrofitCallback cb);
+                                HandyRetrofitCallback cb);
 
     @POST("/bookings/{booking}/after_booking_update")
     void addBookingPostInfo(@Path("booking") int bookingId, @Body BookingPostInfo info,
                             HandyRetrofitCallback cb);
+
+
+    @POST("/bookings/{booking}/description_update")
+    void updateBookingDescription(@Path("booking") int bookingId,
+                                  @Body BookingUpdateDescriptionTransaction descriptionTransaction,
+                                  HandyRetrofitCallback cb);
+
 
     @GET("/bookings/prereschedule_info")
     void getPreRescheduleInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
@@ -114,7 +123,7 @@ public interface HandyRetrofitService {
 
     @GET("/bookings/{booking}/add_laundry")
     void getAddLaundryInfo(@Path("booking") int bookingId, @Query("auth_token") String authToken,
-                                HandyRetrofitCallback cb);
+                           HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/add_laundry")
@@ -139,7 +148,7 @@ public interface HandyRetrofitService {
                      HandyRetrofitCallback cb);
 
     @GET("/users/dont_look_at_this")
-    void getUserInfo(@Query("email")String email, HandyRetrofitCallback cb);
+    void getUserInfo(@Query("email") String email, HandyRetrofitCallback cb);
 
     @PUT("/users/{user}")
     void updateUserInfo(@Path("user") String userId, @Body UserUpdateRequest req,
@@ -163,20 +172,27 @@ public interface HandyRetrofitService {
     @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
-    static final class UserUpdateRequest {
-        @SerializedName("user") private User user;
-        @SerializedName("auth_token") private String authToken;
+    static final class UserUpdateRequest
+    {
+        @SerializedName("user")
+        private User user;
+        @SerializedName("auth_token")
+        private String authToken;
 
-        UserUpdateRequest(final User user, final String authToken) {
+        UserUpdateRequest(final User user, final String authToken)
+        {
             this.user = user;
             this.authToken = authToken;
         }
     }
 
-    static final class RateProRequest {
-        @SerializedName("positive_feedback") private String positiveFeedback;
+    static final class RateProRequest
+    {
+        @SerializedName("positive_feedback")
+        private String positiveFeedback;
 
-        RateProRequest(final String positiveFeedback) {
+        RateProRequest(final String positiveFeedback)
+        {
             this.positiveFeedback = positiveFeedback;
         }
     }

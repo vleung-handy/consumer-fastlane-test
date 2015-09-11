@@ -14,6 +14,7 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
+import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
@@ -372,7 +373,8 @@ public final class BaseDataManager extends DataManager
                 if (response.has("coupon") && response.optInt("coupon") == 1)
                 {
                     cb.onSuccess(new PromoCode(PromoCode.Type.COUPON, promoCode));
-                } else if (response.has("voucher"))
+                }
+                else if (response.has("voucher"))
                 {
                     final JSONObject voucher = response.optJSONObject("voucher");
 
@@ -386,7 +388,8 @@ public final class BaseDataManager extends DataManager
                     //code.setUniq(voucher.optString("machine_name"));
 
                     cb.onSuccess(code);
-                } else
+                }
+                else
                 {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
@@ -683,6 +686,22 @@ public final class BaseDataManager extends DataManager
             }
         });
     }
+
+
+    public final void updateBookingNoteToPro(int bookingId,
+                                                BookingUpdateDescriptionTransaction descriptionTransaction,
+                                                final Callback<Void> cb)
+    {
+        service.updateBookingDescription(bookingId, descriptionTransaction, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+            }
+        });
+    }
+
 
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb)
     {

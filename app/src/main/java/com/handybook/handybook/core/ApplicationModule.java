@@ -27,6 +27,7 @@ import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
+import com.handybook.handybook.ui.activity.BookingNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
@@ -60,6 +61,7 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
+import com.handybook.handybook.ui.fragment.BookingNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
@@ -128,6 +130,8 @@ import retrofit.converter.GsonConverter;
         BookingDetailSectionFragmentNoteToPro.class,
         BookingDetailSectionFragmentPayment.class,
         BookingDetailSectionFragmentProfessionalInformation.class,
+        BookingNoteToProActivity.class,
+        BookingNoteToProFragment.class,
 
 })
 public final class ApplicationModule

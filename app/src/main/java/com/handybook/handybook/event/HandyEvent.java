@@ -5,6 +5,7 @@ import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.data.DataManager;
 
@@ -77,7 +78,6 @@ public abstract class HandyEvent
     public static class RequestPreCancelationInfo extends RequestEvent
     {
         public String bookingId;
-
         public RequestPreCancelationInfo(String bookingId)
         {
             this.bookingId = bookingId;
@@ -98,6 +98,38 @@ public abstract class HandyEvent
     public static class ReceivePreCancelationInfoError extends ReceiveErrorEvent
     {
         public ReceivePreCancelationInfoError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
+    //
+    public static class RequestUpdateBookingNoteToPro extends RequestEvent
+    {
+        public int bookingId;
+        public BookingUpdateDescriptionTransaction descriptionTransaction;
+
+        public RequestUpdateBookingNoteToPro(int bookingId, BookingUpdateDescriptionTransaction descriptionTransaction)
+        {
+            this.bookingId = bookingId;
+            this.descriptionTransaction = descriptionTransaction;
+        }
+    }
+
+    //
+    public static class ReceiveUpdateBookingNoteToProSuccess extends ReceiveSuccessEvent
+    {
+        public ReceiveUpdateBookingNoteToProSuccess()
+        {
+
+        }
+    }
+
+    //
+    public static class ReceiveUpdateBookingNoteToProError extends ReceiveErrorEvent
+    {
+        public ReceiveUpdateBookingNoteToProError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
