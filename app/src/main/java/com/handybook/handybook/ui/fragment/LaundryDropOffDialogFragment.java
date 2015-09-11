@@ -25,8 +25,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class LaundryDropOffDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -37,12 +37,18 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
 
     @Inject DataManager dataManager;
 
-    @InjectView(R.id.title_text) TextView titleText;
-    @InjectView(R.id.message_text) TextView messageText;
-    @InjectView(R.id.date_spinner) Spinner dateSpinner;
-    @InjectView(R.id.time_spinner) Spinner timeSpinner;
-    @InjectView(R.id.submit_button) Button submitButton;
-    @InjectView(R.id.submit_progress) ProgressBar submitProgress;
+    @Bind(R.id.title_text)
+    TextView titleText;
+    @Bind(R.id.message_text)
+    TextView messageText;
+    @Bind(R.id.date_spinner)
+    Spinner dateSpinner;
+    @Bind(R.id.time_spinner)
+    Spinner timeSpinner;
+    @Bind(R.id.submit_button)
+    Button submitButton;
+    @Bind(R.id.submit_progress)
+    ProgressBar submitProgress;
 
     public static LaundryDropOffDialogFragment newInstance(final int bookingId,
                                                            final LaundryDropInfo dropInfo) {
@@ -74,7 +80,7 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_laundry_drop_off, container, true);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         titleText.setText(dropInfo.getTitle());
         messageText.setText(dropInfo.getSubtitle());

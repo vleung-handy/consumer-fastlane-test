@@ -17,17 +17,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+
 
 /**
  * Created by cdavis on 9/1/15.
  */
 public class BookingDetailSectionPaymentView extends BookingDetailSectionView
 {
-    @InjectView(R.id.pay_lines_section)
+    @Bind(R.id.pay_lines_section)
     public LinearLayout paymentLinesSection;
 
-    @InjectView(R.id.total_text)
+    @Bind(R.id.total_text)
     public TextView totalText;
 
     public BookingDetailSectionPaymentView(final Context context)

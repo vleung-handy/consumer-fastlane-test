@@ -9,6 +9,8 @@ import android.view.TouchDelegate;
 import android.view.View;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 public final class Utils {
 
@@ -18,7 +20,7 @@ public final class Utils {
     }
 
     static int toDP(final int px, final Context context) {
-        return toDP((float)px, context);
+        return toDP((float) px, context);
     }
 
     public static boolean equalDates(final Date date1, final Date date2) {
@@ -36,17 +38,20 @@ public final class Utils {
     }
 
     public static void extendHitArea(final View view, final View parent, final int extra) {
-        parent.post(new Runnable() {
+        parent.post(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 final Rect delegateArea = new Rect();
                 view.getHitRect(delegateArea);
                 delegateArea.right += extra;
                 delegateArea.bottom += extra;
 
                 final TouchDelegate touchDelegate = new TouchDelegate(delegateArea, view);
-                if (View.class.isInstance(view.getParent())) {
-                    ((View)view.getParent()).setTouchDelegate(touchDelegate);
+                if (View.class.isInstance(view.getParent()))
+                {
+                    ((View) view.getParent()).setTouchDelegate(touchDelegate);
                 }
             }
         });
@@ -61,5 +66,13 @@ public final class Utils {
 
         for (int i = 0; i < 3; i++) hsvb[i] = (hsva[i] + ((hsvb[i] - hsva[i]) * proportion));
         return Color.HSVToColor(hsvb);
+    }
+
+    public static void printMap(Map mp) {
+        Iterator it = mp.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+        }
     }
 }

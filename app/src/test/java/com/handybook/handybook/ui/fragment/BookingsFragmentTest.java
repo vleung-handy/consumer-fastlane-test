@@ -4,23 +4,21 @@ import android.widget.ListView;
 
 import com.handybook.handybook.HandyRobolectricTestRunner;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.ui.fragment.BookingsFragment;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 import org.robolectric.Robolectric;
-
 import org.robolectric.annotation.Config;
-import org.robolectric.util.ActivityController;
 import org.robolectric.util.FragmentTestUtil;
 
 import java.io.IOException;
 
 import javax.inject.Inject;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by jwilliams on 2/25/15.

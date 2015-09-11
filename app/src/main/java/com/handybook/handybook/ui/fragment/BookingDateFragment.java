@@ -29,8 +29,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingDateFragment extends BookingFlowFragment
 {
@@ -46,19 +46,18 @@ public final class BookingDateFragment extends BookingFlowFragment
     private Date rescheduleDate;
     private String notice;
 
-    @InjectView(R.id.next_button)
+    @Bind(R.id.next_button)
     Button nextButton;
-    @InjectView(R.id.date_picker)
+    @Bind(R.id.date_picker)
     DatePicker datePicker;
-    @InjectView(R.id.time_picker)
+    @Bind(R.id.time_picker)
     TimePicker timePicker;
-    @InjectView(R.id.nav_text)
+    @Bind(R.id.nav_text)
     TextView navText;
-    @InjectView(R.id.notice_text)
+    @Bind(R.id.notice_text)
     TextView noticeText;
 
-    public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions)
-    {
+    public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
         final BookingDateFragment fragment = new BookingDateFragment();
 
         final Bundle args = new Bundle();
@@ -129,7 +128,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_date, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         if (rescheduleBooking != null)
         {

@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingExtrasFragment extends BookingFlowFragment
 {
@@ -31,9 +31,9 @@ public final class BookingExtrasFragment extends BookingFlowFragment
     @Inject
     SecurePreferences securePrefs;
 
-    @InjectView(R.id.options_layout)
+    @Bind(R.id.options_layout)
     LinearLayout optionsLayout;
-    @InjectView(R.id.next_button)
+    @Bind(R.id.next_button)
     Button nextButton;
 
     public static BookingExtrasFragment newInstance()
@@ -57,7 +57,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_extras, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

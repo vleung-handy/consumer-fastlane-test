@@ -27,8 +27,8 @@ import com.handybook.handybook.ui.widget.BookingOptionsView;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.util.TextUtils;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class BookingConfirmationFragment extends BookingFlowFragment
@@ -44,19 +44,18 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     private int page;
     private boolean isNewUser;
 
-    @InjectView(R.id.options_layout)
+    @Bind(R.id.options_layout)
     LinearLayout optionsLayout;
-    @InjectView(R.id.header_text)
+    @Bind(R.id.header_text)
     TextView headerText;
-    @InjectView(R.id.next_button)
+    @Bind(R.id.next_button)
     Button nextButton;
-    @InjectView(R.id.keys_text)
+    @Bind(R.id.keys_text)
     BasicInputTextView keysText;
-    @InjectView(R.id.pwd_text)
+    @Bind(R.id.pwd_text)
     PasswordInputTextView pwdText;
 
-    public static BookingConfirmationFragment newInstance(final int page, final boolean isNewUser)
-    {
+    public static BookingConfirmationFragment newInstance(final int page, final boolean isNewUser) {
         final BookingConfirmationFragment fragment = new BookingConfirmationFragment();
         final Bundle args = new Bundle();
 
@@ -82,7 +81,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_confirmation, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         keysText.setMinLength(2);
         keysText.setHint(getString(R.string.where_hide_key));

@@ -10,14 +10,14 @@ import com.handybook.handybook.core.Booking;
 
 import java.util.ArrayList;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by cdavis on 9/1/15.
  */
 public class BookingDetailSectionExtrasView extends BookingDetailSectionView
 {
-    @InjectView(R.id.extras_section)
+    @Bind(R.id.extras_section)
     public LinearLayout extrasSection;
 
     public BookingDetailSectionExtrasView(final Context context)

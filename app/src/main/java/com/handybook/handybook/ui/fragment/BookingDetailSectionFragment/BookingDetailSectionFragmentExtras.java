@@ -5,11 +5,11 @@ import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFragment
 {
-    @InjectView(R.id.booking_detail_section_view)
+    @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionExtrasView view;
 
     @Override

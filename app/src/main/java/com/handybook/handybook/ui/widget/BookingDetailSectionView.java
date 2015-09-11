@@ -7,18 +7,19 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.ui.view.InjectedRelativeLayout;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+
 
 /**
  * Created by cdavis on 9/1/15.
  */
 public class BookingDetailSectionView extends InjectedRelativeLayout
 {
-    @InjectView(R.id.entry_title)
+    @Bind(R.id.entry_title)
     public TextView entryTitle;
-    @InjectView(R.id.entry_text)
+    @Bind(R.id.entry_text)
     public TextView entryText;
-    @InjectView(R.id.entry_action_text)
+    @Bind(R.id.entry_action_text)
     public TextView entryActionText;
 
     public BookingDetailSectionView(final Context context)

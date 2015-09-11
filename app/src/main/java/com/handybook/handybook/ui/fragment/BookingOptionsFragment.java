@@ -23,8 +23,8 @@ import com.handybook.handybook.ui.widget.BookingOptionsView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingOptionsFragment extends BookingFlowFragment
 {
@@ -44,13 +44,13 @@ public final class BookingOptionsFragment extends BookingFlowFragment
     private int page;
     private boolean isPost;
 
-    @InjectView(R.id.options_layout)
+    @Bind(R.id.options_layout)
     LinearLayout optionsLayout;
-    @InjectView(R.id.nav_text)
+    @Bind(R.id.nav_text)
     TextView navText;
-    @InjectView(R.id.header_text)
+    @Bind(R.id.header_text)
     TextView headerText;
-    @InjectView(R.id.next_button)
+    @Bind(R.id.next_button)
     Button nextButton;
 
     public static BookingOptionsFragment newInstance(final ArrayList<BookingOption> options,
@@ -100,7 +100,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_options, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         if (page != 0)
         {

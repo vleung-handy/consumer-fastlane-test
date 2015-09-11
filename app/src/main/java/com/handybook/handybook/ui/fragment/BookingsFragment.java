@@ -25,8 +25,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingsFragment extends InjectedFragment {
     private static final String STATE_LOADED_BOOKINGS = "LOADED_BOOKINGS";
@@ -37,8 +37,10 @@ public final class BookingsFragment extends InjectedFragment {
     private ArrayList<Booking> upBookings = new ArrayList<>();
     private ArrayList<Booking> pastBookings = new ArrayList<>();
 
-    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
-    @InjectView(android.R.id.list) PinnedSectionListView listView;
+    @Bind(R.id.menu_button_layout)
+    ViewGroup menuButtonLayout;
+    @Bind(android.R.id.list)
+    PinnedSectionListView listView;
 
     public static BookingsFragment newInstance() {
         return new BookingsFragment();
@@ -50,7 +52,7 @@ public final class BookingsFragment extends InjectedFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_bookings,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         listView.setAdapter(new BookingsListAdapter());
 

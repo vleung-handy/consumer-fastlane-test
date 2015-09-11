@@ -11,14 +11,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.facebook.FacebookAuthorizationException;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.User;
@@ -34,10 +34,12 @@ import com.handybook.handybook.ui.widget.PasswordInputTextView;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class LoginFragment extends BookingFlowFragment
         implements MenuDrawerActivity.OnDrawerStateChangeListener {
@@ -47,7 +49,8 @@ public final class LoginFragment extends BookingFlowFragment
     private static final String STATE_EMAIL_HIGHLIGHT = "EMAIL_HIGHLIGHT";
     private static final String STATE_PASSWORD_HIGHLIGHT = "PASSWORD_HIGHLIGHT";
 
-    private UiLifecycleHelper uiHelper;
+    CallbackManager callbackManager;
+    //private UiLifecycleHelper uiHelper;
     private boolean handleFBSessionUpdates = false;
     private boolean findUser;
     private String bookingUserName, bookingUserEmail;
@@ -56,16 +59,28 @@ public final class LoginFragment extends BookingFlowFragment
 
     private enum AuthType {EMAIL, FACEBOOK}
 
-    @InjectView(R.id.nav_text) TextView navText;
-    @InjectView(R.id.login_button) Button loginButton;
-    @InjectView(R.id.forgot_button) Button forgotButton;
-    @InjectView(R.id.email_text) EmailInputTextView emailText;
-    @InjectView(R.id.password_text) PasswordInputTextView passwordText;
-    @InjectView(R.id.fb_button) LoginButton fbButton;
-    @InjectView(R.id.fb_layout) View fbLayout;
-    @InjectView(R.id.or_text) TextView orText;
-    @InjectView(R.id.welcome_text) TextView welcomeText;
-    @InjectView(R.id.menu_button_layout) ViewGroup menuButtonLayout;
+    @Bind(R.id.nav_text)
+    TextView navText;
+    @Bind(R.id.login_button)
+    Button loginButton;
+    @Bind(R.id.forgot_button)
+    Button forgotButton;
+    @Bind(R.id.email_text)
+    EmailInputTextView emailText;
+    @Bind(R.id.password_text)
+    PasswordInputTextView passwordText;
+    //@Bind(R.id.fb_button)
+    //LoginButton fbButton;
+    @Bind(R.id.fb_login_button)
+    LoginButton fbLoginButton;
+    @Bind(R.id.fb_layout)
+    View fbLayout;
+    @Bind(R.id.or_text)
+    TextView orText;
+    @Bind(R.id.welcome_text)
+    TextView welcomeText;
+    @Bind(R.id.menu_button_layout)
+    ViewGroup menuButtonLayout;
 
     public static LoginFragment newInstance(final boolean findUser, final String bookingUserName,
                                      final String bookingUserEmail) {
@@ -84,9 +99,12 @@ public final class LoginFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
         bookingRequest = bookingManager.getCurrentRequest();
-        uiHelper = new UiLifecycleHelper(getActivity(), statusCallback);
-        uiHelper.onCreate(savedInstanceState);
+        //uiHelper = new UiLifecycleHelper(getActivity(), statusCallback);
+        //uiHelper.onCreate(savedInstanceState);
         findUser = getArguments().getBoolean(EXTRA_FIND_USER);
         bookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
         bookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
@@ -100,7 +118,7 @@ public final class LoginFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_login,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
 
@@ -126,8 +144,68 @@ public final class LoginFragment extends BookingFlowFragment
             menuButtonLayout.addView(menuButton);
         }
 
-        fbButton.setFragment(this);
-        fbButton.setReadPermissions("email");
+        //fbButton.setFragment(this);
+        //fbButton.setReadPermissions("email");
+
+        fbLoginButton.setFragment(this);
+        fbLoginButton.setReadPermissions("email");
+
+        // Callback registration
+        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>()
+        {
+            @Override
+            public void onSuccess(final LoginResult loginResult)
+            {
+                GraphRequest.newMeRequest( // Request user info from FB through a GraphRequest
+                        loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
+                        {
+                            @Override
+                            public void onCompleted(JSONObject me, GraphResponse response)
+                            {
+                                if (response.getError() != null)
+                                {
+                                    // handle error
+                                    //TODO: Handle error
+                                } else
+                                {
+                                    String fbid = me.optString("id");
+                                    String accessToken = loginResult.getAccessToken().getToken();
+                                    String email = me.optString("email");
+                                    String firstName = me.optString("first_name");
+                                    String lastName = me.optString("last_name");
+                                    //TODO: Make magic strings -> costants
+                                    authType = AuthType.FACEBOOK;
+                                    dataManager.authFBUser( // send email and id to your web server
+                                            fbid,
+                                            accessToken,
+                                            email,
+                                            firstName,
+                                            lastName,
+                                            userCallback);
+                                }
+                            }
+                        }).executeAsync();
+            }
+
+            @Override
+            public void onCancel()
+            {
+                assert true;
+                // App code
+                //TODO: Handle case when user cancels Facebook login
+            }
+
+            @Override
+            public void onError(FacebookException exception)
+            {
+                progressDialog.dismiss();
+                enableInputs();
+                toast.setText(R.string.default_error_string);
+
+
+                toast.show();
+            }
+        });
 
         return view;
     }
@@ -151,27 +229,27 @@ public final class LoginFragment extends BookingFlowFragment
     @Override
     public final void onResume() {
         super.onResume();
-        uiHelper.onResume();
+        //uiHelper.onResume();
         handleFBSessionUpdates = true;
     }
 
     @Override
     public final void onPause() {
         super.onPause();
-        uiHelper.onPause();
+        //uiHelper.onPause();
         handleFBSessionUpdates = false;
     }
 
     @Override
     public final void onDestroy() {
         super.onDestroy();
-        uiHelper.onDestroy();
+        //uiHelper.onDestroy();
     }
 
     @Override
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        uiHelper.onSaveInstanceState(outState);
+        //uiHelper.onSaveInstanceState(outState);
         outState.putBoolean(STATE_EMAIL_HIGHLIGHT, emailText.isHighlighted());
         outState.putBoolean(STATE_PASSWORD_HIGHLIGHT, passwordText.isHighlighted());
     }
@@ -180,7 +258,8 @@ public final class LoginFragment extends BookingFlowFragment
     public final void onActivityResult(final int requestCode, final int resultCode,
                                        final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        uiHelper.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        //uiHelper.onActivityResult(requestCode, resultCode, data);
     }
 
     private boolean validateFields() {
@@ -288,6 +367,8 @@ public final class LoginFragment extends BookingFlowFragment
         }
     };
 
+//TODO: Cleanup below
+/*
     private final Session.StatusCallback statusCallback = new Session.StatusCallback() {
         @Override
         public void call(final Session session, final SessionState state, final Exception exception) {
@@ -337,6 +418,7 @@ public final class LoginFragment extends BookingFlowFragment
             }
         }
     };
+*/
 
     private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>() {
         @Override
@@ -354,8 +436,10 @@ public final class LoginFragment extends BookingFlowFragment
                         mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.FACEBOOK);
                     } else mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
 
+/*
                     Session session = Session.getActiveSession();
                     if (session != null) session.closeAndClearTokenInformation();
+*/
 
                     if (bookingUserName != null || (authType == AuthType.FACEBOOK && findUser)) {
                         continueBookingFlow();
@@ -404,8 +488,10 @@ public final class LoginFragment extends BookingFlowFragment
         progressDialog.dismiss();
         enableInputs();
 
+/*
         final Session session = Session.getActiveSession();
         if (session != null) session.closeAndClearTokenInformation();
+*/
 
         final HashMap<String, InputTextField> inputMap = new HashMap<>();
         inputMap.put("password", passwordText);

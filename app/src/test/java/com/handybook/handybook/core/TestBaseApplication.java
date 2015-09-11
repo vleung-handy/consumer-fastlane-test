@@ -1,12 +1,6 @@
 package com.handybook.handybook.core;
 
-import android.app.Application;
-
-import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.R;
 import com.urbanairship.AirshipConfigOptions;
-import com.urbanairship.UAirship;
-import com.urbanairship.push.notifications.DefaultNotificationFactory;
 
 import dagger.ObjectGraph;
 

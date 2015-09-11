@@ -9,7 +9,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.ui.view.InjectedRelativeLayout;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by cdavis on 9/1/15.
@@ -17,9 +17,9 @@ import butterknife.InjectView;
 public class BookingDetailSectionExtrasEntryView extends InjectedRelativeLayout
 {
 
-    @InjectView(R.id.extra_title)
+    @Bind(R.id.extra_title)
     public TextView extraTitle;
-    @InjectView(R.id.extra_image)
+    @Bind(R.id.extra_image)
     public ImageView extraImage;
 
     public BookingDetailSectionExtrasEntryView(final Context context)

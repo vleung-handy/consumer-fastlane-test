@@ -13,15 +13,14 @@ import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.BookingDetailSectionView;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.Optional;
+import butterknife.Bind;
 
 public abstract class BookingDetailSectionFragment extends InjectedFragment
 {
     protected Booking booking;
 
-    @Optional
-    @InjectView(R.id.booking_detail_section_view)
+
+    @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionView view;
 
     protected int getFragmentResourceId()
@@ -47,7 +46,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(getFragmentResourceId(), container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         updateDisplay(this.booking, userManager.getCurrentUser());
 

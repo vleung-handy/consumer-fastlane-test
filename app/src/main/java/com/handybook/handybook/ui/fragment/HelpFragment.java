@@ -26,22 +26,22 @@ import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public final class HelpFragment extends InjectedFragment
 {
 
-    @InjectView(R.id.help_node_view)
+    @Bind(R.id.help_node_view)
     HelpNodeView helpNodeView;
-    @InjectView(R.id.help_banner_view)
+    @Bind(R.id.help_banner_view)
     HelpBannerView helpBannerView;
-    @InjectView(R.id.fetch_error_view)
+    @Bind(R.id.fetch_error_view)
     View errorView;
-    @InjectView(R.id.fetch_error_text)
+    @Bind(R.id.fetch_error_text)
     TextView errorText;
-    @InjectView(R.id.scroll_view)
+    @Bind(R.id.scroll_view)
     ScrollView scrollView;
 
     private final String STATE_SCROLL_POSITION = "SCROLL_POSITION";
@@ -52,7 +52,6 @@ public final class HelpFragment extends InjectedFragment
     private String currentBookingId = "";
     private String currentLoginToken = "";
     private String path = "";
-
     private HelpNode associatedNode = null;
 
     public static HelpFragment newInstance(final String bookingId,
@@ -107,7 +106,8 @@ public final class HelpFragment extends InjectedFragment
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_help, container, false);
-        ButterKnife.inject(this, view);
+
+        ButterKnife.bind(this, view);
 
         //Restore saved scroll position
         if (savedInstanceState != null)
@@ -157,13 +157,11 @@ public final class HelpFragment extends InjectedFragment
             if (nodeIsBooking)
             {
                 bus.post(new HandyEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
-            }
-            else
+            } else
             {
                 bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
             }
-        }
-        else
+        } else
         {
             helpNodeReceivedForPage(this.associatedNode);
         }
@@ -204,8 +202,7 @@ public final class HelpFragment extends InjectedFragment
             this.associatedNode = helpNode;
             getArguments().putParcelable(BundleKeys.HELP_NODE, helpNode);
             helpNodeReceivedForPage(helpNode);
-        }
-        else
+        } else
         {
             helpNodeReceivedForNextPage(helpNode);
         }
@@ -238,8 +235,7 @@ public final class HelpFragment extends InjectedFragment
         if (helpNode.getType().equals(HelpNode.HelpNodeType.CONTACT))
         {
             navigateToHelpContactPage(helpNode);
-        }
-        else
+        } else
         {
             navigateToHelpPage(helpNode);
         }
@@ -261,8 +257,7 @@ public final class HelpFragment extends InjectedFragment
         if (nodeIsBooking)
         {
             bus.post(new HandyEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
-        }
-        else
+        } else
         {
             bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
         }
@@ -274,8 +269,7 @@ public final class HelpFragment extends InjectedFragment
         if (childNode.getType().equals(HelpNode.HelpNodeType.BOOKING))
         {
             bus.post(new HandyEvent.RequestHelpBookingNode(Integer.toString(childNode.getId()), currentBookingId));
-        }
-        else
+        } else
         {
             bus.post(new HandyEvent.RequestHelpNode(Integer.toString(childNode.getId()), currentBookingId));
         }
@@ -347,8 +341,7 @@ public final class HelpFragment extends InjectedFragment
                     if (childNode.getType().equals(HelpNode.HelpNodeType.LOG_IN_FORM))
                     {
                         showToast(R.string.please_login);
-                    }
-                    else
+                    } else
                     {
                         requestChildNodeDetails(childNode);
                     }

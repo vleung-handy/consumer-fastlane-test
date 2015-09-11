@@ -15,27 +15,27 @@ import com.handybook.handybook.util.TextUtils;
 import java.util.Calendar;
 import java.util.Date;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public final class BookingDetailView extends InjectedRelativeLayout
 {
-    @InjectView(R.id.date_text)
+    @Bind(R.id.date_text)
     TextView dateText;
-    @InjectView(R.id.time_text)
+    @Bind(R.id.time_text)
     TextView timeText;
-    @InjectView(R.id.freq_text)
+    @Bind(R.id.freq_text)
     TextView freqText;
-    @InjectView(R.id.freq_layout)
+    @Bind(R.id.freq_layout)
     View freqLayout;
-    @InjectView(R.id.options_layout)
+    @Bind(R.id.options_layout)
     View optionsLayout;
-    @InjectView(R.id.reschedule_button)
+    @Bind(R.id.reschedule_button)
     public Button rescheduleButton;
-    @InjectView(R.id.cancel_button)
+    @Bind(R.id.cancel_button)
     public Button cancelButton;
-    @InjectView(R.id.booking_text)
+    @Bind(R.id.booking_text)
     TextView bookingText;
-    @InjectView(R.id.nav_text)
+    @Bind(R.id.nav_text)
     TextView navText;
 
     public BookingDetailView(final Context context)

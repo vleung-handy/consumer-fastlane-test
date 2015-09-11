@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,8 @@ import android.widget.ImageView;
 
 import com.handybook.handybook.R;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.Optional;
 
 public final class OnboardPageFragment extends BookingFlowFragment {
     static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
@@ -21,13 +21,26 @@ public final class OnboardPageFragment extends BookingFlowFragment {
     private int page;
     private boolean animated;
 
-    @InjectView(R.id.image) View image;
-    @Optional @InjectView(R.id.icon_clean) ImageView cleanIcon;
-    @Optional @InjectView(R.id.icon_handy) ImageView handyIcon;
-    @Optional @InjectView(R.id.icon_paint) ImageView paintIcon;
-    @Optional @InjectView(R.id.image_pro_1) ImageView proImage1;
-    @Optional @InjectView(R.id.image_pro_3) ImageView proImage3;
-    @Optional @InjectView(R.id.image_pro_4) ImageView proImage4;
+    @Bind(R.id.image)
+    View image;
+    @Nullable
+    @Bind(R.id.icon_clean)
+    ImageView cleanIcon;
+    @Nullable
+    @Bind(R.id.icon_handy)
+    ImageView handyIcon;
+    @Nullable
+    @Bind(R.id.icon_paint)
+    ImageView paintIcon;
+    @Nullable
+    @Bind(R.id.image_pro_1)
+    ImageView proImage1;
+    @Nullable
+    @Bind(R.id.image_pro_3)
+    ImageView proImage3;
+    @Nullable
+    @Bind(R.id.image_pro_4)
+    ImageView proImage4;
 
     public static OnboardPageFragment newInstance(final int page, final boolean animate) {
         final OnboardPageFragment fragment = new OnboardPageFragment();
@@ -79,7 +92,7 @@ public final class OnboardPageFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(layout, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         if (animated) {
             image.setVisibility(View.VISIBLE);

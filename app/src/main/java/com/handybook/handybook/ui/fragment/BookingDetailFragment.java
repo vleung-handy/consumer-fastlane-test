@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingDetailFragment extends BookingFlowFragment
 {
@@ -41,7 +41,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     private Booking booking;
     private boolean updatedBooking;
 
-    @InjectView(R.id.booking_detail_view)
+    @Bind(R.id.booking_detail_view)
     BookingDetailView bookingDetailView;
 
     public static BookingDetailFragment newInstance(final Booking booking)
@@ -75,7 +75,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_detail, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
 
         bookingDetailView.updateDisplay(this.booking, userManager.getCurrentUser());

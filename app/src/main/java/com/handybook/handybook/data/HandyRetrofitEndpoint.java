@@ -6,8 +6,6 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import retrofit.Endpoint;
-
 public final class HandyRetrofitEndpoint implements HandyEndpoint {
     private Environment env = Environment.S;
     private Context context;
