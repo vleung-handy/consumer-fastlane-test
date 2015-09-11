@@ -18,7 +18,7 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
     @Override
     protected int getEntryActionTextResourceId()
     {
-        return R.string.add;
+        return R.string.edit;
     }
 
     @Override

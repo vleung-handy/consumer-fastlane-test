@@ -34,6 +34,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 public final class BookingConfirmationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener
 {
+    private static final int PAGE_ENTRY_INFORMATION = 0;
+    private static final int PAGE_NOTE_TO_PRO = 1;
+    private static final int PAGE_PASSWORD_PROMPT = 2;
+
+
     static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
     static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
     private static final String STATE_KEY_HIGHLIGHT = "KEY_HIGHLIGHT";
@@ -55,7 +60,8 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     @Bind(R.id.pwd_text)
     PasswordInputTextView pwdText;
 
-    public static BookingConfirmationFragment newInstance(final int page, final boolean isNewUser) {
+    public static BookingConfirmationFragment newInstance(final int page, final boolean isNewUser)
+    {
         final BookingConfirmationFragment fragment = new BookingConfirmationFragment();
         final Bundle args = new Bundle();
 
@@ -89,28 +95,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
         postInfo = bookingManager.getCurrentPostInfo();
 
-        if (page == 1)
-        {
-            headerText.setText(getString(R.string.pro_to_know));
-            if (!isNewUser)
-            {
-                nextButton.setText(getString(R.string.finish));
-            }
-
-            final BookingOption option = new BookingOption();
-            option.setType("text");
-            option.setDefaultValue(getString(R.string.additional_pro_info));
-
-            optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
-            ((BookingOptionsTextView) optionsView).setValue(postInfo.getExtraMessage());
-        }
-        else if (page == 2)
-        {
-            headerText.setText(getString(R.string.use_your_pwd));
-            nextButton.setText(getString(R.string.finish));
-            pwdText.setVisibility(View.VISIBLE);
-        }
-        else
+        if (page == PAGE_ENTRY_INFORMATION)
         {
             final String text = getString(R.string.payment_confirmed);
             final SpannableString spanText = new SpannableString(text);
@@ -135,14 +120,34 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             final int index = indexStr == null ? 0 : Integer.parseInt(indexStr);
             ((BookingOptionsSelectView) optionsView).setCurrentIndex(index);
         }
+        else if (page == PAGE_NOTE_TO_PRO)
+        {
+            headerText.setText(getString(R.string.pro_to_know));
+            if (!isNewUser)
+            {
+                nextButton.setText(getString(R.string.finish));
+            }
 
-        if (page == 0 || page == 1)
+            final BookingOption option = new BookingOption();
+            option.setType("text");
+            option.setDefaultValue(getString(R.string.additional_pro_info));
+
+            optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
+            ((BookingOptionsTextView) optionsView).setValue(postInfo.getExtraMessage());
+        }
+        else if (page == PAGE_PASSWORD_PROMPT)
+        {
+            headerText.setText(getString(R.string.use_your_pwd));
+            nextButton.setText(getString(R.string.finish));
+            pwdText.setVisibility(View.VISIBLE);
+        }
+
+        if (page == PAGE_ENTRY_INFORMATION || page == PAGE_NOTE_TO_PRO)
         {
             optionsLayout.addView(optionsView, 0);
         }
-        {
-            nextButton.setOnClickListener(nextClicked);
-        }
+
+        nextButton.setOnClickListener(nextClicked);
 
         return view;
     }
@@ -176,7 +181,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     public final void onStart()
     {
         super.onStart();
-        if (page == 0)
+        if (page == PAGE_ENTRY_INFORMATION)
         {
             ((BaseActivity) getActivity()).setOnBackPressedListener(this);
         }
@@ -186,7 +191,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     public final void onStop()
     {
         super.onStop();
-        if (page == 0)
+        if (page == PAGE_ENTRY_INFORMATION)
         {
             ((BaseActivity) getActivity()).setOnBackPressedListener(null);
         }
@@ -210,13 +215,13 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     {
         boolean validate = true;
 
-        if (page == 0 && ((BookingOptionsSelectView) optionsView).getCurrentIndex() == 2
+        if (page == PAGE_ENTRY_INFORMATION && ((BookingOptionsSelectView) optionsView).getCurrentIndex() == 2
                 && !keysText.validate())
         {
             validate = false;
         }
 
-        if (page == 2)
+        if (page == PAGE_PASSWORD_PROMPT)
         {
             if (!pwdText.validate())
             {
@@ -237,7 +242,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     @Override
     public final void onBack()
     {
-        if (page == 0)
+        if (page == PAGE_ENTRY_INFORMATION)
         {
             showBookings();
         }
@@ -253,15 +258,17 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                 return;
             }
 
-            if (page == 0)
+            if (page == PAGE_ENTRY_INFORMATION)
             {
+                //goto the next page / activity
                 final Intent intent = new Intent(getActivity(), BookingConfirmationActivity.class);
                 intent.putExtra(BookingConfirmationActivity.EXTRA_PAGE, 1);
                 intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, isNewUser);
                 startActivity(intent);
             }
-            else if (page == 1 && isNewUser)
+            else if (page == PAGE_NOTE_TO_PRO && isNewUser)
             {
+                //goto the next page / activity
                 final Intent intent = new Intent(getActivity(), BookingConfirmationActivity.class);
                 intent.putExtra(BookingConfirmationActivity.EXTRA_PAGE, 2);
                 intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, isNewUser);
@@ -269,7 +276,8 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             }
             else
             {
-                if (page == 2)
+                //submit the information
+                if (page == PAGE_PASSWORD_PROMPT)
                 {
                     postInfo.setPassword(pwdText.getPassword());
                 }

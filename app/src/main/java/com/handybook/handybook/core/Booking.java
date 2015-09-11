@@ -28,7 +28,7 @@ public final class Booking implements Parcelable
     @SerializedName("price")
     private float price;
     @SerializedName("recurring")
-    private int recurring; //THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
+    private int recurring; //WARNING DECEPTIVE VARIABLE NAME! THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
     @SerializedName("recurring_id")
     private String recurringId;  //This actually indicates if a booking is isRecurring, non-null/empty id
     @SerializedName("recurring_string")
