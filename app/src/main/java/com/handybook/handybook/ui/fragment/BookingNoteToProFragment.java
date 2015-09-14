@@ -16,6 +16,7 @@ import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.BookingOptionsTextView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,11 +37,9 @@ public final class BookingNoteToProFragment extends BookingFlowFragment
     public static BookingNoteToProFragment newInstance(final Booking booking)
     {
         final BookingNoteToProFragment fragment = new BookingNoteToProFragment();
-
         final Bundle args = new Bundle();
-
         args.putParcelable(BundleKeys.BOOKING, booking);
-
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -49,6 +48,13 @@ public final class BookingNoteToProFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         booking = getArguments().getParcelable(BundleKeys.BOOKING);
+        initTransaction();
+    }
+
+    private void initTransaction()
+    {
+        descriptionTransaction = new BookingUpdateDescriptionTransaction();
+        descriptionTransaction.setMessageToPro(booking.getProNote());
     }
 
     @Override
@@ -91,12 +97,34 @@ public final class BookingNoteToProFragment extends BookingFlowFragment
         nextButton.setClickable(true);
     }
 
+
+    @Subscribe
+    public final void onReceiveUpdateBookingNoteToProSuccess(HandyEvent.ReceiveUpdateBookingNoteToProSuccess event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+        showToast(R.string.updated_note_to_pro);
+        getActivity().finish();
+    }
+
+    @Subscribe
+    public final void onReceiveUpdateBookingNoteToProError(HandyEvent.ReceiveUpdateBookingNoteToProError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
+
+
+
     private final View.OnClickListener nextClicked = new View.OnClickListener()
     {
         @Override
         public void onClick(final View view)
         {
             //If we send incomplete booking post info does it overwrite existing data?
+            disableInputs();
+            progressDialog.show();
 
             BookingUpdateDescriptionTransaction descriptionTransaction = new BookingUpdateDescriptionTransaction();
 

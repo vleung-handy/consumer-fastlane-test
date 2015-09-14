@@ -689,8 +689,8 @@ public final class BaseDataManager extends DataManager
 
 
     public final void updateBookingNoteToPro(int bookingId,
-                                                BookingUpdateDescriptionTransaction descriptionTransaction,
-                                                final Callback<Void> cb)
+                                             BookingUpdateDescriptionTransaction descriptionTransaction,
+                                             final Callback<Void> cb)
     {
         service.updateBookingDescription(bookingId, descriptionTransaction, new HandyRetrofitCallback(cb)
         {

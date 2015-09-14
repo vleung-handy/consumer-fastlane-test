@@ -160,4 +160,5 @@
     <string name="add">Add</string>
     <string name="set_dropoff">Set Drop-Off</string>
     <string name="email_receipt">Email Receipt</string>
+    <string name="updated_note_to_pro">Note to pro updated</string>
 </resources>

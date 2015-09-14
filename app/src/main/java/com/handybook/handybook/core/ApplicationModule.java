@@ -194,6 +194,7 @@ public final class ApplicationModule
                         if (user != null)
                         {
                             request.addQueryParam("app_user_id", user.getId());
+                            request.addQueryParam("auth_token", user.getAuthToken());
                         }
                     }
                 }).setConverter(new GsonConverter(new GsonBuilder()

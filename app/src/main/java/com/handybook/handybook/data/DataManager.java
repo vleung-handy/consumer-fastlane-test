@@ -141,6 +141,7 @@ public abstract class DataManager
                                             Callback<Void> cb);
 
     public abstract void updateBookingNoteToPro(int bookingId,
+                                                //String authToken,
                                                 BookingUpdateDescriptionTransaction descriptionTransaction,
                                                 Callback<Void> cb);
 

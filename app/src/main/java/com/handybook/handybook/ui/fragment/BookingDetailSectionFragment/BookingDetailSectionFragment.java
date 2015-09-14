@@ -19,7 +19,6 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 {
     protected Booking booking;
 
-
     @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionView view;
 
@@ -75,10 +74,6 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         }
     }
 
-    protected void onActionClick()
-    {
-    }
-
     @Override
     protected void disableInputs()
     {
@@ -104,6 +99,11 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
             onActionClick();
         }
     };
+
+    protected void onActionClick()
+    {
+
+    }
 
 
 }

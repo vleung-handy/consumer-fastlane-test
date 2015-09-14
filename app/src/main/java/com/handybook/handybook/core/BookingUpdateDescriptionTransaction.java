@@ -15,9 +15,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 public final class BookingUpdateDescriptionTransaction extends Observable {
-    @SerializedName("getin") private String getInId;
-    @SerializedName("getin_text") private String getInText;
-    @SerializedName("msg_to_pro") private String messageToPro;
+    @SerializedName("getin") private String getInId;            //Get-In identifier, numeric, corresponds to value on server  . TODO: Sync values to consts here
+    @SerializedName("getin_text") private String getInText;     //User entered text that explains additional Get-In information
+    @SerializedName("msg_to_pro") private String messageToPro;  //Separate message to pro containing misc information
 
     public final String getGetInId() {
         return getInId;
