@@ -126,14 +126,13 @@ public final class BookingNoteToProFragment extends BookingFlowFragment
             disableInputs();
             progressDialog.show();
 
-            BookingUpdateDescriptionTransaction descriptionTransaction = new BookingUpdateDescriptionTransaction();
+            //BookingUpdateDescriptionTransaction descriptionTransaction = new BookingUpdateDescriptionTransaction();
 
             //descriptionTransaction.setMessageToPro();
 
             int bookingId = Integer.parseInt(booking.getId());
 
             bus.post(new HandyEvent.RequestUpdateBookingNoteToPro(bookingId, descriptionTransaction));
-
 
 //            dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
 //                    postInfo, new DataManager.Callback<Void>()

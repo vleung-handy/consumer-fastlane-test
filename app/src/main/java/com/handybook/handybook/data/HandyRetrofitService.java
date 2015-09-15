@@ -83,7 +83,6 @@ public interface HandyRetrofitService
 
     @POST("/bookings/{booking}/description_update")
     void updateBookingDescription(@Path("booking") int bookingId,
-                                  //@Field("auth_token") String authToken,
                                   @Body BookingUpdateDescriptionTransaction descriptionTransaction,
                                   HandyRetrofitCallback cb);
 

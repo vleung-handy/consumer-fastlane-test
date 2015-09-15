@@ -1,7 +1,6 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
-import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
@@ -41,7 +40,7 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
         }
         else
         {
-            view.setVisibility(View.GONE);
+            view.entryText.setText("");
         }
     }
 
