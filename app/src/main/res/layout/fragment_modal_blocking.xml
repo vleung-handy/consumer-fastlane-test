@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_blocking_head"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="100dp"
+        android:background="#f4f4f4f">
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_modal_blocking_title"
+            fontPath="fonts/CircularStd-Bold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center_horizontal"
+            android:text="Oh no! Your app\nis out of date."
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:ignore="MissingPrefix"/>
+
+        <TextView
+            android:id="@+id/tv_modal_blocking_subtitle"
+            fontPath="fonts/CircularStd-Bold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="We got some great improvements\ninthe new one. Check it out!"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:ignore="MissingPrefix"/>
+
+        <Button
+            android:id="@+id/b_update_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:background="@color/handy_blue"
+            android:text="Update Now"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_blocking_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="80dp"
+        android:src="@drawable/img_modal_blocking_screen"/>
+
+</RelativeLayout>
