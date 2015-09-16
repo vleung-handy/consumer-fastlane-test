@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
+import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.User;
 
 import java.util.Date;
@@ -81,10 +82,15 @@ public interface HandyRetrofitService
                             HandyRetrofitCallback cb);
 
 
-    @POST("/bookings/{booking}/description_update")
-    void updateBookingDescription(@Path("booking") int bookingId,
-                                  @Body BookingUpdateDescriptionTransaction descriptionTransaction,
-                                  HandyRetrofitCallback cb);
+    @POST("/bookings/{booking}/description_update") //points to same endpoint as update entry info but that is because the endpoint currently does too much
+    void updateBookingNoteToPro(@Path("booking") int bookingId,
+                                @Body BookingUpdateNoteToProTransaction descriptionTransaction,
+                                HandyRetrofitCallback cb);
+
+    @POST("/bookings/{booking}/description_update") //points to same endpoint as update note to pro but that is because the endpoint currently does too much
+    void updateBookingEntryInformation(@Path("booking") int bookingId,
+                                @Body BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                HandyRetrofitCallback cb);
 
 
     @GET("/bookings/prereschedule_info")

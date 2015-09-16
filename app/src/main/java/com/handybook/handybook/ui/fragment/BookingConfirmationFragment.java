@@ -347,7 +347,6 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     };
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated;
-
     {
         optionUpdated = new BookingOptionsView.OnUpdatedListener()
         {

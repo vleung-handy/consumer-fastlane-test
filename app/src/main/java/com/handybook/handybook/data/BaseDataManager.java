@@ -14,7 +14,8 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
+import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
@@ -687,12 +688,12 @@ public final class BaseDataManager extends DataManager
         });
     }
 
-
+    @Override
     public final void updateBookingNoteToPro(int bookingId,
-                                             BookingUpdateDescriptionTransaction descriptionTransaction,
+                                             BookingUpdateNoteToProTransaction descriptionTransaction,
                                              final Callback<Void> cb)
     {
-        service.updateBookingDescription(bookingId, descriptionTransaction, new HandyRetrofitCallback(cb)
+        service.updateBookingNoteToPro(bookingId, descriptionTransaction, new HandyRetrofitCallback(cb)
         {
             @Override
             void success(final JSONObject response)
@@ -702,6 +703,20 @@ public final class BaseDataManager extends DataManager
         });
     }
 
+    @Override
+    public final void updateBookingEntryInformation(int bookingId,
+                                             BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                             final Callback<Void> cb)
+    {
+        service.updateBookingEntryInformation(bookingId, entryInformationTransaction, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+            }
+        });
+    }
 
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb)
     {

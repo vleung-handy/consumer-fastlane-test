@@ -5,7 +5,8 @@ import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
+import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.data.DataManager;
 
@@ -104,13 +105,15 @@ public abstract class HandyEvent
     }
 
 
-    //
+//Edit Booking Events
+
+    //Update the note to pro for a booking
     public static class RequestUpdateBookingNoteToPro extends RequestEvent
     {
         public int bookingId;
-        public BookingUpdateDescriptionTransaction descriptionTransaction;
+        public BookingUpdateNoteToProTransaction descriptionTransaction;
 
-        public RequestUpdateBookingNoteToPro(int bookingId, BookingUpdateDescriptionTransaction descriptionTransaction)
+        public RequestUpdateBookingNoteToPro(int bookingId, BookingUpdateNoteToProTransaction descriptionTransaction)
         {
             this.bookingId = bookingId;
             this.descriptionTransaction = descriptionTransaction;
@@ -130,6 +133,37 @@ public abstract class HandyEvent
     public static class ReceiveUpdateBookingNoteToProError extends ReceiveErrorEvent
     {
         public ReceiveUpdateBookingNoteToProError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    //Update the entry information for a booking
+    public static class RequestUpdateBookingEntryInformation extends RequestEvent
+    {
+        public int bookingId;
+        public BookingUpdateEntryInformationTransaction entryInformationTransaction;
+
+        public RequestUpdateBookingEntryInformation(int bookingId, BookingUpdateEntryInformationTransaction entryInformationTransaction)
+        {
+            this.bookingId = bookingId;
+            this.entryInformationTransaction = entryInformationTransaction;
+        }
+    }
+
+    //
+    public static class ReceiveUpdateBookingEntryInformationSuccess extends ReceiveSuccessEvent
+    {
+        public ReceiveUpdateBookingEntryInformationSuccess()
+        {
+
+        }
+    }
+
+    //
+    public static class ReceiveUpdateBookingEntryInformationError extends ReceiveErrorEvent
+    {
+        public ReceiveUpdateBookingEntryInformationError(DataManager.DataManagerError error)
         {
             this.error = error;
         }

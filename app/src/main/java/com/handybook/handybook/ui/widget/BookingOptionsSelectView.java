@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
+
 public final class BookingOptionsSelectView extends BookingOptionsIndexView
 {
     protected String[] optionsSubtitles;
@@ -67,7 +68,23 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         optionsRightText = option.getOptionsRightText();
 
         checkMap = new HashMap<>();
-        checkedIndex = isMulti ? 0 : Integer.parseInt(option.getDefaultValue());
+
+
+        int optionDefaultValue = 0;
+
+        if (option.getDefaultValue() != null)
+        {
+            try
+            {
+                optionDefaultValue = Integer.parseInt(option.getDefaultValue());
+            }
+            catch (NumberFormatException e)
+            {
+                optionDefaultValue = 0;
+            }
+        }
+
+        checkedIndex = isMulti ? 0 : optionDefaultValue;
         checkedIndexes = new HashSet<>();
 
         for (int i = 0; i < optionsList.length; i++)

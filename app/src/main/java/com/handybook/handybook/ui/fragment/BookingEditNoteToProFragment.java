@@ -12,7 +12,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
+import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.BookingOptionsTextView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
@@ -21,9 +21,9 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingNoteToProFragment extends BookingFlowFragment
+public final class BookingEditNoteToProFragment extends BookingFlowFragment
 {
-    private BookingUpdateDescriptionTransaction descriptionTransaction;
+    private BookingUpdateNoteToProTransaction descriptionTransaction;
 
     private Booking booking;
 
@@ -34,9 +34,9 @@ public final class BookingNoteToProFragment extends BookingFlowFragment
     @Bind(R.id.next_button)
     Button nextButton;
 
-    public static BookingNoteToProFragment newInstance(final Booking booking)
+    public static BookingEditNoteToProFragment newInstance(final Booking booking)
     {
-        final BookingNoteToProFragment fragment = new BookingNoteToProFragment();
+        final BookingEditNoteToProFragment fragment = new BookingEditNoteToProFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
         fragment.setArguments(args);
@@ -53,7 +53,7 @@ public final class BookingNoteToProFragment extends BookingFlowFragment
 
     private void initTransaction()
     {
-        descriptionTransaction = new BookingUpdateDescriptionTransaction();
+        descriptionTransaction = new BookingUpdateNoteToProTransaction();
         descriptionTransaction.setMessageToPro(booking.getProNote());
     }
 
@@ -62,7 +62,7 @@ public final class BookingNoteToProFragment extends BookingFlowFragment
                                    final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_confirmation, container, false);
+                .inflate(R.layout.fragment_booking_confirmation, container, false);   //TODO: Make this its own fragment
 
         ButterKnife.bind(this, view);
 

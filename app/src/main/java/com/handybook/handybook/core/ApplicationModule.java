@@ -25,9 +25,10 @@ import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
+import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
-import com.handybook.handybook.ui.activity.BookingNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
@@ -58,10 +59,11 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessionalInformation;
+import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
+import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
-import com.handybook.handybook.ui.fragment.BookingNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
@@ -130,8 +132,10 @@ import retrofit.converter.GsonConverter;
         BookingDetailSectionFragmentNoteToPro.class,
         BookingDetailSectionFragmentPayment.class,
         BookingDetailSectionFragmentProfessionalInformation.class,
-        BookingNoteToProActivity.class,
-        BookingNoteToProFragment.class,
+        BookingEditNoteToProActivity.class,
+        BookingEditNoteToProFragment.class,
+        BookingEditEntryInformationActivity.class,
+        BookingEditEntryInformationFragment.class,
 
 })
 public final class ApplicationModule

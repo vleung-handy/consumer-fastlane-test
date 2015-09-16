@@ -33,10 +33,12 @@ public final class Booking implements Parcelable
     private String recurringId;  //This actually indicates if a booking is isRecurring, non-null/empty id
     @SerializedName("recurring_string")
     private String recurringInfo;
+    @SerializedName("getin")
+    private int entryType; //numeric, must keep synced against server, start using an auto deserialized enum
     @SerializedName("getin_string")
-    private String entryInfo;
+    private String entryInfo;   //string descriptor of the entry type
     @SerializedName("getintxt")
-    private String extraEntryInfo;
+    private String extraEntryInfo; //additional information i.e. where user will hide the key
     @SerializedName("msg_to_pro")
     private String proNote;
     @SerializedName("laundry_status")
@@ -206,9 +208,11 @@ public final class Booking implements Parcelable
         billedStatus = stringData[7];
         recurringId = stringData[8];
 
-        final int[] intData = new int[1];
+        final int[] intData = new int[2];
         in.readIntArray(intData);
         isPast = intData[0];
+        entryType = intData[1];
+
 
         final float[] floatData = new float[2];
         in.readFloatArray(floatData);
@@ -239,7 +243,7 @@ public final class Booking implements Parcelable
                 ? laundryStatus.name() : "", recurringInfo, entryInfo, extraEntryInfo, proNote,
                 billedStatus, recurringId});
 
-        out.writeIntArray(new int[]{isPast});
+        out.writeIntArray(new int[]{isPast, entryType});
         out.writeFloatArray(new float[]{hours, price});
         out.writeLong(startDate.getTime());
         out.writeParcelable(address, 0);
@@ -266,6 +270,11 @@ public final class Booking implements Parcelable
             return new Booking[size];
         }
     };
+
+    public int getEntryType()
+    {
+        return entryType;
+    }
 
     public static final class Address implements Parcelable
     {

@@ -10,7 +10,8 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.core.BookingUpdateDescriptionTransaction;
+import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
@@ -141,8 +142,11 @@ public abstract class DataManager
                                             Callback<Void> cb);
 
     public abstract void updateBookingNoteToPro(int bookingId,
-                                                //String authToken,
-                                                BookingUpdateDescriptionTransaction descriptionTransaction,
+                                                BookingUpdateNoteToProTransaction descriptionTransaction,
+                                                Callback<Void> cb);
+
+    public abstract void updateBookingEntryInformation(int bookingId,
+                                                BookingUpdateEntryInformationTransaction entryInformationTransaction,
                                                 Callback<Void> cb);
 
     public abstract void ratePro(int bookingId,

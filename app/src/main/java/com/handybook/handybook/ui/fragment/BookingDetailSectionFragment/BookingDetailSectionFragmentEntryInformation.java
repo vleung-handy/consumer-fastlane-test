@@ -1,10 +1,13 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
 
 public class BookingDetailSectionFragmentEntryInformation extends BookingDetailSectionFragment
 {
@@ -46,5 +49,9 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     protected void onActionClick()
     {
         //TODO: edit entry info
+
+        final Intent intent = new Intent(getActivity(), BookingEditEntryInformationActivity.class);
+        intent.putExtra(BundleKeys.BOOKING, this.booking);
+        startActivity(intent);
     }
 }

@@ -6,7 +6,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.ui.activity.BookingNoteToProActivity;
+import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 
 public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionFragment
 {
@@ -51,7 +51,7 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
 
         //BookingNoteToProActivity
 
-        final Intent intent = new Intent(getActivity(), BookingNoteToProActivity.class);
+        final Intent intent = new Intent(getActivity(), BookingEditNoteToProActivity.class);
         intent.putExtra(BundleKeys.BOOKING, this.booking);
         startActivity(intent);
     }
