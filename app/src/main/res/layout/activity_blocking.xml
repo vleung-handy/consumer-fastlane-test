@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.handybook.handybook.ui.fragment.BlockingUpdateFragment"
-        android:id="@+id/fragment"
-        android:layout_gravity="center"/>
+        android:id="@+id/f_blocking"
+        android:layout_gravity="center"
+        tools:layout="@layout/fragment_modal_blocking"
+        android:layout_margin="20dp"/>
 </FrameLayout>
