@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
@@ -153,6 +154,9 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+    //TODO: Check the results for edit pro note and edit entry information
+
         if (resultCode == BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE)
         {
            Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
@@ -163,6 +167,10 @@ public final class BookingDetailFragment extends BookingFlowFragment
         {
             setCanceledBookingResult();
             getActivity().finish();
+        }
+        else if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED)
+        {
+            //TODO: request update the booking shown, will have side effect of updating cache, when we move to api v4 we will be getting bookings as return values
         }
     }
 

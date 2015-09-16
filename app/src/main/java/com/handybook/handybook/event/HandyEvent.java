@@ -8,6 +8,7 @@ import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 
 import java.util.List;
@@ -45,7 +46,44 @@ public abstract class HandyEvent
     }
 
 
+    //Bookings
+
+    public static class RequestBookingsForUser extends RequestEvent
+    {
+        public User user;
+        public RequestBookingsForUser(User user)
+        {
+            this.user = user;
+        }
+    }
+
+    public static class ReceiveBookingsSuccess extends ReceiveSuccessEvent
+    {
+        public List<Booking> bookings;
+
+        public ReceiveBookingsSuccess(List<Booking> bookings)
+        {
+            this.bookings = bookings;
+        }
+
+    }
+
+    public static class ReceiveBookingsError extends ReceiveErrorEvent
+    {
+        public ReceiveBookingsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
 //Booking Details
+
+    public static class RequestBookingDetails extends RequestEvent
+    {
+        public String bookingId;
+    }
+
 
     public static class RequestPreRescheduleInfo extends RequestEvent
     {

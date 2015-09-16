@@ -54,6 +54,9 @@ public abstract class DataManager
         this.env = env;
     }
 
+
+    //TODO: Don't need to manually pass auth tokens for any endpoint, auth token is now auto added as part of the intercept
+
     public abstract void getServices(CacheResponse<List<Service>> cache,
                                      Callback<List<Service>> cb);
 

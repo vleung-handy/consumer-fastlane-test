@@ -270,7 +270,8 @@ public final class ApplicationModule
     @Singleton
     final BookingManager provideBookingManager(final Bus bus,
                                                final PrefsManager prefsManager,
-                                               final DataManager dataManager)
+                                               final DataManager dataManager
+                                               )
     {
         return new BookingManager(bus, prefsManager, dataManager);
     }
