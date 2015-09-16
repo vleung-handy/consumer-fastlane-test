@@ -155,5 +155,9 @@
     <string name="error_fetching_connectivity_issue">Oops! There was an error with your internet connection</string>
     <string name="ensure_fields_valid">Please ensure all fields are filled out correctly</string>
     <string name="an_error_has_occurred">An error has occurred, please try again</string>
+    <string name="modal_blocking_title">Oh no! Your app\nis out of date.</string>
+    <string name="modal_blocking_subtitle">We got some great improvements\nin the new one. Check it out!</string>
+    <string name="modal_blocking_button_text">Update Now</string>
+    <string name="modal_blocking_image_content_description">Please update the app image.</string>
 
 </resources>
