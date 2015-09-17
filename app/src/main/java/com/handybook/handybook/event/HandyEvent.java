@@ -82,6 +82,10 @@ public abstract class HandyEvent
     public static class RequestBookingDetails extends RequestEvent
     {
         public String bookingId;
+        public RequestBookingDetails(String bookingId)
+        {
+            this.bookingId = bookingId;
+        }
     }
 
     public static class ReceiveBookingDetailsSuccess extends ReceiveBookingSuccessEvent

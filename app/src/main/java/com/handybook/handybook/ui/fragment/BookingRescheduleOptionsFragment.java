@@ -98,8 +98,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE) {
-            final long date = data
-                    .getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
+            final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
 
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);

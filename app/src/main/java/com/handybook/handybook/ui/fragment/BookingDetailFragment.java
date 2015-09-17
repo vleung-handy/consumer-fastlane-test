@@ -57,6 +57,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         this.booking = getArguments().getParcelable(BundleKeys.BOOKING);
 
         if (savedInstanceState != null)
@@ -77,12 +78,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
 
-
-        bookingDetailView.updateDisplay(this.booking, userManager.getCurrentUser());
-
-        setupClickListeners(this.booking);
-
-        addSectionFragments();
+        setupForBooking(this.booking);
 
         return view;
     }
@@ -104,6 +100,8 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
     private void addSectionFragments()
     {
+        clearSectionFragments();
+
         List<BookingDetailSectionFragment> sectionFragments = constructSectionFragments(this.booking);
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -117,6 +115,11 @@ public final class BookingDetailFragment extends BookingFlowFragment
         }
 
         transaction.commit();
+    }
+
+    private void clearSectionFragments()
+    {
+        bookingDetailView.sectionFragmentContainer.removeAllViews();
     }
 
     private void setupClickListeners(Booking booking)
@@ -153,12 +156,14 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //TODO: Should be checking and setting results codes in case we have functionality that returns to this page on failure
 
     //TODO: Check the results for edit pro note and edit entry information
 
         if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
            Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
+            //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model
            bookingDetailView.updateDateTimeInfoText(booking, newDate);
            setUpdatedBookingResult();
         }
@@ -169,8 +174,14 @@ public final class BookingDetailFragment extends BookingFlowFragment
         }
         else if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED)
         {
-            //TODO: request update the booking shown, will have side effect of updating cache, when we move to api v4 we will be getting bookings as return values
+            //TODO: request update the booking shown, will also have side effect of updating cache, when we move to api v4 we will be getting bookings as return values
+            setUpdatedBookingResult();
+            //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
 
+            disableInputs();
+            progressDialog.show();
+
+            bus.post(new HandyEvent.RequestBookingDetails(booking.getId()));
         }
     }
 
@@ -180,6 +191,17 @@ public final class BookingDetailFragment extends BookingFlowFragment
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_UPDATED_BOOKING, updatedBooking);
     }
+
+    private View.OnClickListener rescheduleClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            disableInputs();
+            progressDialog.show();
+            bus.post(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
+        }
+    };
 
     @Subscribe
     public void onReceivePreRescheduleInfoSuccess(HandyEvent.ReceivePreRescheduleInfoSuccess event)
@@ -201,14 +223,14 @@ public final class BookingDetailFragment extends BookingFlowFragment
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private View.OnClickListener rescheduleClicked = new View.OnClickListener()
+    private View.OnClickListener cancelClicked = new View.OnClickListener()
     {
         @Override
         public void onClick(final View v)
         {
             disableInputs();
             progressDialog.show();
-            bus.post(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
+            bus.post(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
         }
     };
 
@@ -236,24 +258,31 @@ public final class BookingDetailFragment extends BookingFlowFragment
     }
 
 
-    private View.OnClickListener cancelClicked = new View.OnClickListener()
+
+
+    @Subscribe
+    public void onReceiveBookingDetailsSuccess(HandyEvent.ReceiveBookingDetailsSuccess event)
     {
-        @Override
-        public void onClick(final View v)
-        {
-            disableInputs();
-            progressDialog.show();
+        enableInputs();
+        progressDialog.dismiss();
 
-            bus.post(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
-        }
-    };
+        this.booking = event.booking;
+        getArguments().putParcelable(BundleKeys.BOOKING, event.booking);
 
+        setupForBooking(event.booking);
+    }
 
+    @Subscribe
+    public void onReceiveBookingDetailsError(HandyEvent.ReceiveBookingDetailsError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
 
     private final void setUpdatedBookingResult()
     {
         updatedBooking = true;
-
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.BOOKING, booking);
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, intent);
@@ -264,6 +293,13 @@ public final class BookingDetailFragment extends BookingFlowFragment
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.CANCELLED_BOOKING, booking);
         getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, intent);
+    }
+
+    private void setupForBooking(Booking booking)
+    {
+        bookingDetailView.updateDisplay(booking, userManager.getCurrentUser());
+        setupClickListeners(booking);
+        addSectionFragments();
     }
 
 }

@@ -54,15 +54,21 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
         totalText.setText(price);
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
-        Collections.sort(paymentInfo, new Comparator<Booking.LineItem>()
-        {
-            @Override
-            public int compare(final Booking.LineItem lhs, final Booking.LineItem rhs)
-            {
-                return lhs.getOrder() - rhs.getOrder();
-            }
-        });
 
+        //Sort the payment info
+        if (paymentInfo != null && paymentInfo.size() > 0)
+        {
+            Collections.sort(paymentInfo, new Comparator<Booking.LineItem>()
+            {
+                @Override
+                public int compare(final Booking.LineItem lhs, final Booking.LineItem rhs)
+                {
+                    return lhs.getOrder() - rhs.getOrder();
+                }
+            });
+        }
+
+        //Display the payment info
         if (paymentInfo != null && paymentInfo.size() > 0)
         {
             paymentLinesSection.setVisibility(View.VISIBLE);

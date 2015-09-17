@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
@@ -164,6 +166,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         enableInputs();
         progressDialog.dismiss();
         showToast(R.string.updated_entry_information);
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 

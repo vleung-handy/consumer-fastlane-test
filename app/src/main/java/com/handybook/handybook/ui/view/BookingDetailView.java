@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -37,6 +38,8 @@ public final class BookingDetailView extends InjectedRelativeLayout
     TextView bookingText;
     @Bind(R.id.nav_text)
     TextView navText;
+    @Bind(R.id.section_fragment_container)
+    public LinearLayout sectionFragmentContainer;
 
     public BookingDetailView(final Context context)
     {

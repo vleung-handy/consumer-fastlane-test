@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
@@ -48,10 +49,13 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     @Override
     protected void onActionClick()
     {
-        //TODO: edit entry info
-
         final Intent intent = new Intent(getActivity(), BookingEditEntryInformationActivity.class);
         intent.putExtra(BundleKeys.BOOKING, this.booking);
-        startActivity(intent);
+        getParentFragment().startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
     }
+
+
+
+
+
 }

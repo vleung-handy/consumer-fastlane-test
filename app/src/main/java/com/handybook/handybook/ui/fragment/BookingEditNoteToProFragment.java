@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
@@ -104,6 +106,10 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
         enableInputs();
         progressDialog.dismiss();
         showToast(R.string.updated_note_to_pro);
+
+        System.out.println("Zzzzz done with note to pro fragment, setting activity result");
+
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 
