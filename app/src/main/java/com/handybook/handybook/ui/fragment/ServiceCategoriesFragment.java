@@ -2,6 +2,7 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -16,9 +17,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
+import com.handybook.handybook.core.ShouldBlockObject;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
@@ -30,7 +34,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class ServiceCategoriesFragment extends BookingFlowFragment {
+public final class ServiceCategoriesFragment extends BookingFlowFragment
+{
     private List<Service> services = new ArrayList<>();
     private boolean usedCache;
 
@@ -47,24 +52,28 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
     @Bind(R.id.promo_text)
     TextView promoText;
 
-    public static ServiceCategoriesFragment newInstance() {
+    public static ServiceCategoriesFragment newInstance()
+    {
         return new ServiceCategoriesFragment();
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
+    public final void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final SharedPreferences.Editor edit = prefs.edit();
 
-        if (!prefs.getBoolean("APP_OPENED_PREV", false)) {
+        if (!prefs.getBoolean("APP_OPENED_PREV", false))
+        {
             mixpanel.trackEventFirstTimeUse();
             edit.putBoolean("APP_OPENED_PREV", true);
             edit.apply();
         }
 
-        if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false)) {
+        if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false))
+        {
             final Intent intent = new Intent(getActivity(), OnboardActivity.class);
             startActivity(intent);
         }
@@ -72,15 +81,18 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
 
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+                                   final Bundle savedInstanceState)
+    {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_service_categories,container, false);
+                .inflate(R.layout.fragment_service_categories, container, false);
 
         ButterKnife.bind(this, view);
 
-        logo.setOnClickListener(new View.OnClickListener() {
+        logo.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(final View v) {
+            public void onClick(final View v)
+            {
                 AnimationDrawable logoSpin = (AnimationDrawable) logo.getBackground();
                 logoSpin.stop();
                 logoSpin.start();
@@ -96,19 +108,80 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
     }
 
     @Override
-    public final void onActivityCreated(final Bundle savedInstanceState) {
+    public final void onActivityCreated(final Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
         allowCallbacks = true;
         loadServices();
     }
 
     @Override
-    public void onStart() {
+    public void onResume()
+    {
+        super.onResume();
+        checkIfBlocked();
+    }
+
+    /**
+     * Checks if this instance of the app is not too old to be alowed to be used
+     * This is a call to /app_updates which returns ShouldBlockObject
+     * Launches blocking activity if the app version_code is smaller than the minimum req value
+     */
+    private void checkIfBlocked()
+    {
+        int versionCode;
+        try
+        {
+            versionCode = getContext().getPackageManager()
+                    .getPackageInfo(getActivity().getPackageName(), 0)
+                    .versionCode;
+        } catch (PackageManager.NameNotFoundException e)
+        {
+            e.printStackTrace();
+            Crashlytics.logException(e);
+            versionCode = 0;
+        }
+        dataManager.getShouldBlockObject(
+                versionCode,
+                new DataManager.CacheResponse<ShouldBlockObject>()
+                {
+                    @Override
+                    public void onResponse(final ShouldBlockObject shouldBlockObject)
+                    {
+                        //TODO:implement
+                    }
+                },
+                new DataManager.Callback<ShouldBlockObject>()
+                {
+                    @Override
+                    public void onSuccess(ShouldBlockObject response)
+                    {
+                        if (response.isBlocked())
+                        {
+                            Intent newIntent = new Intent(getActivity(), BlockingActivity.class);
+                            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(newIntent);
+                        }
+                    }
+
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        //TODO:implement
+                    }
+                });
+    }
+
+    @Override
+    public void onStart()
+    {
         super.onStart();
 
         final String coupon = bookingManager.getPromoTabCoupon();
 
-        if (coupon != null) {
+        if (coupon != null)
+        {
             final Spannable text
                     = new SpannableString(String.format(getString(R.string.using_promo), coupon));
 
@@ -118,15 +191,16 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
 
             promoText.setText(text, TextView.BufferType.SPANNABLE);
             couponLayout.setVisibility(View.VISIBLE);
-        }
-        else couponLayout.setVisibility(View.GONE);
+        } else couponLayout.setVisibility(View.GONE);
     }
 
-    private void displayServices() {
+    private void displayServices()
+    {
         categoryLayout.removeAllViews();
         int pos = 0;
 
-        for (final Service service : services) {
+        for (final Service service : services)
+        {
             final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
 
             categoryView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -134,51 +208,61 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment {
 
             categoryView.setText(service.getName());
 
-            categoryView.setOnClickListener(new View.OnClickListener() {
+            categoryView.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
-                    if (service.getServices().size() > 0) {
+                public void onClick(View view)
+                {
+                    if (service.getServices().size() > 0)
+                    {
                         final Intent intent = new Intent(getActivity(), ServicesActivity.class);
                         intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
                         intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, categoryView.getHeight());
                         startActivity(intent);
-                    }
-                    else startBookingFlow(service.getId(), service.getUniq());
+                    } else startBookingFlow(service.getId(), service.getUniq());
                 }
             });
             categoryLayout.addView(categoryView, pos++);
         }
     }
 
-    private void loadServices() {
+    private void loadServices()
+    {
         progressDialog.show();
         usedCache = false;
 
-        dataManager.getServices(new DataManager.CacheResponse<List<Service>>() {
-            @Override
-            public void onResponse(final List<Service> response) {
-                if (!allowCallbacks) return;
-                usedCache = true;
-                services = response;
-                displayServices();
-                progressDialog.dismiss();
-            }
-        },
-        new DataManager.Callback<List<Service>>() {
-            @Override
-            public void onSuccess(final List<Service> response) {
-                if (!allowCallbacks) return;
-                services = response;
-                displayServices();
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onError(final DataManager.DataManagerError error) {
-                if (!allowCallbacks || usedCache) return;
-                progressDialog.dismiss();
-                dataManagerErrorHandler.handleError(getActivity(), error);
-            }
-        });
+        dataManager.getServices(
+                new DataManager.CacheResponse<List<Service>>()
+                {
+                    @Override
+                    public void onResponse(final List<Service> response)
+                    {
+                        if (!allowCallbacks) return;
+                        usedCache = true;
+                        services = response;
+                        displayServices();
+                        progressDialog.dismiss();
+                    }
+                },
+                new DataManager.Callback<List<Service>>()
+                {
+                    @Override
+                    public void onSuccess(final List<Service> response)
+                    {
+                        if (!allowCallbacks) return;
+                        services = response;
+                        displayServices();
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        if (!allowCallbacks || usedCache) return;
+                        progressDialog.dismiss();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                });
     }
 }
