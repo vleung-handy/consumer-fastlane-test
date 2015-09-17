@@ -20,7 +20,6 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
-import com.handybook.handybook.ui.activity.PeakPricingActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -240,7 +239,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
             final long date = data
-                    .getLongExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
+                    .getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
 
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
@@ -252,7 +251,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         else if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
             final long date = data
-                    .getLongExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
+                    .getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
 
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
@@ -379,10 +378,10 @@ public final class BookingDateFragment extends BookingFlowFragment
                     final Intent intent = new Intent(getActivity(),
                             BookingRescheduleOptionsActivity.class);
 
-                    intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_BOOKING,
+                    intent.putExtra(BundleKeys.RESCHEDULE_BOOKING,
                             rescheduleBooking);
 
-                    intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_DATE,
+                    intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE,
                             date.getTimeInMillis());
 
                     startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);

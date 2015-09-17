@@ -17,7 +17,6 @@ import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
-import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.util.TextUtils;
@@ -147,9 +146,9 @@ public class BookingFlowFragment extends InjectedFragment
                         if (peakTable != null && !peakTable.isEmpty())
                         {
                             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
-                            intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_BOOKING, booking);
-                            intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_PRICE_TABLE, peakTable);
-                            intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_ALL, rescheduleAll);
+                            intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
+                            intent.putExtra(BundleKeys.RESCHEDULE_PRICE_TABLE, peakTable);
+                            intent.putExtra(BundleKeys.RESCHEDULE_ALL, rescheduleAll);
                             startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
                             return;
                         }
@@ -158,7 +157,7 @@ public class BookingFlowFragment extends InjectedFragment
 
                         if (BookingFlowFragment.this instanceof PeakPricingTableFragment)
                         {
-                            intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, date.getTime());
+                            intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
 
                             getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
                         }
@@ -170,8 +169,7 @@ public class BookingFlowFragment extends InjectedFragment
                         }
                         else if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment)
                         {
-                            intent.putExtra(BookingRescheduleOptionsActivity
-                                    .EXTRA_RESCHEDULE_NEW_DATE, date.getTime());
+                            intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
 
                             getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
                         }
@@ -255,7 +253,7 @@ public class BookingFlowFragment extends InjectedFragment
         else if (isVoucherFlow && shouldShowSurgePricingOptions(peakTable, isVoucherFlow))
         {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
-            intent.putExtra(PeakPricingActivity.EXTRA_FOR_VOUCHER, true);
+            intent.putExtra(BundleKeys.FOR_VOUCHER, true);
             startActivity(intent);
         }
 

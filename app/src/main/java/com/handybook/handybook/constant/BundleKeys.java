@@ -26,4 +26,9 @@ public class BundleKeys
     public static final String OPTIONS = "options";
     public static final String NOTICE = "notice";
 
+    public static final String RESCHEDULE_PRICE_TABLE = "reschedule_price_table";
+    public static final String RESCHEDULE_ALL = "reschedule_all";
+    public static final String FOR_VOUCHER = "for_voucher";
+
+
 }
