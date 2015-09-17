@@ -16,7 +16,6 @@ import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
-import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
@@ -157,13 +156,13 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
     //TODO: Check the results for edit pro note and edit entry information
 
-        if (resultCode == BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE)
+        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
            Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
            bookingDetailView.updateDateTimeInfoText(booking, newDate);
            setUpdatedBookingResult();
         }
-        else if (resultCode == BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED)
+        else if (resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
         {
             setCanceledBookingResult();
             getActivity().finish();
@@ -171,6 +170,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
         else if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED)
         {
             //TODO: request update the booking shown, will have side effect of updating cache, when we move to api v4 we will be getting bookings as return values
+
         }
     }
 
@@ -190,7 +190,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, this.booking);
         intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, event.notice);
-        startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE);
+        startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
     }
 
     @Subscribe
@@ -224,7 +224,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
         intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
         intent.putExtra(BundleKeys.NOTICE, result.first);
         intent.putExtra(BundleKeys.BOOKING, booking);
-        startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
+        startActivityForResult(intent, ActivityResult.RESULT_BOOKING_CANCELED);
     }
 
     @Subscribe
@@ -256,14 +256,14 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.BOOKING, booking);
-        getActivity().setResult(BookingDetailActivity.RESULT_BOOKING_UPDATED, intent);
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, intent);
     }
 
     private final void setCanceledBookingResult()
     {
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.CANCELLED_BOOKING, booking);
-        getActivity().setResult(BookingDetailActivity.RESULT_BOOKING_CANCELED, intent);
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, intent);
     }
 
 }

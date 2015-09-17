@@ -9,9 +9,6 @@ import com.handybook.handybook.ui.fragment.BookingDetailFragment;
 
 public final class BookingDetailActivity extends MenuDrawerActivity {
 
-    public static final int RESULT_BOOKING_UPDATED = 1;
-    public static final int RESULT_BOOKING_CANCELED = 2;
-
     @Override
     protected final Fragment createFragment() {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);

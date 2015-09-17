@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
@@ -70,7 +71,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE) {
+        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE) {
             openServiceCategoriesActivity();
         }
     }
@@ -100,7 +101,7 @@ public class SplashActivity extends BaseActivity {
                                 final Intent intent = new Intent(SplashActivity.this, BookingDateActivity.class);
                                 intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
                                 intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
-                                startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE);
+                                startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
                             }
 
                             @Override

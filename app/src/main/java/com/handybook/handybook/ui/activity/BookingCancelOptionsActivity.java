@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 public final class BookingCancelOptionsActivity extends MenuDrawerActivity {
 
-    public static final int RESULT_BOOKING_CANCELED = 10;
-
     @Override
     protected final Fragment createFragment() {
         final String notice = getIntent().getStringExtra(BundleKeys.NOTICE);

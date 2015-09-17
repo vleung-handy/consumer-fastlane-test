@@ -15,7 +15,6 @@ public final class PeakPricingActivity extends MenuDrawerActivity {
     public static final String EXTRA_RESCHEDULE_ALL = "com.handy.handy.EXTRA_RESCHEDULE_ALL";
     public static final String EXTRA_RESCHEDULE_NEW_DATE = "com.handy.handy.EXTRA_RESCHEDULE_NEW_DATE";
     public static final String EXTRA_FOR_VOUCHER = "com.handy.handy.EXTRA_FOR_VOUCHER";
-    public static final int RESULT_RESCHEDULE_NEW_DATE = 2;
 
     @Override
     protected final Fragment createFragment() {

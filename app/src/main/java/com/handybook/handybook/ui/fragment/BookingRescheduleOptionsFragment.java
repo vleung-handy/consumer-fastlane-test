@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
@@ -97,14 +98,14 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
                                        final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == PeakPricingActivity.RESULT_RESCHEDULE_NEW_DATE) {
+        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE) {
             final long date = data
                     .getLongExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
 
             final Intent intent = new Intent();
             intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_NEW_DATE, date);
 
-            getActivity().setResult(BookingRescheduleOptionsActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();
         }
     }

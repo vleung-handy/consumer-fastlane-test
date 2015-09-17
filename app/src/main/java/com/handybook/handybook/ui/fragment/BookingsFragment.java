@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
@@ -88,7 +89,7 @@ public final class BookingsFragment extends InjectedFragment
             {
                 final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
                 intent.putExtra(BundleKeys.BOOKING, getBooking(i));
-                startActivityForResult(intent, BookingDetailActivity.RESULT_BOOKING_UPDATED);
+                startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
             }
         });
     }
@@ -125,11 +126,11 @@ public final class BookingsFragment extends InjectedFragment
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == BookingDetailActivity.RESULT_BOOKING_UPDATED
-                || resultCode == BookingDetailActivity.RESULT_BOOKING_CANCELED)
+        if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED
+                || resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
         {
 
-            final boolean isCancel = resultCode == BookingDetailActivity.RESULT_BOOKING_CANCELED;
+            final boolean isCancel = resultCode == ActivityResult.RESULT_BOOKING_CANCELED;
             final Booking booking;
 
             if (isCancel)

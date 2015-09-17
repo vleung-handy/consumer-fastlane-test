@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public final class BookingDateActivity extends MenuDrawerActivity {
 
-    public static final int RESULT_RESCHEDULE_NEW_DATE = 1;
-
     @Override
     protected final Fragment createFragment() {
 

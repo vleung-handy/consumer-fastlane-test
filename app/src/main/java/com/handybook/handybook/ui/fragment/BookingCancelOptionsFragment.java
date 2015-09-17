@@ -10,11 +10,11 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 
@@ -137,7 +137,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
                         toast.show();
                     }
 
-                    getActivity().setResult(BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED, new Intent());
+                    getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, new Intent());
                     getActivity().finish();
                 }
 

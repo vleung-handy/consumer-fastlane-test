@@ -3,6 +3,7 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Intent;
 import android.support.v4.util.Pair;
 
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingCoupon;
@@ -13,7 +14,6 @@ import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
-import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
@@ -150,7 +150,7 @@ public class BookingFlowFragment extends InjectedFragment
                             intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_BOOKING, booking);
                             intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_PRICE_TABLE, peakTable);
                             intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_ALL, rescheduleAll);
-                            startActivityForResult(intent, PeakPricingActivity.RESULT_RESCHEDULE_NEW_DATE);
+                            startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
                             return;
                         }
 
@@ -158,26 +158,22 @@ public class BookingFlowFragment extends InjectedFragment
 
                         if (BookingFlowFragment.this instanceof PeakPricingTableFragment)
                         {
-                            intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE,
-                                    date.getTime());
+                            intent.putExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, date.getTime());
 
-                            getActivity().setResult(PeakPricingActivity
-                                    .RESULT_RESCHEDULE_NEW_DATE, intent);
+                            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
                         }
                         else if (BookingFlowFragment.this instanceof BookingDateFragment)
                         {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
 
-                            getActivity().setResult(BookingDateActivity
-                                    .RESULT_RESCHEDULE_NEW_DATE, intent);
+                            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
                         }
                         else if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment)
                         {
                             intent.putExtra(BookingRescheduleOptionsActivity
                                     .EXTRA_RESCHEDULE_NEW_DATE, date.getTime());
 
-                            getActivity().setResult(BookingRescheduleOptionsActivity
-                                    .RESULT_RESCHEDULE_NEW_DATE, intent);
+                            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
                         }
 
                         getActivity().finish();
@@ -288,7 +284,7 @@ public class BookingFlowFragment extends InjectedFragment
         // if user logged in, hide login view on back
         if (user != null && BookingFlowFragment.this instanceof LoginFragment)
         {
-            getActivity().setResult(LoginActivity.RESULT_FINISH);
+            getActivity().setResult(ActivityResult.RESULT_LOGIN_FINISH);
             getActivity().finish();
         }
 
@@ -361,7 +357,7 @@ public class BookingFlowFragment extends InjectedFragment
 
         if (BookingFlowFragment.this instanceof LoginFragment)
         {
-            getActivity().setResult(LoginActivity.RESULT_FINISH);
+            getActivity().setResult(ActivityResult.RESULT_LOGIN_FINISH);
             getActivity().finish();
         }
     }

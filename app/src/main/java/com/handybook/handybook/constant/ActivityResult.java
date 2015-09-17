@@ -6,7 +6,7 @@ package com.handybook.handybook.constant;
 public class ActivityResult
 {
     public static final int RESULT_BOOKING_UPDATED = 991;
-    public static final int RESULT_BOOKING_CANCELLED = 992;
+    public static final int RESULT_BOOKING_CANCELED = 992;
     public static final int RESULT_RESCHEDULE_NEW_DATE = 993;
     public static final int RESULT_LOGIN_FINISH = 994;
 }

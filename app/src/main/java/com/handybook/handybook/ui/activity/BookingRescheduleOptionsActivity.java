@@ -12,7 +12,6 @@ public final class BookingRescheduleOptionsActivity extends MenuDrawerActivity {
     public static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     public static final String EXTRA_RESCHEDULE_DATE = "com.handy.handy.EXTRA_RESCHEDULE_DATE";
     public static final String EXTRA_RESCHEDULE_NEW_DATE = "com.handy.handy.EXTRA_RESCHEDULE_NEW_DATE";
-    public static final int RESULT_RESCHEDULE_NEW_DATE = 1;
 
     @Override
     protected final Fragment createFragment() {

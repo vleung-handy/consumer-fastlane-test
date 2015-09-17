@@ -12,12 +12,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.PeakPricingActivity;
@@ -237,7 +237,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == BookingRescheduleOptionsActivity.RESULT_RESCHEDULE_NEW_DATE)
+        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
             final long date = data
                     .getLongExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
@@ -245,10 +245,11 @@ public final class BookingDateFragment extends BookingFlowFragment
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
 
-            getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();
         }
-        else if (resultCode == PeakPricingActivity.RESULT_RESCHEDULE_NEW_DATE)
+        //COLIN COLIN COLIN TODO: FIX THE BUNDLE KEYS FOR EXTRA RESCHEDULE DATE
+        else if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
             final long date = data
                     .getLongExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
@@ -256,7 +257,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
 
-            getActivity().setResult(BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();
         }
     }
@@ -384,8 +385,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                     intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_DATE,
                             date.getTimeInMillis());
 
-                    startActivityForResult(intent, BookingRescheduleOptionsActivity
-                            .RESULT_RESCHEDULE_NEW_DATE);
+                    startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
                 }
                 else
                 {
