@@ -156,14 +156,12 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //TODO: Should be checking and setting results codes in case we have functionality that returns to this page on failure
-
-    //TODO: Check the results for edit pro note and edit entry information
+        //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
 
         if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
            Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
-            //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model
+            //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model. API v4 should return the updated booking model
            bookingDetailView.updateDateTimeInfoText(booking, newDate);
            setUpdatedBookingResult();
         }
@@ -174,14 +172,8 @@ public final class BookingDetailFragment extends BookingFlowFragment
         }
         else if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED)
         {
-            //TODO: request update the booking shown, will also have side effect of updating cache, when we move to api v4 we will be getting bookings as return values
-            setUpdatedBookingResult();
             //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
-
-            disableInputs();
-            progressDialog.show();
-
-            bus.post(new HandyEvent.RequestBookingDetails(booking.getId()));
+            postBlockingEvent(new HandyEvent.RequestBookingDetails(booking.getId()));
         }
     }
 
@@ -197,9 +189,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
         @Override
         public void onClick(final View v)
         {
-            disableInputs();
-            progressDialog.show();
-            bus.post(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
+            postBlockingEvent(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
         }
     };
 
@@ -228,9 +218,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
         @Override
         public void onClick(final View v)
         {
-            disableInputs();
-            progressDialog.show();
-            bus.post(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
+            postBlockingEvent(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
         }
     };
 
@@ -268,7 +256,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
         this.booking = event.booking;
         getArguments().putParcelable(BundleKeys.BOOKING, event.booking);
-
+        setUpdatedBookingResult();
         setupForBooking(event.booking);
     }
 
@@ -277,6 +265,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         enableInputs();
         progressDialog.dismiss();
+
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
@@ -284,7 +273,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         updatedBooking = true;
         final Intent intent = new Intent();
-        intent.putExtra(BundleKeys.BOOKING, booking);
+        intent.putExtra(BundleKeys.UPDATED_BOOKING, booking);
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, intent);
     }
 

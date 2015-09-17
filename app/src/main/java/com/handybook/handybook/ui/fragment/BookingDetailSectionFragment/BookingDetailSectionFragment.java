@@ -67,7 +67,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
     protected void setupClickListeners(Booking booking)
     {
-        //TODO: Probably some additional constraints on this for certain edit actions
+        //TODO: Probably some additional constraints on this for certain edit actions?
         if (!booking.isPast())
         {
             view.entryActionText.setOnClickListener(actionClicked);
@@ -93,9 +93,6 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         @Override
         public void onClick(final View v)
         {
-//            disableInputs();
-//            progressDialog.show();
-//            bus.post(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
             onActionClick();
         }
     };

@@ -3,7 +3,6 @@ package com.handybook.handybook.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,10 +57,8 @@ public final class BookingDetailView extends InjectedRelativeLayout
 
     public void updateDisplay(final Booking booking, final User user)
     {
-        final ViewGroup container = this;
-
         navText.setText(booking.getService());
-        bookingText.setText("Booking #" + booking.getId());
+        bookingText.setText("Booking #" + booking.getId()); //TODO: hardcoded string
 
         updateDateTimeInfoText(booking);
 

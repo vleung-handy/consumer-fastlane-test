@@ -144,6 +144,7 @@ public final class BookingsFragment extends InjectedFragment
 
             final String bookingId = booking.getId();
 
+            //TODO: We are manually updating the booking in the list, should re-request from manager which would have the updated booking in its cache
             for (int i = 0; i < upBookings.size(); i++)
             {
                 final Booking upBooking = upBookings.get(i);
@@ -175,7 +176,8 @@ public final class BookingsFragment extends InjectedFragment
                 }
             }
 
-            // reloading all bookings here until there is a way to update recurring instances as well
+            //And then we're just going and requesting everything again anyway.....
+            //TODO: reloading all bookings here until there is a way to update recurring instances as well
             loadBookings();
         }
     }

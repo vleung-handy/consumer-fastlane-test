@@ -71,7 +71,7 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
         headerText.setText(getString(R.string.pro_to_know));
 
         final BookingOption option = new BookingOption();
-        option.setType("text");
+        option.setType("text"); //todo : magic string
         option.setDefaultValue(getString(R.string.additional_pro_info));
 
         BookingOptionsView optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
@@ -107,8 +107,6 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
         progressDialog.dismiss();
         showToast(R.string.updated_note_to_pro);
 
-        System.out.println("Zzzzz done with note to pro fragment, setting activity result");
-
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
@@ -121,65 +119,17 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-
-
     private final View.OnClickListener nextClicked = new View.OnClickListener()
     {
         @Override
         public void onClick(final View view)
         {
-            //If we send incomplete booking post info does it overwrite existing data?
             disableInputs();
             progressDialog.show();
-
-            //BookingUpdateDescriptionTransaction descriptionTransaction = new BookingUpdateDescriptionTransaction();
-
-            //descriptionTransaction.setMessageToPro();
-
             int bookingId = Integer.parseInt(booking.getId());
-
             bus.post(new HandyEvent.RequestUpdateBookingNoteToPro(bookingId, descriptionTransaction));
-
-//            dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
-//                    postInfo, new DataManager.Callback<Void>()
-//                    {
-//                        @Override
-//                        public void onSuccess(final Void response)
-//                        {
-//                            if (!allowCallbacks)
-//                            {
-//                                return;
-//                            }
-//                            showBookings();
-//                            enableInputs();
-//                            progressDialog.dismiss();
-//                        }
-//
-//                        @Override
-//                        public void onError(final DataManager.DataManagerError error)
-//                        {
-//                            if (!allowCallbacks)
-//                            {
-//                                return;
-//                            }
-//
-//                            enableInputs();
-//                            progressDialog.dismiss();
-//                            dataManagerErrorHandler.handleError(getActivity(), error);
-//                        }
-//                    });
         }
     };
-
-//    private void showBookings()
-//    {
-//        bookingManager.clearAll();
-//
-//        final Intent intent = new Intent(getActivity(), BookingsActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//    }
 
     private final BookingOptionsView.OnUpdatedListener textUpdated
             = new BookingOptionsView.OnUpdatedListener()
