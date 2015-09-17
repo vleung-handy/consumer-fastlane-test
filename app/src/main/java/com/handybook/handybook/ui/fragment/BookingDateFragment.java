@@ -247,18 +247,6 @@ public final class BookingDateFragment extends BookingFlowFragment
             getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();
         }
-        //COLIN COLIN COLIN TODO: FIX THE BUNDLE KEYS FOR EXTRA RESCHEDULE DATE
-        else if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
-        {
-            final long date = data
-                    .getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
-
-            final Intent intent = new Intent();
-            intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
-
-            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
-            getActivity().finish();
-        }
     }
 
     @Override
