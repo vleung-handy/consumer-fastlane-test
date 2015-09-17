@@ -95,7 +95,6 @@ public abstract class DataManager
                                      Callback<List<Booking>> cb);
 
     public abstract void getBooking(String bookingId,
-                                    String authToken,
                                     Callback<Booking> cb);
 
     public abstract void getPreBookingPromo(String promoCode,

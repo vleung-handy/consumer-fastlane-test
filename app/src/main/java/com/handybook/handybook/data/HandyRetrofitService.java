@@ -62,7 +62,7 @@ public interface HandyRetrofitService
     void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
 
     @GET("/bookings/{id}")
-    void getBooking(@Path("id") String bookingId, @Query("auth_token") String authToken,
+    void getBooking(@Path("id") String bookingId,
                     HandyRetrofitCallback cb);
 
     @GET("/bookings/promo_prebooking")
@@ -82,15 +82,17 @@ public interface HandyRetrofitService
                             HandyRetrofitCallback cb);
 
 
-    @POST("/bookings/{booking}/description_update") //points to same endpoint as update entry info but that is because the endpoint currently does too much
+    @POST("/bookings/{booking}/description_update")
+        //points to same endpoint as update entry info but that is because the endpoint currently does too much
     void updateBookingNoteToPro(@Path("booking") int bookingId,
                                 @Body BookingUpdateNoteToProTransaction descriptionTransaction,
                                 HandyRetrofitCallback cb);
 
-    @POST("/bookings/{booking}/description_update") //points to same endpoint as update note to pro but that is because the endpoint currently does too much
+    @POST("/bookings/{booking}/description_update")
+        //points to same endpoint as update note to pro but that is because the endpoint currently does too much
     void updateBookingEntryInformation(@Path("booking") int bookingId,
-                                @Body BookingUpdateEntryInformationTransaction entryInformationTransaction,
-                                HandyRetrofitCallback cb);
+                                       @Body BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                       HandyRetrofitCallback cb);
 
 
     @GET("/bookings/prereschedule_info")

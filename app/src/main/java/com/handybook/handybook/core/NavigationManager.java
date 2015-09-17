@@ -328,7 +328,7 @@ public final class NavigationManager
     {
         User user = userManager.getCurrentUser();
         final Context intentContext = this.context;
-        dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
+        dataManager.getBooking(bookingId,
                 new DataManager.Callback<Booking>()
                 {
                     @Override

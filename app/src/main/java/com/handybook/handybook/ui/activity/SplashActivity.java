@@ -87,7 +87,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void openRescheduleActivity(final String bookingId) {
-        dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
+        dataManager.getBooking(bookingId,
                 new DataManager.Callback<Booking>() {
                     @Override
                     public void onSuccess(final Booking booking) {

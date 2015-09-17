@@ -134,7 +134,24 @@ public final class BookingManager implements Observer
         });
     }
 
+    @Subscribe
+    public void onRequestBookingDetails(HandyEvent.RequestBookingDetails event)
+    {
+        dataManager.getBooking(event.bookingId, new DataManager.Callback<Booking>()
+        {
+            @Override
+            public void onSuccess(final Booking result)
+            {
+                bus.post(new HandyEvent.ReceiveBookingDetailsSuccess(result));
+            }
 
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveBookingDetailsError(error));
+            }
+        });
+    }
 
 
 

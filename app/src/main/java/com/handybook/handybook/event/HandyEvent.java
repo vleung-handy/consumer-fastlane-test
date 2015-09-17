@@ -84,6 +84,23 @@ public abstract class HandyEvent
         public String bookingId;
     }
 
+    public static class ReceiveBookingDetailsSuccess extends ReceiveBookingSuccessEvent
+    {
+        public ReceiveBookingDetailsSuccess(Booking booking)
+        {
+            this.booking = booking;
+        }
+    }
+
+    public static class ReceiveBookingDetailsError extends ReceiveErrorEvent
+    {
+        public ReceiveBookingDetailsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+
+    }
+
 
     public static class RequestPreRescheduleInfo extends RequestEvent
     {

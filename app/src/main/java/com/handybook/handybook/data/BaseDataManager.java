@@ -351,9 +351,9 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void getBooking(final String bookingId, final String authToken, final Callback<Booking> cb)
+    public void getBooking(final String bookingId, final Callback<Booking> cb)
     {
-        service.getBooking(bookingId, authToken, new HandyRetrofitCallback(cb)
+        service.getBooking(bookingId, new HandyRetrofitCallback(cb)
         {
             @Override
             void success(final JSONObject response)
