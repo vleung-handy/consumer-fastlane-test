@@ -49,23 +49,23 @@ public class BlockingUpdateFragment extends InjectedFragment
     public void launchPlayStore(final Button submitButton)
     {
         final String appPackageName = getActivity().getPackageName();
+        Uri playUri;
         try
         {
+            playUri = Uri.parse(String.format(URL_FORMAT_MARKET, appPackageName));
             startActivity(
-                    new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(String.format(URL_FORMAT_MARKET, appPackageName))
-                    ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    new Intent(Intent.ACTION_VIEW, playUri)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             );
             //This will fail if user doesn't have play store app, hence the link to web below
         } catch (android.content.ActivityNotFoundException anfe)
         {
+            playUri = Uri.parse(String.format(URL_FORMAT_PLAY_WEB, appPackageName));
             startActivity(
-
-                    new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(String.format(URL_FORMAT_PLAY_WEB, appPackageName))
-                    ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    new Intent(Intent.ACTION_VIEW, playUri)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             );
         } finally
         {

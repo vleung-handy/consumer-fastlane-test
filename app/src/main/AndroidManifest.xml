@@ -111,6 +111,7 @@
         <activity
             android:name="com.urbanairship.google.PlayServicesErrorActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
 
         <service
             android:name="com.urbanairship.push.PushService"
