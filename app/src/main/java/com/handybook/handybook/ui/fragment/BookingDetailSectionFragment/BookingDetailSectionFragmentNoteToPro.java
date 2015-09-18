@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
@@ -37,11 +38,12 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
         final String proNote = booking.getProNote();
         if (proNote != null)
         {
+            view.entryText.setVisibility(View.VISIBLE);
             view.entryText.setText(proNote);
         }
         else
         {
-            view.entryText.setText("");
+            view.entryText.setVisibility(View.GONE);
         }
     }
 

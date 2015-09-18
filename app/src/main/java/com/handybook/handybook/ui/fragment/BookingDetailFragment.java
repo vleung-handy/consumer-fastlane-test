@@ -104,6 +104,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
         List<BookingDetailSectionFragment> sectionFragments = constructSectionFragments(this.booking);
 
+        //These are fragments nested inside this fragment, must use getChildFragmentManager instead of getFragmentManager
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         for (BookingDetailSectionFragment sectionFragment : sectionFragments)
@@ -242,6 +243,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         enableInputs();
         progressDialog.dismiss();
+
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
