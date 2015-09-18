@@ -132,4 +132,11 @@ public abstract class HandyEvent
         }
     }
 
+    @Track("consumer app blocking screen displayed")
+    public static class BlockingScreenDisplayed extends HandyEvent{
+    }
+
+    @Track("consumer app blocking screen button clicked")
+    public static class BlockingScreenButtonPressed extends HandyEvent{
+    }
 }
