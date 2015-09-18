@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,6 +40,8 @@ public final class BookingDetailView extends InjectedRelativeLayout
     TextView navText;
     @Bind(R.id.section_fragment_container)
     public LinearLayout sectionFragmentContainer;
+    @Bind(R.id.back_button)
+    public ImageButton backButton;
 
     public BookingDetailView(final Context context)
     {
@@ -85,8 +88,8 @@ public final class BookingDetailView extends InjectedRelativeLayout
         endDate.setTime(startDate);
         endDate.add(Calendar.MINUTE, minutes);
 
-        timeText.setText(TextUtils.formatDate(startDate, "h:mmaaa - ")
-                + TextUtils.formatDate(endDate.getTime(), "h:mmaaa (") + TextUtils.formatDecimal(hours, "#.#") + " "
+        timeText.setText(TextUtils.formatDate(startDate, "h:mm aaa - ")
+                + TextUtils.formatDate(endDate.getTime(), "h:mm aaa (") + TextUtils.formatDecimal(hours, "#.#") + " "
                 + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours)) + ")");
 
         dateText.setText(TextUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy"));

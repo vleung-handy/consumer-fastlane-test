@@ -125,6 +125,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
     private void setupClickListeners(Booking booking)
     {
+        bookingDetailView.backButton.setOnClickListener(backButtonClicked);
         if (!booking.isPast())
         {
           bookingDetailView.rescheduleButton.setOnClickListener(rescheduleClicked);
@@ -136,7 +137,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     protected void disableInputs()
     {
         super.disableInputs();
-
+        bookingDetailView.backButton.setClickable(false);
         bookingDetailView.rescheduleButton.setClickable(false);
         bookingDetailView.cancelButton.setClickable(false);
     }
@@ -145,7 +146,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     protected final void enableInputs()
     {
         super.enableInputs();
-
+        bookingDetailView.backButton.setClickable(true);
         bookingDetailView.rescheduleButton.setClickable(true);
         bookingDetailView.cancelButton.setClickable(true);
     }
@@ -193,6 +194,16 @@ public final class BookingDetailFragment extends BookingFlowFragment
             postBlockingEvent(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
         }
     };
+
+    private View.OnClickListener backButtonClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            getActivity().onBackPressed();
+        }
+    };
+
 
     @Subscribe
     public void onReceivePreRescheduleInfoSuccess(HandyEvent.ReceivePreRescheduleInfoSuccess event)

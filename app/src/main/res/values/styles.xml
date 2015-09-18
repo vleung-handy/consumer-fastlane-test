@@ -54,9 +54,17 @@
         <item name="android:textColor">@drawable/button_text_white</item>
     </style>
 
+    <style name="Button.Blue.Round">
+        <item name="android:background">@drawable/button_blue_round</item>
+    </style>
+
     <style name="Button.Grey">
         <item name="android:background">@drawable/button_grey</item>
         <item name="android:textColor">@drawable/button_text_white</item>
+    </style>
+
+    <style name="Button.Grey.Round">
+        <item name="android:background">@drawable/button_grey_round</item>
     </style>
 
     <style name="Button.Green">

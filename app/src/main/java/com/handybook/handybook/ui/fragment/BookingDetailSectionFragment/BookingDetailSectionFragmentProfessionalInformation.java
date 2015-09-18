@@ -1,7 +1,6 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
 import android.text.util.Linkify;
-import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
@@ -19,7 +18,7 @@ public class BookingDetailSectionFragmentProfessionalInformation extends Booking
     @Override
     protected int getEntryActionTextResourceId()
     {
-        return R.string.contact;
+        return R.string.request_pro;
     }
 
     @Override
@@ -45,18 +44,34 @@ public class BookingDetailSectionFragmentProfessionalInformation extends Booking
             //TODO WHAT IS THIS LINKIFY THING DOING, IS THIS REPLACED BY OUR ACTION TEXT LINKS?
             Linkify.addLinks(view.entryText, Linkify.PHONE_NUMBERS);
             TextUtils.stripUnderlines(view.entryText);
+
+
+            //deprecating the linkify and replacing them with explicit contact buttons
+
+
         }
         else
         {
-            view.setVisibility(View.GONE);
+            //if no pro has been assigned indicate
+            view.entryText.setText(R.string.pro_assignment_pending);
         }
+
+
+
+
+
     }
 
 
     @Override
     protected void onActionClick()
     {
-        //TODO: Contact pro? Check the booking for business logic about when can contact / edit
+        //If no pro assigned can request a pro
+
+        //If pro has been assigned can use special call and text buttons to contact the pro but can longer request a pro
+
+
+
     }
 
 

@@ -163,4 +163,6 @@
     <string name="updated_note_to_pro">Note to pro updated</string>
     <string name="updated_entry_information">Entry information updated</string>
     <string name="pro_entry_information">How will your professional get in?</string>
+    <string name="pro_assignment_pending">Professional assignment pending</string>
+
 </resources>
