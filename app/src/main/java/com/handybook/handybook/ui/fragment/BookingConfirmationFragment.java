@@ -14,12 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
+import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
+import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsTextView;
@@ -31,13 +36,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
+//TODO: Break this into distinct fragments, see BookingEditNoteToPro, BookingEditEntryInformation, still need to do the password prompt
 public final class BookingConfirmationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener
 {
     private static final int PAGE_ENTRY_INFORMATION = 0;
     private static final int PAGE_NOTE_TO_PRO = 1;
     private static final int PAGE_PASSWORD_PROMPT = 2;
-
 
     static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
     static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
@@ -322,6 +327,30 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    private void showBookingDetails(String bookingId) {
+        bookingManager.clearAll();
+        User user = userManager.getCurrentUser();
+        dataManager.getBooking(bookingId,
+                new DataManager.Callback<Booking>()
+                {
+                    @Override
+                    public void onSuccess(final Booking booking)
+                    {
+                        final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
+                        intent.putExtra(BundleKeys.BOOKING, booking);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                        startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
+                    }
+                });
     }
 
     private final BookingOptionsView.OnUpdatedListener textUpdated
