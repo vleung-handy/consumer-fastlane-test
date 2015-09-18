@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Passed in by API to denote if the applciation should be blocked or not
+ * Passed in by API to denote if the application should be blocked or not
  */
 public class ShouldBlockObject
 {
