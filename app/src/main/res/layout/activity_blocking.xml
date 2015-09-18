@@ -12,6 +12,6 @@
         android:name="com.handybook.handybook.ui.fragment.BlockingUpdateFragment"
         android:id="@+id/f_blocking"
         android:layout_gravity="center"
-        tools:layout="@layout/fragment_modal_blocking"
-        android:layout_margin="20dp"/>
+        tools:layout="@layout/fragment_blocking_update"
+        />
 </FrameLayout>

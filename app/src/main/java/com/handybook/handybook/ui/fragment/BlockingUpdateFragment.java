@@ -31,7 +31,7 @@ public class BlockingUpdateFragment extends InjectedFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        final View root = inflater.inflate(R.layout.fragment_modal_blocking, container, false);
+        final View root = inflater.inflate(R.layout.fragment_blocking_update, container, false);
         ButterKnife.bind(this, root);
         return root;
     }
