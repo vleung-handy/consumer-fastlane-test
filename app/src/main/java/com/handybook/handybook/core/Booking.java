@@ -34,7 +34,7 @@ public final class Booking implements Parcelable
     @SerializedName("recurring_string")
     private String recurringInfo;
     @SerializedName("getin")
-    private int entryType; //numeric, must keep synced against server, start using an auto deserialized enum
+    private int entryType; //numeric, must keep synced against server, start using an auto deserialized enum?
     @SerializedName("getin_string")
     private String entryInfo;   //string descriptor of the entry type
     @SerializedName("getintxt")
@@ -53,6 +53,10 @@ public final class Booking implements Parcelable
     private ArrayList<LineItem> paymentInfo;
     @SerializedName("extras_info")
     private ArrayList<ExtraInfo> extrasInfo;
+    @SerializedName("can_edit_hours")
+    private Boolean canEditHours;
+    @SerializedName("can_edit_frequency")
+    private Boolean canEditFrequency;
 
     public final String getId()
     {
@@ -274,6 +278,16 @@ public final class Booking implements Parcelable
     public int getEntryType()
     {
         return entryType;
+    }
+
+    public Boolean getCanEditHours()
+    {
+        return canEditHours;
+    }
+
+    public Boolean getCanEditFrequency()
+    {
+        return canEditFrequency;
     }
 
     public static final class Address implements Parcelable
@@ -631,6 +645,11 @@ public final class Booking implements Parcelable
         @SerializedName("in_progress")IN_PROGRESS,
         @SerializedName("out_for_delivery")OUT_FOR_DELIVERY,
         @SerializedName("delivered")DELIVERED,
-        @SerializedName("skipped")SKIPPED
+        @SerializedName("skipped")SKIPPED,
     }
+
+    public static final int ENTRY_TYPE_WILL_BE_HOME = 0;
+    public static final int ENTRY_TYPE_DOORMAN = 1;
+    public static final int ENTRY_TYPE_HIDE_THE_KEYS = 2;
+
 }

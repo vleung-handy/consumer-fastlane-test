@@ -9,7 +9,8 @@ public final class BookingOption implements Parcelable
 {
 
     //todo: auto serialized enums for type see : Booking.LaundryStatus
-
+    public final static String TYPE_OPTION = "option";
+    public final static String TYPE_TEXT = "text";
 
 
     @SerializedName("uniq") private String uniq;

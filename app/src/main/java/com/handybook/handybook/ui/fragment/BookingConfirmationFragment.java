@@ -112,7 +112,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             headerText.setText(spanText, TextView.BufferType.SPANNABLE);
 
             final BookingOption option = new BookingOption();
-            option.setType("option");
+            option.setType(BookingOption.TYPE_OPTION);
             option.setDefaultValue("0");
 
             option.setOptions(new String[]{getString(R.string.will_be_home),
@@ -134,7 +134,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             }
 
             final BookingOption option = new BookingOption();
-            option.setType("text");
+            option.setType(BookingOption.TYPE_TEXT);
             option.setDefaultValue(getString(R.string.additional_pro_info));
 
             optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);

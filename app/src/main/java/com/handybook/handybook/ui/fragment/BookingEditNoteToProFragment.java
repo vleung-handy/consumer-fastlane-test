@@ -64,25 +64,28 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
                                    final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_confirmation, container, false);   //TODO: Make this its own fragment
+                .inflate(R.layout.fragment_booking_confirmation, container, false);   //TODO: Make this its own fragment?
 
         ButterKnife.bind(this, view);
 
         headerText.setText(getString(R.string.pro_to_know));
 
-        final BookingOption option = new BookingOption();
-        option.setType("text"); //todo : magic string
-        option.setDefaultValue(getString(R.string.additional_pro_info));
+        initOptionsView();
 
-        BookingOptionsView optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
-
-        ((BookingOptionsTextView) optionsView).setValue(descriptionTransaction.getMessageToPro());
-
-        optionsLayout.addView(optionsView, 0);
-
+        nextButton.setText(R.string.update);
         nextButton.setOnClickListener(nextClicked);
 
         return view;
+    }
+
+    private void initOptionsView()
+    {
+        final BookingOption option = new BookingOption();
+        option.setType(BookingOption.TYPE_TEXT);
+        option.setDefaultValue(getString(R.string.additional_pro_info));
+        BookingOptionsView optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
+        ((BookingOptionsTextView) optionsView).setValue(descriptionTransaction.getMessageToPro());
+        optionsLayout.addView(optionsView, 0);
     }
 
     @Override

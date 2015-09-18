@@ -66,7 +66,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         ButterKnife.bind(this, view);
 
         final BookingOption options = new BookingOption();
-        options.setType("option");
+        options.setType(BookingOption.TYPE_OPTION);
         options.setOptions(new String[]{getString(R.string.no), getString(R.string.yes)});
         options.setDefaultValue(Integer.toString(optionIndex));
 

@@ -72,7 +72,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
         ButterKnife.bind(this, view);
 
         final BookingOption options = new BookingOption();
-        options.setType("option");
+        options.setType(BookingOption.TYPE_OPTION);
         options.setOptions(optionsList.toArray(new String[optionsList.size()]));
         options.setDefaultValue(Integer.toString(optionIndex));
 

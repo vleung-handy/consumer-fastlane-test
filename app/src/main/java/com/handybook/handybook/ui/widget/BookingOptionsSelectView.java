@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.util.Utils;
@@ -169,8 +170,9 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
     public final void setCurrentIndex(final int index)
     {
-        if (index < 0)
+        if (index < 0 || !checkMap.containsKey(index))
         {
+            Crashlytics.log("BookingOptionsSelectView::setCurrentIndex invalid index : " + index);
             return;
         }
 
