@@ -245,9 +245,6 @@ public final class BookingDetailFragment extends BookingFlowFragment
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-
-
-
     @Subscribe
     public void onReceiveBookingDetailsSuccess(HandyEvent.ReceiveBookingDetailsSuccess event)
     {
