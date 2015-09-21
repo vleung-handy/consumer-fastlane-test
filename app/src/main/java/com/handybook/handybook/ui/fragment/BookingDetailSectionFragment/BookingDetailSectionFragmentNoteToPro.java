@@ -14,13 +14,13 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
 {
 
     @Override
-    protected int getEntryTitleTextResourceId()
+    protected int getEntryTitleTextResourceId(Booking booking)
     {
         return R.string.pro_note;
     }
 
     @Override
-    protected int getEntryActionTextResourceId()
+    protected int getEntryActionTextResourceId(Booking booking)
     {
         return R.string.edit;
     }

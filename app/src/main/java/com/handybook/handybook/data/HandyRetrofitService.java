@@ -165,6 +165,20 @@ public interface HandyRetrofitService
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
 
+    //Request a list of requestable pros for this booking. Example response : {requestable_jobs: [{:name=>"Jason Jones", :id=>2462}, {:name=>"FakeJake Eubank", :id=>2746}]}
+    @GET("/bookings/{booking}/request_pro_info")
+    void getRequestProInfo(@Path("booking") int bookingId,
+                           HandyRetrofitCallback cb);
+
+    //Request a specific pro for a specific booking.
+    @POST("/bookings/{booking}/request_pro")
+    void requestProForBooking(@Path("booking") int bookingId,
+                           @Query("requested_pro") int requestedProId,
+                           @Query("fail_on_conflict") boolean failOnConflict,
+                           HandyRetrofitCallback cb);
+
+    //Help Center Self Service Center
+
     @GET("/self_service/node_details")
     void getHelpInfo(@Query("id") String nodeId,
                      @Query("auth_token") String authToken,

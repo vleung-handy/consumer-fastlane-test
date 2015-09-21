@@ -8,13 +8,13 @@ import com.handybook.handybook.util.TextUtils;
 public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFragment
 {
     @Override
-    protected int getEntryTitleTextResourceId()
+    protected int getEntryTitleTextResourceId(Booking booking)
     {
         return R.string.address;
     }
 
     @Override
-    protected int getEntryActionTextResourceId()
+    protected int getEntryActionTextResourceId(Booking booking)
     {
         return R.string.edit;
     }

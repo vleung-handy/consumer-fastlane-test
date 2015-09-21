@@ -85,6 +85,11 @@ public final class Booking implements Parcelable
         }
     }
 
+    public final boolean hasAssignedProvider()
+    {
+        return(provider != null && provider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED);
+    }
+
     public final boolean isRecurring()
     {
         return recurringId != null && !recurringId.isEmpty();
@@ -439,6 +444,11 @@ public final class Booking implements Parcelable
         final void setPhone(final String phone)
         {
             this.phone = phone;
+        }
+
+        public final String getFullName()
+        {
+            return ((firstName != null ? firstName : "") + " " +  (lastName != null ? lastName : ""));
         }
 
         private Provider(final Parcel in)

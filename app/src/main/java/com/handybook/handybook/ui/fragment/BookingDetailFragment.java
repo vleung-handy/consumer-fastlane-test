@@ -23,7 +23,7 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
-import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessionalInformation;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.ui.view.BookingDetailView;
 import com.squareup.otto.Subscribe;
 
@@ -88,7 +88,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     protected List<BookingDetailSectionFragment> constructSectionFragments(Booking booking)
     {
         return Lists.newArrayList(
-                new BookingDetailSectionFragmentProfessionalInformation(),
+                new BookingDetailSectionFragmentProInformation(),
                 new BookingDetailSectionFragmentLaundry(),
                 new BookingDetailSectionFragmentEntryInformation(),
                 new BookingDetailSectionFragmentNoteToPro(),

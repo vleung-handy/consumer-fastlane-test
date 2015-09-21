@@ -7,8 +7,10 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
+import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
@@ -181,6 +183,13 @@ public abstract class DataManager
 
     public abstract void requestPasswordReset(String email,
                                               Callback<String> cb);
+
+    public abstract void getRequestProInfo(int bookingId,
+                                              Callback<BookingRequestablePros> cb);
+
+    public abstract void requestProForBooking(int bookingId,
+                                              int requestedProId,
+                                                Callback<BookingProRequestResponse> cb);
 
     public abstract void getHelpInfo(String nodeId,
                                      String authToken,

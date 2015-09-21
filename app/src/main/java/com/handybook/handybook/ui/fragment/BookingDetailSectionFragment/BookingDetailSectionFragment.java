@@ -27,8 +27,8 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         return R.layout.fragment_booking_detail_section;
     }
 
-    protected abstract int getEntryTitleTextResourceId();
-    protected abstract int getEntryActionTextResourceId();
+    protected abstract int getEntryTitleTextResourceId(Booking booking);
+    protected abstract int getEntryActionTextResourceId(Booking booking);
     protected abstract boolean hasEnabledAction();
 
     @Override
@@ -56,8 +56,8 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
     protected void updateDisplay(Booking booking, User user)
     {
-        view.entryTitle.setText(getEntryTitleTextResourceId());
-        view.entryActionText.setText(getEntryActionTextResourceId());
+        view.entryTitle.setText(getEntryTitleTextResourceId(booking));
+        view.entryActionText.setText(getEntryActionTextResourceId(booking));
         if(!hasEnabledAction())
         {
             view.entryActionText.setVisibility(View.GONE);

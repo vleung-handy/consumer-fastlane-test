@@ -7,6 +7,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOptionsWrapper;
+import com.handybook.handybook.core.BookingProRequestResponse;
+import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.HelpNodeWrapper;
 
 import org.json.JSONObject;
@@ -72,6 +74,25 @@ class HelpNodeWrapperResponseHandyRetroFitCallback extends TypedHandyRetrofitCal
         super(callback);
     }
 }
+
+
+
+class BookingRequestableProsResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingRequestablePros>
+{
+    BookingRequestableProsResponseHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+class BookingProRequestResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingProRequestResponse>
+{
+    BookingProRequestResponseHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
 
 class EmptyHandyRetroFitCallback extends TypedHandyRetrofitCallback<Void>
 {

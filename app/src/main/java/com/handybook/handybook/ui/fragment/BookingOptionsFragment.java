@@ -26,7 +26,7 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingOptionsFragment extends BookingFlowFragment
+public class BookingOptionsFragment extends BookingFlowFragment
 {
     static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
@@ -36,22 +36,22 @@ public final class BookingOptionsFragment extends BookingFlowFragment
     static final String STATE_CHILD_DISPLAY_MAP = "STATE_CHILD_DISPLAY_MAP";
     static final String STATE_OPTION_INDEX_MAP = "STATE_OPTION_INDEX_MAP";
 
-    private ArrayList<BookingOption> options;
-    private ArrayList<BookingOption> postOptions;
-    private HashMap<String, Boolean> childDisplayMap;
-    private HashMap<String, Integer> optionIndexMap;
-    private HashMap<String, BookingOptionsView> optionsViewMap;
-    private int page;
-    private boolean isPost;
+    protected ArrayList<BookingOption> options;
+    protected ArrayList<BookingOption> postOptions;
+    protected HashMap<String, Boolean> childDisplayMap;
+    protected HashMap<String, Integer> optionIndexMap;
+    protected HashMap<String, BookingOptionsView> optionsViewMap;
+    protected int page;
+    protected boolean isPost;
 
     @Bind(R.id.options_layout)
-    LinearLayout optionsLayout;
+    protected LinearLayout optionsLayout;
     @Bind(R.id.nav_text)
-    TextView navText;
+    protected TextView navText;
     @Bind(R.id.header_text)
-    TextView headerText;
+    protected TextView headerText;
     @Bind(R.id.next_button)
-    Button nextButton;
+    protected Button nextButton;
 
     public static BookingOptionsFragment newInstance(final ArrayList<BookingOption> options,
                                                      final int page,
@@ -145,7 +145,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment
         nextButton.setClickable(true);
     }
 
-    private void displayOptions()
+    protected void displayOptions()
     {
         optionsViewMap = new HashMap<>();
         optionsLayout.removeAllViews();
@@ -337,7 +337,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment
         }
     }
 
-    private void handleChildViews(final String[] items, final boolean show)
+    protected void handleChildViews(final String[] items, final boolean show)
     {
         for (final String item : items)
         {
@@ -357,7 +357,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment
         }
     }
 
-    private void handleOptionUpdate(final BookingOptionsView view,
+    protected void handleOptionUpdate(final BookingOptionsView view,
                                     final BookingOption option)
     {
         final HashMap<String, String> requestOptions
@@ -380,7 +380,7 @@ public final class BookingOptionsFragment extends BookingFlowFragment
         bookingManager.getCurrentRequest().setOptions(requestOptions);
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
+    protected final View.OnClickListener nextClicked = new View.OnClickListener()
     {
         @Override
         public void onClick(final View v)

@@ -58,7 +58,7 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
-import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProfessionalInformation;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
@@ -131,7 +131,7 @@ import retrofit.converter.GsonConverter;
         BookingDetailSectionFragmentLaundry.class,
         BookingDetailSectionFragmentNoteToPro.class,
         BookingDetailSectionFragmentPayment.class,
-        BookingDetailSectionFragmentProfessionalInformation.class,
+        BookingDetailSectionFragmentProInformation.class,
         BookingEditNoteToProActivity.class,
         BookingEditNoteToProFragment.class,
         BookingEditEntryInformationActivity.class,

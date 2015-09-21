@@ -11,8 +11,10 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
+import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
@@ -661,6 +663,23 @@ public final class BaseDataManager extends DataManager
             }
         });
     }
+
+
+    @Override
+    public final void getRequestProInfo(int bookingId,
+                                           Callback<BookingRequestablePros> cb)
+    {
+        service.getRequestProInfo(bookingId, new BookingRequestableProsResponseHandyRetroFitCallback(cb));
+    }
+
+    @Override
+    public final void requestProForBooking(int bookingId,
+                                              int requestedProId,
+                                              Callback<BookingProRequestResponse> cb)
+    {
+        service.requestProForBooking(bookingId, requestedProId, true, new BookingProRequestResponseHandyRetroFitCallback(cb));
+    }
+
 
     @Override
     public final void getHelpInfo(final String nodeId, final String authToken, final String bookingId, final Callback<HelpNodeWrapper> cb)

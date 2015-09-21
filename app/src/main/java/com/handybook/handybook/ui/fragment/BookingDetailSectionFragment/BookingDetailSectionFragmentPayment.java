@@ -13,13 +13,13 @@ public class BookingDetailSectionFragmentPayment extends BookingDetailSectionFra
     protected BookingDetailSectionPaymentView view;
 
     @Override
-    protected int getEntryTitleTextResourceId()
+    protected int getEntryTitleTextResourceId(Booking booking)
     {
         return R.string.payment;
     }
 
     @Override
-    protected int getEntryActionTextResourceId()
+    protected int getEntryActionTextResourceId(Booking booking)
     {
         return R.string.email_receipt;
     }

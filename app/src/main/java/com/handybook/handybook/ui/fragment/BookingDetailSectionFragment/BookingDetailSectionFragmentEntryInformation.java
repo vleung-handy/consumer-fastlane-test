@@ -14,13 +14,13 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
 {
 
     @Override
-    protected int getEntryTitleTextResourceId()
+    protected int getEntryTitleTextResourceId(Booking booking)
     {
         return R.string.entry_info;
     }
 
     @Override
-    protected int getEntryActionTextResourceId()
+    protected int getEntryActionTextResourceId(Booking booking)
     {
         return R.string.edit;
     }

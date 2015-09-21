@@ -10,13 +10,13 @@ public class BookingDetailSectionFragmentLaundry extends BookingDetailSectionFra
 {
 
     @Override
-    protected int getEntryTitleTextResourceId()
+    protected int getEntryTitleTextResourceId(Booking booking)
     {
         return R.string.laundry;
     }
 
     @Override
-    protected int getEntryActionTextResourceId()
+    protected int getEntryActionTextResourceId(Booking booking)
     {
         return R.string.set_dropoff;
     }
