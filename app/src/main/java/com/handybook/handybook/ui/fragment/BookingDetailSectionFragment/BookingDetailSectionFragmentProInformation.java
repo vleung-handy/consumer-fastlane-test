@@ -4,6 +4,9 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 
+
+//TODO: Request a pro feature requires breaking down the BookingOptionsFragment into a usable fragment, request a pro disabled until that time
+
 public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
 {
     @Override
@@ -34,7 +37,8 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         }
         else
         {
-            return true;
+            //TODO: Request a pro functionality
+            return false;
         }
     }
 
@@ -61,20 +65,10 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     protected void onActionClick()
     {
         //If no pro assigned can request a pro
-        if (booking.hasAssignedProvider())
+        if (!booking.hasAssignedProvider())
         {
-            //how will we handle the call / phone action buttons....  , are they going to be in here?
-        }
-        else
-        {
-
-
-
+            //TODO: Request a pro functionality
             //need a new UI where we request the requestable pros, then display them, then get the result back
-
-//            final Intent intent = new Intent(getActivity(), BookingEditNoteToProActivity.class);
-//            intent.putExtra(BundleKeys.BOOKING, this.booking);
-//            getParentFragment().startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
         }
     }
 

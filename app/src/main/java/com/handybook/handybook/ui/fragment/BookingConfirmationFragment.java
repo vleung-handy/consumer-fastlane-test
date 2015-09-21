@@ -36,6 +36,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
+
+//THIS CLASS HAS BEEN BROKEN UP INTO SUB FRAGMENT TYPES BUT WE ARE STILL USING THE ORIGINAL FRAGMENT IN THE BOOKING FLOW, SEE NOTE
 //TODO: Break this into distinct fragments, see BookingEditNoteToPro, BookingEditEntryInformation, still need to do the password prompt
 public final class BookingConfirmationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener
@@ -262,6 +264,9 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             {
                 return;
             }
+
+
+            //TODO: Finish breaking up booking confirmation fragment/activity and then call the specific fragment instead of passing along an EXTRA_PAGE
 
             if (page == PAGE_ENTRY_INFORMATION)
             {
