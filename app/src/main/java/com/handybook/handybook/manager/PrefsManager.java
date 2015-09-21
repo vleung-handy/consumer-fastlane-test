@@ -17,6 +17,12 @@ public class PrefsManager
         this.prefs = prefs;
     }
 
+    // String
+    public void setString(PrefsKey prefsKey, String value)
+    {
+        prefs.put(prefsKey.getKey(), value);
+    }
+
     public String getString(PrefsKey prefsKey)
     {
         return getString(prefsKey, "");
@@ -24,25 +30,66 @@ public class PrefsManager
 
     public String getString(PrefsKey prefsKey, String defaultValue)
     {
+        if (!prefs.containsKey(prefsKey.getKey()))
+        {
+            return defaultValue;
+        }
         return prefs.getString(prefsKey.getKey());
-        //return(prefs.getString(prefsKey.getKey(), defaultValue));
     }
 
+    // boolean
     public boolean getBoolean(PrefsKey prefsKey, boolean defaultValue)
     {
-      return Boolean.valueOf(prefs.getString(prefsKey.getKey()));
-      //return(prefs.getBoolean(prefsKey.getKey(), defaultValue));
+        if (!prefs.containsKey(prefsKey.getKey()))
+        {
+            return defaultValue;
+        }
+        return Boolean.valueOf(prefs.getString(prefsKey.getKey()));
     }
 
     public void setBoolean(PrefsKey prefsKey, boolean value)
     {
         prefs.put(prefsKey.getKey(), Boolean.toString(value));
-        //prefs.edit().putBoolean(prefsKey.getKey(), value).apply();
     }
 
-    public void setString(PrefsKey prefsKey, String value)
+    // int
+    public void setInt(final PrefsKey prefsKey, final int intValue)
     {
-        prefs.put(prefsKey.getKey(), value);
-        //prefs.edit().putString(prefsKey.getKey(), value).apply();
+        prefs.put(prefsKey.getKey(), Integer.toString(intValue));
+    }
+
+    public int getInt(final PrefsKey prefsKey, int defaultValue)
+    {
+        if (!prefs.containsKey(prefsKey.getKey()))
+        {
+            return defaultValue;
+        }
+        return getInt(prefsKey);
+    }
+
+    public int getInt(final PrefsKey prefsKey)
+    {
+        return Integer.valueOf(prefs.getString(prefsKey.getKey()));
+    }
+
+
+    // long
+    public void setLong(final PrefsKey prefsKey, final long longValue)
+    {
+        prefs.put(prefsKey.getKey(), Long.toString(longValue));
+    }
+
+    public long getLong(PrefsKey prefsKey, long defaultValue)
+    {
+        if (!prefs.containsKey(prefsKey.getKey()))
+        {
+            return defaultValue;
+        }
+        return getLong(prefsKey);
+    }
+
+    public long getLong(PrefsKey prefsKey)
+    {
+        return Long.valueOf(prefs.getString(prefsKey.getKey()));
     }
 }
