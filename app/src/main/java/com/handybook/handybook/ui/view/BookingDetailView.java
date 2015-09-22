@@ -4,19 +4,17 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.ui.widget.ServiceIconImageView;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 
@@ -33,7 +31,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
     @Bind(R.id.action_buttons_layout)
     public LinearLayout actionButtonsLayout;
     @Bind(R.id.service_icon)
-    ImageView serviceIcon;
+    ServiceIconImageView serviceIcon;
 
     //TODO: Dynamically generated action buttons a la Portal allowed_actions
 //    @Bind(R.id.reschedule_button)
@@ -74,7 +72,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
 
         updateFrequencySectionDisplay(booking);
 
-        updateServiceIcon(booking);
+        serviceIcon.updateServiceIconByBooking(booking);
 
         if (booking.isPast())
         {
@@ -116,44 +114,4 @@ public final class BookingDetailView extends InjectedRelativeLayout
             freqText.setText(booking.getRecurringInfo());
         }
     }
-
-    private void updateServiceIcon(Booking booking)
-    {
-        Integer iconResourceId = getIconForService(booking.getServiceMachineName());
-        serviceIcon.setImageResource(iconResourceId);
-    }
-
-    //Service icon at top of page
-    private static final Map<String, Integer> SERVICE_ICONS;
-    static
-    {
-        SERVICE_ICONS = new HashMap<>();
-        //Cleaning
-        SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_clean_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_clean_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_OFFICE_CLEANING, R.drawable.ic_clean_fill);
-        //Handyman
-        SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handy_fill); //there are many handyman services, not sure how they all map
-        SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_paint_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_plumber_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_ELECTRICAL, R.drawable.ic_elec_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_elec_fill);
-    }
-
-    private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_clean_fill;
-
-    private Integer getIconForService(String serviceMachineName)
-    {
-        Integer iconResourceId = DEFAULT_SERVICE_ICON_RESOURCE_ID;
-        if(serviceMachineName != null && !serviceMachineName.isEmpty())
-        {
-            if (SERVICE_ICONS.containsKey(serviceMachineName))
-            {
-                return SERVICE_ICONS.get(serviceMachineName);
-            }
-        }
-        return iconResourceId;
-    }
-
-
 }
