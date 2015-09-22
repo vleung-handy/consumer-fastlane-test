@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.TouchDelegate;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.BookingActionButtonType;
 
 import java.util.Date;
@@ -87,6 +88,7 @@ public final class Utils {
                 return bat;
             }
         }
+        Crashlytics.log("Invalid booking action button type : " + actionType);
         return null;
     }
 }

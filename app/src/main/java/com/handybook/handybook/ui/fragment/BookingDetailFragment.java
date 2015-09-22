@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BookingAction;
+import com.handybook.handybook.constant.BookingActionButtonType;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
@@ -308,14 +310,20 @@ public final class BookingDetailFragment extends BookingFlowFragment
 
         List<String> actionButtonTypes = getActionButtonTypeList(booking);
 
-        LinearLayout buttonsContainer = bookingDetailView.actionButtonsLayout;
-
         for(String actionButtonType : actionButtonTypes)
         {
-            int newChildIndex = buttonsContainer.getChildCount(); //new index is equal to the old count since the new count is +1
-            BookingActionButton bookingActionButton = (BookingActionButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(Utils.getBookingActionButtonType(actionButtonType).getLayoutTemplateId(), buttonsContainer)).getChildAt(newChildIndex);
-            View.OnClickListener onClickListener = getOnClickListenerForAction(actionButtonType);
-            bookingActionButton.init(actionButtonType, onClickListener);
+            BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(actionButtonType);
+            if(bookingActionButtonType != null)
+            {
+                ViewGroup buttonParentLayout = getParentLayoutForButtonActionType(bookingActionButtonType);
+                if(buttonParentLayout != null)
+                {
+                    int newChildIndex = buttonParentLayout.getChildCount(); //new index is equal to the old count since the new count is +1
+                    BookingActionButton bookingActionButton = (BookingActionButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(bookingActionButtonType.getLayoutTemplateId(), buttonParentLayout)).getChildAt(newChildIndex);
+                    View.OnClickListener onClickListener = getOnClickListenerForAction(actionButtonType);
+                    bookingActionButton.init(actionButtonType, onClickListener);
+                }
+            }
         }
     }
 
@@ -403,6 +411,33 @@ public final class BookingDetailFragment extends BookingFlowFragment
         }
     };
 
+
+    //Mapping for ButtonActionType to Parent Layout, used when adding Action Buttons dynamically
+    private ViewGroup getParentLayoutForButtonActionType(BookingActionButtonType buttonActionType)
+    {
+        if(buttonActionType == null)
+        {
+            return null;
+        }
+
+        switch (buttonActionType)
+        {
+            case RESCHEDULE:
+            case CANCEL:
+            {
+                return bookingDetailView.actionButtonsLayout;
+            }
+
+            case CONTACT_PHONE: return null; //(ViewGroup) contactLayout.findViewById(R.id.booking_details_contact_action_button_layout_slot_1);
+            case CONTACT_TEXT: return null; //(ViewGroup) contactLayout.findViewById(R.id.booking_details_contact_action_button_layout_slot_2);
+
+            default:
+            {
+                Crashlytics.log("Could not find parent layout for button action type : " + buttonActionType.toString());
+                return null;
+            }
+        }
+    }
 
 
 
