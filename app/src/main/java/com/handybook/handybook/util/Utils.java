@@ -8,6 +8,8 @@ import android.util.TypedValue;
 import android.view.TouchDelegate;
 import android.view.View;
 
+import com.handybook.handybook.constant.BookingActionButtonType;
+
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -74,5 +76,17 @@ public final class Utils {
             Map.Entry pair = (Map.Entry) it.next();
             System.out.println(pair.getKey() + " = " + pair.getValue());
         }
+    }
+
+    public static BookingActionButtonType getBookingActionButtonType(String actionType)
+    {
+        for (BookingActionButtonType bat : BookingActionButtonType.values())
+        {
+            if (actionType.equals(bat.getActionName()))
+            {
+                return bat;
+            }
+        }
+        return null;
     }
 }

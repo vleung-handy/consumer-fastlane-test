@@ -7,10 +7,12 @@ import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BookingAction;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
@@ -25,6 +27,8 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.ui.view.BookingDetailView;
+import com.handybook.handybook.ui.widget.BookingActionButton;
+import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -128,8 +132,8 @@ public final class BookingDetailFragment extends BookingFlowFragment
         bookingDetailView.backButton.setOnClickListener(backButtonClicked);
         if (!booking.isPast())
         {
-          bookingDetailView.rescheduleButton.setOnClickListener(rescheduleClicked);
-          bookingDetailView.cancelButton.setOnClickListener(cancelClicked);
+          //bookingDetailView.rescheduleButton.setOnClickListener(rescheduleClicked);
+          //bookingDetailView.cancelButton.setOnClickListener(cancelClicked);
         }
     }
 
@@ -138,8 +142,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         super.disableInputs();
         bookingDetailView.backButton.setClickable(false);
-        bookingDetailView.rescheduleButton.setClickable(false);
-        bookingDetailView.cancelButton.setClickable(false);
+        setActionButtonsEnabled(false);
     }
 
     @Override
@@ -147,8 +150,19 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         super.enableInputs();
         bookingDetailView.backButton.setClickable(true);
-        bookingDetailView.rescheduleButton.setClickable(true);
-        bookingDetailView.cancelButton.setClickable(true);
+        setActionButtonsEnabled(true);
+    }
+
+    private void setActionButtonsEnabled(boolean enabled)
+    {
+        for(int i = 0; i < bookingDetailView.actionButtonsLayout.getChildCount(); i++)
+        {
+            BookingActionButton actionButton = (BookingActionButton) bookingDetailView.actionButtonsLayout.getChildAt(i);
+            if(actionButton != null)
+            {
+                actionButton.setEnabled(enabled);
+            }
+        }
     }
 
     @Override
@@ -186,14 +200,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
         outState.putBoolean(STATE_UPDATED_BOOKING, updatedBooking);
     }
 
-    private View.OnClickListener rescheduleClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View v)
-        {
-            postBlockingEvent(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
-        }
-    };
+
 
     private View.OnClickListener backButtonClicked = new View.OnClickListener()
     {
@@ -225,14 +232,7 @@ public final class BookingDetailFragment extends BookingFlowFragment
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private View.OnClickListener cancelClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View v)
-        {
-            postBlockingEvent(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
-        }
-    };
+
 
     @Subscribe
     public void onReceivePreCancelationInfoSuccess(HandyEvent.ReceivePreCancelationInfoSuccess event)
@@ -299,6 +299,111 @@ public final class BookingDetailFragment extends BookingFlowFragment
         bookingDetailView.updateDisplay(booking, userManager.getCurrentUser());
         setupClickListeners(booking);
         addSectionFragments();
+        setupBookingActionButtons(booking);
     }
+
+    private void setupBookingActionButtons(Booking booking)
+    {
+        clearBookingActionButtons();
+
+        List<String> actionButtonTypes = getActionButtonTypeList(booking);
+
+        LinearLayout buttonsContainer = bookingDetailView.actionButtonsLayout;
+
+        for(String actionButtonType : actionButtonTypes)
+        {
+            int newChildIndex = buttonsContainer.getChildCount(); //new index is equal to the old count since the new count is +1
+            BookingActionButton bookingActionButton = (BookingActionButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(Utils.getBookingActionButtonType(actionButtonType).getLayoutTemplateId(), buttonsContainer)).getChildAt(newChildIndex);
+            View.OnClickListener onClickListener = getOnClickListenerForAction(actionButtonType);
+            bookingActionButton.init(actionButtonType, onClickListener);
+        }
+    }
+
+    private void clearBookingActionButtons()
+    {
+        LinearLayout buttonsContainer = bookingDetailView.actionButtonsLayout;
+        buttonsContainer.removeAllViews();
+    }
+
+    //List of action button types in display order
+    private List<String> getActionButtonTypeList(Booking booking)
+    {
+        List<String> actionButtonTypes = new ArrayList<>();
+
+        //TODO: Get this from server like we do for portal
+
+        //TODO: Is there an additional time restriction on when these actions can be taken?
+
+        if(!booking.isPast())
+        {
+            actionButtonTypes.add(BookingAction.ACTION_RESCHEDULE);
+            actionButtonTypes.add(BookingAction.ACTION_CANCEL);
+        }
+
+        //TODO: Is there a time restriction on when these actions can be taken?
+
+        //these buttons need to go in a different container
+
+//        if(booking.hasAssignedProvider())
+//        {
+//            actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
+//            actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
+//        }
+
+        return actionButtonTypes;
+    }
+
+    private View.OnClickListener getOnClickListenerForAction(String actionButtonType)
+    {
+        switch(actionButtonType)
+        {
+            case BookingAction.ACTION_CANCEL: return cancelClicked;
+            case BookingAction.ACTION_RESCHEDULE: return rescheduleClicked;
+            case BookingAction.ACTION_CONTACT_TEXT: return contactTextClicked;
+            case BookingAction.ACTION_CONTACT_PHONE: return contactPhoneClicked;
+        }
+        return null;
+    }
+
+    private View.OnClickListener cancelClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            postBlockingEvent(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
+        }
+    };
+
+    private View.OnClickListener rescheduleClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            postBlockingEvent(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
+        }
+    };
+
+    private View.OnClickListener contactTextClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            //TODO: Text message to provider if possible
+           // postBlockingEvent(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
+        }
+    };
+
+    private View.OnClickListener contactPhoneClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            //TODO: Call provider phone if possible
+            //postBlockingEvent(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
+        }
+    };
+
+
+
 
 }

@@ -378,7 +378,7 @@ public final class BookingsFragment extends InjectedFragment
     private void configureCell(final View cell, final Booking booking)
     {
         final TextView serviceText = (TextView) cell.findViewById(R.id.service);
-        serviceText.setText(booking.getService());
+        serviceText.setText(booking.getServiceName());
 
         final TextView dateText = (TextView) cell.findViewById(R.id.date);
         dateText.setText(TextUtils.formatDate(booking.getStartDate(), "EEEE',' MMMM d"));

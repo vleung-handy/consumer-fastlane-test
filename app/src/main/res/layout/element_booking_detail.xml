@@ -15,8 +15,8 @@
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_chevron"
             android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_chevron"
             />
 
         <TextView
@@ -24,11 +24,11 @@
             style="@style/TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/back_button"
             android:gravity="center"
             android:singleLine="true"
-            android:textSize="18sp"
             android:text="Service Name"
-            android:layout_toRightOf="@id/back_button"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -36,13 +36,13 @@
             style="@style/TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/nav_text"
+            android:layout_toRightOf="@id/back_button"
             android:gravity="center"
             android:singleLine="true"
+            android:text="#1000"
             android:textColor="@color/black_pressed"
             android:textSize="12sp"
-            android:text="#1000"
-            android:layout_toRightOf="@id/back_button"
-            android:layout_below="@id/nav_text"
             />
 
     </RelativeLayout>
@@ -72,12 +72,12 @@
                     android:id="@+id/date_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/service_icon"
+                    android:background="@color/white"
                     android:paddingBottom="20dp"
                     android:paddingLeft="@dimen/default_padding"
                     android:paddingRight="@dimen/default_padding"
                     android:paddingTop="40dp"
-                    android:layout_below="@id/service_icon"
-                    android:background="@color/white"
                     >
 
                     <TextView
@@ -85,8 +85,8 @@
                         style="@style/TextView.XLarge.Bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="3dp"
                         android:text="Long Date Goes Here"
                         android:textSize="24sp"
                         />
@@ -106,8 +106,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/time_text"
-                        android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -131,16 +131,15 @@
                 </RelativeLayout>
 
 
-
             </FrameLayout>
 
             <ImageView
                 android:id="@+id/service_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_clean_fill"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_clean_fill"/>
 
             <LinearLayout
                 android:id="@+id/section_fragment_container"
@@ -164,26 +163,32 @@
                 android:layout_height="0dp"
                 android:layout_below="@id/end_sep"/>
 
-            <RelativeLayout
-                android:id="@+id/options_layout"
+            <LinearLayout
+                android:id="@+id/action_buttons_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/end_view"
                 android:background="@color/handy_bg"
                 android:paddingBottom="16dp"
-                android:paddingTop="15dp">
+                android:paddingTop="15dp"
+                android:orientation="vertical"
+                >
+
+
+                <!--empty view needed for bottom layout margin bug on older APIs
 
                 <Button
                     android:id="@+id/reschedule_button"
-                    style="@style/Button.Blue.Round"
+                    style="@style/Button.BookingAction.Teal"
                     android:layout_alignParentBottom="false"
                     android:layout_marginLeft="@dimen/default_margin"
                     android:layout_marginRight="@dimen/default_margin"
-                    android:text="@string/reschedule"/>
+                    android:text="@string/reschedule"
+                    />
 
                 <Button
                     android:id="@+id/cancel_button"
-                    style="@style/Button.Grey.Round"
+                    style="@style/Button.BookingAction.Grey"
                     android:layout_alignParentBottom="false"
                     android:layout_below="@id/reschedule_button"
                     android:layout_marginLeft="@dimen/default_margin"
@@ -191,17 +196,18 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/cancel_booking"/>
 
-            </RelativeLayout>
+                    -->
+
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_booking_detail_logo"
-                android:layout_below="@id/options_layout"
+                android:layout_below="@id/action_buttons_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_booking_detail_logo"
                 />
-
 
 
         </RelativeLayout>

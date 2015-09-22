@@ -20,7 +20,9 @@ public final class Booking implements Parcelable
     @SerializedName("booking_status")
     private int isPast;   //previously isPast
     @SerializedName("service_name")
-    private String service;
+    private String serviceName;
+    @SerializedName("service_machine")
+    private String serviceMachineName;
     @SerializedName("date_start")
     private Date startDate;
     @SerializedName("hours")
@@ -32,7 +34,7 @@ public final class Booking implements Parcelable
     @SerializedName("recurring_id")
     private String recurringId;  //This actually indicates if a booking is isRecurring, non-null/empty id
     @SerializedName("recurring_string")
-    private String recurringInfo;
+    private String recurringInfo; //User facing display string of frequency, i.e. once, every 2 weeks, every 4 weeks
     @SerializedName("getin")
     private int entryType; //numeric, must keep synced against server, start using an auto deserialized enum?
     @SerializedName("getin_string")
@@ -87,7 +89,7 @@ public final class Booking implements Parcelable
 
     public final boolean hasAssignedProvider()
     {
-        return(provider != null && provider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED);
+        return (provider != null && provider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED);
     }
 
     public final boolean isRecurring()
@@ -115,15 +117,27 @@ public final class Booking implements Parcelable
         return proNote;
     }
 
-    public final String getService()
+    public final String getServiceName()
     {
-        return service;
+        return serviceName;
     }
 
-    final void setService(final String service)
+    public final String getServiceMachineName()
     {
-        this.service = service;
+        return serviceMachineName;
     }
+
+    //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table , select distinct(machine_name) from service
+    public final static String SERVICE_CLEANING = "cleaning";
+    public final static String SERVICE_HOME_CLEANING = "home_cleaning";
+    public final static String SERVICE_OFFICE_CLEANING = "office_cleaning";
+
+    public final static String SERVICE_HANDYMAN = "handyman";
+    public final static String SERVICE_PLUMBING = "plumbing";
+    public final static String SERVICE_ELECTRICIAN = "electrician";
+    public final static String SERVICE_ELECTRICAL = "electrical";
+    public final static String SERVICE_PAINTING = "painting";
+
 
     public final Date getStartDate()
     {
@@ -197,25 +211,27 @@ public final class Booking implements Parcelable
 
     private Booking(final Parcel in)
     {
-        final String[] stringData = new String[9];
+        final String[] stringData = new String[10];
         in.readStringArray(stringData);
         id = stringData[0];
-        service = stringData[1];
+        serviceName = stringData[1];
+        serviceMachineName = stringData[2];
 
         try
         {
-            laundryStatus = LaundryStatus.valueOf(stringData[2]);
-        } catch (IllegalArgumentException x)
+            laundryStatus = LaundryStatus.valueOf(stringData[3]);
+        }
+        catch (IllegalArgumentException x)
         {
             laundryStatus = null;
         }
 
-        recurringInfo = stringData[3];
-        entryInfo = stringData[4];
-        extraEntryInfo = stringData[5];
-        proNote = stringData[6];
-        billedStatus = stringData[7];
-        recurringId = stringData[8];
+        recurringInfo = stringData[4];
+        entryInfo = stringData[5];
+        extraEntryInfo = stringData[6];
+        proNote = stringData[7];
+        billedStatus = stringData[8];
+        recurringId = stringData[9];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -248,9 +264,20 @@ public final class Booking implements Parcelable
     @Override
     public final void writeToParcel(final Parcel out, final int flags)
     {
-        out.writeStringArray(new String[]{id, service, laundryStatus != null
-                ? laundryStatus.name() : "", recurringInfo, entryInfo, extraEntryInfo, proNote,
-                billedStatus, recurringId});
+        out.writeStringArray(new String[]
+                {
+                        id,
+                        serviceName,
+                        serviceMachineName,
+                        laundryStatus != null ? laundryStatus.name() : "",
+                        recurringInfo,
+                        entryInfo,
+                        extraEntryInfo,
+                        proNote,
+                        billedStatus,
+                        recurringId
+                }
+        );
 
         out.writeIntArray(new int[]{isPast, entryType});
         out.writeFloatArray(new float[]{hours, price});
@@ -448,7 +475,7 @@ public final class Booking implements Parcelable
 
         public final String getFullName()
         {
-            return ((firstName != null ? firstName : "") + " " +  (lastName != null ? lastName : ""));
+            return ((firstName != null ? firstName : "") + " " + (lastName != null ? lastName : ""));
         }
 
         private Provider(final Parcel in)
@@ -567,7 +594,7 @@ public final class Booking implements Parcelable
         public enum ExtraInfoImageName
         {
             //TODO: Why is the server sending a full imageName name for something that is supposed to be bundled as part of the app? Should just send an identifier or nothing and use label
-                //They are always coming back as _disabled in booking details, not sure why, to investigate? Possibly a hold over from web?
+            //They are always coming back as _disabled in booking details, not sure why, to investigate? Possibly a hold over from web?
             @SerializedName("inside_cabinets_extras_disabled.png")INSIDE_CABINETS_DISABLED,
             @SerializedName("inside_fridge_extras_disabled.png")INSIDE_FRIDGE_DISABLED,
             @SerializedName("inside_oven_extras_disabled.png")INSIDE_OVEN_DISABLED,
@@ -576,6 +603,7 @@ public final class Booking implements Parcelable
         }
 
         private static final Map<ExtraInfoImageName, Integer> EXTRAS_ICONS;
+
         static
         {
             EXTRAS_ICONS = new HashMap<>();
@@ -604,7 +632,7 @@ public final class Booking implements Parcelable
 
         private final int getImageResource(ExtraInfoImageName extraInfoImageName)
         {
-            if(EXTRAS_ICONS.containsKey(extraInfoImageName))
+            if (EXTRAS_ICONS.containsKey(extraInfoImageName))
             {
                 return EXTRAS_ICONS.get(extraInfoImageName);
             }

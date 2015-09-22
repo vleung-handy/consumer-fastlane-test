@@ -165,5 +165,8 @@
     <string name="pro_entry_information">How will your professional get in?</string>
     <string name="pro_assignment_pending">Professional assignment pending</string>
     <string name="blank"></string>
+    <string name="call">Call</string>
+    <string name="text">Text</string>
+    <string name="booking_number">Booking #</string>
 
 </resources>
