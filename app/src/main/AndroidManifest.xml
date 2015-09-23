@@ -1,168 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.handybook.handybook">
+<manifest
+    package="com.handybook.handybook"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-feature android:name="android.hardware.location" android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="${PACKAGE_NAME}.permission.UA_DATA" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="${PACKAGE_NAME}.permission.UA_DATA"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE"/>
 
-    <permission android:name="${PACKAGE_NAME}.permission.UA_DATA" android:protectionLevel="signature" />
-    <permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <permission
+        android:name="${PACKAGE_NAME}.permission.UA_DATA"
+        android:protectionLevel="signature"/>
+    <permission
+        android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"/>
 
     <application
         android:name=".core.BaseApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backupscheme"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Base">
-
         <activity
             android:name=".ui.activity.ServiceCategoriesActivity"
             android:label="@string/app_name">
-
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
             <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
 
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="handy" android:host="yozio" android:path="/"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:scheme="http"
+                    android:host="yozio"
+                    android:path="/"
+                    android:scheme="handy"/>
+                <data
                     android:host="deeplink.yoz.io"
-                    android:pathPrefix="/ea269dcf-ff3c-435a-bdc6-55b4c7904493" />
-
+                    android:pathPrefix="/ea269dcf-ff3c-435a-bdc6-55b4c7904493"
+                    android:scheme="http"/>
             </intent-filter>
-
         </activity>
-
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="handy"  android:host="booking"  android:path="/reschedule"/>
-                <data android:scheme="handy"  android:host="profile"  android:path="/"/>
-                <data android:scheme="handy"  android:host="bookings"  android:path="/"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="booking"
+                    android:path="/reschedule"
+                    android:scheme="handy"/>
+                <data
+                    android:host="profile"
+                    android:path="/"
+                    android:scheme="handy"/>
+                <data
+                    android:host="bookings"
+                    android:path="/"
+                    android:scheme="handy"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.activity.LoginActivity" />
-        <activity android:name=".ui.activity.ServicesActivity" />
-        <activity android:name=".ui.activity.BookingLocationActivity" />
-        <activity android:name=".ui.activity.ProfileActivity" />
-        <activity android:name=".ui.activity.BookingsActivity" />
-        <activity android:name=".ui.activity.BookingOptionsActivity" />
-        <activity android:name=".ui.activity.BookingDateActivity" />
-        <activity android:name=".ui.activity.BookingAddressActivity" />
-        <activity android:name=".ui.activity.BookingPaymentActivity" />
-        <activity android:name=".ui.activity.BookingDetailActivity" />
-        <activity android:name=".ui.activity.BookingConfirmationActivity" />
-        <activity android:name=".ui.activity.BookingRecurrenceActivity" />
-        <activity android:name=".ui.activity.BookingExtrasActivity" />
-        <activity android:name=".ui.activity.BookingRescheduleOptionsActivity" />
-        <activity android:name=".ui.activity.BookingCancelOptionsActivity" />
-        <activity android:name=".ui.activity.PeakPricingActivity" />
-        <activity android:name=".ui.activity.PromosActivity" />
-        <activity android:name=".ui.activity.OnboardActivity" />
-        <activity android:name=".ui.activity.HelpActivity" />
-        <activity android:name=".ui.activity.HelpContactActivity" />
-
+        <activity android:name=".ui.activity.LoginActivity"/>
+        <activity android:name=".ui.activity.ServicesActivity"/>
+        <activity android:name=".ui.activity.BookingLocationActivity"/>
+        <activity android:name=".ui.activity.ProfileActivity"/>
+        <activity android:name=".ui.activity.BookingsActivity"/>
+        <activity android:name=".ui.activity.BookingOptionsActivity"/>
+        <activity android:name=".ui.activity.BookingDateActivity"/>
+        <activity android:name=".ui.activity.BookingAddressActivity"/>
+        <activity android:name=".ui.activity.BookingPaymentActivity"/>
+        <activity android:name=".ui.activity.BookingDetailActivity"/>
+        <activity android:name=".ui.activity.BookingConfirmationActivity"/>
+        <activity android:name=".ui.activity.BookingRecurrenceActivity"/>
+        <activity android:name=".ui.activity.BookingExtrasActivity"/>
+        <activity android:name=".ui.activity.BookingRescheduleOptionsActivity"/>
+        <activity android:name=".ui.activity.BookingCancelOptionsActivity"/>
+        <activity android:name=".ui.activity.PeakPricingActivity"/>
+        <activity android:name=".ui.activity.PromosActivity"/>
+        <activity android:name=".ui.activity.OnboardActivity"/>
+        <activity android:name=".ui.activity.HelpActivity"/>
+        <activity android:name=".ui.activity.HelpContactActivity"/>
+        <activity
+            android:name=".ui.activity.BlockingActivity"
+            android:noHistory="true"/>
         <activity
             android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name"/>
-
-        <activity android:name="com.urbanairship.CoreActivity" />
-
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name="com.urbanairship.CoreActivity"/>
         <activity
             android:name="com.urbanairship.google.PlayServicesErrorActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
 
-        <service android:name="com.urbanairship.push.PushService" android:label="Push Notification Service" />
-        <service android:name="com.urbanairship.analytics.EventService" android:label="Event Service" />
-        <service android:name="com.urbanairship.actions.ActionService" />
-        <service android:name="com.urbanairship.richpush.RichPushUpdateService" />
-        <service android:name="com.urbanairship.location.LocationService" android:label="Segments Service" />
+        <service
+            android:name="com.urbanairship.push.PushService"
+            android:label="Push Notification Service"/>
+        <service
+            android:name="com.urbanairship.analytics.EventService"
+            android:label="Event Service"/>
+        <service android:name="com.urbanairship.actions.ActionService"/>
+        <service android:name="com.urbanairship.richpush.RichPushUpdateService"/>
+        <service
+            android:name="com.urbanairship.location.LocationService"
+            android:label="Segments Service"/>
 
         <provider
             android:name="com.urbanairship.UrbanAirshipProvider"
             android:authorities="${PACKAGE_NAME}.urbanairship.provider"
-            android:permission="${PACKAGE_NAME}.permission.UA_DATA"
             android:exported="true"
-            android:multiprocess="true" />
+            android:multiprocess="true"
+            android:permission="${PACKAGE_NAME}.permission.UA_DATA"/>
 
+        <!-- Used for install referrer tracking by Yozio-->
         <receiver
             android:name=".receiver.InstallReferrerReceiver"
-            android:exported="true"
-            android:enabled="true">
-
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
+                <action android:name="com.android.vending.INSTALL_REFERRER"/>
             </intent-filter>
-
         </receiver>
 
         <receiver
             android:name="com.urbanairship.CoreReceiver"
             android:exported="false">
-
             <intent-filter android:priority="-999">
-                <action android:name="com.urbanairship.push.OPENED" />
-                <category android:name="${PACKAGE_NAME}" />
+                <action android:name="com.urbanairship.push.OPENED"/>
+
+                <category android:name="${PACKAGE_NAME}"/>
             </intent-filter>
         </receiver>
 
         <receiver
             android:name="com.urbanairship.push.GCMPushReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
-
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="${PACKAGE_NAME}" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+
+                <category android:name="${PACKAGE_NAME}"/>
             </intent-filter>
         </receiver>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
+            android:value="@string/facebook_app_id"/>
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
+            android:value="@integer/google_play_services_version"/>
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="688486cdd4f0b095424122ad0a42e5e3473e83be"/>
-
         <meta-data
             android:name="YozioAppKey"
-            android:value="ea269dcf-ff3c-435a-bdc6-55b4c7904493" />
-
+            android:value="ea269dcf-ff3c-435a-bdc6-55b4c7904493"/>
         <meta-data
             android:name="YozioSecretKey"
-            android:value="243eee8e-5ae7-47f8-9739-e11cad7f57c0" />
-
+            android:value="243eee8e-5ae7-47f8-9739-e11cad7f57c0"/>
         <meta-data
             android:name="YozioNewInstallMetaDataCallback"
-            android:value="com.handybook.handybook.yozio.YozioMetaDataCallback" />
+            android:value="com.handybook.handybook.yozio.YozioMetaDataCallback"/>
 
     </application>
 

@@ -27,6 +27,7 @@ import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.squareup.otto.Bus;
 import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
@@ -51,6 +52,7 @@ public abstract class BaseActivity extends FragmentActivity {
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
     @Inject NavigationManager navigationManager;
+    @Inject Bus bus;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

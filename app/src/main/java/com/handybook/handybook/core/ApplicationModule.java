@@ -17,9 +17,11 @@ import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
@@ -44,6 +46,7 @@ import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.fragment.AddLaundryDialogFragment;
+import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingCancelOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingConfirmationFragment;
@@ -111,7 +114,7 @@ import retrofit.converter.GsonConverter;
         RateServiceDialogFragment.class, RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class, AddLaundryDialogFragment.class,
         HelpContactFragment.class, HelpContactActivity.class,
-        SplashActivity.class
+        SplashActivity.class, BlockingActivity.class, BlockingUpdateFragment.class
 })
 public final class ApplicationModule
 {
@@ -297,6 +300,17 @@ public final class ApplicationModule
         return new HelpContactManager(bus, dataManager);
     }
 
+    @Provides
+    @Singleton
+    final AppBlockManager provideAppBlockManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final PrefsManager prefsManager
+    )
+    {
+        return new AppBlockManager(bus, dataManager, prefsManager);
+    }
+
     private String getDeviceId()
     {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -310,8 +324,7 @@ public final class ApplicationModule
         if (model.startsWith(manufacturer))
         {
             return model;
-        }
-        else
+        } else
         {
             return manufacturer + " " + model;
         }

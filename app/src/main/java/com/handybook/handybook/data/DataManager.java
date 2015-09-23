@@ -14,6 +14,7 @@ import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
+import com.handybook.handybook.core.ShouldBlockObject;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.squareup.otto.Bus;
@@ -42,6 +43,18 @@ public abstract class DataManager {
     }
 
     public abstract void getServices(CacheResponse<List<Service>> cache, Callback<List<Service>> cb);
+
+    /**
+     * Requests a ShouldBlockObject defining if the app is recent enough to be used
+     * @param versionCode Android version code (Not version name!)
+     * @param shouldBlockObjectCacheResponse ..
+     * @param shouldBlockObjectCallback ..
+     */
+    public abstract void getShouldBlockObject(
+            final int versionCode,
+            final CacheResponse<ShouldBlockObject> shouldBlockObjectCacheResponse,
+            final Callback<ShouldBlockObject> shouldBlockObjectCallback
+    );
 
     public abstract void getQuoteOptions(int serviceId, String userId,  Callback<BookingOptionsWrapper> cb);
 
