@@ -6,21 +6,21 @@ import android.os.Bundle;
 /**
  * Collection of events launched for each of all activities lifecycle methods
  */
-public abstract class ActivityEvent
+public interface ActivityEvent
 {
-    public interface ActivityHolder
+    interface ActivityHolder
     {
         Activity getActivity();
     }
 
 
-    public interface BundleHolder
+    interface BundleHolder
     {
         Bundle getBundle();
     }
 
 
-    static class DefaultActivityHolder implements ActivityHolder
+    class DefaultActivityHolder implements ActivityEvent, ActivityHolder
     {
         private Activity mActivity;
 
@@ -37,7 +37,10 @@ public abstract class ActivityEvent
     }
 
 
-    static class DefaultActivityAndBundleHolder implements ActivityHolder, BundleHolder
+    class DefaultActivityAndBundleHolder implements
+            ActivityEvent,
+            ActivityHolder,
+            BundleHolder
     {
         private Activity mActivity;
         private Bundle mBundle;
@@ -63,7 +66,7 @@ public abstract class ActivityEvent
 
 
     // Created
-    public static class Created extends DefaultActivityAndBundleHolder
+    class Created extends DefaultActivityAndBundleHolder
     {
         public Created(final Activity activity, final Bundle bundle)
         {
@@ -73,7 +76,7 @@ public abstract class ActivityEvent
 
 
     // Started
-    public static class Started extends DefaultActivityHolder
+    class Started extends DefaultActivityHolder
     {
         public Started(final Activity activity)
         {
@@ -83,7 +86,7 @@ public abstract class ActivityEvent
 
 
     // Resumed
-    public static class Resumed extends DefaultActivityHolder
+    class Resumed extends DefaultActivityHolder
     {
         public Resumed(final Activity activity)
         {
@@ -93,7 +96,7 @@ public abstract class ActivityEvent
 
 
     // Paused
-    public static class Paused extends DefaultActivityHolder
+    class Paused extends DefaultActivityHolder
     {
         public Paused(final Activity activity)
         {
@@ -103,7 +106,7 @@ public abstract class ActivityEvent
 
 
     // SavedInstanceState
-    public static class SavedInstanceState extends DefaultActivityAndBundleHolder
+    class SavedInstanceState extends DefaultActivityAndBundleHolder
     {
         public SavedInstanceState(final Activity activity, final Bundle bundle)
         {
@@ -113,7 +116,7 @@ public abstract class ActivityEvent
 
 
     // Stopped
-    public static class Stopped extends DefaultActivityHolder
+    class Stopped extends DefaultActivityHolder
     {
         public Stopped(final Activity activity)
         {
@@ -123,7 +126,7 @@ public abstract class ActivityEvent
 
 
     // Destroyed
-    public static class Destroyed extends DefaultActivityHolder
+    class Destroyed extends DefaultActivityHolder
     {
         public Destroyed(final Activity activity)
         {
