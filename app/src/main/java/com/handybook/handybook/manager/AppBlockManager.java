@@ -37,7 +37,7 @@ public class AppBlockManager
     }
 
     @Subscribe
-    void onEachActivityResume(final ActivityEvent.Resumed e)
+    public void onEachActivityResume(final ActivityEvent.Resumed e)
     {
         if (mContext == null)
         {
