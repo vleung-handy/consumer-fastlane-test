@@ -111,7 +111,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     protected abstract void onActionClick();
 
 
-    //TODO: Might put all this into a child class?, it's a big chunk of functionality
+    //TODO: Might put all this booking action button stuff into a child class?, it's a big chunk of functionality
     //Booking action buttons
     //This code is a copy paste from booking detail fragment, migrate the code away from booking detail fragment into a sub fragment
     protected void setupBookingActionButtons(Booking booking)

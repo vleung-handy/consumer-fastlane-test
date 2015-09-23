@@ -44,7 +44,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     {
         if (booking.hasAssignedProvider())
         {
-            return R.string.blank;
+            return R.string.blank_string;
         }
         else
         {
