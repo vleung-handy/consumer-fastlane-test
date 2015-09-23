@@ -10,7 +10,9 @@ import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.ShouldBlockObject;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BlockingActivity;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
@@ -21,14 +23,19 @@ public class AppBlockManager
     private static final long MIN_APP_BLOCKED_CHECK_INTERVAL = 30 * 1000; // no more than every 30s
     private Context mContext;
 
-    @Inject PrefsManager prefsManager;
-    @Inject DataManager dataManager;
+    @Inject
+    PrefsManager prefsManager;
+    @Inject
+    DataManager dataManager;
+    @Inject
+    Bus bus;
 
 
     @Subscribe
     void onEachActivityResume(final ActivityEvent.Resumed e)
     {
-        if(mContext == null){
+        if (mContext == null)
+        {
             mContext = e.getActivity().getApplicationContext();
         }
         if (shoulBlockActivity(e.getActivity()))
@@ -115,8 +122,18 @@ public class AppBlockManager
 
     private void updateAppBlockedSharedPreference(final boolean isBlocked)
     {
+        final boolean wasBlocked = prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
         prefsManager.setLong(PrefsKey.APP_BLOCKED_LAST_CHECK, System.currentTimeMillis());
         prefsManager.setBoolean(PrefsKey.APP_BLOCKED, isBlocked);
+        if (!wasBlocked && isBlocked)
+        {// We're starting to block
+            bus.post(new HandyEvent.StartBlockingAppEvent());
+            showBlockingScreen();
+        } else if (wasBlocked && !isBlocked)
+        {// We're stopping blocking
+            bus.post(new HandyEvent.StopBlockingAppEvent());
+
+        }
     }
 
 
