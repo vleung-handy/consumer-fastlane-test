@@ -17,6 +17,7 @@ import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
@@ -297,6 +298,17 @@ public final class ApplicationModule
     )
     {
         return new HelpContactManager(bus, dataManager);
+    }
+
+    @Provides
+    @Singleton
+    final AppBlockManager provideAppBlockManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final PrefsManager prefsManager
+    )
+    {
+        return new AppBlockManager(bus, dataManager, prefsManager);
     }
 
     private String getDeviceId()
