@@ -21,16 +21,16 @@ public class BlockingActivity extends BaseActivity
     }
 
     @Override
-    protected void onPause()
+    protected void onResume()
     {
-        super.onPause();
+        super.onResume();
         bus.register(this);
     }
 
     @Override
-    protected void onResume()
+    protected void onPause()
     {
-        super.onResume();
+        super.onPause();
         bus.unregister(this);
     }
 
