@@ -117,8 +117,11 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     protected List<String> getActionButtonTypeList(Booking booking)
     {
         List<String> actionButtonTypes = new ArrayList<>();
-        actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
-        actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
+        if(booking.hasAssignedProvider())
+        {
+            actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
+            actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
+        }
         return actionButtonTypes;
     }
 
