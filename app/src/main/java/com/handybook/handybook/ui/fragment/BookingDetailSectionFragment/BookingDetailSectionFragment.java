@@ -34,7 +34,9 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     }
 
     protected abstract int getEntryTitleTextResourceId(Booking booking);
+
     protected abstract int getEntryActionTextResourceId(Booking booking);
+
     protected abstract boolean hasEnabledAction();
 
     @Override
@@ -64,7 +66,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     {
         view.entryTitle.setText(getEntryTitleTextResourceId(booking));
         view.entryActionText.setText(getEntryActionTextResourceId(booking));
-        if(!hasEnabledAction())
+        if (!hasEnabledAction())
         {
             view.entryActionText.setVisibility(View.GONE);
         }
@@ -109,11 +111,9 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     protected abstract void onActionClick();
 
 
-
-
-//TODO: Might put all this into a child class?, it's a big chunk of functionality
+    //TODO: Might put all this into a child class?, it's a big chunk of functionality
     //Booking action buttons
-        //This code is a copy paste from booking detail fragment, migrate the code away from booking detail fragment into a sub fragment
+    //This code is a copy paste from booking detail fragment, migrate the code away from booking detail fragment into a sub fragment
     protected void setupBookingActionButtons(Booking booking)
     {
         clearBookingActionButtons();
@@ -122,7 +122,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
         ViewGroup actionButtonLayout = getBookingActionButtonLayout();
 
-        if(actionButtonTypes.isEmpty())
+        if (actionButtonTypes.isEmpty())
         {
             actionButtonLayout.setVisibility(View.GONE);
         }
@@ -181,16 +181,30 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         view.actionButtonsLayout.removeAllViews();
     }
 
-    private void setActionButtonsEnabled(boolean enabled)
+    protected void setActionButtonsEnabled(boolean enabled)
     {
-        for(int i = 0; i < view.actionButtonsLayout.getChildCount(); i++)
+        List<String> actionButtonTypes = getActionButtonTypeList(this.booking);
+        if (!actionButtonTypes.isEmpty())
         {
-            BookingActionButton actionButton = (BookingActionButton) view.actionButtonsLayout.getChildAt(i);
-            if(actionButton != null)
+            for (String actionButtonType : actionButtonTypes)
             {
-                actionButton.setEnabled(enabled);
+                BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(actionButtonType);
+                if (bookingActionButtonType != null)
+                {
+                    ViewGroup buttonParentLayout = getParentForActionButtonType(actionButtonType);
+                    if (buttonParentLayout != null)
+                    {
+                        for (int i = 0; i < buttonParentLayout.getChildCount(); i++)
+                        {
+                            BookingActionButton actionButton = (BookingActionButton) buttonParentLayout.getChildAt(i);
+                            if (actionButton != null)
+                            {
+                                actionButton.setEnabled(enabled);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-
 }

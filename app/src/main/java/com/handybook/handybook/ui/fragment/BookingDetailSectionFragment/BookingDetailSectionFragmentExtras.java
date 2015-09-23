@@ -13,7 +13,10 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
     protected BookingDetailSectionExtrasView view;
 
     @Override
-    protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section_extras; }
+    protected int getFragmentResourceId()
+    {
+        return R.layout.fragment_booking_detail_section_extras;
+    }
 
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)

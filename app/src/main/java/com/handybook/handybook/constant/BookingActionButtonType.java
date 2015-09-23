@@ -10,7 +10,7 @@ public enum BookingActionButtonType
     CONTACT_TEXT(BookingAction.ACTION_CONTACT_TEXT, R.string.text, BookingActionButtonStyle.CONTACT),
     ;
 
-    private String actionName; //must correspond to server's actionName to match up correctly
+    private String actionName; //TODO: Enum this?
     private int displayNameId;
     private BookingActionButtonStyle style;
 

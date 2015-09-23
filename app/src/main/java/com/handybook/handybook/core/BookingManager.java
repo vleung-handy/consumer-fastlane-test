@@ -18,6 +18,7 @@ import java.util.Observer;
 
 import javax.inject.Inject;
 
+//TODO: Add caching like we do for portal, navigating back and forth from my bookings page is painfully slow right now
 public final class BookingManager implements Observer
 {
     private BookingRequest request;
@@ -36,7 +37,8 @@ public final class BookingManager implements Observer
         this.bus = bus;
         this.bus.register(this);
     }
-    //Event listening sending, half way to updating our managers to work like nortal's managers and provide a layer for data access
+
+    //Event listening + sending, half way to updating our managers to work like nortal's managers and provide a layer for data access
 
     @Subscribe
     public void onRequestPreRescheduleInfo(HandyEvent.RequestPreRescheduleInfo event)
@@ -153,32 +155,7 @@ public final class BookingManager implements Observer
         });
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Old Direct References
-
+//Old Direct References, to eventually be handled in the events way
 
     public final BookingRequest getCurrentRequest()
     {

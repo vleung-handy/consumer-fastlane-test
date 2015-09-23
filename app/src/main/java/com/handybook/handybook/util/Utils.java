@@ -16,8 +16,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BookingActionButtonType;
 
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
 
 public final class Utils {
 
@@ -73,14 +71,6 @@ public final class Utils {
 
         for (int i = 0; i < 3; i++) hsvb[i] = (hsva[i] + ((hsvb[i] - hsva[i]) * proportion));
         return Color.HSVToColor(hsvb);
-    }
-
-    public static void printMap(Map mp) {
-        Iterator it = mp.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            System.out.println(pair.getKey() + " = " + pair.getValue());
-        }
     }
 
     public static BookingActionButtonType getBookingActionButtonType(String actionType)

@@ -31,7 +31,10 @@ public class BookingDetailSectionFragmentPayment extends BookingDetailSectionFra
     }
 
     @Override
-    protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section_payment; }
+    protected int getFragmentResourceId()
+    {
+        return R.layout.fragment_booking_detail_section_payment;
+    }
 
     @Override
     protected void updateDisplay(Booking booking, User user)
