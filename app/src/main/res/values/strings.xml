@@ -168,5 +168,6 @@
     <string name="call">Call</string>
     <string name="text">Text</string>
     <string name="booking_number">Booking #</string>
+    <string name="error_no_intent_handler_found">No application found to handle the requested action</string>
 
 </resources>

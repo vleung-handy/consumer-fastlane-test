@@ -1,13 +1,18 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BookingAction;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.widget.BookingDetailSectionProInfoView;
+import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +28,10 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     protected BookingDetailSectionProInfoView view;
 
     @Override
-    protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section_pro_info; }
+    protected int getFragmentResourceId()
+    {
+        return R.layout.fragment_booking_detail_section_pro_info;
+    }
 
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
@@ -85,10 +93,9 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         if (!booking.hasAssignedProvider())
         {
             //TODO: Request a pro functionality
-                //need a new UI where we request the requestable pros, then display them, then get the result back
+            //need a new UI where we request the requestable pros, then display them, then get the result back
         }
     }
-
 
 
     //Setup the contact booking action buttons
@@ -118,10 +125,12 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected ViewGroup getParentForActionButtonType(String actionButtonType)
     {
-        switch(actionButtonType)
+        switch (actionButtonType)
         {
-            case BookingAction.ACTION_CONTACT_PHONE: return view.actionButtonsLayoutSlot1;
-            case BookingAction.ACTION_CONTACT_TEXT: return view.actionButtonsLayoutSlot2;
+            case BookingAction.ACTION_CONTACT_PHONE:
+                return view.actionButtonsLayoutSlot1;
+            case BookingAction.ACTION_CONTACT_TEXT:
+                return view.actionButtonsLayoutSlot2;
         }
         return null;
     }
@@ -129,10 +138,12 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected View.OnClickListener getOnClickListenerForAction(String actionButtonType)
     {
-        switch(actionButtonType)
+        switch (actionButtonType)
         {
-            case BookingAction.ACTION_CONTACT_PHONE: return contactPhoneClicked;
-            case BookingAction.ACTION_CONTACT_TEXT: return contactTextClicked;
+            case BookingAction.ACTION_CONTACT_PHONE:
+                return contactPhoneClicked;
+            case BookingAction.ACTION_CONTACT_TEXT:
+                return contactTextClicked;
         }
         return null;
     }
@@ -142,8 +153,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            //TODO: Call provider phone if possible
-            System.out.println("Call Provider");
+            callPhoneNumber(booking.getProvider().getPhone());
         }
     };
 
@@ -152,12 +162,36 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            //TODO: Text message to provider if possible
-            System.out.println("Text Provider");
+            textPhoneNumber(booking.getProvider().getPhone());
         }
     };
 
 
+    //use native functionality to trigger a phone call
+    private void callPhoneNumber(final String phoneNumber)
+    {
+        try
+        {
+            Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("tel", phoneNumber, null)), this.getActivity());
+        }
+        catch (ActivityNotFoundException activityException)
+        {
+            Crashlytics.logException(new RuntimeException("Calling a Phone Number failed", activityException));
+        }
+    }
+
+    //use native functionality to trigger a text message interface
+    private void textPhoneNumber(final String phoneNumber)
+    {
+        try
+        {
+            Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null)), this.getActivity());
+        }
+        catch (ActivityNotFoundException activityException)
+        {
+            Crashlytics.logException(new RuntimeException("Texting a Phone Number failed", activityException));
+        }
+    }
 
 
 }

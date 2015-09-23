@@ -1,14 +1,18 @@
 package com.handybook.handybook.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.text.format.Time;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.TouchDelegate;
 import android.view.View;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BookingActionButtonType;
 
 import java.util.Date;
@@ -91,4 +95,28 @@ public final class Utils {
         Crashlytics.log("Invalid booking action button type : " + actionType);
         return null;
     }
+
+    //returns true if the intent was successfully launched
+    public static boolean safeLaunchIntent(Intent intent, Context context)
+    {
+        if (context == null)
+        {
+            Crashlytics.logException(new Exception("Trying to launch an intent with a null context!"));
+        }
+        else if (intent.resolveActivity(context.getPackageManager()) != null)
+        {
+            context.startActivity(intent);
+            return true;
+        }
+        else //no activity found to handle the intent
+        {
+            //note: this must be called from the UI thread
+            Toast toast = Toast.makeText(context, R.string.error_no_intent_handler_found, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            Crashlytics.logException(new Exception("No activity found to handle the intent " + intent.toString()));
+        }
+        return false;
+    }
+
 }
