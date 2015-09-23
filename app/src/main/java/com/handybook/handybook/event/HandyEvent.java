@@ -228,6 +228,17 @@ public abstract class HandyEvent
         }
     }
 
+   //UI
+
+    public static class SetBookingDetailSectionFragmentActionControlsEnabled extends HandyEvent
+    {
+        public boolean enabled;
+        public SetBookingDetailSectionFragmentActionControlsEnabled(boolean enabled)
+        {
+            this.enabled = enabled;
+        }
+    }
+
 
 //Help Self Service Center
     public static class RequestHelpNode extends HandyEvent

@@ -91,9 +91,6 @@ public final class BookingDetailFragment extends InjectedFragment
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        progressDialog.dismiss();
-        enableInputs();
-
         //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
 
         if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
@@ -130,6 +127,7 @@ public final class BookingDetailFragment extends InjectedFragment
     {
         super.disableInputs();
         bookingDetailView.backButton.setClickable(false);
+        setSectionFragmentInputsEnabled(false);
     }
 
     @Override
@@ -137,6 +135,12 @@ public final class BookingDetailFragment extends InjectedFragment
     {
         super.enableInputs();
         bookingDetailView.backButton.setClickable(true);
+        setSectionFragmentInputsEnabled(true);
+    }
+
+    private void setSectionFragmentInputsEnabled(boolean enabled)
+    {
+        bus.post(new HandyEvent.SetBookingDetailSectionFragmentActionControlsEnabled(enabled));
     }
 
     private void setupForBooking(Booking booking)

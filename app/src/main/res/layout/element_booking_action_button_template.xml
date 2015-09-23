@@ -9,5 +9,7 @@
         style="@style/Button.BookingAction"
         android:layout_alignParentBottom="false"
         android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
         />
 </merge>

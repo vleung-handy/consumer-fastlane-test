@@ -10,10 +10,12 @@ import com.handybook.handybook.constant.BookingActionButtonType;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.BookingActionButton;
 import com.handybook.handybook.ui.widget.BookingDetailSectionView;
 import com.handybook.handybook.util.Utils;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,18 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         setupBookingActionButtons(booking);
     }
 
+    @Subscribe
+    public void onSetBookingActionControlsEnabled(HandyEvent.SetBookingDetailSectionFragmentActionControlsEnabled event)
+    {
+        if(event.enabled)
+        {
+            enableInputs();
+        }
+        else
+        {
+            disableInputs();
+        }
+    }
 
     protected void setupClickListeners(Booking booking)
     {

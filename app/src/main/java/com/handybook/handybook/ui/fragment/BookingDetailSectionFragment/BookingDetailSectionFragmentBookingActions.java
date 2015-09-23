@@ -60,7 +60,8 @@ public class BookingDetailSectionFragmentBookingActions extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            disableInputs();
+            //TODO: Need to work out a system for enabling/disabling at proper times, listening to events from parent fragment is flakey b/c of on resume timing
+            //disableInputs();
             //TODO: investigate, do not activate the progress dialog here, causes issues when returning from activity
             bus.post(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
         }
@@ -71,9 +72,14 @@ public class BookingDetailSectionFragmentBookingActions extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            disableInputs();
+            //TODO: Need to work out a system for enabling/disabling at proper times, listening to events from parent fragment is flakey b/c of on resume timing
+            //disableInputs();
             //TODO: investigate, do not activate the progress dialog here, causes issues when returning from activity
             bus.post(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
         }
     };
+
+
+
+
 }

@@ -36,6 +36,7 @@
         android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
         />
 
 </com.handybook.handybook.ui.widget.BookingDetailSectionBookingActionsView>
