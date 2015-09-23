@@ -1,14 +1,30 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BookingAction;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.ui.widget.BookingDetailSectionProInfoView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
 
 
 //TODO: Request a pro feature requires breaking down the BookingOptionsFragment into a usable fragment, request a pro disabled until that time
 
 public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
 {
+    @Bind(R.id.booking_detail_section_view)
+    protected BookingDetailSectionProInfoView view;
+
+    @Override
+    protected int getFragmentResourceId(){ return R.layout.fragment_booking_detail_section_pro_info; }
+
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {
@@ -24,6 +40,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         }
         else
         {
+            //TODO: Request a pro functionality
             return R.string.request_pro;
         }
     }
@@ -68,8 +85,79 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         if (!booking.hasAssignedProvider())
         {
             //TODO: Request a pro functionality
-            //need a new UI where we request the requestable pros, then display them, then get the result back
+                //need a new UI where we request the requestable pros, then display them, then get the result back
         }
     }
+
+
+
+    //Setup the contact booking action buttons
+
+    @Override
+    protected void clearBookingActionButtons()
+    {
+        view.actionButtonsLayoutSlot1.removeAllViews();
+        view.actionButtonsLayoutSlot2.removeAllViews();
+    }
+
+    @Override
+    protected ViewGroup getBookingActionButtonLayout()
+    {
+        return view.actionButtonsLayout;
+    }
+
+    @Override
+    protected List<String> getActionButtonTypeList(Booking booking)
+    {
+        List<String> actionButtonTypes = new ArrayList<>();
+        actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
+        actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
+        return actionButtonTypes;
+    }
+
+    @Override
+    protected ViewGroup getParentForActionButtonType(String actionButtonType)
+    {
+        switch(actionButtonType)
+        {
+            case BookingAction.ACTION_CONTACT_PHONE: return view.actionButtonsLayoutSlot1;
+            case BookingAction.ACTION_CONTACT_TEXT: return view.actionButtonsLayoutSlot2;
+        }
+        return null;
+    }
+
+    @Override
+    protected View.OnClickListener getOnClickListenerForAction(String actionButtonType)
+    {
+        switch(actionButtonType)
+        {
+            case BookingAction.ACTION_CONTACT_PHONE: return contactPhoneClicked;
+            case BookingAction.ACTION_CONTACT_TEXT: return contactTextClicked;
+        }
+        return null;
+    }
+
+    private View.OnClickListener contactPhoneClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            //TODO: Call provider phone if possible
+            System.out.println("Call Provider");
+        }
+    };
+
+    private View.OnClickListener contactTextClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            //TODO: Text message to provider if possible
+            System.out.println("Text Provider");
+        }
+    };
+
+
+
 
 }

@@ -33,6 +33,7 @@ public class BookingActionButton extends Button
         final BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(bookingAction);
         if(bookingActionButtonType == null)
         {
+            System.out.println("ZZZZ : no type");
             Crashlytics.log("BookingActionButton : No associated action type for : " + bookingAction);
             return;
         }

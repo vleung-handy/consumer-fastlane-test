@@ -6,14 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BookingActionButtonType;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.ui.widget.BookingActionButton;
 import com.handybook.handybook.ui.widget.BookingDetailSectionView;
+import com.handybook.handybook.util.Utils;
 
-import butterknife.ButterKnife;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public abstract class BookingDetailSectionFragment extends InjectedFragment
 {
@@ -62,6 +68,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         {
             view.entryActionText.setVisibility(View.GONE);
         }
+        setupBookingActionButtons(booking);
     }
 
 
@@ -79,6 +86,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     {
         super.disableInputs();
         view.entryActionText.setClickable(false);
+        setActionButtonsEnabled(false);
     }
 
     @Override
@@ -86,6 +94,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     {
         super.enableInputs();
         view.entryActionText.setClickable(true);
+        setActionButtonsEnabled(true);
     }
 
     protected View.OnClickListener actionClicked = new View.OnClickListener()
@@ -97,10 +106,91 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         }
     };
 
-    protected void onActionClick()
-    {
+    protected abstract void onActionClick();
 
+
+
+
+//TODO: Might put all this into a child class?, it's a big chunk of functionality
+    //Booking action buttons
+        //This code is a copy paste from booking detail fragment, migrate the code away from booking detail fragment into a sub fragment
+    protected void setupBookingActionButtons(Booking booking)
+    {
+        clearBookingActionButtons();
+
+        List<String> actionButtonTypes = getActionButtonTypeList(booking);
+
+        ViewGroup actionButtonLayout = getBookingActionButtonLayout();
+
+        if(actionButtonTypes.isEmpty())
+        {
+            actionButtonLayout.setVisibility(View.GONE);
+        }
+        else
+        {
+            actionButtonLayout.setVisibility(View.VISIBLE);
+
+            for (String actionButtonType : actionButtonTypes)
+            {
+                BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(actionButtonType);
+
+                if (bookingActionButtonType != null)
+                {
+                    ViewGroup buttonParentLayout = getParentForActionButtonType(actionButtonType);
+
+                    if (buttonParentLayout != null)
+                    {
+                        int newChildIndex = buttonParentLayout.getChildCount(); //new index is equal to the old count since the new count is +1
+                        ViewGroup rootViewGroup = (ViewGroup) getActivity().getLayoutInflater().inflate(bookingActionButtonType.getLayoutTemplateId(), buttonParentLayout);
+
+                        BookingActionButton bookingActionButton = (BookingActionButton) rootViewGroup.getChildAt(newChildIndex);
+                        View.OnClickListener onClickListener = getOnClickListenerForAction(actionButtonType);
+                        bookingActionButton.init(actionButtonType, onClickListener);
+                    }
+                }
+            }
+        }
     }
 
+    protected ViewGroup getBookingActionButtonLayout()
+    {
+        return view.actionButtonsLayout;
+    }
+
+    protected ViewGroup getParentForActionButtonType(String actionButtonType)
+    {
+        //default is directly into parent, some sub classes will further sub divide this section
+        return view.actionButtonsLayout;
+    }
+
+    //nothing by default
+    protected View.OnClickListener getOnClickListenerForAction(String actionButtonType)
+    {
+        return null;
+    }
+
+    //Nothing by default
+    protected List<String> getActionButtonTypeList(Booking booking)
+    {
+        List<String> actionButtonTypes = new ArrayList<>();
+        return actionButtonTypes;
+    }
+
+    protected void clearBookingActionButtons()
+    {
+        view.actionButtonsLayout.removeAllViews();
+    }
+
+    private void setActionButtonsEnabled(boolean enabled)
+    {
+        for(int i = 0; i < view.actionButtonsLayout.getChildCount(); i++)
+        {
+            BookingActionButton actionButton = (BookingActionButton) view.actionButtonsLayout.getChildAt(i);
+            if(actionButton != null)
+            {
+                actionButton.setEnabled(enabled);
+            }
+        }
+    }
 
 }

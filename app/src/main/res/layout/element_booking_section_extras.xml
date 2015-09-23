@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView
-    android:id="@+id/help_node_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -35,10 +34,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/entry_sep"
         android:layout_marginBottom="10dp"
+        android:gravity="right"
         android:text="XX action text XX"
         android:textAllCaps="true"
-        android:textColor="@color/handy_blue"
-        android:gravity="right"/>
+        android:textColor="@color/handy_blue"/>
 
     <LinearLayout
         android:id="@+id/extras_section"
@@ -58,5 +57,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/extras_section"
         android:visibility="invisible"/>
+
+
+    <LinearLayout
+        android:id="@+id/action_buttons_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entry_text"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        />
 
 </com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView>

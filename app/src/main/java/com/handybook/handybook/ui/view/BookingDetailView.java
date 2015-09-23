@@ -28,7 +28,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
     TextView freqText;
     @Bind(R.id.freq_layout)
     View freqLayout;
-    @Bind(R.id.action_buttons_layout)
+    @Bind(R.id.booking_details_action_buttons_layout)
     public LinearLayout actionButtonsLayout;
     @Bind(R.id.service_icon)
     ServiceIconImageView serviceIcon;

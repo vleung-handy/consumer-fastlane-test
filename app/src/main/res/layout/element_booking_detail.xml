@@ -168,7 +168,7 @@
                 android:layout_below="@id/end_sep"/>
 
             <LinearLayout
-                android:id="@+id/action_buttons_layout"
+                android:id="@+id/booking_details_action_buttons_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/end_view"
@@ -207,7 +207,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/action_buttons_layout"
+                android:layout_below="@id/booking_details_action_buttons_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp"
                 android:src="@drawable/ic_booking_detail_logo"

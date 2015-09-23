@@ -2,6 +2,7 @@ package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -21,6 +22,8 @@ public class BookingDetailSectionView extends InjectedRelativeLayout
     public TextView entryText;
     @Bind(R.id.entry_action_text)
     public TextView entryActionText;
+    @Bind(R.id.action_buttons_layout)
+    public LinearLayout actionButtonsLayout;
 
     public BookingDetailSectionView(final Context context)
     {

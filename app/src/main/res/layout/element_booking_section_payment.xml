@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.handybook.handybook.ui.widget.BookingDetailSectionPaymentView
-    android:id="@+id/help_node_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -35,10 +34,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/entry_sep"
         android:layout_marginBottom="10dp"
+        android:gravity="right"
         android:text="XX action text XX"
         android:textAllCaps="true"
-        android:textColor="@color/handy_blue"
-        android:gravity="right"/>
+        android:textColor="@color/handy_blue"/>
 
     <RelativeLayout
         android:id="@+id/payment_info_section"
@@ -87,5 +86,14 @@
         android:layout_below="@id/payment_info_section"
         android:text="Billed Status"
         android:textColor="@color/black_pressed"/>
+
+    <LinearLayout
+        android:id="@+id/action_buttons_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entry_text"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        />
 
 </com.handybook.handybook.ui.widget.BookingDetailSectionPaymentView>
