@@ -139,4 +139,13 @@ public abstract class HandyEvent
     @Track("consumer app blocking screen button clicked")
     public static class BlockingScreenButtonPressed extends HandyEvent{
     }
+
+    public static class StartBlockingAppEvent extends HandyEvent{
+
+    }
+
+    public static class StopBlockingAppEvent extends HandyEvent{
+
+    }
+
 }
