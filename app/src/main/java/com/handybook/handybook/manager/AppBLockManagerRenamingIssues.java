@@ -15,7 +15,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-public class AppBLockManager
+public class AppBLockManagerRenamingIssues
 {
 
     private static final long MIN_APP_BLOCKED_CHECK_INTERVAL = 30 * 1000; // no more than every 30s
