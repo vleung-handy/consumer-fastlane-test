@@ -153,61 +153,17 @@
                 android:orientation="vertical"
                 />
 
-            <View
-                android:id="@+id/end_sep"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/section_fragment_container"
-                android:background="@color/nav_sep"/>
-
             <!--empty view needed for bottom layout margin bug on older APIs-->
             <View
                 android:id="@+id/end_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@id/end_sep"/>
-
-            <LinearLayout
-                android:id="@+id/booking_details_action_buttons_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/end_view"
-                android:background="@color/handy_bg"
-                android:paddingBottom="16dp"
-                android:paddingTop="15dp"
-                android:orientation="vertical"
-                >
-
-
-                <!--empty view needed for bottom layout margin bug on older APIs
-
-                <Button
-                    android:id="@+id/reschedule_button"
-                    style="@style/Button.BookingAction.Teal"
-                    android:layout_alignParentBottom="false"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:text="@string/reschedule"
-                    />
-
-                <Button
-                    android:id="@+id/cancel_button"
-                    style="@style/Button.BookingAction.Grey"
-                    android:layout_alignParentBottom="false"
-                    android:layout_below="@id/reschedule_button"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/cancel_booking"/>
-
-                    -->
-
-            </LinearLayout>
+                android:layout_below="@id/section_fragment_container"/>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/booking_details_action_buttons_layout"
+                android:layout_below="@id/end_view"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp"
                 android:src="@drawable/ic_booking_detail_logo"

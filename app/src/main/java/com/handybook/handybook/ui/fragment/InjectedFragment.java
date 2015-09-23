@@ -38,6 +38,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     @Inject NavigationManager navigationManager;
 
     @Inject
+    protected
     Bus bus;
 
 

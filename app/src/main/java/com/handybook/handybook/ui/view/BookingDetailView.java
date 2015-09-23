@@ -18,6 +18,8 @@ import java.util.Date;
 
 import butterknife.Bind;
 
+//TODO: Continue chopping this class up into fragments so all the elements in BookingDetailFragment are BookingDetailSectionFragments
+
 public final class BookingDetailView extends InjectedRelativeLayout
 {
     @Bind(R.id.date_text)
@@ -28,17 +30,8 @@ public final class BookingDetailView extends InjectedRelativeLayout
     TextView freqText;
     @Bind(R.id.freq_layout)
     View freqLayout;
-    @Bind(R.id.booking_details_action_buttons_layout)
-    public LinearLayout actionButtonsLayout;
     @Bind(R.id.service_icon)
     ServiceIconImageView serviceIcon;
-
-    //TODO: Dynamically generated action buttons a la Portal allowed_actions
-//    @Bind(R.id.reschedule_button)
-//    public Button rescheduleButton;
-//    @Bind(R.id.cancel_button)
-//    public Button cancelButton;
-
     @Bind(R.id.booking_text)
     TextView bookingText;
     @Bind(R.id.nav_text)
@@ -73,11 +66,6 @@ public final class BookingDetailView extends InjectedRelativeLayout
         updateFrequencySectionDisplay(booking);
 
         serviceIcon.updateServiceIconByBooking(booking);
-
-        if (booking.isPast())
-        {
-            actionButtonsLayout.setVisibility(View.GONE);
-        }
     }
 
     //TODO: don't like having an exception the fragment should talk to the view in as few ways as possible, this view is going to be supplanted by new sub fragments

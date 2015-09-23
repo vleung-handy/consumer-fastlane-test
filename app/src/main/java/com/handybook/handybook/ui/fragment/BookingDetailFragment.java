@@ -7,14 +7,10 @@ import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BookingAction;
-import com.handybook.handybook.constant.BookingActionButtonType;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
@@ -22,6 +18,7 @@ import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
@@ -29,8 +26,6 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.ui.view.BookingDetailView;
-import com.handybook.handybook.ui.widget.BookingActionButton;
-import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -40,7 +35,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingDetailFragment extends BookingFlowFragment
+public final class BookingDetailFragment extends InjectedFragment
 {
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
 
@@ -96,14 +91,20 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+        progressDialog.dismiss();
+        enableInputs();
+
         //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
 
         if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
-            Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
-            //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model. API v4 should return the updated booking model
-            bookingDetailView.updateDateTimeInfoText(booking, newDate);
-            setUpdatedBookingResult();
+            if(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
+            {
+                Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
+                //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model. API v4 should return the updated booking model
+                bookingDetailView.updateDateTimeInfoText(booking, newDate);
+                setUpdatedBookingResult();
+            }
         }
         else if (resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
         {
@@ -129,7 +130,6 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         super.disableInputs();
         bookingDetailView.backButton.setClickable(false);
-        setActionButtonsEnabled(false);
     }
 
     @Override
@@ -137,18 +137,16 @@ public final class BookingDetailFragment extends BookingFlowFragment
     {
         super.enableInputs();
         bookingDetailView.backButton.setClickable(true);
-        setActionButtonsEnabled(true);
     }
 
     private void setupForBooking(Booking booking)
     {
         bookingDetailView.updateDisplay(booking, userManager.getCurrentUser());
-        setupClickListeners(booking);
+        setupClickListeners();
         addSectionFragments();
-        setupBookingActionButtons(booking);
     }
 
-    private void setupClickListeners(Booking booking)
+    private void setupClickListeners()
     {
         bookingDetailView.backButton.setOnClickListener(backButtonClicked);
     }
@@ -163,7 +161,8 @@ public final class BookingDetailFragment extends BookingFlowFragment
                 new BookingDetailSectionFragmentNoteToPro(),
                 new BookingDetailSectionFragmentExtras(),
                 new BookingDetailSectionFragmentAddress(),
-                new BookingDetailSectionFragmentPayment()
+                new BookingDetailSectionFragmentPayment(),
+                new BookingDetailSectionFragmentBookingActions()
         );
     }
 
@@ -280,133 +279,4 @@ public final class BookingDetailFragment extends BookingFlowFragment
         intent.putExtra(BundleKeys.CANCELLED_BOOKING, booking);
         getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, intent);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Booking Action Buttons , this is moving to bookingdetailsectionfragment
-
-
-    private void setupBookingActionButtons(Booking booking)
-    {
-        clearBookingActionButtons();
-
-        List<String> actionButtonTypes = getActionButtonTypeList(booking);
-
-        for(String actionButtonType : actionButtonTypes)
-        {
-            BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(actionButtonType);
-            if(bookingActionButtonType != null)
-            {
-                ViewGroup buttonParentLayout = getParentLayoutForButtonActionType(bookingActionButtonType);
-                if(buttonParentLayout != null)
-                {
-                    int newChildIndex = buttonParentLayout.getChildCount(); //new index is equal to the old count since the new count is +1
-                    BookingActionButton bookingActionButton = (BookingActionButton) ((ViewGroup) getActivity().getLayoutInflater().inflate(bookingActionButtonType.getLayoutTemplateId(), buttonParentLayout)).getChildAt(newChildIndex);
-                    View.OnClickListener onClickListener = getOnClickListenerForAction(actionButtonType);
-                    bookingActionButton.init(actionButtonType, onClickListener);
-                }
-            }
-        }
-    }
-
-    private void setActionButtonsEnabled(boolean enabled)
-    {
-        for(int i = 0; i < bookingDetailView.actionButtonsLayout.getChildCount(); i++)
-        {
-            BookingActionButton actionButton = (BookingActionButton) bookingDetailView.actionButtonsLayout.getChildAt(i);
-            if(actionButton != null)
-            {
-                actionButton.setEnabled(enabled);
-            }
-        }
-    }
-
-    private void clearBookingActionButtons()
-    {
-        LinearLayout buttonsContainer = bookingDetailView.actionButtonsLayout;
-        buttonsContainer.removeAllViews();
-    }
-
-    //List of action button types in display order
-    private List<String> getActionButtonTypeList(Booking booking)
-    {
-        List<String> actionButtonTypes = new ArrayList<>();
-
-        //TODO: Get this from server like we do for portal
-
-        //TODO: Is there an additional time restriction on when these actions can be taken?
-
-        if(!booking.isPast())
-        {
-            actionButtonTypes.add(BookingAction.ACTION_RESCHEDULE);
-            actionButtonTypes.add(BookingAction.ACTION_CANCEL);
-        }
-
-        return actionButtonTypes;
-    }
-
-    private View.OnClickListener getOnClickListenerForAction(String actionButtonType)
-    {
-        switch(actionButtonType)
-        {
-            case BookingAction.ACTION_CANCEL: return cancelClicked;
-            case BookingAction.ACTION_RESCHEDULE: return rescheduleClicked;
-        }
-        return null;
-    }
-
-    private View.OnClickListener cancelClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View v)
-        {
-            postBlockingEvent(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
-        }
-    };
-
-    private View.OnClickListener rescheduleClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View v)
-        {
-            postBlockingEvent(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
-        }
-    };
-
-    //Mapping for ButtonActionType to Parent Layout, used when adding Action Buttons dynamically
-    private ViewGroup getParentLayoutForButtonActionType(BookingActionButtonType buttonActionType)
-    {
-        if(buttonActionType == null)
-        {
-            return null;
-        }
-
-        switch (buttonActionType)
-        {
-            case RESCHEDULE:
-            case CANCEL:
-            {
-                return bookingDetailView.actionButtonsLayout;
-            }
-
-            default:
-            {
-                Crashlytics.log("Could not find parent layout for button action type : " + buttonActionType.toString());
-                return null;
-            }
-        }
-    }
-
-
-
 }

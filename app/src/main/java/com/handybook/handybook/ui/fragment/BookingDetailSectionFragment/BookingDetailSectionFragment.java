@@ -33,11 +33,20 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         return R.layout.fragment_booking_detail_section;
     }
 
-    protected abstract int getEntryTitleTextResourceId(Booking booking);
+    protected int getEntryTitleTextResourceId(Booking booking)
+    {
+        return R.string.blank_string;
+    }
 
-    protected abstract int getEntryActionTextResourceId(Booking booking);
+    protected int getEntryActionTextResourceId(Booking booking)
+    {
+        return R.string.blank_string;
+    }
 
-    protected abstract boolean hasEnabledAction();
+    protected boolean hasEnabledAction()
+    {
+        return false;
+    }
 
     @Override
     public final void onCreate(final Bundle savedInstanceState)
@@ -108,7 +117,9 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         }
     };
 
-    protected abstract void onActionClick();
+    protected void onActionClick()
+    {
+    }
 
 
     //TODO: Might put all this booking action button stuff into a child class?, it's a big chunk of functionality
