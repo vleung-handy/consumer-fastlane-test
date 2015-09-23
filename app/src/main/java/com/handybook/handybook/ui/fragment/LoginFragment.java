@@ -110,7 +110,10 @@ public final class LoginFragment extends BookingFlowFragment
         bookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
         bookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
 
-        if (!findUser && bookingUserName == null) mixpanel.trackPageLogin();
+        if (!findUser && bookingUserName == null)
+        {
+            mixpanel.trackPageLogin();
+        }
     }
 
     @Override

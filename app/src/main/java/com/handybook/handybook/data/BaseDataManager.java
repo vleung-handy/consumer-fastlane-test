@@ -22,6 +22,7 @@ import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
+import com.handybook.handybook.core.ShouldBlockObject;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.manager.PrefsManager;
 import com.squareup.otto.Bus;
@@ -230,6 +231,27 @@ public final class BaseDataManager extends DataManager
                         cb.onSuccess(servicesMenu);
                     }
                 });
+            }
+        });
+    }
+
+    @Override
+    public void getShouldBlockObject(
+            final int versionCode,
+            final CacheResponse<ShouldBlockObject> shouldBlockObjectCacheResponse,
+            final Callback<ShouldBlockObject> shouldBlockObjectCallback
+    )
+    {
+        service.getShouldBlockObject(
+                versionCode,
+                new HandyRetrofitCallback(shouldBlockObjectCallback)
+        {
+            @Override
+            void success(JSONObject response)
+            {
+                final ShouldBlockObject shouldBlockObject = ShouldBlockObject
+                        .fromJson(response.toString());
+                shouldBlockObjectCallback.onSuccess(shouldBlockObject);
             }
         });
     }

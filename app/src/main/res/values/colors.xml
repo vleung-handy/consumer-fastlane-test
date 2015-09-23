@@ -10,6 +10,10 @@
     <color name="handy_purple">#993092</color>
     <color name="handy_bg">#EAEAEA</color>
     <color name="handy_love">#F9002E</color>
+    <color name="handy_white">#FFFFFF</color>
+    <color name="handy_black">#000000</color>
+    <color name="handy_light_grey">#f4f4f4</color>
+    <color name="handy_dark_grey">#5C5C5C</color>
     <color name="disabled">#E5EAEC</color>
     <color name="nav_bg">#1D1D1D</color>
     <color name="white">#FFFFFF</color>
