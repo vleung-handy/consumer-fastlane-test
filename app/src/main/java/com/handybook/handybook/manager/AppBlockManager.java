@@ -1,6 +1,5 @@
 package com.handybook.handybook.manager;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -43,21 +42,15 @@ public class AppBlockManager
         {
             mContext = e.getActivity().getApplicationContext();
         }
-        if (shoulBlockActivity(e.getActivity()))
+        if (shouldUpdateBlockingStateFromApi())
+        {
+            updateIsBlockedStateFromApi();
+        }
+        if (isAppBlocked() && !e.getActivity().getClass().equals(BlockingActivity.class))
         {
             showBlockingScreen();
             e.getActivity().finish();
         }
-        if (shouldUpdateBlockingStateFromApi())
-        {
-            updateBlockingStateFromApi();
-        }
-    }
-
-    private boolean shoulBlockActivity(final Activity activity)
-    {
-        // If we are resuming an activity other than blocking activity and app is blocked
-        return isAppBlocked() && !activity.getClass().equals(BlockingActivity.class);
     }
 
     private void showBlockingScreen()
@@ -82,7 +75,7 @@ public class AppBlockManager
     /**
      * Request ShouldBlock object from API and update shared preferences accordingly
      */
-    private void updateBlockingStateFromApi()
+    private void updateIsBlockedStateFromApi()
     {
         int versionCode;
         final PackageManager packageManager = mContext.getPackageManager();
