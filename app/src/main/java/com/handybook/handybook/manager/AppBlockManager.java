@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.core.ShouldBlockObject;
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.event.HandyEvent;
@@ -18,7 +18,7 @@ public class AppBlockManager
 {
     private static final long MIN_BLOCK_CHECK_DELAY_MILLIS = 30 * 1000; // no more than every 30s
 
-    private Context mContext;
+    private Context appContext;
     private PrefsManager prefsManager;
     private DataManager dataManager;
     private Bus bus;
@@ -38,9 +38,9 @@ public class AppBlockManager
     @Subscribe
     public void onEachActivityResume(final ActivityEvent.Resumed e)
     {
-        if (mContext == null)
+        if (appContext == null)
         {
-            mContext = e.getActivity().getApplicationContext();
+            appContext = e.getActivity().getApplicationContext();
         }
         if (shouldUpdateBlockingStateFromApi())
         {
@@ -55,10 +55,10 @@ public class AppBlockManager
 
     private void showBlockingScreen()
     {
-        Intent launchBlockingActivity = new Intent(mContext, BlockingActivity.class);
+        Intent launchBlockingActivity = new Intent(appContext, BlockingActivity.class);
         launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(launchBlockingActivity);
+        appContext.startActivity(launchBlockingActivity);
     }
 
     private boolean isAppBlocked()
@@ -78,8 +78,8 @@ public class AppBlockManager
     private void updateIsBlockedStateFromApi()
     {
         int versionCode;
-        final PackageManager packageManager = mContext.getPackageManager();
-        final String packageName = mContext.getPackageName();
+        final PackageManager packageManager = appContext.getPackageManager();
+        final String packageName = appContext.getPackageName();
         try
         {
             versionCode = packageManager.getPackageInfo(packageName, 0).versionCode;
@@ -89,20 +89,20 @@ public class AppBlockManager
             Crashlytics.logException(nnfe);
             versionCode = 0;
         }
-        dataManager.getShouldBlockObject(
+        dataManager.getBlockedWrapper(
                 versionCode,
-                new DataManager.CacheResponse<ShouldBlockObject>()
+                new DataManager.CacheResponse<BlockedWrapper>()
                 {
                     @Override
-                    public void onResponse(final ShouldBlockObject shouldBlockObject)
+                    public void onResponse(final BlockedWrapper blockedWrapper)
                     {
                         //Do nothing, what is this even for?
                     }
                 },
-                new DataManager.Callback<ShouldBlockObject>()
+                new DataManager.Callback<BlockedWrapper>()
                 {
                     @Override
-                    public void onSuccess(ShouldBlockObject response)
+                    public void onSuccess(BlockedWrapper response)
                     {
                         updateAppBlockedSharedPreference(response.isBlocked());
                     }
