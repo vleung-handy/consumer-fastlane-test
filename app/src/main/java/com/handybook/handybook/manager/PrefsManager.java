@@ -92,4 +92,5 @@ public class PrefsManager
     {
         return Long.valueOf(prefs.getString(prefsKey.getKey()));
     }
+
 }
