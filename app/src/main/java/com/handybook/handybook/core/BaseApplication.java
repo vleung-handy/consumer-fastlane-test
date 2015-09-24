@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.ActivityEvent;
@@ -44,8 +45,7 @@ public class BaseApplication extends Application
     @Inject
     Bus bus;
 
-
-    //We are injecting all of our event bus listening managers in BaseApplication to start them
+    // We are injecting all of our event bus listening managers in BaseApplication to start them
     // up for event listening
     @Inject
     HelpManager helpManager;
@@ -73,10 +73,8 @@ public class BaseApplication extends Application
             {
                 final DefaultNotificationFactory defaultNotificationFactory =
                         new DefaultNotificationFactory(getApplicationContext());
-
                 defaultNotificationFactory.setColor(getResources().getColor(R.color.handy_blue));
                 defaultNotificationFactory.setSmallIconId(R.drawable.ic_notification);
-
                 airship.getPushManager().setNotificationFactory(defaultNotificationFactory);
                 airship.getPushManager().setPushEnabled(false);
                 airship.getPushManager().setUserNotificationsEnabled(false);
@@ -96,7 +94,12 @@ public class BaseApplication extends Application
         {
             NewRelic.withApplicationToken("AAbaf8c55fb9788d1664e82661d94bc18ea7c39aa6").start(this);
         }
-
+        // If this is the first ever run of the application, emit Mixpanel event
+        if (prefsManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
+        {
+            prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
+            mixpanel.trackEventAppTrackInstall();
+        }
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             @Override
@@ -167,7 +170,6 @@ public class BaseApplication extends Application
     protected void updateUser()
     {
         final User user = userManager.getCurrentUser();
-
         if (user != null)
         {
             dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
