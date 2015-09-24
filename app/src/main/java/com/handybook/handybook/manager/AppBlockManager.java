@@ -68,8 +68,8 @@ public class AppBlockManager
 
     private boolean shouldUpdateBlockingStateFromApi()
     {
-        final long lastBlockedCheckMillis = prefsManager.getLong(PrefsKey.APP_BLOCKED_LAST_CHECK, 0);
-        return System.currentTimeMillis() - lastBlockedCheckMillis > MIN_BLOCK_CHECK_DELAY_MILLIS;
+        final long lastCheckMillis = prefsManager.getLong(PrefsKey.APP_BLOCKED_LAST_CHECK, 0);
+        return System.currentTimeMillis() - lastCheckMillis > MIN_BLOCK_CHECK_DELAY_MILLIS;
     }
 
     /**
@@ -110,7 +110,8 @@ public class AppBlockManager
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        Crashlytics.log("Get should block object error.");
+                        final String logMessage = "Error while requesting BlockedWrapper: " + error;
+                        Crashlytics.log(logMessage);
                         // Otherwise do nothing. We default to letting people use the app, so in
                         // case of request error we stick to that policy.
                     }
