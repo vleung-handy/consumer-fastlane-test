@@ -74,6 +74,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         page = getArguments().getInt(EXTRA_PAGE, 0);
         isNewUser = getArguments().getBoolean(EXTRA_NEW_USER, false);
+        mixpanel.trackEventAppTrackConfirmation();
     }
 
     @Override
