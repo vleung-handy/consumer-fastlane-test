@@ -16,12 +16,12 @@ import com.squareup.otto.Subscribe;
 
 public class AppBlockManager
 {
-    private static final long MIN_APP_BLOCKED_CHECK_INTERVAL = 30 * 1000; // no more than every 30s
+    private static final long MIN_BLOCK_CHECK_DELAY_MILLIS = 30 * 1000; // no more than every 30s
 
     private Context mContext;
-    private PrefsManager mPrefsManager;
-    private DataManager mDataManager;
-    private Bus mBus;
+    private PrefsManager prefsManager;
+    private DataManager dataManager;
+    private Bus bus;
 
     public AppBlockManager(
             final Bus bus,
@@ -29,10 +29,10 @@ public class AppBlockManager
             final PrefsManager prefsManager
     )
     {
-        mBus = bus;
-        mPrefsManager = prefsManager;
-        mDataManager = dataManager;
-        mBus.register(this);
+        this.bus = bus;
+        this.prefsManager = prefsManager;
+        this.dataManager = dataManager;
+        this.bus.register(this);
     }
 
     @Subscribe
@@ -63,13 +63,13 @@ public class AppBlockManager
 
     private boolean isAppBlocked()
     {
-        return mPrefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
+        return prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
     }
 
     private boolean shouldUpdateBlockingStateFromApi()
     {
-        final long lastBlockedCheckMillis = mPrefsManager.getLong(PrefsKey.APP_BLOCKED_LAST_CHECK, 0);
-        return System.currentTimeMillis() - lastBlockedCheckMillis > MIN_APP_BLOCKED_CHECK_INTERVAL;
+        final long lastBlockedCheckMillis = prefsManager.getLong(PrefsKey.APP_BLOCKED_LAST_CHECK, 0);
+        return System.currentTimeMillis() - lastBlockedCheckMillis > MIN_BLOCK_CHECK_DELAY_MILLIS;
     }
 
     /**
@@ -89,7 +89,7 @@ public class AppBlockManager
             Crashlytics.logException(nnfe);
             versionCode = 0;
         }
-        mDataManager.getShouldBlockObject(
+        dataManager.getShouldBlockObject(
                 versionCode,
                 new DataManager.CacheResponse<ShouldBlockObject>()
                 {
@@ -120,16 +120,16 @@ public class AppBlockManager
 
     private void updateAppBlockedSharedPreference(final boolean isBlocked)
     {
-        final boolean wasBlocked = mPrefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
-        mPrefsManager.setLong(PrefsKey.APP_BLOCKED_LAST_CHECK, System.currentTimeMillis());
-        mPrefsManager.setBoolean(PrefsKey.APP_BLOCKED, isBlocked);
+        final boolean wasBlocked = prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
+        prefsManager.setLong(PrefsKey.APP_BLOCKED_LAST_CHECK, System.currentTimeMillis());
+        prefsManager.setBoolean(PrefsKey.APP_BLOCKED, isBlocked);
         if (!wasBlocked && isBlocked)
         {// We're starting to block
-            mBus.post(new HandyEvent.StartBlockingAppEvent());
+            bus.post(new HandyEvent.StartBlockingAppEvent());
             showBlockingScreen();
         } else if (wasBlocked && !isBlocked)
         {// We're stopping blocking
-            mBus.post(new HandyEvent.StopBlockingAppEvent());
+            bus.post(new HandyEvent.StopBlockingAppEvent());
 
         }
     }
