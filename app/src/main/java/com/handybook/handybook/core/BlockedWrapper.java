@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Passed in by API to denote if the application should be blocked or not
  */
-public class ShouldBlockObject
+public class BlockedWrapper
 {
     @SerializedName("blocked")
     private boolean blocked;
@@ -16,8 +16,8 @@ public class ShouldBlockObject
         return blocked;
     }
 
-    public static ShouldBlockObject fromJson(final String json)
+    public static BlockedWrapper fromJson(final String json)
     {
-        return new GsonBuilder().create().fromJson(json, ShouldBlockObject.class);
+        return new GsonBuilder().create().fromJson(json, BlockedWrapper.class);
     }
 }

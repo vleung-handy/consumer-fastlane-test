@@ -18,7 +18,7 @@ import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.ShouldBlockObject;
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.manager.PrefsManager;
 import com.squareup.otto.Bus;
@@ -232,24 +232,24 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void getShouldBlockObject(
+    public void getBlockedWrapper(
             final int versionCode,
-            final CacheResponse<ShouldBlockObject> shouldBlockObjectCacheResponse,
-            final Callback<ShouldBlockObject> shouldBlockObjectCallback
+            final CacheResponse<BlockedWrapper> blockedWrapperCacheResponse,
+            final Callback<BlockedWrapper> blockedWrapperCallback
     )
     {
-        service.getShouldBlockObject(
+        service.getBlockedWrapper(
                 versionCode,
-                new HandyRetrofitCallback(shouldBlockObjectCallback)
-        {
-            @Override
-            void success(JSONObject response)
-            {
-                final ShouldBlockObject shouldBlockObject = ShouldBlockObject
-                        .fromJson(response.toString());
-                shouldBlockObjectCallback.onSuccess(shouldBlockObject);
-            }
-        });
+                new HandyRetrofitCallback(blockedWrapperCallback)
+                {
+                    @Override
+                    void success(JSONObject response)
+                    {
+                        final BlockedWrapper blockedWrapper = BlockedWrapper
+                                .fromJson(response.toString());
+                        blockedWrapperCallback.onSuccess(blockedWrapper);
+                    }
+                });
     }
 
     @Override

@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.core.ShouldBlockObject;
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.event.HandyEvent;
@@ -16,12 +16,12 @@ import com.squareup.otto.Subscribe;
 
 public class AppBlockManager
 {
-    private static final long MIN_APP_BLOCKED_CHECK_INTERVAL = 30 * 1000; // no more than every 30s
+    private static final long MIN_BLOCK_CHECK_DELAY_MILLIS = 30 * 1000; // no more than every 30s
 
-    private Context mContext;
-    private PrefsManager mPrefsManager;
-    private DataManager mDataManager;
-    private Bus mBus;
+    private Context appContext;
+    private PrefsManager prefsManager;
+    private DataManager dataManager;
+    private Bus bus;
 
     public AppBlockManager(
             final Bus bus,
@@ -29,18 +29,18 @@ public class AppBlockManager
             final PrefsManager prefsManager
     )
     {
-        mBus = bus;
-        mPrefsManager = prefsManager;
-        mDataManager = dataManager;
-        mBus.register(this);
+        this.bus = bus;
+        this.prefsManager = prefsManager;
+        this.dataManager = dataManager;
+        this.bus.register(this);
     }
 
     @Subscribe
     public void onEachActivityResume(final ActivityEvent.Resumed e)
     {
-        if (mContext == null)
+        if (appContext == null)
         {
-            mContext = e.getActivity().getApplicationContext();
+            appContext = e.getActivity().getApplicationContext();
         }
         if (shouldUpdateBlockingStateFromApi())
         {
@@ -55,21 +55,21 @@ public class AppBlockManager
 
     private void showBlockingScreen()
     {
-        Intent launchBlockingActivity = new Intent(mContext, BlockingActivity.class);
+        Intent launchBlockingActivity = new Intent(appContext, BlockingActivity.class);
         launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(launchBlockingActivity);
+        appContext.startActivity(launchBlockingActivity);
     }
 
     private boolean isAppBlocked()
     {
-        return mPrefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
+        return prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
     }
 
     private boolean shouldUpdateBlockingStateFromApi()
     {
-        final long lastBlockedCheckMillis = mPrefsManager.getLong(PrefsKey.APP_BLOCKED_LAST_CHECK, 0);
-        return System.currentTimeMillis() - lastBlockedCheckMillis > MIN_APP_BLOCKED_CHECK_INTERVAL;
+        final long lastCheckMillis = prefsManager.getLong(PrefsKey.APP_BLOCKED_LAST_CHECK, 0);
+        return System.currentTimeMillis() - lastCheckMillis > MIN_BLOCK_CHECK_DELAY_MILLIS;
     }
 
     /**
@@ -78,8 +78,8 @@ public class AppBlockManager
     private void updateIsBlockedStateFromApi()
     {
         int versionCode;
-        final PackageManager packageManager = mContext.getPackageManager();
-        final String packageName = mContext.getPackageName();
+        final PackageManager packageManager = appContext.getPackageManager();
+        final String packageName = appContext.getPackageName();
         try
         {
             versionCode = packageManager.getPackageInfo(packageName, 0).versionCode;
@@ -89,20 +89,20 @@ public class AppBlockManager
             Crashlytics.logException(nnfe);
             versionCode = 0;
         }
-        mDataManager.getShouldBlockObject(
+        dataManager.getBlockedWrapper(
                 versionCode,
-                new DataManager.CacheResponse<ShouldBlockObject>()
+                new DataManager.CacheResponse<BlockedWrapper>()
                 {
                     @Override
-                    public void onResponse(final ShouldBlockObject shouldBlockObject)
+                    public void onResponse(final BlockedWrapper blockedWrapper)
                     {
                         //Do nothing, what is this even for?
                     }
                 },
-                new DataManager.Callback<ShouldBlockObject>()
+                new DataManager.Callback<BlockedWrapper>()
                 {
                     @Override
-                    public void onSuccess(ShouldBlockObject response)
+                    public void onSuccess(BlockedWrapper response)
                     {
                         updateAppBlockedSharedPreference(response.isBlocked());
                     }
@@ -110,7 +110,8 @@ public class AppBlockManager
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        Crashlytics.log("Get should block object error.");
+                        final String logMessage = "Error while requesting BlockedWrapper: " + error;
+                        Crashlytics.log(logMessage);
                         // Otherwise do nothing. We default to letting people use the app, so in
                         // case of request error we stick to that policy.
                     }
@@ -120,16 +121,16 @@ public class AppBlockManager
 
     private void updateAppBlockedSharedPreference(final boolean isBlocked)
     {
-        final boolean wasBlocked = mPrefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
-        mPrefsManager.setLong(PrefsKey.APP_BLOCKED_LAST_CHECK, System.currentTimeMillis());
-        mPrefsManager.setBoolean(PrefsKey.APP_BLOCKED, isBlocked);
+        final boolean wasBlocked = prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
+        prefsManager.setLong(PrefsKey.APP_BLOCKED_LAST_CHECK, System.currentTimeMillis());
+        prefsManager.setBoolean(PrefsKey.APP_BLOCKED, isBlocked);
         if (!wasBlocked && isBlocked)
         {// We're starting to block
-            mBus.post(new HandyEvent.StartBlockingAppEvent());
+            bus.post(new HandyEvent.StartBlockingAppEvent());
             showBlockingScreen();
         } else if (wasBlocked && !isBlocked)
         {// We're stopping blocking
-            mBus.post(new HandyEvent.StopBlockingAppEvent());
+            bus.post(new HandyEvent.StopBlockingAppEvent());
 
         }
     }
