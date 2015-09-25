@@ -44,29 +44,17 @@
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/fb_login_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="18sp"
                     />
-                <!--style="@style/FacebookButton"-->
-
-                <!--                <com.facebook.widget.LoginButton
-                                    android:id="@+id/fb_button"
-                                    android:layout_marginLeft="@dimen/default_margin"
-                                    android:layout_marginRight="@dimen/default_margin"
-                                    style="@style/FacebookButton" />
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginLeft="28dp"
-                                    android:layout_marginStart="28dp"
-                                    android:src="@drawable/ic_facebook"
-                                    android:contentDescription="facebook" />
-                -->
 
             </RelativeLayout>
 
