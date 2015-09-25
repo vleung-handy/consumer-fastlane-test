@@ -46,7 +46,7 @@ android {
     defaultConfig {
         applicationId 'com.handy.handy'
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 51
         versionName '1.7'
         multiDexEnabled true
