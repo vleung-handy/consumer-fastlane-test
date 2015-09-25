@@ -2,15 +2,12 @@
 <com.handybook.handybook.ui.widget.BookingDetailSectionBookingActionsView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingRight="@dimen/default_padding"
-    >
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/entry_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
         android:visibility="gone"
         />
 
@@ -18,25 +15,23 @@
         android:id="@+id/entry_action_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
         android:visibility="gone"/>
 
     <TextView
         android:id="@+id/entry_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
         android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/action_buttons_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/entry_text"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
-        />
+        android:orientation="vertical">
+    </LinearLayout>
 
 </com.handybook.handybook.ui.widget.BookingDetailSectionBookingActionsView>
