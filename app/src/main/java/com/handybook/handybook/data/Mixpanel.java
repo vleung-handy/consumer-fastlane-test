@@ -331,7 +331,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Install");
+        mixpanelAPI.track("App Track Install", props);
     }
 
     // APP_TRACK_LOCATION ("App Track Location"),
@@ -339,7 +339,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Location");
+        mixpanelAPI.track("App Track Location", props);
     }
 
     // APP_TRACK_DETAILS ("App Track Details"),
@@ -347,7 +347,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Details");
+        mixpanelAPI.track("App Track Details", props);
     }
 
     // APP_TRACK_TIME ("App Track Time"),
@@ -355,7 +355,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Time");
+        mixpanelAPI.track("App Track Time", props);
     }
 
     // APP_TRACK_CONTACT ("App Track Contact"),
@@ -363,7 +363,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("");
+        mixpanelAPI.track("App Track Contact", props);
     }
 
     // APP_TRACK_LOG_IN ("App Track Log In"),
@@ -371,7 +371,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("");
+        mixpanelAPI.track("App Track Log In", props);
     }
 
     // APP_TRACK_REQUEST_PRO ("App Track Request Pro"),
@@ -379,7 +379,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Request Pro");
+        mixpanelAPI.track("App Track Request Pro", props);
     }
 
     // APP_TRACK_COMMENTS ("App Track Comments"),
@@ -387,7 +387,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Comments");
+        mixpanelAPI.track("App Track Comments", props);
     }
 
     // APP_TRACK_FREQUENCY ("App Track Frequency"),
@@ -395,7 +395,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Frequency");
+        mixpanelAPI.track("App Track Frequency", props);
     }
 
     // APP_TRACK_EXTRAS ("App Track Extras"),
@@ -403,7 +403,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Extras");
+        mixpanelAPI.track("App Track Extras", props);
     }
 
     // APP_TRACK_ADDRESS ("App Track Address"),
@@ -411,7 +411,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Address");
+        mixpanelAPI.track("App Track Address", props);
     }
 
     // APP_TRACK_PAYMENT ("App Track Payment"),
@@ -419,7 +419,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Payment");
+        mixpanelAPI.track("App Track Payment", props);
     }
 
     // APP_TRACK_CONFIRMATION ("App Track Confirmation");
@@ -427,7 +427,7 @@ public class Mixpanel
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
-        mixpanelAPI.track("App Track Confirmation");
+        mixpanelAPI.track("App Track Confirmation", props);
     }
 
 
