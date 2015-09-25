@@ -22,6 +22,8 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
+// This does not break the build when Android Studio is missing the JRebel for Android plugin.
+apply plugin: 'com.zeroturnaround.jrebel.android'
 apply plugin: 'io.fabric'
 apply plugin: 'newrelic'
 
@@ -46,7 +48,7 @@ android {
     defaultConfig {
         applicationId 'com.handy.handy'
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 51
         versionName '1.7'
         multiDexEnabled true
