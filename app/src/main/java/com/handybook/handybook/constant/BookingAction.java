@@ -1,8 +1,5 @@
 package com.handybook.handybook.constant;
 
-/**
- * Created by cdavis on 9/21/15.
- */
 public class BookingAction
 {
     public static final String ACTION_RESCHEDULE = "reschedule";

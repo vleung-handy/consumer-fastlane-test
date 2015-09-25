@@ -18,7 +18,8 @@ import java.util.Date;
 
 import butterknife.Bind;
 
-//TODO: Continue chopping this class up into fragments so all the elements in BookingDetailFragment are BookingDetailSectionFragments
+// TODO: Continue chopping this class up into fragments so all the elements in BookingDetailFragment
+// are BookingDetailSectionFragments
 
 public final class BookingDetailView extends InjectedRelativeLayout
 {
@@ -68,7 +69,8 @@ public final class BookingDetailView extends InjectedRelativeLayout
         serviceIcon.updateServiceIconByBooking(booking);
     }
 
-    //TODO: don't like having an exception the fragment should talk to the view in as few ways as possible, this view is going to be supplanted by new sub fragments
+    //TODO: don't like having an exception the fragment should talk to the view in as few ways as
+    // possible, this view is going to be supplanted by new sub fragments
     public void updateDateTimeInfoText(final Booking booking)
     {
         updateDateTimeInfoText(booking, booking.getStartDate());
@@ -77,14 +79,16 @@ public final class BookingDetailView extends InjectedRelativeLayout
     public void updateDateTimeInfoText(final Booking booking, final Date startDate)
     {
         final float hours = booking.getHours();
-        final int minutes = (int) (60 * hours); //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
+        //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
+        final int minutes = (int) (60 * hours);
         final Calendar endDate = Calendar.getInstance();
 
         endDate.setTime(startDate);
         endDate.add(Calendar.MINUTE, minutes);
 
         timeText.setText(TextUtils.formatDate(startDate, "h:mm aaa - ")
-                + TextUtils.formatDate(endDate.getTime(), "h:mm aaa (") + TextUtils.formatDecimal(hours, "#.#") + " "
+                + TextUtils.formatDate(endDate.getTime(), "h:mm aaa (")
+                + TextUtils.formatDecimal(hours, "#.#") + " "
                 + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours)) + ")");
 
         dateText.setText(TextUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy"));

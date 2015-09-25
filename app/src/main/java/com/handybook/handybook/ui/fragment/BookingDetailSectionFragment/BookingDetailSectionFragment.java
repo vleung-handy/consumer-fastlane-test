@@ -58,18 +58,17 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(getFragmentResourceId(), container, false);
-
         ButterKnife.bind(this, view);
-
         updateDisplay(this.booking, userManager.getCurrentUser());
-
         setupClickListeners(this.booking);
-
         return view;
     }
 
@@ -154,20 +153,16 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         else
         {
             actionButtonLayout.setVisibility(View.VISIBLE);
-
             for (String actionButtonType : actionButtonTypes)
             {
                 BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(actionButtonType);
-
                 if (bookingActionButtonType != null)
                 {
                     ViewGroup buttonParentLayout = getParentForActionButtonType(actionButtonType);
-
                     if (buttonParentLayout != null)
                     {
                         int newChildIndex = buttonParentLayout.getChildCount(); //new index is equal to the old count since the new count is +1
                         ViewGroup rootViewGroup = (ViewGroup) getActivity().getLayoutInflater().inflate(bookingActionButtonType.getLayoutTemplateId(), buttonParentLayout);
-
                         BookingActionButton bookingActionButton = (BookingActionButton) rootViewGroup.getChildAt(newChildIndex);
                         View.OnClickListener onClickListener = getOnClickListenerForAction(actionButtonType);
                         bookingActionButton.init(actionButtonType, onClickListener);
