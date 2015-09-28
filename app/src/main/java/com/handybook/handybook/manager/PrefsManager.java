@@ -1,5 +1,8 @@
 package com.handybook.handybook.manager;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.SecurePreferences;
 
@@ -17,18 +20,41 @@ public class PrefsManager
         this.prefs = prefs;
     }
 
-    // String
-    public void setString(PrefsKey prefsKey, String value)
+    /**
+     * Set String in shared preference at prefsKey
+     *
+     * @param prefsKey key to store the value at
+     * @param value    the String value to be stored at the prefsKey location
+     */
+    public void setString(@NonNull final PrefsKey prefsKey, @Nullable final String value)
     {
         prefs.put(prefsKey.getKey(), value);
     }
 
-    public String getString(PrefsKey prefsKey)
+    /**
+     * Get a String from SecurePreferences or null if key doesn't exist.
+     * <p/>
+     * See also the method {@link #getString(PrefsKey, String)}.
+     * <p/>Returns **null** when value for _prefsKey_ not found.
+     *
+     * @param prefsKey PrefsKey key
+     * @return Requested String or Null
+     */
+    @Nullable
+    public String getString(@NonNull final PrefsKey prefsKey)
     {
-        return getString(prefsKey, "");
+        return getString(prefsKey, null);
     }
 
-    public String getString(PrefsKey prefsKey, String defaultValue)
+    /**
+     * Get a String from SecurePreferences or _defaultValue_ if key doesn't exist.
+     *
+     * @param prefsKey     PrefsKey key
+     * @param defaultValue Value returned if property at prefsKey doesn't exist
+     * @return Requested String or defaultValue
+     */
+    @Nullable
+    public String getString(@NonNull final PrefsKey prefsKey, @Nullable final String defaultValue)
     {
         if (!prefs.containsKey(prefsKey.getKey()))
         {
@@ -37,7 +63,13 @@ public class PrefsManager
         return prefs.getString(prefsKey.getKey());
     }
 
-    // boolean
+    /**
+     * Get a Boolean from SecurePreferences or _defaultValue_ if key doesn't exist
+     *
+     * @param prefsKey     PrefsKey key
+     * @param defaultValue Value returned if property at prefsKey doesn't exist
+     * @return Requested Boolean or defaultValue
+     */
     public boolean getBoolean(PrefsKey prefsKey, boolean defaultValue)
     {
         if (!prefs.containsKey(prefsKey.getKey()))
