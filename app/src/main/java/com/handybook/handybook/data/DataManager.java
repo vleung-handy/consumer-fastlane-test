@@ -18,7 +18,7 @@ import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.ShouldBlockObject;
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.squareup.otto.Bus;
@@ -68,10 +68,10 @@ public abstract class DataManager
      * @param shouldBlockObjectCacheResponse ..
      * @param shouldBlockObjectCallback ..
      */
-    public abstract void getShouldBlockObject(
+    public abstract void getBlockedWrapper(
             final int versionCode,
-            final CacheResponse<ShouldBlockObject> shouldBlockObjectCacheResponse,
-            final Callback<ShouldBlockObject> shouldBlockObjectCallback
+            final CacheResponse<BlockedWrapper> shouldBlockObjectCacheResponse,
+            final Callback<BlockedWrapper> shouldBlockObjectCallback
     );
 
     public abstract void getQuoteOptions(int serviceId,

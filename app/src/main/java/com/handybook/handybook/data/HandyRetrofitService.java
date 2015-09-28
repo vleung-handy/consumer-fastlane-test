@@ -24,7 +24,7 @@ public interface HandyRetrofitService
 {
 
     @GET("/app_updates")
-    void getShouldBlockObject(@Query("version_code") int versionCode, HandyRetrofitCallback cb);
+    void getBlockedWrapper(@Query("version_code") int versionCode, HandyRetrofitCallback cb);
 
     @GET("/services/most_common")
     void getServicesMenu(HandyRetrofitCallback cb);
