@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingBottom="@dimen/default_padding"
-    android:paddingLeft="@dimen/default_padding"
-    android:paddingRight="@dimen/default_padding"
+    android:paddingBottom="8dp"
     >
 
     <View
@@ -20,10 +18,14 @@
     <TextView
         android:id="@+id/entry_title"
         style="@style/TextView.XSmall.Bold"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/entry_sep"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="20dp"
         tools:text="xxx this is the entry title xxx"
         android:textAllCaps="true"
         android:textColor="@color/steel"/>
@@ -31,14 +33,18 @@
     <TextView
         android:id="@+id/entry_action_text"
         style="@style/TextView.XSmall.Bold"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/entry_sep"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/default_margin"
+        android:padding="4dp"
         android:gravity="end"
         tools:text="XX action text XX"
         android:textAllCaps="true"
-        android:textColor="@color/handy_blue"/>
+        android:textColor="@color/handy_blue"
+        />
 
     <TextView
         android:id="@+id/entry_text"
@@ -46,6 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/entry_title"
+        android:layout_margin="@dimen/default_margin"
         tools:text="XXXX this is where the entry text goes it can be multiple lines XXX"/>
 
     <LinearLayout

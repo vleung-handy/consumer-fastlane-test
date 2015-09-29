@@ -130,25 +130,28 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         if (actionButtonTypes.isEmpty())
         {
             actionButtonLayout.setVisibility(View.GONE);
-        }
-        else
+        } else
         {
             actionButtonLayout.setVisibility(View.VISIBLE);
             for (String actionButtonType : actionButtonTypes)
             {
-                BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(actionButtonType);
-                if (bookingActionButtonType != null)
+                BookingActionButtonType bookingABT = Utils.getBookingActionButtonType(actionButtonType);
+                if (bookingABT == null)
                 {
-                    ViewGroup buttonParentLayout = getParentForActionButtonType(actionButtonType);
-                    if (buttonParentLayout != null)
-                    {
-                        int newChildIndex = buttonParentLayout.getChildCount(); //new index is equal to the old count since the new count is +1
-                        ViewGroup rootViewGroup = (ViewGroup) getActivity().getLayoutInflater().inflate(bookingActionButtonType.getLayoutTemplateId(), buttonParentLayout);
-                        BookingActionButton bookingActionButton = (BookingActionButton) rootViewGroup.getChildAt(newChildIndex);
-                        View.OnClickListener onClickListener = getOnClickListenerForAction(actionButtonType);
-                        bookingActionButton.init(actionButtonType, onClickListener);
-                    }
+                    continue;
                 }
+                ViewGroup buttonParentLayout = getParentForActionButtonType(actionButtonType);
+                if (buttonParentLayout == null)
+                {
+                    continue;
+                }
+                int newChildIndex = buttonParentLayout.getChildCount();//old count +1
+                ViewGroup rootViewGroup = (ViewGroup) getActivity().getLayoutInflater()
+                        .inflate(bookingABT.getLayoutTemplateId(), buttonParentLayout);
+                BookingActionButton bookingActionButton = (BookingActionButton) rootViewGroup
+                        .getChildAt(newChildIndex);
+                View.OnClickListener onClickListener = getOnClickListenerForAction(actionButtonType);
+                bookingActionButton.init(actionButtonType, onClickListener);
             }
         }
     }
@@ -186,11 +189,10 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
             HandyEvent.SetBookingDetailSectionFragmentActionControlsEnabled event
     )
     {
-        if(event.enabled)
+        if (event.enabled)
         {
             enableInputs();
-        }
-        else
+        } else
         {
             disableInputs();
         }
@@ -203,26 +205,30 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     protected void setActionButtonsEnabled(boolean enabled)
     {
         List<String> actionButtonTypes = getActionButtonTypeList(this.booking);
-        if (!actionButtonTypes.isEmpty())
+        if (actionButtonTypes.isEmpty())
         {
-            for (String actionButtonType : actionButtonTypes)
+            return;
+        }
+        for (String actionButtonType : actionButtonTypes)
+        {
+            BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(actionButtonType);
+            if (bookingActionButtonType == null)
             {
-                BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(actionButtonType);
-                if (bookingActionButtonType != null)
+                continue;
+            }
+            ViewGroup buttonParentLayout = getParentForActionButtonType(actionButtonType);
+            if (buttonParentLayout == null)
+            {
+                continue;
+            }
+            for (int i = 0; i < buttonParentLayout.getChildCount(); i++)
+            {
+                BookingActionButton actionButton = (BookingActionButton) buttonParentLayout.getChildAt(i);
+                if (actionButton == null)
                 {
-                    ViewGroup buttonParentLayout = getParentForActionButtonType(actionButtonType);
-                    if (buttonParentLayout != null)
-                    {
-                        for (int i = 0; i < buttonParentLayout.getChildCount(); i++)
-                        {
-                            BookingActionButton actionButton = (BookingActionButton) buttonParentLayout.getChildAt(i);
-                            if (actionButton != null)
-                            {
-                                actionButton.setEnabled(enabled);
-                            }
-                        }
-                    }
+                    continue;
                 }
+                actionButton.setEnabled(enabled);
             }
         }
     }

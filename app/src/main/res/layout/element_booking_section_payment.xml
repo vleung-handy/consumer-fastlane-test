@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.handybook.handybook.ui.widget.BookingDetailSectionPaymentView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:paddingBottom="@dimen/default_padding"
-    android:paddingLeft="@dimen/default_padding"
-    android:paddingRight="@dimen/default_padding"
     >
-
     <View
         android:id="@+id/entry_sep"
         android:layout_width="match_parent"
@@ -19,25 +17,33 @@
     <TextView
         android:id="@+id/entry_title"
         style="@style/TextView.XSmall.Bold"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/entry_sep"
-        android:layout_marginBottom="10dp"
-        android:text="@string/payment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="20dp"
+        tools:text="xxx this is the entry title xxx"
         android:textAllCaps="true"
         android:textColor="@color/steel"/>
 
     <TextView
         android:id="@+id/entry_action_text"
         style="@style/TextView.XSmall.Bold"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/entry_sep"
-        android:layout_marginBottom="10dp"
-        android:gravity="right"
-        android:text="XX action text XX"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/default_margin"
+        android:padding="4dp"
+        android:gravity="end"
+        tools:text="XX action text XX"
         android:textAllCaps="true"
-        android:textColor="@color/handy_blue"/>
+        android:textColor="@color/handy_blue"
+        />
 
     <RelativeLayout
         android:id="@+id/payment_info_section"
@@ -50,6 +56,10 @@
             android:id="@+id/pay_lines_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginBottom="20dp"
             android:orientation="vertical"
             android:visibility="gone"/>
@@ -57,6 +67,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
             android:layout_below="@id/pay_lines_section"
             android:orientation="horizontal">
 
@@ -84,6 +98,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/payment_info_section"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
         android:text="Billed Status"
         android:textColor="@color/black_pressed"/>
 

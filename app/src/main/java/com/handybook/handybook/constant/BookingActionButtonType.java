@@ -4,8 +4,8 @@ import com.handybook.handybook.R;
 
 public enum BookingActionButtonType
 {
-    RESCHEDULE(BookingAction.ACTION_RESCHEDULE, R.string.reschedule, BookingActionButtonStyle.TEAL),
-    CANCEL(BookingAction.ACTION_CANCEL, R.string.cancel_booking, BookingActionButtonStyle.RED_EMPTY),
+    RESCHEDULE(BookingAction.ACTION_RESCHEDULE, R.string.reschedule, BookingActionButtonStyle.BLUE),
+    CANCEL(BookingAction.ACTION_CANCEL, R.string.cancel_booking, BookingActionButtonStyle.GREY),
     CONTACT_PHONE(BookingAction.ACTION_CONTACT_PHONE, R.string.call, BookingActionButtonStyle.CONTACT),
     CONTACT_TEXT(BookingAction.ACTION_CONTACT_TEXT, R.string.text, BookingActionButtonStyle.CONTACT),
     ;
