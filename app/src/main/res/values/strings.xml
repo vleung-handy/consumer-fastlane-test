@@ -174,5 +174,7 @@
     <string name="booking_number">Booking #</string>
     <string name="error_no_intent_handler_found">No application found to handle the requested action</string>
     <string name="no_information">No information</string>
+    <string name="error_toast_missing_hidden_keys_note">Please, describe where you\'ll hide the keys.</string>
+    <string name="toast_error_missing_hidden_key_note">Please, describe where you\'ll hide the keys.</string>
 
 </resources>

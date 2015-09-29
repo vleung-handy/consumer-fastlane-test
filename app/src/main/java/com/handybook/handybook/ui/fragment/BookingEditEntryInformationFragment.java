@@ -159,6 +159,10 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         @Override
         public void onClick(final View view)
         {
+            if(keysText.length() <= 0){
+                showToast(R.string.toast_error_missing_hidden_key_note);
+                return;
+            }
             disableInputs();
             progressDialog.show();
             int bookingId = Integer.parseInt(booking.getId());
