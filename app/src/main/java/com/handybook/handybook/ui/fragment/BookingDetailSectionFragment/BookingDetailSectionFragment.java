@@ -30,79 +30,20 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionView view;
 
-    protected int getFragmentResourceId()
+    protected View.OnClickListener actionClicked = new View.OnClickListener()
     {
-        return R.layout.fragment_booking_detail_section;
-    }
-
-    protected int getEntryTitleTextResourceId(Booking booking)
-    {
-        return R.string.blank_string;
-    }
-
-    protected int getEntryActionTextResourceId(Booking booking)
-    {
-        return R.string.blank_string;
-    }
-
-    protected boolean hasEnabledAction()
-    {
-        return false;
-    }
+        @Override
+        public void onClick(final View v)
+        {
+            onActionClick();
+        }
+    };
 
     @Override
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         this.booking = getArguments().getParcelable(BundleKeys.BOOKING);
-    }
-
-    @Override
-    public final View onCreateView(
-            final LayoutInflater inflater,
-            final ViewGroup container,
-            final Bundle savedInstanceState
-    )
-    {
-        final View view = getActivity().getLayoutInflater()
-                .inflate(getFragmentResourceId(), container, false);
-        ButterKnife.bind(this, view);
-        updateDisplay(this.booking, userManager.getCurrentUser());
-        setupClickListeners(this.booking);
-        return view;
-    }
-
-    protected void updateDisplay(Booking booking, User user)
-    {
-        view.entryTitle.setText(getEntryTitleTextResourceId(booking));
-        view.entryActionText.setText(getEntryActionTextResourceId(booking));
-        if (!hasEnabledAction())
-        {
-            view.entryActionText.setVisibility(View.GONE);
-        }
-        setupBookingActionButtons(booking);
-    }
-
-    @Subscribe
-    public void onSetBookingActionControlsEnabled(HandyEvent.SetBookingDetailSectionFragmentActionControlsEnabled event)
-    {
-        if(event.enabled)
-        {
-            enableInputs();
-        }
-        else
-        {
-            disableInputs();
-        }
-    }
-
-    protected void setupClickListeners(Booking booking)
-    {
-        //TODO: Probably some additional constraints on this for certain edit actions?
-        if (!booking.isPast())
-        {
-            view.entryActionText.setOnClickListener(actionClicked);
-        }
     }
 
     @Override
@@ -121,31 +62,71 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         setActionButtonsEnabled(true);
     }
 
-    protected View.OnClickListener actionClicked = new View.OnClickListener()
+    @Override
+    public final View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
-        @Override
-        public void onClick(final View v)
-        {
-            onActionClick();
-        }
-    };
-
-    protected void onActionClick()
-    {
+        final View view = getActivity().getLayoutInflater()
+                .inflate(getFragmentResourceId(), container, false);
+        ButterKnife.bind(this, view);
+        updateDisplay(this.booking, userManager.getCurrentUser());
+        setupClickListeners(this.booking);
+        return view;
     }
 
+    protected int getFragmentResourceId()
+    {
+        return R.layout.fragment_booking_detail_section;
+    }
 
-    //TODO: Might put all this booking action button stuff into a child class?, it's a big chunk of functionality
+    protected void updateDisplay(Booking booking, User user)
+    {
+        view.entryTitle.setText(getEntryTitleTextResourceId(booking));
+        view.entryActionText.setText(getEntryActionTextResourceId(booking));
+        if (!hasEnabledAction())
+        {
+            view.entryActionText.setVisibility(View.GONE);
+        }
+        setupBookingActionButtons(booking);
+    }
+
+    protected void setupClickListeners(Booking booking)
+    {
+        //TODO: Probably some additional constraints on this for certain edit actions?
+        if (!booking.isPast())
+        {
+            view.entryActionText.setOnClickListener(actionClicked);
+        }
+    }
+
+    protected int getEntryTitleTextResourceId(Booking booking)
+    {
+        return R.string.blank_string;
+    }
+
+    protected int getEntryActionTextResourceId(Booking booking)
+    {
+        return R.string.blank_string;
+    }
+
+    protected boolean hasEnabledAction()
+    {
+        return false;
+    }
+
+    //TODO: Might put all this booking action button stuff into a child class?, it's a big chunk of
+    // functionality
     //Booking action buttons
-    //This code is a copy paste from booking detail fragment, migrate the code away from booking detail fragment into a sub fragment
+    //This code is a copy paste from booking detail fragment, migrate the code away from booking
+    // detail fragment into a sub fragment
     protected void setupBookingActionButtons(Booking booking)
     {
         clearBookingActionButtons();
-
         List<String> actionButtonTypes = getActionButtonTypeList(booking);
-
         ViewGroup actionButtonLayout = getBookingActionButtonLayout();
-
         if (actionButtonTypes.isEmpty())
         {
             actionButtonLayout.setVisibility(View.GONE);
@@ -172,6 +153,17 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         }
     }
 
+    protected void clearBookingActionButtons()
+    {
+        view.actionButtonsLayout.removeAllViews();
+    }
+
+    //Nothing by default
+    protected List<String> getActionButtonTypeList(Booking booking)
+    {
+        return new ArrayList<>();
+    }
+
     protected ViewGroup getBookingActionButtonLayout()
     {
         return view.actionButtonsLayout;
@@ -189,16 +181,23 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         return null;
     }
 
-    //Nothing by default
-    protected List<String> getActionButtonTypeList(Booking booking)
+    @Subscribe
+    public void onSetBookingActionControlsEnabled(
+            HandyEvent.SetBookingDetailSectionFragmentActionControlsEnabled event
+    )
     {
-        List<String> actionButtonTypes = new ArrayList<>();
-        return actionButtonTypes;
+        if(event.enabled)
+        {
+            enableInputs();
+        }
+        else
+        {
+            disableInputs();
+        }
     }
 
-    protected void clearBookingActionButtons()
+    protected void onActionClick()
     {
-        view.actionButtonsLayout.removeAllViews();
     }
 
     protected void setActionButtonsEnabled(boolean enabled)
