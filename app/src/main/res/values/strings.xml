@@ -176,5 +176,7 @@
     <string name="no_information">No information</string>
     <string name="error_toast_missing_hidden_keys_note">Please, describe where you\'ll hide the keys.</string>
     <string name="toast_error_missing_hidden_key_note">Please, describe where you\'ll hide the keys.</string>
+    <string name="image_content_description_handy_logo">Handy icon</string>
+    <string name="image_content_description_icon_recuring">Recuring Icon</string>
 
 </resources>
