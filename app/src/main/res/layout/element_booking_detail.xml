@@ -13,13 +13,13 @@
 
         <ImageButton
             android:id="@+id/back_button"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
             android:background="@color/transparent"
             android:scaleX="-1"
-            android:src="@drawable/ic_chevron"/>
+            android:src="@drawable/ic_chevron"
+            android:padding="16dp"/>
 
         <TextView
             android:id="@+id/nav_text"
@@ -74,10 +74,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="24dp"
                     android:background="@color/white"
-                    android:paddingBottom="20dp"
-                    android:paddingTop="40dp">
+                    android:paddingBottom="35dp"
+                    android:paddingTop="40dp"
+                    >
 
                     <TextView
                         android:id="@+id/date_text"
@@ -138,12 +140,15 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_clean_fill"/>
+                    android:src="@drawable/ic_clean_fill"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentTop="true"/>
 
                 <LinearLayout
                     android:id="@+id/section_fragment_container"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/date_section"
                     android:orientation="vertical"
                     />
 
@@ -152,11 +157,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/section_fragment_container"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:contentDescription="@string/image_content_description_handy_logo"
                 android:src="@drawable/ic_booking_detail_logo"/>
         </LinearLayout>

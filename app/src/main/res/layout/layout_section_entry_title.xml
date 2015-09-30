@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:textAllCaps="true"
         android:textColor="@color/steel"
         tools:text="xxx this is the entry title xxx"/>

@@ -7,12 +7,12 @@
 
     <!--<include layout="@layout/element_section_separator"/>-->
 
-    <include layout="@layout/element_section_entry_title"/>
+    <include layout="@layout/layout_section_entry_title"/>
 
-    <include layout="@layout/element_section_action_text"/>
+    <include layout="@layout/layout_section_action_text"/>
 
-    <include layout="@layout/element_section_entry_text"/>
+    <include layout="@layout/layout_section_entry_text"/>
 
-    <include layout="@layout/element_section_action_buttons_layout"/>
+    <include layout="@layout/layout_section_action_buttons"/>
 
 </com.handybook.handybook.ui.widget.BookingDetailSectionBookingActionsView>

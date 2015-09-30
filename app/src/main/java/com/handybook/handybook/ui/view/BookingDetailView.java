@@ -86,7 +86,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
         endDate.setTime(startDate);
         endDate.add(Calendar.MINUTE, minutes);
 
-        timeText.setText(TextUtils.formatDate(startDate, "h:mm aaa - ")
+        timeText.setText(TextUtils.formatDate(startDate, "h:mm aaa – ")
                 + TextUtils.formatDate(endDate.getTime(), "h:mm aaa (")
                 + TextUtils.formatDecimal(hours, "#.#") + " "
                 + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours)) + ")");

@@ -51,8 +51,7 @@
 
     <style name="Button.BookingAction">
         <item name="android:textColor">@drawable/button_text_booking_action_white</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
     <style name="Button.BookingAction.White">

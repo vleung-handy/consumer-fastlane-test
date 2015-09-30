@@ -269,7 +269,7 @@ public final class BookingDetailFragment extends InjectedFragment
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private final void setUpdatedBookingResult()
+    private void setUpdatedBookingResult()
     {
         updatedBooking = true;
         final Intent intent = new Intent();
@@ -277,7 +277,7 @@ public final class BookingDetailFragment extends InjectedFragment
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, intent);
     }
 
-    private final void setCanceledBookingResult()
+    private void setCanceledBookingResult()
     {
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.CANCELLED_BOOKING, booking);
