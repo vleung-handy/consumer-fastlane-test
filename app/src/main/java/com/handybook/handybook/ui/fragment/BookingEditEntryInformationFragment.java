@@ -74,7 +74,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
 
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+            final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_confirmation, container, false);   //TODO: Make this its own fragment?
@@ -99,7 +99,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         keysText.setMinLength(2);
         keysText.setHint(getString(R.string.where_hide_key));
         keysText.addTextChangedListener(keyTextWatcher);
-        if(booking.getExtraEntryInfo() != null && !booking.getExtraEntryInfo().isEmpty())
+        if (booking.getExtraEntryInfo() != null && !booking.getExtraEntryInfo().isEmpty())
         {
             keysText.setText(booking.getExtraEntryInfo());
         }
@@ -159,7 +159,9 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         @Override
         public void onClick(final View view)
         {
-            if(keysText.length() <= 0){
+            if (entryInformationTransaction.getGetInId() == ENTRY_INFORMATION_HIDE_KEY
+                    && keysText.length() <= 0)
+            {
                 showToast(R.string.toast_error_missing_hidden_key_note);
                 return;
             }
@@ -171,6 +173,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     };
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated;
+
     {
         optionUpdated = new BookingOptionsView.OnUpdatedListener()
         {
@@ -184,8 +187,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                 if (index == ENTRY_INFORMATION_HIDE_KEY)
                 {
                     keysText.setVisibility(View.VISIBLE);
-                }
-                else
+                } else
                 {
                     keysText.unHighlight();
                     keysText.setVisibility(View.GONE);
@@ -194,13 +196,13 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
 
             @Override
             public void onShowChildren(final BookingOptionsView view,
-                                       final String[] items)
+                    final String[] items)
             {
             }
 
             @Override
             public void onHideChildren(final BookingOptionsView view,
-                                       final String[] items)
+                    final String[] items)
             {
             }
         };
@@ -210,14 +212,14 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     {
         @Override
         public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                      final int count, final int after)
+                final int count, final int after)
         {
 
         }
 
         @Override
         public void onTextChanged(final CharSequence charSequence, final int start,
-                                  final int before, final int count)
+                final int before, final int count)
         {
         }
 
