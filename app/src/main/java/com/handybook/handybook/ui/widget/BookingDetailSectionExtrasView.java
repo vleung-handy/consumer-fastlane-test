@@ -43,7 +43,7 @@ public class BookingDetailSectionExtrasView extends BookingDetailSectionView
             for (int i = 0; i < extras.size(); i++)
             {
                 final Booking.ExtraInfo info = extras.get(i);
-                BookingDetailSectionExtrasEntryView extrasEntryView = (BookingDetailSectionExtrasEntryView) inflate(R.layout.element_booking_section_extras_entry, extrasSection);
+                BookingDetailSectionExtrasEntryView extrasEntryView = (BookingDetailSectionExtrasEntryView) inflate(R.layout.element_booking_detail_section_extras_entry, extrasSection);
                 extrasEntryView.updateDisplay(info);
             }
         }

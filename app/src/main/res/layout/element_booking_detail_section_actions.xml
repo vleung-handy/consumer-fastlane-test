@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handybook.handybook.ui.widget.BookingDetailSectionBookingActionsView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <!--<include layout="@layout/element_section_separator"/>-->
+
+    <include layout="@layout/element_section_entry_title"/>
+
+    <include layout="@layout/element_section_action_text"/>
+
+    <include layout="@layout/element_section_entry_text"/>
+
+    <include layout="@layout/element_section_action_buttons_layout"/>
+
+</com.handybook.handybook.ui.widget.BookingDetailSectionBookingActionsView>

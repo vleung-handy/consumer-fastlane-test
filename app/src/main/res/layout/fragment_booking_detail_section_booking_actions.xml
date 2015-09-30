@@ -6,6 +6,6 @@
 
     <include
         android:id="@+id/booking_detail_section_view"
-        layout="@layout/element_booking_section_booking_actions"/>
+        layout="@layout/element_booking_detail_section_actions"/>
 
 </RelativeLayout>
