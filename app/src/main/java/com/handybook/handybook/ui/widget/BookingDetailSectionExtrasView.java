@@ -40,6 +40,7 @@ public class BookingDetailSectionExtrasView extends BookingDetailSectionView
         final ArrayList<Booking.ExtraInfo> extras = booking.getExtrasInfo();
         if (extras != null && extras.size() > 0)
         {
+            extrasSection.removeAllViews();
             for (int i = 0; i < extras.size(); i++)
             {
                 final Booking.ExtraInfo info = extras.get(i);
