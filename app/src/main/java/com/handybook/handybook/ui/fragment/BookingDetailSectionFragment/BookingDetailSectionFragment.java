@@ -86,13 +86,14 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
     public void updateDisplay(Booking booking, User user)
     {
-        view.entryTitle.setText(getEntryTitleTextResourceId(booking));
-        view.entryActionText.setText(getEntryActionTextResourceId(booking));
+        this.booking = booking;
+        view.entryTitle.setText(getEntryTitleTextResourceId(this.booking));
+        view.entryActionText.setText(getEntryActionTextResourceId(this.booking));
         if (!hasEnabledAction())
         {
             view.entryActionText.setVisibility(View.GONE);
         }
-        setupBookingActionButtons(booking);
+        setupBookingActionButtons(this.booking);
     }
 
     protected void setupClickListeners(Booking booking)
