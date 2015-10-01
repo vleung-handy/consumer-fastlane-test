@@ -99,8 +99,10 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     protected void setupClickListeners(Booking booking)
     {
         //TODO: Probably some additional constraints on this for certain edit actions?
-        if (!booking.isPast())
+        if (booking.isPast())
         {
+            view.entryActionText.setVisibility(View.GONE);
+        } else {
             view.entryActionText.setOnClickListener(actionClicked);
         }
     }
