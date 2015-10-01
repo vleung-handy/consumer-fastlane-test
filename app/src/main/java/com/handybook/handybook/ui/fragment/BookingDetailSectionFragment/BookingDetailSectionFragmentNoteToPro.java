@@ -13,6 +13,8 @@ import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionFragment
 {
 
+    public static final String TAG= "BookingDetailSectionFragmentNoteToPro";
+
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {

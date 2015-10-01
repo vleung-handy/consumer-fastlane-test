@@ -9,6 +9,8 @@ import com.handybook.handybook.core.User;
 public class BookingDetailSectionFragmentLaundry extends BookingDetailSectionFragment
 {
 
+    public static final String TAG= "BookingDetailSectionFragmentLaundry";
+
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {

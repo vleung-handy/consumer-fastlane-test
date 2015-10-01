@@ -14,6 +14,8 @@ import java.util.List;
 
 public class BookingDetailSectionFragmentBookingActions extends BookingDetailSectionFragment
 {
+    public static final String TAG= "BookingDetailSectionFragmentBookingAction";
+
     @Override
     protected int getFragmentResourceId()
     {

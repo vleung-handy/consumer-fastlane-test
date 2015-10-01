@@ -9,6 +9,8 @@ import butterknife.Bind;
 
 public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFragment
 {
+    public static final String TAG= "BookingDetailSectionExtras";
+
     @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionExtrasView view;
 

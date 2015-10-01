@@ -24,6 +24,8 @@ import butterknife.Bind;
 
 public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
 {
+    public static final String TAG= "BookingDetailSectionFragmentProInformation";
+
     @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionProInfoView view;
 

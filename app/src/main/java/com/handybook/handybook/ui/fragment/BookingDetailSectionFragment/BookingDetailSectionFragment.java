@@ -25,6 +25,8 @@ import butterknife.ButterKnife;
 
 public abstract class BookingDetailSectionFragment extends InjectedFragment
 {
+    public static final String TAG= "BookingDetailSectionFragment";
+
     protected Booking booking;
 
     @Bind(R.id.booking_detail_section_view)

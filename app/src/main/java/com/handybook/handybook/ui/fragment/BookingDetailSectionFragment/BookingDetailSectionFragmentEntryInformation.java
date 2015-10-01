@@ -12,6 +12,8 @@ import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
 public class BookingDetailSectionFragmentEntryInformation extends BookingDetailSectionFragment
 {
 
+    public static final String TAG= "BookingDetailSectionFragmentEntryInformation";
+
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {
