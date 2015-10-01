@@ -23,7 +23,7 @@ public class BookingDetailSectionFragmentBookingActions extends BookingDetailSec
     }
 
     @Override
-    protected void updateDisplay(Booking booking, User user)
+    public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
         view.entryText.setVisibility(View.GONE);

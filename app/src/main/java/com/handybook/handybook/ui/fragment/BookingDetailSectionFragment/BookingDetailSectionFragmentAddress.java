@@ -28,7 +28,7 @@ public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFra
     }
 
     @Override
-    protected void updateDisplay(Booking booking, User user)
+    public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
         final Booking.Address address = booking.getAddress();

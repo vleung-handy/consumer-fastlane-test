@@ -84,7 +84,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         return R.layout.fragment_booking_detail_section;
     }
 
-    protected void updateDisplay(Booking booking, User user)
+    public void updateDisplay(Booking booking, User user)
     {
         view.entryTitle.setText(getEntryTitleTextResourceId(booking));
         view.entryActionText.setText(getEntryActionTextResourceId(booking));

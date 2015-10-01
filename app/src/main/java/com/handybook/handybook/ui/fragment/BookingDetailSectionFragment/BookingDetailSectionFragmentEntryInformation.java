@@ -33,7 +33,7 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     }
 
     @Override
-    protected void updateDisplay(Booking booking, User user)
+    public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
         final String entryInfo = booking.getEntryInfo();

@@ -39,7 +39,7 @@ public class BookingDetailSectionFragmentPayment extends BookingDetailSectionFra
     }
 
     @Override
-    protected void updateDisplay(Booking booking, User user)
+    public void updateDisplay(Booking booking, User user)
     {
         //This one is worth having a different view for
         super.updateDisplay(booking, user);
