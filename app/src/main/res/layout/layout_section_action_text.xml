@@ -2,7 +2,9 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:tools="http://schemas.android.com/tools"
        android:layout_width="match_parent"
-       android:layout_height="match_parent">
+       android:layout_height="match_parent"
+       tools:showIn="@layout/element_booking_detail_section"
+    >
 
     <TextView
         android:id="@+id/entry_action_text"
@@ -12,7 +14,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="12dp"
+        android:layout_margin="8dp"
         android:gravity="end"
         android:padding="8dp"
         android:textAllCaps="true"
