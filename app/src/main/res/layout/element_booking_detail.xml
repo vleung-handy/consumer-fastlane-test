@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/handy_bg"
-    tools:showIn="@layout/fragment_booking_detail">
+    tools:showIn="@layout/fragment_booking_detail"
+    tools:context=".BookingDetailActivity">
 
     <RelativeLayout
         android:id="@+id/nav_bar"
@@ -29,6 +30,7 @@
             android:layout_alignParentLeft="false"
             android:layout_alignParentStart="false"
             android:layout_marginLeft="48dp"
+            android:layout_marginStart="48dp"
             android:layout_marginTop="10dp"
             android:singleLine="true"
             android:text="Service Name"
@@ -78,7 +80,7 @@
                     android:layout_marginTop="24dp"
                     android:background="@color/white"
                     android:paddingBottom="35dp"
-                    android:paddingTop="40dp"
+                    android:paddingTop="50dp"
                     >
 
                     <TextView
