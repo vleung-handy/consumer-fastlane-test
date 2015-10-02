@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.handybook.handybook.ui.widget.BookingDetailSectionBookingActionsView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BookingDetailSectionView.Transparent"
     >
 
     <!--<include layout="@layout/element_section_separator"/>-->
