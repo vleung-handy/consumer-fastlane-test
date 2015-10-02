@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="handy_transparent">#00000000</color>
     <color name="handy_blue">#00CDED</color>
     <color name="handy_blue_pressed">#00ABC6</color>
     <color name="handy_green">#8CC63f</color>
