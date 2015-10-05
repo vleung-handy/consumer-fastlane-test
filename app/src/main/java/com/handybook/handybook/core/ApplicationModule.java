@@ -72,7 +72,7 @@ import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
-import com.handybook.handybook.ui.fragment.BookingsFragment;
+import com.handybook.handybook.ui.fragment.BookingsFragmentOld;
 import com.handybook.handybook.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
@@ -108,7 +108,7 @@ import retrofit.converter.GsonConverter;
 
 @Module(injects = {
         ServiceCategoriesFragment.class, LoginFragment.class, NavigationFragment.class,
-        ProfileFragment.class, BookingsFragment.class, BookingDetailFragment.class,
+        ProfileFragment.class, BookingsFragmentOld.class, BookingDetailFragment.class,
         ServiceCategoriesFragment.class, ServicesFragment.class, BookingLocationFragment.class,
         BookingOptionsFragment.class, BookingDateFragment.class, BookingAddressFragment.class,
         BookingHeaderFragment.class, BookingPaymentFragment.class, PeakPricingFragment.class,

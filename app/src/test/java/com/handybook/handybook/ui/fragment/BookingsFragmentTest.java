@@ -38,7 +38,7 @@ public class BookingsFragmentTest {
     public void testLoadUpcomingBookings() throws IOException {
         server.enqueue(new MockResponse().setBody(getUpcomingBookingsJsonResponse()));
 
-        BookingsFragment fragment = BookingsFragment.newInstance();
+        BookingsFragmentOld fragment = BookingsFragmentOld.newInstance();
         FragmentTestUtil.startFragment(fragment);
         assertNotNull(fragment.getView());
         ListView listView = (ListView)fragment.getView().findViewById(android.R.id.list);
@@ -52,7 +52,7 @@ public class BookingsFragmentTest {
     public void testLoadPastBookings() throws IOException {
         server.enqueue(new MockResponse().setBody(getPastBookingsJsonResponse()));
 
-        BookingsFragment fragment = BookingsFragment.newInstance();
+        BookingsFragmentOld fragment = BookingsFragmentOld.newInstance();
         FragmentTestUtil.startFragment(fragment);
         assertNotNull(fragment.getView());
         ListView listView = (ListView)fragment.getView().findViewById(android.R.id.list);
@@ -66,7 +66,7 @@ public class BookingsFragmentTest {
     public void testLoadUpcomingAndPastBookings() throws IOException {
         server.enqueue(new MockResponse().setBody(getUpcomingAndPastBookingsJsonResponse()));
 
-        BookingsFragment fragment = BookingsFragment.newInstance();
+        BookingsFragmentOld fragment = BookingsFragmentOld.newInstance();
         FragmentTestUtil.startFragment(fragment);
         assertNotNull(fragment.getView());
         ListView listView = (ListView)fragment.getView().findViewById(android.R.id.list);

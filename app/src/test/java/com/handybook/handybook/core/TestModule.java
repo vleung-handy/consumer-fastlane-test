@@ -13,7 +13,7 @@ import com.handybook.handybook.data.MockSecurePreferences;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.ui.activity.BookingsActivity;
-import com.handybook.handybook.ui.fragment.BookingsFragment;
+import com.handybook.handybook.ui.fragment.BookingsFragmentOld;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.otto.Bus;
@@ -34,7 +34,7 @@ import retrofit.RestAdapter;
 @Module (
 
         injects = {
-                TestBaseApplication.class, BaseDataManager.class, BookingsFragment.class,
+                TestBaseApplication.class, BaseDataManager.class, BookingsFragmentOld.class,
                 BookingsActivity.class, NavigationFragment.class
         })
 
