@@ -99,7 +99,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
         if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
         {
-            if(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
+            if (data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
             {
                 Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
                 //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model. API v4 should return the updated booking model
@@ -199,12 +199,12 @@ public final class BookingDetailFragment extends InjectedFragment
     {
         //Remove all of the child fragments for this fragment
         List<Fragment> childFragments = getChildFragmentManager().getFragments();
-        if(childFragments != null && childFragments.size() > 0)
+        if (childFragments != null && childFragments.size() > 0)
         {
             FragmentTransaction removalTransaction = getChildFragmentManager().beginTransaction();
             for (Fragment frag : childFragments)
             {
-                if(! (frag == null || frag.isDetached() || frag.isRemoving()) )
+                if (!(frag == null || frag.isDetached() || frag.isRemoving()))
                 {
                     removalTransaction.remove(frag);
                 }
