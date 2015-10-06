@@ -98,10 +98,10 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
         int i = 0;
         for (final BookingQuote.PeakPriceInfo info : priceList) {
             final View row = layoutInflater.inflate(R.layout.table_item_price, container, false);
-            final TextView dateText = (TextView) row.findViewById(R.id.date_text);
+            final TextView timeText = (TextView) row.findViewById(R.id.time_text);
             final TextView priceText = (TextView) row.findViewById(R.id.price_text);
 
-            dateText.setText(TextUtils.formatDate(info.getDate(), "h:mm aaa"));
+            timeText.setText(TextUtils.formatDate(info.getDate(), "h:mm aaa"));
             priceText.setText(TextUtils.formatPrice(info.getPrice(), currChar, null));
 
             final int freq = forVoucher || forReschedule ? -1
@@ -149,10 +149,10 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
     }
 
     private void disableRow(final View row) {
-        final TextView dateText = (TextView) row.findViewById(R.id.date_text);
+        final TextView timeText = (TextView) row.findViewById(R.id.time_text);
         final TextView priceText = (TextView) row.findViewById(R.id.price_text);
         priceText.setTextColor(getResources().getColor(R.color.black_pressed));
         priceText.setText(getString(R.string.unavailable));
-        dateText.setTextColor(getResources().getColor(R.color.black_pressed));
+        timeText.setTextColor(getResources().getColor(R.color.black_pressed));
     }
 }
