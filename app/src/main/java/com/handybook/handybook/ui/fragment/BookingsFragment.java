@@ -1,6 +1,8 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
@@ -23,13 +25,12 @@ import butterknife.ButterKnife;
 public class BookingsFragment extends InjectedFragment
 {
 
-    public static final String FRAGMENT_TYPE_UPCOMING = "fragment_type_upcoming";
-    public static final String FRAGMENT_TYPE_PAST = "fragment_type_past";
-
     private TabAdapter mTabAdapter;
 
     @Bind(R.id.pager)
-    private ViewPager mPager;
+    ViewPager vViewPager;
+    @Bind(R.id.tab_layout)
+    TabLayout vTabLayout;
 
 
     /**
@@ -53,29 +54,33 @@ public class BookingsFragment extends InjectedFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mTabAdapter = new TabAdapter(getChildFragmentManager());
+        mTabAdapter = new TabAdapter(getActivity(), getChildFragmentManager());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState)
     {
-        // Inflate the layout for this fragment
-        final View view =  inflater.inflate(R.layout.fragment_bookings_tabbed, container, false);
+        final View view = inflater.inflate(R.layout.fragment_bookings, container, false);
         ButterKnife.bind(this, view);
+        vTabLayout.setTabsFromPagerAdapter(mTabAdapter);
         return view;
     }
 
     private static class TabAdapter extends FragmentPagerAdapter
     {
         private ArrayList<BookingListFragment> fragments = new ArrayList<>();
+        private ArrayList<String> titles = new ArrayList<>();
 
-        public TabAdapter(FragmentManager fm)
+        public TabAdapter(Context context, FragmentManager fm)
         {
             super(fm);
+
+            titles.add(context.getResources().getString(R.string.upcoming));
             fragments.add(
                     BookingListFragment.newInstance(BookingListFragment.BookingListType.UPCOMING)
             );
+            titles.add(context.getResources().getString(R.string.past));
             fragments.add(
                     BookingListFragment.newInstance(BookingListFragment.BookingListType.PAST)
             );
@@ -91,6 +96,12 @@ public class BookingsFragment extends InjectedFragment
         public BookingListFragment getItem(int position)
         {
             return fragments.get(position);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position)
+        {
+            return titles.get(position);
         }
     }
 }

@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/handy_bg">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/handy_bg"
+              android:orientation="vertical"
+              tools:context="com.handybook.handybook.ui.fragment.BookingsFragment"
+    >
 
     <FrameLayout
         android:id="@+id/nav_layout"
@@ -11,23 +14,27 @@
 
         <TextView
             android:id="@+id/nav_text"
-            android:text="@string/my_bookings"
-            style="@style/TextView.Navbar" />
+            style="@style/TextView.Navbar"
+            android:text="@string/my_bookings"/>
 
         <RelativeLayout
             android:id="@+id/menu_button_layout"
-            style="@style/MenuButtonLayout" />
-
+            style="@style/MenuButtonLayout"/>
     </FrameLayout>
 
-    <com.handybook.handybook.ui.widget.PinnedSectionListView
-        android:id="@android:id/list"
+    <TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nav_layout"
-        android:scrollbarStyle="outsideOverlay"
-        android:clipToPadding="false"
-        android:choiceMode="singleChoice"
-        android:divider="@null"/>
+        android:id="@+id/tab_layout"
+        >
+    </TabLayout>
 
-</RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+
+</LinearLayout>
