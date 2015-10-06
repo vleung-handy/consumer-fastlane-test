@@ -1,5 +1,6 @@
 package com.handybook.handybook.core;
 
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import com.handybook.handybook.constant.PrefsKey;
@@ -305,6 +306,7 @@ public final class BookingManager implements Observer
         prefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
     }
 
+    @Nullable
     public final String getPromoTabCoupon()
     {
         return prefsManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);

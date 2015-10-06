@@ -112,10 +112,18 @@ public final class BaseDataManager extends DataManager
     public final void getServices(final CacheResponse<List<Service>> cache,
                                   final Callback<List<Service>> cb)
     {
-        final List<Service> cachedServices = new Gson().fromJson(prefsManager.getString(PrefsKey.CACHED_SERVICES),
+
+        String cachedServicesJson = prefsManager.getString(PrefsKey.CACHED_SERVICES);
+        List<Service> cachedServices = null;
+        if(cachedServicesJson != null)
+        {
+            cachedServices = new Gson().fromJson(
+                prefsManager.getString(PrefsKey.CACHED_SERVICES),
                 new TypeToken<List<Service>>()
                 {
                 }.getType());
+        }
+
         cache.onResponse(cachedServices != null ? cachedServices : new ArrayList<Service>());
 
         final ArrayList<Service> servicesMenu = new ArrayList<>();
@@ -143,7 +151,10 @@ public final class BaseDataManager extends DataManager
                         final String name = obj.isNull("name") ? null : obj.optString("name", null);
                         final int ignore = obj.optInt("ignore", 1);
 
-                        if (name == null || ignore == 1) continue;
+                        if (name == null || ignore == 1)
+                        {
+                            continue;
+                        }
 
                         final Service service = new Service();
                         service.setUniq(obj.isNull("uniq") ? null : obj.optString("uniq"));
@@ -194,7 +205,9 @@ public final class BaseDataManager extends DataManager
 
                                 ArrayList<Service> list;
                                 if ((list = servicesMap.get(service.getParentId())) != null)
+                                {
                                     list.add(service);
+                                }
                                 else
                                 {
                                     list = new ArrayList<>();
@@ -516,8 +529,13 @@ public final class BaseDataManager extends DataManager
         };
 
         if (reasonCode >= 0)
+        {
             service.cancelBooking(bookingId, reasonCode, userId, authToken, callback);
-        else service.cancelBooking(bookingId, userId, authToken, callback);
+        }
+        else
+        {
+            service.cancelBooking(bookingId, userId, authToken, callback);
+        }
     }
 
     @Override
@@ -602,8 +620,14 @@ public final class BaseDataManager extends DataManager
             @Override
             void success(final JSONObject response)
             {
-                if (response.optBoolean("success", false)) cb.onSuccess(null);
-                else cb.onError(new DataManagerError(Type.SERVER));
+                if (response.optBoolean("success", false))
+                {
+                    cb.onSuccess(null);
+                }
+                else
+                {
+                    cb.onError(new DataManagerError(Type.SERVER));
+                }
             }
         });
     }
@@ -693,15 +717,15 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public final void getRequestProInfo(int bookingId,
-                                           Callback<BookingRequestablePros> cb)
+                                        Callback<BookingRequestablePros> cb)
     {
         service.getRequestProInfo(bookingId, new BookingRequestableProsResponseHandyRetroFitCallback(cb));
     }
 
     @Override
     public final void requestProForBooking(int bookingId,
-                                              int requestedProId,
-                                              Callback<BookingProRequestResponse> cb)
+                                           int requestedProId,
+                                           Callback<BookingProRequestResponse> cb)
     {
         service.requestProForBooking(bookingId, requestedProId, true, new BookingProRequestResponseHandyRetroFitCallback(cb));
     }
@@ -750,8 +774,8 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public final void updateBookingEntryInformation(int bookingId,
-                                             BookingUpdateEntryInformationTransaction entryInformationTransaction,
-                                             final Callback<Void> cb)
+                                                    BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                                    final Callback<Void> cb)
     {
         service.updateBookingEntryInformation(bookingId, entryInformationTransaction, new HandyRetrofitCallback(cb)
         {
@@ -787,7 +811,11 @@ public final class BaseDataManager extends DataManager
         {
             final JSONArray array = response.optJSONArray("messages");
             return array != null && !array.isNull(0) ? array.optString(0) : null;
-        } else return null;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }

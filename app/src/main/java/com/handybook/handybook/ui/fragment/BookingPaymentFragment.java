@@ -287,7 +287,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         public void onClick(final View v) {
             final String promoCode = promoText.getText().toString();
             final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-            final boolean hasPromo = bookingTransaction.promoApplied() != null;
+            final boolean hasPromo = (bookingTransaction.promoApplied() != null);
 
             if (hasPromo || promoCode.length() > 0) {
                 promoProgress.setVisibility(View.VISIBLE);
@@ -432,7 +432,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     private void updatePromoUI() {
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
         final String promo = bookingTransaction.promoApplied();
-        final boolean applied = promo != null;
+        final boolean applied = (promo != null);
 
         promoProgress.setVisibility(View.INVISIBLE);
         promoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
