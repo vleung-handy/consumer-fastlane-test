@@ -2,9 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:tools="http://schemas.android.com/tools"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       tools:showIn="@layout/element_booking_detail_section_extras"
-    >
+       android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/extras_section"
@@ -16,7 +14,7 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
-        >
+        tools:showIn="@layout/element_booking_section_extras">
 
     </LinearLayout>
 

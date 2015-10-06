@@ -512,18 +512,5 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="BookingDetailSectionView">
-        <item name="android:paddingTop">@dimen/default_padding</item>
-        <item name="android:paddingBottom">@dimen/default_padding</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/handy_white</item>
-    </style>
-
-    <style name="BookingDetailSectionView.Transparent" parent="BookingDetailSectionView">
-        <item name="android:background">@color/handy_transparent</item>
-
-    </style>
-
     <string name="name">Name</string>
 </resources>

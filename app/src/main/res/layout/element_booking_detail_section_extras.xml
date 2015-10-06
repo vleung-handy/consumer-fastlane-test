@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/BookingDetailSectionView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/default_padding"
     >
 
     <include layout="@layout/layout_section_separator_view"/>

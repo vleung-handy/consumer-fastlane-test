@@ -86,24 +86,26 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
     public void updateDisplay(Booking booking, User user)
     {
-        this.booking = booking;
-        view.entryTitle.setText(getEntryTitleTextResourceId(this.booking));
-        view.entryActionText.setText(getEntryActionTextResourceId(this.booking));
+        view.entryTitle.setText(getEntryTitleTextResourceId(booking));
+        view.entryActionText.setText(getEntryActionTextResourceId(booking));
         if (!hasEnabledAction())
         {
             view.entryActionText.setVisibility(View.GONE);
         }
-        setupBookingActionButtons(this.booking);
+        setupBookingActionButtons(booking);
     }
 
     protected void setupClickListeners(Booking booking)
     {
         //TODO: Probably some additional constraints on this for certain edit actions?
-        if (booking.isPast())
+        if (!booking.isPast())
         {
-            view.entryActionText.setVisibility(View.GONE);
-        } else {
             view.entryActionText.setOnClickListener(actionClicked);
+            System.out.println("ZZZ BOOKING IS COOL CLICK AWAY ON THE ENTRY ACTION TEXT");
+        }
+        else
+        {
+            System.out.println("ZZZ BOOKING IS IN THE PAST WE CAN'T CLICK ON THE ENTRY ACTION TEXT");
         }
     }
 
