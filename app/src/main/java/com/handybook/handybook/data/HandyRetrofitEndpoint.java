@@ -52,6 +52,9 @@ public final class HandyRetrofitEndpoint implements HandyEndpoint {
             case Q6:
                 return apiEndpointInternal.replace("#", "q6");
 
+            case Q7:
+                return apiEndpointInternal.replace("#", "q7");
+
             case D1:
                 return apiEndpointInternal.replace("#", "d1");
 
@@ -79,6 +82,9 @@ public final class HandyRetrofitEndpoint implements HandyEndpoint {
 
             case Q6:
                 return baseUrlInternal.replace("#", "q6");
+
+            case Q7:
+                return baseUrlInternal.replace("#", "q7");
 
             case D1:
                 return baseUrlInternal.replace("#", "d1");
@@ -108,6 +114,9 @@ public final class HandyRetrofitEndpoint implements HandyEndpoint {
 
             case Q6:
                 return "Q6";
+
+            case Q7:
+                return "Q7";
 
             case D1:
                 return "D1";

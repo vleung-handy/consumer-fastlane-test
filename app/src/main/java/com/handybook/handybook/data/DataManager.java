@@ -34,7 +34,7 @@ public abstract class DataManager
 {
     public static enum Environment
     {
-        P, S, Q1, Q2, Q3, Q4, Q6, D1
+        P, S, Q1, Q2, Q3, Q4, Q6, Q7, D1
     }
 
     private Environment env = Environment.S;

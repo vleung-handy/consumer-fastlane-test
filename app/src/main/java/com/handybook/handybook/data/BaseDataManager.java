@@ -89,6 +89,10 @@ public final class BaseDataManager extends DataManager
                 endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q6);
                 break;
 
+            case Q7:
+                endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q7);
+                break;
+
             case D1:
                 endpoint.setEnv(HandyRetrofitEndpoint.Environment.D1);
                 break;
