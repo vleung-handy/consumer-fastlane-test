@@ -140,7 +140,7 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
     // Urban Airship for cloud messaging
-    compile 'com.urbanairship.android:urbanairship-sdk:6.1.+'
+    compile 'com.urbanairship.android:urbanairship-sdk:6.3.+'
 
     //Guava
     compile 'com.google.guava:guava:18.0'
