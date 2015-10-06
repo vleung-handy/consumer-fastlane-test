@@ -55,7 +55,7 @@ public final class BookingsFragmentOld extends InjectedFragment
                                    final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_bookings, container, false);
+                .inflate(R.layout.fragment_bookings_old, container, false);
 
         ButterKnife.bind(this, view);
 
