@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -37,8 +36,6 @@ public final class BookingDetailView extends InjectedRelativeLayout
     TextView bookingText;
     @Bind(R.id.nav_text)
     TextView navText;
-    @Bind(R.id.section_fragment_container)
-    public LinearLayout sectionFragmentContainer;
     @Bind(R.id.back_button)
     public ImageButton backButton;
 

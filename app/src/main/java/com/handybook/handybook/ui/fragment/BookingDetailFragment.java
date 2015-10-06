@@ -3,7 +3,6 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
@@ -70,8 +69,6 @@ public final class BookingDetailFragment extends InjectedFragment
                 setUpdatedBookingResult();
             }
         }
-
-        FragmentManager.enableDebugLogging(true);
     }
 
     @Override
@@ -116,6 +113,7 @@ public final class BookingDetailFragment extends InjectedFragment
         {
             //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
             postBlockingEvent(new HandyEvent.RequestBookingDetails(booking.getId()));
+            //setting the updated result with the new booking when we receive the new booking data
         }
     }
 
@@ -211,11 +209,6 @@ public final class BookingDetailFragment extends InjectedFragment
             }
             removalTransaction.commit();
         }
-
-        //getChildFragmentManager().executePendingTransactions();
-
-        //Clear any ancillary views kicking around
-        //bookingDetailView.sectionFragmentContainer.removeAllViews();
     }
 
     //The on screen back button works as the softkey back button

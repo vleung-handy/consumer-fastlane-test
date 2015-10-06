@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 
 public abstract class BookingDetailSectionFragment extends InjectedFragment
 {
-    public static final String TAG= "BookingDetailSectionFragment";
+    public static final String TAG = "BookingDetailSectionFragment";
 
     protected Booking booking;
 
@@ -88,7 +88,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     {
         view.entryTitle.setText(getEntryTitleTextResourceId(booking));
         view.entryActionText.setText(getEntryActionTextResourceId(booking));
-        if (!hasEnabledAction())
+        if (!hasEnabledAction() || booking.isPast())
         {
             view.entryActionText.setVisibility(View.GONE);
         }
@@ -98,16 +98,9 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     protected void setupClickListeners(Booking booking)
     {
         //TODO: Probably some additional constraints on this for certain edit actions?
-        if (booking.isPast())
+        if (!booking.isPast())
         {
-            view.entryActionText.setVisibility(View.GONE);
-        } else {
             view.entryActionText.setOnClickListener(actionClicked);
-            System.out.println("ZZZ BOOKING IS COOL CLICK AWAY ON THE ENTRY ACTION TEXT");
-        }
-        else
-        {
-            System.out.println("ZZZ BOOKING IS IN THE PAST WE CAN'T CLICK ON THE ENTRY ACTION TEXT");
         }
     }
 
@@ -139,7 +132,8 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         if (actionButtonTypes.isEmpty())
         {
             actionButtonLayout.setVisibility(View.GONE);
-        } else
+        }
+        else
         {
             actionButtonLayout.setVisibility(View.VISIBLE);
             for (String actionButtonType : actionButtonTypes)
@@ -201,7 +195,8 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         if (event.enabled)
         {
             enableInputs();
-        } else
+        }
+        else
         {
             disableInputs();
         }
