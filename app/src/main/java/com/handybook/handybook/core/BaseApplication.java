@@ -3,6 +3,7 @@ package com.handybook.handybook.core;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
@@ -26,7 +27,7 @@ import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
-public class BaseApplication extends Application
+public class BaseApplication extends MultiDexApplication
 {
     public static final String FLAVOR_PROD = "prod";
     public static final String FLAVOR_STAGE = "stage";
