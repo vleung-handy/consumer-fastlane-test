@@ -13,7 +13,6 @@
         android:layout_below="@id/entry_title"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"
-        android:layout_alignParentBottom="true"
         tools:showIn="@layout/element_booking_section_payment">
 
         <LinearLayout

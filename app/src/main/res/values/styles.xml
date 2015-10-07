@@ -513,8 +513,8 @@
     </style>
 
     <style name="BookingDetailSectionView">
-        <item name="android:paddingTop">@dimen/default_padding</item>
-        <item name="android:paddingBottom">@dimen/default_padding</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">4dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/handy_white</item>

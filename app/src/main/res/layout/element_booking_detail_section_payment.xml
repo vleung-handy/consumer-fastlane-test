@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.handybook.handybook.ui.widget.BookingDetailSectionPaymentView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/BookingDetailSectionView"
     >
 
@@ -12,7 +13,20 @@
 
     <include layout="@layout/layout_section_payment_info"/>
 
-    <include layout="@layout/layout_section_entry_text"/>
+    <TextView
+        android:id="@+id/entry_text"
+        style="@style/TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="false"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginTop="0dp"
+        tools:text="XXXX this is where the entry text goes, it can be multiple lines XXX"
+        android:layout_below="@+id/payment_info_section"
+        />
 
     <include layout="@layout/layout_section_action_buttons"/>
 
