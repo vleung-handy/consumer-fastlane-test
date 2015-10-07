@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Base" parent="android:Theme.Holo.Light.NoActionBar">
+    <style name="Theme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="simpleAlertDialogStyle">@style/Theme.SimpleAlertDialog.Light</item>
         <item name="abstractWheelViewStyle">@style/abstractWheelViewStyle</item>
         <item name="vpiCirclePageIndicatorStyle">@style/CirclePageIndicatorStyle</item>
+        <item name="colorPrimary">@color/handy_blue</item>
+        <item name="colorPrimaryDark">@color/handy_dark_grey</item>
+        <item name="colorAccent">@color/handy_love</item>
+
     </style>
 
     <style name="ContentLayout">
