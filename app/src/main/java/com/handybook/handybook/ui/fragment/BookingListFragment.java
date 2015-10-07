@@ -215,14 +215,16 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     }
 
 
-    private class BookingHolder extends RecyclerView.ViewHolder
+    private class BookingCardHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener
     {
         private Booking mBooking;
 
-        public BookingHolder(View itemView)
+        public BookingCardHolder(View itemView)
         {
             super(itemView);
+            ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(this);
         }
 
         public void bindBooking(final Booking booking)
@@ -242,19 +244,19 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     }
 
 
-    private class BookingAdapter extends RecyclerView.Adapter<BookingHolder>
+    private class BookingAdapter extends RecyclerView.Adapter<BookingCardHolder>
     {
 
         @Override
-        public BookingHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        public BookingCardHolder onCreateViewHolder(ViewGroup parent, int viewType)
         {
             final View itemView = LayoutInflater.from(mContext)
                     .inflate(R.layout.layout_card_booking, null);
-            return new BookingHolder(itemView);
+            return new BookingCardHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(final BookingHolder holder, int position)
+        public void onBindViewHolder(final BookingCardHolder holder, int position)
         {
             Booking booking = mBookings.get(position);
             holder.bindBooking(booking);
