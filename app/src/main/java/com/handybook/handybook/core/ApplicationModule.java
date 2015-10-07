@@ -67,6 +67,7 @@ import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
+import com.handybook.handybook.ui.fragment.BookingListFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
@@ -114,6 +115,7 @@ import retrofit.converter.GsonConverter;
         ProfileFragment.class,
         BookingsFragment.class,
         BookingsFragmentOld.class,
+        BookingListFragment.class,
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,
         ServicesFragment.class,

@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.widget.ViewPager;
+import com.handybook.handybook.ui.widget.MenuButton;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class BookingsFragment extends InjectedFragment
 
     private TabAdapter mTabAdapter;
 
+    @Bind(R.id.menu_button_layout)
+    ViewGroup vMenuButtonLayout;
     @Bind(R.id.pager)
     ViewPager vViewPager;
     @Bind(R.id.tab_layout)
@@ -63,7 +66,13 @@ public class BookingsFragment extends InjectedFragment
     {
         final View view = inflater.inflate(R.layout.fragment_bookings, container, false);
         ButterKnife.bind(this, view);
+        vViewPager.setAdapter(mTabAdapter);
+        vViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(vTabLayout));
+        vTabLayout.setupWithViewPager(vViewPager);
         vTabLayout.setTabsFromPagerAdapter(mTabAdapter);
+        final MenuButton menuButton = new MenuButton(getActivity(), vMenuButtonLayout);
+        vMenuButtonLayout.addView(menuButton);
+
         return view;
     }
 
@@ -78,11 +87,11 @@ public class BookingsFragment extends InjectedFragment
 
             titles.add(context.getResources().getString(R.string.upcoming));
             fragments.add(
-                    BookingListFragment.newInstance(BookingListFragment.BookingListType.UPCOMING)
+                    BookingListFragment.newInstance(BookingListFragment.TYPE_UPCOMING)
             );
             titles.add(context.getResources().getString(R.string.past));
             fragments.add(
-                    BookingListFragment.newInstance(BookingListFragment.BookingListType.PAST)
+                    BookingListFragment.newInstance(BookingListFragment.TYPE_PAST)
             );
         }
 
