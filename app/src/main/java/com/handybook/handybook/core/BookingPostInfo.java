@@ -15,6 +15,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public final class BookingPostInfo extends Observable {
+
     @SerializedName("get_in") private String getInId;
     @SerializedName("get_in_text") private String getInText;
     @SerializedName("extra_message") private String extraMessage;

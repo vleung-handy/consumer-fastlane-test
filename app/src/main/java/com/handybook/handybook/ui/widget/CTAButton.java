@@ -7,7 +7,6 @@ import android.widget.Button;
 
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.NavigationManager;
-import com.handybook.handybook.data.Mixpanel;
 
 import javax.inject.Inject;
 

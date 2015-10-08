@@ -33,12 +33,13 @@ public class Mixpanel
 
     @Inject
     public Mixpanel(final Context context,
-            final PrefsManager prefsManager)
+                    final PrefsManager prefsManager)
     {
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
             mixpanelAPI = MixpanelAPI.getInstance(context, "864ccb52b900de546bb1bba717ab4fac");
-        } else
+        }
+        else
         {
             mixpanelAPI = MixpanelAPI.getInstance(context, "5b31021d4a78ed7d57d9f19fd796f1cd");
         }
@@ -59,13 +60,19 @@ public class Mixpanel
         addProps(props, "mobile", true);
         addProps(props, "client", "android");
         addProps(props, "impersonating", false);
-        // UPGRADE: This is a change, previously we talked to the UserManager, make sure that the
-        // prefs user_obj is always updated properly in secureprefs
-        final User user = User.fromJson(prefsManager.getString(PrefsKey.USER));
+        //UPGRADE: This is a change, previously we talked to the UserManager, make sure that the prefs user_obj is always updated properly in secureprefs
+        String userJson = prefsManager.getString(PrefsKey.USER);
+        User user = null;
+        if (userJson != null)
+        {
+            user = User.fromJson(userJson);
+        }
+
         if (user == null)
         {
             addProps(props, "user_logged_in", false);
-        } else
+        }
+        else
         {
             addProps(props, "user_logged_in", true);
             addProps(props, "name", user.getFullName());
@@ -273,7 +280,7 @@ public class Mixpanel
     }
 
     public void trackEventProRate(final ProRateEventType type, final int bookingId,
-            final String proName, final int rating)
+                                  final String proName, final int rating)
     {
         final JSONObject props = new JSONObject();
         addProps(props, "dialog_event", type.getValue());
@@ -436,7 +443,8 @@ public class Mixpanel
         try
         {
             object.put(key, value);
-        } catch (final JSONException e)
+        }
+        catch (final JSONException e)
         {
             throw new RuntimeException(e);
         }
@@ -450,7 +458,8 @@ public class Mixpanel
             {
                 object.put(key, props.get(key));
             }
-        } catch (final JSONException e)
+        }
+        catch (final JSONException e)
         {
             throw new RuntimeException(e);
         }
@@ -586,7 +595,8 @@ public class Mixpanel
             if (pricing[0] == pricing[1])
             {
                 totalPrice = pricing[0];
-            } else
+            }
+            else
             {
                 totalPrice = pricing[1];
             }
@@ -699,7 +709,8 @@ public class Mixpanel
                 try
                 {
                     value = field.get(event);
-                } catch (IllegalAccessException e)
+                }
+                catch (IllegalAccessException e)
                 {
                     e.printStackTrace();
                 }

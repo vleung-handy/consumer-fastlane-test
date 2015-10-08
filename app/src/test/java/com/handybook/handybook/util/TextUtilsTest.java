@@ -3,6 +3,7 @@ package com.handybook.handybook.util;
 import com.handybook.handybook.core.CreditCard;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**

@@ -160,4 +160,23 @@
     <string name="modal_blocking_button_text">Update Now</string>
     <string name="modal_blocking_image_content_description">Please update the app image.</string>
 
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+    <string name="set_dropoff">Set Drop-Off</string>
+    <string name="email_receipt">Email Receipt</string>
+    <string name="updated_note_to_pro">Note to pro updated</string>
+    <string name="updated_entry_information">Entry information updated</string>
+    <string name="pro_entry_information">How will your professional get in?</string>
+    <string name="pro_assignment_pending">Professional assignment pending</string>
+    <string name="blank_string"></string>
+    <string name="call">Call</string>
+    <string name="text">Text</string>
+    <string name="booking_number">Booking #</string>
+    <string name="error_no_intent_handler_found">No application found to handle the requested action</string>
+    <string name="no_information">No information</string>
+    <string name="error_toast_missing_hidden_keys_note">Please, describe where you\'ll hide the keys.</string>
+    <string name="toast_error_missing_hidden_key_note">Please, describe where you\'ll hide the keys.</string>
+    <string name="image_content_description_handy_logo">Handy icon</string>
+    <string name="image_content_description_icon_recuring">Recuring Icon</string>
+
 </resources>

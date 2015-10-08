@@ -4,8 +4,6 @@ import org.junit.runners.model.InitializationError;
 import org.robolectric.AndroidManifest;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.res.Fs;
-import org.robolectric.res.FsFile;
 
 import java.io.File;
 import java.util.Properties;

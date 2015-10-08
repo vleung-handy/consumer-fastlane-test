@@ -20,6 +20,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
@@ -311,7 +312,7 @@ public final class LoginFragment extends BookingFlowFragment
                                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, name);
                                 intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, email);
-                                startActivityForResult(intent, LoginActivity.RESULT_FINISH);
+                                startActivityForResult(intent, ActivityResult.RESULT_LOGIN_FINISH);
 
                                 progressDialog.dismiss();
                                 enableInputs();

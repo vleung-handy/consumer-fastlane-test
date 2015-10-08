@@ -27,6 +27,8 @@ import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
+import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
@@ -52,6 +54,17 @@ import com.handybook.handybook.ui.fragment.BookingCancelOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingConfirmationFragment;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
+import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
+import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
@@ -114,7 +127,22 @@ import retrofit.converter.GsonConverter;
         RateServiceDialogFragment.class, RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class, AddLaundryDialogFragment.class,
         HelpContactFragment.class, HelpContactActivity.class,
-        SplashActivity.class, BlockingActivity.class, BlockingUpdateFragment.class
+        SplashActivity.class,
+        BookingDetailSectionFragment.class,
+        BookingDetailSectionFragmentAddress.class,
+        BookingDetailSectionFragmentEntryInformation.class,
+        BookingDetailSectionFragmentExtras.class,
+        BookingDetailSectionFragmentLaundry.class,
+        BookingDetailSectionFragmentNoteToPro.class,
+        BookingDetailSectionFragmentPayment.class,
+        BookingDetailSectionFragmentProInformation.class,
+        BookingDetailSectionFragmentBookingActions.class,
+        BookingEditNoteToProActivity.class,
+        BookingEditNoteToProFragment.class,
+        BookingEditEntryInformationActivity.class,
+        BookingEditEntryInformationFragment.class,
+        BlockingActivity.class,
+        BlockingUpdateFragment.class,
 })
 public final class ApplicationModule
 {
@@ -176,6 +204,7 @@ public final class ApplicationModule
                         if (user != null)
                         {
                             request.addQueryParam("app_user_id", user.getId());
+                            request.addQueryParam("auth_token", user.getAuthToken());
                         }
                     }
                 }).setConverter(new GsonConverter(new GsonBuilder()
@@ -246,9 +275,11 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final BookingManager provideBookingManager(final Bus bus,
-                                               final PrefsManager prefsManager)
+                                               final PrefsManager prefsManager,
+                                               final DataManager dataManager
+    )
     {
-        return new BookingManager(bus, prefsManager);
+        return new BookingManager(bus, prefsManager, dataManager);
     }
 
     @Provides
@@ -324,7 +355,8 @@ public final class ApplicationModule
         if (model.startsWith(manufacturer))
         {
             return model;
-        } else
+        }
+        else
         {
             return manufacturer + " " + model;
         }

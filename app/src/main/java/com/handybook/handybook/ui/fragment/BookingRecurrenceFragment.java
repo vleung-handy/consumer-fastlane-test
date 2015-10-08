@@ -52,7 +52,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         transaction.replace(R.id.info_header_layout, header).commit();
 
         final BookingOption option = new BookingOption();
-        option.setType("option");
+        option.setType(BookingOption.TYPE_OPTION);
         option.setDefaultValue("0");
 
         option.setOptions(new String[] { getString(R.string.every_week),

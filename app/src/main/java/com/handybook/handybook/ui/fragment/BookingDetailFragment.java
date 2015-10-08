@@ -2,103 +2,70 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
-import com.handybook.handybook.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
+import com.handybook.handybook.ui.view.BookingDetailView;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingDetailFragment extends BookingFlowFragment {
-    static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
+public final class BookingDetailFragment extends InjectedFragment
+{
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
 
     private Booking booking;
     private boolean updatedBooking;
 
-    @Bind(R.id.date_text)
-    TextView dateText;
-    @Bind(R.id.time_text)
-    TextView timeText;
-    @Bind(R.id.freq_text)
-    TextView freqText;
-    @Bind(R.id.freq_layout)
-    View freqLayout;
-    @Bind(R.id.pro_section)
-    View proSection;
-    @Bind(R.id.pro_text)
-    TextView proText;
-    @Bind(R.id.laundry_section)
-    View laundrySection;
-    @Bind(R.id.entry_section)
-    View entrySection;
-    @Bind(R.id.entry_text)
-    TextView entryText;
-    @Bind(R.id.pro_note_section)
-    View proNoteSection;
-    @Bind(R.id.pro_note_text)
-    TextView proNoteText;
-    @Bind(R.id.extras_section)
-    View extrasSection;
-    @Bind(R.id.extras_text)
-    TextView extrasText;
-    @Bind(R.id.addr_text)
-    TextView addrText;
-    @Bind(R.id.total_text)
-    TextView totalText;
-    @Bind(R.id.pay_lines_section)
-    LinearLayout paymentLinesSection;
-    @Bind(R.id.billed_text)
-    TextView billedText;
-    @Bind(R.id.options_layout)
-    View optionsLayout;
-    @Bind(R.id.reschedule_button)
-    Button rescheduleButton;
-    @Bind(R.id.cancel_button)
-    Button cancelButton;
-    @Bind(R.id.booking_text)
-    TextView bookingText;
-    @Bind(R.id.nav_text)
-    TextView navText;
+    @Bind(R.id.booking_detail_view)
+    BookingDetailView bookingDetailView;
 
-    public static BookingDetailFragment newInstance(final Booking booking) {
+    public static BookingDetailFragment newInstance(final Booking booking)
+    {
         final BookingDetailFragment fragment = new BookingDetailFragment();
         final Bundle args = new Bundle();
-        args.putParcelable(EXTRA_BOOKING, booking);
+        args.putParcelable(BundleKeys.BOOKING, booking);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
+    public final void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackDetails();
-        booking = getArguments().getParcelable(EXTRA_BOOKING);
+        booking = getArguments().getParcelable(BundleKeys.BOOKING);
 
-        if (savedInstanceState != null) {
-            if (savedInstanceState.getBoolean(STATE_UPDATED_BOOKING)) {
+        if (savedInstanceState != null)
+        {
+            if (savedInstanceState.getBoolean(STATE_UPDATED_BOOKING))
+            {
                 setUpdatedBookingResult();
             }
         }
@@ -109,241 +76,232 @@ public final class BookingDetailFragment extends BookingFlowFragment {
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    ) {
+    )
+    {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_detail, container, false);
 
         ButterKnife.bind(this, view);
 
-        navText.setText(booking.getService());
-        bookingText.setText("Booking #" + booking.getId());
-
-        updateDateTimeInfoText(booking.getStartDate());
-
-        final String recurringInfo = booking.getRecurringInfo();
-        if (recurringInfo == null) freqLayout.setVisibility(View.GONE);
-        else freqText.setText(booking.getRecurringInfo());
-
-        final User user = userManager.getCurrentUser();
-        final Booking.Provider pro = booking.getProvider();
-        if (pro.getStatus() == 3) {
-            proText.setText(pro.getFirstName() + " " + pro.getLastName() +
-                    (pro.getPhone() != null ? "\n" + TextUtils.formatPhone(pro.getPhone(),
-                            user.getPhonePrefix()) : ""));
-
-            Linkify.addLinks(proText, Linkify.PHONE_NUMBERS);
-            TextUtils.stripUnderlines(proText);
-        }
-        else proSection.setVisibility(View.GONE);
-
-        if (booking.getLaundryStatus() == null
-                || booking.getLaundryStatus() == Booking.LaundryStatus.SKIPPED) {
-            laundrySection.setVisibility(View.GONE);
-        }
-
-        final String entryInfo = booking.getEntryInfo();
-        if (entryInfo != null) {
-            entryText.setText(entryInfo + " "
-                    + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
-        }
-        else entrySection.setVisibility(View.GONE);
-
-        final String proNote = booking.getProNote();
-        if (proNote != null) proNoteText.setText(proNote);
-        else proNoteSection.setVisibility(View.GONE);
-
-        final ArrayList<Booking.ExtraInfo> extras = booking.getExtrasInfo();
-        if (extras != null && extras.size() > 0) {
-            String extraInfo = "";
-
-            for (int i = 0; i < extras.size(); i++) {
-                final Booking.ExtraInfo info = extras.get(i);
-                extraInfo += info.getLabel();
-
-                if (i < extras.size() - 1) extraInfo += ", ";
-            }
-
-            extrasText.setText(extraInfo);
-        }
-        else extrasSection.setVisibility(View.GONE);
-
-        final Booking.Address address = booking.getAddress();
-        addrText.setText(TextUtils.formatAddress(address.getAddress1(), address.getAddress2(),
-                address.getCity(), address.getState(), address.getZip()));
-
-        final String price = TextUtils.formatPrice(booking.getPrice(),
-                user.getCurrencyChar(), null);
-        totalText.setText(price);
-
-        final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
-        Collections.sort(paymentInfo, new Comparator<Booking.LineItem>() {
-            @Override
-            public int compare(final Booking.LineItem lhs, final Booking.LineItem rhs) {
-                return lhs.getOrder() - rhs.getOrder();
-            }
-        });
-
-        if (paymentInfo != null && paymentInfo.size() > 0) {
-            paymentLinesSection.setVisibility(View.VISIBLE);
-
-            View lineView;
-
-            for (int i = 0; i < paymentInfo.size(); i++) {
-                lineView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.view_payment_line, container, false);
-
-                final TextView labelText = (TextView)lineView.findViewById(R.id.label_text);
-                final TextView amountText = (TextView)lineView.findViewById(R.id.amount_text);
-                final Booking.LineItem line = paymentInfo.get(i);
-
-                labelText.setText(line.getLabel());
-                amountText.setText(line.getAmount());
-
-                if (i < paymentInfo.size() - 1) lineView.setPadding(0, 0, 0, Utils.toDP(10, getActivity()));
-
-                paymentLinesSection.addView(lineView);
-            }
-        }
-
-        final String billedStatus = booking.getBilledStatus();
-        if (billedStatus != null)  billedText.setText(billedStatus);
-        else billedText.setVisibility(View.GONE);
-
-        if (booking.isPast()) optionsLayout.setVisibility(View.GONE);
-        else {
-            rescheduleButton.setOnClickListener(rescheduleClicked);
-            cancelButton.setOnClickListener(cancelClicked);
-        }
+        setupForBooking(this.booking);
 
         return view;
     }
 
     @Override
-    protected void disableInputs() {
-        super.disableInputs();
-        rescheduleButton.setClickable(false);
-    }
-
-    @Override
-    protected final void enableInputs() {
-        super.enableInputs();
-        rescheduleButton.setClickable(true);
-    }
-
-    @Override
-    public final void onActivityResult(final int requestCode, final int resultCode,
-                                       final Intent data) {
+    public final void onActivityResult(final int requestCode,
+                                       final int resultCode,
+                                       final Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE) {
-            updateDateTimeInfoText(new Date(data
-                    .getLongExtra(BookingDateActivity.EXTRA_RESCHEDULE_NEW_DATE, 0)));
-            setUpdatedBookingResult();
-        }
+        //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
 
-        else if (resultCode == BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED) {
+        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
+        {
+            if (data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
+            {
+                Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
+                //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model. API v4 should return the updated booking model
+                bookingDetailView.updateDateTimeInfoText(booking, newDate);
+                setUpdatedBookingResult();
+            }
+        }
+        else if (resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
+        {
             setCanceledBookingResult();
             getActivity().finish();
         }
+        else if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED)
+        {
+            //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
+            postBlockingEvent(new HandyEvent.RequestBookingDetails(booking.getId()));
+            //setting the updated result with the new booking when we receive the new booking data
+        }
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState) {
+    public final void onSaveInstanceState(final Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_UPDATED_BOOKING, updatedBooking);
     }
 
-    private View.OnClickListener rescheduleClicked = new View.OnClickListener() {
+    @Override
+    protected void disableInputs()
+    {
+        super.disableInputs();
+        bookingDetailView.backButton.setClickable(false);
+        setSectionFragmentInputsEnabled(false);
+    }
+
+    @Override
+    protected final void enableInputs()
+    {
+        super.enableInputs();
+        bookingDetailView.backButton.setClickable(true);
+        setSectionFragmentInputsEnabled(true);
+    }
+
+    private void setSectionFragmentInputsEnabled(boolean enabled)
+    {
+        bus.post(new HandyEvent.SetBookingDetailSectionFragmentActionControlsEnabled(enabled));
+    }
+
+    private void setupForBooking(Booking booking)
+    {
+        bookingDetailView.updateDisplay(booking, userManager.getCurrentUser());
+        setupClickListeners();
+        addSectionFragments();
+    }
+
+    private void setupClickListeners()
+    {
+        bookingDetailView.backButton.setOnClickListener(backButtonClicked);
+    }
+
+    //Section fragments to display, In display order
+    protected List<BookingDetailSectionFragment> constructSectionFragments()
+    {
+        return Lists.newArrayList(
+                new BookingDetailSectionFragmentProInformation(),
+                new BookingDetailSectionFragmentLaundry(),
+                new BookingDetailSectionFragmentEntryInformation(),
+                new BookingDetailSectionFragmentNoteToPro(),
+                new BookingDetailSectionFragmentExtras(),
+                new BookingDetailSectionFragmentAddress(),
+                new BookingDetailSectionFragmentPayment(),
+                new BookingDetailSectionFragmentBookingActions()
+        );
+    }
+
+    private void addSectionFragments()
+    {
+        clearSectionFragments();
+
+        List<BookingDetailSectionFragment> sectionFragments = constructSectionFragments();
+
+        //These are fragments nested inside this fragment, must use getChildFragmentManager instead of getFragmentManager
+        for (BookingDetailSectionFragment sectionFragment : sectionFragments)
+        {
+            //Normally we would bundle all of these adds into one transaction but there is a bug
+            //  with the fragment manager which displays them in reverse order if fragments were just cleared
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            Bundle args = new Bundle();
+            args.putParcelable(BundleKeys.BOOKING, this.booking);
+            sectionFragment.setArguments(args);
+            transaction.add(R.id.section_fragment_container, sectionFragment);
+            transaction.commit();
+        }
+
+    }
+
+    private void clearSectionFragments()
+    {
+        //Remove all of the child fragments for this fragment
+        List<Fragment> childFragments = getChildFragmentManager().getFragments();
+        if (childFragments != null && childFragments.size() > 0)
+        {
+            FragmentTransaction removalTransaction = getChildFragmentManager().beginTransaction();
+            for (Fragment frag : childFragments)
+            {
+                if (!(frag == null || frag.isDetached() || frag.isRemoving()))
+                {
+                    removalTransaction.remove(frag);
+                }
+            }
+            removalTransaction.commit();
+        }
+    }
+
+    //The on screen back button works as the softkey back button
+    private View.OnClickListener backButtonClicked = new View.OnClickListener()
+    {
         @Override
-        public void onClick(final View v) {
-            disableInputs();
-            progressDialog.show();
-
-            dataManager.getPreRescheduleInfo(booking.getId(), new DataManager.Callback<String>() {
-                @Override
-                public void onSuccess(final String notice) {
-                    if (!allowCallbacks) return;
-                    enableInputs();
-                    progressDialog.dismiss();
-
-                    final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
-                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
-                    intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
-                    startActivityForResult(intent, BookingDateActivity.RESULT_RESCHEDULE_NEW_DATE);
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error) {
-                    if (!allowCallbacks) return;
-                    enableInputs();
-                    progressDialog.dismiss();
-                    dataManagerErrorHandler.handleError(getActivity(), error);
-                }
-            });
+        public void onClick(final View v)
+        {
+            getActivity().onBackPressed();
         }
     };
 
-    private View.OnClickListener cancelClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            disableInputs();
-            progressDialog.show();
+    @Subscribe
+    public void onReceivePreRescheduleInfoSuccess(HandyEvent.ReceivePreRescheduleInfoSuccess event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
 
-            dataManager.getPreCancelationInfo(booking.getId(),
-                    new DataManager.Callback<Pair<String, List<String>>>() {
-                        @Override
-                        public void onSuccess(final Pair<String, List<String>> result) {
-                            if (!allowCallbacks) return;
-                            enableInputs();
-                            progressDialog.dismiss();
+        final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, this.booking);
+        intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, event.notice);
+        startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
+    }
 
-                            final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
+    @Subscribe
+    public void onReceivePreRescheduleInfoError(HandyEvent.ReceivePreRescheduleInfoError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
 
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
-                                    new ArrayList<>(result.second));
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
 
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
+    @Subscribe
+    public void onReceivePreCancelationInfoSuccess(HandyEvent.ReceivePreCancelationInfoSuccess event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
 
-                            startActivityForResult(intent, BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED);
-                        }
+        Pair<String, List<String>> result = event.result;
 
-                        @Override
-                        public void onError(final DataManager.DataManagerError error) {
-                            if (!allowCallbacks) return;
-                            enableInputs();
-                            progressDialog.dismiss();
-                            dataManagerErrorHandler.handleError(getActivity(), error);
-                        }
-                    });
-        }
-    };
+        final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
+        intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
+        intent.putExtra(BundleKeys.NOTICE, result.first);
+        intent.putExtra(BundleKeys.BOOKING, booking);
+        startActivityForResult(intent, ActivityResult.RESULT_BOOKING_CANCELED);
+    }
 
-    private final void setUpdatedBookingResult() {
+    @Subscribe
+    public void onReceivePreCancelationInfoError(HandyEvent.ReceivePreCancelationInfoError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
+
+    @Subscribe
+    public void onReceiveBookingDetailsSuccess(HandyEvent.ReceiveBookingDetailsSuccess event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+
+        this.booking = event.booking;
+        getArguments().putParcelable(BundleKeys.BOOKING, event.booking);
+        setUpdatedBookingResult();
+        setupForBooking(event.booking);
+    }
+
+    @Subscribe
+    public void onReceiveBookingDetailsError(HandyEvent.ReceiveBookingDetailsError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
+
+    private void setUpdatedBookingResult()
+    {
         updatedBooking = true;
-
         final Intent intent = new Intent();
-        intent.putExtra(BookingDetailActivity.EXTRA_UPDATED_BOOKING, booking);
-        getActivity().setResult(BookingDetailActivity.RESULT_BOOKING_UPDATED, intent);
+        intent.putExtra(BundleKeys.UPDATED_BOOKING, booking);
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, intent);
     }
 
-    private final void setCanceledBookingResult() {
+    private void setCanceledBookingResult()
+    {
         final Intent intent = new Intent();
-        intent.putExtra(BookingDetailActivity.EXTRA_CANCELED_BOOKING, booking);
-        getActivity().setResult(BookingDetailActivity.RESULT_BOOKING_CANCELED, intent);
-    }
-
-    private void updateDateTimeInfoText(final Date date) {
-        final float hours = booking.getHours();
-        final Calendar endDate = Calendar.getInstance();
-        endDate.setTime(date);
-        endDate.add(Calendar.MINUTE, (int)(60 * hours));
-
-        timeText.setText(TextUtils.formatDate(date, "h:mmaaa - ")
-                + TextUtils.formatDate(endDate.getTime(), "h:mmaaa (") + TextUtils.formatDecimal(hours, "#.#") + " "
-                + getResources().getQuantityString(R.plurals.hour,
-                (int)Math.ceil(hours)) + ")");
-
-        dateText.setText(TextUtils.formatDate(date, "EEEE',' MMM d',' yyyy"));
+        intent.putExtra(BundleKeys.CANCELLED_BOOKING, booking);
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, intent);
     }
 }

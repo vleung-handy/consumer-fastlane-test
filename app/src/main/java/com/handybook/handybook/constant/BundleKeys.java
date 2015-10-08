@@ -15,4 +15,20 @@ public class BundleKeys
     public static final String PATH = "path";
     public static final String TAB = "tab";
     public static final String LOGIN_TOKEN = "login_token";
+    public static final String CANCELLED_BOOKING = "cancelled_booking";
+    public static final String UPDATED_BOOKING = "updated_booking";
+
+    public static final String RESCHEDULE_BOOKING = "reschedule_booking";
+    public static final String RESCHEDULE_NOTICE = "reschedule_notice";
+    public static final String RESCHEDULE_NEW_DATE = "reschedule_new_date";
+    public static final String POST_OPTIONS = "post_options";
+
+    public static final String OPTIONS = "options";
+    public static final String NOTICE = "notice";
+
+    public static final String RESCHEDULE_PRICE_TABLE = "reschedule_price_table";
+    public static final String RESCHEDULE_ALL = "reschedule_all";
+    public static final String FOR_VOUCHER = "for_voucher";
+
+
 }

@@ -22,6 +22,8 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
+// This does not break the build when Android Studio is missing the JRebel for Android plugin.
+apply plugin: 'com.zeroturnaround.jrebel.android'
 apply plugin: 'io.fabric'
 apply plugin: 'newrelic'
 
@@ -41,19 +43,19 @@ android {
             storePassword 'S0H@ndy!'
         }
     }
-    compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
     defaultConfig {
         applicationId 'com.handy.handy'
         minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 51
-        versionName '1.7'
+        targetSdkVersion 21
+        versionCode 52
+        versionName '1.8'
         multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -83,15 +85,16 @@ dependencies {
 
 
     //Android Support Libraries
-    compile 'com.android.support:support-v4:23.0.1'
-    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:support-v4:21.0.1'
+    compile 'com.android.support:appcompat-v7:21.0.1'
 
     //Google Play
     compile 'com.google.android.gms:play-services-location:7.8.0'
     compile 'com.google.android.gms:play-services-gcm:7.8.0'
 
     //Crashlytics
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
 

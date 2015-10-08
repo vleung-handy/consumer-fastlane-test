@@ -11,61 +11,78 @@ import android.widget.RelativeLayout;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BookingOption;
 
-public final class BookingOptionsTextView extends BookingOptionsView {
+public final class BookingOptionsTextView extends BookingOptionsView
+{
     private EditText editText;
 
     public BookingOptionsTextView(final Context context, final BookingOption option,
-                                  final OnUpdatedListener updateListener) {
+                                  final OnUpdatedListener updateListener)
+    {
         super(context, R.layout.view_booking_options_text, option, updateListener);
         init();
     }
 
-    BookingOptionsTextView(final Context context, final AttributeSet attrs) {
+    BookingOptionsTextView(final Context context, final AttributeSet attrs)
+    {
         super(context, attrs);
     }
 
-    BookingOptionsTextView(final Context context, final AttributeSet attrs, final int defStyle) {
+    BookingOptionsTextView(final Context context, final AttributeSet attrs, final int defStyle)
+    {
         super(context, attrs, defStyle);
     }
 
-    private void init() {
-        if (!option.getType().equals("text")) return;
+    private void init()
+    {
+        if (!option.getType().equals("text"))
+        {
+            return;
+        }
 
-        mainLayout = (RelativeLayout)this.findViewById(R.id.rel_layout);
+        mainLayout = (RelativeLayout) this.findViewById(R.id.rel_layout);
 
-        editText = (EditText)this.findViewById(R.id.edit_text);
+        editText = (EditText) this.findViewById(R.id.edit_text);
         editText.setGravity(Gravity.TOP);
         editText.setHint(option.getDefaultValue());
-        editText.addTextChangedListener(new TextWatcher() {
+        editText.addTextChangedListener(new TextWatcher()
+        {
             @Override
             public void beforeTextChanged(final CharSequence s, final int start, final int count,
-                                          final int after) {
+                                          final int after)
+            {
 
             }
 
             @Override
             public void onTextChanged(final CharSequence s, final int start, final int before,
-                                      final int count) {
+                                      final int count)
+            {
 
             }
 
             @Override
-            public void afterTextChanged(final Editable s) {
-                if (updateListener != null) updateListener
-                        .onUpdate(BookingOptionsTextView.this);
+            public void afterTextChanged(final Editable s)
+            {
+                if (updateListener != null)
+                {
+                    updateListener.onUpdate(BookingOptionsTextView.this);
+                }
             }
         });
     }
 
-    public final String getCurrentValue() {
+    public final String getCurrentValue()
+    {
         return editText.getText().toString().trim();
     }
 
-    public final void setValue(final String value) {
+    public final void setValue(final String value)
+    {
         editText.setText(value);
     }
 
-    public final void enableSingleMode() {
+    public final void enableSingleMode()
+    {
         mainLayout.setBackgroundResource(0);
         mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, mainLayout.getPaddingRight(), 0);
         invalidate();
