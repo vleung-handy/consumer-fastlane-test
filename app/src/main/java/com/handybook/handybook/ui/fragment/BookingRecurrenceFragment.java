@@ -36,6 +36,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bookingTransaction = bookingManager.getCurrentTransaction();
+        mixpanel.trackEventAppTrackFrequency();
     }
 
     @Override

@@ -43,7 +43,6 @@ public class Mixpanel
         {
             mixpanelAPI = MixpanelAPI.getInstance(context, "5b31021d4a78ed7d57d9f19fd796f1cd");
         }
-
         this.calledMap = new HashMap<>();
         this.prefsManager = prefsManager;
         setSuperProps();
@@ -57,17 +56,14 @@ public class Mixpanel
     private void setSuperProps()
     {
         mixpanelAPI.clearSuperProperties();
-
         final JSONObject props = new JSONObject();
         addProps(props, "mobile", true);
         addProps(props, "client", "android");
         addProps(props, "impersonating", false);
-
         //UPGRADE: This is a change, previously we talked to the UserManager, make sure that the prefs user_obj is always updated properly in secureprefs
-
         String userJson = prefsManager.getString(PrefsKey.USER);
         User user = null;
-        if(userJson != null)
+        if (userJson != null)
         {
             user = User.fromJson(userJson);
         }
@@ -79,13 +75,10 @@ public class Mixpanel
         else
         {
             addProps(props, "user_logged_in", true);
-
             addProps(props, "name", user.getFullName());
             addProps(props, "email", user.getEmail());
             addProps(props, "user_id", user.getId());
-
             final User.Analytics analytics = user.getAnalytics();
-
             if (analytics != null)
             {
                 addProps(props, "last_booking_end", analytics.getLastBookingEnd());
@@ -158,7 +151,11 @@ public class Mixpanel
         trackWhenPageEvents("when page submitted", request);
     }
 
-    public void trackEventPaymentPage(BookingRequest request, BookingQuote quote, BookingTransaction transaction)
+    public void trackEventPaymentPage(
+            BookingRequest request,
+            BookingQuote quote,
+            BookingTransaction transaction
+    )
     {
         final String event = "payment page";
         final Boolean called = calledMap.get(event);
@@ -174,7 +171,11 @@ public class Mixpanel
         calledMap.put(event, true);
     }
 
-    public void trackEventSubmitPayment(BookingRequest request, BookingQuote quote, BookingTransaction transaction)
+    public void trackEventSubmitPayment(
+            BookingRequest request,
+            BookingQuote quote,
+            BookingTransaction transaction
+    )
     {
         final String event = "submit payment";
         final Boolean called = calledMap.get(event);
@@ -190,7 +191,10 @@ public class Mixpanel
         calledMap.put(event, true);
     }
 
-    public void trackEventBookingMade(BookingRequest request, BookingQuote quote, BookingTransaction transaction)
+    public void trackEventBookingMade(
+            BookingRequest request,
+            BookingQuote quote,
+            BookingTransaction transaction)
     {
         final String event = "booking made";
         final Boolean called = calledMap.get(event);
@@ -198,10 +202,8 @@ public class Mixpanel
         {
             return;
         }
-
         final JSONObject props = new JSONObject();
         addBookingMadeFlowProps(props, request, quote, transaction);
-
         mixpanelAPI.track(event, props);
         calledMap.put(event, true);
     }
@@ -331,12 +333,118 @@ public class Mixpanel
         mixpanelAPI.track("submit schedule laundry page", props);
     }
 
+    // APP_TRACK_INSTALL ("App Track Install"),
+    public void trackEventAppTrackInstall()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Install", props);
+    }
+
+    // APP_TRACK_LOCATION ("App Track Location"),
+    public void trackEventAppTrackLocation()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Location", props);
+    }
+
+    // APP_TRACK_DETAILS ("App Track Details"),
+    public void trackEventAppTrackDetails()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Details", props);
+    }
+
+    // APP_TRACK_TIME ("App Track Time"),
+    public void trackEventAppTrackTime()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Time", props);
+    }
+
+    // APP_TRACK_CONTACT ("App Track Contact"),
+    public void trackEventAppTrackContact()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Contact", props);
+    }
+
+    // APP_TRACK_LOG_IN ("App Track Log In"),
+    public void trackEventAppTrackLogIn()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Log In", props);
+    }
+
+    // APP_TRACK_REQUEST_PRO ("App Track Request Pro"),
+    public void trackEventAppTrackRequestPro()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Request Pro", props);
+    }
+
+    // APP_TRACK_COMMENTS ("App Track Comments"),
+    public void trackEventAppTrackComments()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Comments", props);
+    }
+
+    // APP_TRACK_FREQUENCY ("App Track Frequency"),
+    public void trackEventAppTrackFrequency()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Frequency", props);
+    }
+
+    // APP_TRACK_EXTRAS ("App Track Extras"),
+    public void trackEventAppTrackExtras()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Extras", props);
+    }
+
+    // APP_TRACK_ADDRESS ("App Track Address"),
+    public void trackEventAppTrackAddress()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Address", props);
+    }
+
+    // APP_TRACK_PAYMENT ("App Track Payment"),
+    public void trackEventAppTrackPayment()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Payment", props);
+    }
+
+    // APP_TRACK_CONFIRMATION ("App Track Confirmation");
+    public void trackEventAppTrackConfirmation()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Confirmation", props);
+    }
+
+
     private void addProps(final JSONObject object, final String key, final Object value)
     {
         try
         {
             object.put(key, value);
-        } catch (final JSONException e)
+        }
+        catch (final JSONException e)
         {
             throw new RuntimeException(e);
         }
@@ -350,7 +458,8 @@ public class Mixpanel
             {
                 object.put(key, props.get(key));
             }
-        } catch (final JSONException e)
+        }
+        catch (final JSONException e)
         {
             throw new RuntimeException(e);
         }
@@ -363,10 +472,8 @@ public class Mixpanel
         {
             return;
         }
-
         final JSONObject props = new JSONObject();
         addWhenFlowProps(props, request);
-
         mixpanelAPI.track(event, props);
         calledMap.put(event, true);
     }
@@ -375,38 +482,37 @@ public class Mixpanel
     {
         //final BookingRequest request = bookingManager.getCurrentRequest();
         String service = null, zip = null;
-
         if (request != null)
         {
             service = request.getUniq();
             zip = request.getZipCode();
         }
-
         addProps(props, "service", service);
         addProps(props, "booking_zipcode", zip);
     }
 
-    private void addPaymentFlowProps(final JSONObject props, BookingRequest request, BookingQuote quote, BookingTransaction transaction)
+    private void addPaymentFlowProps(
+            final JSONObject props,
+            BookingRequest request,
+            BookingQuote quote,
+            BookingTransaction transaction
+    )
     {
         addWhenFlowProps(props, request);
-
         String email = null;
         int bookingId = 0, repeatFreq = 0;
         float hours = 0, price = 0;
         boolean hasDynamicPricing = false, isRepeat = false;
-
         if (request != null)
         {
             email = request.getEmail();
         }
-
         if (quote != null)
         {
             bookingId = quote.getBookingId();
             hours = quote.getHours();
             hasDynamicPricing = quote.getSurgePriceTable() != null;
         }
-
         if (transaction != null)
         {
             repeatFreq = transaction.getRecurringFrequency();
@@ -416,7 +522,6 @@ public class Mixpanel
                 price = quote.getPricing(hours, repeatFreq)[0];
             }
         }
-
         addProps(props, "booking_id", bookingId);
         addProps(props, "hours", hours);
         addProps(props, "email", email);
@@ -429,18 +534,19 @@ public class Mixpanel
         }
     }
 
-    private void addSubmitPaymentFlowProps(final JSONObject props, BookingRequest request, BookingQuote quote, BookingTransaction transaction)
+    private void addSubmitPaymentFlowProps(
+            final JSONObject props,
+            BookingRequest request,
+            BookingQuote quote,
+            BookingTransaction transaction)
     {
         addPaymentFlowProps(props, request, quote, transaction);
-
         String cleaningExtras = null;
         boolean cleaningExtrasSelected = false;
         float hours = 0;
-
         if (transaction != null)
         {
             cleaningExtras = transaction.getExtraCleaningText();
-
             if (cleaningExtras != null)
             {
                 final String[] extrasList = cleaningExtras.split(",");
@@ -449,10 +555,8 @@ public class Mixpanel
                     cleaningExtrasSelected = true;
                 }
             }
-
             hours = transaction.getExtraHours();
         }
-
         addProps(props, "cleaning_extras_tapped", cleaningExtrasSelected);
         if (cleaningExtrasSelected)
         {
@@ -464,25 +568,26 @@ public class Mixpanel
         }
     }
 
-    private void addBookingMadeFlowProps(final JSONObject props, BookingRequest request, BookingQuote quote, BookingTransaction transaction)
+    private void addBookingMadeFlowProps(
+            final JSONObject props,
+            BookingRequest request,
+            BookingQuote quote,
+            BookingTransaction transaction
+    )
     {
         addSubmitPaymentFlowProps(props, request, quote, transaction);
-
         float hourlyPrice = 0, totalPrice = 0;
         boolean isRepeating = false;
-
         if (quote != null)
         {
             hourlyPrice = quote.getHourlyAmount();
         }
-
         if (transaction != null)
         {
             isRepeating = transaction.getRecurringFrequency() > 0;
 
             final float hours = transaction.getHours() + transaction.getExtraHours();
             float[] pricing = new float[]{0, 0};
-
             if (quote != null)
             {
                 pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
@@ -518,7 +623,6 @@ public class Mixpanel
     public enum LoginType
     {
         EMAIL("email/password"), FACEBOOK("facebook");
-
         private String value;
 
         private LoginType(final String value)
@@ -532,10 +636,10 @@ public class Mixpanel
         }
     }
 
+
     public enum ProRateEventType
     {
         SHOW("show"), SUBMIT("submit");
-
         private String value;
 
         private ProRateEventType(final String value)
@@ -549,10 +653,10 @@ public class Mixpanel
         }
     }
 
+
     public enum LaundryEventSource
     {
         APP_OPEN("app_open");
-
         private String value;
 
         private LaundryEventSource(final String value)
@@ -568,7 +672,6 @@ public class Mixpanel
 
 
     //UPGRADE: Bringing over from Nortal to track events
-
     public void track(String eventName)
     {
         track(eventName, null);
@@ -577,14 +680,11 @@ public class Mixpanel
     public void trackEvent(Object event)
     {
         Class eventClass = event.getClass();
-
         if (eventClass.isAnnotationPresent(Track.class))
         {
             Track annotation = (Track) eventClass.getAnnotation(Track.class);
             String message = annotation.value();
-
             getItemsToTrack(eventClass);
-
             track(message, getItemsToTrack(event));
         }
     }
@@ -605,16 +705,15 @@ public class Mixpanel
                 TrackField annotation = field.getAnnotation(TrackField.class);
                 String key = annotation.value();
                 Object value = null;
-
                 field.setAccessible(true);
                 try
                 {
                     value = field.get(event);
-                } catch (IllegalAccessException e)
+                }
+                catch (IllegalAccessException e)
                 {
                     e.printStackTrace();
                 }
-
                 addProps(object, key, value);
             }
         }

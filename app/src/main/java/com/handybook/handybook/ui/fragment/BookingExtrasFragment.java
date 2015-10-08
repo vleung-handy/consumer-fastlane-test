@@ -48,6 +48,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         bookingTransaction = bookingManager.getCurrentTransaction();
         bookingQuote = bookingManager.getCurrentQuote();
+        mixpanel.trackEventAppTrackExtras();
     }
 
     @Override

@@ -45,6 +45,13 @@ public final class BookingAddressFragment extends BookingFlowFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        mixpanel.trackEventAppTrackAddress();
+    }
+
+    @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater()

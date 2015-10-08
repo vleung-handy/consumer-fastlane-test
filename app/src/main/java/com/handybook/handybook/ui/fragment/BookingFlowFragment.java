@@ -397,7 +397,7 @@ public class BookingFlowFragment extends InjectedFragment
         final String authToken = user != null ? user.getAuthToken() : null;
         final String coupon = bookingManager.getPromoTabCoupon();
 
-        if (coupon != null)
+        if (coupon != null && !coupon.isEmpty())
         {
             dataManager.applyPromo(coupon, quote.getBookingId(), userId, email, authToken,
                     new DataManager.Callback<BookingCoupon>()

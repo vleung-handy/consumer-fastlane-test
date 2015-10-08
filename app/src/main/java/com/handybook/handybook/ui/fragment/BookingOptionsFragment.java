@@ -315,7 +315,8 @@ public class BookingOptionsFragment extends BookingFlowFragment
             {
                 navText.setText(getString(R.string.comments));
                 optionsLayout.setBackgroundColor(0);
-                ((BookingOptionsTextView) optionsView).enableSingleMode();
+                ((BookingOptionsTextView)optionsView).enableSingleMode();
+                mixpanel.trackEventAppTrackComments();
             }
             else if (pageOptions.size() == 1 && option.getType().equals("option")
                     && option.getTitle().contains("professional"))
@@ -323,7 +324,8 @@ public class BookingOptionsFragment extends BookingFlowFragment
                 headerText.setText(option.getTitle());
                 headerText.setVisibility(View.VISIBLE);
                 navText.setText(getString(R.string.request_pro));
-                ((BookingOptionsIndexView) optionsView).hideTitle();
+                ((BookingOptionsIndexView)optionsView).hideTitle();
+                mixpanel.trackEventAppTrackRequestPro();
             }
 
             optionsLayout.addView(optionsView, pos++);
