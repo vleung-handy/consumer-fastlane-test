@@ -45,7 +45,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="8dp"
                 android:gravity="center"
-                android:textSize="@dimen/small_text_size"
+                android:textSize="@dimen/text_size_small"
                 android:text="@string/you_have_credits"
                 style="@style/TextView" />
 
@@ -90,7 +90,7 @@
                 android:gravity="center"
                 android:padding="@dimen/default_padding"
                 android:text="@string/change_password"
-                android:textSize="@dimen/small_text_size"
+                android:textSize="@dimen/text_size_small"
                 style="@style/TextView" />
 
             <com.handybook.handybook.ui.widget.PasswordInputTextView

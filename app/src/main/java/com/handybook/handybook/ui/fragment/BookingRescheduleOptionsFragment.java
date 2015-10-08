@@ -9,10 +9,10 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
-import com.handybook.handybook.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 
@@ -66,7 +66,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         ButterKnife.bind(this, view);
 
         final BookingOption options = new BookingOption();
-        options.setType("option");
+        options.setType(BookingOption.TYPE_OPTION);
         options.setOptions(new String[]{getString(R.string.no), getString(R.string.yes)});
         options.setDefaultValue(Integer.toString(optionIndex));
 
@@ -97,14 +97,16 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
                                        final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == PeakPricingActivity.RESULT_RESCHEDULE_NEW_DATE) {
-            final long date = data
-                    .getLongExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
-
-            final Intent intent = new Intent();
-            intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_NEW_DATE, date);
-
-            getActivity().setResult(BookingRescheduleOptionsActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+        //Pass along any valid reschedules
+        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
+        {
+            if(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
+            {
+                final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
+                final Intent intent = new Intent();
+                intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
+                getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
+            }
             getActivity().finish();
         }
     }

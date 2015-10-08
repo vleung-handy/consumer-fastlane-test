@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.ui.fragment.LoginFragment;
 
 public final class LoginActivity extends MenuDrawerActivity {
     public static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
     public static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
     public static final String EXTRA_BOOKING_EMAIL = "com.handy.handy.EXTRA_BOOKING_EMAIL";
-    public static final int RESULT_FINISH = 1;
+
 
     @Override
     protected final Fragment createFragment() {
@@ -25,7 +26,7 @@ public final class LoginActivity extends MenuDrawerActivity {
     protected void onActivityResult(final int requestCode, final int resultCode,
                                     final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_FINISH) finish();
+        if (resultCode == ActivityResult.RESULT_LOGIN_FINISH) finish();
     }
 
     @Override

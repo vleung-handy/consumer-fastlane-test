@@ -64,7 +64,13 @@ public class Mixpanel
         addProps(props, "impersonating", false);
 
         //UPGRADE: This is a change, previously we talked to the UserManager, make sure that the prefs user_obj is always updated properly in secureprefs
-        final User user = User.fromJson(prefsManager.getString(PrefsKey.USER));
+
+        String userJson = prefsManager.getString(PrefsKey.USER);
+        User user = null;
+        if(userJson != null)
+        {
+            user = User.fromJson(userJson);
+        }
 
         if (user == null)
         {

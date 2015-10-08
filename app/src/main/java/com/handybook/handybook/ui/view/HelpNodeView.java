@@ -179,7 +179,7 @@ public final class HelpNodeView extends InjectedRelativeLayout
 
     private void addCtaButton(HelpNode node)
     {
-        final CTAButton ctaButton = (CTAButton) inflate(R.layout.fragment_cta_button_template, ctaLayout);
+        final CTAButton ctaButton = (CTAButton) inflate(R.layout.template_fragment_cta_button, ctaLayout);
         ctaButton.initFromHelpNode(node, this.currentLoginToken);
     }
 

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handybook.handybook.ui.view.BookingDetailView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    tools:showIn="@layout/fragment_booking_detail"
+    tools:context=".BookingDetailActivity">
+
+    <RelativeLayout
+        android:id="@+id/nav_bar"
+        style="@style/RelativeLayout.NavBar">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:scaleX="-1"
+            android:src="@drawable/ic_chevron"
+            android:padding="16dp"/>
+
+        <TextView
+            android:id="@+id/nav_text"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:layout_marginLeft="48dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:text="Service Name"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/booking_text"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/nav_text"
+            android:layout_alignParentLeft="false"
+            android:layout_below="@+id/nav_text"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="#1000"
+            android:textColor="@color/black_pressed"
+            android:textSize="12sp"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_bar"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/date_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/white"
+                    android:paddingBottom="35dp"
+                    android:paddingTop="50dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/date_text"
+                        style="@style/TextView.XLarge.Bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="3dp"
+                        android:textSize="24sp"
+                        tools:text="Long Date Goes Here"
+                        />
+
+                    <TextView
+                        android:id="@+id/time_text"
+                        style="@style/TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/date_text"
+                        android:layout_centerHorizontal="true"
+                        tools:text="Long Time"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/freq_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/time_text"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/icon_recur"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@string/image_content_description_icon_recuring"
+                            android:scaleX="-1"
+                            android:src="@drawable/ic_recurring"/>
+
+                        <TextView
+                            android:id="@+id/freq_text"
+                            style="@style/TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginStart="4dp"
+                            android:textColor="@color/steel"
+                            tools:text="Freq"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <com.handybook.handybook.ui.widget.ServiceIconImageView
+                    android:id="@+id/service_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_clean_fill"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="true"/>
+
+                <LinearLayout
+                    android:id="@+id/section_fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_section"
+                    android:orientation="vertical"
+                    />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/image_content_description_handy_logo"
+                android:src="@drawable/ic_booking_detail_logo"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</com.handybook.handybook.ui.view.BookingDetailView>

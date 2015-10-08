@@ -17,7 +17,8 @@ import javax.inject.Inject;
 
 public class HelpManager
 {
-    public static final String ROOT_NODE_ID = "root"; //server still expects us to send null in the request but we can cache by assuming null means root
+    //server still expects us to send null in the request but we can cache by assuming null means root
+    public static final String ROOT_NODE_ID = "root";
 
     private final Bus bus;
     private final DataManager dataManager;
@@ -29,9 +30,9 @@ public class HelpManager
     public HelpManager(final Bus bus, final DataManager dataManager, final UserManager userManager)
     {
         this.bus = bus;
-        this.bus.register(this);
         this.dataManager = dataManager;
         this.userManager = userManager;
+        this.bus.register(this);
 
         //TODO: we don't currently have a way to query to see if a node is changed so we rely on our cache decaying every day
         this.helpNodeCache = CacheBuilder.newBuilder()

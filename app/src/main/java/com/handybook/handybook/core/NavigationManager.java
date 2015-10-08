@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.util.Pair;
 
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.PropertiesReader;
@@ -21,7 +22,6 @@ import com.handybook.handybook.ui.widget.CTANavigationData;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -32,13 +32,14 @@ import javax.inject.Inject;
  * Created by cdavis on 4/20/15.
  */
 
-public final class NavigationManager {
+public final class NavigationManager
+{
 
     //String consts
-    private static final String WEB_AUTH_TOKEN ="slt=";
-    private static final String WEB_PARAM_TOKEN ="?";
-    private static final String WEB_ADDITIONAL_PARAM_TOKEN ="&";
-    private static final String WEB_PARAM_DISABLE_MOBILE_SPLASH="&disable_mobile_splash=1";
+    private static final String WEB_AUTH_TOKEN = "slt=";
+    private static final String WEB_PARAM_TOKEN = "?";
+    private static final String WEB_ADDITIONAL_PARAM_TOKEN = "&";
+    private static final String WEB_PARAM_DISABLE_MOBILE_SPLASH = "&disable_mobile_splash=1";
 
     //Injected params
     private UserManager userManager;
@@ -76,7 +77,9 @@ public final class NavigationManager {
 
     //Action Id to Deeplink Id Mapping
     public static final Map<String, String> ACTION_ID_TO_DEEP_LINK_ID;
-    static {
+
+    static
+    {
         Map<String, String> map = new HashMap<String, String>();
         map.put(ACTION_ID_SERVICES, DEEP_LINK_ID_SERVICES);
         map.put(ACTION_ID_GO_TO_MY_PROFILE, DEEP_LINK_ID_PROFILE);
@@ -126,12 +129,12 @@ public final class NavigationManager {
         String constructedUrl = constructWebUrlFromNavData(navData);
 
         //Deep links have priority over web links
-        if(validateDeepLink(deepLinkId))
+        if (validateDeepLink(deepLinkId))
         {
             navigateToDeepLink(deepLinkId, params);
             success = true;
         }
-        else if(validateUrl(constructedUrl))
+        else if (validateUrl(constructedUrl))
         {
             navigateToWeb(constructedUrl);
             success = true;
@@ -147,7 +150,8 @@ public final class NavigationManager {
         final String action = splashScreenIntent.getAction();
         final Uri data = splashScreenIntent.getData();
 
-        if (!action.equals("android.intent.action.VIEW") || !data.getScheme().equals("handy")) {
+        if (!action.equals("android.intent.action.VIEW") || !data.getScheme().equals("handy"))
+        {
             openServiceCategoriesActivity();
             return;
         }
@@ -155,7 +159,7 @@ public final class NavigationManager {
         final String deepLinkId = data.getHost() + data.getPath();
 
         HashMap<String, String> params = new HashMap<String, String>();
-        if(deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_RESCHEDULE) || deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_CANCEL))
+        if (deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_RESCHEDULE) || deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_CANCEL))
         {
             String bookingId = data.getQueryParameter("booking_id");
             params.put(PARAM_BOOKING_ID, (bookingId != null ? bookingId : ""));
@@ -174,13 +178,13 @@ public final class NavigationManager {
 
     private String constructWebUrlFromNavData(CTANavigationData data)
     {
-        String baseUrl =  this.dataManager.getBaseUrl();
+        String baseUrl = this.dataManager.getBaseUrl();
         String separatorCharacter = (data.nodeContentWebUrl.contains(WEB_PARAM_TOKEN) ? WEB_ADDITIONAL_PARAM_TOKEN : WEB_PARAM_TOKEN);
 
         String[] tokens = data.nodeContentWebUrl.split("#");
         String fullUrl;
         //user/booking targeted URLs need to be split at # to insert params like auth token
-        if(tokens.length == 2)
+        if (tokens.length == 2)
         {
             fullUrl = (baseUrl + tokens[0] + separatorCharacter + getAuthToken(data) + WEB_PARAM_DISABLE_MOBILE_SPLASH + "#" + tokens[1]);
         }
@@ -195,11 +199,11 @@ public final class NavigationManager {
     private String getAuthToken(CTANavigationData data)
     {
         String authToken = "";
-        if(data.loginToken != null && !data.loginToken.isEmpty())
+        if (data.loginToken != null && !data.loginToken.isEmpty())
         {
             authToken = WEB_AUTH_TOKEN + data.loginToken;
         }
-        else if(userManager.getCurrentUser() != null)
+        else if (userManager.getCurrentUser() != null)
         {
             authToken = WEB_AUTH_TOKEN + userManager.getCurrentUser().getAuthToken();
         }
@@ -214,9 +218,9 @@ public final class NavigationManager {
         startActivity(browserIntent);
     }
 
-    private Boolean validateUrl (String webUrl)
+    private Boolean validateUrl(String webUrl)
     {
-        if(webUrl == null || webUrl.isEmpty())
+        if (webUrl == null || webUrl.isEmpty())
         {
             return false;
         }
@@ -229,16 +233,16 @@ public final class NavigationManager {
 
     private String actionIdToDeepLinkId(String actionId)
     {
-        if(ACTION_ID_TO_DEEP_LINK_ID.containsKey(actionId))
+        if (ACTION_ID_TO_DEEP_LINK_ID.containsKey(actionId))
         {
             return ACTION_ID_TO_DEEP_LINK_ID.get(actionId);
         }
         return "";
     }
 
-    private Boolean validateDeepLink (String deepLinkId)
+    private Boolean validateDeepLink(String deepLinkId)
     {
-        if(deepLinkId == null || deepLinkId.isEmpty())
+        if (deepLinkId == null || deepLinkId.isEmpty())
         {
             return false;
         }
@@ -249,10 +253,26 @@ public final class NavigationManager {
     {
         switch (deepLinkId)
         {
-            case DEEP_LINK_ID_PROFILE: {openActivity(ProfileActivity.class, true);}break;
-            case DEEP_LINK_ID_BOOKINGS:{openActivity(BookingsActivity.class, true);}break;
-            case DEEP_LINK_ID_SERVICES:{openServiceCategoriesActivity();}break;
-            case DEEP_LINK_ID_PROMOTIONS:{openActivity(PromosActivity.class, true);}break;
+            case DEEP_LINK_ID_PROFILE:
+            {
+                openActivity(ProfileActivity.class, true);
+            }
+            break;
+            case DEEP_LINK_ID_BOOKINGS:
+            {
+                openActivity(BookingsActivity.class, true);
+            }
+            break;
+            case DEEP_LINK_ID_SERVICES:
+            {
+                openServiceCategoriesActivity();
+            }
+            break;
+            case DEEP_LINK_ID_PROMOTIONS:
+            {
+                openActivity(PromosActivity.class, true);
+            }
+            break;
 
             case DEEP_LINK_ID_BOOKINGS_RESCHEDULE:
             {
@@ -268,7 +288,10 @@ public final class NavigationManager {
             }
             break;
 
-            default:{openServiceCategoriesActivity();}
+            default:
+            {
+                openServiceCategoriesActivity();
+            }
         }
     }
 
@@ -280,27 +303,32 @@ public final class NavigationManager {
     }
 
     //Open deep links
-    private void openActivity(final Class<? extends Activity> targetClass, final boolean requiresUser) {
-        if (requiresUser && userManager.getCurrentUser() == null) {
+    private void openActivity(final Class<? extends Activity> targetClass, final boolean requiresUser)
+    {
+        if (requiresUser && userManager.getCurrentUser() == null)
+        {
             openServiceCategoriesActivity();
         }
         startActivity(new Intent(this.context, targetClass));
     }
 
-    private void openActivity(final Class<? extends Activity> targetClass, final HashMap<String, String> params) {
+    private void openActivity(final Class<? extends Activity> targetClass, final HashMap<String, String> params)
+    {
         Intent navIntent = new Intent(this.context, targetClass);
 
         startActivity(new Intent(this.context, targetClass));
     }
 
-    private void openServiceCategoriesActivity() {
+    private void openServiceCategoriesActivity()
+    {
         startActivity(new Intent(this.context, ServiceCategoriesActivity.class));
     }
 
-    private void openBookingRequiredActivity(final String bookingId, final Class targetClass) {
+    private void openBookingRequiredActivity(final String bookingId, final Class targetClass)
+    {
         User user = userManager.getCurrentUser();
         final Context intentContext = this.context;
-        dataManager.getBooking(bookingId, user != null ? user.getAuthToken() : null,
+        dataManager.getBooking(bookingId,
                 new DataManager.Callback<Booking>()
                 {
                     @Override
@@ -323,15 +351,15 @@ public final class NavigationManager {
         if (targetClass == BookingCancelOptionsActivity.class)
         {
             dataManager.getPreCancelationInfo(booking.getId(),
-                    new DataManager.Callback<Pair<String, List<String>>>() {
+                    new DataManager.Callback<Pair<String, List<String>>>()
+                    {
                         @Override
                         public void onSuccess(final Pair<String, List<String>> result)
                         {
                             final Intent intent = new Intent(context, BookingCancelOptionsActivity.class);
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_OPTIONS,
-                                    new ArrayList<>(result.second));
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_NOTICE, result.first);
-                            intent.putExtra(BookingCancelOptionsActivity.EXTRA_BOOKING, booking);
+                            intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
+                            intent.putExtra(BundleKeys.NOTICE, result.first);
+                            intent.putExtra(BundleKeys.BOOKING, booking);
                             startActivity(intent);
                         }
 
@@ -345,17 +373,20 @@ public final class NavigationManager {
         else if (targetClass == BookingDateActivity.class)
         {
             dataManager.getPreRescheduleInfo(booking.getId(),
-                    new DataManager.Callback<String>() {
+                    new DataManager.Callback<String>()
+                    {
                         @Override
-                        public void onSuccess(final String notice) {
+                        public void onSuccess(final String notice)
+                        {
                             final Intent intent = new Intent(intentContext, BookingDateActivity.class);
-                            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_BOOKING, booking);
-                            intent.putExtra(BookingDateActivity.EXTRA_RESCHEDULE_NOTICE, notice);
+                            intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
+                            intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
                             startActivity(intent);
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error) {
+                        public void onError(final DataManager.DataManagerError error)
+                        {
                             onBookingDataError(error, intentContext);
                         }
                     }

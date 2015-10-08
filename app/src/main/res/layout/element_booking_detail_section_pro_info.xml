@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handybook.handybook.ui.widget.BookingDetailSectionProInfoView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BookingDetailSectionView"
+    >
+
+    <include layout="@layout/layout_section_separator_view"/>
+
+    <include layout="@layout/layout_section_entry_title"/>
+
+    <include layout="@layout/layout_section_action_text"/>
+
+    <include layout="@layout/layout_section_entry_text"/>
+
+    <include layout="@layout/layout_section_action_buttons"/>
+
+    <LinearLayout
+        android:id="@+id/action_buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entry_text"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+            android:id="@+id/action_buttons_layout_slot_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"/>
+
+        <LinearLayout
+            android:id="@+id/action_buttons_layout_slot_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"/>
+
+    </LinearLayout>
+
+</com.handybook.handybook.ui.widget.BookingDetailSectionProInfoView>
