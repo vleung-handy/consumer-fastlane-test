@@ -49,8 +49,8 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 52
-        versionName '1.8'
+        versionCode 10801
+        versionName '1.8.1'
         multiDexEnabled true
     }
     buildTypes {
