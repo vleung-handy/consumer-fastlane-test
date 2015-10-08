@@ -82,6 +82,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        mixpanel.trackEventAppTrackTime();
 
         rescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
         if (rescheduleBooking != null)

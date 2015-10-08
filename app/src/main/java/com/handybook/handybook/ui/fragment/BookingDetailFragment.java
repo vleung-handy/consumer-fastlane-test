@@ -59,8 +59,8 @@ public final class BookingDetailFragment extends InjectedFragment
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        this.booking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mixpanel.trackEventAppTrackDetails();
+        booking = getArguments().getParcelable(BundleKeys.BOOKING);
 
         if (savedInstanceState != null)
         {
@@ -72,8 +72,11 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_detail, container, false);

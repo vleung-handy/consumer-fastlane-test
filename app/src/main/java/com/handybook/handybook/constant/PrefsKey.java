@@ -12,7 +12,7 @@ public enum PrefsKey
     CACHED_SERVICES("CACHED_SERVICES"),
     APP_BLOCKED("APP_BLOCKED"),
     APP_BLOCKED_LAST_CHECK("APP_BLOCKED_LAST_CHECK"),
-    ;
+    APP_FIRST_RUN("APP_FIRST_RUN");
 
     private String key;
 

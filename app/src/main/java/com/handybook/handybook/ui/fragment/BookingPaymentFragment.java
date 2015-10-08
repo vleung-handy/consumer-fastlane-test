@@ -83,6 +83,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         if (savedInstanceState != null) {
             useExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
         }
+        mixpanel.trackEventAppTrackPayment();
     }
 
     @Override

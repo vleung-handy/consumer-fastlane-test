@@ -133,6 +133,7 @@ public final class LoginFragment extends BookingFlowFragment
             forgotButton.setVisibility(View.GONE);
             loginButton.setText(getString(R.string.next));
             emailText.setText(bookingRequest.getEmail());
+            mixpanel.trackEventAppTrackContact();
         }
         else if (bookingUserName != null) {
             activity.setDrawerDisabled(true);
@@ -142,6 +143,7 @@ public final class LoginFragment extends BookingFlowFragment
             welcomeText.setText(String.format(getString(R.string.welcome_back), bookingUserName));
             welcomeText.setVisibility(View.VISIBLE);
             bookingRequest.setEmail(bookingUserEmail);
+            mixpanel.trackEventAppTrackLogIn();
         }
         else {
             final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);

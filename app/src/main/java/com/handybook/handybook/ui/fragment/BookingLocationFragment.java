@@ -70,6 +70,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mixpanel.trackEventAppTrackLocation();
 
         final BookingRequest request = bookingManager.getCurrentRequest();
         if ((isPromoFlow = request.getPromoCode() != null))
