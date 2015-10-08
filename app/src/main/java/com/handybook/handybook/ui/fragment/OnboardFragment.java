@@ -18,8 +18,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class OnboardFragment extends BookingFlowFragment {
     private static final String STATE_ANIMATE_PAGES = "ANIMATED_PAGES";
@@ -28,11 +28,16 @@ public final class OnboardFragment extends BookingFlowFragment {
     private boolean[] animatePages;
     private int count = 4;
 
-    @InjectView(R.id.layout) View layout;
-    @InjectView(R.id.pager) ViewPager pager;
-    @InjectView(R.id.start_button) Button startButton;
-    @InjectView(R.id.login_button) Button loginButton;
-    @InjectView(R.id.indicator) CirclePageIndicator indicator;
+    @Bind(R.id.layout)
+    View layout;
+    @Bind(R.id.pager)
+    ViewPager pager;
+    @Bind(R.id.start_button)
+    Button startButton;
+    @Bind(R.id.login_button)
+    Button loginButton;
+    @Bind(R.id.indicator)
+    CirclePageIndicator indicator;
 
     public static OnboardFragment newInstance() {
         return new OnboardFragment();
@@ -44,7 +49,7 @@ public final class OnboardFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_onboard, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         mixpanel.trackOnboardingShown();
 

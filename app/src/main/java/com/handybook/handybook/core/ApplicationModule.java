@@ -17,11 +17,18 @@ import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.manager.HelpContactManager;
+import com.handybook.handybook.manager.HelpManager;
+import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
+import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
@@ -41,11 +48,23 @@ import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.fragment.AddLaundryDialogFragment;
+import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingCancelOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingConfirmationFragment;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
+import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
+import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
@@ -108,43 +127,70 @@ import retrofit.converter.GsonConverter;
         RateServiceDialogFragment.class, RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class, AddLaundryDialogFragment.class,
         HelpContactFragment.class, HelpContactActivity.class,
-        SplashActivity.class
+        SplashActivity.class,
+        BookingDetailSectionFragment.class,
+        BookingDetailSectionFragmentAddress.class,
+        BookingDetailSectionFragmentEntryInformation.class,
+        BookingDetailSectionFragmentExtras.class,
+        BookingDetailSectionFragmentLaundry.class,
+        BookingDetailSectionFragmentNoteToPro.class,
+        BookingDetailSectionFragmentPayment.class,
+        BookingDetailSectionFragmentProInformation.class,
+        BookingDetailSectionFragmentBookingActions.class,
+        BookingEditNoteToProActivity.class,
+        BookingEditNoteToProFragment.class,
+        BookingEditEntryInformationActivity.class,
+        BookingEditEntryInformationFragment.class,
+        BlockingActivity.class,
+        BlockingUpdateFragment.class,
 })
-public final class ApplicationModule {
+public final class ApplicationModule
+{
     private final Context context;
     private final Properties configs;
 
-    public ApplicationModule(final Context context) {
+    public ApplicationModule(final Context context)
+    {
         this.context = context.getApplicationContext();
         configs = PropertiesReader
                 .getProperties(context, "config.properties");
     }
 
-    @Provides @Singleton final HandyEndpoint provideHandyEnpoint() {
+    @Provides
+    @Singleton
+    final HandyEndpoint provideHandyEndpoint()
+    {
         return new HandyRetrofitEndpoint(context);
     }
 
-    @Provides @Singleton final HandyRetrofitService provideHandyService(final HandyEndpoint endpoint,
-                                                                        final UserManager userManager) {
+    @Provides
+    @Singleton
+    final HandyRetrofitService provideHandyService(final HandyEndpoint endpoint,
+                                                   final UserManager userManager)
+    {
 
         final OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
 
         final String username = configs.getProperty("api_username");
         String password = configs.getProperty("api_password_internal");
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
             password = configs.getProperty("api_password");
+        }
 
         final String pwd = password;
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint)
-                .setRequestInterceptor(new RequestInterceptor() {
+                .setRequestInterceptor(new RequestInterceptor()
+                {
                     final String auth = "Basic " + Base64.encodeToString((username + ":" + pwd)
                             .getBytes(), Base64.NO_WRAP);
 
                     @Override
-                    public void intercept(RequestFacade request) {
+                    public void intercept(RequestFacade request)
+                    {
                         request.addHeader("Authorization", auth);
                         request.addHeader("Accept", "application/json");
                         request.addQueryParam("client", "android");
@@ -155,7 +201,11 @@ public final class ApplicationModule {
                         request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
 
                         final User user = userManager.getCurrentUser();
-                        if (user != null) request.addQueryParam("app_user_id", user.getId());
+                        if (user != null)
+                        {
+                            request.addQueryParam("app_user_id", user.getId());
+                            request.addQueryParam("auth_token", user.getAuthToken());
+                        }
                     }
                 }).setConverter(new GsonConverter(new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -177,72 +227,138 @@ public final class ApplicationModule {
 
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
+        {
             restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
+        }
 
         return restAdapter.create(HandyRetrofitService.class);
     }
 
-    @Provides @Singleton final DataManager provideDataManager(final HandyRetrofitService service,
-                                                              final HandyEndpoint endpoint,
-                                                              final Bus bus,
-                                                              final SecurePreferences prefs) {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefs);
+    @Provides
+    @Singleton
+    final DataManager provideDataManager(final HandyRetrofitService service,
+                                         final HandyEndpoint endpoint,
+                                         final Bus bus,
+                                         final PrefsManager prefsManager)
+    {
+        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefsManager);
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
             dataManager.setEnvironment(DataManager.Environment.P, false);
+        }
 
         return dataManager;
     }
 
-    @Provides final DataManagerErrorHandler provideDataManagerErrorHandler() {
+    @Provides
+    final DataManagerErrorHandler provideDataManagerErrorHandler()
+    {
         return new BaseDataManagerErrorHandler();
     }
 
-    @Provides @Singleton final Bus provideBus() {
-        return new MainBus();
+    @Provides
+    @Singleton
+    final Bus provideBus(final Mixpanel mixpanel)
+    {
+        return new MainBus(mixpanel);
     }
 
-    @Provides @Singleton final SecurePreferences providePrefs() {
+    @Provides
+    @Singleton
+    final SecurePreferences providePrefs()
+    {
         return new SecurePreferences(context, null,
                 configs.getProperty("secure_prefs_key"), true);
     }
 
-    @Provides @Singleton final BookingManager provideBookingManager(final Bus bus,
-                                                                    final SecurePreferences prefs) {
-        return new BookingManager(bus, prefs);
+    @Provides
+    @Singleton
+    final BookingManager provideBookingManager(final Bus bus,
+                                               final PrefsManager prefsManager,
+                                               final DataManager dataManager
+    )
+    {
+        return new BookingManager(bus, prefsManager, dataManager);
     }
 
-    @Provides @Singleton final UserManager provideUserManager(final Bus bus,
-                                                              final SecurePreferences prefs) {
-        return new UserManager(bus, prefs);
+    @Provides
+    @Singleton
+    final UserManager provideUserManager(final Bus bus,
+                                         final PrefsManager prefsManager)
+    {
+        return new UserManager(bus, prefsManager);
     }
 
-    @Provides final ReactiveLocationProvider provideReactiveLocationProvider() {
+    @Provides
+    final ReactiveLocationProvider provideReactiveLocationProvider()
+    {
         return new ReactiveLocationProvider(context);
     }
 
-    @Provides @Singleton final Mixpanel provideMixpanel(final UserManager userManager,
-                                                        final BookingManager bookingManager,
-                                                        final Bus bus) {
-        return new Mixpanel(context, userManager, bookingManager, bus);
+    @Provides
+    @Singleton
+    final Mixpanel provideMixpanel(final PrefsManager prefsManager)
+    {
+        return new Mixpanel(context, prefsManager);
     }
 
-    @Provides @Singleton final NavigationManager provideNavigationManager(final UserManager userManager,
-                                                                          final DataManager dataManager,
-                                                                          final DataManagerErrorHandler dataManagerErrorHandler) {
+    @Provides
+    @Singleton
+    final NavigationManager provideNavigationManager(final UserManager userManager,
+                                                     final DataManager dataManager,
+                                                     final DataManagerErrorHandler dataManagerErrorHandler)
+    {
         return new NavigationManager(this.context, userManager, dataManager, dataManagerErrorHandler);
     }
 
-    private String getDeviceId() {
-        return Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+    @Provides
+    @Singleton
+    final HelpManager provideHelpManager(final Bus bus,
+                                         final DataManager dataManager,
+                                         final UserManager userManager
+    )
+    {
+        return new HelpManager(bus, dataManager, userManager);
     }
 
-    private String getDeviceName() {
+    @Provides
+    @Singleton
+    final HelpContactManager provideHelpContactManager(final Bus bus,
+                                                       final DataManager dataManager
+    )
+    {
+        return new HelpContactManager(bus, dataManager);
+    }
+
+    @Provides
+    @Singleton
+    final AppBlockManager provideAppBlockManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final PrefsManager prefsManager
+    )
+    {
+        return new AppBlockManager(bus, dataManager, prefsManager);
+    }
+
+    private String getDeviceId()
+    {
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    private String getDeviceName()
+    {
         final String manufacturer = Build.MANUFACTURER;
         final String model = Build.MODEL;
 
-        if (model.startsWith(manufacturer)) return model;
-        else return manufacturer + " " + model;
+        if (model.startsWith(manufacturer))
+        {
+            return model;
+        }
+        else
+        {
+            return manufacturer + " " + model;
+        }
     }
 }

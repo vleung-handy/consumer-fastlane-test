@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
@@ -34,14 +35,17 @@ import com.squareup.otto.Subscribe;
 import net.simonvt.menudrawer.MenuDrawer;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class NavigationFragment extends InjectedFragment
-        implements SimpleAlertDialog.OnClickListener, SimpleAlertDialog.OnItemClickListener {
+        implements SimpleAlertDialog.OnClickListener, SimpleAlertDialog.OnItemClickListener
+{
     static final String ARG_SELECTED_ITEM = "com.handybook.handybook.ARG_SELECTED_ITEM";
     static final int REQUEST_LOGOUT = 1;
     static final int REQUEST_ENV = 2;
@@ -51,14 +55,20 @@ public final class NavigationFragment extends InjectedFragment
     private String selectedItem;
     private MenuDrawer menuDrawer;
 
-    @InjectView(R.id.env_button) Button envButton;
-    @InjectView(android.R.id.list) ListView listView;
+    @Bind(R.id.env_button)
+    Button envButton;
+    @Bind(android.R.id.list)
+    ListView listView;
 
-    @Inject UserManager userManager;
-    @Inject DataManager dataManager;
-    @Inject Bus bus;
+    @Inject
+    UserManager userManager;
+    @Inject
+    DataManager dataManager;
+    @Inject
+    Bus bus;
 
-    public static NavigationFragment newInstance(final String selectedItem) {
+    public static NavigationFragment newInstance(final String selectedItem)
+    {
         final Bundle args = new Bundle();
         args.putString(ARG_SELECTED_ITEM, selectedItem);
 
@@ -68,33 +78,44 @@ public final class NavigationFragment extends InjectedFragment
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
+    public final void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         final Bundle args;
-        if ((args = getArguments()) != null) {
+        if ((args = getArguments()) != null)
+        {
             selectedItem = args.getString(ARG_SELECTED_ITEM);
         }
 
-        for (DataManager.Environment env : DataManager.Environment.values()) {
-            if (env != DataManager.Environment.P) envs.add(env.toString());
+        for (DataManager.Environment env : DataManager.Environment.values())
+        {
+            if (env != DataManager.Environment.P)
+            {
+                envs.add(env.toString());
+            }
         }
     }
 
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+                                   final Bundle savedInstanceState)
+    {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_navigation,container, false);
+                .inflate(R.layout.fragment_navigation, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
             envButton.setVisibility(View.GONE);
+        }
 
-        envButton.setOnClickListener(new View.OnClickListener() {
+        envButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 new SimpleAlertDialogSupportFragment.Builder()
                         .setTitle("Select Environment")
                         .setItems(envs.toArray(new String[envs.size()]))
@@ -108,81 +129,128 @@ public final class NavigationFragment extends InjectedFragment
     }
 
     @Override
-    public final void onResume() {
+    public final void onResume()
+    {
         super.onResume();
         loadNavItems();
-        bus.register(this);
     }
 
     @Override
-    public void onPause() {
+    public void onPause()
+    {
         super.onPause();
-        bus.unregister(this);
+    }
+
+    private Integer getViewIdByItemName(String itemName)
+    {
+        //HACK: This is an ugly hack to move automation forward, we should not continue the pattern of using string names as identifiers
+        //since it is currently keyed by a string we can't do it statically, yet another reason to move over to static ids
+        Map<String, Integer> nameToResourceId = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        nameToResourceId.put(getString(R.string.home), R.id.nav_menu_home);
+        nameToResourceId.put(getString(R.string.profile), R.id.nav_menu_profile);
+        nameToResourceId.put(getString(R.string.my_bookings), R.id.nav_menu_my_bookings);
+        nameToResourceId.put(getString(R.string.help), R.id.nav_menu_help);
+        nameToResourceId.put(getString(R.string.promotions), R.id.nav_menu_promotions);
+        nameToResourceId.put(getString(R.string.log_out), R.id.nav_menu_log_out);
+        nameToResourceId.put(getString(R.string.log_in), R.id.nav_menu_log_in);
+
+        if(nameToResourceId.containsKey(itemName))
+        {
+            return nameToResourceId.get(itemName);
+        }
+
+        Crashlytics.log("Could not find mapping to id for navigation menu entry : " + itemName);
+        return -1;
     }
 
     @Override
-    public final void onActivityCreated(final Bundle savedInstanceState) {
+    public final void onActivityCreated(final Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
 
-        final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
         menuDrawer = activity.getMenuDrawer();
         listView.setAdapter(new ArrayAdapter<String>(getActivity(),
-                R.layout.list_item_nav, items) {
+                R.layout.list_item_nav, items)
+        {
             @Override
             public final View getView(final int position, final View convertView,
-                                      final ViewGroup parent) {
+                                      final ViewGroup parent)
+            {
                 View view = convertView;
-                if (view == null) {
+                if (view == null)
+                {
                     final LayoutInflater inflater = (LayoutInflater) getContext()
                             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     view = inflater.inflate(R.layout.list_item_nav, parent, false);
                 }
 
-                final String text = items.get(position).toUpperCase();
+                final String itemName = items.get(position).toUpperCase();
                 final TextView item = (TextView) view.findViewById(R.id.nav_item);
-                item.setText(text);
+                item.setText(itemName);
 
-                if (text.equalsIgnoreCase(selectedItem))
+                if (itemName.equalsIgnoreCase(selectedItem))
+                {
                     item.setTextColor(getResources().getColor(R.color.handy_blue));
-                else item.setTextColor(getResources().getColor(R.color.white));
+                }
+                else
+                {
+                    item.setTextColor(getResources().getColor(R.color.white));
+                }
+
+                //HACK: We should be using IDs not text names, this is a quick fix so Automation is not blocked
+                int viewId = getViewIdByItemName(itemName);
+                if(viewId > -1)
+                {
+                    view.setId(viewId);
+                }
 
                 return view;
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view,
-                                    final int position, final long id) {
-                final TextView textView = (TextView)view.findViewById(R.id.nav_item);
+                                    final int position, final long id)
+            {
+                final TextView textView = (TextView) view.findViewById(R.id.nav_item);
                 final String item = textView.getText().toString();
-                final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+                final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
                 if (item.equalsIgnoreCase(getString(R.string.home))
-                        && !(getString(R.string.home).equalsIgnoreCase(selectedItem))) {
+                        && !(getString(R.string.home).equalsIgnoreCase(selectedItem)))
+                {
                     activity.navigateToActivity(ServiceCategoriesActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.profile))
-                        && !(getString(R.string.profile).equalsIgnoreCase(selectedItem))) {
+                        && !(getString(R.string.profile).equalsIgnoreCase(selectedItem)))
+                {
                     activity.navigateToActivity(ProfileActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.my_bookings))
-                        && !(getString(R.string.my_bookings).equalsIgnoreCase(selectedItem))) {
+                        && !(getString(R.string.my_bookings).equalsIgnoreCase(selectedItem)))
+                {
                     activity.navigateToActivity(BookingsActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.help))
-                        && !(getString(R.string.help).equalsIgnoreCase(selectedItem))) {
+                        && !(getString(R.string.help).equalsIgnoreCase(selectedItem)))
+                {
                     activity.navigateToActivity(HelpActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.promotions))
-                        && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem))) {
+                        && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem)))
+                {
                     activity.navigateToActivity(PromosActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.log_in))
-                        && !(getString(R.string.log_in).equalsIgnoreCase(selectedItem))) {
+                        && !(getString(R.string.log_in).equalsIgnoreCase(selectedItem)))
+                {
                     activity.navigateToActivity(LoginActivity.class);
                 }
-                else if (item.equalsIgnoreCase(getString(R.string.log_out))) {
+                else if (item.equalsIgnoreCase(getString(R.string.log_out)))
+                {
                     new SimpleAlertDialogSupportFragment.Builder()
                             .setMessage(getString(R.string.want_to_log_out))
                             .setPositiveButton(R.string.log_out)
@@ -191,53 +259,67 @@ public final class NavigationFragment extends InjectedFragment
                             .setTargetFragment(NavigationFragment.this)
                             .create().show(getActivity().getSupportFragmentManager(), "dialog");
                 }
-                else menuDrawer.closeMenu();
+                else
+                {
+                    menuDrawer.closeMenu();
+                }
             }
         });
     }
 
     @Override
     public final void onDialogPositiveButtonClicked(final SimpleAlertDialog dialog,
-                                              final int requestCode, final View view) {
-        if (requestCode == REQUEST_LOGOUT) {
+                                                    final int requestCode, final View view)
+    {
+        if (requestCode == REQUEST_LOGOUT)
+        {
             userManager.setCurrentUser(null);
         }
     }
 
     @Override
     public final void onDialogNegativeButtonClicked(final SimpleAlertDialog dialog,
-                                              final int requestCode, final View view) {}
+                                                    final int requestCode, final View view)
+    {
+    }
 
     @Override
     public final void onItemClick(final SimpleAlertDialog dialog, final int requestCode,
-                                  final int which) {
-        if (requestCode == REQUEST_ENV) {
+                                  final int which)
+    {
+        if (requestCode == REQUEST_ENV)
+        {
             dataManager.setEnvironment(DataManager.Environment.valueOf(envs.get(which)), true);
         }
     }
 
     @Subscribe
-    public final void userAuthUpdated(final UserLoggedInEvent event) {
+    public final void userAuthUpdated(final UserLoggedInEvent event)
+    {
         loadNavItems();
 
-        if (!event.isLoggedIn()) {
-            final MenuDrawerActivity activity = (MenuDrawerActivity)getActivity();
+        if (!event.isLoggedIn())
+        {
+            final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
             activity.navigateToActivity(ServiceCategoriesActivity.class);
         }
     }
 
     @Subscribe
-    public final void envUpdated(final EnvironmentUpdatedEvent event) {
+    public final void envUpdated(final EnvironmentUpdatedEvent event)
+    {
         loadNavItems();
     }
 
-    private void loadNavItems() {
+    private void loadNavItems()
+    {
         final boolean userLoggedIn = userManager.getCurrentUser() != null;
 
         items.clear();
         items.add(getString(R.string.home));
 
-        if (userLoggedIn) {
+        if (userLoggedIn)
+        {
             items.add(getString(R.string.profile));
             items.add(getString(R.string.my_bookings));
         }
@@ -246,13 +328,22 @@ public final class NavigationFragment extends InjectedFragment
 
         items.add(getString(R.string.promotions));
 
-        if (userManager.getCurrentUser() != null) items.add(getString(R.string.log_out));
-        else items.add(getString(R.string.log_in));
+        if (userManager.getCurrentUser() != null)
+        {
+            items.add(getString(R.string.log_out));
+        }
+        else
+        {
+            items.add(getString(R.string.log_in));
+        }
 
         envButton.setText(String.format(getString(R.string.env_format), dataManager.getEnvironment(),
                 BuildConfig.VERSION_NAME, Integer.valueOf(BuildConfig.VERSION_CODE).toString()));
 
-        final BaseAdapter adapter = (BaseAdapter)listView.getAdapter();
-        if (adapter != null) adapter.notifyDataSetChanged();
+        final BaseAdapter adapter = (BaseAdapter) listView.getAdapter();
+        if (adapter != null)
+        {
+            adapter.notifyDataSetChanged();
+        }
     }
 }

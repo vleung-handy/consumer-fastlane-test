@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/handy_white">
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/s_center"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/handy_light_grey"
+        android:layout_above="@+id/s_center">
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/iv_blocking_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_modal_blocking_screen"
+        android:layout_above="@+id/s_center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-21dp"
+        android:contentDescription="@string/modal_blocking_image_content_description"/>
+
+    <TextView
+        android:id="@+id/tv_modal_blocking_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/modal_blocking_title"
+        android:textColor="@color/handy_dark_grey"
+        android:textSize="26sp"
+        android:textIsSelectable="false"
+        android:lineSpacingMultiplier="1"
+        android:layout_below="@+id/s_center"
+        android:layout_centerHorizontal="true"
+        style="@style/TextView.Bold"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:id="@+id/tv_modal_blocking_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/modal_blocking_subtitle"
+        android:layout_below="@+id/tv_modal_blocking_title"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/handy_dark_grey"
+        android:textSize="18sp"
+        android:lineSpacingMultiplier="1.2"
+        />
+
+    <Button
+        android:id="@+id/b_modal_blocking_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/handy_blue"
+        android:text="@string/modal_blocking_button_text"
+        android:textColor="@color/white"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="32dp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

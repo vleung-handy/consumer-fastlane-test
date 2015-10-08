@@ -9,17 +9,17 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
-import com.handybook.handybook.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 
 import java.util.Date;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingRescheduleOptionsFragment extends BookingFlowFragment {
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
@@ -30,8 +30,10 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
     private Booking booking;
     private Date date;
 
-    @InjectView(R.id.options_layout) FrameLayout optionsLayout;
-    @InjectView(R.id.reschedule_button) Button rescheduleButton;
+    @Bind(R.id.options_layout)
+    FrameLayout optionsLayout;
+    @Bind(R.id.reschedule_button)
+    Button rescheduleButton;
 
     public static BookingRescheduleOptionsFragment newInstance(final Booking booking, final Date date) {
         final BookingRescheduleOptionsFragment fragment = new BookingRescheduleOptionsFragment();
@@ -61,10 +63,10 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_reschedule_options, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingOption options = new BookingOption();
-        options.setType("option");
+        options.setType(BookingOption.TYPE_OPTION);
         options.setOptions(new String[]{getString(R.string.no), getString(R.string.yes)});
         options.setDefaultValue(Integer.toString(optionIndex));
 
@@ -95,14 +97,16 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
                                        final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == PeakPricingActivity.RESULT_RESCHEDULE_NEW_DATE) {
-            final long date = data
-                    .getLongExtra(PeakPricingActivity.EXTRA_RESCHEDULE_NEW_DATE, 0);
-
-            final Intent intent = new Intent();
-            intent.putExtra(BookingRescheduleOptionsActivity.EXTRA_RESCHEDULE_NEW_DATE, date);
-
-            getActivity().setResult(BookingRescheduleOptionsActivity.RESULT_RESCHEDULE_NEW_DATE, intent);
+        //Pass along any valid reschedules
+        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
+        {
+            if(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
+            {
+                final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
+                final Intent intent = new Intent();
+                intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
+                getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
+            }
             getActivity().finish();
         }
     }

@@ -10,18 +10,18 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingCancelOptionsFragment extends BookingFlowFragment {
     public static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
@@ -34,9 +34,12 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
     private ArrayList<String> optionsList;
     private Booking booking;
 
-    @InjectView(R.id.options_layout) FrameLayout optionsLayout;
-    @InjectView(R.id.cancel_button) Button cancelButton;
-    @InjectView(R.id.notice_text) TextView noticeText;
+    @Bind(R.id.options_layout)
+    FrameLayout optionsLayout;
+    @Bind(R.id.cancel_button)
+    Button cancelButton;
+    @Bind(R.id.notice_text)
+    TextView noticeText;
 
     public static BookingCancelOptionsFragment newInstance(final String notice,
                                                            final ArrayList<String> options,
@@ -66,10 +69,10 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_cancel_options, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingOption options = new BookingOption();
-        options.setType("option");
+        options.setType(BookingOption.TYPE_OPTION);
         options.setOptions(optionsList.toArray(new String[optionsList.size()]));
         options.setDefaultValue(Integer.toString(optionIndex));
 
@@ -134,7 +137,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
                         toast.show();
                     }
 
-                    getActivity().setResult(BookingCancelOptionsActivity.RESULT_BOOKING_CANCELED, new Intent());
+                    getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, new Intent());
                     getActivity().finish();
                 }
 

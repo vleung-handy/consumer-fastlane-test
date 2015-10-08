@@ -149,4 +149,34 @@
         <item quantity="one">hour</item>
         <item quantity="other">hours</item>
     </plurals>
+
+    <string name="help_center_subject">Subject: </string>
+    <string name="try_again">Try Again</string>
+    <string name="error_fetching_connectivity_issue">Oops! There was an error with your internet connection</string>
+    <string name="ensure_fields_valid">Please ensure all fields are filled out correctly</string>
+    <string name="an_error_has_occurred">An error has occurred, please try again</string>
+    <string name="modal_blocking_title">Oh no! Your app\nis out of date.</string>
+    <string name="modal_blocking_subtitle">We got some great improvements\nin the new one. Check it out!</string>
+    <string name="modal_blocking_button_text">Update Now</string>
+    <string name="modal_blocking_image_content_description">Please update the app image.</string>
+
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+    <string name="set_dropoff">Set Drop-Off</string>
+    <string name="email_receipt">Email Receipt</string>
+    <string name="updated_note_to_pro">Note to pro updated</string>
+    <string name="updated_entry_information">Entry information updated</string>
+    <string name="pro_entry_information">How will your professional get in?</string>
+    <string name="pro_assignment_pending">Professional assignment pending</string>
+    <string name="blank_string"></string>
+    <string name="call">Call</string>
+    <string name="text">Text</string>
+    <string name="booking_number">Booking #</string>
+    <string name="error_no_intent_handler_found">No application found to handle the requested action</string>
+    <string name="no_information">No information</string>
+    <string name="error_toast_missing_hidden_keys_note">Please, describe where you\'ll hide the keys.</string>
+    <string name="toast_error_missing_hidden_key_note">Please, describe where you\'ll hide the keys.</string>
+    <string name="image_content_description_handy_logo">Handy icon</string>
+    <string name="image_content_description_icon_recuring">Recuring Icon</string>
+
 </resources>

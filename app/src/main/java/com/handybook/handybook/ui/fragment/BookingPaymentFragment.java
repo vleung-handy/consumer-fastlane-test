@@ -37,8 +37,8 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.CardException;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class BookingPaymentFragment extends BookingFlowFragment {
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
@@ -48,18 +48,30 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
 
     private boolean useExistingCard;
 
-    @InjectView(R.id.next_button) Button nextButton;
-    @InjectView(R.id.change_button) Button changeButton;
-    @InjectView(R.id.promo_button) Button promoButton;
-    @InjectView(R.id.credit_card_text) CreditCardNumberInputTextView creditCardText;
-    @InjectView(R.id.exp_text) CreditCardExpDateInputTextView expText;
-    @InjectView(R.id.cvc_text) CreditCardCVCInputTextView cvcText;
-    @InjectView(R.id.promo_text) FreezableInputTextView promoText;
-    @InjectView(R.id.lock_icon) ImageView lockIcon;
-    @InjectView(R.id.card_icon) ImageView creditCardIcon;
-    @InjectView(R.id.card_extras_layout) LinearLayout cardExtrasLayout;
-    @InjectView(R.id.promo_progress) ProgressBar promoProgress;
-    @InjectView(R.id.promo_layout) LinearLayout promoLayout;
+    @Bind(R.id.next_button)
+    Button nextButton;
+    @Bind(R.id.change_button)
+    Button changeButton;
+    @Bind(R.id.promo_button)
+    Button promoButton;
+    @Bind(R.id.credit_card_text)
+    CreditCardNumberInputTextView creditCardText;
+    @Bind(R.id.exp_text)
+    CreditCardExpDateInputTextView expText;
+    @Bind(R.id.cvc_text)
+    CreditCardCVCInputTextView cvcText;
+    @Bind(R.id.promo_text)
+    FreezableInputTextView promoText;
+    @Bind(R.id.lock_icon)
+    ImageView lockIcon;
+    @Bind(R.id.card_icon)
+    ImageView creditCardIcon;
+    @Bind(R.id.card_extras_layout)
+    LinearLayout cardExtrasLayout;
+    @Bind(R.id.promo_progress)
+    ProgressBar promoProgress;
+    @Bind(R.id.promo_layout)
+    LinearLayout promoLayout;
 
     public static BookingPaymentFragment newInstance() {
         return new BookingPaymentFragment();
@@ -76,11 +88,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        mixpanel.trackEventPaymentPage();
+
+        mixpanel.trackEventPaymentPage(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_payment,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -274,7 +287,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         public void onClick(final View v) {
             final String promoCode = promoText.getText().toString();
             final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-            final boolean hasPromo = bookingTransaction.promoApplied() != null;
+            final boolean hasPromo = (bookingTransaction.promoApplied() != null);
 
             if (hasPromo || promoCode.length() > 0) {
                 promoProgress.setVisibility(View.VISIBLE);
@@ -325,8 +338,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
             new DataManager.Callback<BookingCompleteTransaction>() {
                 @Override
                 public void onSuccess(final BookingCompleteTransaction trans) {
-                    mixpanel.trackEventSubmitPayment();
-                    mixpanel.trackEventBookingMade();
+
+                    //UPGRADE: Should we use this trans or ask the manager for current trans? So much inconsistency....
+
+                    mixpanel.trackEventSubmitPayment(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
+                    mixpanel.trackEventBookingMade(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
+
                     if (!allowCallbacks) return;
 
                     bookingManager.getCurrentTransaction().setBookingId(trans.getId());
@@ -415,7 +432,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     private void updatePromoUI() {
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
         final String promo = bookingTransaction.promoApplied();
-        final boolean applied = promo != null;
+        final boolean applied = (promo != null);
 
         promoProgress.setVisibility(View.INVISIBLE);
         promoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));

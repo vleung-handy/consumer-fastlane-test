@@ -13,7 +13,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 abstract class HandyRetrofitCallback implements retrofit.Callback<Response> {
-    private final DataManager.Callback callback;
+    protected final DataManager.Callback callback;
 
     HandyRetrofitCallback(DataManager.Callback callback) {
         this.callback = callback;
@@ -69,8 +69,11 @@ abstract class HandyRetrofitCallback implements retrofit.Callback<Response> {
     public final void failure(final RetrofitError error) {
         if (callback != null) {
             final DataManager.DataManagerError err;
-            if (error.isNetworkError()) err = new DataManager.DataManagerError(DataManager.Type.NETWORK);
-            else {
+            if (error.getKind() == RetrofitError.Kind.NETWORK)
+            {
+                err = new DataManager.DataManagerError(DataManager.Type.NETWORK);
+            } else
+            {
                 final int resp = error.getResponse().getStatus();
                 if (resp >= 400 && resp < 500) {
                     if (error.getResponse().getBody().mimeType().contains("json")) {

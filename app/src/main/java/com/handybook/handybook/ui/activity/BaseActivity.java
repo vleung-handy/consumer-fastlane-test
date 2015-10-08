@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
@@ -28,6 +27,7 @@ import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.squareup.otto.Bus;
 import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
@@ -52,12 +52,12 @@ public abstract class BaseActivity extends FragmentActivity {
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
     @Inject NavigationManager navigationManager;
+    @Inject Bus bus;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Crashlytics.start(this);
         Yozio.initialize(this);
 
         ((BaseApplication)this.getApplication()).inject(this);
@@ -84,14 +84,13 @@ public abstract class BaseActivity extends FragmentActivity {
         progressDialog.setMessage(getString(R.string.loading));
     }
 
+    //Lifecycle
     @Override
     protected void onStart() {
         super.onStart();
-
         if (PlayServicesUtils.isGooglePlayStoreAvailable()) {
             PlayServicesUtils.handleAnyPlayServicesError(this);
         }
-
         allowCallbacks = true;
     }
 
@@ -109,7 +108,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
     @Override
     protected final void attachBaseContext(final Context newBase) {
-        super.attachBaseContext(new CalligraphyContextWrapper(newBase));
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override

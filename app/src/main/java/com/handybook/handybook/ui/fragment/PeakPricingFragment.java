@@ -24,8 +24,8 @@ import com.handybook.handybook.util.Utils;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public final class PeakPricingFragment extends BookingFlowFragment {
     static final String EXTRA_RESCHEDULE_PRICE_TABLE = "com.handy.handy.EXTRA_RESCHEDULE_PRICE_TABLE";
@@ -41,12 +41,18 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     private Booking rescheduleBooking;
     private boolean rescheduleAll;
 
-    @InjectView(R.id.skip_button) Button skipButton;
-    @InjectView(R.id.date_text) TextView dateText;
-    @InjectView(R.id.header_text) TextView headerText;
-    @InjectView(R.id.pager) ViewPager datePager;
-    @InjectView(R.id.arrow_left) ImageView arrowLeft;
-    @InjectView(R.id.arrow_right) ImageView arrowRight;
+    @Bind(R.id.skip_button)
+    Button skipButton;
+    @Bind(R.id.date_text)
+    TextView dateText;
+    @Bind(R.id.header_text)
+    TextView headerText;
+    @Bind(R.id.pager)
+    ViewPager datePager;
+    @Bind(R.id.arrow_left)
+    ImageView arrowLeft;
+    @Bind(R.id.arrow_right)
+    ImageView arrowRight;
 
     public static PeakPricingFragment newInstance(final boolean forVoucher) {
         return newInstance(null, null, false, forVoucher);
@@ -106,7 +112,7 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_peak_pricing,container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         if (forVoucher || forReschedule || (transaction != null && transaction.getRecurringFrequency() > 0)) {

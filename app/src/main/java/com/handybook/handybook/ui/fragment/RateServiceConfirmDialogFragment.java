@@ -16,8 +16,8 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.widget.LimitedEditText;
 import com.handybook.handybook.util.Utils;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -26,15 +26,24 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
     private int rating;
     private int booking;
 
-    @InjectView(R.id.service_icon) ImageView serviceIcon;
-    @InjectView(R.id.service_icon_img) ImageView serviceIconImage;
-    @InjectView(R.id.title_text) TextView titleText;
-    @InjectView(R.id.message_text) TextView messageText;
-    @InjectView(R.id.feedback_text) LimitedEditText feedbackText;
-    @InjectView(R.id.submit_button) Button submitButton;
-    @InjectView(R.id.submit_progress) ProgressBar submitProgress;
-    @InjectView(R.id.skip_button) Button skipButton;
-    @InjectView(R.id.submit_button_layout) View submitButtonLayout;
+    @Bind(R.id.service_icon)
+    ImageView serviceIcon;
+    @Bind(R.id.service_icon_img)
+    ImageView serviceIconImage;
+    @Bind(R.id.title_text)
+    TextView titleText;
+    @Bind(R.id.message_text)
+    TextView messageText;
+    @Bind(R.id.feedback_text)
+    LimitedEditText feedbackText;
+    @Bind(R.id.submit_button)
+    Button submitButton;
+    @Bind(R.id.submit_progress)
+    ProgressBar submitProgress;
+    @Bind(R.id.skip_button)
+    Button skipButton;
+    @Bind(R.id.submit_button_layout)
+    View submitButtonLayout;
 
     public static RateServiceConfirmDialogFragment newInstance(final int bookingId, final int rating) {
         final RateServiceConfirmDialogFragment rateServiceConfirmDialogFragment
@@ -64,7 +73,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_rate_service_confirm, container, true);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         initLayout(rating);
         submitButton.setOnClickListener(submitListener);

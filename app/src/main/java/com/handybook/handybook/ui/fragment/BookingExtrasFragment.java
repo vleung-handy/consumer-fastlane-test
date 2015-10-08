@@ -20,25 +20,31 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-public final class BookingExtrasFragment extends BookingFlowFragment {
+public final class BookingExtrasFragment extends BookingFlowFragment
+{
     private BookingTransaction bookingTransaction;
     private BookingQuote bookingQuote;
 
-    @Inject SecurePreferences securePrefs;
+    @Inject
+    SecurePreferences securePrefs;
 
-    @InjectView(R.id.options_layout) LinearLayout optionsLayout;
-    @InjectView(R.id.next_button) Button nextButton;
+    @Bind(R.id.options_layout)
+    LinearLayout optionsLayout;
+    @Bind(R.id.next_button)
+    Button nextButton;
 
-    public static BookingExtrasFragment newInstance() {
+    public static BookingExtrasFragment newInstance()
+    {
         final BookingExtrasFragment fragment = new BookingExtrasFragment();
         return fragment;
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         bookingTransaction = bookingManager.getCurrentTransaction();
         bookingQuote = bookingManager.getCurrentQuote();
@@ -46,11 +52,12 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
 
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+                                   final Bundle savedInstanceState)
+    {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_extras, container, false);
 
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -62,22 +69,30 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
         optionsView.hideTitle();
 
         final String selected = securePrefs.getString("STATE_BOOKING_CLEANING_EXTRAS_SEL");
-        if (selected != null) {
+        if (selected != null)
+        {
             final String[] indexes = selected.split(",");
             final ArrayList<Integer> checked = new ArrayList<>();
 
-            for (int i = 0; i < indexes.length; i++) {
-                try { checked.add(Integer.parseInt(indexes[i])); }
-                catch (final NumberFormatException e) {}
+            for (int i = 0; i < indexes.length; i++)
+            {
+                try
+                {
+                    checked.add(Integer.parseInt(indexes[i]));
+                } catch (final NumberFormatException e)
+                {
+                }
             }
 
             optionsView.setCheckedIndexes(checked.toArray(new Integer[checked.size()]));
         }
 
         optionsLayout.addView(optionsView, 0);
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(final View view) {
+            public void onClick(final View view)
+            {
                 continueBookingFlow();
             }
         });
@@ -85,9 +100,11 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated
-            = new BookingOptionsView.OnUpdatedListener() {
+            = new BookingOptionsView.OnUpdatedListener()
+    {
         @Override
-        public void onUpdate(final BookingOptionsView view) {
+        public void onUpdate(final BookingOptionsView view)
+        {
             final Integer[] indexes = ((BookingOptionsSelectView) view).getCheckedIndexes();
             final BookingOption option = bookingQuote.getExtrasOptions();
             final float[] hoursMap = option.getHoursInfo();
@@ -98,7 +115,8 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
             String extraText = "";
 
             int j = 0;
-            for (final int i : indexes) {
+            for (final int i : indexes)
+            {
                 selected += i + ",";
                 extraHours += hoursMap[i];
                 extraText += options[i] + (j == indexes.length - 1 ? "" : ", ");
@@ -113,12 +131,14 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
 
         @Override
         public void onShowChildren(final BookingOptionsView view,
-                                   final String[] items) {
+                                   final String[] items)
+        {
         }
 
         @Override
         public void onHideChildren(final BookingOptionsView view,
-                                   final String[] items) {
+                                   final String[] items)
+        {
         }
     };
 }

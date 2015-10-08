@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.util.Utils;
@@ -19,7 +20,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public final class BookingOptionsSelectView extends BookingOptionsIndexView {
+
+public final class BookingOptionsSelectView extends BookingOptionsIndexView
+{
     protected String[] optionsSubtitles;
     protected String[] optionsRightText;
     private HashMap<Integer, CheckBox> checkMap;
@@ -28,67 +31,104 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView {
     private boolean isMulti;
 
     public BookingOptionsSelectView(final Context context, final BookingOption option,
-                                    final OnUpdatedListener updateListener) {
+                                    final OnUpdatedListener updateListener)
+    {
         super(context, R.layout.view_booking_options_select, option, updateListener);
         init(context);
     }
 
-    BookingOptionsSelectView(final Context context, final AttributeSet attrs) {
+    BookingOptionsSelectView(final Context context, final AttributeSet attrs)
+    {
         super(context, attrs);
     }
 
-    BookingOptionsSelectView(final Context context, final AttributeSet attrs, final int defStyle) {
+    BookingOptionsSelectView(final Context context, final AttributeSet attrs, final int defStyle)
+    {
         super(context, attrs, defStyle);
     }
 
-    private void init(final Context context) {
+    private void init(final Context context)
+    {
         final String type = option.getType();
-        if (!type.equals("option") && !type.equals("checklist")) return;
-        if (type.equals("checklist")) isMulti = true;
 
-        mainLayout = (RelativeLayout)this.findViewById(R.id.rel_layout);
+        if (!type.equals("option") && !type.equals("checklist"))
+        {
+            return;
+        }
 
-        final LinearLayout optionLayout = (LinearLayout)this.findViewById(R.id.options_layout);
+        if (type.equals("checklist"))
+        {
+            isMulti = true;
+        }
+
+        mainLayout = (RelativeLayout) this.findViewById(R.id.rel_layout);
+
+        final LinearLayout optionLayout = (LinearLayout) this.findViewById(R.id.options_layout);
 
         optionsSubtitles = option.getOptionsSubText();
         optionsRightText = option.getOptionsRightText();
 
         checkMap = new HashMap<>();
-        checkedIndex = isMulti ? 0 : Integer.parseInt(option.getDefaultValue());
+
+
+        int optionDefaultValue = 0;
+
+        if (option.getDefaultValue() != null)
+        {
+            try
+            {
+                optionDefaultValue = Integer.parseInt(option.getDefaultValue());
+            }
+            catch (NumberFormatException e)
+            {
+                optionDefaultValue = 0;
+            }
+        }
+
+        checkedIndex = isMulti ? 0 : optionDefaultValue;
         checkedIndexes = new HashSet<>();
 
-        for (int i = 0; i < optionsList.length; i++) {
+        for (int i = 0; i < optionsList.length; i++)
+        {
             final String optionText = optionsList[i];
-            final LinearLayout optionView = (LinearLayout)LayoutInflater.from(context)
+            final LinearLayout optionView = (LinearLayout) LayoutInflater.from(context)
                     .inflate(R.layout.view_booking_select_option, this, false);
 
-            final TextView title = (TextView)optionView.findViewById(R.id.title_text);
+            final TextView title = (TextView) optionView.findViewById(R.id.title_text);
             title.setText(optionText);
 
             String subTitleText;
-            if (optionsSubtitles != null && optionsSubtitles.length >= i + 1
-                    && (subTitleText = optionsSubtitles[i]) != null && subTitleText.length() > 0) {
-                final TextView subTitle = (TextView)optionView.findViewById(R.id.sub_text);
+            if (optionsSubtitles != null &&
+                    optionsSubtitles.length >= i + 1 &&
+                    (subTitleText = optionsSubtitles[i]) != null && subTitleText.length() > 0)
+            {
+                final TextView subTitle = (TextView) optionView.findViewById(R.id.sub_text);
                 subTitle.setText(subTitleText);
                 subTitle.setVisibility(VISIBLE);
             }
 
             String rightText;
-            if (optionsRightText != null && optionsRightText.length >= i + 1
-                    && (rightText = optionsRightText[i]) != null && rightText.length() > 0) {
-                final TextView rightTextView = (TextView)optionView.findViewById(R.id.right_text);
+            if (optionsRightText != null &&
+                    optionsRightText.length >= i + 1 &&
+                    (rightText = optionsRightText[i]) != null && rightText.length() > 0)
+            {
+                final TextView rightTextView = (TextView) optionView.findViewById(R.id.right_text);
                 rightTextView.setText(rightText);
                 rightTextView.setVisibility(VISIBLE);
             }
 
-            final CheckBox checkBox = (CheckBox)optionView.findViewById(R.id.check_box);
-            if (!isMulti && i == checkedIndex) selectOption(checkBox, true);
+            final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);
+            if (!isMulti && i == checkedIndex)
+            {
+                selectOption(checkBox, true);
+            }
             checkBox.setOnCheckedChangeListener(checkedChanged);
             checkMap.put(i, checkBox);
 
-            if (i < optionsList.length - 1) {
+            if (i < optionsList.length - 1)
+            {
                 final LinearLayout.LayoutParams layoutParams
-                        = (LinearLayout.LayoutParams)optionLayout.getLayoutParams();
+                        = (LinearLayout.LayoutParams) optionLayout.getLayoutParams();
 
                 layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin,
                         layoutParams.rightMargin, Utils.toDP(16, context));
@@ -96,12 +136,20 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView {
                 optionView.setLayoutParams(layoutParams);
             }
 
-            optionView.setOnClickListener(new OnClickListener() {
+            optionView.setOnClickListener(new OnClickListener()
+            {
                 @Override
-                public void onClick(final View v) {
-                    final CheckBox box =  ((CheckBox)optionView.findViewById(R.id.check_box));
-                    if (isMulti) box.setChecked(!box.isChecked());
-                    else box.setChecked(true);
+                public void onClick(final View v)
+                {
+                    final CheckBox box = ((CheckBox) optionView.findViewById(R.id.check_box));
+                    if (isMulti)
+                    {
+                        box.setChecked(!box.isChecked());
+                    }
+                    else
+                    {
+                        box.setChecked(true);
+                    }
                 }
             });
 
@@ -112,76 +160,101 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView {
         handleChildren(getCurrentIndex());
     }
 
-    public final String getCurrentValue() {
+    public final String getCurrentValue()
+    {
         final CheckBox box = checkMap.get(checkedIndex);
-        final ViewGroup layout = (ViewGroup)box.getParent();
-        final TextView title = (TextView)layout.findViewById(R.id.title_text);
+        final ViewGroup layout = (ViewGroup) box.getParent();
+        final TextView title = (TextView) layout.findViewById(R.id.title_text);
         return title.getText().toString();
     }
 
-    public final void setCurrentIndex(final int index) {
-        if (index < 0) return;
-        for (final CheckBox checkBox : checkMap.values()) checkBox.setChecked(false);
+    public final void setCurrentIndex(final int index)
+    {
+        if (index < 0 || !checkMap.containsKey(index))
+        {
+            Crashlytics.log("BookingOptionsSelectView::setCurrentIndex invalid index : " + index);
+            return;
+        }
+
+        for (final CheckBox checkBox : checkMap.values())
+        {
+            checkBox.setChecked(false);
+        }
+
         checkMap.get(index).setChecked(true);
         checkedIndex = index;
 
-        if (updateListener != null) updateListener
-                .onUpdate(BookingOptionsSelectView.this);
+        if (updateListener != null)
+        {
+            updateListener.onUpdate(BookingOptionsSelectView.this);
+        }
 
         invalidate();
         requestLayout();
     }
 
-    public final void setCheckedIndexes(final Integer[] indexes) {
-        for (final CheckBox checkBox : checkMap.values()) checkBox.setChecked(false);
+    public final void setCheckedIndexes(final Integer[] indexes)
+    {
+        for (final CheckBox checkBox : checkMap.values())
+        {
+            checkBox.setChecked(false);
+        }
         checkedIndexes.clear();
 
-        for (final int i : indexes) {
+        for (final int i : indexes)
+        {
             checkMap.get(i).setChecked(true);
             checkedIndexes.add(i);
         }
 
-        if (updateListener != null) updateListener
-                .onUpdate(BookingOptionsSelectView.this);
+        if (updateListener != null)
+        {
+            updateListener.onUpdate(BookingOptionsSelectView.this);
+        }
 
         invalidate();
         requestLayout();
     }
 
-    public final int getCurrentIndex() {
+    public final int getCurrentIndex()
+    {
         return checkedIndex;
     }
 
-    public final Integer[] getCheckedIndexes() {
+    public final Integer[] getCheckedIndexes()
+    {
         final Integer[] indexes = checkedIndexes.toArray(new Integer[checkedIndexes.size()]);
         Arrays.sort(indexes);
         return indexes;
     }
 
     @Override
-    public void hideTitle() {
+    public void hideTitle()
+    {
         super.hideTitle();
 
-        mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, mainLayout.getPaddingRight(),
-                mainLayout.getPaddingBottom());
+        mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, mainLayout.getPaddingRight(), mainLayout.getPaddingBottom());
 
         invalidate();
         requestLayout();
     }
 
-    private void selectOption(final CheckBox box, final boolean isChecked) {
-        final ViewGroup layout = (ViewGroup)box.getParent();
-        final TextView title = (TextView)layout.findViewById(R.id.title_text);
-        final TextView subTitle = (TextView)layout.findViewById(R.id.sub_text);
-        final TextView rightText = (TextView)layout.findViewById(R.id.right_text);
+    private void selectOption(final CheckBox box, final boolean isChecked)
+    {
+        final ViewGroup layout = (ViewGroup) box.getParent();
+        final TextView title = (TextView) layout.findViewById(R.id.title_text);
+        final TextView subTitle = (TextView) layout.findViewById(R.id.sub_text);
+        final TextView rightText = (TextView) layout.findViewById(R.id.right_text);
 
-        if (isChecked) {
+        if (isChecked)
+        {
             title.setTextColor(getResources().getColor(R.color.black));
             subTitle.setTextColor(getResources().getColor(R.color.handy_blue));
             rightText.setTextColor(getResources().getColor(R.color.black));
             box.setChecked(true);
         }
-        else {
+        else
+        {
             title.setTextColor(getResources().getColor(R.color.black_pressed));
             subTitle.setTextColor(getResources().getColor(R.color.black_pressed));
             rightText.setTextColor(getResources().getColor(R.color.black_pressed));
@@ -190,32 +263,58 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView {
     }
 
     private final CompoundButton.OnCheckedChangeListener checkedChanged
-            = new CompoundButton.OnCheckedChangeListener() {
+            = new CompoundButton.OnCheckedChangeListener()
+    {
         @Override
-        public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-            for (final Integer index : checkMap.keySet()) {
+        public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked)
+        {
+            for (final Integer index : checkMap.keySet())
+            {
                 final CheckBox box = checkMap.get(index);
 
                 box.setOnCheckedChangeListener(null);
 
-                if (box == buttonView) {
+                if (box == buttonView)
+                {
                     checkedIndex = index;
-                    if (!isMulti) selectOption(box, true);
-                    else {
+                    if (!isMulti)
+                    {
+                        selectOption(box, true);
+                    }
+                    else
+                    {
                         selectOption(box, isChecked);
-                        if (isChecked) checkedIndexes.add(index);
-                        else checkedIndexes.remove(index);
+                        if (isChecked)
+                        {
+                            checkedIndexes.add(index);
+                        }
+                        else
+                        {
+                            checkedIndexes.remove(index);
+                        }
                     }
                 }
-                else if (!isMulti) selectOption(box, false);
+                else if (!isMulti)
+                {
+                    selectOption(box, false);
+                }
 
                 box.setOnCheckedChangeListener(this);
             }
 
-            if (!warningsMap.isEmpty()) handleWarnings(getCurrentIndex());
-            if (!childMap.isEmpty()) handleChildren(getCurrentIndex());
-            if (updateListener != null) updateListener
-                    .onUpdate(BookingOptionsSelectView.this);
+            if (!warningsMap.isEmpty())
+            {
+                handleWarnings(getCurrentIndex());
+            }
+            if (!childMap.isEmpty())
+            {
+                handleChildren(getCurrentIndex());
+            }
+            if (updateListener != null)
+            {
+                updateListener
+                        .onUpdate(BookingOptionsSelectView.this);
+            }
         }
     };
 }
