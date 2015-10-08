@@ -3,7 +3,6 @@ package com.handybook.handybook.ui.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,7 +46,7 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
     }
 
     //TODO: Clean this up
-    public void updatePaymentDisplay(final Booking booking, final User user, final ViewGroup container)
+    public void updatePaymentDisplay(final Booking booking, final User user)
     {
         final String price = TextUtils.formatPrice(booking.getPrice(),
                 user.getCurrencyChar(), null);
@@ -77,7 +76,7 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
 
             for (int i = 0; i < paymentInfo.size(); i++)
             {
-                paymentLineView = inflate(R.layout.view_payment_line, container);
+                paymentLineView = inflate(R.layout.view_payment_line, paymentLinesSection);
 
                 final TextView labelText = (TextView) paymentLineView.findViewById(R.id.label_text);
                 final TextView amountText = (TextView) paymentLineView.findViewById(R.id.amount_text);
@@ -91,8 +90,6 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
                 {
                     paymentLineView.setPadding(0, 0, 0, Utils.toDP(10, getContext()));
                 }
-
-                paymentLinesSection.addView(paymentLineView);
             }
         }
 
