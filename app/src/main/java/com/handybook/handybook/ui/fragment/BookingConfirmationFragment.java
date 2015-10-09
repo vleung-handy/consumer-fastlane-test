@@ -303,7 +303,9 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                                 {
                                     return;
                                 }
-                                showBookings();
+
+                                String bookingId = Integer.toString(bookingManager.getCurrentTransaction().getBookingId());
+                                showBookingDetails(bookingId);
                                 enableInputs();
                                 progressDialog.dismiss();
                             }
