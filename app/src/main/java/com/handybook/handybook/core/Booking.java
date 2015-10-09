@@ -2,6 +2,7 @@ package com.handybook.handybook.core;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
@@ -9,12 +10,21 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.R;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class Booking implements Parcelable
 {
+    public static final Comparator<? super Booking> COMPARATOR_DATE = new Comparator<Booking>()
+    {
+        @Override
+        public int compare(@NonNull final Booking lhs, @NonNull final Booking rhs)
+        {
+            return lhs.getStartDate().compareTo(rhs.getStartDate());
+        }
+    };
     @SerializedName("id")
     private String id;
     @SerializedName("booking_status")
