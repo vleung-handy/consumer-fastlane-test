@@ -16,6 +16,15 @@
 #   public *;
 #}
 
+-dontshrink
+-dontoptimize
+
+#Some warnings we think are safe to ignore
+-dontwarn sun.misc.Unsafe
+
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+
 #Butterknife
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
