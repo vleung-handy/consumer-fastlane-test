@@ -2,80 +2,107 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cv_booking_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     >
 
     <LinearLayout
-        android:id="@+id/ll_booking_card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/rl_card_booking_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
+
+            <com.handybook.handybook.ui.widget.ServiceIconImageView
                 android:id="@+id/iv_booking_card_service_icon"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:src="@drawable/ic_clean_fill"
                 android:padding="@dimen/default_padding_half"
+                tools:src="@drawable/ic_clean_fill"
                 />
+
             <TextView
                 android:id="@+id/tv_booking_card_service_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Home Cleaning"
-                android:layout_toRightOf="@id/iv_booking_card_service_icon"
                 android:layout_marginTop="@dimen/default_margin_half"
+                android:layout_toRightOf="@id/iv_booking_card_service_icon"
+                android:textColor="@color/handy_green"
                 android:textSize="@dimen/text_size_large"
-                android:textColor="@color/handy_green"/>
+                tools:text="Home Cleaning"/>
+
             <LinearLayout
-                android:id="@+id/ll_booking_card_recuring_layout"
+                android:id="@+id/ll_booking_card_recurring_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/iv_booking_card_service_icon"
                 android:layout_below="@+id/tv_booking_card_service_title"
+                android:layout_toRightOf="@id/iv_booking_card_service_icon"
                 >
+
                 <ImageView
+                    android:id="@+id/iv_booking_card_recurring_icon"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:src="@drawable/ic_recurring"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:scaleX="-1"
+                    android:src="@drawable/ic_recurring"/>
+
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_booking_card_recurring_text"
                     android:layout_width="wrap_content"
-                    tools:text="Every 2 weeks"
-                    android:textSize="@dimen/text_size_small"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="Repeats every 2 weeks"
                     />
             </LinearLayout>
 
         </RelativeLayout>
-        <include layout="@layout/list_item_booking"/>
-        <include layout="@layout/list_item_booking"/>
+
+        <include layout="@layout/layout_card_booking_row"/>
+
+        <include layout="@layout/layout_card_booking_row"/>
+
         <RelativeLayout
+            android:id="@+id/rl_booking_card_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                tools:text="More bookings will be generated"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/default_margin"
-                android:textColor="@color/handy_dark_grey"/>
+                android:layout_marginStart="@dimen/default_margin"
+                android:textColor="@color/handy_dark_grey"
+                android:text="@string/booking_card_recurring_footer_text"/>
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
-                android:src="@drawable/ic_help_lifesaver"
-                android:background="@color/handy_blue"/>
+                android:background="@color/handy_blue"
+                android:src="@drawable/ic_help_lifesaver"/>
+
+            <ImageView
+                android:id="@+id/iv_card_booking_row_edge_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:background="@color/handy_divider_line"/>
+
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
