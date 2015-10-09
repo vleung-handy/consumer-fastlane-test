@@ -16,6 +16,20 @@
 #   public *;
 #}
 
+-keepattributes EnclosingMethod, InnerClasses
+
+-dontshrink  #currently having compile issues
+-dontoptimize #currently having compile issues
+
+#Some warnings we think are safe to ignore
+-dontwarn sun.misc.Unsafe
+
+#typed handy retrofitcallback
+-keep class com.handybook.handybook.data.** { *; }
+
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+
 #Butterknife
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }

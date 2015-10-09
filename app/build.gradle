@@ -27,6 +27,12 @@ apply plugin: 'com.zeroturnaround.jrebel.android'
 apply plugin: 'io.fabric'
 apply plugin: 'newrelic'
 
+def computeVersionName(versionCode) {
+    def major = (versionCode / 10000).intValue() % 10000
+    def minor = (versionCode / 100).intValue() % 100
+    def bugfix = versionCode % 100
+    "${major}.${minor}.${bugfix}"
+}
 
 android {
     signingConfigs {
@@ -49,13 +55,13 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 10801
-        versionName '1.8.1'
+        versionCode 10802
+        versionName computeVersionName(versionCode)
         multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -89,9 +95,11 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.1'
     compile 'com.android.support:appcompat-v7:21.0.1'
 
+//fix missing nullable annotations warnings
+    compile 'com.google.code.findbugs:jsr305:2.0.2'
+
     //Google Play
-    compile 'com.google.android.gms:play-services-location:7.8.0'
-    compile 'com.google.android.gms:play-services-gcm:7.8.0'
+    compile 'com.google.android.gms:play-services:6.1.71'
 
     //Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
@@ -120,7 +128,7 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
     // Urban Airship for cloud messaging
-    compile 'com.urbanairship.android:urbanairship-sdk:6.1.+'
+    compile 'com.urbanairship:urbanairship-lib:1.5.1@aar'
 
     //Guava
     compile 'com.google.guava:guava:18.0'
