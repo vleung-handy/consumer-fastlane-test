@@ -27,6 +27,12 @@ apply plugin: 'com.zeroturnaround.jrebel.android'
 apply plugin: 'io.fabric'
 apply plugin: 'newrelic'
 
+def computeVersionName(versionCode) {
+    def major = (versionCode / 10000).intValue() % 10000
+    def minor = (versionCode / 100).intValue() % 100
+    def bugfix = versionCode % 100
+    "${major}.${minor}.${bugfix}"
+}
 
 android {
     signingConfigs {
@@ -50,7 +56,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 10801
-        versionName '1.8.1'
+        versionName computeVersionName(versionCode)
         multiDexEnabled true
     }
     buildTypes {
