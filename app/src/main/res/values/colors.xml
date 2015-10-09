@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="handy_transparent">#00000000</color>
-    <color name="handy_blue">#00CDED</color>
     <color name="handy_blue_pressed">#00ABC6</color>
     <color name="handy_green">#8CC63f</color>
     <color name="handy_green_pressed">#71A230</color>
@@ -11,7 +10,6 @@
     <color name="handy_purple">#993092</color>
     <color name="handy_bg">#EAEAEA</color>
     <color name="handy_love">#F9002E</color>
-    <color name="handy_white">#FFFFFF</color>
     <color name="handy_black">#000000</color>
     <color name="handy_light_grey">#f4f4f4</color>
     <color name="handy_dark_grey">#5C5C5C</color>
@@ -39,6 +37,22 @@
     <color name="facebook_pressed">#1C4B76</color>
     <color name="transparent">#00000000</color>
     <color name="border_mid_grey">#CCCCCC</color>
-
-
+    <!--Colors as defined in the Style Guide -->
+    <!--https://projects.invisionapp.com/d/main#/console/2999599/66734904/preview-->
+    <color name="handy_service_cleaner">#FF8bc53e</color>
+    <color name="handy_service_handyman">#FF43d1b8</color>
+    <color name="handy_service_plumber">#FFff5c5c</color>
+    <color name="handy_service_electrician">#FFffb600</color>
+    <color name="handy_service_painter">#FF993092</color>
+    <color name="handy_blue">#FF00cded</color>
+    <color name="handy_darkened_blue">#FF0bb8e3</color>
+    <color name="handy_tertiary_gray">#FF9cabb5</color>
+    <color name="handy_background_blue">#FFedf5f8</color>
+    <color name="handy_background_gray">#FFf4f4f4</color>
+    <color name="handy_white">#FFffffff</color>
+    <color name="handy_text_black">#FF434343</color>
+    <color name="handy_text_gray">#FF999999</color>
+    <color name="handy_divider_line">#FFeeeeee</color>
+    <color name="handy_dark_divider_line">#FFcccccc</color>
+    <color name="handy_input_field_stroke">#FFd1d1d1</color>
 </resources>
