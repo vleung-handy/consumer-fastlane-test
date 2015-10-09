@@ -3,7 +3,6 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -85,17 +84,17 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
-        logo.setOnClickListener(
-                new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final View v)
-                    {
-                        AnimationDrawable logoSpin = (AnimationDrawable) logo.getBackground();
-                        logoSpin.stop();
-                        logoSpin.start();
-                    }
-                });
+//        logo.setOnClickListener(
+//                new View.OnClickListener()
+//                {
+//                    @Override
+//                    public void onClick(final View v)
+//                    {
+//                        AnimationDrawable logoSpin = (AnimationDrawable) logo.getBackground();
+//                        logoSpin.stop();
+//                        logoSpin.start();
+//                    }
+//                });
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         assert true;

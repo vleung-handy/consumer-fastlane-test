@@ -600,6 +600,7 @@ public final class Booking implements Parcelable
             @SerializedName("inside_oven_extras_disabled.png")INSIDE_OVEN_DISABLED,
             @SerializedName("laundry_extras_disabled.png")LAUNDRY_DISABLED,
             @SerializedName("interior_windows_extras_disabled.png")WINDOWS_DISABLED,
+            @SerializedName("default.png")DEFAULT_IMAGE_NAME,
         }
 
         private static final Map<ExtraInfoImageName, Integer> EXTRAS_ICONS;
@@ -612,8 +613,9 @@ public final class Booking implements Parcelable
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_OVEN_DISABLED, R.drawable.ic_booking_detail_oven);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.LAUNDRY_DISABLED, R.drawable.ic_booking_extra_laundry);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.WINDOWS_DISABLED, R.drawable.ic_booking_extra_window);
+            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.DEFAULT_IMAGE_NAME, R.drawable.ic_booking_detail_logo);
+            //TODO: Need to add missing icons like ladders and painting
         }
-
 
         public final String getLabel()
         {
@@ -648,13 +650,29 @@ public final class Booking implements Parcelable
             final String[] stringData = new String[2];
             in.readStringArray(stringData);
             label = stringData[0];
-            imageName = ExtraInfoImageName.valueOf(stringData[1]);
+
+            try
+            {
+                imageName = ExtraInfoImageName.valueOf(stringData[1]);
+            }
+            catch (IllegalArgumentException e)
+            {
+                Crashlytics.log("Could not convert string : " + stringData[1] + " to extras image name");
+            }
+
+            if(imageName == null)
+            {
+                imageName = ExtraInfoImageName.DEFAULT_IMAGE_NAME;
+            }
         }
 
         @Override
         public final void writeToParcel(final Parcel out, final int flags)
         {
-            out.writeStringArray(new String[]{label, imageName.toString()});
+            out.writeStringArray(new String[]{
+                    label,
+                    (imageName != null ? imageName.toString() : ExtraInfoImageName.DEFAULT_IMAGE_NAME.toString() )
+                    });
         }
 
         @Override
