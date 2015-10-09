@@ -118,7 +118,7 @@
                             android:id="@+id/icon_recur"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:contentDescription="@string/image_content_description_icon_recuring"
+                            android:contentDescription="@string/image_content_description_icon_recurring"
                             android:scaleX="-1"
                             android:src="@drawable/ic_recurring"/>
 
