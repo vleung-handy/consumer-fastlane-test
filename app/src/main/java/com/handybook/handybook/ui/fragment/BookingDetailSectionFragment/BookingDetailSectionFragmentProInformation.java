@@ -24,6 +24,8 @@ import butterknife.Bind;
 
 public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
 {
+    private static final long HOURS_TO_ALLOW_CONTACT_PAST_BOOKING = 72L;
+
     public static final String TAG= "BookingDetailSectionFragmentProInformation";
 
     @Bind(R.id.booking_detail_section_view)
@@ -121,8 +123,16 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         List<String> actionButtonTypes = new ArrayList<>();
         if(booking.hasAssignedProvider())
         {
-            actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
-            actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
+            //TODO: Business rules allow contact up to 72 hours, all business rules logic should be stripped out and replaced with AvailableActions logic in consumer api v4
+            if(Utils.hoursPastDate(booking.getEndDate()) <= HOURS_TO_ALLOW_CONTACT_PAST_BOOKING)
+            {
+                //Make sure it is not an empty phone number
+                if(validateProPhoneInformation(booking))
+                {
+                    actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
+                    actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
+                }
+            }
         }
         return actionButtonTypes;
     }
@@ -158,7 +168,14 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            callPhoneNumber(booking.getProvider().getPhone());
+            if(validateProPhoneInformation(booking))
+            {
+                callPhoneNumber(booking.getProvider().getPhone());
+            }
+            else
+            {
+                showToast(R.string.invalid_pro_phone_number);
+            }
         }
     };
 
@@ -167,10 +184,30 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            textPhoneNumber(booking.getProvider().getPhone());
+            if(validateProPhoneInformation(booking))
+            {
+                textPhoneNumber(booking.getProvider().getPhone());
+            }
+            else
+            {
+                showToast(R.string.invalid_pro_phone_number);
+            }
         }
     };
 
+    private boolean validateProPhoneInformation(Booking booking)
+    {
+        boolean validPhoneNumber = false;
+
+        if(booking.getProvider() != null &&
+                booking.getProvider().getPhone() != null &&
+                !booking.getProvider().getPhone().isEmpty())
+        {
+            validPhoneNumber = true;
+        }
+
+        return validPhoneNumber;
+    }
 
     //use native functionality to trigger a phone call
     private void callPhoneNumber(final String phoneNumber)
