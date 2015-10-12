@@ -3,6 +3,7 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.widget.ServiceIconImageView;
 import com.squareup.otto.Subscribe;
@@ -49,6 +52,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     private Context mContext;
     private BookingAdapter mBookingAdapter;
     private ArrayList<Booking> mBookings = new ArrayList<>();
+    private BookingCardViewModel.List mBookingCardViewModels= new BookingCardViewModel.List();
     private boolean mBookingsWereReceived;
 
     /**
@@ -197,11 +201,13 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     public void onReceiveBookingsSuccess(HandyEvent.ReceiveBookingsSuccess event)
     {
         mBookings = new ArrayList<>(event.bookings);
+        mBookingCardViewModels = BookingCardViewModel.List.from(event.bookings);
         mBookingsWereReceived = true;
         initialize();
         //progressDialog.dismiss();
         vSwipeRefreshLayout.setRefreshing(false);
     }
+
 
     @Subscribe
     public void onReceiveBookingsError(HandyEvent.ReceiveBookingsError event)
@@ -220,10 +226,9 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     }
 
 
-    class BookingCardHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener
-    {
+    class BookingCardHolder extends RecyclerView.ViewHolder {
         private BookingCardViewModel mBookingCardViewModel;
+        private View mRoot;
 
         @Bind(R.id.iv_booking_card_service_icon)
         ServiceIconImageView vServiceIcon;
@@ -239,11 +244,11 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         public BookingCardHolder(View itemView)
         {
             super(itemView);
-            ButterKnife.bind(this,itemView);
-            itemView.setOnClickListener(this);
+            mRoot = itemView;
+            ButterKnife.bind(this, itemView);
         }
 
-        public void bindBooking(final BookingCardViewModel bookingCardViewModel)
+        public void bindBookingCardViewModel(@NonNull final BookingCardViewModel bookingCardViewModel)
         {
             mBookingCardViewModel = bookingCardViewModel;
             //TODO:set all other properties
@@ -260,6 +265,34 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
             vServiceIcon.updateServiceIconByBooking(mBookingCardViewModel.getBookings().get(0));
         }
 
+    }
+
+    class BookingHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private View mRoot;
+        private BookingCardRowViewModel mBookingCardRowViewModel;
+
+        @Bind(R.id.tv_card_booking_row_title)
+        TextView vTitle;
+        @Bind(R.id.tv_card_booking_row_subtitle)
+        TextView vSubtitle;
+        @Bind(R.id.iv_card_booking_row_left_edge_indicator)
+        ImageView vLeftEdgeIndicator;
+
+        public BookingHolder(final View itemView)
+        {
+            super(itemView);
+            mRoot = itemView;
+            ButterKnife.bind(this.itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        public void bindBookingViewModel(@NonNull final BookingCardRowViewModel bookingCardRowViewModel){
+            mBookingCardRowViewModel = bookingCardRowViewModel;
+            vTitle.setText(bookingCardRowViewModel.getTitle());
+            vSubtitle.setText(bookingCardRowViewModel.getSubtitle());
+
+        }
 
         @Override
         public void onClick(View v)
@@ -268,6 +301,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
             //intent.putExtra(BundleKeys.BOOKING, mBookingCardViewModel);
             startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
         }
+
     }
 
 
@@ -285,8 +319,8 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         @Override
         public void onBindViewHolder(final BookingCardHolder holder, int position)
         {
-            BookingCardViewModel booking = mBookings.get(position);
-            holder.bindBooking(booking);
+            BookingCardViewModel bookingCardViewModel = mBookingCardViewModels.get(position);
+            holder.bindBookingCardViewModel(bookingCardViewModel);
         }
 
         @Override
