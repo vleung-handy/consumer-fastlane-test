@@ -11,13 +11,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.model.BookingCardViewModel;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.widget.ServiceIconImageView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -215,10 +220,21 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     }
 
 
-    private class BookingCardHolder extends RecyclerView.ViewHolder
+    class BookingCardHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener
     {
-        private Booking mBooking;
+        private BookingCardViewModel mBookingCardViewModel;
+
+        @Bind(R.id.iv_booking_card_service_icon)
+        ServiceIconImageView vServiceIcon;
+        @Bind(R.id.tv_booking_card_service_title)
+        TextView vServiceTitle;
+        @Bind(R.id.ll_booking_card_recurring_layout)
+        LinearLayout vRecurringSubtitleContainer;
+        @Bind(R.id.tv_booking_card_recurring_text)
+        TextView vRecurringText;
+        @Bind(R.id.rl_booking_card_footer)
+        RelativeLayout vFooter;
 
         public BookingCardHolder(View itemView)
         {
@@ -227,10 +243,21 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
             itemView.setOnClickListener(this);
         }
 
-        public void bindBooking(final Booking booking)
+        public void bindBooking(final BookingCardViewModel bookingCardViewModel)
         {
-            mBooking = booking;
+            mBookingCardViewModel = bookingCardViewModel;
             //TODO:set all other properties
+            vServiceTitle.setText(mBookingCardViewModel.getTitle());
+            if(mBookingCardViewModel.isMultiCard()){
+                vRecurringSubtitleContainer.setVisibility(View.VISIBLE);
+                vFooter.setVisibility(View.GONE);
+                vRecurringText.setText(mBookingCardViewModel.getSubtitle());
+            }else {
+                vRecurringSubtitleContainer.setVisibility(View.GONE);
+                vFooter.setVisibility(View.GONE);
+            }
+
+            vServiceIcon.updateServiceIconByBooking(mBookingCardViewModel.getBookings().get(0));
         }
 
 
@@ -238,7 +265,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         public void onClick(View v)
         {
             final Intent intent = new Intent(mContext, BookingDetailActivity.class);
-            intent.putExtra(BundleKeys.BOOKING, mBooking);
+            //intent.putExtra(BundleKeys.BOOKING, mBookingCardViewModel);
             startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
         }
     }
@@ -258,7 +285,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         @Override
         public void onBindViewHolder(final BookingCardHolder holder, int position)
         {
-            Booking booking = mBookings.get(position);
+            BookingCardViewModel booking = mBookings.get(position);
             holder.bindBooking(booking);
         }
 
