@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -147,6 +148,15 @@ public final class Booking implements Parcelable
     public final void setStartDate(final Date startDate)
     {
         this.startDate = startDate;
+    }
+
+    public final Date getEndDate()
+    {
+        final Calendar endDate = Calendar.getInstance();
+        endDate.setTime(this.getStartDate());
+        //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
+        endDate.add(Calendar.MINUTE, (int)(60 * this.getHours()));
+        return endDate.getTime();
     }
 
     public final float getHours()

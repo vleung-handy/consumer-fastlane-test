@@ -24,6 +24,8 @@ import butterknife.Bind;
 
 public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
 {
+    private static final long HOURS_TO_ALLOW_CONTACT_PAST_BOOKING = 72L;
+
     public static final String TAG= "BookingDetailSectionFragmentProInformation";
 
     @Bind(R.id.booking_detail_section_view)
@@ -121,8 +123,12 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         List<String> actionButtonTypes = new ArrayList<>();
         if(booking.hasAssignedProvider())
         {
-            actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
-            actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
+            //Make sure it is not an empty phone number
+            if(validateProPhoneInformation(booking))
+            {
+                actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
+                actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
+            }
         }
         return actionButtonTypes;
     }
@@ -158,7 +164,14 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            callPhoneNumber(booking.getProvider().getPhone());
+            if(validateProPhoneInformation(booking))
+            {
+                callPhoneNumber(booking.getProvider().getPhone());
+            }
+            else
+            {
+                showToast(R.string.invalid_pro_phone_number);
+            }
         }
     };
 
@@ -167,14 +180,39 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            textPhoneNumber(booking.getProvider().getPhone());
+            if(validateProPhoneInformation(booking))
+            {
+                textPhoneNumber(booking.getProvider().getPhone());
+            }
+            else
+            {
+                showToast(R.string.invalid_pro_phone_number);
+            }
         }
     };
 
+    private boolean validateProPhoneInformation(Booking booking)
+    {
+        boolean validPhoneNumber = false;
+
+        if(booking.getProvider() != null &&
+                booking.getProvider().getPhone() != null &&
+                !booking.getProvider().getPhone().isEmpty())
+        {
+            validPhoneNumber = true;
+        }
+
+        return validPhoneNumber;
+    }
 
     //use native functionality to trigger a phone call
     private void callPhoneNumber(final String phoneNumber)
     {
+        if(phoneNumber == null || phoneNumber.isEmpty())
+        {
+            return;
+        }
+
         try
         {
             Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("tel", phoneNumber, null)), this.getActivity());
@@ -188,6 +226,11 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     //use native functionality to trigger a text message interface
     private void textPhoneNumber(final String phoneNumber)
     {
+        if(phoneNumber == null || phoneNumber.isEmpty())
+        {
+            return;
+        }
+
         try
         {
             Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null)), this.getActivity());

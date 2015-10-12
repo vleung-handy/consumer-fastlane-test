@@ -15,6 +15,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BookingActionButtonType;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public final class Utils {
@@ -109,4 +110,16 @@ public final class Utils {
         return false;
     }
 
+    public static long minutesPastDate(Date oldDate)
+    {
+        Date nowDate = Calendar.getInstance().getTime(); // Get time now
+        long differenceInMillis = nowDate.getTime() - oldDate.getTime();
+        long differenceInMinutes = (differenceInMillis) / 1000L / 60L; // Divide by millis/sec, secs/min
+        return differenceInMinutes;
+    }
+
+    public static long hoursPastDate(Date oldDate)
+    {
+        return minutesPastDate(oldDate) / 60L;
+    }
 }
