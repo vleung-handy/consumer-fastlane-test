@@ -8,7 +8,7 @@
     >
 
     <TextView
-        android:id="@+id/tv_card_booking_row_date"
+        android:id="@+id/tv_card_booking_row_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -18,16 +18,16 @@
         style="@style/TextView.Medium.Bold"/>
 
     <TextView
-        android:id="@+id/tv_card_booking_row_time"
+        android:id="@+id/tv_card_booking_row_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_card_booking_row_date"
-        android:layout_below="@id/tv_card_booking_row_date"
+        android:layout_alignLeft="@id/tv_card_booking_row_title"
+        android:layout_below="@id/tv_card_booking_row_title"
         tools:text="11:00 – 2:00 p, (3 hours)"
         style="@style/TextView.Small.Med"/>
 
     <ImageView
-        android:id="@+id/iv_card_booking_row_edge_left"
+        android:id="@+id/iv_card_booking_row_left_edge_indicator"
         android:layout_width="2dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"/>
 
     <ImageView
-        android:id="@+id/iv_card_booking_row_edge_top"
+        android:id="@+id/iv_card_booking_row_top_edge"
         android:layout_height="1dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"

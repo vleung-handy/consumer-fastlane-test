@@ -179,5 +179,6 @@
     <string name="image_content_description_handy_logo">Handy icon</string>
     <string name="image_content_description_icon_recurring">Recurring Icon</string>
     <string name="booking_card_recurring_footer_text">More bookings will be generated</string>
+    <string name="booking_card_row_time_and_duration">%1$s – %2$s (%3$s hours)</string>
 
 </resources>
