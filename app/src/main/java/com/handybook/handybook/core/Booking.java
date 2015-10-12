@@ -3,6 +3,7 @@ package com.handybook.handybook.core;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
@@ -340,6 +341,24 @@ public final class Booking implements Parcelable
     public Boolean getCanEditFrequency()
     {
         return canEditFrequency;
+    }
+
+    /**
+     *  Tries to convert String representation of recurringId to Long
+     * @return Long value or null if the String value couldn't be converted.
+     */
+    @Nullable
+    public Long getRecurringId()
+    {
+        Long longValue = null;
+        try
+        {
+            longValue =  Long.parseLong(recurringId);
+        } catch (NumberFormatException nfe){
+            Crashlytics.log("Error converting recurringId to Long");
+            Crashlytics.logException(nfe);
+        }
+        return longValue;
     }
 
     public static final class Address implements Parcelable
