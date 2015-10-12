@@ -65,9 +65,17 @@
 
         </RelativeLayout>
 
-        <include layout="@layout/layout_card_booking_row"/>
+        <LinearLayout
+            android:id="@+id/ll_booking_card_bookings_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <include layout="@layout/layout_card_booking_row"/>
+            <include layout="@layout/layout_card_booking_row"/>
+
+            <include layout="@layout/layout_card_booking_row"/>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_booking_card_footer"
@@ -82,8 +90,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:textColor="@color/handy_dark_grey"
-                android:text="@string/booking_card_recurring_footer_text"/>
+                android:text="@string/booking_card_recurring_footer_text"
+                android:textColor="@color/handy_dark_grey"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -96,7 +104,7 @@
                 android:src="@drawable/ic_help_lifesaver"/>
 
             <ImageView
-                android:id="@+id/iv_card_booking_row_edge_top"
+                android:id="@+id/iv_card_booking_row_top_edge"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentLeft="true"
