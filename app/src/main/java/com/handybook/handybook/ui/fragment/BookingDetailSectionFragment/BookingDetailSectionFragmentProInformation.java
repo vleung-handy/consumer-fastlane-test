@@ -208,6 +208,11 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     //use native functionality to trigger a phone call
     private void callPhoneNumber(final String phoneNumber)
     {
+        if(phoneNumber == null || phoneNumber.isEmpty())
+        {
+            return;
+        }
+
         try
         {
             Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("tel", phoneNumber, null)), this.getActivity());
@@ -221,6 +226,11 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     //use native functionality to trigger a text message interface
     private void textPhoneNumber(final String phoneNumber)
     {
+        if(phoneNumber == null || phoneNumber.isEmpty())
+        {
+            return;
+        }
+
         try
         {
             Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null)), this.getActivity());
