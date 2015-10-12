@@ -123,15 +123,11 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         List<String> actionButtonTypes = new ArrayList<>();
         if(booking.hasAssignedProvider())
         {
-            //TODO: Business rules allow contact up to 72 hours, all business rules logic should be stripped out and replaced with AvailableActions logic in consumer api v4
-            if(Utils.hoursPastDate(booking.getEndDate()) <= HOURS_TO_ALLOW_CONTACT_PAST_BOOKING)
+            //Make sure it is not an empty phone number
+            if(validateProPhoneInformation(booking))
             {
-                //Make sure it is not an empty phone number
-                if(validateProPhoneInformation(booking))
-                {
-                    actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
-                    actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
-                }
+                actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
+                actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
             }
         }
         return actionButtonTypes;
