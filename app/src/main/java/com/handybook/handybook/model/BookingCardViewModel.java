@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 public class BookingCardViewModel
 {
@@ -62,6 +61,12 @@ public class BookingCardViewModel
         return mBookings.size() > 1;
     }
 
+    public BookingCardRowViewModel.List getBookingCardRowViewModels()
+    {
+        BookingCardRowViewModel.List bcrvms = BookingCardRowViewModel.List.from(getBookings());
+        return bcrvms;
+    }
+
     public static class List extends ArrayList<BookingCardViewModel>
     {
 
@@ -69,10 +74,8 @@ public class BookingCardViewModel
         {
             final HashMap<Long, BookingCardViewModel> recurringIdToBCVM = new HashMap<>();
             final List bookingCardViewModels = new List();
-            final Iterator<Booking> bookingIterator = bookings.iterator();
-            while (bookingIterator.hasNext())
+            for (Booking eachBooking : bookings)
             {
-                Booking eachBooking = bookingIterator.next();
                 // If it's part of recurring booking
                 if (eachBooking.isRecurring())
                 {
@@ -85,7 +88,8 @@ public class BookingCardViewModel
                         bcvm = new BookingCardViewModel(eachBooking);
                         recurringIdToBCVM.put(eachBooking.getRecurringId(), bcvm);
                         bookingCardViewModels.add(bcvm);
-                    } else {
+                    } else
+                    {
                         // We have seen one from this series, add it to it's parent
                         bcvm.addBooking(eachBooking);
                     }

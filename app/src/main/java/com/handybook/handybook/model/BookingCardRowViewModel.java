@@ -7,28 +7,24 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.util.TextUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 public class BookingCardRowViewModel
 {
     private Booking mBooking;
-    private Context mContext;
 
 
-    private BookingCardRowViewModel(@NonNull final Booking booking, @NonNull final Context context)
+    private BookingCardRowViewModel(@NonNull final Booking booking)
     {
         mBooking = booking;
-        mContext = context;
     }
 
-    public static BookingCardRowViewModel from(
-            @NonNull final Booking booking,
-            @NonNull final Context context
-    )
+    public static BookingCardRowViewModel from(@NonNull final Booking booking)
     {
-
-        return new BookingCardRowViewModel(booking, context);
+        return new BookingCardRowViewModel(booking);
     }
 
     public String getTitle()
@@ -37,7 +33,7 @@ public class BookingCardRowViewModel
         return title;
     }
 
-    public String getSubtitle()
+    public String getSubtitle(@NonNull Context context)
     {
 //        String timeText = TextUtils.formatDate(booking.getStartDate(), "h:mm aaa")
 //                + " - "
@@ -52,12 +48,25 @@ public class BookingCardRowViewModel
         final String end = TextUtils.formatDate(endDate, "h:mm aaa");
         final String duration = TextUtils.formatDecimal(mBooking.getHours(), "#.#");
 
-        final String subtitle =  mContext.getString(
+        final String subtitle = context.getString(
                 R.string.booking_card_row_time_and_duration,
                 start,
                 end,
                 duration
         );
         return subtitle;
+    }
+
+    public static class List extends ArrayList<BookingCardRowViewModel>
+    {
+        public static BookingCardRowViewModel.List from(@NonNull final Collection<Booking> bookings)
+        {
+            final List list = new List();
+            for (Booking eachBooking : bookings)
+            {
+                list.add(BookingCardRowViewModel.from(eachBooking));
+            }
+            return list;
+        }
     }
 }
