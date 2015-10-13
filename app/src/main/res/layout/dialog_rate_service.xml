@@ -190,6 +190,47 @@
             android:layout_height="0dp" />
 
         <FrameLayout
+            android:id="@+id/tip_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/title_text"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <RadioGroup
+                style="@style/ToggleGroupStyle"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <RadioButton
+                    style="@style/TipToggle.First"
+                    android:text="None"
+                    android:id="@+id/tip_0" />
+
+                <RadioButton
+                    style="@style/TipToggle"
+                    android:text="$5"
+                    android:id="@+id/tip_1" />
+
+                <RadioButton
+                    style="@style/TipToggle"
+                    android:text="$10"
+                    android:id="@+id/tip_2" />
+
+                <RadioButton
+                    style="@style/TipToggle"
+                    android:text="$15"
+                    android:id="@+id/tip_3" />
+
+                <RadioButton
+                    style="@style/TipToggle.Last"
+                    android:text="Other"
+                    android:id="@+id/tip_4" />
+
+            </RadioGroup>
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/submit_button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

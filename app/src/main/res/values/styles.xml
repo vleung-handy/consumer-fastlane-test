@@ -536,5 +536,35 @@
 
     </style>
 
+    <style name="TipToggle">
+        <item name="android:textColor">@color/toggle_button_text</item>
+        <item name="android:background">@drawable/custom_toggle</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:divider">?android:attr/dividerVertical</item>
+        <item name="android:showDividers">middle</item>
+    </style>
+
+    <style name="TipToggle.First">
+        <item name="android:background">@drawable/custom_toggle_first</item>
+    </style>
+
+    <style name="TipToggle.Last">
+        <item name="android:background">@drawable/custom_toggle_last</item>
+    </style>
+
+    <style name="ToggleGroupStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:divider">@drawable/toggle_divider</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:background">@drawable/custom_toggle_group</item>
+    </style>
+
     <string name="name">Name</string>
 </resources>
