@@ -14,6 +14,8 @@ import java.util.Date;
 
 public class BookingCardRowViewModel
 {
+
+    private static final long MIN_NEGATIVE_DELTA_MS_FOR_ON_MY_WAY = 60 * 60 * 1000; //an hour
     private Booking mBooking;
 
 
@@ -55,6 +57,19 @@ public class BookingCardRowViewModel
                 duration
         );
         return subtitle;
+    }
+
+    public boolean isIndicatorVisible()
+    {
+        final long now = System.currentTimeMillis();
+        final long start = mBooking.getStartDate().getTime();
+        final long delta = now - start;
+        //TODO: Come up with specs an implement this properly
+        if (delta < 0 && delta > MIN_NEGATIVE_DELTA_MS_FOR_ON_MY_WAY)
+        {
+            return true;
+        }
+        return false;
     }
 
     public static class List extends ArrayList<BookingCardRowViewModel>

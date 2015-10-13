@@ -11,14 +11,13 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.model.BookingCardViewModel;
 import com.handybook.handybook.ui.holder.BookingCardHolder;
 
-public class BookingAdapter extends RecyclerView.Adapter<BookingCardHolder>
+public class BookingCardAdapter extends RecyclerView.Adapter<BookingCardHolder>
 {
 
     private Context mContext;
     private BookingCardViewModel.List mBookingCardViewModels;
 
-
-    public BookingAdapter(
+    public BookingCardAdapter(
             @NonNull final Context context,
             @NonNull final BookingCardViewModel.List bookingCardViewModels
     )
