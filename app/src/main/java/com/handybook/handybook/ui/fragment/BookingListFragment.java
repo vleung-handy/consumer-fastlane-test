@@ -3,6 +3,7 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -39,14 +40,14 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
 
     @Bind(R.id.fragment_booking_list_booking_card_recycler_view)
     RecyclerView vRecyclerView;
-    @Bind(R.id.fragment_bookinng_list_swipe_refresh_layout)
+    @Bind(R.id.fragment_booking_list_swipe_refresh_layout)
     SwipeRefreshLayout vSwipeRefreshLayout;
 
     private int mBookingListType;
     private Context mContext;
     private BookingCardAdapter mBookingCardAdapter;
     private ArrayList<Booking> mBookings = new ArrayList<>();
-    private BookingCardViewModel.List mBookingCardViewModels = new BookingCardViewModel.List();
+    private final BookingCardViewModel.List mBookingCardViewModels = new BookingCardViewModel.List();
     private boolean mBookingsWereReceived;
 
     /**
@@ -75,8 +76,9 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         {
             mBookingsWereReceived = savedInstanceState.getBoolean(KEY_BOOKINGS_RECEIVED, false);
             mBookings = savedInstanceState.getParcelableArrayList(KEY_BOOKINGS);
-            if(mBookings!= null){
-                mBookingCardViewModels = BookingCardViewModel.List.from(mBookings);
+            if (mBookings != null)
+            {
+                mBookingCardViewModels.addAll(BookingCardViewModel.List.from(mBookings));
             }
         }
         if (getArguments() != null)
@@ -100,15 +102,14 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     public final void onStop()
     {
         super.onStop();
-        //progressDialog.dismiss();
         vSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void loadBookings()
     {
-        bus.post(new HandyEvent.RequestBookingsForUser(userManager.getCurrentUser()));
-        //progressDialog.show();
+        //bus.post(new HandyEvent.RequestBookingsForUser(userManager.getCurrentUser()));
         vSwipeRefreshLayout.setRefreshing(true);
+        bus.post(new HandyEvent.Request.Request.BookingCardViewModels(userManager.getCurrentUser()));
     }
 
     @Override
@@ -180,35 +181,41 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         }
     }
 
-    private void initialize()
-    {
-        mBookingCardAdapter.notifyDataSetChanged();
-    }
-
     @Subscribe
     public void onReceiveBookingsSuccess(HandyEvent.ReceiveBookingsSuccess event)
     {
         vSwipeRefreshLayout.setRefreshing(false);
-        mBookings = new ArrayList<>(event.bookings);
-        mBookingCardViewModels = BookingCardViewModel.List.from(event.bookings);
-        mBookingsWereReceived = true;
+    }
+
+    @Subscribe
+    public void onModelsReceived(@NonNull final HandyEvent.Response.BookingCardViewModels e){
+        vSwipeRefreshLayout.setRefreshing(false);
+        mBookingCardViewModels.clear();
+        mBookingCardViewModels.addAll(e.getPayload());
         initialize();
     }
 
 
     @Subscribe
-    public void onReceiveBookingsError(HandyEvent.ReceiveBookingsError event)
+    public void onModelsRequestError(@NonNull final HandyEvent.Response.BookingCardViewModelsError e)
     {
         vSwipeRefreshLayout.setRefreshing(false);
         mBookingsWereReceived = false;
-        initialize();
-        dataManagerErrorHandler.handleError(getActivity(), event.error);
+        toast.setText("Error loading bookings, please try again.");
+        toast.show();
+        dataManagerErrorHandler.handleError(getActivity(), e.getPayload());
     }
 
     @Override
     public void onRefresh()
     {
         Toast.makeText(mContext, "OnRefresh", Toast.LENGTH_LONG).show();
+        loadBookings();
+    }
+
+    private void initialize()
+    {
+        mBookingCardAdapter.notifyDataSetChanged();
     }
 
 

@@ -10,9 +10,11 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.BookingCardViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -138,6 +140,32 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
+    public void onRequestBookingCardViewModels(HandyEvent.Request.BookingCardViewModels event)
+    {
+        dataManager.getBookings(event.getUser(), new DataManager.Callback<List<Booking>>()
+        {
+            @Override
+            public void onSuccess(final List<Booking> result)
+            {
+                Collections.sort(result, Booking.COMPARATOR_DATE);
+                bus.post(
+                        new HandyEvent.Response.BookingCardViewModels(
+                                BookingCardViewModel.List.from(result)
+                        )
+                );
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(
+                        new HandyEvent.Response.BookingCardViewModelsError(error)
+                );
+            }
+        });
+    }
+
+    @Subscribe
     public void onRequestBookingDetails(HandyEvent.RequestBookingDetails event)
     {
         dataManager.getBooking(event.bookingId, new DataManager.Callback<Booking>()
@@ -163,8 +191,7 @@ public final class BookingManager implements Observer
         if (request != null)
         {
             return request;
-        }
-        else
+        } else
         {
             if ((request = BookingRequest.fromJson(prefsManager.getString(PrefsKey.BOOKING_REQUEST))) != null)
             {
@@ -199,8 +226,7 @@ public final class BookingManager implements Observer
         if (quote != null)
         {
             return quote;
-        }
-        else
+        } else
         {
             if ((quote = BookingQuote.fromJson(prefsManager.getString(PrefsKey.BOOKING_QUOTE))) != null)
             {
@@ -234,8 +260,7 @@ public final class BookingManager implements Observer
         if (transaction != null)
         {
             return transaction;
-        }
-        else
+        } else
         {
             if ((transaction = BookingTransaction
                     .fromJson(prefsManager.getString(PrefsKey.BOOKING_TRANSACTION))) != null)
@@ -270,8 +295,7 @@ public final class BookingManager implements Observer
         if (postInfo != null)
         {
             return postInfo;
-        }
-        else
+        } else
         {
             if ((postInfo = BookingPostInfo
                     .fromJson(prefsManager.getString(PrefsKey.BOOKING_POST))) != null)

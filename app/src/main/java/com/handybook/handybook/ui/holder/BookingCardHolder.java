@@ -3,10 +3,7 @@ package com.handybook.handybook.ui.holder;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,11 +11,8 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.model.BookingCardViewModel;
-import com.handybook.handybook.ui.adapter.BookingCardRowAdapter;
 import com.handybook.handybook.ui.view.BookingCardRowView;
 import com.handybook.handybook.ui.widget.ServiceIconImageView;
-
-import java.util.zip.Inflater;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,7 +21,6 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
 {
     private Context mContext;
     private BookingCardViewModel mBookingCardViewModel;
-    private BookingCardRowAdapter mBookingCardRowAdapter;
 
     private View mRoot;
 
@@ -57,15 +50,12 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     {
         mBookingCardViewModel = bookingCardViewModel;
         vServiceTitle.setText(mBookingCardViewModel.getTitle());
-        mBookingCardRowAdapter = new BookingCardRowAdapter(
-                mContext,
-                bookingCardViewModel.getBookingCardRowViewModels()
-        );
-        for (BookingCardRowViewModel bookingCardRowViewModel : bookingCardViewModel.getBookingCardRowViewModels())
+        vBookingRowContainer.removeAllViews();
+        for (BookingCardRowViewModel model : bookingCardViewModel.getBookingCardRowViewModels())
         {
             BookingCardRowView bookingCardRowView = new BookingCardRowView(mContext);
             vBookingRowContainer.addView(bookingCardRowView);
-            bookingCardRowView.update(bookingCardRowViewModel);
+            bookingCardRowView.update(model);
         }
         if (mBookingCardViewModel.isMultiCard())
         {
