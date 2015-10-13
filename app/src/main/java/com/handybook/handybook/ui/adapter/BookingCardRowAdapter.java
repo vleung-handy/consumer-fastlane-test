@@ -11,19 +11,19 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.ui.holder.BookingCardRowHolder;
 
-public class BookingRowAdapter extends RecyclerView.Adapter<BookingCardRowHolder>
+public class BookingCardRowAdapter extends RecyclerView.Adapter<BookingCardRowHolder>
 {
 
     private Context mContext;
     private BookingCardRowViewModel.List mBookingCardRowViewModels;
 
-    public BookingRowAdapter(
+    public BookingCardRowAdapter(
             @NonNull final Context context,
             @NonNull final BookingCardRowViewModel.List bookingCardRowViewModels
     )
     {
         mContext = context;
-        this.mBookingCardRowViewModels = bookingCardRowViewModels;
+        mBookingCardRowViewModels = bookingCardRowViewModels;
     }
 
     @Override
@@ -44,6 +44,6 @@ public class BookingRowAdapter extends RecyclerView.Adapter<BookingCardRowHolder
     @Override
     public int getItemCount()
     {
-        return 0;
+        return mBookingCardRowViewModels.size();
     }
 }

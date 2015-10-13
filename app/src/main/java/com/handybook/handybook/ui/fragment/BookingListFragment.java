@@ -19,7 +19,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.model.BookingCardViewModel;
-import com.handybook.handybook.ui.adapter.BookingAdapter;
+import com.handybook.handybook.ui.adapter.BookingCardAdapter;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
 
     private int mBookingListType;
     private Context mContext;
-    private BookingAdapter mBookingAdapter;
+    private BookingCardAdapter mBookingCardAdapter;
     private ArrayList<Booking> mBookings = new ArrayList<>();
     private BookingCardViewModel.List mBookingCardViewModels = new BookingCardViewModel.List();
     private boolean mBookingsWereReceived;
@@ -83,7 +83,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         {
             mBookingListType = getArguments().getInt(KEY_BOOKING_LIST_TYPE);
         }
-        mBookingAdapter = new BookingAdapter(mContext, mBookingCardViewModels);
+        mBookingCardAdapter = new BookingCardAdapter(mContext, mBookingCardViewModels);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         ButterKnife.bind(this, root);
         vSwipeRefreshLayout.setOnRefreshListener(this);
         vRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        vRecyclerView.setAdapter(mBookingAdapter);
+        vRecyclerView.setAdapter(mBookingCardAdapter);
         return root;
     }
 
@@ -182,7 +182,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
 
     private void initialize()
     {
-        mBookingAdapter.notifyDataSetChanged();
+        mBookingCardAdapter.notifyDataSetChanged();
     }
 
     @Subscribe

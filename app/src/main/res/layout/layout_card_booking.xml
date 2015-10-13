@@ -2,6 +2,8 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -65,13 +67,12 @@
 
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_booking_card_booking_recycler_view"
+        <LinearLayout
+            android:id="@+id/ll_booking_card_booking_row_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_booking_card_footer"
