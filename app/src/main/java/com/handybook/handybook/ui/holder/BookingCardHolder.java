@@ -1,6 +1,8 @@
 package com.handybook.handybook.ui.holder;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,8 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.view.BookingCardRowView;
 import com.handybook.handybook.ui.widget.ServiceIconImageView;
 
@@ -51,9 +56,21 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
         mBookingCardViewModel = bookingCardViewModel;
         vServiceTitle.setText(mBookingCardViewModel.getTitle());
         vBookingRowContainer.removeAllViews();
-        for (BookingCardRowViewModel model : bookingCardViewModel.getBookingCardRowViewModels())
+        for (final BookingCardRowViewModel model : bookingCardViewModel.getBookingCardRowViewModels())
         {
             BookingCardRowView bookingCardRowView = new BookingCardRowView(mContext);
+            bookingCardRowView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Activity activity = (Activity) mContext;
+                    final Intent intent = new Intent(mContext, BookingDetailActivity.class);
+                    intent.putExtra(BundleKeys.BOOKING, model.getBooking());
+                    activity.startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
+
+                }
+            });
             vBookingRowContainer.addView(bookingCardRowView);
             bookingCardRowView.update(model);
         }

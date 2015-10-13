@@ -72,6 +72,11 @@ public class BookingCardRowViewModel
         return false;
     }
 
+    public Booking getBooking()
+    {
+        return mBooking;
+    }
+
     public static class List extends ArrayList<BookingCardRowViewModel>
     {
         public static BookingCardRowViewModel.List from(@NonNull final Collection<Booking> bookings)

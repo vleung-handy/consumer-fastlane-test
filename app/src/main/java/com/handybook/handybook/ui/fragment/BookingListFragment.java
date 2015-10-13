@@ -209,7 +209,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     @Override
     public void onRefresh()
     {
-        Toast.makeText(mContext, "OnRefresh", Toast.LENGTH_LONG).show();
+        //Toast.makeText(mContext, "OnRefresh", Toast.LENGTH_LONG).show();
         loadBookings();
     }
 
