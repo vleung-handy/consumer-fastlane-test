@@ -65,17 +65,13 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_booking_card_bookings_holder"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_booking_card_booking_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <include layout="@layout/layout_card_booking_row"/>
 
-            <include layout="@layout/layout_card_booking_row"/>
-
-        </LinearLayout>
+        </android.support.v7.widget.RecyclerView>
 
         <RelativeLayout
             android:id="@+id/rl_booking_card_footer"
