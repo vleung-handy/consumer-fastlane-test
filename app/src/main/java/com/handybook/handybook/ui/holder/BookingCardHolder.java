@@ -18,7 +18,6 @@ import com.handybook.handybook.model.BookingCardViewModel;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.view.BookingCardRowView;
 import com.handybook.handybook.ui.widget.BookingCardServiceIcon;
-import com.handybook.handybook.ui.widget.ServiceIconImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

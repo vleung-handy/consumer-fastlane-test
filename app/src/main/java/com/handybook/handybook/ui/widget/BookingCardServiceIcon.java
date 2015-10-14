@@ -34,14 +34,14 @@ public class BookingCardServiceIcon extends ImageView
         SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_service_cleaning_outline);
         SERVICE_ICONS.put(Booking.SERVICE_OFFICE_CLEANING, R.drawable.ic_service_cleaning_outline);
         //Handyman
-        SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_service_handyman_outline); //there are many handyman services, not sure how they all map
+        SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_service_handyman_outline);
         SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_service_painting_outline);
         SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_service_plumbing_outline);
         SERVICE_ICONS.put(Booking.SERVICE_ELECTRICAL, R.drawable.ic_service_electrical_outline);
         SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_service_electrical_outline);
     }
 
-    private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_clean_fill;
+    private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_service_handyman_outline;
 
     public void updateServiceIconByBooking(Booking booking)
     {
