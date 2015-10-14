@@ -81,7 +81,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     @Bind(R.id.tip_amount_radio_group)
     RadioGroup tipAmountRadioGroup;
     @Bind(R.id.tip_layout)
-    FrameLayout tipLayout;
+    LinearLayout tipLayout;
     @Bind(R.id.custom_tip_amount_wrapper)
     LinearLayout customTipAmountWrapper;
     @Bind(R.id.custom_tip_amount)
@@ -140,9 +140,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     }
 
     private void updateTipAmountDisplay(final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts) {
-        if (defaultTipAmounts.isEmpty()) {
-            tipLayout.setVisibility(View.GONE);
-        } else {
+        if (!defaultTipAmounts.isEmpty()) {
+            tipLayout.setVisibility(View.VISIBLE);
             int maxEntriesToDisplay = Math.min(defaultTipAmounts.size(), 3); // MAKE IT CONSTANT! PRAISE BE!
 
             for (int i = 0; i < maxEntriesToDisplay; i++) {
