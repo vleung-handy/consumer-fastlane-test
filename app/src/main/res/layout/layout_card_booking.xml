@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="@dimen/default_margin_half"
+    android:layout_marginRight="@dimen/default_margin_half"
+    android:layout_marginTop="@dimen/default_margin_half"
     app:cardCornerRadius="4dp"
     app:cardElevation="2dp"
     app:cardPreventCornerOverlap="true"
@@ -22,58 +23,74 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_card_booking_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="72dp"
+            android:orientation="horizontal"
+            >
 
-            <com.handybook.handybook.ui.widget.ServiceIconImageView
-                android:id="@+id/iv_booking_card_service_icon"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:padding="@dimen/default_padding_half"
-                tools:src="@drawable/ic_clean_fill"
-                />
+            <FrameLayout
+                android:layout_width="72dp"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_booking_card_service_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin_half"
-                android:layout_toRightOf="@id/iv_booking_card_service_icon"
-                android:textColor="@color/handy_green"
-                android:textSize="@dimen/text_size_large"
-                tools:text="Home Cleaning"/>
+                <com.handybook.handybook.ui.widget.BookingCardServiceIcon
+                    android:id="@+id/iv_booking_card_service_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    tools:src="@drawable/ic_service_handyman_outline"
+                    />
+
+            </FrameLayout>
 
             <LinearLayout
-                android:id="@+id/ll_booking_card_recurring_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_booking_card_service_title"
-                android:layout_toRightOf="@id/iv_booking_card_service_icon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
                 >
 
-                <ImageView
-                    android:id="@+id/iv_booking_card_recurring_icon"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="center_vertical"
-                    android:scaleX="-1"
-                    android:src="@drawable/ic_recurring"/>
-
                 <TextView
-                    android:id="@+id/tv_booking_card_recurring_text"
+                    android:id="@+id/tv_booking_card_service_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:textSize="@dimen/text_size_small"
-                    tools:text="Repeats every 2 weeks"
-                    />
+                    android:textSize="@dimen/text_size_large"
+                    tools:text="Home Cleaning"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_booking_card_recurring_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <ImageView
+                        android:id="@+id/iv_booking_card_recurring_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:scaleX="-1"
+                        android:src="@drawable/ic_recurring"/>
+
+                    <TextView
+                        android:id="@+id/tv_booking_card_recurring_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/handy_tertiary_gray"
+                        android:textSize="@dimen/text_size_small"
+                        tools:text="Repeats every 2 weeks"
+                        />
+                </LinearLayout>
+
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_booking_card_booking_row_container"
@@ -85,7 +102,7 @@
         <RelativeLayout
             android:id="@+id/rl_booking_card_footer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="48dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -96,7 +113,8 @@
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
                 android:text="@string/booking_card_recurring_footer_text"
-                android:textColor="@color/handy_dark_grey"/>
+                android:textColor="@color/handy_dark_divider_line"
+                />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -105,8 +123,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
-                android:background="@color/handy_blue"
-                android:src="@drawable/ic_help_lifesaver"/>
+                android:layout_marginTop="@dimen/default_margin"
+                android:src="@drawable/ic_question_mark_grey_outline"/>
 
             <ImageView
                 android:id="@+id/iv_card_booking_row_top_edge"

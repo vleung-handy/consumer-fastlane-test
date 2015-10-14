@@ -5,6 +5,7 @@
     android:id="@+id/rl_card_booking_row"
     android:layout_width="match_parent"
     android:layout_height="80dp"
+    android:background="?attr/selectableItemBackground"
     >
 
     <TextView
@@ -15,7 +16,7 @@
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginLeft="@dimen/default_margin"
         tools:text="Thursday, Sept 12"
-        style="@style/TextView.Medium.Bold"/>
+        style="@style/TextView.Medium"/>
 
     <TextView
         android:id="@+id/tv_card_booking_row_subtitle"
@@ -24,7 +25,7 @@
         android:layout_alignLeft="@id/tv_card_booking_row_title"
         android:layout_below="@id/tv_card_booking_row_title"
         tools:text="11:00 – 2:00 p, (3 hours)"
-        style="@style/TextView.Small.Med"/>
+        style="@style/TextView.Small"/>
 
     <ImageView
         android:id="@+id/iv_card_booking_row_left_edge_indicator"
