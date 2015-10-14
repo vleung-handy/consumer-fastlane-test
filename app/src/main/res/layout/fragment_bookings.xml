@@ -2,7 +2,8 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/handy_bg"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="@color/handy_blue"
               android:orientation="vertical"
               tools:context="com.handybook.handybook.ui.fragment.BookingsFragment"
     >
@@ -13,8 +14,14 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
             android:id="@+id/nav_text"
-            style="@style/TextView.Navbar"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="72dp"
+            android:layout_marginStart="72dp"
+            style="@style/TextView.Large"
+            android:textColor="@color/handy_white"
             android:text="@string/my_bookings"/>
 
         <RelativeLayout
@@ -26,6 +33,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tab_layout"
+        app:tabTextColor="@color/handy_white_semitransparent"
+        app:tabSelectedTextColor="@color/handy_white"
+        app:tabIndicatorColor="@color/handy_hot_pink"
+        app:tabTextAppearance="@style/TextView.Medium"
+        app:tabIndicatorHeight="2dp"
         >
     </android.support.design.widget.TabLayout>
 
@@ -34,6 +46,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@color/handy_white"/>
 
 </LinearLayout>

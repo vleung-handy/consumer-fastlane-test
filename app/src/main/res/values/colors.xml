@@ -50,9 +50,12 @@
     <color name="handy_background_blue">#FFedf5f8</color>
     <color name="handy_background_gray">#FFf4f4f4</color>
     <color name="handy_white">#FFffffff</color>
+    <color name="handy_white_semitransparent">#88ffffff</color>
     <color name="handy_text_black">#FF434343</color>
     <color name="handy_text_gray">#FF999999</color>
     <color name="handy_divider_line">#FFeeeeee</color>
     <color name="handy_dark_divider_line">#FFcccccc</color>
     <color name="handy_input_field_stroke">#FFd1d1d1</color>
+    <color name="handy_hot_pink">#FFeb00cb</color>
+
 </resources>
