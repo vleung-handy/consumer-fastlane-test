@@ -40,7 +40,11 @@ public class BaseDialogFragment extends InjectedDialogFragment {
             @Override
             public boolean onKey(final DialogInterface dialog, final int keyCode,
                                  final KeyEvent event) {
-                return !canDismiss;
+                // Disable the back key when cannot dismiss
+                if (keyCode == KeyEvent.KEYCODE_BACK) return !canDismiss;
+
+                // Otherwise return false
+                return false;
             }
         });
 

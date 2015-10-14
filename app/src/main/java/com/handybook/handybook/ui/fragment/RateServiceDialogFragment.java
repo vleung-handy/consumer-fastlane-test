@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,6 +45,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     private int rating;
     private int tipAmount;
     private boolean sendTipAmount = false;
+    private boolean customTipSelected = false;
     private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
     private Map tipMapping = new HashMap();
 
@@ -79,6 +81,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     RadioGroup tipAmountRadioGroup;
     @Bind(R.id.tip_layout)
     FrameLayout tipLayout;
+    @Bind(R.id.custom_tip_amount_wrapper)
+    LinearLayout customTipAmountWrapper;
+    @Bind(R.id.custom_tip_amount)
+    EditText customTipAmount;
 
     public static RateServiceDialogFragment newInstance(final int bookingId, final String proName,
                                                         final int rating, final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts) {
@@ -214,11 +220,18 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
                 if (tipMapping.containsKey(checkedRadioButton)) {
                     setTipAmount((int) tipMapping.get(checkedRadioButton));
                     setSendTipAmount(true);
+                    setCustomTipSelected(false);
+                    customTipAmountWrapper.setVisibility(View.GONE);
                 } else if (pickedOtherAmount(checkedRadioButton, rGroup)) {
                     setTipAmount(0);
                     setSendTipAmount(true);
+                    setCustomTipSelected(true);
+                    customTipAmountWrapper.setVisibility(View.VISIBLE);
+                    customTipAmountWrapper.requestFocus();
                 } else {
+                    setCustomTipSelected(false);
                     setSendTipAmount(false);
+                    customTipAmountWrapper.setVisibility(View.GONE);
                 }
             }
 
@@ -234,6 +247,9 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
 
     private void setSendTipAmount(final boolean sendTipAmount) {
         this.sendTipAmount = sendTipAmount;
+    }
+    private void setCustomTipSelected(final boolean customTipSelected) {
+        this.customTipSelected = customTipSelected;
     }
 
     private void setRating(final int rating) {
@@ -258,7 +274,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
             submitButton.setText(null);
 
             final int finalRating = rating + 1;
-            final Integer postTipAmount = sendTipAmount ? tipAmount : null;
+            final Integer postTipAmount = getTipAmount();
 
             dataManager.ratePro(booking, finalRating, postTipAmount, new DataManager.Callback<Void>() {
                 @Override
@@ -283,6 +299,19 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
                     dataManagerErrorHandler.handleError(getActivity(), error);
                 }
             });
+        }
+
+        private Integer getTipAmount() {
+            if (sendTipAmount) {
+                return customTipSelected ? getCustomTipAmount() : tipAmount;
+            }
+            else {
+                return null;
+            }
+        }
+
+        private Integer getCustomTipAmount() {
+            return Integer.parseInt("" + customTipAmount.getText()) * 100;
         }
     };
 }
