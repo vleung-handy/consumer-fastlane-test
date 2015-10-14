@@ -10,10 +10,12 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.model.BookingCardViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
@@ -148,11 +150,29 @@ public final class BookingManager implements Observer
             public void onSuccess(final List<Booking> result)
             {
                 Collections.sort(result, Booking.COMPARATOR_DATE);
-                bus.post(
-                        new HandyEvent.Response.BookingCardViewModels(
-                                BookingCardViewModel.List.from(result)
-                        )
-                );
+                final ArrayList<Booking> pastBookings = new ArrayList<>();
+                final ArrayList<Booking> upcomingBookings = new ArrayList<>();
+                for (Booking eachBooking : result)
+                {
+                    if (eachBooking.isPast())
+                    {
+                        pastBookings.add(eachBooking);
+                    } else
+                    {
+                        upcomingBookings.add(eachBooking);
+                    }
+                }
+
+                // Emit upcoming
+                BookingCardViewModel.List upcoming = BookingCardViewModel.List.from(upcomingBookings);
+                upcoming.setType(BookingCardViewModel.List.TYPE_UPCOMING);
+                bus.post(new HandyEvent.Response.BookingCardViewModels(upcoming));
+
+                // Emit past
+                BookingCardViewModel.List past = BookingCardViewModel.List.from(pastBookings);
+                past.setType(BookingCardViewModel.List.TYPE_PAST);
+                bus.post(new HandyEvent.Response.BookingCardViewModels(past));
+
             }
 
             @Override

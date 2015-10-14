@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
@@ -34,16 +33,14 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
 
     public static final String KEY_BOOKINGS = "key:bookings";
     public static final String KEY_BOOKINGS_RECEIVED = "key:bookings_received";
-    public static final int TYPE_UPCOMING = 1;
-    public static final int TYPE_PAST = 2;
-    private static final String KEY_BOOKING_LIST_TYPE = "key:booking_list_type";
+    private static final String KEY_LIST_TYPE = "key:booking_list_type";
 
     @Bind(R.id.fragment_booking_list_booking_card_recycler_view)
     RecyclerView vRecyclerView;
     @Bind(R.id.fragment_booking_list_swipe_refresh_layout)
     SwipeRefreshLayout vSwipeRefreshLayout;
 
-    private int mBookingListType;
+    private int mBookingCardViewModelList;
     private Context mContext;
     private BookingCardAdapter mBookingCardAdapter;
     private ArrayList<Booking> mBookings = new ArrayList<>();
@@ -58,11 +55,13 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     {
     }
 
-    public static BookingListFragment newInstance(final int bookingListType)
+    public static BookingListFragment newInstance(
+            @BookingCardViewModel.List.ListType final int bookingListType
+    )
     {
         BookingListFragment fragment = new BookingListFragment();
         Bundle args = new Bundle();
-        args.putInt(KEY_BOOKING_LIST_TYPE, bookingListType);
+        args.putInt(KEY_LIST_TYPE, bookingListType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,7 +82,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         }
         if (getArguments() != null)
         {
-            mBookingListType = getArguments().getInt(KEY_BOOKING_LIST_TYPE);
+            mBookingCardViewModelList = getArguments().getInt(KEY_LIST_TYPE);
         }
         mBookingCardAdapter = new BookingCardAdapter(mContext, mBookingCardViewModels);
     }
@@ -107,7 +106,6 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
 
     private void loadBookings()
     {
-        //bus.post(new HandyEvent.RequestBookingsForUser(userManager.getCurrentUser()));
         vSwipeRefreshLayout.setRefreshing(true);
         bus.post(new HandyEvent.Request.Request.BookingCardViewModels(userManager.getCurrentUser()));
     }
@@ -188,11 +186,15 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     }
 
     @Subscribe
-    public void onModelsReceived(@NonNull final HandyEvent.Response.BookingCardViewModels e){
-        vSwipeRefreshLayout.setRefreshing(false);
-        mBookingCardViewModels.clear();
-        mBookingCardViewModels.addAll(e.getPayload());
-        initialize();
+    public void onModelsReceived(@NonNull final HandyEvent.Response.BookingCardViewModels e)
+    {
+        if (e.getPayload().getType() == mBookingCardViewModelList)
+        {
+            vSwipeRefreshLayout.setRefreshing(false);
+            mBookingCardViewModels.clear();
+            mBookingCardViewModels.addAll(e.getPayload());
+            initialize();
+        }
     }
 
 

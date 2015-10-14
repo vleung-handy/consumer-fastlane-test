@@ -97,6 +97,13 @@ public class BookingCardViewModel
             mType = type;
         }
 
+
+        @ListType
+        public int getType()
+        {
+            return mType;
+        }
+
         public static List from(@NonNull final Collection<Booking> bookings)
         {
             final HashMap<Long, BookingCardViewModel> recurringIdToBCVM = new HashMap<>();
