@@ -17,6 +17,7 @@ import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.model.BookingCardViewModel;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.view.BookingCardRowView;
+import com.handybook.handybook.ui.widget.BookingCardServiceIcon;
 import com.handybook.handybook.ui.widget.ServiceIconImageView;
 
 import butterknife.Bind;
@@ -30,7 +31,7 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     private View mRoot;
 
     @Bind(R.id.iv_booking_card_service_icon)
-    ServiceIconImageView vServiceIcon;
+    BookingCardServiceIcon vServiceIcon;
     @Bind(R.id.tv_booking_card_service_title)
     TextView vServiceTitle;
     @Bind(R.id.ll_booking_card_recurring_layout)
