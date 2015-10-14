@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.model.BookingCardViewModel;
 import com.handybook.handybook.ui.widget.MenuButton;
 
 import java.util.ArrayList;
@@ -87,11 +88,11 @@ public class BookingsFragment extends InjectedFragment
 
             titles.add(context.getResources().getString(R.string.upcoming));
             fragments.add(
-                    BookingListFragment.newInstance(BookingListFragment.TYPE_UPCOMING)
+                    BookingListFragment.newInstance(BookingCardViewModel.List.TYPE_UPCOMING)
             );
             titles.add(context.getResources().getString(R.string.past));
             fragments.add(
-                    BookingListFragment.newInstance(BookingListFragment.TYPE_PAST)
+                    BookingListFragment.newInstance(BookingCardViewModel.List.TYPE_PAST)
             );
         }
 
