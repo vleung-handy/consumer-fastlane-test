@@ -5,11 +5,13 @@
     android:gravity="center"
     android:background="@android:color/transparent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="46dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
 
         <TextView
             android:id="@+id/title_text"
@@ -190,47 +192,6 @@
             android:layout_height="0dp" />
 
         <FrameLayout
-            android:id="@+id/tip_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/title_text"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-
-            <RadioGroup
-                style="@style/ToggleGroupStyle"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp">
-
-                <RadioButton
-                    style="@style/TipToggle.First"
-                    android:text="None"
-                    android:id="@+id/tip_0" />
-
-                <RadioButton
-                    style="@style/TipToggle"
-                    android:text="$5"
-                    android:id="@+id/tip_1" />
-
-                <RadioButton
-                    style="@style/TipToggle"
-                    android:text="$10"
-                    android:id="@+id/tip_2" />
-
-                <RadioButton
-                    style="@style/TipToggle"
-                    android:text="$15"
-                    android:id="@+id/tip_3" />
-
-                <RadioButton
-                    style="@style/TipToggle.Last"
-                    android:text="Other"
-                    android:id="@+id/tip_4" />
-
-            </RadioGroup>
-        </FrameLayout>
-
-        <FrameLayout
             android:id="@+id/submit_button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -239,32 +200,98 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/skip_button"
-                    android:text="@string/skip"
-                    android:layout_weight="2"
-                    android:visibility="gone"
-                    style="@style/Button.Grey"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                        android:id="@+id/tip_layout"
+                    android:layout_marginBottom="25dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/border_mid_grey"
+                            android:layout_marginBottom="25dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Leave a tip? (optional)" />
+
+                        <RadioGroup
+                            style="@style/ToggleGroupStyle"
+                            android:id="@+id/tip_amount_radio_group"
+                            android:layout_marginLeft="@dimen/default_margin"
+                            android:layout_marginRight="@dimen/default_margin"
+                            android:checkedButton="@+id/tip_0"
+                            android:layout_marginTop="20dp">
+
+                            <RadioButton
+                                style="@style/TipToggle.First"
+                                android:text="None"
+                                android:id="@+id/tip_0" />
+
+                            <RadioButton
+                                style="@style/TipToggle"
+                                android:id="@+id/tip_1" />
+
+                            <RadioButton
+                                style="@style/TipToggle"
+                                android:id="@+id/tip_2" />
+
+                            <RadioButton
+                                style="@style/TipToggle"
+                                android:id="@+id/tip_3" />
+
+                            <RadioButton
+                                style="@style/TipToggle.Last"
+                                android:text="Other"
+                                android:id="@+id/tip_4" />
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <Button
-                        android:id="@+id/submit_button"
-                        android:text="@string/submit"
-                        android:animateLayoutChanges="true"
-                        style="@style/Button.Green"/>
+                        android:id="@+id/skip_button"
+                        android:text="@string/skip"
+                        android:layout_weight="2"
+                        android:visibility="gone"
+                        style="@style/Button.Grey"/>
 
-                    <ProgressBar
-                        android:id="@+id/submit_progress"
-                        android:layout_gravity="center"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:visibility="invisible" />
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/submit_button"
+                            android:text="@string/submit"
+                            android:animateLayoutChanges="true"
+                            style="@style/Button.Green"/>
+
+                        <ProgressBar
+                            android:id="@+id/submit_progress"
+                            android:layout_gravity="center"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:visibility="invisible" />
+
+                    </FrameLayout>
 
                 </FrameLayout>
 
@@ -272,7 +299,7 @@
 
         </FrameLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="300dp"

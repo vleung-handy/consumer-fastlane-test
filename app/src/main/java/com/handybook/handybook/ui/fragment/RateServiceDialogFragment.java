@@ -8,17 +8,23 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -29,12 +35,17 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
+    static final String EXTRA_DEFAULT_TIP_AMOUNTS = "com.handy.handy.EXTRA_DEFAULT_TIP_AMOUNTS";
     private static final String STATE_RATING = "RATING";
 
     private ArrayList<ImageView> stars = new ArrayList<>();
     private int booking;
     private String proName;
     private int rating;
+    private int tipAmount;
+    private boolean sendTipAmount = false;
+    private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
+    private Map tipMapping = new HashMap();
 
     @Inject DataManager dataManager;
 
@@ -64,15 +75,20 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     ImageView star4;
     @Bind(R.id.star_5)
     ImageView star5;
+    @Bind(R.id.tip_amount_radio_group)
+    RadioGroup tipAmountRadioGroup;
+    @Bind(R.id.tip_layout)
+    FrameLayout tipLayout;
 
     public static RateServiceDialogFragment newInstance(final int bookingId, final String proName,
-                                                        final int rating) {
+                                                        final int rating, final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts) {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
         final Bundle bundle = new Bundle();
 
         bundle.putInt(EXTRA_BOOKING, bookingId);
         bundle.putString(EXTRA_PRO_NAME, proName);
         bundle.putInt(EXTRA_RATING, rating);
+        bundle.putParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS, defaultTipAmounts);
 
         rateServiceDialogFragment.setArguments(bundle);
         return rateServiceDialogFragment;
@@ -89,11 +105,14 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         final Bundle args = getArguments();
         booking = args.getInt(EXTRA_BOOKING);
         proName = args.getString(EXTRA_PRO_NAME);
+        defaultTipAmounts = args.getParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS);
+        updateTipAmountDisplay(defaultTipAmounts);
 
         if (savedInstanceState != null) rating = savedInstanceState.getInt(STATE_RATING , -1);
         else rating = args.getInt(EXTRA_RATING, -1);
 
         initStars();
+        initTipListeners();
         setRating(rating);
 
         serviceIcon.setColorFilter(getResources().getColor(R.color.handy_green),
@@ -111,6 +130,26 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         });
 
         return view;
+    }
+
+    private void updateTipAmountDisplay(final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts) {
+        if (defaultTipAmounts.isEmpty()) {
+            tipLayout.setVisibility(View.GONE);
+        }
+        else {
+            int maxEntriesToDisplay = Math.min(defaultTipAmounts.size(), 3); // MAKE IT CONSTANT! PRAISE BE!
+
+            for (int i = 0; i < maxEntriesToDisplay; i++) {
+                int radioButtonGroupIndex = i + 1;
+                if (tipAmountRadioGroup.getChildCount() > radioButtonGroupIndex) {
+                    RadioButton childRadioButton = (RadioButton) tipAmountRadioGroup.getChildAt(radioButtonGroupIndex);
+                    childRadioButton.setText(defaultTipAmounts.get(i).getDisplayAmount());
+
+                    // Create a mapping of the child radio button to the tip amount
+                    tipMapping.put(childRadioButton, defaultTipAmounts.get(i).getAmountInCents());
+                }
+            }
+        }
     }
 
     @Override
@@ -150,13 +189,13 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         ratingsLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(final View v, final MotionEvent event) {
-                for(int i = 0; i < ratingsLayout.getChildCount(); i++) {
-                    final RelativeLayout layout = (RelativeLayout)ratingsLayout.getChildAt(i);
+                for (int i = 0; i < ratingsLayout.getChildCount(); i++) {
+                    final RelativeLayout layout = (RelativeLayout) ratingsLayout.getChildAt(i);
                     final Rect outRect = new Rect(layout.getLeft(), layout.getTop(),
                             layout.getRight(), layout.getBottom());
 
-                    if (outRect.contains((int)event.getX(), (int)event.getY())) {
-                        final int starsIndex = stars.indexOf((ImageView)layout.getChildAt(0));
+                    if (outRect.contains((int) event.getX(), (int) event.getY())) {
+                        final int starsIndex = stars.indexOf((ImageView) layout.getChildAt(0));
                         setRating(starsIndex);
                         break;
                     }
@@ -165,6 +204,36 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
                 return true;
             }
         });
+    }
+
+    private void initTipListeners() {
+        tipAmountRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup rGroup, int checkedId) {
+                RadioButton checkedRadioButton = (RadioButton) rGroup.findViewById(checkedId);
+
+                if (tipMapping.containsKey(checkedRadioButton)) {
+                    setTipAmount((int) tipMapping.get(checkedRadioButton));
+                    setSendTipAmount(true);
+                } else if (pickedOtherAmount(checkedRadioButton, rGroup)) {
+                    setTipAmount(0);
+                    setSendTipAmount(true);
+                } else {
+                    setSendTipAmount(false);
+                }
+            }
+
+            private boolean pickedOtherAmount(final RadioButton checkedRadioButton, final RadioGroup radioGroup) {
+                return checkedRadioButton.getId() == radioGroup.getChildAt(radioGroup.getChildCount() - 1).getId();
+            }
+        });
+    }
+
+    private void setTipAmount(final int tipAmount) {
+        this.tipAmount = tipAmount;
+    }
+
+    private void setSendTipAmount(final boolean sendTipAmount) {
+        this.sendTipAmount = sendTipAmount;
     }
 
     private void setRating(final int rating) {
@@ -189,8 +258,9 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
             submitButton.setText(null);
 
             final int finalRating = rating + 1;
+            final Integer postTipAmount = sendTipAmount ? tipAmount : null;
 
-            dataManager.ratePro(booking, finalRating, new DataManager.Callback<Void>() {
+            dataManager.ratePro(booking, finalRating, postTipAmount, new DataManager.Callback<Void>() {
                 @Override
                 public void onSuccess(final Void response) {
                     if (!allowCallbacks) return;
