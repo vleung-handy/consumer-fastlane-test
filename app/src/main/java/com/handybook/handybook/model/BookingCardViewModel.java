@@ -1,9 +1,12 @@
 package com.handybook.handybook.model;
 
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
 import com.handybook.handybook.core.Booking;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -69,6 +72,30 @@ public class BookingCardViewModel
 
     public static class List extends ArrayList<BookingCardViewModel>
     {
+        public static final int TYPE_PAST = 100;
+        public static final int TYPE_UPCOMING = 101;
+        public static final int TYPE_MIXED = 102;
+
+        private int mType;
+
+
+        /**
+         *  Defines type of BookingCardViewModel.List
+         *  <p/>
+         *  IntDef used instead of ENUMs
+         *  @see <a href="http://tools.android.com/tech-docs/support-annotations">Support Annotations</a>
+         *
+         */
+        @IntDef({TYPE_PAST, TYPE_UPCOMING, TYPE_MIXED})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface ListType
+        {
+        }
+
+        public void setType(@ListType int type)
+        {
+            mType = type;
+        }
 
         public static List from(@NonNull final Collection<Booking> bookings)
         {
