@@ -49,7 +49,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
     private Map tipMapping = new HashMap();
 
-    @Inject DataManager dataManager;
+    @Inject
+    DataManager dataManager;
 
     @Bind(R.id.service_icon)
     ImageView serviceIcon;
@@ -114,7 +115,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         defaultTipAmounts = args.getParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS);
         updateTipAmountDisplay(defaultTipAmounts);
 
-        if (savedInstanceState != null) rating = savedInstanceState.getInt(STATE_RATING , -1);
+        if (savedInstanceState != null) rating = savedInstanceState.getInt(STATE_RATING, -1);
         else rating = args.getInt(EXTRA_RATING, -1);
 
         initStars();
@@ -141,8 +142,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     private void updateTipAmountDisplay(final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts) {
         if (defaultTipAmounts.isEmpty()) {
             tipLayout.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             int maxEntriesToDisplay = Math.min(defaultTipAmounts.size(), 3); // MAKE IT CONSTANT! PRAISE BE!
 
             for (int i = 0; i < maxEntriesToDisplay; i++) {
@@ -248,6 +248,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     private void setSendTipAmount(final boolean sendTipAmount) {
         this.sendTipAmount = sendTipAmount;
     }
+
     private void setCustomTipSelected(final boolean customTipSelected) {
         this.customTipSelected = customTipSelected;
     }
@@ -286,7 +287,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
                             proName, finalRating);
 
                     RateServiceConfirmDialogFragment.newInstance(booking, finalRating).show(getActivity()
-                                .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
+                            .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
                 }
 
                 @Override
@@ -304,8 +305,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         private Integer getTipAmount() {
             if (sendTipAmount) {
                 return customTipSelected ? getCustomTipAmount() : tipAmount;
-            }
-            else {
+            } else {
                 return null;
             }
         }
