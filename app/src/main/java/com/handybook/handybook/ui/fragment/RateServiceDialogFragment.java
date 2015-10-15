@@ -52,6 +52,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     private boolean customTipSelected = false;
     private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
     private Map tipMapping = new HashMap();
+    private int maxCustomTipValues = 3;
 
     @Inject
     DataManager dataManager;
@@ -146,7 +147,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     private void updateTipAmountDisplay(final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts) {
         if (!defaultTipAmounts.isEmpty()) {
             tipLayout.setVisibility(View.VISIBLE);
-            int maxEntriesToDisplay = Math.min(defaultTipAmounts.size(), 3); // MAKE IT CONSTANT! PRAISE BE!
+            int maxEntriesToDisplay = Math.min(defaultTipAmounts.size(), maxCustomTipValues);
 
             for (int i = 0; i < maxEntriesToDisplay; i++) {
                 int radioButtonGroupIndex = i + 1;
