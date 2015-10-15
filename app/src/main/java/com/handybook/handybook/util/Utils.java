@@ -135,7 +135,8 @@ public final class Utils
         imm.showSoftInput(view, 0);
     }
 
-    public static void hideSoftKeyboard(FragmentActivity activity, View view) {
+    public static void hideSoftKeyboard(FragmentActivity activity, View view)
+    {
         final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
