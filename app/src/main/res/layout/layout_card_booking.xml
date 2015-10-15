@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="@dimen/default_margin"
     android:layout_marginLeft="@dimen/default_margin_half"
     android:layout_marginRight="@dimen/default_margin_half"
     android:layout_marginTop="@dimen/default_margin_half"
@@ -14,8 +14,9 @@
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
     app:contentPadding="0dp"
-    app:paddingEnd="8dp"
-    app:paddingStart="8dp"
+    app:paddingEnd="@dimen/default_margin_half"
+    app:paddingStart="@dimen/default_margin_half"
+    app:contentPaddingTop="@dimen/default_margin_half"
     >
 
     <LinearLayout
