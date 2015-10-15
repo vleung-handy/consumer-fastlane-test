@@ -9,13 +9,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.model.BookingCardViewModel;
@@ -23,28 +23,25 @@ import com.handybook.handybook.ui.adapter.BookingCardAdapter;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class BookingListFragment extends InjectedFragment implements OnRefreshListener
 {
-
+    public static final String TAG = "BookingListFragment";
     public static final String KEY_BOOKINGS = "key:bookings";
     public static final String KEY_BOOKINGS_RECEIVED = "key:bookings_received";
     private static final String KEY_LIST_TYPE = "key:booking_list_type";
-
+    private final BookingCardViewModel.List mBookingCardViewModels = new BookingCardViewModel.List();
     @Bind(R.id.fragment_booking_list_booking_card_recycler_view)
     RecyclerView vRecyclerView;
     @Bind(R.id.fragment_booking_list_swipe_refresh_layout)
     SwipeRefreshLayout vSwipeRefreshLayout;
-
-    private int mBookingCardViewModelList;
+    private int mListType;
     private Context mContext;
     private BookingCardAdapter mBookingCardAdapter;
     private ArrayList<Booking> mBookings = new ArrayList<>();
-    private final BookingCardViewModel.List mBookingCardViewModels = new BookingCardViewModel.List();
     private boolean mBookingsWereReceived;
 
     /**
@@ -82,15 +79,28 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         }
         if (getArguments() != null)
         {
-            mBookingCardViewModelList = getArguments().getInt(KEY_LIST_TYPE);
+            mListType = getArguments().getInt(KEY_LIST_TYPE);
         }
         mBookingCardAdapter = new BookingCardAdapter(mContext, mBookingCardViewModels);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View root = inflater.inflate(R.layout.fragment_booking_list, container, false);
+        ButterKnife.bind(this, root);
+        vSwipeRefreshLayout.setOnRefreshListener(this);
+        vRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        vRecyclerView.setAdapter(mBookingCardAdapter);
+        return root;
     }
 
     @Override
     public final void onStart()
     {
         super.onStart();
+        vSwipeRefreshLayout.setRefreshing(true);
         if (!mBookingsWereReceived)
         {
             loadBookings();
@@ -104,10 +114,15 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         vSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void loadBookings()
+    @Override
+    public final void onSaveInstanceState(final Bundle outState)
     {
-        vSwipeRefreshLayout.setRefreshing(true);
-        bus.post(new HandyEvent.Request.Request.BookingCardViewModels(userManager.getCurrentUser()));
+        super.onSaveInstanceState(outState);
+        if (mBookingsWereReceived)
+        {
+            outState.putParcelableArrayList(KEY_BOOKINGS, mBookingCardViewModels.getBookings());
+            outState.putBoolean(KEY_BOOKINGS_RECEIVED, mBookingsWereReceived);
+        }
     }
 
     @Override
@@ -121,6 +136,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED
                 || resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
         {
+/*
             final boolean isCancel = resultCode == ActivityResult.RESULT_BOOKING_CANCELED;
             final Booking booking;
             if (isCancel)
@@ -152,30 +168,8 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
             }
             //And then we're just going and requesting everything again anyway.....
             //TODO: reloading all bookings here until there is a way to update recurring instances as well
+*/
             loadBookings();
-        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View root = inflater.inflate(R.layout.fragment_booking_list, container, false);
-        ButterKnife.bind(this, root);
-        vSwipeRefreshLayout.setOnRefreshListener(this);
-        vRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        vRecyclerView.setAdapter(mBookingCardAdapter);
-        return root;
-    }
-
-    @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        if (mBookingsWereReceived)
-        {
-            outState.putParcelableArrayList(KEY_BOOKINGS, mBookings);
-            outState.putBoolean(KEY_BOOKINGS_RECEIVED, mBookingsWereReceived);
         }
     }
 
@@ -188,7 +182,7 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     @Subscribe
     public void onModelsReceived(@NonNull final HandyEvent.Response.BookingCardViewModels e)
     {
-        if (e.getPayload().getType() == mBookingCardViewModelList)
+        if (e.getPayload().getType() == mListType)
         {
             vSwipeRefreshLayout.setRefreshing(false);
             mBookingCardViewModels.clear();
@@ -196,7 +190,6 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
             initialize();
         }
     }
-
 
     @Subscribe
     public void onModelsRequestError(@NonNull final HandyEvent.Response.BookingCardViewModelsError e)
@@ -208,11 +201,19 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         dataManagerErrorHandler.handleError(getActivity(), e.getPayload());
     }
 
+
     @Override
     public void onRefresh()
     {
-        //Toast.makeText(mContext, "OnRefresh", Toast.LENGTH_LONG).show();
         loadBookings();
+    }
+
+    private void loadBookings()
+    {
+        vSwipeRefreshLayout.setRefreshing(true);
+        Log.d(TAG, "loadBookings :setRefreshing");
+        bus.post(new HandyEvent.Request.Request.BookingCardViewModels(userManager.getCurrentUser()));
+        Log.d(TAG, "loadBookings :bus.post");
     }
 
     private void initialize()

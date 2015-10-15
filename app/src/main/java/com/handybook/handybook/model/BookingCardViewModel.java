@@ -1,5 +1,6 @@
 package com.handybook.handybook.model;
 
+import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
@@ -77,6 +78,13 @@ public class BookingCardViewModel
         public static final int TYPE_MIXED = 102;
 
         private int mType;
+        private ArrayList<Booking> mBookings;
+
+        public ArrayList<Booking> getBookings()
+        {
+
+            return mBookings;
+        }
 
 
         /**
@@ -116,8 +124,11 @@ public class BookingCardViewModel
         {
             final HashMap<Long, BookingCardViewModel> recurringIdToBCVM = new HashMap<>();
             final List bookingCardViewModels = new List();
+            bookingCardViewModels.mBookings = new ArrayList<>();
             for (Booking eachBooking : bookings)
             {
+                // Add it to the internal booking list
+                bookingCardViewModels.mBookings.add(eachBooking);
                 // If it's part of recurring booking
                 if (eachBooking.isRecurring())
                 {
