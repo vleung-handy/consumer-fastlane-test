@@ -713,6 +713,7 @@ public final class Booking implements Parcelable
             //TODO: Need to add missing icons like ladders and painting
         }
 
+
         public final String getLabel()
         {
             return label;
@@ -806,5 +807,20 @@ public final class Booking implements Parcelable
     public static final int ENTRY_TYPE_WILL_BE_HOME = 0;
     public static final int ENTRY_TYPE_DOORMAN = 1;
     public static final int ENTRY_TYPE_HIDE_THE_KEYS = 2;
+
+    public static class List extends ArrayList<Booking>
+    {
+
+        public static final String VALUE_ONLY_BOOKINGS_PAST = "past";
+        public static final String VALUE_ONLY_BOOKINGS_UPCOMING = "upcoming";
+
+
+        @Retention(RetentionPolicy.SOURCE)
+        @StringDef({VALUE_ONLY_BOOKINGS_PAST, VALUE_ONLY_BOOKINGS_UPCOMING})
+        public @interface OnlyBookingValues
+        {
+        }
+    }
+
 
 }

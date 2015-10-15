@@ -1,11 +1,13 @@
 package com.handybook.handybook.data;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
@@ -22,7 +24,6 @@ import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.manager.PrefsManager;
 import com.squareup.otto.Bus;
@@ -207,8 +208,7 @@ public final class BaseDataManager extends DataManager
                                 if ((list = servicesMap.get(service.getParentId())) != null)
                                 {
                                     list.add(service);
-                                }
-                                else
+                                } else
                                 {
                                     list = new ArrayList<>();
                                     list.add(service);
@@ -366,9 +366,46 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public final void getBookings(final User user, final Callback<List<Booking>> cb)
+    public final void getBookings(
+            final User user,
+            final Callback<List<Booking>> cb)
     {
-        service.getBookings(user.getAuthToken(), new HandyRetrofitCallback(cb)
+        service.getBookings(
+                user.getAuthToken(),
+                null,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    void success(final JSONObject response)
+                    {
+                        final JSONArray array = response.optJSONArray("user_bookings");
+
+                        if (array == null)
+                        {
+                            cb.onError(new DataManagerError(Type.SERVER));
+                            return;
+                        }
+
+                        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+                        final List<Booking> bookings = gson.fromJson(array.toString(),
+                                new TypeToken<List<Booking>>()
+                                {
+                                }.getType());
+                        cb.onSuccess(bookings);
+                    }
+                });
+    }
+
+    @Override
+    public final void getBookings(
+            final User user,
+            @NonNull @Booking.List.OnlyBookingValues final String onlyBookingValue,
+            final Callback<List<Booking>> cb)
+    {
+        service.getBookings(
+                user.getAuthToken(),
+                onlyBookingValue,
+                new HandyRetrofitCallback(cb)
         {
             @Override
             void success(final JSONObject response)
@@ -415,8 +452,7 @@ public final class BaseDataManager extends DataManager
                 if (response.has("coupon") && response.optInt("coupon") == 1)
                 {
                     cb.onSuccess(new PromoCode(PromoCode.Type.COUPON, promoCode));
-                }
-                else if (response.has("voucher"))
+                } else if (response.has("voucher"))
                 {
                     final JSONObject voucher = response.optJSONObject("voucher");
 
@@ -430,8 +466,7 @@ public final class BaseDataManager extends DataManager
                     //code.setUniq(voucher.optString("machine_name"));
 
                     cb.onSuccess(code);
-                }
-                else
+                } else
                 {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
@@ -623,8 +658,7 @@ public final class BaseDataManager extends DataManager
                 if (response.optBoolean("success", false))
                 {
                     cb.onSuccess(null);
-                }
-                else
+                } else
                 {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
@@ -714,22 +748,20 @@ public final class BaseDataManager extends DataManager
         });
     }
 
-
     @Override
     public final void getRequestProInfo(int bookingId,
-                                        Callback<BookingRequestablePros> cb)
+                                           Callback<BookingRequestablePros> cb)
     {
         service.getRequestProInfo(bookingId, new BookingRequestableProsResponseHandyRetroFitCallback(cb));
     }
 
     @Override
     public final void requestProForBooking(int bookingId,
-                                           int requestedProId,
-                                           Callback<BookingProRequestResponse> cb)
+                                              int requestedProId,
+                                              Callback<BookingProRequestResponse> cb)
     {
         service.requestProForBooking(bookingId, requestedProId, true, new BookingProRequestResponseHandyRetroFitCallback(cb));
     }
-
 
     @Override
     public final void getHelpInfo(final String nodeId, final String authToken, final String bookingId, final Callback<HelpNodeWrapper> cb)

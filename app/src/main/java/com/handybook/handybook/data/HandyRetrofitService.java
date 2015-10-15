@@ -1,5 +1,7 @@
 package com.handybook.handybook.data;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingRequest;
@@ -62,7 +64,11 @@ public interface HandyRetrofitService
                             @Query("entered_code") String promoCode, HandyRetrofitCallback cb);
 
     @GET("/bookings")
-    void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
+    void getBookings(
+            @Query("auth_token") String authToken,
+            @Nullable @Query("only_bookings") String bookingType,
+            HandyRetrofitCallback cb
+    );
 
     @GET("/bookings/{id}")
     void getBooking(@Path("id") String bookingId,
@@ -197,7 +203,7 @@ public interface HandyRetrofitService
     @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
-    static final class UserUpdateRequest
+    final class UserUpdateRequest
     {
         @SerializedName("user")
         private User user;
@@ -211,7 +217,8 @@ public interface HandyRetrofitService
         }
     }
 
-    static final class RateProRequest
+
+    final class RateProRequest
     {
         @SerializedName("positive_feedback")
         private String positiveFeedback;

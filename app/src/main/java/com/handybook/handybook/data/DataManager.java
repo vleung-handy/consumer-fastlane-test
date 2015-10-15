@@ -1,7 +1,9 @@
 package com.handybook.handybook.data;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
@@ -18,7 +20,6 @@ import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.squareup.otto.Bus;
@@ -28,7 +29,8 @@ import java.util.List;
 
 import retrofit.mime.TypedInput;
 
-//TODO: Don't need to manually pass auth tokens for any endpoint, auth token is now auto added as part of the intercept
+//TODO: Don't need to manually pass auth tokens for any endpoint, auth token is now auto added as
+// part of the intercept
 
 public abstract class DataManager
 {
@@ -107,6 +109,11 @@ public abstract class DataManager
 
     public abstract void getBookings(User user,
                                      Callback<List<Booking>> cb);
+
+    public abstract void getBookings(
+            @NonNull final User user,
+            @NonNull @Booking.List.OnlyBookingValues String onlyBookingValues,
+            @NonNull Callback<List<Booking>> cb);
 
     public abstract void getBooking(String bookingId,
                                     Callback<Booking> cb);
