@@ -1,5 +1,6 @@
 package com.handybook.handybook.event;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
@@ -22,8 +23,18 @@ public abstract class HandyEvent
         public static class BookingCardViewModels extends Request
         {
             private User mUser;
+            @Booking.List.OnlyBookingValues
+            private String mOnlyBookingValue;
 
-            public BookingCardViewModels(User user)
+            public BookingCardViewModels(
+                    @NonNull final User user,
+                    @NonNull @Booking.List.OnlyBookingValues final String onlyBookingsValue)
+            {
+                mUser = user;
+                mOnlyBookingValue = onlyBookingsValue;
+            }
+
+            public BookingCardViewModels(@NonNull final User user)
             {
                 mUser = user;
             }
@@ -31,6 +42,12 @@ public abstract class HandyEvent
             public User getUser()
             {
                 return mUser;
+            }
+
+            @Booking.List.OnlyBookingValues
+            public String getOnlyBookingValue()
+            {
+                return mOnlyBookingValue;
             }
         }
     }
@@ -59,6 +76,7 @@ public abstract class HandyEvent
             }
         }
 
+
         public static class BookingCardViewModelsError extends Response<DataManager.DataManagerError>
         {
             public BookingCardViewModelsError(DataManager.DataManagerError payload)
@@ -68,6 +86,7 @@ public abstract class HandyEvent
         }
 
     }
+
 
     public abstract static class RequestBookingActionEvent extends Request
     {
@@ -94,14 +113,17 @@ public abstract class HandyEvent
 
     //Bookings
 
+
     public static class RequestBookingsForUser extends Request
     {
         public User user;
+
         public RequestBookingsForUser(User user)
         {
             this.user = user;
         }
     }
+
 
     public static class ReceiveBookingsSuccess extends ReceiveSuccessEvent
     {

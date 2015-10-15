@@ -1,7 +1,9 @@
 package com.handybook.handybook.data;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
@@ -18,7 +20,6 @@ import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.squareup.otto.Bus;
@@ -32,14 +33,8 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
-    public static enum Environment
-    {
-        P, S, Q1, Q2, Q3, Q4, Q6, D1
-    }
-
-    private Environment env = Environment.S;
     private final Bus bus;
-
+    private Environment env = Environment.S;
     DataManager(final Bus bus)
     {
         this.bus = bus;
@@ -107,6 +102,11 @@ public abstract class DataManager
 
     public abstract void getBookings(User user,
                                      Callback<List<Booking>> cb);
+
+    public abstract void getBookings(
+            @NonNull final User user,
+            @NonNull @Booking.List.OnlyBookingValues String onlyBookingValues,
+            @NonNull Callback<List<Booking>> cb);
 
     public abstract void getBooking(String bookingId,
                                     Callback<Booking> cb);
@@ -218,22 +218,31 @@ public abstract class DataManager
 
     public abstract String getBaseUrl();
 
-    public static interface Callback<T>
+    public enum Environment
+    {
+        P, S, Q1, Q2, Q3, Q4, Q6, D1
+    }
+
+
+    enum Type
+    {
+        OTHER, SERVER, CLIENT, NETWORK
+    }
+
+
+    public interface Callback<T>
     {
         void onSuccess(T response);
 
         void onError(DataManagerError error);
     }
 
-    public static interface CacheResponse<T>
+
+    public interface CacheResponse<T>
     {
         void onResponse(T response);
     }
 
-    static enum Type
-    {
-        OTHER, SERVER, CLIENT, NETWORK
-    }
 
     public static final class DataManagerError
     {

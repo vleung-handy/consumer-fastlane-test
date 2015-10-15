@@ -1,7 +1,9 @@
 package com.handybook.handybook.core;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
@@ -9,7 +11,6 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.model.BookingCardViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -25,13 +26,13 @@ import javax.inject.Inject;
 //TODO: Add caching like we do for portal, navigating back and forth from my bookings page is painfully slow right now
 public final class BookingManager implements Observer
 {
+    private final PrefsManager prefsManager;
+    private final DataManager dataManager;
+    private final Bus bus;
     private BookingRequest request;
     private BookingQuote quote;
     private BookingTransaction transaction;
     private BookingPostInfo postInfo;
-    private final PrefsManager prefsManager;
-    private final DataManager dataManager;
-    private final Bus bus;
 
     @Inject
     BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
@@ -141,47 +142,87 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
-    public void onRequestBookingCardViewModels(HandyEvent.Request.BookingCardViewModels event)
+    public void onRequestBookingCardViewModels(@NonNull final HandyEvent.Request.BookingCardViewModels event)
     {
-        dataManager.getBookings(event.getUser(), new DataManager.Callback<List<Booking>>()
+        if (event.getOnlyBookingValue() == null)
         {
-            @Override
-            public void onSuccess(final List<Booking> result)
-            {
-                Collections.sort(result, Booking.COMPARATOR_DATE);
-                final ArrayList<Booking> pastBookings = new ArrayList<>();
-                final ArrayList<Booking> upcomingBookings = new ArrayList<>();
-                for (Booking eachBooking : result)
-                {
-                    if (eachBooking.isPast())
+            // The code below did the filtering before I knew about the past, upcoming API parameter
+            dataManager.getBookings(
+                    event.getUser(),
+                    null,
+                    new DataManager.Callback<List<Booking>>()
                     {
-                        pastBookings.add(eachBooking);
-                    } else
+                        @Override
+                        public void onSuccess(final List<Booking> result)
+                        {
+                            Collections.sort(result, Booking.COMPARATOR_DATE);
+                            final ArrayList<Booking> pastBookings = new ArrayList<>();
+                            final ArrayList<Booking> upcomingBookings = new ArrayList<>();
+                            for (Booking eachBooking : result)
+                            {
+                                if (eachBooking.isPast())
+                                {
+                                    pastBookings.add(eachBooking);
+                                } else
+                                {
+                                    upcomingBookings.add(eachBooking);
+                                }
+                            }
+
+                            // Emit upcoming
+                            BookingCardViewModel.List upcoming = BookingCardViewModel.List.from(upcomingBookings);
+                            upcoming.setType(BookingCardViewModel.List.TYPE_UPCOMING);
+                            bus.post(new HandyEvent.Response.BookingCardViewModels(upcoming));
+
+                            // Emit past
+                            BookingCardViewModel.List past = BookingCardViewModel.List.from(pastBookings);
+                            past.setType(BookingCardViewModel.List.TYPE_PAST);
+                            bus.post(new HandyEvent.Response.BookingCardViewModels(past));
+
+                        }
+
+                        @Override
+                        public void onError(DataManager.DataManagerError error)
+                        {
+                            bus.post(
+                                    new HandyEvent.Response.BookingCardViewModelsError(error)
+                            );
+                        }
+                    });
+        } else
+        {
+            dataManager.getBookings(
+                    event.getUser(),
+                    event.getOnlyBookingValue(),
+                    new DataManager.Callback<List<Booking>>()
                     {
-                        upcomingBookings.add(eachBooking);
-                    }
-                }
+                        @Override
+                        public void onSuccess(final List<Booking> result)
+                        {
+                            Collections.sort(result, Booking.COMPARATOR_DATE);
+                            // Mark bookingCardViewModels accordingly and emit it.
+                            BookingCardViewModel.List models = BookingCardViewModel.List.from(result);
+                            switch (event.getOnlyBookingValue())
+                            {
+                                case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
+                                    models.setType(BookingCardViewModel.List.TYPE_PAST);
+                                    break;
+                                case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
+                                    models.setType(BookingCardViewModel.List.TYPE_UPCOMING);
+                                    break;
+                                default:
+                                    Crashlytics.log("event.getOnlyBookingValue() hit default :(");
+                            }
+                            bus.post(new HandyEvent.Response.BookingCardViewModels(models));
+                        }
 
-                // Emit upcoming
-                BookingCardViewModel.List upcoming = BookingCardViewModel.List.from(upcomingBookings);
-                upcoming.setType(BookingCardViewModel.List.TYPE_UPCOMING);
-                bus.post(new HandyEvent.Response.BookingCardViewModels(upcoming));
-
-                // Emit past
-                BookingCardViewModel.List past = BookingCardViewModel.List.from(pastBookings);
-                past.setType(BookingCardViewModel.List.TYPE_PAST);
-                bus.post(new HandyEvent.Response.BookingCardViewModels(past));
-
-            }
-
-            @Override
-            public void onError(DataManager.DataManagerError error)
-            {
-                bus.post(
-                        new HandyEvent.Response.BookingCardViewModelsError(error)
-                );
-            }
-        });
+                        @Override
+                        public void onError(DataManager.DataManagerError error)
+                        {
+                            bus.post(new HandyEvent.Response.BookingCardViewModelsError(error));
+                        }
+                    });
+        }
     }
 
     @Subscribe
@@ -344,14 +385,14 @@ public final class BookingManager implements Observer
         prefsManager.setString(PrefsKey.BOOKING_POST, postInfo.toJson());
     }
 
-    public final void setPromoTabCoupon(final String code)
-    {
-        prefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
-    }
-
     public final String getPromoTabCoupon()
     {
         return prefsManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
+    }
+
+    public final void setPromoTabCoupon(final String code)
+    {
+        prefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
     }
 
     @Override

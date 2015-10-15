@@ -84,18 +84,6 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         mBookingCardAdapter = new BookingCardAdapter(mContext, mBookingCardViewModels);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View root = inflater.inflate(R.layout.fragment_booking_list, container, false);
-        ButterKnife.bind(this, root);
-        vSwipeRefreshLayout.setOnRefreshListener(this);
-        vRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        vRecyclerView.setAdapter(mBookingCardAdapter);
-        return root;
-    }
-
     @Override
     public final void onStart()
     {
@@ -112,17 +100,6 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     {
         super.onStop();
         vSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        if (mBookingsWereReceived)
-        {
-            outState.putParcelableArrayList(KEY_BOOKINGS, mBookingCardViewModels.getBookings());
-            outState.putBoolean(KEY_BOOKINGS_RECEIVED, mBookingsWereReceived);
-        }
     }
 
     @Override
@@ -173,6 +150,29 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         }
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View root = inflater.inflate(R.layout.fragment_booking_list, container, false);
+        ButterKnife.bind(this, root);
+        vSwipeRefreshLayout.setOnRefreshListener(this);
+        vRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        vRecyclerView.setAdapter(mBookingCardAdapter);
+        return root;
+    }
+
+    @Override
+    public final void onSaveInstanceState(final Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        if (mBookingsWereReceived)
+        {
+            outState.putParcelableArrayList(KEY_BOOKINGS, mBookingCardViewModels.getBookings());
+            outState.putBoolean(KEY_BOOKINGS_RECEIVED, mBookingsWereReceived);
+        }
+    }
+
     @Subscribe
     public void onReceiveBookingsSuccess(HandyEvent.ReceiveBookingsSuccess event)
     {
@@ -212,8 +212,29 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     {
         vSwipeRefreshLayout.setRefreshing(true);
         Log.d(TAG, "loadBookings :setRefreshing");
-        bus.post(new HandyEvent.Request.Request.BookingCardViewModels(userManager.getCurrentUser()));
-        Log.d(TAG, "loadBookings :bus.post");
+        String onlyBookingValues = null;
+        switch (mListType)
+        {
+            case BookingCardViewModel.List.TYPE_PAST:
+                onlyBookingValues = Booking.List.VALUE_ONLY_BOOKINGS_PAST;
+                break;
+            case BookingCardViewModel.List.TYPE_UPCOMING:
+                onlyBookingValues = Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING;
+                break;
+        }
+        if (onlyBookingValues == null)
+        {
+            // Load all of them
+            bus.post(new HandyEvent.Request.Request.BookingCardViewModels(
+                    userManager.getCurrentUser()
+            ));
+        } else
+        {
+            bus.post(new HandyEvent.Request.Request.BookingCardViewModels(
+                    userManager.getCurrentUser(),
+                    onlyBookingValues
+            ));
+        }
     }
 
     private void initialize()
