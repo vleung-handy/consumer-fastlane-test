@@ -57,5 +57,9 @@
     <color name="handy_dark_divider_line">#FFcccccc</color>
     <color name="handy_input_field_stroke">#FFd1d1d1</color>
     <color name="handy_hot_pink">#FFeb00cb</color>
-
+    <color name="tertiary">#9CABB5</color>
+    <color name="input_field_stroke">#D1D1D1</color>
+    <color name="divider">#EEEEEE</color>
+    <color name="dark_divider">#CCCCCC</color>
+    <color name="text_gray">#999999</color>
 </resources>

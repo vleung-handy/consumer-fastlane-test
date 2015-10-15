@@ -1,5 +1,7 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -7,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +25,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -190,15 +195,19 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
         }
 
         // fill stars when dragging across them
-        ratingsLayout.setOnTouchListener(new View.OnTouchListener() {
+        ratingsLayout.setOnTouchListener(new View.OnTouchListener()
+        {
             @Override
-            public boolean onTouch(final View v, final MotionEvent event) {
-                for (int i = 0; i < ratingsLayout.getChildCount(); i++) {
+            public boolean onTouch(final View v, final MotionEvent event)
+            {
+                for (int i = 0; i < ratingsLayout.getChildCount(); i++)
+                {
                     final RelativeLayout layout = (RelativeLayout) ratingsLayout.getChildAt(i);
                     final Rect outRect = new Rect(layout.getLeft(), layout.getTop(),
                             layout.getRight(), layout.getBottom());
 
-                    if (outRect.contains((int) event.getX(), (int) event.getY())) {
+                    if (outRect.contains((int) event.getX(), (int) event.getY()))
+                    {
                         final int starsIndex = stars.indexOf((ImageView) layout.getChildAt(0));
                         setRating(starsIndex);
                         break;
@@ -235,6 +244,17 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
 
             private boolean pickedOtherAmount(final RadioButton checkedRadioButton, final RadioGroup radioGroup) {
                 return checkedRadioButton.getId() == radioGroup.getChildAt(radioGroup.getChildCount() - 1).getId();
+            }
+        });
+
+        customTipAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Utils.showSoftKeyboard(getActivity(), v);
+                } else {
+                    Utils.hideSoftKeyboard(getActivity(), v);
+                }
             }
         });
     }

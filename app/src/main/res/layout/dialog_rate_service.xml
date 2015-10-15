@@ -204,20 +204,19 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tip_layout"
                 android:orientation="vertical"
-                android:layout_marginBottom="25dp"
-                android:animateLayoutChanges="true">
+                android:layout_marginBottom="25dp">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/cell_sep"
+                    android:background="@color/divider"
                     android:layout_marginBottom="25dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Leave a tip? (optional)" />
+                    android:text="@string/leave_a_tip" />
 
                 <RadioGroup
                     style="@style/ToggleGroupStyle"
@@ -229,7 +228,7 @@
 
                     <RadioButton
                         style="@style/TipToggle.First"
-                        android:text="None"
+                        android:text="@string/none"
                         android:id="@+id/tip_0" />
 
                     <RadioButton
@@ -246,7 +245,7 @@
 
                     <RadioButton
                         style="@style/TipToggle.Last"
-                        android:text="Other"
+                        android:text="@string/other"
                         android:id="@+id/tip_4" />
 
                 </RadioGroup>
@@ -264,7 +263,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Amount:"
+                        android:text="@string/tip_amount"
                         android:textSize="14dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="8dp"/>
@@ -303,7 +302,6 @@
                     <Button
                         android:id="@+id/submit_button"
                         android:text="@string/submit"
-                        android:animateLayoutChanges="true"
                         style="@style/Button.Green"/>
 
                     <ProgressBar
