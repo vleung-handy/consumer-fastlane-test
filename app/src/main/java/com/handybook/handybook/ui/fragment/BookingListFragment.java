@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +27,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BookingListFragment extends InjectedFragment implements OnRefreshListener
+public class BookingListFragment extends InjectedFragment
+        implements SwipeRefreshLayout.OnRefreshListener
 {
     public static final String TAG = "BookingListFragment";
     public static final String KEY_BOOKINGS = "key:bookings";
@@ -38,10 +39,9 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     RecyclerView vRecyclerView;
     @Bind(R.id.fragment_booking_list_swipe_refresh_layout)
     SwipeRefreshLayout vSwipeRefreshLayout;
-    private int mListType;
     private Context mContext;
+    private int mListType;
     private BookingCardAdapter mBookingCardAdapter;
-    private ArrayList<Booking> mBookings = new ArrayList<>();
     private boolean mBookingsWereReceived;
 
     /**
@@ -71,10 +71,10 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
         if (savedInstanceState != null)
         {
             mBookingsWereReceived = savedInstanceState.getBoolean(KEY_BOOKINGS_RECEIVED, false);
-            mBookings = savedInstanceState.getParcelableArrayList(KEY_BOOKINGS);
-            if (mBookings != null)
+            ArrayList<Booking> bookings = savedInstanceState.getParcelableArrayList(KEY_BOOKINGS);
+            if (bookings != null)
             {
-                mBookingCardViewModels.addAll(BookingCardViewModel.List.from(mBookings));
+                mBookingCardViewModels.addAll(BookingCardViewModel.List.from(bookings));
             }
         }
         if (getArguments() != null)
@@ -88,6 +88,11 @@ public class BookingListFragment extends InjectedFragment implements OnRefreshLi
     public final void onStart()
     {
         super.onStart();
+        TypedValue typed_value = new TypedValue();
+        // Workaround to be able to display the SwipeRefreshLayout onStart
+        // as in: http://stackoverflow.com/a/26860930/486332
+        getActivity().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
+        vSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
         vSwipeRefreshLayout.setRefreshing(true);
         if (!mBookingsWereReceived)
         {
