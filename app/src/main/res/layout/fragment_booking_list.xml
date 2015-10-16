@@ -5,25 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/layout_card_no_bookings"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fragment_booking_list_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.handybook.handybook.ui.view.EmptyRecyclerView
-            android:id="@+id/fragment_booking_list_booking_card_recycler_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="4dp"
-            tools:listitem="@layout/layout_card_booking">
-        </com.handybook.handybook.ui.view.EmptyRecyclerView>
+            android:layout_height="match_parent">
+
+            <include layout="@layout/layout_card_no_bookings"/>
+
+            <com.handybook.handybook.ui.view.EmptyRecyclerView
+                android:id="@+id/fragment_booking_list_booking_card_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="4dp"
+                tools:listitem="@layout/layout_card_booking">
+            </com.handybook.handybook.ui.view.EmptyRecyclerView>
+        </FrameLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
 </FrameLayout>
 

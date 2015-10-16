@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,7 @@ public class BookingListFragment extends InjectedFragment
     private int mListType;
     private BookingCardAdapter mBookingCardAdapter;
     private boolean mBookingsWereReceived;
+    private LinearLayoutManager mLayoutManager;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -169,15 +171,32 @@ public class BookingListFragment extends InjectedFragment
         ButterKnife.bind(this, root);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.handy_service_cleaner,
-                R.color.handy_service_electrician,
                 R.color.handy_service_handyman,
+                R.color.handy_service_electrician,
+                R.color.handy_service_cleaner,
                 R.color.handy_service_painter,
                 R.color.handy_service_plumber
         );
-        mEmptyRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mLayoutManager = new LinearLayoutManager(mContext);
+        mEmptyRecyclerView.setLayoutManager(mLayoutManager);
         mEmptyRecyclerView.setAdapter(mBookingCardAdapter);
         mEmptyRecyclerView.setEmptyView(mNoBookingsView);
+        // Only allow SwipeRefresh when Recycler scrolled all the way up
+        mEmptyRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
+            {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(-1))
+                {
+                    mSwipeRefreshLayout.setEnabled(true);
+                } else
+                {
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+            }
+        });
         switch (mListType)
         {
             case BookingCardViewModel.List.TYPE_UPCOMING:
