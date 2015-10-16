@@ -166,6 +166,13 @@ public class BookingListFragment extends InjectedFragment
         View root = inflater.inflate(R.layout.fragment_booking_list, container, false);
         ButterKnife.bind(this, root);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.handy_service_cleaner,
+                R.color.handy_service_electrician,
+                R.color.handy_service_handyman,
+                R.color.handy_service_painter,
+                R.color.handy_service_plumber
+        );
         mEmptyRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mEmptyRecyclerView.setAdapter(mBookingCardAdapter);
         mEmptyRecyclerView.setEmptyView(mNoBookingsView);

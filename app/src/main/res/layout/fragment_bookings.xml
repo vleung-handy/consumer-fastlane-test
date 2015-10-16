@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/handy_blue"
               android:orientation="vertical"
               tools:context="com.handybook.handybook.ui.fragment.BookingsFragment"
@@ -14,15 +14,15 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/nav_text"
+            style="@style/TextView.Large"
             android:layout_width="match_parent"
             android:layout_height="72dp"
-            android:id="@+id/nav_text"
-            android:gravity="center_vertical"
             android:layout_marginLeft="72dp"
             android:layout_marginStart="72dp"
-            style="@style/TextView.Large"
-            android:textColor="@color/handy_white"
-            android:text="@string/my_bookings"/>
+            android:gravity="center_vertical"
+            android:text="@string/my_bookings"
+            android:textColor="@color/handy_white"/>
 
         <RelativeLayout
             android:id="@+id/menu_button_layout"
@@ -30,14 +30,15 @@
     </FrameLayout>
 
     <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        style="@style/TextView.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tab_layout"
-        app:tabTextColor="@color/handy_white_semitransparent"
-        app:tabSelectedTextColor="@color/handy_white"
         app:tabIndicatorColor="@color/handy_hot_pink"
-        app:tabTextAppearance="@style/TextView.Medium"
         app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="@color/handy_white"
+        app:tabTextAppearance="@style/TextView.Medium"
+        app:tabTextColor="@color/handy_white_semitransparent"
         >
     </android.support.design.widget.TabLayout>
 
