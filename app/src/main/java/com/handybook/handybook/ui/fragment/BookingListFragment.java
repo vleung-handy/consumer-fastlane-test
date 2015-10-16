@@ -8,11 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
@@ -43,6 +43,8 @@ public class BookingListFragment extends InjectedFragment
     EmptyRecyclerView mEmptyRecyclerView;
     @Bind(R.id.card_no_bookings)
     CardView mNoBookingsView;
+    @Bind(R.id.card_no_bookings_text)
+    TextView mNoBookingsText;
     private Context mContext;
     private int mListType;
     private BookingCardAdapter mBookingCardAdapter;
@@ -176,6 +178,15 @@ public class BookingListFragment extends InjectedFragment
         mEmptyRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mEmptyRecyclerView.setAdapter(mBookingCardAdapter);
         mEmptyRecyclerView.setEmptyView(mNoBookingsView);
+        switch (mListType)
+        {
+            case BookingCardViewModel.List.TYPE_UPCOMING:
+                mNoBookingsText.setText(R.string.no_booking_card_upcoming_text);
+                break;
+            case BookingCardViewModel.List.TYPE_PAST:
+                mNoBookingsText.setText(R.string.no_booking_card_past_text);
+                break;
+        }
         return root;
     }
 
@@ -228,7 +239,6 @@ public class BookingListFragment extends InjectedFragment
     private void loadBookings()
     {
         mSwipeRefreshLayout.setRefreshing(true);
-        Log.d(TAG, "loadBookings :setRefreshing");
         String onlyBookingValues = null;
         switch (mListType)
         {
