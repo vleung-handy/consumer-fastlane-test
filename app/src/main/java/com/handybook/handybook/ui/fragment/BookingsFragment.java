@@ -27,15 +27,19 @@ import butterknife.ButterKnife;
 public class BookingsFragment extends InjectedFragment
 {
 
+    @Bind(R.id.menu_button_layout)
+    ViewGroup mMenuButtonLayout;
+    @Bind(R.id.pager)
+    ViewPager mViewPager;
+    @Bind(R.id.tab_layout)
+    TabLayout mTabLayout;
     private TabAdapter mTabAdapter;
 
-    @Bind(R.id.menu_button_layout)
-    ViewGroup vMenuButtonLayout;
-    @Bind(R.id.pager)
-    ViewPager vViewPager;
-    @Bind(R.id.tab_layout)
-    TabLayout vTabLayout;
 
+    public BookingsFragment()
+    {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -47,11 +51,6 @@ public class BookingsFragment extends InjectedFragment
     {
         BookingsFragment fragment = new BookingsFragment();
         return fragment;
-    }
-
-    public BookingsFragment()
-    {
-        // Required empty public constructor
     }
 
     @Override
@@ -67,12 +66,13 @@ public class BookingsFragment extends InjectedFragment
     {
         final View view = inflater.inflate(R.layout.fragment_bookings, container, false);
         ButterKnife.bind(this, view);
-        vViewPager.setAdapter(mTabAdapter);
-        vViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(vTabLayout));
-        vTabLayout.setupWithViewPager(vViewPager);
-        vTabLayout.setTabsFromPagerAdapter(mTabAdapter);
-        final MenuButton menuButton = new MenuButton(getActivity(), vMenuButtonLayout);
-        vMenuButtonLayout.addView(menuButton);
+        mViewPager.setAdapter(mTabAdapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
+        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
+        menuButton.setColor(R.color.handy_white);
+        mMenuButtonLayout.addView(menuButton);
 
         return view;
     }
@@ -103,15 +103,15 @@ public class BookingsFragment extends InjectedFragment
         }
 
         @Override
-        public BookingListFragment getItem(int position)
-        {
-            return fragments.get(position);
-        }
-
-        @Override
         public CharSequence getPageTitle(int position)
         {
             return titles.get(position);
+        }
+
+        @Override
+        public BookingListFragment getItem(int position)
+        {
+            return fragments.get(position);
         }
     }
 }
