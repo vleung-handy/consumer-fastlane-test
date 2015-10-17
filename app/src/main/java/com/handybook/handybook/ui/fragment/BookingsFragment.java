@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.ui.view.HandyTabLayout;
 import com.handybook.handybook.ui.widget.MenuButton;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class BookingsFragment extends InjectedFragment
     @Bind(R.id.pager)
     ViewPager mViewPager;
     @Bind(R.id.tab_layout)
-    TabLayout mTabLayout;
+    HandyTabLayout mTabLayout;
     private TabAdapter mTabAdapter;
 
 
