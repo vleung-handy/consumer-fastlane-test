@@ -34,11 +34,12 @@
         style="@style/TextView.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/handy_hot_pink"
         app:tabIndicatorHeight="2dp"
-        app:tabSelectedTextColor="@color/handy_white"
-        app:tabTextAppearance="@style/TextView.Medium"
+        app:tabIndicatorColor="@color/handy_white"
+        app:tabTextAppearance="@style/TextAppearance.TabText"
         app:tabTextColor="@color/handy_white_semitransparent"
+        app:tabSelectedTextColor="@color/handy_white"
+
         >
     </com.handybook.handybook.ui.view.HandyTabLayout>
 

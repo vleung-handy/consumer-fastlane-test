@@ -29,7 +29,7 @@ public class HandyTabLayout extends TabLayout
     @Override
     public void setTabsFromPagerAdapter(@NonNull PagerAdapter adapter)
     {
-        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/CircularStd-Book.otf");
+        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/CircularStd-Bold.otf");
 
         this.removeAllTabs();
 
