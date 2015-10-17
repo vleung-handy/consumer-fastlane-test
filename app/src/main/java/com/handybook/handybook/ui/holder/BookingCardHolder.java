@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import com.handybook.handybook.ui.widget.BookingCardServiceIcon;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class BookingCardHolder extends RecyclerView.ViewHolder
 {
@@ -87,6 +89,14 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
             vFooter.setVisibility(View.GONE);
         }
         vServiceIcon.updateServiceIconByBooking(mBookingCardViewModel.getBookings().get(0));
+    }
+
+    @OnClick(R.id.rl_booking_card_footer)
+    void onInfoRowClicked()
+    {
+        Snackbar
+                .make(mRoot, R.string.snackbar_recurring_will_be_generated, Snackbar.LENGTH_LONG)
+                .show();
     }
 
 }
