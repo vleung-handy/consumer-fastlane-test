@@ -88,11 +88,11 @@ public class BookingCardViewModel
 
 
         /**
-         *  Defines type of BookingCardViewModel.List
-         *  <p/>
-         *  IntDef used instead of ENUMs
-         *  @see <a href="http://tools.android.com/tech-docs/support-annotations">Support Annotations</a>
+         * Defines type of BookingCardViewModel.List
+         * <p/>
+         * IntDef used instead of ENUMs
          *
+         * @see <a href="http://tools.android.com/tech-docs/support-annotations">Support Annotations</a>
          */
         @IntDef({TYPE_PAST, TYPE_UPCOMING, TYPE_MIXED})
         @Retention(RetentionPolicy.SOURCE)
@@ -115,9 +115,42 @@ public class BookingCardViewModel
 
         public static List from(@NonNull final Collection<Booking> bookings, @ListType int type)
         {
-            final List theList = from(bookings);
-            theList.setType(type);
-            return theList;
+            switch (type)
+            {
+                case TYPE_PAST:
+                    final List pastList = from(bookings, true);
+                    pastList.setType(type);
+                    return pastList;
+                case TYPE_UPCOMING:
+                    final List upcomingList = from(bookings);
+                    upcomingList.setType(type);
+                    return upcomingList;
+                default:
+                    return new List();
+            }
+        }
+
+        public static List from(
+                @NonNull final Collection<Booking> bookings,
+                final boolean doNotGroup
+        )
+        {
+            if (doNotGroup)
+            {
+                final List bookingCardViewModels = new List();
+                bookingCardViewModels.mBookings = new ArrayList<>();
+                for (Booking eachBooking : bookings)
+                {
+                    // Add the BookingsCardViewModel
+                    bookingCardViewModels.add(new BookingCardViewModel(eachBooking));
+                    // Add it to the internal booking list
+                    bookingCardViewModels.mBookings.add(eachBooking);
+                }
+                return bookingCardViewModels;
+            } else
+            {
+                return from(bookings);
+            }
         }
 
         public static List from(@NonNull final Collection<Booking> bookings)

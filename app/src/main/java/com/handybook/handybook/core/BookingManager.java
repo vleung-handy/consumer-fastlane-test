@@ -148,6 +148,8 @@ public final class BookingManager implements Observer
         if (event.getOnlyBookingValue() == null)
         {
             // The code below did the filtering before I knew about the past, upcoming API parameter
+            // The code below should never ever be run
+            // TODO: Remove the code below
             dataManager.getBookings(
                     event.getUser(),
                     null,
@@ -172,14 +174,18 @@ public final class BookingManager implements Observer
 
                             // Emit upcoming
                             BookingCardViewModel.List upcoming = BookingCardViewModel.List
-                                    .from(upcomingBookings);
-                            upcoming.setType(BookingCardViewModel.List.TYPE_UPCOMING);
+                                    .from(
+                                            upcomingBookings,
+                                            BookingCardViewModel.List.TYPE_UPCOMING
+                                    );
                             bus.post(new HandyEvent.Response.BookingCardViewModels(upcoming));
 
                             // Emit past
                             BookingCardViewModel.List past = BookingCardViewModel.List
-                                    .from(pastBookings);
-                            past.setType(BookingCardViewModel.List.TYPE_PAST);
+                                    .from(
+                                            pastBookings,
+                                            BookingCardViewModel.List.TYPE_PAST
+                                    );
                             bus.post(new HandyEvent.Response.BookingCardViewModels(past));
 
                         }
@@ -204,14 +210,16 @@ public final class BookingManager implements Observer
                         {
                             Collections.sort(result, Booking.COMPARATOR_DATE);
                             // Mark bookingCardViewModels accordingly and emit it.
-                            BookingCardViewModel.List models = BookingCardViewModel.List
-                                    .from(result);
+                            BookingCardViewModel.List models = new BookingCardViewModel.List();
                             switch (event.getOnlyBookingValue())
                             {
                                 case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
-                                    models.setType(BookingCardViewModel.List.TYPE_PAST);
+                                    models = BookingCardViewModel.List
+                                            .from(result, BookingCardViewModel.List.TYPE_PAST);
                                     break;
                                 case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
+                                    models = BookingCardViewModel.List
+                                            .from(result, BookingCardViewModel.List.TYPE_UPCOMING);
                                     models.setType(BookingCardViewModel.List.TYPE_UPCOMING);
                                     break;
                                 default:
