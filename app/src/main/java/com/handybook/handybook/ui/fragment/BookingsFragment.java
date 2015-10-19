@@ -72,7 +72,7 @@ public class BookingsFragment extends InjectedFragment
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(R.color.handy_white);
+        menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
 
         return view;
