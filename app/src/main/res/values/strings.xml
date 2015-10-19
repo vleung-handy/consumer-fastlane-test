@@ -179,5 +179,8 @@
     <string name="image_content_description_handy_logo">Handy Icon</string>
     <string name="image_content_description_icon_recuring">Recurring Icon</string>
     <string name="invalid_pro_phone_number">The phone number for this provider could not be found</string>
+    <string name="set_environment">Set Environment</string>
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

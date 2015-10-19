@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
@@ -22,10 +23,8 @@ import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.manager.PrefsManager;
-import com.squareup.otto.Bus;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,62 +43,15 @@ import retrofit.mime.TypedInput;
 public final class BaseDataManager extends DataManager
 {
     private final HandyRetrofitService service;
-    private final HandyEndpoint endpoint;
+    private final HandyRetrofitEndpoint endpoint;
     private final PrefsManager prefsManager;
 
     @Inject
-    public BaseDataManager(final HandyRetrofitService service, final HandyEndpoint endpoint,
-                           final Bus bus, final PrefsManager prefsManager)
+    public BaseDataManager(final HandyRetrofitService service, final HandyRetrofitEndpoint endpoint, final PrefsManager prefsManager)
     {
-        super(bus);
         this.service = service;
         this.endpoint = endpoint;
         this.prefsManager = prefsManager;
-    }
-
-    //UPGRADE: Grab the HandyRetrofitEndpoint and EnvironmentManagers from Nortal
-
-    @Override
-    public void setEnvironment(final Environment env, final boolean notify)
-    {
-        super.setEnvironment(env, notify);
-        switch (env)
-        {
-            case P:
-                endpoint.setEnv(HandyEndpoint.Environment.P);
-                break;
-
-            case Q1:
-                endpoint.setEnv(HandyEndpoint.Environment.Q1);
-                break;
-
-            case Q2:
-                endpoint.setEnv(HandyEndpoint.Environment.Q2);
-                break;
-
-            case Q3:
-                endpoint.setEnv(HandyEndpoint.Environment.Q3);
-                break;
-
-            case Q4:
-                endpoint.setEnv(HandyEndpoint.Environment.Q4);
-                break;
-
-            case Q6:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q6);
-                break;
-
-            case Q7:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.Q7);
-                break;
-
-            case D1:
-                endpoint.setEnv(HandyRetrofitEndpoint.Environment.D1);
-                break;
-
-            default:
-                endpoint.setEnv(HandyEndpoint.Environment.S);
-        }
     }
 
     @Override

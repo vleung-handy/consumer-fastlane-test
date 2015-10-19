@@ -11,7 +11,6 @@ import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.HandyEndpoint;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
@@ -158,14 +157,28 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HandyEndpoint provideHandyEndpoint()
+    final EnvironmentModifier provideEnvironmentModifier(Bus bus, PrefsManager prefsManager)
     {
-        return new HandyRetrofitEndpoint(context);
+        EnvironmentModifier environmentModifier = new EnvironmentModifier(context, bus, prefsManager);
+
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
+            environmentModifier.setEnvironment(EnvironmentModifier.Environment.P);
+        }
+
+        return environmentModifier;
     }
 
     @Provides
     @Singleton
-    final HandyRetrofitService provideHandyService(final HandyEndpoint endpoint,
+    final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(EnvironmentModifier environmentModifier)
+    {
+        return new HandyRetrofitEndpoint(context, environmentModifier);
+    }
+
+    @Provides
+    @Singleton
+    final HandyRetrofitService provideHandyService(final HandyRetrofitEndpoint endpoint,
                                                    final UserManager userManager)
     {
 
@@ -237,16 +250,10 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final DataManager provideDataManager(final HandyRetrofitService service,
-                                         final HandyEndpoint endpoint,
-                                         final Bus bus,
+                                         final HandyRetrofitEndpoint endpoint,
                                          final PrefsManager prefsManager)
     {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefsManager);
-
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-        {
-            dataManager.setEnvironment(DataManager.Environment.P, false);
-        }
+        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
 
         return dataManager;
     }

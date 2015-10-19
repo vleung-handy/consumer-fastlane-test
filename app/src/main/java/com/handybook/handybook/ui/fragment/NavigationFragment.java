@@ -1,6 +1,8 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
@@ -29,7 +33,6 @@ import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.simplealertdialog.SimpleAlertDialog;
 import com.simplealertdialog.SimpleAlertDialogSupportFragment;
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import net.simonvt.menudrawer.MenuDrawer;
@@ -44,14 +47,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class NavigationFragment extends InjectedFragment
-        implements SimpleAlertDialog.OnClickListener, SimpleAlertDialog.OnItemClickListener
+        implements SimpleAlertDialog.OnClickListener
 {
     static final String ARG_SELECTED_ITEM = "com.handybook.handybook.ARG_SELECTED_ITEM";
     static final int REQUEST_LOGOUT = 1;
-    static final int REQUEST_ENV = 2;
 
-    private final ArrayList<String> items = new ArrayList<String>();
-    private final ArrayList<String> envs = new ArrayList<String>();
+    private final ArrayList<String> items = new ArrayList<>();
     private String selectedItem;
     private MenuDrawer menuDrawer;
 
@@ -65,7 +66,7 @@ public final class NavigationFragment extends InjectedFragment
     @Inject
     DataManager dataManager;
     @Inject
-    Bus bus;
+    EnvironmentModifier environmentModifier;
 
     public static NavigationFragment newInstance(final String selectedItem)
     {
@@ -86,14 +87,6 @@ public final class NavigationFragment extends InjectedFragment
         if ((args = getArguments()) != null)
         {
             selectedItem = args.getString(ARG_SELECTED_ITEM);
-        }
-
-        for (DataManager.Environment env : DataManager.Environment.values())
-        {
-            if (env != DataManager.Environment.P)
-            {
-                envs.add(env.toString());
-            }
         }
     }
 
@@ -116,12 +109,25 @@ public final class NavigationFragment extends InjectedFragment
             @Override
             public void onClick(View view)
             {
-                new SimpleAlertDialogSupportFragment.Builder()
-                        .setTitle("Select Environment")
-                        .setItems(envs.toArray(new String[envs.size()]))
-                        .setRequestCode(REQUEST_ENV)
-                        .setTargetFragment(NavigationFragment.this)
-                        .create().show(getActivity().getSupportFragmentManager(), "dialog");
+                Context context = NavigationFragment.this.getActivity();
+
+                final EditText input = new EditText(context);
+                input.setText(environmentModifier.getEnvironment());
+
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.set_environment)
+                        .setView(input)
+                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i)
+                            {
+                                environmentModifier.setEnvironment(input.getText().toString());
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create()
+                        .show();
             }
         });
 
@@ -154,7 +160,7 @@ public final class NavigationFragment extends InjectedFragment
         nameToResourceId.put(getString(R.string.log_out), R.id.nav_menu_log_out);
         nameToResourceId.put(getString(R.string.log_in), R.id.nav_menu_log_in);
 
-        if(nameToResourceId.containsKey(itemName))
+        if (nameToResourceId.containsKey(itemName))
         {
             return nameToResourceId.get(itemName);
         }
@@ -200,7 +206,7 @@ public final class NavigationFragment extends InjectedFragment
 
                 //HACK: We should be using IDs not text names, this is a quick fix so Automation is not blocked
                 int viewId = getViewIdByItemName(itemName);
-                if(viewId > -1)
+                if (viewId > -1)
                 {
                     view.setId(viewId);
                 }
@@ -283,16 +289,6 @@ public final class NavigationFragment extends InjectedFragment
     {
     }
 
-    @Override
-    public final void onItemClick(final SimpleAlertDialog dialog, final int requestCode,
-                                  final int which)
-    {
-        if (requestCode == REQUEST_ENV)
-        {
-            dataManager.setEnvironment(DataManager.Environment.valueOf(envs.get(which)), true);
-        }
-    }
-
     @Subscribe
     public final void userAuthUpdated(final UserLoggedInEvent event)
     {
@@ -337,7 +333,7 @@ public final class NavigationFragment extends InjectedFragment
             items.add(getString(R.string.log_in));
         }
 
-        envButton.setText(String.format(getString(R.string.env_format), dataManager.getEnvironment(),
+        envButton.setText(String.format(getString(R.string.env_format), environmentModifier.getEnvironment(),
                 BuildConfig.VERSION_NAME, Integer.valueOf(BuildConfig.VERSION_CODE).toString()));
 
         final BaseAdapter adapter = (BaseAdapter) listView.getAdapter();
