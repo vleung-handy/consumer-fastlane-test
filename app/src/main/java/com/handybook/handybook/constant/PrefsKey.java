@@ -16,16 +16,16 @@ public enum PrefsKey
     ENVIRONMENT_PREFIX("ENVIRONMENT_PREFIX"),
     ;
 
-    private String key;
+    private String mKey;
 
     PrefsKey(String key)
     {
-        this.key = key;
+        mKey = key;
     }
 
     public String getKey()
     {
-        return this.key;
+        return this.mKey;
     }
 
     @Override

@@ -21,7 +21,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.ui.activity.BookingsActivity;
@@ -53,8 +52,8 @@ public final class NavigationFragment extends InjectedFragment
     static final int REQUEST_LOGOUT = 1;
 
     private final ArrayList<String> items = new ArrayList<>();
-    private String selectedItem;
-    private MenuDrawer menuDrawer;
+    private String mSelectedItem;
+    private MenuDrawer mMenuDrawer;
 
     @Bind(R.id.env_button)
     Button envButton;
@@ -62,11 +61,9 @@ public final class NavigationFragment extends InjectedFragment
     ListView listView;
 
     @Inject
-    UserManager userManager;
+    UserManager mUserManager;
     @Inject
-    DataManager dataManager;
-    @Inject
-    EnvironmentModifier environmentModifier;
+    EnvironmentModifier mEnvironmentModifier;
 
     public static NavigationFragment newInstance(final String selectedItem)
     {
@@ -86,7 +83,7 @@ public final class NavigationFragment extends InjectedFragment
         final Bundle args;
         if ((args = getArguments()) != null)
         {
-            selectedItem = args.getString(ARG_SELECTED_ITEM);
+            mSelectedItem = args.getString(ARG_SELECTED_ITEM);
         }
     }
 
@@ -110,10 +107,8 @@ public final class NavigationFragment extends InjectedFragment
             public void onClick(View view)
             {
                 Context context = NavigationFragment.this.getActivity();
-
                 final EditText input = new EditText(context);
-                input.setText(environmentModifier.getEnvironment());
-
+                input.setText(mEnvironmentModifier.getEnvironment());
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.set_environment)
                         .setView(input)
@@ -122,7 +117,7 @@ public final class NavigationFragment extends InjectedFragment
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i)
                             {
-                                environmentModifier.setEnvironment(input.getText().toString());
+                                mEnvironmentModifier.setEnvironment(input.getText().toString());
                             }
                         })
                         .setNegativeButton(R.string.cancel, null)
@@ -175,7 +170,7 @@ public final class NavigationFragment extends InjectedFragment
         super.onActivityCreated(savedInstanceState);
 
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        menuDrawer = activity.getMenuDrawer();
+        mMenuDrawer = activity.getMenuDrawer();
         listView.setAdapter(new ArrayAdapter<String>(getActivity(),
                 R.layout.list_item_nav, items)
         {
@@ -195,7 +190,7 @@ public final class NavigationFragment extends InjectedFragment
                 final TextView item = (TextView) view.findViewById(R.id.nav_item);
                 item.setText(itemName);
 
-                if (itemName.equalsIgnoreCase(selectedItem))
+                if (itemName.equalsIgnoreCase(mSelectedItem))
                 {
                     item.setTextColor(getResources().getColor(R.color.handy_blue));
                 }
@@ -226,32 +221,32 @@ public final class NavigationFragment extends InjectedFragment
                 final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
                 if (item.equalsIgnoreCase(getString(R.string.home))
-                        && !(getString(R.string.home).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.home).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(ServiceCategoriesActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.profile))
-                        && !(getString(R.string.profile).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.profile).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(ProfileActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.my_bookings))
-                        && !(getString(R.string.my_bookings).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.my_bookings).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(BookingsActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.help))
-                        && !(getString(R.string.help).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.help).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(HelpActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.promotions))
-                        && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.promotions).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(PromosActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.log_in))
-                        && !(getString(R.string.log_in).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.log_in).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(LoginActivity.class);
                 }
@@ -267,7 +262,7 @@ public final class NavigationFragment extends InjectedFragment
                 }
                 else
                 {
-                    menuDrawer.closeMenu();
+                    mMenuDrawer.closeMenu();
                 }
             }
         });
@@ -279,7 +274,7 @@ public final class NavigationFragment extends InjectedFragment
     {
         if (requestCode == REQUEST_LOGOUT)
         {
-            userManager.setCurrentUser(null);
+            mUserManager.setCurrentUser(null);
         }
     }
 
@@ -309,7 +304,7 @@ public final class NavigationFragment extends InjectedFragment
 
     private void loadNavItems()
     {
-        final boolean userLoggedIn = userManager.getCurrentUser() != null;
+        final boolean userLoggedIn = mUserManager.getCurrentUser() != null;
 
         items.clear();
         items.add(getString(R.string.home));
@@ -324,7 +319,7 @@ public final class NavigationFragment extends InjectedFragment
 
         items.add(getString(R.string.promotions));
 
-        if (userManager.getCurrentUser() != null)
+        if (mUserManager.getCurrentUser() != null)
         {
             items.add(getString(R.string.log_out));
         }
@@ -333,7 +328,7 @@ public final class NavigationFragment extends InjectedFragment
             items.add(getString(R.string.log_in));
         }
 
-        envButton.setText(String.format(getString(R.string.env_format), environmentModifier.getEnvironment(),
+        envButton.setText(String.format(getString(R.string.env_format), mEnvironmentModifier.getEnvironment(),
                 BuildConfig.VERSION_NAME, Integer.valueOf(BuildConfig.VERSION_CODE).toString()));
 
         final BaseAdapter adapter = (BaseAdapter) listView.getAdapter();

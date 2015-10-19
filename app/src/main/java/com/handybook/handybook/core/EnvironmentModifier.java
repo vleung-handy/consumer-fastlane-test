@@ -18,13 +18,13 @@ public class EnvironmentModifier
         public static final String S = "s";
     }
 
-    private final Bus bus;
-    private final PrefsManager prefsManager;
+    private final Bus mBus;
+    private final PrefsManager mPrefsManager;
 
     public EnvironmentModifier(Context context, Bus bus, PrefsManager prefsManager)
     {
-        this.bus = bus;
-        this.prefsManager = prefsManager;
+        mBus = bus;
+        mPrefsManager = prefsManager;
 
         try
         {
@@ -41,7 +41,7 @@ public class EnvironmentModifier
 
     public String getEnvironment()
     {
-        return prefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, Environment.S);
+        return mPrefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, Environment.S);
     }
 
     public boolean isProduction()
@@ -52,8 +52,8 @@ public class EnvironmentModifier
     public void setEnvironment(String environment)
     {
         String previousEnvironment = getEnvironment();
-        prefsManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
+        mPrefsManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
 
-        bus.post(new EnvironmentUpdatedEvent(environment, previousEnvironment));
+        mBus.post(new EnvironmentUpdatedEvent(environment, previousEnvironment));
     }
 }
