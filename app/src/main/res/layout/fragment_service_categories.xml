@@ -1,65 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/handy_blue">
+    android:background="@color/handy_bg">
 
-    <RelativeLayout
-        android:id="@+id/menu_button_layout"
-        android:layout_height="64dp"
-        android:gravity="top|start"
-        style="@style/MenuButtonLayout" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/logo_spin"
-        android:contentDescription="@string/app_name" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/handy_blue"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="138dp"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/logo_spin"
+                    android:contentDescription="@string/app_name"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/menu_button_layout"
+                style="@style/MenuButtonLayout"
+                android:layout_height="64dp"
+                android:gravity="top|start"/>
+
+            <LinearLayout
+                android:id="@+id/category_layout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/logo"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="-32dp"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/coupon_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/default_padding"
-        android:gravity="center"
         android:layout_alignParentBottom="true"
         android:background="@android:color/black"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_padding"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/promo_img"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_price_tag"
-            android:contentDescription="promotion" />
+            android:contentDescription="promotion"
+            android:src="@drawable/ic_price_tag"/>
 
         <TextView
             android:id="@+id/promo_text"
+            style="@style/TextView.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:singleLine="true"
             android:gravity="center"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:singleLine="true"
             android:text="@string/using_promo"
-            style="@style/TextView.Medium"/>
+            android:textAllCaps="false"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/category_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/coupon_layout"
-        android:orientation="vertical"
-        android:layout_below="@id/logo"
-        android:background="@android:color/white" />
-
 </RelativeLayout>

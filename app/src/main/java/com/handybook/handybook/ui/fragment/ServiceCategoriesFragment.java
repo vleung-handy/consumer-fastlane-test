@@ -36,8 +36,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     @Bind(R.id.category_layout)
     LinearLayout categoryLayout;
-    @Bind(R.id.logo)
-    ImageView logo;
     @Bind(R.id.menu_button_layout)
     ViewGroup menuButtonLayout;
     @Bind(R.id.coupon_layout)
@@ -84,17 +82,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
-//        logo.setOnClickListener(
-//                new View.OnClickListener()
-//                {
-//                    @Override
-//                    public void onClick(final View v)
-//                    {
-//                        AnimationDrawable logoSpin = (AnimationDrawable) logo.getBackground();
-//                        logoSpin.stop();
-//                        logoSpin.start();
-//                    }
-//                });
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         assert true;
@@ -135,7 +122,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
             promoText.setText(text, TextView.BufferType.SPANNABLE);
             couponLayout.setVisibility(View.VISIBLE);
-        } else
+        }
+        else
         {
             couponLayout.setVisibility(View.GONE);
         }
@@ -161,7 +149,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                         intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
                         intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, categoryView.getHeight());
                         startActivity(intent);
-                    } else
+                    }
+                    else
                     {
                         startBookingFlow(service.getId(), service.getUniq());
                     }
