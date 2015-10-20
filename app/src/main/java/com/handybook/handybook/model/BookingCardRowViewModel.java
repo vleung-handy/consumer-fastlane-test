@@ -15,6 +15,10 @@ import java.util.Date;
 public class BookingCardRowViewModel
 {
 
+    public static final String SUBTITLE_DATE_FORMAT = "h:mm aaa";
+    public static final int MINUTES_PER_HOUR = 60;
+    public static final String DURATION_FORMAT = "#.#";
+    public static final String TITLE_DATE_FORMAT = "EEEE',' MMMM d";
     private static final long MIN_NEGATIVE_DELTA_MS_FOR_ON_MY_WAY = 60 * 60 * 1000; //an hour
     private Booking mBooking;
 
@@ -31,25 +35,19 @@ public class BookingCardRowViewModel
 
     public String getTitle()
     {
-        final String title = TextUtils.formatDate(mBooking.getStartDate(), "EEEE',' MMMM d");
+        final String title = TextUtils.formatDate(mBooking.getStartDate(), TITLE_DATE_FORMAT);
         return title;
     }
 
     public String getSubtitle(@NonNull Context context)
     {
-//        String timeText = TextUtils.formatDate(booking.getStartDate(), "h:mm aaa")
-//                + " - "
-//                + TextUtils.formatDecimal(booking.getHours(), "#.#")
-//                + " "
-//                + getString(R.string.hours);
-        final String start = TextUtils.formatDate(mBooking.getStartDate(), "h:mm aaa");
+        final String start = TextUtils.formatDate(mBooking.getStartDate(), SUBTITLE_DATE_FORMAT);
         Calendar cal = Calendar.getInstance();
         cal.setTime(mBooking.getStartDate());
-        cal.add(Calendar.MINUTE, Math.round(mBooking.getHours() * 60)); // adds booking duration
+        cal.add(Calendar.MINUTE, Math.round(mBooking.getHours() * MINUTES_PER_HOUR)); // adds booking duration
         final Date endDate = cal.getTime();
-        final String end = TextUtils.formatDate(endDate, "h:mm aaa");
-        final String duration = TextUtils.formatDecimal(mBooking.getHours(), "#.#");
-
+        final String end = TextUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT);
+        final String duration = TextUtils.formatDecimal(mBooking.getHours(), DURATION_FORMAT);
         final String subtitle = context.getString(
                 R.string.booking_card_row_time_and_duration,
                 start,
@@ -65,11 +63,7 @@ public class BookingCardRowViewModel
         final long start = mBooking.getStartDate().getTime();
         final long delta = now - start;
         //TODO: Come up with specs an implement this properly
-        if (delta < 0 && delta > MIN_NEGATIVE_DELTA_MS_FOR_ON_MY_WAY)
-        {
-            return true;
-        }
-        return false;
+        return delta < 0 && delta > MIN_NEGATIVE_DELTA_MS_FOR_ON_MY_WAY;
     }
 
     public Booking getBooking()
