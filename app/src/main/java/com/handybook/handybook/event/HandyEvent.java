@@ -6,6 +6,7 @@ import android.support.v4.util.Pair;
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.User;
@@ -313,6 +314,33 @@ public abstract class HandyEvent
         }
     }
 
+    //Update the frequency of a booking
+    public static class RequestUpdateBookingFrequency extends Request
+    {
+        public final int bookingId;
+        public final BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction;
+
+        public RequestUpdateBookingFrequency(int bookingId, BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction)
+        {
+            this.bookingId = bookingId;
+            this.bookingUpdateFrequencyTransaction = bookingUpdateFrequencyTransaction;
+        }
+    }
+
+    public static class ReceiveUpdateBookingFrequencySuccess extends ReceiveSuccessEvent
+    {
+        public ReceiveUpdateBookingFrequencySuccess()
+        {
+        }
+    }
+
+    public static class ReceiveUpdateBookingFrequencyError extends ReceiveErrorEvent
+    {
+        public ReceiveUpdateBookingFrequencyError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
     //UI
 
 

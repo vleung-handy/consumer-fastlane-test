@@ -15,6 +15,7 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
@@ -171,6 +172,10 @@ public abstract class DataManager
     public abstract void updateBookingEntryInformation(int bookingId,
                                                 BookingUpdateEntryInformationTransaction entryInformationTransaction,
                                                 Callback<Void> cb);
+
+    public abstract void updateBookingFrequency(int bookingId,
+                                                       BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
+                                                       Callback<Void> cb);
 
     public abstract void ratePro(int bookingId,
                                  int rating,

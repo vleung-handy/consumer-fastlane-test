@@ -19,6 +19,7 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
@@ -452,7 +453,8 @@ public final class BaseDataManager extends DataManager
                 if (response.has("coupon") && response.optInt("coupon") == 1)
                 {
                     cb.onSuccess(new PromoCode(PromoCode.Type.COUPON, promoCode));
-                } else if (response.has("voucher"))
+                }
+                else if (response.has("voucher"))
                 {
                     final JSONObject voucher = response.optJSONObject("voucher");
 
@@ -466,7 +468,8 @@ public final class BaseDataManager extends DataManager
                     //code.setUniq(voucher.optString("machine_name"));
 
                     cb.onSuccess(code);
-                } else
+                }
+                else
                 {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
@@ -658,7 +661,8 @@ public final class BaseDataManager extends DataManager
                 if (response.optBoolean("success", false))
                 {
                     cb.onSuccess(null);
-                } else
+                }
+                else
                 {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
@@ -810,6 +814,21 @@ public final class BaseDataManager extends DataManager
                                                     final Callback<Void> cb)
     {
         service.updateBookingEntryInformation(bookingId, entryInformationTransaction, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+            }
+        });
+    }
+
+    @Override
+    public final void updateBookingFrequency(int bookingId,
+                                                    BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
+                                                    final Callback<Void> cb)
+    {
+        service.updateBookingFrequency(bookingId, bookingUpdateFrequencyTransaction, new HandyRetrofitCallback(cb)
         {
             @Override
             void success(final JSONObject response)

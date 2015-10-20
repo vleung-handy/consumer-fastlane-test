@@ -11,14 +11,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.model.BookingCardViewModel;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.view.BookingCardRowView;
 import com.handybook.handybook.ui.widget.BookingCardServiceIcon;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,6 +49,8 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     @Bind(R.id.ll_booking_card_booking_row_container)
     LinearLayout vBookingRowContainer;
 
+    @Bind(R.id.tv_edit_booking_card)
+    TextView editBookingCard;
 
     public BookingCardHolder(View itemView)
     {
@@ -76,20 +83,63 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
             vBookingRowContainer.addView(bookingCardRowView);
             bookingCardRowView.update(model);
         }
-        if (mBookingCardViewModel.isMultiCard())
+
+        Booking masterBooking = getMasterBookingFromCardViewModel();
+        if(masterBooking == null)
         {
-            vRecurringSubtitleContainer.setVisibility(View.VISIBLE);
-            vFooter.setVisibility(View.VISIBLE);
-            vRecurringText.setVisibility(View.VISIBLE);
-            vRecurringText.setText(mBookingCardViewModel.getSubtitle());
-        } else
-        {
-            vRecurringText.setVisibility(View.GONE);
-            vRecurringSubtitleContainer.setVisibility(View.GONE);
-            vFooter.setVisibility(View.GONE);
+            Crashlytics.logException(new Exception(this.getClass().getCanonicalName() + ": model does not contain any bookings"));
         }
-        vServiceIcon.updateServiceIconByBooking(mBookingCardViewModel.getBookings().get(0));
+        else
+        {
+            boolean canEditFrequency = masterBooking.getCanEditFrequency() == null ? false : masterBooking.getCanEditFrequency();
+            if (canEditFrequency)
+            {
+                editBookingCard.setVisibility(View.VISIBLE);
+                editBookingCard.setOnClickListener(onEditClickListener);
+            }
+            else
+            {
+                editBookingCard.setVisibility(View.GONE);
+                editBookingCard.setOnClickListener(null);
+            }
+
+            if (masterBooking.isRecurring())
+            {
+                vRecurringSubtitleContainer.setVisibility(View.VISIBLE);
+                vFooter.setVisibility(View.VISIBLE);
+                vRecurringText.setVisibility(View.VISIBLE);
+                vRecurringText.setText(mBookingCardViewModel.getSubtitle());
+            }
+            else
+            {
+                vRecurringText.setVisibility(View.GONE);
+                vRecurringSubtitleContainer.setVisibility(View.GONE);
+                vFooter.setVisibility(View.GONE);
+            }
+            vServiceIcon.updateServiceIconByBooking(masterBooking);
+        }
+
     }
+
+    private Booking getMasterBookingFromCardViewModel()
+    {
+        ArrayList<Booking> bookings = mBookingCardViewModel.getBookings();
+        return (bookings == null || bookings.size() == 0) ? null : bookings.get(0);
+        //this is to account for confusing api payload response - e.g. only the first booking of a recurring series will have recurring > 0
+        //TODO: safer to loop through bookings list to find best booking to use
+    }
+
+    private View.OnClickListener onEditClickListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            final Intent intent = new Intent(mContext, BookingEditFrequencyActivity.class);
+            intent.putExtra(BundleKeys.BOOKING, getMasterBookingFromCardViewModel());
+            Activity activity = (Activity) mContext;
+            activity.startActivity(intent);
+        }
+    };
 
     @OnClick(R.id.rl_booking_card_footer)
     void onInfoRowClicked()
