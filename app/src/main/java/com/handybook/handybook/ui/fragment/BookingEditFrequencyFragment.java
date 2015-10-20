@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
-    //TODO: need to consolidate booking edit fragments with booking flow fragments that are used in booking creation
+    //TODO: need to consolidate all booking edit fragments with booking flow fragments that are used in booking creation
     private BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction;
     private Booking booking;
     private int[] recurValues;
@@ -69,18 +69,18 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
+        option.setDefaultValue("0");
 
         option.setOptions(new String[]{getString(R.string.every_week),
                 getString(R.string.every_two_weeks), getString(R.string.every_four_weeks)});
 
         recurValues = new int[]{1, 2, 4}; //allowing edit frequency only for recurring bookings
 
-        option.setDefaultValue("0");
 
         option.setOptionsSubText(new String[]
                 {null, getString(R.string.most_popular), null});
 
-//        option.setOptionsRightText(getSavingsInfo()); //TODO: can we get savings info from booking object alone?
+//        option.setOptionsRightText(getSavingsInfo()); //TODO: need BookingQuote's price table to get savings info
 
         final BookingOptionsSelectView optionsView
                 = new BookingOptionsSelectView(getActivity(), option, optionUpdated);

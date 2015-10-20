@@ -4,9 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Observable;
 
-public final class BookingUpdateFrequencyTransaction extends Observable {
+public final class BookingUpdateFrequencyTransaction extends Observable
+{
+    @SerializedName("new_freq")
+    private int recurringFrequency;
 
-    @SerializedName("new_freq") private int recurringFrequency;
     public int getRecurringFrequency()
     {
         return recurringFrequency;
@@ -15,9 +17,12 @@ public final class BookingUpdateFrequencyTransaction extends Observable {
     public void setRecurringFrequency(int recurring)
     {
         this.recurringFrequency = recurring;
+        triggerObservers();
     }
 
-    private void triggerObservers() {
+    //TODO: this function is duplicated in a LOT of other classes - we must consolidate!
+    private void triggerObservers()
+    {
         setChanged();
         notifyObservers();
     }
