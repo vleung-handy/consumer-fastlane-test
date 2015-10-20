@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/handy_white"
     app:cardCornerRadius="4dp"
     app:cardElevation="1dp"
     app:cardPreventCornerOverlap="true"
@@ -12,7 +13,6 @@
     app:contentPadding="0dp"
     app:paddingEnd="@dimen/default_margin_half"
     app:paddingStart="@dimen/default_margin_half"
-    app:cardBackgroundColor="@color/handy_white"
     >
 
     <LinearLayout
@@ -44,15 +44,15 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center_vertical"
+                android:orientation="vertical"
                 >
 
                 <TextView
                     android:id="@+id/tv_booking_card_service_title"
+                    style="@style/TextView.Large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/TextView.Large"
                     tools:text="Home Cleaning"/>
 
                 <LinearLayout
@@ -84,6 +84,23 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/default_margin_half">
+                <TextView
+                    android:id="@+id/tv_edit_booking_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:text="@string/edit"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextView.Bold"
+                    android:textColor="@color/handy_blue"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+            </FrameLayout>
 
         </LinearLayout>
 

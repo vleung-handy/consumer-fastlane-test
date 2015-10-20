@@ -7,6 +7,7 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.User;
 
@@ -103,6 +104,10 @@ public interface HandyRetrofitService
                                        @Body BookingUpdateEntryInformationTransaction entryInformationTransaction,
                                        HandyRetrofitCallback cb);
 
+    @POST("/bookings/{booking}/edit_frequency")
+    void updateBookingFrequency(@Path("booking") int bookingId,
+                                @Body BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
+                                HandyRetrofitCallback cb);
 
     @GET("/bookings/prereschedule_info")
     void getPreRescheduleInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
