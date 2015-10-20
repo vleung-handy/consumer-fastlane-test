@@ -35,15 +35,15 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     private boolean usedCache;
 
     @Bind(R.id.category_layout)
-    LinearLayout categoryLayout;
+    LinearLayout mCategoryLayout;
     @Bind(R.id.menu_button_layout)
-    ViewGroup menuButtonLayout;
+    ViewGroup mMenuButtonLayout;
     @Bind(R.id.coupon_layout)
-    View couponLayout;
+    View mCouponLayout;
     @Bind(R.id.promo_img)
-    ImageView promoImage;
+    ImageView mPromoImage;
     @Bind(R.id.promo_text)
-    TextView promoText;
+    TextView mPromoText;
 
     public static ServiceCategoriesFragment newInstance()
     {
@@ -82,12 +82,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
-        final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
+        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         assert true;
-        menuButtonLayout.addView(menuButton);
+        mMenuButtonLayout.addView(menuButton);
 
-        promoImage.setColorFilter(
+        mPromoImage.setColorFilter(
                 getResources().getColor(R.color.handy_blue),
                 PorterDuff.Mode.SRC_ATOP);
         return view;
@@ -120,24 +120,23 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             );
 
-            promoText.setText(text, TextView.BufferType.SPANNABLE);
-            couponLayout.setVisibility(View.VISIBLE);
+            mPromoText.setText(text, TextView.BufferType.SPANNABLE);
+            mCouponLayout.setVisibility(View.VISIBLE);
         }
         else
         {
-            couponLayout.setVisibility(View.GONE);
+            mCouponLayout.setVisibility(View.GONE);
         }
     }
 
     private void displayServices()
     {
-        categoryLayout.removeAllViews();
+        mCategoryLayout.removeAllViews();
         int pos = 0;
         for (final Service service : services)
         {
             final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
-            categoryView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1));
-            categoryView.setText(service.getName());
+            categoryView.init(service);
             categoryView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -156,7 +155,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                     }
                 }
             });
-            categoryLayout.addView(categoryView, pos++);
+            mCategoryLayout.addView(categoryView, pos++);
         }
     }
 

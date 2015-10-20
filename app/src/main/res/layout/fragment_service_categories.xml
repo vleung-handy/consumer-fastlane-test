@@ -15,39 +15,41 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/logo"
+                android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:background="@color/handy_blue"
-                android:gravity="center">
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|start">
+
+                    <RelativeLayout
+                        android:id="@+id/menu_button_layout"
+                        style="@style/MenuButtonLayout"
+                        android:layout_height="64dp"/>
+                </LinearLayout>
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="138dp"
-                    android:layout_marginBottom="32dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/logo_spin"
-                    android:contentDescription="@string/app_name"/>
+                    android:layout_width="96dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="80dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_home_logo"/>
             </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/menu_button_layout"
-                style="@style/MenuButtonLayout"
-                android:layout_height="64dp"
-                android:gravity="top|start"/>
 
             <LinearLayout
                 android:id="@+id/category_layout"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_below="@id/logo"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="-32dp"
-                android:orientation="vertical">
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/header"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:layout_marginRight="@dimen/default_margin_half"
+                android:layout_marginTop="-60dp"
+                android:orientation="vertical"/>
 
         </RelativeLayout>
     </ScrollView>
