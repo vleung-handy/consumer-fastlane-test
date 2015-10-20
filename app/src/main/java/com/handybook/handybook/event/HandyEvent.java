@@ -18,15 +18,15 @@ import retrofit.mime.TypedInput;
 
 public abstract class HandyEvent
 {
-    public abstract static class Request extends HandyEvent
+    public abstract static class RequestEvent extends HandyEvent
     {
-        public static class BookingCardViewModels extends Request
+        public static class BookingCardViewModelsEvent extends RequestEvent
         {
             private User mUser;
             @Booking.List.OnlyBookingValues
             private String mOnlyBookingValue;
 
-            public BookingCardViewModels(
+            public BookingCardViewModelsEvent(
                     @NonNull final User user,
                     @NonNull @Booking.List.OnlyBookingValues final String onlyBookingsValue)
             {
@@ -34,7 +34,7 @@ public abstract class HandyEvent
                 mOnlyBookingValue = onlyBookingsValue;
             }
 
-            public BookingCardViewModels(@NonNull final User user)
+            public BookingCardViewModelsEvent(@NonNull final User user)
             {
                 mUser = user;
             }
@@ -53,11 +53,11 @@ public abstract class HandyEvent
     }
 
 
-    public abstract static class Response<T> extends HandyEvent
+    public abstract static class ResponseEvent<T> extends HandyEvent
     {
         private T mPayload;
 
-        public Response(T payload)
+        public ResponseEvent(T payload)
         {
             this.mPayload = payload;
         }
@@ -67,7 +67,7 @@ public abstract class HandyEvent
             return mPayload;
         }
 
-        public static class BookingCardViewModels extends Response<BookingCardViewModel.List>
+        public static class BookingCardViewModels extends ResponseEvent<BookingCardViewModel.List>
         {
 
             public BookingCardViewModels(BookingCardViewModel.List payload)
@@ -77,7 +77,7 @@ public abstract class HandyEvent
         }
 
 
-        public static class BookingCardViewModelsError extends Response<DataManager.DataManagerError>
+        public static class BookingCardViewModelsError extends ResponseEvent<DataManager.DataManagerError>
         {
             public BookingCardViewModelsError(DataManager.DataManagerError payload)
             {
@@ -88,7 +88,7 @@ public abstract class HandyEvent
     }
 
 
-    public abstract static class RequestBookingActionEvent extends Request
+    public abstract static class RequestBookingActionEvent extends RequestEvent
     {
         public String bookingId;
     }
@@ -114,7 +114,7 @@ public abstract class HandyEvent
     //Bookings
 
 
-    public static class RequestBookingsForUser extends Request
+    public static class RequestBookingsForUser extends RequestEvent
     {
         public User user;
 
@@ -149,7 +149,7 @@ public abstract class HandyEvent
 //Booking Details
 
 
-    public static class RequestBookingDetails extends Request
+    public static class RequestBookingDetails extends RequestEvent
     {
         public String bookingId;
 
@@ -179,7 +179,7 @@ public abstract class HandyEvent
     }
 
 
-    public static class RequestPreRescheduleInfo extends Request
+    public static class RequestPreRescheduleInfo extends RequestEvent
     {
         public String bookingId;
 
@@ -211,7 +211,7 @@ public abstract class HandyEvent
     }
 
 
-    public static class RequestPreCancelationInfo extends Request
+    public static class RequestPreCancelationInfo extends RequestEvent
     {
         public String bookingId;
 
@@ -247,7 +247,7 @@ public abstract class HandyEvent
 
 
     //Update the note to pro for a booking
-    public static class RequestUpdateBookingNoteToPro extends Request
+    public static class RequestUpdateBookingNoteToPro extends RequestEvent
     {
         public int bookingId;
         public BookingUpdateNoteToProTransaction descriptionTransaction;
@@ -281,7 +281,7 @@ public abstract class HandyEvent
 
 
     //Update the entry information for a booking
-    public static class RequestUpdateBookingEntryInformation extends Request
+    public static class RequestUpdateBookingEntryInformation extends RequestEvent
     {
         public int bookingId;
         public BookingUpdateEntryInformationTransaction entryInformationTransaction;

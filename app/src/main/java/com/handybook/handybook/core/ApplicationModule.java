@@ -74,7 +74,6 @@ import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
-import com.handybook.handybook.ui.fragment.BookingsFragmentOld;
 import com.handybook.handybook.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
@@ -114,7 +113,6 @@ import retrofit.converter.GsonConverter;
         NavigationFragment.class,
         ProfileFragment.class,
         BookingsFragment.class,
-        BookingsFragmentOld.class,
         BookingListFragment.class,
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,

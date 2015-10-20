@@ -31,7 +31,7 @@
                 android:layout_width="72dp"
                 android:layout_height="match_parent">
 
-                <com.handybook.handybook.ui.widget.BookingCardServiceIcon
+                <com.handybook.handybook.ui.widget.ServiceOutlineIcon
                     android:id="@+id/iv_booking_card_service_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

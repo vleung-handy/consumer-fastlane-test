@@ -18,7 +18,7 @@ import com.handybook.handybook.model.BookingCardRowViewModel;
 import com.handybook.handybook.model.BookingCardViewModel;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.view.BookingCardRowView;
-import com.handybook.handybook.ui.widget.BookingCardServiceIcon;
+import com.handybook.handybook.ui.widget.ServiceOutlineIcon;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,21 +28,19 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
 {
     private Context mContext;
     private BookingCardViewModel mBookingCardViewModel;
-
     private View mRoot;
-
     @Bind(R.id.iv_booking_card_service_icon)
-    BookingCardServiceIcon vServiceIcon;
+    ServiceOutlineIcon vServiceIcon;
     @Bind(R.id.tv_booking_card_service_title)
-    TextView vServiceTitle;
+    TextView mServiceTitle;
     @Bind(R.id.ll_booking_card_recurring_layout)
-    LinearLayout vRecurringSubtitleContainer;
+    LinearLayout mRecurringSubtitleContainer;
     @Bind(R.id.tv_booking_card_recurring_text)
-    TextView vRecurringText;
+    TextView mRecurringText;
     @Bind(R.id.rl_booking_card_footer)
-    RelativeLayout vFooter;
+    RelativeLayout mFooter;
     @Bind(R.id.ll_booking_card_booking_row_container)
-    LinearLayout vBookingRowContainer;
+    LinearLayout mBookingRowContainer;
 
 
     public BookingCardHolder(View itemView)
@@ -56,8 +54,8 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     public void bindBookingCardViewModel(@NonNull final BookingCardViewModel bookingCardViewModel)
     {
         mBookingCardViewModel = bookingCardViewModel;
-        vServiceTitle.setText(mBookingCardViewModel.getTitle());
-        vBookingRowContainer.removeAllViews();
+        mServiceTitle.setText(mBookingCardViewModel.getTitle());
+        mBookingRowContainer.removeAllViews();
         for (final BookingCardRowViewModel model : bookingCardViewModel.getBookingCardRowViewModels())
         {
             BookingCardRowView bookingCardRowView = new BookingCardRowView(mContext);
@@ -73,20 +71,20 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
 
                 }
             });
-            vBookingRowContainer.addView(bookingCardRowView);
+            mBookingRowContainer.addView(bookingCardRowView);
             bookingCardRowView.update(model);
         }
         if (mBookingCardViewModel.isMultiCard())
         {
-            vRecurringSubtitleContainer.setVisibility(View.VISIBLE);
-            vFooter.setVisibility(View.VISIBLE);
-            vRecurringText.setVisibility(View.VISIBLE);
-            vRecurringText.setText(mBookingCardViewModel.getSubtitle());
+            mRecurringSubtitleContainer.setVisibility(View.VISIBLE);
+            mFooter.setVisibility(View.VISIBLE);
+            mRecurringText.setVisibility(View.VISIBLE);
+            mRecurringText.setText(mBookingCardViewModel.getSubtitle());
         } else
         {
-            vRecurringText.setVisibility(View.GONE);
-            vRecurringSubtitleContainer.setVisibility(View.GONE);
-            vFooter.setVisibility(View.GONE);
+            mRecurringText.setVisibility(View.GONE);
+            mRecurringSubtitleContainer.setVisibility(View.GONE);
+            mFooter.setVisibility(View.GONE);
         }
         vServiceIcon.updateServiceIconByBooking(mBookingCardViewModel.getBookings().get(0));
     }

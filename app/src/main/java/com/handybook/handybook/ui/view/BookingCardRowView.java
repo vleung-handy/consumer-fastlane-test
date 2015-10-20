@@ -34,21 +34,24 @@ public class BookingCardRowView extends RelativeLayout
         init();
     }
 
-    private void init(){
+    private void init()
+    {
         inflate(getContext(), R.layout.layout_card_booking_row, this);
         vTitle = (TextView) findViewById(R.id.tv_card_booking_row_title);
         vSubtitle = (TextView) findViewById(R.id.tv_card_booking_row_subtitle);
         vEdgeInidcator = (ImageView) findViewById(R.id.iv_card_booking_row_left_edge_indicator);
     }
 
-    public void update(BookingCardRowViewModel model){
+    public void update(BookingCardRowViewModel model)
+    {
         vTitle.setText(model.getTitle());
         vSubtitle.setText(model.getSubtitle(getContext()));
         //TODO: Add indicator, image on the left based on the model state.
-        if(model.isIndicatorVisible()){
+        if (model.isIndicatorVisible())
+        {
             vEdgeInidcator.setVisibility(VISIBLE);
-        }
-        else {
+        } else
+        {
             vEdgeInidcator.setVisibility(GONE);
         }
     }

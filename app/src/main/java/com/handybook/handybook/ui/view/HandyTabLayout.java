@@ -9,6 +9,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
+import com.handybook.handybook.util.TextUtils;
+
 public class HandyTabLayout extends TabLayout
 {
     public HandyTabLayout(Context context)
@@ -29,7 +31,7 @@ public class HandyTabLayout extends TabLayout
     @Override
     public void setTabsFromPagerAdapter(@NonNull PagerAdapter adapter)
     {
-        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/CircularStd-Book.otf");
+        Typeface typeface = TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK);
 
         this.removeAllTabs();
 

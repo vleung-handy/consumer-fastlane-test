@@ -227,7 +227,7 @@ public class BookingListFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onModelsReceived(@NonNull final HandyEvent.Response.BookingCardViewModels e)
+    public void onModelsReceived(@NonNull final HandyEvent.ResponseEvent.BookingCardViewModels e)
     {
         if (e.getPayload().getType() == mListType)
         {
@@ -239,7 +239,7 @@ public class BookingListFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onModelsRequestError(@NonNull final HandyEvent.Response.BookingCardViewModelsError e)
+    public void onModelsRequestError(@NonNull final HandyEvent.ResponseEvent.BookingCardViewModelsError e)
     {
         mSwipeRefreshLayout.setRefreshing(false);
         mBookingsWereReceived = false;
@@ -271,12 +271,12 @@ public class BookingListFragment extends InjectedFragment
         if (onlyBookingValues == null)
         {
             // Load all of them
-            bus.post(new HandyEvent.Request.Request.BookingCardViewModels(
+            bus.post(new HandyEvent.RequestEvent.BookingCardViewModelsEvent(
                     userManager.getCurrentUser()
             ));
         } else
         {
-            bus.post(new HandyEvent.Request.Request.BookingCardViewModels(
+            bus.post(new HandyEvent.RequestEvent.BookingCardViewModelsEvent(
                     userManager.getCurrentUser(),
                     onlyBookingValues
             ));

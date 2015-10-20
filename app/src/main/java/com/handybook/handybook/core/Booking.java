@@ -151,6 +151,7 @@ public final class Booking implements Parcelable
     public static final String SERVICE_ELECTRICAL = "electrical";
     public static final String SERVICE_PAINTING = "painting";
 
+
     /*
     Service list from api/v3/services:
     cleaning
@@ -195,7 +196,7 @@ public final class Booking implements Parcelable
             SERVICE_ELECTRICIAN,
             SERVICE_ELECTRICAL,
             SERVICE_PAINTING
-    //TODO:Implement the rest of service types from above
+            //TODO:Implement the rest of service types from above
     })
     public @interface ServiceType
     {
@@ -217,7 +218,7 @@ public final class Booking implements Parcelable
         final Calendar endDate = Calendar.getInstance();
         endDate.setTime(this.getStartDate());
         //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
-        endDate.add(Calendar.MINUTE, (int)(60 * this.getHours()));
+        endDate.add(Calendar.MINUTE, (int) (60 * this.getHours()));
         return endDate.getTime();
     }
 
@@ -567,7 +568,7 @@ public final class Booking implements Parcelable
 
         public final String getFullName()
         {
-            return ((firstName != null ? firstName : "") + " " + (lastName != null ? lastName : ""));
+            return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
         }
 
         private Provider(final Parcel in)
@@ -746,17 +747,15 @@ public final class Booking implements Parcelable
             final String[] stringData = new String[2];
             in.readStringArray(stringData);
             label = stringData[0];
-
             try
             {
                 imageName = ExtraInfoImageName.valueOf(stringData[1]);
-            }
-            catch (IllegalArgumentException e)
+            } catch (IllegalArgumentException e)
             {
                 Crashlytics.log("Could not convert string : " + stringData[1] + " to extras image name");
             }
 
-            if(imageName == null)
+            if (imageName == null)
             {
                 imageName = ExtraInfoImageName.DEFAULT_IMAGE_NAME;
             }
@@ -770,7 +769,7 @@ public final class Booking implements Parcelable
                     imageName != null ?
                             imageName.toString()
                             : ExtraInfoImageName.DEFAULT_IMAGE_NAME.toString()
-                    });
+            });
         }
 
         @Override
@@ -808,9 +807,9 @@ public final class Booking implements Parcelable
     public static final int ENTRY_TYPE_DOORMAN = 1;
     public static final int ENTRY_TYPE_HIDE_THE_KEYS = 2;
 
+
     public static class List extends ArrayList<Booking>
     {
-
         public static final String VALUE_ONLY_BOOKINGS_PAST = "past";
         public static final String VALUE_ONLY_BOOKINGS_UPCOMING = "upcoming";
 

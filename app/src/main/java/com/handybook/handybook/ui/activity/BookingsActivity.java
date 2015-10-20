@@ -17,9 +17,4 @@ public final class BookingsActivity extends MenuDrawerActivity {
         return getString(R.string.my_bookings);
     }
 
-//    @Override
-//    protected void onActivityResult(final int requestCode, final int resultCode,
-//                                    final Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
 }
