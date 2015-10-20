@@ -11,7 +11,6 @@ import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.HandyEndpoint;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
@@ -146,38 +145,50 @@ import retrofit.converter.GsonConverter;
 })
 public final class ApplicationModule
 {
-    private final Context context;
-    private final Properties configs;
+    private final Context mContext;
+    private final Properties mConfigs;
 
     public ApplicationModule(final Context context)
     {
-        this.context = context.getApplicationContext();
-        configs = PropertiesReader
+        mContext = context.getApplicationContext();
+        mConfigs = PropertiesReader
                 .getProperties(context, "config.properties");
     }
 
     @Provides
     @Singleton
-    final HandyEndpoint provideHandyEndpoint()
+    final EnvironmentModifier provideEnvironmentModifier(Bus bus, PrefsManager prefsManager)
     {
-        return new HandyRetrofitEndpoint(context);
+        EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus, prefsManager);
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
+            environmentModifier.setEnvironment(EnvironmentModifier.Environment.P);
+        }
+        return environmentModifier;
     }
 
     @Provides
     @Singleton
-    final HandyRetrofitService provideHandyService(final HandyEndpoint endpoint,
+    final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(EnvironmentModifier environmentModifier)
+    {
+        return new HandyRetrofitEndpoint(mContext, environmentModifier);
+    }
+
+    @Provides
+    @Singleton
+    final HandyRetrofitService provideHandyService(final HandyRetrofitEndpoint endpoint,
                                                    final UserManager userManager)
     {
 
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
 
-        final String username = configs.getProperty("api_username");
-        String password = configs.getProperty("api_password_internal");
+        final String username = mConfigs.getProperty("api_username");
+        String password = mConfigs.getProperty("api_password_internal");
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
-            password = configs.getProperty("api_password");
+            password = mConfigs.getProperty("api_password");
         }
 
         final String pwd = password;
@@ -237,16 +248,10 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final DataManager provideDataManager(final HandyRetrofitService service,
-                                         final HandyEndpoint endpoint,
-                                         final Bus bus,
+                                         final HandyRetrofitEndpoint endpoint,
                                          final PrefsManager prefsManager)
     {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefsManager);
-
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-        {
-            dataManager.setEnvironment(DataManager.Environment.P, false);
-        }
+        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
 
         return dataManager;
     }
@@ -268,8 +273,8 @@ public final class ApplicationModule
     @Singleton
     final SecurePreferences providePrefs()
     {
-        return new SecurePreferences(context, null,
-                configs.getProperty("secure_prefs_key"), true);
+        return new SecurePreferences(mContext, null,
+                mConfigs.getProperty("secure_prefs_key"), true);
     }
 
     @Provides
@@ -293,14 +298,14 @@ public final class ApplicationModule
     @Provides
     final ReactiveLocationProvider provideReactiveLocationProvider()
     {
-        return new ReactiveLocationProvider(context);
+        return new ReactiveLocationProvider(mContext);
     }
 
     @Provides
     @Singleton
     final Mixpanel provideMixpanel(final PrefsManager prefsManager)
     {
-        return new Mixpanel(context, prefsManager);
+        return new Mixpanel(mContext, prefsManager);
     }
 
     @Provides
@@ -309,7 +314,7 @@ public final class ApplicationModule
                                                      final DataManager dataManager,
                                                      final DataManagerErrorHandler dataManagerErrorHandler)
     {
-        return new NavigationManager(this.context, userManager, dataManager, dataManagerErrorHandler);
+        return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
     }
 
     @Provides
@@ -344,7 +349,7 @@ public final class ApplicationModule
 
     private String getDeviceId()
     {
-        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        return Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     private String getDeviceName()
