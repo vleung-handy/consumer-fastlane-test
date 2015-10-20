@@ -1,6 +1,8 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,8 +19,8 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.ui.activity.BookingsActivity;
@@ -29,7 +32,6 @@ import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.simplealertdialog.SimpleAlertDialog;
 import com.simplealertdialog.SimpleAlertDialogSupportFragment;
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import net.simonvt.menudrawer.MenuDrawer;
@@ -44,16 +46,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class NavigationFragment extends InjectedFragment
-        implements SimpleAlertDialog.OnClickListener, SimpleAlertDialog.OnItemClickListener
+        implements SimpleAlertDialog.OnClickListener
 {
     static final String ARG_SELECTED_ITEM = "com.handybook.handybook.ARG_SELECTED_ITEM";
     static final int REQUEST_LOGOUT = 1;
-    static final int REQUEST_ENV = 2;
 
-    private final ArrayList<String> items = new ArrayList<String>();
-    private final ArrayList<String> envs = new ArrayList<String>();
-    private String selectedItem;
-    private MenuDrawer menuDrawer;
+    private final ArrayList<String> items = new ArrayList<>();
+    private String mSelectedItem;
+    private MenuDrawer mMenuDrawer;
 
     @Bind(R.id.env_button)
     Button envButton;
@@ -61,11 +61,9 @@ public final class NavigationFragment extends InjectedFragment
     ListView listView;
 
     @Inject
-    UserManager userManager;
+    UserManager mUserManager;
     @Inject
-    DataManager dataManager;
-    @Inject
-    Bus bus;
+    EnvironmentModifier mEnvironmentModifier;
 
     public static NavigationFragment newInstance(final String selectedItem)
     {
@@ -85,15 +83,7 @@ public final class NavigationFragment extends InjectedFragment
         final Bundle args;
         if ((args = getArguments()) != null)
         {
-            selectedItem = args.getString(ARG_SELECTED_ITEM);
-        }
-
-        for (DataManager.Environment env : DataManager.Environment.values())
-        {
-            if (env != DataManager.Environment.P)
-            {
-                envs.add(env.toString());
-            }
+            mSelectedItem = args.getString(ARG_SELECTED_ITEM);
         }
     }
 
@@ -116,12 +106,23 @@ public final class NavigationFragment extends InjectedFragment
             @Override
             public void onClick(View view)
             {
-                new SimpleAlertDialogSupportFragment.Builder()
-                        .setTitle("Select Environment")
-                        .setItems(envs.toArray(new String[envs.size()]))
-                        .setRequestCode(REQUEST_ENV)
-                        .setTargetFragment(NavigationFragment.this)
-                        .create().show(getActivity().getSupportFragmentManager(), "dialog");
+                Context context = NavigationFragment.this.getActivity();
+                final EditText input = new EditText(context);
+                input.setText(mEnvironmentModifier.getEnvironment());
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.set_environment)
+                        .setView(input)
+                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i)
+                            {
+                                mEnvironmentModifier.setEnvironment(input.getText().toString());
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create()
+                        .show();
             }
         });
 
@@ -154,7 +155,7 @@ public final class NavigationFragment extends InjectedFragment
         nameToResourceId.put(getString(R.string.log_out), R.id.nav_menu_log_out);
         nameToResourceId.put(getString(R.string.log_in), R.id.nav_menu_log_in);
 
-        if(nameToResourceId.containsKey(itemName))
+        if (nameToResourceId.containsKey(itemName))
         {
             return nameToResourceId.get(itemName);
         }
@@ -169,7 +170,7 @@ public final class NavigationFragment extends InjectedFragment
         super.onActivityCreated(savedInstanceState);
 
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        menuDrawer = activity.getMenuDrawer();
+        mMenuDrawer = activity.getMenuDrawer();
         listView.setAdapter(new ArrayAdapter<String>(getActivity(),
                 R.layout.list_item_nav, items)
         {
@@ -189,7 +190,7 @@ public final class NavigationFragment extends InjectedFragment
                 final TextView item = (TextView) view.findViewById(R.id.nav_item);
                 item.setText(itemName);
 
-                if (itemName.equalsIgnoreCase(selectedItem))
+                if (itemName.equalsIgnoreCase(mSelectedItem))
                 {
                     item.setTextColor(getResources().getColor(R.color.handy_blue));
                 }
@@ -200,7 +201,7 @@ public final class NavigationFragment extends InjectedFragment
 
                 //HACK: We should be using IDs not text names, this is a quick fix so Automation is not blocked
                 int viewId = getViewIdByItemName(itemName);
-                if(viewId > -1)
+                if (viewId > -1)
                 {
                     view.setId(viewId);
                 }
@@ -220,32 +221,32 @@ public final class NavigationFragment extends InjectedFragment
                 final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
                 if (item.equalsIgnoreCase(getString(R.string.home))
-                        && !(getString(R.string.home).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.home).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(ServiceCategoriesActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.profile))
-                        && !(getString(R.string.profile).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.profile).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(ProfileActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.my_bookings))
-                        && !(getString(R.string.my_bookings).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.my_bookings).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(BookingsActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.help))
-                        && !(getString(R.string.help).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.help).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(HelpActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.promotions))
-                        && !(getString(R.string.promotions).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.promotions).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(PromosActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.log_in))
-                        && !(getString(R.string.log_in).equalsIgnoreCase(selectedItem)))
+                        && !(getString(R.string.log_in).equalsIgnoreCase(mSelectedItem)))
                 {
                     activity.navigateToActivity(LoginActivity.class);
                 }
@@ -261,7 +262,7 @@ public final class NavigationFragment extends InjectedFragment
                 }
                 else
                 {
-                    menuDrawer.closeMenu();
+                    mMenuDrawer.closeMenu();
                 }
             }
         });
@@ -273,7 +274,7 @@ public final class NavigationFragment extends InjectedFragment
     {
         if (requestCode == REQUEST_LOGOUT)
         {
-            userManager.setCurrentUser(null);
+            mUserManager.setCurrentUser(null);
         }
     }
 
@@ -281,16 +282,6 @@ public final class NavigationFragment extends InjectedFragment
     public final void onDialogNegativeButtonClicked(final SimpleAlertDialog dialog,
                                                     final int requestCode, final View view)
     {
-    }
-
-    @Override
-    public final void onItemClick(final SimpleAlertDialog dialog, final int requestCode,
-                                  final int which)
-    {
-        if (requestCode == REQUEST_ENV)
-        {
-            dataManager.setEnvironment(DataManager.Environment.valueOf(envs.get(which)), true);
-        }
     }
 
     @Subscribe
@@ -313,7 +304,7 @@ public final class NavigationFragment extends InjectedFragment
 
     private void loadNavItems()
     {
-        final boolean userLoggedIn = userManager.getCurrentUser() != null;
+        final boolean userLoggedIn = mUserManager.getCurrentUser() != null;
 
         items.clear();
         items.add(getString(R.string.home));
@@ -328,7 +319,7 @@ public final class NavigationFragment extends InjectedFragment
 
         items.add(getString(R.string.promotions));
 
-        if (userManager.getCurrentUser() != null)
+        if (mUserManager.getCurrentUser() != null)
         {
             items.add(getString(R.string.log_out));
         }
@@ -337,7 +328,7 @@ public final class NavigationFragment extends InjectedFragment
             items.add(getString(R.string.log_in));
         }
 
-        envButton.setText(String.format(getString(R.string.env_format), dataManager.getEnvironment(),
+        envButton.setText(String.format(getString(R.string.env_format), mEnvironmentModifier.getEnvironment(),
                 BuildConfig.VERSION_NAME, Integer.valueOf(BuildConfig.VERSION_CODE).toString()));
 
         final BaseAdapter adapter = (BaseAdapter) listView.getAdapter();

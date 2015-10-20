@@ -21,8 +21,6 @@ import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.EnvironmentUpdatedEvent;
-import com.squareup.otto.Bus;
 
 import java.util.Date;
 import java.util.List;
@@ -34,33 +32,6 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
-    public static enum Environment
-    {
-        P, S, Q1, Q2, Q3, Q4, Q6, Q7, D1
-    }
-
-    private Environment env = Environment.S;
-    private final Bus bus;
-
-    DataManager(final Bus bus)
-    {
-        this.bus = bus;
-    }
-
-    public Environment getEnvironment()
-    {
-        return env;
-    }
-
-    public void setEnvironment(final Environment env, final boolean notify)
-    {
-        if (notify)
-        {
-            bus.post(new EnvironmentUpdatedEvent(env, this.env));
-        }
-        this.env = env;
-    }
-
     public abstract void getServices(CacheResponse<List<Service>> cache,
                                      Callback<List<Service>> cb);
 
