@@ -285,7 +285,7 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final DataManager provideDataManager(final HandyRetrofitService service,
-                                         final HandyRetrofitEndpoint endpoint,
+            final HandyRetrofitEndpoint endpoint,
                                          final PrefsManager prefsManager)
     {
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);

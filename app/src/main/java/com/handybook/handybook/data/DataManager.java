@@ -196,19 +196,21 @@ public abstract class DataManager
 
     public abstract String getBaseUrl();
 
-    public static interface Callback<T>
+    public interface Callback<T>
     {
         void onSuccess(T response);
 
         void onError(DataManagerError error);
     }
 
-    public static interface CacheResponse<T>
+
+    public interface CacheResponse<T>
     {
         void onResponse(T response);
     }
 
-    static enum Type
+
+    enum Type
     {
         OTHER, SERVER, CLIENT, NETWORK
     }

@@ -71,7 +71,7 @@ public final class BaseDataManager extends DataManager
         if(cachedServicesJson != null)
         {
             cachedServices = new Gson().fromJson(
-                mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
+                    mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
                 new TypeToken<List<Service>>()
                 {
                 }.getType());
@@ -322,7 +322,7 @@ public final class BaseDataManager extends DataManager
             final User user,
             final Callback<List<Booking>> cb)
     {
-        service.getBookings(
+        mService.getBookings(
                 user.getAuthToken(),
                 null,
                 new HandyRetrofitCallback(cb)
@@ -695,14 +695,14 @@ public final class BaseDataManager extends DataManager
             {
                 final JSONArray array = response.optJSONArray("messages");
                 cb.onSuccess(array != null && array.length() > 0 ?
-                        (array.isNull(0) ? null : array.optString(0)) : null);
+                        array.isNull(0) ? null : array.optString(0) : null);
             }
         });
     }
 
     @Override
     public final void getRequestProInfo(int bookingId,
-                                        Callback<BookingRequestablePros> cb)
+            Callback<BookingRequestablePros> cb)
     {
         mService.getRequestProInfo(bookingId, new BookingRequestableProsResponseHandyRetroFitCallback(cb));
     }
