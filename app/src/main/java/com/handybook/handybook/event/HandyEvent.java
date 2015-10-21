@@ -5,6 +5,7 @@ import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
@@ -337,6 +338,34 @@ public abstract class HandyEvent
     public static class ReceiveUpdateBookingFrequencyError extends ReceiveErrorEvent
     {
         public ReceiveUpdateBookingFrequencyError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    //Get the booking prices for each booking frequency
+    public static class RequestGetBookingPricesForFrequencies extends Request
+    {
+        public final int bookingId;
+
+        public RequestGetBookingPricesForFrequencies(int bookingId)
+        {
+            this.bookingId = bookingId;
+        }
+    }
+
+    public static class ReceiveGetBookingPricesForFrequenciesSuccess extends ReceiveSuccessEvent
+    {
+        public final BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse;
+        public ReceiveGetBookingPricesForFrequenciesSuccess(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
+        {
+            this.bookingPricesForFrequenciesResponse = bookingPricesForFrequenciesResponse;
+        }
+    }
+
+    public static class ReceiveGetBookingPricesForFrequenciesError extends ReceiveErrorEvent
+    {
+        public ReceiveGetBookingPricesForFrequenciesError(DataManager.DataManagerError error)
         {
             this.error = error;
         }

@@ -144,6 +144,26 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
+    public void onRequestBookingPricesForFrequencies(HandyEvent.RequestGetBookingPricesForFrequencies event)
+    {
+        dataManager.getBookingPricesForFrequencies(event.bookingId, new DataManager.Callback<BookingPricesForFrequenciesResponse>()
+        {
+            @Override
+            public void onSuccess(BookingPricesForFrequenciesResponse response)
+            {
+                bus.post(new HandyEvent.ReceiveGetBookingPricesForFrequenciesSuccess(response));
+
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveGetBookingPricesForFrequenciesError(error));
+            }
+        });
+    }
+
+    @Subscribe
     public void onRequestBookings(HandyEvent.RequestBookingsForUser event)
     {
         dataManager.getBookings(event.user, new DataManager.Callback<List<Booking>>()

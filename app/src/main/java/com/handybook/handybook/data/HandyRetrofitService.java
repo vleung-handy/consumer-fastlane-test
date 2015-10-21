@@ -109,6 +109,10 @@ public interface HandyRetrofitService
                                 @Body BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
                                 HandyRetrofitCallback cb);
 
+    @GET("/bookings/{booking}/edit_frequency")
+    void getBookingPricesForFrequencies(@Path("booking") int bookingId,
+                                        HandyRetrofitCallback cb);
+
     @GET("/bookings/prereschedule_info")
     void getPreRescheduleInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
 
@@ -187,9 +191,9 @@ public interface HandyRetrofitService
     //Request a specific pro for a specific booking.
     @POST("/bookings/{booking}/request_pro")
     void requestProForBooking(@Path("booking") int bookingId,
-                           @Query("requested_pro") int requestedProId,
-                           @Query("fail_on_conflict") boolean failOnConflict,
-                           HandyRetrofitCallback cb);
+                              @Query("requested_pro") int requestedProId,
+                              @Query("fail_on_conflict") boolean failOnConflict,
+                              HandyRetrofitCallback cb);
 
     //Help Center Self Service Center
 
