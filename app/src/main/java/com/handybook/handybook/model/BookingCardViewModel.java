@@ -17,8 +17,8 @@ import java.util.Iterator;
 public class BookingCardViewModel
 {
     private ArrayList<Booking> mBookings;
-    private String mTitle = "<DEFAULT_TITLE>";
-    private String mSubtitle = "<DEFAULT_SUBTITLE>";
+    private String mTitle = "";
+    private String mSubtitle = "";
 
     public BookingCardViewModel(@NonNull final Collection<Booking> bookings)
     {
