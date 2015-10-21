@@ -79,15 +79,16 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState)
     {
-        final View view = getActivity().getLayoutInflater()
+        final View view = inflater
                 .inflate(R.layout.fragment_booking_recurrence, container, false);
 
         ButterKnife.bind(this, view);
-        ViewGroup infoHeaderHolder = (ViewGroup) getActivity().findViewById(R.id.info_header_layout);
+        ViewGroup infoHeaderHolder = (ViewGroup) view.findViewById(R.id.info_header_layout);
         infoHeaderHolder.removeAllViews();
-        TitleHeaderView newView = (TitleHeaderView) getActivity().getLayoutInflater().inflate(R.layout.layout_title_header, null);
+        TitleHeaderView newView = (TitleHeaderView) inflater.inflate(R.layout.layout_title_header, null);
         infoHeaderHolder.addView(newView);
         newView.setTitleString(getResources().getString(R.string.how_often_should_come));
+
         navText.setText(R.string.edit_frequency);
         nextButton.setText(R.string.update);
         nextButton.setOnClickListener(nextClicked);
