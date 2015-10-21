@@ -17,7 +17,6 @@ import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.ui.view.TitleHeaderView;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 import com.handybook.handybook.util.TextUtils;
@@ -85,9 +84,9 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         ButterKnife.bind(this, view);
         ViewGroup infoHeaderHolder = (ViewGroup) view.findViewById(R.id.info_header_layout);
         infoHeaderHolder.removeAllViews();
-        TitleHeaderView newView = (TitleHeaderView) inflater.inflate(R.layout.layout_title_header, null);
+        TextView newView = (TextView) inflater.inflate(R.layout.view_centered_header_text, null);
         infoHeaderHolder.addView(newView);
-        newView.setTitleString(getResources().getString(R.string.how_often_should_come));
+        newView.setText(getResources().getString(R.string.how_often_should_come));
 
         navText.setText(R.string.edit_frequency);
         nextButton.setText(R.string.update);
