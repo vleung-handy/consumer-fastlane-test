@@ -1,8 +1,10 @@
 package com.handybook.handybook.core;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
@@ -10,9 +12,11 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.BookingCardViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -22,13 +26,13 @@ import javax.inject.Inject;
 //TODO: Add caching like we do for portal, navigating back and forth from my bookings page is painfully slow right now
 public final class BookingManager implements Observer
 {
+    private final PrefsManager prefsManager;
+    private final DataManager dataManager;
+    private final Bus bus;
     private BookingRequest request;
     private BookingQuote quote;
     private BookingTransaction transaction;
     private BookingPostInfo postInfo;
-    private final PrefsManager prefsManager;
-    private final DataManager dataManager;
-    private final Bus bus;
 
     @Inject
     BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
@@ -121,12 +125,12 @@ public final class BookingManager implements Observer
     @Subscribe
     public void onRequestBookings(HandyEvent.RequestBookingsForUser event)
     {
-        dataManager.getBookings(event.user, new DataManager.Callback<List<Booking>>()
+        dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
         {
             @Override
-            public void onSuccess(final List<Booking> result)
+            public void onSuccess(final UserBookingsWrapper result)
             {
-                bus.post(new HandyEvent.ReceiveBookingsSuccess(result));
+                bus.post(new HandyEvent.ReceiveBookingsSuccess(result.getBookings()));
             }
 
             @Override
@@ -135,6 +139,49 @@ public final class BookingManager implements Observer
                 bus.post(new HandyEvent.ReceiveBookingsError(error));
             }
         });
+    }
+
+    @Subscribe
+    public void onRequestBookingCardViewModels(@NonNull final HandyEvent.RequestEvent.BookingCardViewModelsEvent event)
+    {
+        if (null != event.getOnlyBookingValue())
+        {
+            dataManager.getBookings(
+                    event.getUser(),
+                    event.getOnlyBookingValue(),
+                    new DataManager.Callback<UserBookingsWrapper>()
+                    {
+                        @Override
+                        public void onSuccess(final UserBookingsWrapper result)
+                        {
+                            final List<Booking> bookings = result.getBookings();
+                            Collections.sort(bookings, Booking.COMPARATOR_DATE);
+                            // Mark bookingCardViewModels accordingly and emit it.
+                            BookingCardViewModel.List models = new BookingCardViewModel.List();
+                            switch (event.getOnlyBookingValue())
+                            {
+                                case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
+                                    models = BookingCardViewModel.List
+                                            .from(bookings, BookingCardViewModel.List.TYPE_PAST);
+                                    break;
+                                case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
+                                    models = BookingCardViewModel.List
+                                            .from(bookings, BookingCardViewModel.List.TYPE_UPCOMING);
+                                    models.setType(BookingCardViewModel.List.TYPE_UPCOMING);
+                                    break;
+                                default:
+                                    Crashlytics.log("event.getOnlyBookingValue() hit default :(");
+                            }
+                            bus.post(new HandyEvent.ResponseEvent.BookingCardViewModels(models));
+                        }
+
+                        @Override
+                        public void onError(DataManager.DataManagerError error)
+                        {
+                            bus.post(new HandyEvent.ResponseEvent.BookingCardViewModelsError(error));
+                        }
+                    });
+        }
     }
 
     @Subscribe
@@ -163,10 +210,10 @@ public final class BookingManager implements Observer
         if (request != null)
         {
             return request;
-        }
-        else
+        } else
         {
-            if ((request = BookingRequest.fromJson(prefsManager.getString(PrefsKey.BOOKING_REQUEST))) != null)
+            if ((request = BookingRequest
+                    .fromJson(prefsManager.getString(PrefsKey.BOOKING_REQUEST))) != null)
             {
                 request.addObserver(this);
             }
@@ -199,10 +246,10 @@ public final class BookingManager implements Observer
         if (quote != null)
         {
             return quote;
-        }
-        else
+        } else
         {
-            if ((quote = BookingQuote.fromJson(prefsManager.getString(PrefsKey.BOOKING_QUOTE))) != null)
+            if ((quote = BookingQuote
+                    .fromJson(prefsManager.getString(PrefsKey.BOOKING_QUOTE))) != null)
             {
                 quote.addObserver(this);
             }
@@ -234,8 +281,7 @@ public final class BookingManager implements Observer
         if (transaction != null)
         {
             return transaction;
-        }
-        else
+        } else
         {
             if ((transaction = BookingTransaction
                     .fromJson(prefsManager.getString(PrefsKey.BOOKING_TRANSACTION))) != null)
@@ -270,8 +316,7 @@ public final class BookingManager implements Observer
         if (postInfo != null)
         {
             return postInfo;
-        }
-        else
+        } else
         {
             if ((postInfo = BookingPostInfo
                     .fromJson(prefsManager.getString(PrefsKey.BOOKING_POST))) != null)

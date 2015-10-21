@@ -221,32 +221,32 @@ public final class NavigationFragment extends InjectedFragment
                 final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
                 if (item.equalsIgnoreCase(getString(R.string.home))
-                        && !(getString(R.string.home).equalsIgnoreCase(mSelectedItem)))
+                        && !getString(R.string.home).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(ServiceCategoriesActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.profile))
-                        && !(getString(R.string.profile).equalsIgnoreCase(mSelectedItem)))
+                        && !getString(R.string.profile).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(ProfileActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.my_bookings))
-                        && !(getString(R.string.my_bookings).equalsIgnoreCase(mSelectedItem)))
+                        && !getString(R.string.my_bookings).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(BookingsActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.help))
-                        && !(getString(R.string.help).equalsIgnoreCase(mSelectedItem)))
+                        && !getString(R.string.help).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(HelpActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.promotions))
-                        && !(getString(R.string.promotions).equalsIgnoreCase(mSelectedItem)))
+                        && !getString(R.string.promotions).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(PromosActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.log_in))
-                        && !(getString(R.string.log_in).equalsIgnoreCase(mSelectedItem)))
+                        && !getString(R.string.log_in).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(LoginActivity.class);
                 }

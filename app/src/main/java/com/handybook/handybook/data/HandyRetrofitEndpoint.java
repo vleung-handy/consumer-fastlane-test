@@ -35,8 +35,7 @@ public final class HandyRetrofitEndpoint implements Endpoint
         if (mEnvironmentModifier.isProduction())
         {
             return mApiEndpoint;
-        }
-        else
+        } else
         {
             return mApiEndpointInternal.replace("#", mEnvironmentModifier.getEnvironment());
         }
@@ -47,8 +46,7 @@ public final class HandyRetrofitEndpoint implements Endpoint
         if (mEnvironmentModifier.isProduction())
         {
             return mBaseUrl;
-        }
-        else
+        } else
         {
             return mBaseUrlInternal.replace("#", mEnvironmentModifier.getEnvironment());
         }

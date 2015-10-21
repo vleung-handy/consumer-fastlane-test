@@ -24,14 +24,14 @@ public class BlockingActivity extends BaseActivity
     protected void onResume()
     {
         super.onResume();
-        bus.register(this);
+        mBus.register(this);
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
-        bus.unregister(this);
+        mBus.unregister(this);
     }
 
     @Override

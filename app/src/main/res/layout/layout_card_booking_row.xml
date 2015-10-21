@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_card_booking_row"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="?attr/selectableItemBackground"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_card_booking_row_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Thursday, Sept 12"
+            style="@style/TextView.Medium"/>
+
+        <TextView
+            android:id="@+id/tv_card_booking_row_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            tools:text="11:00 – 2:00 p, (3 hours)"
+            style="@style/TextView.Small"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_card_booking_row_left_edge_indicator"
+        android:layout_width="2dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_marginBottom="@dimen/default_margin_half"
+        android:background="@color/handy_service_cleaner"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/iv_card_booking_row_top_edge"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/handy_divider_line"
+        android:layout_width="match_parent"/>
+
+</RelativeLayout>

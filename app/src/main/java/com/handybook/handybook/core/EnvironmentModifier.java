@@ -18,6 +18,7 @@ public class EnvironmentModifier
         public static final String S = "s";
     }
 
+
     private final Bus mBus;
     private final PrefsManager mPrefsManager;
 

@@ -32,7 +32,7 @@ public class SplashActivity extends BaseActivity {
 
         if (!launchedNext)
         {
-            user = userManager.getCurrentUser();
+            user = mUserManager.getCurrentUser();
 
             final Intent intent = this.getIntent();
             final String action = intent.getAction();
@@ -43,7 +43,7 @@ public class SplashActivity extends BaseActivity {
                 return;
             }
 
-            navigationManager.handleSplashScreenLaunch(this.getIntent(), this);
+            mNavigationManager.handleSplashScreenLaunch(this.getIntent(), this);
             launchedNext = true;
         }
         else
@@ -87,13 +87,14 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void openRescheduleActivity(final String bookingId) {
-        dataManager.getBooking(bookingId,
+        mDataManager.getBooking(bookingId,
                 new DataManager.Callback<Booking>() {
                     @Override
                     public void onSuccess(final Booking booking) {
                         if (!allowCallbacks) return;
 
-                        dataManager.getPreRescheduleInfo(bookingId, new DataManager.Callback<String>() {
+                        mDataManager.getPreRescheduleInfo(bookingId, new DataManager.Callback<String>()
+                        {
                             @Override
                             public void onSuccess(final String notice) {
                                 if (!allowCallbacks) return;
@@ -107,7 +108,7 @@ public class SplashActivity extends BaseActivity {
                             @Override
                             public void onError(final DataManager.DataManagerError error) {
                                 if (!allowCallbacks) return;
-                                dataManagerErrorHandler.handleError(SplashActivity.this, error);
+                                mDataManagerErrorHandler.handleError(SplashActivity.this, error);
                                 openServiceCategoriesActivity();
                             }
                         });
@@ -116,7 +117,7 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void onError(final DataManager.DataManagerError error) {
                         if (!allowCallbacks) return;
-                        dataManagerErrorHandler.handleError(SplashActivity.this, error);
+                        mDataManagerErrorHandler.handleError(SplashActivity.this, error);
                         openServiceCategoriesActivity();
                     }
                 });

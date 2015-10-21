@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg">
+
+    <FrameLayout
+        android:id="@+id/nav_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/nav_text"
+            android:text="@string/my_bookings"
+            style="@style/TextView.Navbar" />
+
+        <RelativeLayout
+            android:id="@+id/menu_button_layout"
+            style="@style/MenuButtonLayout" />
+
+    </FrameLayout>
+
+    <com.handybook.handybook.ui.widget.PinnedSectionListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nav_layout"
+        android:scrollbarStyle="outsideOverlay"
+        android:clipToPadding="false"
+        android:choiceMode="singleChoice"
+        android:divider="@null"/>
+
+</RelativeLayout>
