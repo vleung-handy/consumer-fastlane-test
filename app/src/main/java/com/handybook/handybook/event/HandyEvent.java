@@ -316,7 +316,7 @@ public abstract class HandyEvent
     }
 
     //Update the frequency of a booking
-    public static class RequestUpdateBookingFrequency extends Request
+    public static class RequestUpdateBookingFrequency extends HandyEvent.RequestEvent
     {
         public final int bookingId;
         public final BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction;
@@ -344,7 +344,7 @@ public abstract class HandyEvent
     }
 
     //Get the booking prices for each booking frequency
-    public static class RequestGetBookingPricesForFrequencies extends Request
+    public static class RequestGetBookingPricesForFrequencies extends HandyEvent.RequestEvent
     {
         public final int bookingId;
 
