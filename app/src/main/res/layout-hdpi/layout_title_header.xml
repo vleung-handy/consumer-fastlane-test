@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handybook.handybook.ui.view.TitleHeaderView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/info_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="Title"/>
+
+    </RelativeLayout>
+
+</com.handybook.handybook.ui.view.TitleHeaderView>

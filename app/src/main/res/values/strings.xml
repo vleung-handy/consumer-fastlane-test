@@ -185,4 +185,6 @@
     <string name="no_booking_card_past_text">You don\'t have any\npast bookings</string>
     <string name="snackbar_recurring_will_be_generated">Bookings are generated 28 days in advance.</string>
     <string name="updated_booking_frequency">Updated booking frequency</string>
+    <string name="edit_frequency">Edit Frequency</string>
+    <string name="how_often_should_come">How often would you like us to come?</string>
 </resources>
