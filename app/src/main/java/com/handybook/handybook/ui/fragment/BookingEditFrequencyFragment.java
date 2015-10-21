@@ -157,6 +157,22 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         progressDialog.dismiss();
     }
 
+    private int indexForFreq(final int freq) {
+        switch (freq) {
+            case 1:
+                return 0;
+
+            case 2:
+                return 1;
+
+            case 4:
+                return 2;
+
+            default:
+                return 3;
+        }
+    }
+
     private String[] getOriginalPriceArrayForRecurValues(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
     {
         String[] priceArray = new String[recurValues.length];
@@ -184,7 +200,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         final BookingOptionsSelectView optionsView
                 = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
         optionsView.hideTitle();
-
+        optionsView.setCurrentIndex(indexForFreq(bookingPricesForFrequenciesResponse.getCurrentFrequency()));
         optionsLayout.removeAllViews();
         optionsLayout.addView(optionsView, 0);
     }
