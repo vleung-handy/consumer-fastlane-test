@@ -85,22 +85,27 @@
 
             </LinearLayout>
 
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/default_margin_half">
                 <TextView
+                    style="@style/TextView.XSmall.Bold"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="@dimen/default_margin_half"
+                    android:gravity="end"
+                    android:padding="@dimen/default_padding_half"
                     android:id="@+id/tv_edit_booking_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
                     android:text="@string/edit"
                     android:textAllCaps="true"
-                    android:textAppearance="@style/TextView.Bold"
                     android:textColor="@color/handy_blue"
-                    android:textSize="@dimen/text_size_small"
-                    android:textStyle="bold"/>
-            </FrameLayout>
+                    android:textSize="@dimen/text_size_small"/>
+            </RelativeLayout>
 
         </LinearLayout>
 
