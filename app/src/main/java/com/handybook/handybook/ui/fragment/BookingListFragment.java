@@ -75,7 +75,7 @@ public class BookingListFragment extends InjectedFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
+        mContext = getActivity();
         if (savedInstanceState != null)
         {
             mBookingsWereReceived = savedInstanceState.getBoolean(KEY_BOOKINGS_RECEIVED, false);
@@ -126,39 +126,6 @@ public class BookingListFragment extends InjectedFragment
         if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED
                 || resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
         {
-/*
-            final boolean isCancel = resultCode == ActivityResult.RESULT_BOOKING_CANCELED;
-            final Booking booking;
-            if (isCancel)
-            {
-                booking = data.getParcelableExtra(BundleKeys.CANCELLED_BOOKING);
-            } else
-            {
-                booking = data.getParcelableExtra(BundleKeys.UPDATED_BOOKING);
-            }
-            final String bookingId = booking.getId();
-            //TODO: We are manually updating the booking in the list, should re-request from manager
-            // which would have the updated booking in its cache
-            for (int i = 0; i < mBookings.size(); i++)
-            {
-                final Booking upBooking = mBookings.get(i);
-                if (upBooking.getId().equals(bookingId))
-                {
-                    if (isCancel)
-                    {
-                        mBookings.remove(i);
-                    } else
-                    {
-                        mBookings.set(i, booking);
-                    }
-                    Collections.sort(mBookings, Booking.COMPARATOR_DATE);
-                    initialize();
-                    break;
-                }
-            }
-            //And then we're just going and requesting everything again anyway.....
-            //TODO: reloading all bookings here until there is a way to update recurring instances as well
-*/
             loadBookings();
         }
     }
@@ -227,7 +194,7 @@ public class BookingListFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onModelsReceived(@NonNull final HandyEvent.Response.BookingCardViewModels e)
+    public void onModelsReceived(@NonNull final HandyEvent.ResponseEvent.BookingCardViewModels e)
     {
         if (e.getPayload().getType() == mListType)
         {
@@ -239,7 +206,7 @@ public class BookingListFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onModelsRequestError(@NonNull final HandyEvent.Response.BookingCardViewModelsError e)
+    public void onModelsRequestError(@NonNull final HandyEvent.ResponseEvent.BookingCardViewModelsError e)
     {
         mSwipeRefreshLayout.setRefreshing(false);
         mBookingsWereReceived = false;
@@ -271,12 +238,12 @@ public class BookingListFragment extends InjectedFragment
         if (onlyBookingValues == null)
         {
             // Load all of them
-            bus.post(new HandyEvent.Request.Request.BookingCardViewModels(
+            bus.post(new HandyEvent.RequestEvent.BookingCardViewModelsEvent(
                     userManager.getCurrentUser()
             ));
         } else
         {
-            bus.post(new HandyEvent.Request.Request.BookingCardViewModels(
+            bus.post(new HandyEvent.RequestEvent.BookingCardViewModelsEvent(
                     userManager.getCurrentUser(),
                     onlyBookingValues
             ));

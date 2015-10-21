@@ -12,9 +12,9 @@ import com.handybook.handybook.model.BookingCardRowViewModel;
 public class BookingCardRowView extends RelativeLayout
 {
 
-    TextView vTitle;
-    TextView vSubtitle;
-    ImageView vEdgeInidcator;
+    TextView mTitle;
+    TextView mSubtitle;
+    ImageView mEdgeIndicator;
 
     public BookingCardRowView(Context context)
     {
@@ -34,22 +34,26 @@ public class BookingCardRowView extends RelativeLayout
         init();
     }
 
-    private void init(){
+    private void init()
+    {
         inflate(getContext(), R.layout.layout_card_booking_row, this);
-        vTitle = (TextView) findViewById(R.id.tv_card_booking_row_title);
-        vSubtitle = (TextView) findViewById(R.id.tv_card_booking_row_subtitle);
-        vEdgeInidcator = (ImageView) findViewById(R.id.iv_card_booking_row_left_edge_indicator);
+        //TODO: Inflate with ButterKnife if possible
+        mTitle = (TextView) findViewById(R.id.tv_card_booking_row_title);
+        mSubtitle = (TextView) findViewById(R.id.tv_card_booking_row_subtitle);
+        mEdgeIndicator = (ImageView) findViewById(R.id.iv_card_booking_row_left_edge_indicator);
     }
 
-    public void update(BookingCardRowViewModel model){
-        vTitle.setText(model.getTitle());
-        vSubtitle.setText(model.getSubtitle(getContext()));
+    public void update(BookingCardRowViewModel model)
+    {
+        mTitle.setText(model.getTitle());
+        mSubtitle.setText(model.getSubtitle(getContext()));
         //TODO: Add indicator, image on the left based on the model state.
-        if(model.isIndicatorVisible()){
-            vEdgeInidcator.setVisibility(VISIBLE);
-        }
-        else {
-            vEdgeInidcator.setVisibility(GONE);
+        if (model.isIndicatorVisible())
+        {
+            mEdgeIndicator.setVisibility(VISIBLE);
+        } else
+        {
+            mEdgeIndicator.setVisibility(GONE);
         }
     }
 

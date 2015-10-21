@@ -40,22 +40,22 @@ public abstract class BaseActivity extends AppCompatActivity
 
 
     protected boolean allowCallbacks;
-    protected ProgressDialog progressDialog;
-    protected Toast toast;
+    protected ProgressDialog mProgressDialog;
+    protected Toast mToast;
     @Inject
-    Mixpanel mixpanel;
+    Mixpanel mMixpanel;
     @Inject
-    UserManager userManager;
+    UserManager mUserManager;
     @Inject
-    DataManager dataManager;
+    DataManager mDataManager;
     @Inject
-    DataManagerErrorHandler dataManagerErrorHandler;
+    DataManagerErrorHandler mDataManagerErrorHandler;
     @Inject
-    NavigationManager navigationManager;
+    NavigationManager mNavigationManager;
     @Inject
-    Bus bus;
-    private OnBackPressedListener onBackPressedListener;
-    private RateServiceDialogFragment rateServiceDialog;
+    Bus mBus;
+    private OnBackPressedListener mOnBackPressedListener;
+    private RateServiceDialogFragment mRateServiceDialogFragment;
 
     //Public Properties
     public boolean getAllowCallbacks()
@@ -79,14 +79,14 @@ public abstract class BaseActivity extends AppCompatActivity
         final Uri data = intent.getData();
         if (data != null && data.getHost() != null && data.getHost().equals("deeplink.yoz.io"))
         {
-            mixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
+            mMixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
         }
-        toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setDelay(400);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
+        mToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+        mToast.setGravity(Gravity.CENTER, 0, 0);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setDelay(400);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setMessage(getString(R.string.loading));
     }
 
     @Override
@@ -106,14 +106,14 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     protected void onDestroy()
     {
-        mixpanel.flush();
+        mMixpanel.flush();
         super.onDestroy();
     }
 
     private void showRequiredUserModals()
     {
         final FragmentManager fm = getSupportFragmentManager();
-        final User user = userManager.getCurrentUser();
+        final User user = mUserManager.getCurrentUser();
         if (user == null || fm.findFragmentByTag("RateServiceDialogFragment") != null
                 || fm.findFragmentByTag("LaundryDropOffDialogFragment") != null
                 || fm.findFragmentByTag("LaundryInfoDialogFragment") != null
@@ -121,7 +121,7 @@ public abstract class BaseActivity extends AppCompatActivity
         {
             return;
         }
-        dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
+        mDataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
         {
             @Override
             public void onSuccess(final User user)
@@ -147,11 +147,11 @@ public abstract class BaseActivity extends AppCompatActivity
                 } else if (proName != null)
                 {
                     final int bookingId = user.getBookingRateId();
-                    rateServiceDialog = RateServiceDialogFragment
+                    mRateServiceDialogFragment = RateServiceDialogFragment
                             .newInstance(bookingId, proName, -1);
-                    rateServiceDialog.show(BaseActivity.this.getSupportFragmentManager(),
+                    mRateServiceDialogFragment.show(BaseActivity.this.getSupportFragmentManager(),
                             "RateServiceDialogFragment");
-                    mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
+                    mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
                             proName, 0);
                 }
             }
@@ -165,7 +165,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
     private void showLaundryInfoModal(final int bookingId, final String authToken)
     {
-        dataManager.getAddLaundryInfo(bookingId, authToken, new DataManager.Callback<Booking>()
+        mDataManager.getAddLaundryInfo(bookingId, authToken, new DataManager.Callback<Booking>()
         {
             @Override
             public void onSuccess(final Booking booking)
@@ -190,7 +190,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
     private void showLaundryDropOffModal(final int bookingId, final String authToken)
     {
-        dataManager.getLaundryScheduleInfo(bookingId, authToken,
+        mDataManager.getLaundryScheduleInfo(bookingId, authToken,
                 new DataManager.Callback<LaundryDropInfo>()
                 {
                     @Override
@@ -221,9 +221,9 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (onBackPressedListener != null)
+        if (mOnBackPressedListener != null)
         {
-            onBackPressedListener.onBack();
+            mOnBackPressedListener.onBack();
         } else
         {
             super.onBackPressed();
@@ -244,7 +244,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
     public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener)
     {
-        this.onBackPressedListener = onBackPressedListener;
+        this.mOnBackPressedListener = onBackPressedListener;
     }
 
     public interface OnBackPressedListener

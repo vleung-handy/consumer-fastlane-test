@@ -23,8 +23,7 @@ import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.EnvironmentUpdatedEvent;
-import com.squareup.otto.Bus;
+import com.handybook.handybook.core.UserBookingsWrapper;
 
 import java.util.Date;
 import java.util.List;
@@ -36,33 +35,6 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
-    public static enum Environment
-    {
-        P, S, Q1, Q2, Q3, Q4, Q6, Q7, D1
-    }
-
-    private Environment env = Environment.S;
-    private final Bus bus;
-
-    DataManager(final Bus bus)
-    {
-        this.bus = bus;
-    }
-
-    public Environment getEnvironment()
-    {
-        return env;
-    }
-
-    public void setEnvironment(final Environment env, final boolean notify)
-    {
-        if (notify)
-        {
-            bus.post(new EnvironmentUpdatedEvent(env, this.env));
-        }
-        this.env = env;
-    }
-
     public abstract void getServices(CacheResponse<List<Service>> cache,
                                      Callback<List<Service>> cb);
 
@@ -110,12 +82,12 @@ public abstract class DataManager
                                             Callback<Void> cb);
 
     public abstract void getBookings(User user,
-                                     Callback<List<Booking>> cb);
+            Callback<UserBookingsWrapper> cb);
 
     public abstract void getBookings(
             @NonNull final User user,
             @NonNull @Booking.List.OnlyBookingValues String onlyBookingValues,
-            @NonNull Callback<List<Booking>> cb);
+            @NonNull Callback<UserBookingsWrapper> cb);
 
     public abstract void getBooking(String bookingId,
                                     Callback<Booking> cb);
@@ -234,19 +206,21 @@ public abstract class DataManager
 
     public abstract String getBaseUrl();
 
-    public static interface Callback<T>
+    public interface Callback<T>
     {
         void onSuccess(T response);
 
         void onError(DataManagerError error);
     }
 
-    public static interface CacheResponse<T>
+
+    public interface CacheResponse<T>
     {
         void onResponse(T response);
     }
 
-    static enum Type
+
+    enum Type
     {
         OTHER, SERVER, CLIENT, NETWORK
     }

@@ -16,7 +16,6 @@ import com.handybook.handybook.model.BookingCardViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
@@ -166,12 +165,12 @@ public final class BookingManager implements Observer
     @Subscribe
     public void onRequestBookings(HandyEvent.RequestBookingsForUser event)
     {
-        dataManager.getBookings(event.user, new DataManager.Callback<List<Booking>>()
+        dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
         {
             @Override
-            public void onSuccess(final List<Booking> result)
+            public void onSuccess(final UserBookingsWrapper result)
             {
-                bus.post(new HandyEvent.ReceiveBookingsSuccess(result));
+                bus.post(new HandyEvent.ReceiveBookingsSuccess(result.getBookings()));
             }
 
             @Override
@@ -183,95 +182,43 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
-    public void onRequestBookingCardViewModels(@NonNull final HandyEvent.Request.BookingCardViewModels event)
+    public void onRequestBookingCardViewModels(@NonNull final HandyEvent.RequestEvent.BookingCardViewModelsEvent event)
     {
-        if (event.getOnlyBookingValue() == null)
-        {
-            // The code below did the filtering before I knew about the past, upcoming API parameter
-            // The code below should never ever be run
-            // TODO: Remove the code below
-            dataManager.getBookings(
-                    event.getUser(),
-                    null,
-                    new DataManager.Callback<List<Booking>>()
-                    {
-                        @Override
-                        public void onSuccess(final List<Booking> result)
-                        {
-                            Collections.sort(result, Booking.COMPARATOR_DATE);
-                            final ArrayList<Booking> pastBookings = new ArrayList<>();
-                            final ArrayList<Booking> upcomingBookings = new ArrayList<>();
-                            for (Booking eachBooking : result)
-                            {
-                                if (eachBooking.isPast())
-                                {
-                                    pastBookings.add(eachBooking);
-                                } else
-                                {
-                                    upcomingBookings.add(eachBooking);
-                                }
-                            }
-
-                            // Emit upcoming
-                            BookingCardViewModel.List upcoming = BookingCardViewModel.List
-                                    .from(
-                                            upcomingBookings,
-                                            BookingCardViewModel.List.TYPE_UPCOMING
-                                    );
-                            bus.post(new HandyEvent.Response.BookingCardViewModels(upcoming));
-
-                            // Emit past
-                            BookingCardViewModel.List past = BookingCardViewModel.List
-                                    .from(
-                                            pastBookings,
-                                            BookingCardViewModel.List.TYPE_PAST
-                                    );
-                            bus.post(new HandyEvent.Response.BookingCardViewModels(past));
-
-                        }
-
-                        @Override
-                        public void onError(DataManager.DataManagerError error)
-                        {
-                            bus.post(
-                                    new HandyEvent.Response.BookingCardViewModelsError(error)
-                            );
-                        }
-                    });
-        } else
+        if (null != event.getOnlyBookingValue())
         {
             dataManager.getBookings(
                     event.getUser(),
                     event.getOnlyBookingValue(),
-                    new DataManager.Callback<List<Booking>>()
+                    new DataManager.Callback<UserBookingsWrapper>()
                     {
                         @Override
-                        public void onSuccess(final List<Booking> result)
+                        public void onSuccess(final UserBookingsWrapper result)
                         {
-                            Collections.sort(result, Booking.COMPARATOR_DATE);
+                            final List<Booking> bookings = result.getBookings();
+                            Collections.sort(bookings, Booking.COMPARATOR_DATE);
                             // Mark bookingCardViewModels accordingly and emit it.
                             BookingCardViewModel.List models = new BookingCardViewModel.List();
                             switch (event.getOnlyBookingValue())
                             {
                                 case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
                                     models = BookingCardViewModel.List
-                                            .from(result, BookingCardViewModel.List.TYPE_PAST);
+                                            .from(bookings, BookingCardViewModel.List.TYPE_PAST);
                                     break;
                                 case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
                                     models = BookingCardViewModel.List
-                                            .from(result, BookingCardViewModel.List.TYPE_UPCOMING);
+                                            .from(bookings, BookingCardViewModel.List.TYPE_UPCOMING);
                                     models.setType(BookingCardViewModel.List.TYPE_UPCOMING);
                                     break;
                                 default:
                                     Crashlytics.log("event.getOnlyBookingValue() hit default :(");
                             }
-                            bus.post(new HandyEvent.Response.BookingCardViewModels(models));
+                            bus.post(new HandyEvent.ResponseEvent.BookingCardViewModels(models));
                         }
 
                         @Override
                         public void onError(DataManager.DataManagerError error)
                         {
-                            bus.post(new HandyEvent.Response.BookingCardViewModelsError(error));
+                            bus.post(new HandyEvent.ResponseEvent.BookingCardViewModelsError(error));
                         }
                     });
         }

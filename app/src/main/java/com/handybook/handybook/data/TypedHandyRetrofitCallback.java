@@ -10,6 +10,7 @@ import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.HelpNodeWrapper;
+import com.handybook.handybook.core.UserBookingsWrapper;
 
 import org.json.JSONObject;
 
@@ -28,8 +29,10 @@ public abstract class TypedHandyRetrofitCallback<T> extends HandyRetrofitCallbac
     {
         try
         {
-            TypeToken<T> typeToken = new TypeToken<T>(getClass()) {};
-            returnData = gsonBuilder.fromJson((response.toString()), typeToken.getType());
+            TypeToken<T> typeToken = new TypeToken<T>(getClass())
+            {
+            };
+            returnData = gsonBuilder.fromJson(response.toString(), typeToken.getType());
         } catch (JsonSyntaxException e)
         {
             Crashlytics.logException(e);
@@ -42,6 +45,7 @@ public abstract class TypedHandyRetrofitCallback<T> extends HandyRetrofitCallbac
     }
 }
 
+
 //We need to trick the compiler into holding onto the generic type so we don't lose it to erasure
 class BookingHandyRetroFitCallback extends TypedHandyRetrofitCallback<Booking>
 {
@@ -51,6 +55,7 @@ class BookingHandyRetroFitCallback extends TypedHandyRetrofitCallback<Booking>
     }
 }
 
+
 class BookingOptionsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingOptionsWrapper>
 {
     BookingOptionsWrapperHandyRetroFitCallback(DataManager.Callback callback)
@@ -59,6 +64,7 @@ class BookingOptionsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallb
     }
 }
 
+
 class ProviderResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<Booking.Provider>
 {
     ProviderResponseHandyRetroFitCallback(DataManager.Callback callback)
@@ -66,6 +72,7 @@ class ProviderResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<B
         super(callback);
     }
 }
+
 
 class HelpNodeWrapperResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<HelpNodeWrapper>
 {
@@ -76,7 +83,6 @@ class HelpNodeWrapperResponseHandyRetroFitCallback extends TypedHandyRetrofitCal
 }
 
 
-
 class BookingRequestableProsResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingRequestablePros>
 {
     BookingRequestableProsResponseHandyRetroFitCallback(DataManager.Callback callback)
@@ -85,9 +91,19 @@ class BookingRequestableProsResponseHandyRetroFitCallback extends TypedHandyRetr
     }
 }
 
+
 class BookingProRequestResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingProRequestResponse>
 {
     BookingProRequestResponseHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class UserBookingsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallback<UserBookingsWrapper>
+{
+    UserBookingsWrapperHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }

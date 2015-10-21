@@ -10,17 +10,20 @@ import com.handybook.handybook.core.Booking;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BookingCardServiceIcon extends ImageView
+public class ServiceOutlineIcon extends ImageView
 {
-    public BookingCardServiceIcon(final Context context) {
+    public ServiceOutlineIcon(final Context context)
+    {
         super(context);
     }
 
-    public BookingCardServiceIcon(final Context context, final AttributeSet attrs) {
+    public ServiceOutlineIcon(final Context context, final AttributeSet attrs)
+    {
         super(context, attrs);
     }
 
-    public BookingCardServiceIcon(final Context context, final AttributeSet attrs, final int defStyle) {
+    public ServiceOutlineIcon(final Context context, final AttributeSet attrs, final int defStyle)
+    {
         super(context, attrs, defStyle);
     }
 

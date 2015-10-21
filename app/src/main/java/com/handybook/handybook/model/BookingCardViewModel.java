@@ -23,10 +23,9 @@ public class BookingCardViewModel
     public BookingCardViewModel(@NonNull final Collection<Booking> bookings)
     {
         mBookings = new ArrayList<>();
-        final Iterator<Booking> bookingIterator = bookings.iterator();
-        while (bookingIterator.hasNext())
+        for (final Booking booking : bookings)
         {
-            mBookings.add(bookingIterator.next());
+            mBookings.add(booking);
         }
         if (mBookings.isEmpty())
         {
@@ -82,7 +81,6 @@ public class BookingCardViewModel
 
         public ArrayList<Booking> getBookings()
         {
-
             return mBookings;
         }
 
@@ -176,7 +174,7 @@ public class BookingCardViewModel
                         bookingCardViewModels.add(bcvm);
                     } else
                     {
-                        // We have seen one from this series, add it to it's parent
+                        // We have seen one from this series, add it to its parent
                         bcvm.addBooking(eachBooking);
                     }
                 }

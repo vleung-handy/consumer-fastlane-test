@@ -12,18 +12,19 @@ public enum PrefsKey
     CACHED_SERVICES("CACHED_SERVICES"),
     APP_BLOCKED("APP_BLOCKED"),
     APP_BLOCKED_LAST_CHECK("APP_BLOCKED_LAST_CHECK"),
-    APP_FIRST_RUN("APP_FIRST_RUN");
+    APP_FIRST_RUN("APP_FIRST_RUN"),
+    ENVIRONMENT_PREFIX("ENVIRONMENT_PREFIX"),;
 
-    private String key;
+    private String mKey;
 
     PrefsKey(String key)
     {
-        this.key = key;
+        mKey = key;
     }
 
     public String getKey()
     {
-        return this.key;
+        return this.mKey;
     }
 
     @Override
