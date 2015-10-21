@@ -25,6 +25,7 @@ import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.manager.PrefsManager;
 
 import org.json.JSONArray;
@@ -320,64 +321,26 @@ public final class BaseDataManager extends DataManager
     @Override
     public final void getBookings(
             final User user,
-            final Callback<List<Booking>> cb)
+            final Callback<UserBookingsWrapper> cb)
     {
         mService.getBookings(
                 user.getAuthToken(),
                 null,
-                new HandyRetrofitCallback(cb)
-                {
-                    @Override
-                    void success(final JSONObject response)
-                    {
-                        final JSONArray array = response.optJSONArray("user_bookings");
-
-                        if (array == null)
-                        {
-                            cb.onError(new DataManagerError(Type.SERVER));
-                            return;
-                        }
-
-                        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-                        final List<Booking> bookings = gson.fromJson(array.toString(),
-                                new TypeToken<List<Booking>>()
-                                {
-                                }.getType());
-                        cb.onSuccess(bookings);
-                    }
-                });
+                new UserBookingsWrapperHandyRetroFitCallback(cb)
+        );
     }
 
     @Override
     public final void getBookings(
             final User user,
             @NonNull @Booking.List.OnlyBookingValues final String onlyBookingValue,
-            final Callback<List<Booking>> cb)
+            final Callback<UserBookingsWrapper> cb)
     {
         mService.getBookings(
                 user.getAuthToken(),
                 onlyBookingValue,
-                new HandyRetrofitCallback(cb)
-        {
-            @Override
-            void success(final JSONObject response)
-            {
-                final JSONArray array = response.optJSONArray("user_bookings");
-
-                if (array == null)
-                {
-                    cb.onError(new DataManagerError(Type.SERVER));
-                    return;
-                }
-
-                final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-                final List<Booking> bookings = gson.fromJson(array.toString(),
-                        new TypeToken<List<Booking>>()
-                        {
-                        }.getType());
-                cb.onSuccess(bookings);
-            }
-        });
+                new UserBookingsWrapperHandyRetroFitCallback(cb)
+        );
     }
 
     @Override

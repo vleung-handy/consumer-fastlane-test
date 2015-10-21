@@ -21,6 +21,7 @@ import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.UserBookingsWrapper;
 
 import java.util.Date;
 import java.util.List;
@@ -79,12 +80,12 @@ public abstract class DataManager
                                             Callback<Void> cb);
 
     public abstract void getBookings(User user,
-                                     Callback<List<Booking>> cb);
+            Callback<UserBookingsWrapper> cb);
 
     public abstract void getBookings(
             @NonNull final User user,
             @NonNull @Booking.List.OnlyBookingValues String onlyBookingValues,
-            @NonNull Callback<List<Booking>> cb);
+            @NonNull Callback<UserBookingsWrapper> cb);
 
     public abstract void getBooking(String bookingId,
                                     Callback<Booking> cb);
