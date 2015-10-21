@@ -75,7 +75,7 @@ public class BookingListFragment extends InjectedFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
+        mContext = getActivity();
         if (savedInstanceState != null)
         {
             mBookingsWereReceived = savedInstanceState.getBoolean(KEY_BOOKINGS_RECEIVED, false);

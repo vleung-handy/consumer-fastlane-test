@@ -42,6 +42,14 @@ public class HandyTabLayout extends TabLayout
             Tab tab = this.newTab();
             this.addTab(tab.setText(adapter.getPageTitle(i)));
             AppCompatTextView view = (AppCompatTextView) ((ViewGroup) slidingTabStrip.getChildAt(i)).getChildAt(1);
+            // Try once again if the above failed
+            // This is a hacky fix for using older android.support.design.widget.TabLayout from
+            // com.android.support:design:22.2.0
+            // With com.android.support:design:23.1.0 the above works.
+            if (view == null)
+            {
+                view = (AppCompatTextView) ((ViewGroup) slidingTabStrip.getChildAt(i)).getChildAt(0);
+            }
             view.setTypeface(typeface, Typeface.NORMAL);
         }
     }
