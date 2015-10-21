@@ -19,7 +19,6 @@ import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
-import com.handybook.handybook.util.TextUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.Map;
@@ -176,12 +175,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     private String[] getOriginalPriceArrayForRecurValues(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
     {
         String[] priceArray = new String[recurValues.length];
-        Map<Integer, Float> priceMap = bookingPricesForFrequenciesResponse.getPriceMap();
-        char currencyChar = bookingPricesForFrequenciesResponse.getCurrencyChar();
+        Map<Integer, String> priceMap = bookingPricesForFrequenciesResponse.getFormattedPriceMap(); //this is string because server returns formatted prices
         for(int i = 0; i<priceArray.length; i++)
         {
-            float originalPrice = priceMap.get(recurValues[i]);
-            priceArray[i] = TextUtils.formatPrice(originalPrice, Character.toString(currencyChar), "");
+            priceArray[i] = priceMap.get(recurValues[i]);
         }
         return priceArray;
     }
@@ -199,8 +196,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         option.setOptionsRightText(getOriginalPriceArrayForRecurValues(bookingPricesForFrequenciesResponse));
         final BookingOptionsSelectView optionsView
                 = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
-        optionsView.hideTitle();
         optionsView.setCurrentIndex(indexForFreq(bookingPricesForFrequenciesResponse.getCurrentFrequency()));
+        optionsView.hideTitle();
         optionsLayout.removeAllViews();
         optionsLayout.addView(optionsView, 0);
     }
