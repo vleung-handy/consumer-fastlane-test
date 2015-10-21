@@ -9,31 +9,38 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.model.BookingCardRowViewModel;
 
-import butterknife.Bind;
-
-public class BookingCardRowView extends InjectedRelativeLayout
+public class BookingCardRowView extends RelativeLayout
 {
 
-    @Bind(R.id.tv_card_booking_row_title)
     TextView mTitle;
-    @Bind(R.id.tv_card_booking_row_title)
     TextView mSubtitle;
-    @Bind(R.id.iv_card_booking_row_left_edge_indicator)
     ImageView mEdgeIndicator;
 
     public BookingCardRowView(Context context)
     {
         super(context);
+        init();
     }
 
     public BookingCardRowView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        init();
     }
 
     public BookingCardRowView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init()
+    {
+        inflate(getContext(), R.layout.layout_card_booking_row, this);
+        //TODO: Inflate with ButterKnife if possible
+        mTitle = (TextView) findViewById(R.id.tv_card_booking_row_title);
+        mSubtitle = (TextView) findViewById(R.id.tv_card_booking_row_subtitle);
+        mEdgeIndicator = (ImageView) findViewById(R.id.iv_card_booking_row_left_edge_indicator);
     }
 
     public void update(BookingCardRowViewModel model)
