@@ -126,39 +126,6 @@ public class BookingListFragment extends InjectedFragment
         if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED
                 || resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
         {
-/*
-            final boolean isCancel = resultCode == ActivityResult.RESULT_BOOKING_CANCELED;
-            final Booking booking;
-            if (isCancel)
-            {
-                booking = data.getParcelableExtra(BundleKeys.CANCELLED_BOOKING);
-            } else
-            {
-                booking = data.getParcelableExtra(BundleKeys.UPDATED_BOOKING);
-            }
-            final String bookingId = booking.getId();
-            //TODO: We are manually updating the booking in the list, should re-request from manager
-            // which would have the updated booking in its cache
-            for (int i = 0; i < mBookings.size(); i++)
-            {
-                final Booking upBooking = mBookings.get(i);
-                if (upBooking.getId().equals(bookingId))
-                {
-                    if (isCancel)
-                    {
-                        mBookings.remove(i);
-                    } else
-                    {
-                        mBookings.set(i, booking);
-                    }
-                    Collections.sort(mBookings, Booking.COMPARATOR_DATE);
-                    initialize();
-                    break;
-                }
-            }
-            //And then we're just going and requesting everything again anyway.....
-            //TODO: reloading all bookings here until there is a way to update recurring instances as well
-*/
             loadBookings();
         }
     }
