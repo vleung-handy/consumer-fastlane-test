@@ -75,12 +75,6 @@ public final class Booking implements Parcelable
     @SerializedName("can_edit_frequency")
     private Boolean canEditFrequency;
 
-    //TODO: does this only return 0 or 1? if so, should be a boolean
-    public final int getRecurring()
-    {
-        return recurring;
-    }
-
     public final String getId()
     {
         return id;
@@ -289,7 +283,7 @@ public final class Booking implements Parcelable
 
     private Booking(final Parcel in)
     {
-        final String[] stringData = new String[11];
+        final String[] stringData = new String[10];
         in.readStringArray(stringData);
         id = stringData[0];
         serviceName = stringData[1];
@@ -309,7 +303,6 @@ public final class Booking implements Parcelable
         proNote = stringData[7];
         billedStatus = stringData[8];
         recurringId = stringData[9];
-        recurring = stringData[10] == null ? 0 : Integer.parseInt(stringData[10]);
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -354,7 +347,6 @@ public final class Booking implements Parcelable
                                 proNote,
                                 billedStatus,
                                 recurringId,
-                                Integer.toString(recurring),
                         }
         );
 

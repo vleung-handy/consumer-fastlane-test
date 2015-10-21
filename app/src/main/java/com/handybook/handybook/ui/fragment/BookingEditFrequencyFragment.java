@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
     //TODO: need to consolidate all booking edit fragments with booking flow fragments that are used in booking creation
-    private BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction;
+    private BookingUpdateFrequencyTransaction mBookingUpdateFrequencyTransaction;
     private Booking booking;
     private int[] recurValues;
 
@@ -70,8 +70,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
     private void initTransaction()
     {
-        bookingUpdateFrequencyTransaction = new BookingUpdateFrequencyTransaction();
-        bookingUpdateFrequencyTransaction.setRecurringFrequency(0);
+        mBookingUpdateFrequencyTransaction = new BookingUpdateFrequencyTransaction();
+        mBookingUpdateFrequencyTransaction.setRecurringFrequency(0);
     }
 
 
@@ -114,7 +114,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         public void onClick(final View view)
         {
             showUiBlockers();
-            bus.post(new HandyEvent.RequestUpdateBookingFrequency(Integer.parseInt(booking.getId()), bookingUpdateFrequencyTransaction));
+            bus.post(new HandyEvent.RequestUpdateBookingFrequency(Integer.parseInt(booking.getId()), mBookingUpdateFrequencyTransaction));
         }
     };
 
@@ -125,7 +125,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         public void onUpdate(final BookingOptionsView view)
         {
             final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-            bookingUpdateFrequencyTransaction.setRecurringFrequency(recurValues[index]);
+            mBookingUpdateFrequencyTransaction.setRecurringFrequency(recurValues[index]);
             if (bookingManager.getCurrentTransaction() != null)
             {
                 bookingManager.getCurrentTransaction().setRecurringFrequency(recurValues[index]);
