@@ -5,7 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class BookingOption implements Parcelable {
+public final class BookingOption implements Parcelable
+{
 
     //todo: auto serialized enums for type see : Booking.LaundryStatus
     public final static String TYPE_OPTION = "option";
@@ -43,130 +44,162 @@ public final class BookingOption implements Parcelable {
     @SerializedName("post")
     private int post;
 
-    public BookingOption() {
+    public BookingOption()
+    {
     }
 
-    public final String getUniq() {
+    public final String getUniq()
+    {
         return uniq;
     }
 
-    final void setUniq(final String uniq) {
+    final void setUniq(final String uniq)
+    {
         this.uniq = uniq;
     }
 
-    public final String getType() {
+    public final String getType()
+    {
         return type;
     }
 
-    public final void setType(final String type) {
+    public final void setType(final String type)
+    {
         this.type = type;
     }
 
-    public final String getTitle() {
+    public final String getTitle()
+    {
         return title;
     }
 
-    final void setTitle(final String title) {
+    final void setTitle(final String title)
+    {
         this.title = title;
     }
 
-    public final String getInfo() {
+    public final String getInfo()
+    {
         return info;
     }
 
-    final void setInfo(final String info) {
+    final void setInfo(final String info)
+    {
         this.info = info;
     }
 
-    public final String getDefaultValue() {
+    public final String getDefaultValue()
+    {
         return defaultValue;
     }
 
-    public final void setDefaultValue(final String defaultValue) {
+    public final void setDefaultValue(final String defaultValue)
+    {
         this.defaultValue = defaultValue;
     }
 
-    public final String[] getOptions() {
+    public final String[] getOptions()
+    {
         return options;
     }
 
-    public final void setOptions(final String[] options) {
+    public final void setOptions(final String[] options)
+    {
         this.options = options;
     }
 
-    public final String[] getOptionsSubText() {
+    public final String[] getOptionsSubText()
+    {
         return optionsSubText;
     }
 
-    public final void setOptionsSubText(final String[] optionsSubText) {
+    public final void setOptionsSubText(final String[] optionsSubText)
+    {
         this.optionsSubText = optionsSubText;
     }
 
-    public final String[] getOptionsRightSubText() {
+    public final String[] getOptionsRightSubText()
+    {
         return optionsRightSubText;
     }
 
-    public final String[] getOptionsRightTitleText() {
+    public final String[] getOptionsRightTitleText()
+    {
         return optionsRightTitleText;
     }
 
-    public void setOptionsRightTitleText(String[] optionsRightTitleText) {
+    public void setOptionsRightTitleText(String[] optionsRightTitleText)
+    {
         this.optionsRightTitleText = optionsRightTitleText;
     }
 
-    public final void setOptionsRightSubText(final String[] optionsRightSubText) {
+    public final void setOptionsRightSubText(final String[] optionsRightSubText)
+    {
         this.optionsRightSubText = optionsRightSubText;
     }
 
-    final String[][] getOptionsImages() {
+    final String[][] getOptionsImages()
+    {
         return optionsImages;
     }
 
-    final void setOptionsImages(final String[][] optionsImages) {
+    final void setOptionsImages(final String[][] optionsImages)
+    {
         this.optionsImages = optionsImages;
     }
 
-    public final float[] getHoursInfo() {
+    public final float[] getHoursInfo()
+    {
         return hoursInfo;
     }
 
-    final void setHoursInfo(final float[] hoursInfo) {
+    final void setHoursInfo(final float[] hoursInfo)
+    {
         this.hoursInfo = hoursInfo;
     }
 
-    public final String[][] getWarnings() {
+    public final String[][] getWarnings()
+    {
         return warnings;
     }
 
-    final void setWarnings(final String[][] warnings) {
+    final void setWarnings(final String[][] warnings)
+    {
         this.warnings = warnings;
     }
 
-    public final String[][] getChildren() {
+    public final String[][] getChildren()
+    {
         return children;
     }
 
-    final void setChildren(final String[][] children) {
+    final void setChildren(final String[][] children)
+    {
         this.children = children;
     }
 
-    public final int getPage() {
+    public final int getPage()
+    {
         return page;
     }
 
-    final void setPage(final int page) {
+    final void setPage(final int page)
+    {
         this.page = page;
     }
 
-    public final boolean isPost() {
+    public final boolean isPost()
+    {
         return post == 1;
     }
 
-    final void setPost(final boolean post) {
+    final void setPost(final boolean post)
+    {
         this.post = post ? 1 : 0;
     }
 
-    private BookingOption(final Parcel in) {
+    private BookingOption(final Parcel in)
+    {
         final String[] stringData = new String[5];
         in.readStringArray(stringData);
         uniq = stringData[0];
@@ -191,7 +224,8 @@ public final class BookingOption implements Parcelable {
     }
 
     @Override
-    public final void writeToParcel(final Parcel out, final int flags) {
+    public final void writeToParcel(final Parcel out, final int flags)
+    {
         out.writeStringArray(new String[]{uniq, type, title, defaultValue, info});
         out.writeIntArray(new int[]{page, post});
         out.writeStringArray(options);
@@ -205,16 +239,20 @@ public final class BookingOption implements Parcelable {
     }
 
     @Override
-    public final int describeContents() {
+    public final int describeContents()
+    {
         return 0;
     }
 
-    public static final Creator CREATOR = new Creator() {
-        public BookingOption createFromParcel(final Parcel in) {
+    public static final Creator CREATOR = new Creator()
+    {
+        public BookingOption createFromParcel(final Parcel in)
+        {
             return new BookingOption(in);
         }
 
-        public BookingOption[] newArray(final int size) {
+        public BookingOption[] newArray(final int size)
+        {
             return new BookingOption[size];
         }
     };
