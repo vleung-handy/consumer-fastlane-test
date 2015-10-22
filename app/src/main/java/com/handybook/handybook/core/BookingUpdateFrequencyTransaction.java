@@ -7,16 +7,16 @@ import java.util.Observable;
 public final class BookingUpdateFrequencyTransaction extends Observable
 {
     @SerializedName("new_freq")
-    private int recurringFrequency;
+    private int mRecurringFrequency;
 
-    public int getRecurringFrequency()
+    public int getmRecurringFrequency()
     {
-        return recurringFrequency;
+        return mRecurringFrequency;
     }
 
     public void setRecurringFrequency(int recurring)
     {
-        this.recurringFrequency = recurring;
+        this.mRecurringFrequency = recurring;
         triggerObservers();
     }
 
