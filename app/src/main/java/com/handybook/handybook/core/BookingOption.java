@@ -5,31 +5,46 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class BookingOption implements Parcelable
-{
+public final class BookingOption implements Parcelable {
 
     //todo: auto serialized enums for type see : Booking.LaundryStatus
     public final static String TYPE_OPTION = "option";
     public final static String TYPE_TEXT = "text";
 
 
-    @SerializedName("uniq") private String uniq;
-    @SerializedName("type") private String type;
-    @SerializedName("title") private String title;
-    @SerializedName("info") private String info;
-    @SerializedName("default_value") private String defaultValue;
-    @SerializedName("options") private String[] options;
-    @SerializedName("options_sub_text") private String[] optionsSubText;
-    @SerializedName("options_right_title_text") private String[] optionsRightTitleText;
-    @SerializedName("options_left_text") private String[] optionsRightSubText; //TODO: why is the key = options_left_text?
-    @SerializedName("options_images") private String[][] optionsImages;
-    @SerializedName("hour_info") private float[] hoursInfo;
-    @SerializedName("warnings") private String[][] warnings;
-    @SerializedName("child_elements") private String[][] children;
-    @SerializedName("page") private int page;
-    @SerializedName("post") private int post;
+    @SerializedName("uniq")
+    private String uniq;
+    @SerializedName("type")
+    private String type;
+    @SerializedName("title")
+    private String title;
+    @SerializedName("info")
+    private String info;
+    @SerializedName("default_value")
+    private String defaultValue;
+    @SerializedName("options")
+    private String[] options;
+    @SerializedName("options_sub_text")
+    private String[] optionsSubText;
+    @SerializedName("options_right_title_text")
+    private String[] optionsRightTitleText;
+    @SerializedName("options_left_text")
+    private String[] optionsRightSubText;
+    @SerializedName("options_images")
+    private String[][] optionsImages;
+    @SerializedName("hour_info")
+    private float[] hoursInfo;
+    @SerializedName("warnings")
+    private String[][] warnings;
+    @SerializedName("child_elements")
+    private String[][] children;
+    @SerializedName("page")
+    private int page;
+    @SerializedName("post")
+    private int post;
 
-    public BookingOption() {}
+    public BookingOption() {
+    }
 
     public final String getUniq() {
         return uniq;
@@ -190,7 +205,7 @@ public final class BookingOption implements Parcelable
     }
 
     @Override
-    public final int describeContents(){
+    public final int describeContents() {
         return 0;
     }
 
@@ -198,6 +213,7 @@ public final class BookingOption implements Parcelable
         public BookingOption createFromParcel(final Parcel in) {
             return new BookingOption(in);
         }
+
         public BookingOption[] newArray(final int size) {
             return new BookingOption[size];
         }

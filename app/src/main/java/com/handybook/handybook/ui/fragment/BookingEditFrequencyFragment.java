@@ -30,8 +30,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
     //TODO: need to consolidate all booking edit fragments with booking flow fragments that are used in booking creation
     private BookingUpdateFrequencyTransaction mBookingUpdateFrequencyTransaction;
-    private Booking booking;
-    private int[] recurValues;
+    private Booking mBooking;
+    private int[] mRecurValues;
 
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout;
@@ -54,7 +54,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackFrequency();
-        booking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         initTransaction();
     }
 
@@ -63,7 +63,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestGetBookingPricesForFrequencies(Integer.parseInt(booking.getId()))); //TODO: investigate why ID is a string?
+        bus.post(new HandyEvent.RequestGetBookingPricesForFrequencies(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
     }
 
     private void initTransaction()
@@ -113,7 +113,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         public void onClick(final View view)
         {
             showUiBlockers();
-            bus.post(new HandyEvent.RequestUpdateBookingFrequency(Integer.parseInt(booking.getId()), mBookingUpdateFrequencyTransaction));
+            bus.post(new HandyEvent.RequestUpdateBookingFrequency(Integer.parseInt(mBooking.getId()), mBookingUpdateFrequencyTransaction));
         }
     };
 
@@ -124,10 +124,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         public void onUpdate(final BookingOptionsView view)
         {
             final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-            mBookingUpdateFrequencyTransaction.setRecurringFrequency(recurValues[index]);
+            mBookingUpdateFrequencyTransaction.setRecurringFrequency(mRecurValues[index]);
             if (bookingManager.getCurrentTransaction() != null)
             {
-                bookingManager.getCurrentTransaction().setRecurringFrequency(recurValues[index]);
+                bookingManager.getCurrentTransaction().setRecurringFrequency(mRecurValues[index]);
             }
         }
 
@@ -175,13 +175,13 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
     private String[] getOriginalPriceArrayForRecurValues(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
     {
-        String[] priceArray = new String[recurValues.length];
+        String[] priceArray = new String[mRecurValues.length];
         Map<Integer, String> priceMap = bookingPricesForFrequenciesResponse.getFormattedPriceMap();
         //this is string because server returns formatted prices (let's not do that in new api)
 
         for(int i = 0; i<priceArray.length; i++)
         {
-            priceArray[i] = priceMap.get(recurValues[i]);
+            priceArray[i] = priceMap.get(mRecurValues[i]);
         }
         return priceArray;
     }
@@ -192,15 +192,15 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         option.setType(BookingOption.TYPE_OPTION);
         option.setOptions(new String[]{getString(R.string.every_week),
                 getString(R.string.every_two_weeks), getString(R.string.every_four_weeks)});
-        recurValues = new int[]{1, 2, 4}; //allowing edit frequency only for recurring bookings
+        mRecurValues = new int[]{1, 2, 4}; //allowing edit frequency only for recurring bookings
 
         //update the options right-hand text views
         option.setOptionsSubText(new String[]
                 {null, getString(R.string.most_popular), null});
         option.setOptionsRightTitleText(getOriginalPriceArrayForRecurValues(bookingPricesForFrequenciesResponse));
 
-        String[] optionsRightSubText = new String[recurValues.length];
-        String rightSubText = "/" + booking.getServiceShortName();
+        String[] optionsRightSubText = new String[mRecurValues.length];
+        String rightSubText = "/" + mBooking.getServiceShortName();
         for(int i = 0; i<optionsRightSubText.length; i++)
         {
             optionsRightSubText[i] = rightSubText;

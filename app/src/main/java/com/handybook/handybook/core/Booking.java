@@ -20,13 +20,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Booking implements Parcelable
-{
-    public static final Comparator<? super Booking> COMPARATOR_DATE = new Comparator<Booking>()
-    {
+public final class Booking implements Parcelable {
+    public static final Comparator<? super Booking> COMPARATOR_DATE = new Comparator<Booking>() {
         @Override
-        public int compare(@NonNull final Booking lhs, @NonNull final Booking rhs)
-        {
+        public int compare(@NonNull final Booking lhs, @NonNull final Booking rhs) {
             return lhs.getStartDate().compareTo(rhs.getStartDate());
         }
     };
@@ -79,69 +76,55 @@ public final class Booking implements Parcelable
     private final static String SERVICE_SHORT_NAME_CLEAN = "clean";
     private final static String SERVICE_SHORT_NAME_JOB = "job";
 
-    public final String getId()
-    {
+    public final String getId() {
         return id;
     }
 
-    public final void setId(final String id)
-    {
+    public final void setId(final String id) {
         this.id = id;
     }
 
-    public final boolean isPast()
-    {
+    public final boolean isPast() {
         return isPast == 1;
     }
 
-    final void setIsPast(final boolean isPast)
-    {
-        if (isPast)
-        {
+    final void setIsPast(final boolean isPast) {
+        if (isPast) {
             this.isPast = 1;
-        } else
-        {
+        } else {
             this.isPast = 0;
         }
     }
 
-    public final boolean hasAssignedProvider()
-    {
+    public final boolean hasAssignedProvider() {
         return provider != null && provider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED;
     }
 
-    public final boolean isRecurring()
-    {
+    public final boolean isRecurring() {
         return recurringId != null && !recurringId.isEmpty() && !"0".equals(recurringId);
     }
 
-    public final String getRecurringInfo()
-    {
+    public final String getRecurringInfo() {
         return recurringInfo;
     }
 
-    public final String getEntryInfo()
-    {
+    public final String getEntryInfo() {
         return entryInfo;
     }
 
-    public final String getExtraEntryInfo()
-    {
+    public final String getExtraEntryInfo() {
         return extraEntryInfo;
     }
 
-    public final String getProNote()
-    {
+    public final String getProNote() {
         return proNote;
     }
 
-    public final String getServiceName()
-    {
+    public final String getServiceName() {
         return serviceName;
     }
 
-    public final String getServiceMachineName()
-    {
+    public final String getServiceMachineName() {
         return serviceMachineName;
     }
 
@@ -202,23 +185,19 @@ public final class Booking implements Parcelable
             SERVICE_PAINTING
             //TODO:Implement the rest of service types from above
     })
-    public @interface ServiceType
-    {
+    public @interface ServiceType {
     }
 
 
-    public final Date getStartDate()
-    {
+    public final Date getStartDate() {
         return startDate;
     }
 
-    public final void setStartDate(final Date startDate)
-    {
+    public final void setStartDate(final Date startDate) {
         this.startDate = startDate;
     }
 
-    public final Date getEndDate()
-    {
+    public final Date getEndDate() {
         final Calendar endDate = Calendar.getInstance();
         endDate.setTime(this.getStartDate());
         //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
@@ -226,63 +205,51 @@ public final class Booking implements Parcelable
         return endDate.getTime();
     }
 
-    public final float getHours()
-    {
+    public final float getHours() {
         return hours;
     }
 
-    final void setHours(float hours)
-    {
+    final void setHours(float hours) {
         this.hours = hours;
     }
 
-    public final float getPrice()
-    {
+    public final float getPrice() {
         return price;
     }
 
-    final void setPrice(float price)
-    {
+    final void setPrice(float price) {
         this.price = price;
     }
 
-    public final Address getAddress()
-    {
+    public final Address getAddress() {
         return address;
     }
 
-    final void setAddress(final Address address)
-    {
+    final void setAddress(final Address address) {
         this.address = address;
     }
 
-    public final Provider getProvider()
-    {
+    public final Provider getProvider() {
         return provider;
     }
 
-    final void setProvider(final Provider provider)
-    {
+    final void setProvider(final Provider provider) {
         this.provider = provider;
     }
 
-    public final LaundryStatus getLaundryStatus()
-    {
+    public final LaundryStatus getLaundryStatus() {
         return laundryStatus;
     }
 
-    public final String getBilledStatus()
-    {
+    public final String getBilledStatus() {
         return billedStatus;
     }
 
-    public final ArrayList<LineItem> getPaymentInfo()
-    {
+    public final ArrayList<LineItem> getPaymentInfo() {
         return paymentInfo;
     }
 
-    public final ArrayList<ExtraInfo> getExtrasInfo()
-    {
+    public final ArrayList<ExtraInfo> getExtrasInfo() {
         return extrasInfo;
     }
 
@@ -298,19 +265,16 @@ public final class Booking implements Parcelable
         }
     }
 
-    private Booking(final Parcel in)
-    {
+    private Booking(final Parcel in) {
         final String[] stringData = new String[10];
         in.readStringArray(stringData);
         id = stringData[0];
         serviceName = stringData[1];
         serviceMachineName = stringData[2];
 
-        try
-        {
+        try {
             laundryStatus = LaundryStatus.valueOf(stringData[3]);
-        } catch (IllegalArgumentException x)
-        {
+        } catch (IllegalArgumentException x) {
             laundryStatus = null;
         }
 
@@ -343,15 +307,13 @@ public final class Booking implements Parcelable
         in.readTypedList(extrasInfo, ExtraInfo.CREATOR);
     }
 
-    public static Booking fromJson(final String json)
-    {
+    public static Booking fromJson(final String json) {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
                 .fromJson(json, Booking.class);
     }
 
     @Override
-    public final void writeToParcel(final Parcel out, final int flags)
-    {
+    public final void writeToParcel(final Parcel out, final int flags) {
         out.writeStringArray(new String[]
                         {
                                 id,
@@ -377,36 +339,29 @@ public final class Booking implements Parcelable
     }
 
     @Override
-    public final int describeContents()
-    {
+    public final int describeContents() {
         return 0;
     }
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-    {
-        public Booking createFromParcel(final Parcel in)
-        {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Booking createFromParcel(final Parcel in) {
             return new Booking(in);
         }
 
-        public Booking[] newArray(final int size)
-        {
+        public Booking[] newArray(final int size) {
             return new Booking[size];
         }
     };
 
-    public int getEntryType()
-    {
+    public int getEntryType() {
         return entryType;
     }
 
-    public Boolean getCanEditHours()
-    {
+    public Boolean getCanEditHours() {
         return canEditHours;
     }
 
-    public Boolean getCanEditFrequency()
-    {
+    public Boolean getCanEditFrequency() {
         return canEditFrequency;
     }
 
@@ -416,22 +371,18 @@ public final class Booking implements Parcelable
      * @return Long value or null if the String value couldn't be converted.
      */
     @Nullable
-    public Long getRecurringId()
-    {
+    public Long getRecurringId() {
         Long longValue = null;
-        try
-        {
+        try {
             longValue = Long.parseLong(recurringId);
-        } catch (NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             Crashlytics.log("Error converting recurringId to Long");
             Crashlytics.logException(nfe);
         }
         return longValue;
     }
 
-    public static final class Address implements Parcelable
-    {
+    public static final class Address implements Parcelable {
         @SerializedName("address1")
         private String address1;
         @SerializedName("address2")
@@ -443,58 +394,47 @@ public final class Booking implements Parcelable
         @SerializedName("zipcode")
         private String zip;
 
-        public final String getAddress1()
-        {
+        public final String getAddress1() {
             return address1;
         }
 
-        final void setAddress1(final String address1)
-        {
+        final void setAddress1(final String address1) {
             this.address1 = address1;
         }
 
-        public final String getAddress2()
-        {
+        public final String getAddress2() {
             return address2;
         }
 
-        final void setAddress2(final String address2)
-        {
+        final void setAddress2(final String address2) {
             this.address2 = address2;
         }
 
-        public final String getCity()
-        {
+        public final String getCity() {
             return city;
         }
 
-        final void setCity(final String city)
-        {
+        final void setCity(final String city) {
             this.city = city;
         }
 
-        public final String getState()
-        {
+        public final String getState() {
             return state;
         }
 
-        final void setState(final String state)
-        {
+        final void setState(final String state) {
             this.state = state;
         }
 
-        public final String getZip()
-        {
+        public final String getZip() {
             return zip;
         }
 
-        final void setZip(final String zip)
-        {
+        final void setZip(final String zip) {
             this.zip = zip;
         }
 
-        private Address(final Parcel in)
-        {
+        private Address(final Parcel in) {
             final String[] stringData = new String[5];
             in.readStringArray(stringData);
             address1 = stringData[0];
@@ -505,34 +445,28 @@ public final class Booking implements Parcelable
         }
 
         @Override
-        public final void writeToParcel(final Parcel out, final int flags)
-        {
+        public final void writeToParcel(final Parcel out, final int flags) {
             out.writeStringArray(new String[]{address1, address2, city, state, zip});
         }
 
         @Override
-        public final int describeContents()
-        {
+        public final int describeContents() {
             return 0;
         }
 
-        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-        {
-            public Address createFromParcel(final Parcel in)
-            {
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public Address createFromParcel(final Parcel in) {
                 return new Address(in);
             }
 
-            public Address[] newArray(final int size)
-            {
+            public Address[] newArray(final int size) {
                 return new Address[size];
             }
         };
     }
 
 
-    public static final class Provider implements Parcelable
-    {
+    public static final class Provider implements Parcelable {
         @SerializedName("status")
         private int status;
         @SerializedName("first_name")
@@ -542,53 +476,43 @@ public final class Booking implements Parcelable
         @SerializedName("phone")
         private String phone;
 
-        public final int getStatus()
-        {
+        public final int getStatus() {
             return status;
         }
 
-        final void setStatus(final int status)
-        {
+        final void setStatus(final int status) {
             this.status = status;
         }
 
-        public final String getFirstName()
-        {
+        public final String getFirstName() {
             return firstName;
         }
 
-        final void setFirstName(final String firstName)
-        {
+        final void setFirstName(final String firstName) {
             this.firstName = firstName;
         }
 
-        public final String getLastName()
-        {
+        public final String getLastName() {
             return lastName;
         }
 
-        final void setLastName(final String lastName)
-        {
+        final void setLastName(final String lastName) {
             this.lastName = lastName;
         }
 
-        public final String getPhone()
-        {
+        public final String getPhone() {
             return phone;
         }
 
-        final void setPhone(final String phone)
-        {
+        final void setPhone(final String phone) {
             this.phone = phone;
         }
 
-        public final String getFullName()
-        {
+        public final String getFullName() {
             return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
         }
 
-        private Provider(final Parcel in)
-        {
+        private Provider(final Parcel in) {
             final int[] intData = new int[1];
             in.readIntArray(intData);
             status = intData[0];
@@ -601,27 +525,22 @@ public final class Booking implements Parcelable
         }
 
         @Override
-        public final void writeToParcel(final Parcel out, final int flags)
-        {
+        public final void writeToParcel(final Parcel out, final int flags) {
             out.writeIntArray(new int[]{status});
             out.writeStringArray(new String[]{firstName, lastName, phone});
         }
 
         @Override
-        public final int describeContents()
-        {
+        public final int describeContents() {
             return 0;
         }
 
-        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-        {
-            public Provider createFromParcel(final Parcel in)
-            {
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public Provider createFromParcel(final Parcel in) {
                 return new Provider(in);
             }
 
-            public Provider[] newArray(final int size)
-            {
+            public Provider[] newArray(final int size) {
                 return new Provider[size];
             }
         };
@@ -631,8 +550,7 @@ public final class Booking implements Parcelable
     }
 
 
-    public static final class LineItem implements Parcelable
-    {
+    public static final class LineItem implements Parcelable {
         @SerializedName("order")
         private int order;
         @SerializedName("label")
@@ -640,23 +558,19 @@ public final class Booking implements Parcelable
         @SerializedName("amount")
         private String amount;
 
-        public final int getOrder()
-        {
+        public final int getOrder() {
             return order;
         }
 
-        public final String getLabel()
-        {
+        public final String getLabel() {
             return label;
         }
 
-        public final String getAmount()
-        {
+        public final String getAmount() {
             return amount;
         }
 
-        private LineItem(final Parcel in)
-        {
+        private LineItem(final Parcel in) {
             final int[] intData = new int[1];
             in.readIntArray(intData);
             order = intData[0];
@@ -668,43 +582,36 @@ public final class Booking implements Parcelable
         }
 
         @Override
-        public final void writeToParcel(final Parcel out, final int flags)
-        {
+        public final void writeToParcel(final Parcel out, final int flags) {
             out.writeIntArray(new int[]{order});
             out.writeStringArray(new String[]{label, amount});
         }
 
         @Override
-        public final int describeContents()
-        {
+        public final int describeContents() {
             return 0;
         }
 
-        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-        {
-            public LineItem createFromParcel(final Parcel in)
-            {
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public LineItem createFromParcel(final Parcel in) {
                 return new LineItem(in);
             }
 
-            public LineItem[] newArray(final int size)
-            {
+            public LineItem[] newArray(final int size) {
                 return new LineItem[size];
             }
         };
     }
 
 
-    public static final class ExtraInfo implements Parcelable
-    {
+    public static final class ExtraInfo implements Parcelable {
         @SerializedName("label")
         private String label;
         @SerializedName("image_name")
         private ExtraInfoImageName imageName;
 
 
-        public enum ExtraInfoImageName
-        {
+        public enum ExtraInfoImageName {
             //TODO: Why is the server sending a full imageName name for something that is supposed to be bundled as part of the app? Should just send an identifier or nothing and use label
             //They are always coming back as _disabled in booking details, not sure why, to investigate? Possibly a hold over from web?
             @SerializedName("inside_cabinets_extras_disabled.png")INSIDE_CABINETS_DISABLED,
@@ -718,8 +625,7 @@ public final class Booking implements Parcelable
 
         private static final Map<ExtraInfoImageName, Integer> EXTRAS_ICONS;
 
-        static
-        {
+        static {
             EXTRAS_ICONS = new HashMap<>();
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_CABINETS_DISABLED, R.drawable.ic_booking_extra_cabinets);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_FRIDGE_DISABLED, R.drawable.ic_booking_extra_fridge);
@@ -731,55 +637,44 @@ public final class Booking implements Parcelable
         }
 
 
-        public final String getLabel()
-        {
+        public final String getLabel() {
             return label;
         }
 
-        public final ExtraInfoImageName getImageName()
-        {
+        public final ExtraInfoImageName getImageName() {
             return imageName;
         }
 
-        public final int getImageResource()
-        {
+        public final int getImageResource() {
             return getImageResource(imageName);
         }
 
-        private final int getImageResource(ExtraInfoImageName extraInfoImageName)
-        {
-            if (EXTRAS_ICONS.containsKey(extraInfoImageName))
-            {
+        private final int getImageResource(ExtraInfoImageName extraInfoImageName) {
+            if (EXTRAS_ICONS.containsKey(extraInfoImageName)) {
                 return EXTRAS_ICONS.get(extraInfoImageName);
-            } else
-            {
+            } else {
                 Crashlytics.log("ExtraInfo::getImageResource unsupported image name : " + extraInfoImageName.toString());
                 return 0;
             }
         }
 
-        private ExtraInfo(final Parcel in)
-        {
+        private ExtraInfo(final Parcel in) {
             final String[] stringData = new String[2];
             in.readStringArray(stringData);
             label = stringData[0];
-            try
-            {
+            try {
                 imageName = ExtraInfoImageName.valueOf(stringData[1]);
-            } catch (IllegalArgumentException e)
-            {
+            } catch (IllegalArgumentException e) {
                 Crashlytics.log("Could not convert string : " + stringData[1] + " to extras image name");
             }
 
-            if (imageName == null)
-            {
+            if (imageName == null) {
                 imageName = ExtraInfoImageName.DEFAULT_IMAGE_NAME;
             }
         }
 
         @Override
-        public final void writeToParcel(final Parcel out, final int flags)
-        {
+        public final void writeToParcel(final Parcel out, final int flags) {
             out.writeStringArray(new String[]{
                     label,
                     imageName != null ?
@@ -789,28 +684,23 @@ public final class Booking implements Parcelable
         }
 
         @Override
-        public final int describeContents()
-        {
+        public final int describeContents() {
             return 0;
         }
 
-        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-        {
-            public ExtraInfo createFromParcel(final Parcel in)
-            {
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public ExtraInfo createFromParcel(final Parcel in) {
                 return new ExtraInfo(in);
             }
 
-            public ExtraInfo[] newArray(final int size)
-            {
+            public ExtraInfo[] newArray(final int size) {
                 return new ExtraInfo[size];
             }
         };
     }
 
 
-    public enum LaundryStatus
-    {
+    public enum LaundryStatus {
         @SerializedName("ready_for_pickup")READY_FOR_PICKUP,
         @SerializedName("in_progress")IN_PROGRESS,
         @SerializedName("out_for_delivery")OUT_FOR_DELIVERY,
@@ -824,16 +714,14 @@ public final class Booking implements Parcelable
     public static final int ENTRY_TYPE_HIDE_THE_KEYS = 2;
 
 
-    public static class List extends ArrayList<Booking>
-    {
+    public static class List extends ArrayList<Booking> {
         public static final String VALUE_ONLY_BOOKINGS_PAST = "past";
         public static final String VALUE_ONLY_BOOKINGS_UPCOMING = "upcoming";
 
 
         @Retention(RetentionPolicy.SOURCE)
         @StringDef({VALUE_ONLY_BOOKINGS_PAST, VALUE_ONLY_BOOKINGS_UPCOMING})
-        public @interface OnlyBookingValues
-        {
+        public @interface OnlyBookingValues {
         }
     }
 
