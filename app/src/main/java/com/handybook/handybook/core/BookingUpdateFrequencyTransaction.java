@@ -14,7 +14,7 @@ public final class BookingUpdateFrequencyTransaction extends Observable
         return mRecurringFrequency;
     }
 
-    public void setRecurringFrequency(int recurring)
+    public void setmRecurringFrequency(int recurring)
     {
         this.mRecurringFrequency = recurring;
         triggerObservers();
