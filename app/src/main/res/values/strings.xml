@@ -191,4 +191,6 @@
     <string name="updated_booking_frequency">Updated booking frequency</string>
     <string name="edit_frequency">Edit Frequency</string>
     <string name="how_often_should_come">How often would you like us to come?</string>
+    <string name="booking_options_right_sub_text">\u2215%1$s</string>
+    <string name="current">current</string>
 </resources>

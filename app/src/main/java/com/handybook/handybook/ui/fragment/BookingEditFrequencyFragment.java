@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BookingFrequency;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
@@ -190,19 +191,24 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
     private BookingOption getBookingOption(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
     {
+        //TODO: mostly duplicated from checkout flow fragment, should reconsider redesigning the options logic
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
         option.setOptions(new String[]{getString(R.string.every_week),
                 getString(R.string.every_two_weeks), getString(R.string.every_four_weeks)});
-        mRecurValues = new int[]{1, 2, 4}; //allowing edit frequency only for recurring bookings
+        mRecurValues = new int[]{BookingFrequency.WEEKLY, BookingFrequency.BIMONTHLY, BookingFrequency.MONTHLY}; //allowing edit frequency only for recurring bookings
 
         //update the options right-hand text views
-        option.setOptionsSubText(new String[]
-                {null, getString(R.string.most_popular), null});
+        int indexForFreq = indexForFreq(bookingPricesForFrequenciesResponse.getCurrentFrequency());
+        String optionsSubText[] = new String[mRecurValues.length];
+        optionsSubText[indexForFreq] = getString(R.string.current);
+        option.setOptionsSubText(optionsSubText);
         option.setOptionsRightTitleText(getOriginalPriceArrayForRecurValues(bookingPricesForFrequenciesResponse));
 
         String[] optionsRightSubText = new String[mRecurValues.length];
-        String rightSubText = "/" + mBooking.getServiceShortName();
+        String rightSubText = getString(
+                R.string.booking_options_right_sub_text,
+                mBooking.getServiceShortName());
         for (int i = 0; i < optionsRightSubText.length; i++)
         {
             optionsRightSubText[i] = rightSubText;

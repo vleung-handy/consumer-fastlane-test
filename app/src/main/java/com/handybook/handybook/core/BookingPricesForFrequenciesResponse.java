@@ -1,14 +1,14 @@
 package com.handybook.handybook.core;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.constant.BookingFrequency;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BookingPricesForFrequenciesResponse
 {
-    //server returns these prices as dollars
+    //server returns these prices as formatted dollar amounts
     @SerializedName("weekly_price_formatted")
     private String mWeeklyPriceFormatted;
     @SerializedName("bimonthly_price_formatted")
@@ -18,18 +18,12 @@ public class BookingPricesForFrequenciesResponse
     @SerializedName("current_freq")
     private int mCurrentFrequency;
 
-    public static BookingPricesForFrequenciesResponse fromJson(final String json)
-    {
-        return new GsonBuilder().create()
-                .fromJson(json, BookingPricesForFrequenciesResponse.class);
-    }
-
-    public Map<Integer, String> getFormattedPriceMap()
+    public Map<Integer, String> getFormattedPriceMap() //map of frequency values to formatted prices
     {
         Map<Integer, String> priceMap = new HashMap<>();
-        priceMap.put(1, mWeeklyPriceFormatted);
-        priceMap.put(2, mBimonthlyPriceFormatted);
-        priceMap.put(4, mMonthlyPriceFormatted);
+        priceMap.put(BookingFrequency.WEEKLY, mWeeklyPriceFormatted);
+        priceMap.put(BookingFrequency.BIMONTHLY, mBimonthlyPriceFormatted);
+        priceMap.put(BookingFrequency.MONTHLY, mMonthlyPriceFormatted);
         return priceMap;
     }
 

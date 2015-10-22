@@ -70,13 +70,13 @@ public final class BaseDataManager extends DataManager
 
         String cachedServicesJson = mPrefsManager.getString(PrefsKey.CACHED_SERVICES);
         List<Service> cachedServices = null;
-        if(cachedServicesJson != null)
+        if (cachedServicesJson != null)
         {
             cachedServices = new Gson().fromJson(
                     mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
-                new TypeToken<List<Service>>()
-                {
-                }.getType());
+                    new TypeToken<List<Service>>()
+                    {
+                    }.getType());
         }
 
         cache.onResponse(cachedServices != null ? cachedServices : new ArrayList<Service>());
@@ -238,9 +238,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public void createQuote(final BookingRequest bookingRequest, final Callback<BookingQuote> cb)
     {
-        mService.createQuote(bookingRequest, new HandyRetrofitCallback(cb) {
+        mService.createQuote(bookingRequest, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(BookingQuote.fromJson(response.toString()));
             }
         });
@@ -250,9 +252,11 @@ public final class BaseDataManager extends DataManager
     public void updateQuoteDate(final int quoteId, final Date date,
                                 final Callback<BookingQuote> cb)
     {
-        mService.updateQuoteDate(quoteId, date, new HandyRetrofitCallback(cb) {
+        mService.updateQuoteDate(quoteId, date, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(BookingQuote.fromJson(response.toString()));
             }
         });
@@ -263,9 +267,11 @@ public final class BaseDataManager extends DataManager
                            final String email, final String authToken, final Callback<BookingCoupon> cb)
     {
         mService.applyPromo(promoCode, quoteId, userId, email, authToken,
-                new HandyRetrofitCallback(cb) {
+                new HandyRetrofitCallback(cb)
+                {
                     @Override
-                    void success(final JSONObject response) {
+                    void success(final JSONObject response)
+                    {
                         cb.onSuccess(BookingCoupon.fromJson(response.toString()));
                     }
                 });
@@ -274,9 +280,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public void removePromo(final int quoteId, final Callback<BookingCoupon> cb)
     {
-        mService.removePromo(quoteId, new HandyRetrofitCallback(cb) {
+        mService.removePromo(quoteId, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(BookingCoupon.fromJson(response.toString()));
             }
         });
@@ -286,9 +294,11 @@ public final class BaseDataManager extends DataManager
     public void createBooking(final BookingTransaction bookingTransaction,
                               final Callback<BookingCompleteTransaction> cb)
     {
-        mService.createBooking(bookingTransaction.getBookingId(), bookingTransaction, new HandyRetrofitCallback(cb) {
+        mService.createBooking(bookingTransaction.getBookingId(), bookingTransaction, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(BookingCompleteTransaction.fromJson(response.toString()));
             }
         });
@@ -300,9 +310,11 @@ public final class BaseDataManager extends DataManager
                                          final Callback<Void> cb)
     {
         mService.validateBookingZip(serviceId, zipCode, userId, authToken, promoCode,
-                new HandyRetrofitCallback(cb) {
+                new HandyRetrofitCallback(cb)
+                {
                     @Override
-                    void success(final JSONObject response) {
+                    void success(final JSONObject response)
+                    {
                         cb.onSuccess(null);
                     }
                 });
@@ -336,9 +348,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public void getBooking(final String bookingId, final Callback<Booking> cb)
     {
-        mService.getBooking(bookingId, new HandyRetrofitCallback(cb) {
+        mService.getBooking(bookingId, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(Booking.fromJson(response.optJSONObject("booking").toString()));
             }
         });
@@ -347,12 +361,17 @@ public final class BaseDataManager extends DataManager
     @Override
     public void getPreBookingPromo(final String promoCode, final Callback<PromoCode> cb)
     {
-        mService.getPreBookingPromo(promoCode, new HandyRetrofitCallback(cb) {
+        mService.getPreBookingPromo(promoCode, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
-                if (response.has("coupon") && response.optInt("coupon") == 1) {
+            void success(final JSONObject response)
+            {
+                if (response.has("coupon") && response.optInt("coupon") == 1)
+                {
                     cb.onSuccess(new PromoCode(PromoCode.Type.COUPON, promoCode));
-                } else if (response.has("voucher")) {
+                }
+                else if (response.has("voucher"))
+                {
                     final JSONObject voucher = response.optJSONObject("voucher");
 
                     final PromoCode code = new PromoCode(PromoCode.Type.VOUCHER,
@@ -365,7 +384,9 @@ public final class BaseDataManager extends DataManager
                     //code.setUniq(voucher.optString("machine_name"));
 
                     cb.onSuccess(code);
-                } else {
+                }
+                else
+                {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
             }
@@ -376,9 +397,11 @@ public final class BaseDataManager extends DataManager
     public void addBookingPostInfo(final int bookingId, final BookingPostInfo postInfo,
                                    final Callback<Void> cb)
     {
-        mService.addBookingPostInfo(bookingId, postInfo, new HandyRetrofitCallback(cb) {
+        mService.addBookingPostInfo(bookingId, postInfo, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(null);
             }
         });
@@ -387,9 +410,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public void getPreRescheduleInfo(final String bookingId, final Callback<String> cb)
     {
-        mService.getPreRescheduleInfo(bookingId, new HandyRetrofitCallback(cb) {
+        mService.getPreRescheduleInfo(bookingId, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(response.isNull("notice") ? null : response.optString("notice", null));
             }
         });
@@ -401,13 +426,16 @@ public final class BaseDataManager extends DataManager
                                   final Callback<Pair<String, BookingQuote>> cb)
     {
         mService.rescheduleBooking(bookingId, date, rescheduleAll ? 1 : 0, userId, authToken,
-                new HandyRetrofitCallback(cb) {
+                new HandyRetrofitCallback(cb)
+                {
                     @Override
-                    void success(final JSONObject response) {
+                    void success(final JSONObject response)
+                    {
                         final String message = parseAlertMessage(response);
                         BookingQuote quote = null;
 
-                        if (response.optJSONArray("dynamic_options") != null) {
+                        if (response.optJSONArray("dynamic_options") != null)
+                        {
                             quote = BookingQuote.fromJson(response.toString());
                         }
 
@@ -420,16 +448,19 @@ public final class BaseDataManager extends DataManager
     public void getPreCancelationInfo(final String bookingId,
                                       final Callback<Pair<String, List<String>>> cb)
     {
-        mService.getPreCancelationInfo(bookingId, new HandyRetrofitCallback(cb) {
+        mService.getPreCancelationInfo(bookingId, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 final String notice = response.isNull("notice") ? null
                         : response.optString("notice", null);
 
                 final JSONArray array = response.optJSONArray("options");
                 final Gson gson = new Gson();
                 final List<String> options = gson.fromJson(array.toString(),
-                        new TypeToken<List<String>>() {
+                        new TypeToken<List<String>>()
+                        {
                         }.getType());
 
                 cb.onSuccess(new Pair<>(notice, options));
@@ -465,9 +496,11 @@ public final class BaseDataManager extends DataManager
     public void getLaundryScheduleInfo(final int bookingId, final String authToken,
                                        final Callback<LaundryDropInfo> cb)
     {
-        mService.getLaundryScheduleInfo(bookingId, authToken, new HandyRetrofitCallback(cb) {
+        mService.getLaundryScheduleInfo(bookingId, authToken, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(LaundryDropInfo.fromJson(response.toString()));
             }
         });
@@ -493,9 +526,11 @@ public final class BaseDataManager extends DataManager
     public void getAddLaundryInfo(final int bookingId, final String authToken,
                                   final Callback<Booking> cb)
     {
-        mService.getAddLaundryInfo(bookingId, authToken, new HandyRetrofitCallback(cb) {
+        mService.getAddLaundryInfo(bookingId, authToken, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 final Booking booking = Booking.fromJson(response.optJSONObject("booking").toString());
                 booking.setId(Integer.toString(bookingId));
                 cb.onSuccess(booking);
@@ -506,9 +541,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public void addLaundry(final int bookingId, final String authToken, final Callback<Void> cb)
     {
-        mService.addLaundry(bookingId, authToken, new HandyRetrofitCallback(cb) {
+        mService.addLaundry(bookingId, authToken, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(null);
             }
         });
@@ -517,9 +554,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public void ratePro(final int bookingId, final int rating, final Callback<Void> cb)
     {
-        mService.ratePro(bookingId, rating, new HandyRetrofitCallback(cb) {
+        mService.ratePro(bookingId, rating, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(null);
             }
         });
@@ -530,12 +569,17 @@ public final class BaseDataManager extends DataManager
                                        final Callback<Void> cb)
     {
         mService.submitProRatingDetails(bookingId, new HandyRetrofitService
-                .RateProRequest(positiveFeedback), new HandyRetrofitCallback(cb) {
+                .RateProRequest(positiveFeedback), new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
-                if (response.optBoolean("success", false)) {
+            void success(final JSONObject response)
+            {
+                if (response.optBoolean("success", false))
+                {
                     cb.onSuccess(null);
-                } else {
+                }
+                else
+                {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
             }
@@ -545,9 +589,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public final void authUser(final String email, final String password, final Callback<User> cb)
     {
-        mService.createUserSession(email, password, new HandyRetrofitCallback(cb) {
+        mService.createUserSession(email, password, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 handleCreateSessionResponse(response, cb);
             }
         });
@@ -558,9 +604,11 @@ public final class BaseDataManager extends DataManager
                                  final String firstName, String lastName, final Callback<User> cb)
     {
         mService.createUserSessionFB(fbid, accessToken, email, firstName, lastName,
-                new HandyRetrofitCallback(cb) {
+                new HandyRetrofitCallback(cb)
+                {
                     @Override
-                    void success(final JSONObject response) {
+                    void success(final JSONObject response)
+                    {
                         handleCreateSessionResponse(response, cb);
                     }
                 });
@@ -568,9 +616,11 @@ public final class BaseDataManager extends DataManager
 
     public final void getUser(final String userId, final String authToken, final Callback<User> cb)
     {
-        mService.getUserInfo(userId, authToken, new HandyRetrofitCallback(cb) {
+        mService.getUserInfo(userId, authToken, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 handleUserResponse(userId, authToken, response, cb);
             }
         });
@@ -579,9 +629,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public final void getUser(final String email, final Callback<String> cb)
     {
-        mService.getUserInfo(email, new HandyRetrofitCallback(cb) {
+        mService.getUserInfo(email, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(response.isNull("name") ? null : response.optString("name"));
             }
         });
@@ -591,9 +643,11 @@ public final class BaseDataManager extends DataManager
     public final void updateUser(final User user, final Callback<User> cb)
     {
         mService.updateUserInfo(user.getId(), new HandyRetrofitService.UserUpdateRequest(user,
-                user.getAuthToken()), new HandyRetrofitCallback(cb) {
+                user.getAuthToken()), new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(JSONObject response) {
+            void success(JSONObject response)
+            {
                 handleUserResponse(user.getId(), user.getAuthToken(), response, cb);
             }
         });
@@ -602,9 +656,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public final void requestPasswordReset(final String email, final Callback<String> cb)
     {
-        mService.requestPasswordReset(email, new HandyRetrofitCallback(cb) {
+        mService.requestPasswordReset(email, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(JSONObject response) {
+            void success(JSONObject response)
+            {
                 final JSONArray array = response.optJSONArray("messages");
                 cb.onSuccess(array != null && array.length() > 0 ?
                         array.isNull(0) ? null : array.optString(0) : null);
@@ -614,15 +670,15 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public final void getRequestProInfo(int bookingId,
-            Callback<BookingRequestablePros> cb)
+                                        Callback<BookingRequestablePros> cb)
     {
         mService.getRequestProInfo(bookingId, new BookingRequestableProsResponseHandyRetroFitCallback(cb));
     }
 
     @Override
     public final void requestProForBooking(int bookingId,
-                                              int requestedProId,
-                                              Callback<BookingProRequestResponse> cb)
+                                           int requestedProId,
+                                           Callback<BookingProRequestResponse> cb)
     {
         mService.requestProForBooking(bookingId, requestedProId, true, new BookingProRequestResponseHandyRetroFitCallback(cb));
     }
@@ -643,9 +699,11 @@ public final class BaseDataManager extends DataManager
     @Override
     public final void createHelpCase(TypedInput body, final Callback<Void> cb)
     {
-        mService.createHelpCase(body, new HandyRetrofitCallback(cb) {
+        mService.createHelpCase(body, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(null);
             }
         });
@@ -656,9 +714,11 @@ public final class BaseDataManager extends DataManager
                                              BookingUpdateNoteToProTransaction descriptionTransaction,
                                              final Callback<Void> cb)
     {
-        mService.updateBookingNoteToPro(bookingId, descriptionTransaction, new HandyRetrofitCallback(cb) {
+        mService.updateBookingNoteToPro(bookingId, descriptionTransaction, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(null);
             }
         });
@@ -669,9 +729,11 @@ public final class BaseDataManager extends DataManager
                                                     BookingUpdateEntryInformationTransaction entryInformationTransaction,
                                                     final Callback<Void> cb)
     {
-        mService.updateBookingEntryInformation(bookingId, entryInformationTransaction, new HandyRetrofitCallback(cb) {
+        mService.updateBookingEntryInformation(bookingId, entryInformationTransaction, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(null);
             }
         });
@@ -682,9 +744,11 @@ public final class BaseDataManager extends DataManager
                                              BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
                                              final Callback<Void> cb)
     {
-        mService.updateBookingFrequency(bookingId, bookingUpdateFrequencyTransaction, new HandyRetrofitCallback(cb) {
+        mService.updateBookingFrequency(bookingId, bookingUpdateFrequencyTransaction, new HandyRetrofitCallback(cb)
+        {
             @Override
-            void success(final JSONObject response) {
+            void success(final JSONObject response)
+            {
                 cb.onSuccess(null);
             }
         });
@@ -694,12 +758,7 @@ public final class BaseDataManager extends DataManager
     public final void getBookingPricesForFrequencies(int bookingId,
                                                      final Callback<BookingPricesForFrequenciesResponse> cb)
     {
-        mService.getBookingPricesForFrequencies(bookingId, new HandyRetrofitCallback(cb) {
-            @Override
-            void success(final JSONObject response) {
-                cb.onSuccess(BookingPricesForFrequenciesResponse.fromJson(response.toString()));
-            }
-        });
+        mService.getBookingPricesForFrequencies(bookingId, new BookingPricesForFrequenciesCallback(cb));
     }
 
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb)
