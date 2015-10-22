@@ -64,7 +64,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         option.setOptionsSubText(new String[]
                 {null, getString(R.string.most_popular), null, null});
 
-        option.setOptionsRightText(getSavingsInfo());
+        option.setOptionsRightSubText(getSavingsInfo());
 
         final BookingOptionsSelectView optionsView
                 = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
@@ -136,7 +136,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
                 percent = (int)((discount - recurDiscount) / discount * 100);
             else percent = (int)((price - recurPrice) / price * 100);
 
-            if (percent > 0) info[i] = getString(R.string.save) + " " + percent + "%";
+            if (percent > 0) info[i] = getString(R.string.save).toUpperCase() + " " + percent + "%";
         }
         return info;
     }

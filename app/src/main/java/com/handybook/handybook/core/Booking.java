@@ -75,6 +75,10 @@ public final class Booking implements Parcelable
     @SerializedName("can_edit_frequency")
     private Boolean canEditFrequency;
 
+    //short names derived from service machine names for display purposes
+    private final static String SERVICE_SHORT_NAME_CLEAN = "clean";
+    private final static String SERVICE_SHORT_NAME_JOB = "job";
+
     public final String getId()
     {
         return id;
@@ -280,6 +284,18 @@ public final class Booking implements Parcelable
     public final ArrayList<ExtraInfo> getExtrasInfo()
     {
         return extrasInfo;
+    }
+
+    //used in edit booking frequency display
+    public final String getServiceShortName() {
+        switch (serviceMachineName) {
+            case SERVICE_CLEANING:
+            case SERVICE_HOME_CLEANING:
+            case SERVICE_OFFICE_CLEANING:
+                return SERVICE_SHORT_NAME_CLEAN;
+            default:
+                return SERVICE_SHORT_NAME_JOB;
+        }
     }
 
     private Booking(final Parcel in)

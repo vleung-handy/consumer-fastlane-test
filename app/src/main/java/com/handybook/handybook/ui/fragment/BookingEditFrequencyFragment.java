@@ -156,6 +156,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         progressDialog.dismiss();
     }
 
+    //TODO: duplicated from BookingRecurrenceFragment. we shouldn't have to use this kind of logic
     private int indexForFreq(final int freq) {
         switch (freq) {
             case 1:
@@ -175,31 +176,48 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     private String[] getOriginalPriceArrayForRecurValues(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
     {
         String[] priceArray = new String[recurValues.length];
-        Map<Integer, String> priceMap = bookingPricesForFrequenciesResponse.getFormattedPriceMap(); //this is string because server returns formatted prices
+        Map<Integer, String> priceMap = bookingPricesForFrequenciesResponse.getFormattedPriceMap();
+        //this is string because server returns formatted prices (let's not do that in new api)
+
         for(int i = 0; i<priceArray.length; i++)
         {
             priceArray[i] = priceMap.get(recurValues[i]);
         }
         return priceArray;
     }
-    private void updateUiWithBookingPricesForFrequencies(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
+
+    private BookingOption getBookingOption(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
     {
-        //update the options right text
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
-        option.setDefaultValue("0");
         option.setOptions(new String[]{getString(R.string.every_week),
                 getString(R.string.every_two_weeks), getString(R.string.every_four_weeks)});
         recurValues = new int[]{1, 2, 4}; //allowing edit frequency only for recurring bookings
+
+        //update the options right-hand text views
         option.setOptionsSubText(new String[]
                 {null, getString(R.string.most_popular), null});
-        option.setOptionsRightText(getOriginalPriceArrayForRecurValues(bookingPricesForFrequenciesResponse));
+        option.setOptionsRightTitleText(getOriginalPriceArrayForRecurValues(bookingPricesForFrequenciesResponse));
+
+        String[] optionsRightSubText = new String[recurValues.length];
+        String rightSubText = "/" + booking.getServiceShortName();
+        for(int i = 0; i<optionsRightSubText.length; i++)
+        {
+            optionsRightSubText[i] = rightSubText;
+        }
+        option.setOptionsRightSubText(optionsRightSubText);
+        return option;
+    }
+
+    private void createOptionsView(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
+    {
+        //create the options view
         final BookingOptionsSelectView optionsView
-                = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
+                = new BookingOptionsSelectView(getActivity(), getBookingOption(bookingPricesForFrequenciesResponse), optionUpdated);
         optionsView.setCurrentIndex(indexForFreq(bookingPricesForFrequenciesResponse.getCurrentFrequency()));
         optionsView.hideTitle();
         optionsLayout.removeAllViews();
-        optionsLayout.addView(optionsView, 0);
+        optionsLayout.addView(optionsView);
     }
 
     private void onReceiveErrorEvent(HandyEvent.ReceiveErrorEvent event)
@@ -227,7 +245,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     @Subscribe
     public final void onReceiveBookingPricesForFrequenciesSuccess(HandyEvent.ReceiveGetBookingPricesForFrequenciesSuccess event)
     {
-        updateUiWithBookingPricesForFrequencies(event.bookingPricesForFrequenciesResponse);
+        createOptionsView(event.bookingPricesForFrequenciesResponse);
         removeUiBlockers();
     }
 

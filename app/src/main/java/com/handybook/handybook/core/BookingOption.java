@@ -20,7 +20,8 @@ public final class BookingOption implements Parcelable
     @SerializedName("default_value") private String defaultValue;
     @SerializedName("options") private String[] options;
     @SerializedName("options_sub_text") private String[] optionsSubText;
-    @SerializedName("options_left_text") private String[] optionsRightText;
+    @SerializedName("options_right_title_text") private String[] optionsRightTitleText;
+    @SerializedName("options_left_text") private String[] optionsRightSubText; //TODO: why is the key = options_left_text?
     @SerializedName("options_images") private String[][] optionsImages;
     @SerializedName("hour_info") private float[] hoursInfo;
     @SerializedName("warnings") private String[][] warnings;
@@ -86,12 +87,20 @@ public final class BookingOption implements Parcelable
         this.optionsSubText = optionsSubText;
     }
 
-    public final String[] getOptionsRightText() {
-        return optionsRightText;
+    public final String[] getOptionsRightSubText() {
+        return optionsRightSubText;
     }
 
-    public final void setOptionsRightText(final String[] optionsRightText) {
-        this.optionsRightText = optionsRightText;
+    public final String[] getOptionsRightTitleText() {
+        return optionsRightTitleText;
+    }
+
+    public void setOptionsRightTitleText(String[] optionsRightTitleText) {
+        this.optionsRightTitleText = optionsRightTitleText;
+    }
+
+    public final void setOptionsRightSubText(final String[] optionsRightSubText) {
+        this.optionsRightSubText = optionsRightSubText;
     }
 
     final String[][] getOptionsImages() {
@@ -158,7 +167,8 @@ public final class BookingOption implements Parcelable
 
         options = in.createStringArray();
         optionsSubText = in.createStringArray();
-        optionsRightText = in.createStringArray();
+        optionsRightTitleText = in.createStringArray();
+        optionsRightSubText = in.createStringArray();
         optionsImages = (String[][]) in.readSerializable();
         hoursInfo = in.createFloatArray();
         warnings = (String[][]) in.readSerializable();
@@ -167,11 +177,12 @@ public final class BookingOption implements Parcelable
 
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
-        out.writeStringArray(new String[]{ uniq, type, title, defaultValue, info });
-        out.writeIntArray(new int[]{ page, post });
+        out.writeStringArray(new String[]{uniq, type, title, defaultValue, info});
+        out.writeIntArray(new int[]{page, post});
         out.writeStringArray(options);
         out.writeStringArray(optionsSubText);
-        out.writeStringArray(optionsRightText);
+        out.writeStringArray(optionsRightTitleText);
+        out.writeStringArray(optionsRightSubText);
         out.writeSerializable(optionsImages);
         out.writeFloatArray(hoursInfo);
         out.writeSerializable(warnings);
