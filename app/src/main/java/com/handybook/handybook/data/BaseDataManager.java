@@ -3,9 +3,7 @@ package com.handybook.handybook.data;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BlockedWrapper;
@@ -699,17 +697,7 @@ public final class BaseDataManager extends DataManager
         mService.getBookingPricesForFrequencies(bookingId, new HandyRetrofitCallback(cb) {
             @Override
             void success(final JSONObject response) {
-                try {
-                    com.google.common.reflect.TypeToken<BookingPricesForFrequenciesResponse> typeToken = new com.google.common.reflect.TypeToken<BookingPricesForFrequenciesResponse>(getClass()) {
-                    };
-                    BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse = (new Gson()).fromJson(response.toString(),
-                            typeToken.getType());
-                    cb.onSuccess(bookingPricesForFrequenciesResponse);
-                } catch (Exception e) {
-                    Crashlytics.logException(new Exception("Unable to deserialize booking prices for frequencies response: " + response == null ? null : response.toString(), e));
-                    cb.onError(new DataManagerError(Type.SERVER, "Unable to deserialize booking prices for frequencies response"));
-                }
-
+                cb.onSuccess(BookingPricesForFrequenciesResponse.fromJson(response.toString()));
             }
         });
     }

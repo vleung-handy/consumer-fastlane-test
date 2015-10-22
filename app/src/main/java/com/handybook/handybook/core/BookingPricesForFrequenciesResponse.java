@@ -1,5 +1,6 @@
 package com.handybook.handybook.core;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
@@ -16,6 +17,12 @@ public class BookingPricesForFrequenciesResponse
     private String mMonthlyPriceFormatted;
     @SerializedName("current_freq")
     private int mCurrentFrequency;
+
+    public static BookingPricesForFrequenciesResponse fromJson(final String json)
+    {
+        return new GsonBuilder().create()
+                .fromJson(json, BookingPricesForFrequenciesResponse.class);
+    }
 
     public Map<Integer, String> getFormattedPriceMap()
     {

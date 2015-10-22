@@ -157,8 +157,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     //TODO: duplicated from BookingRecurrenceFragment. we shouldn't have to use this kind of logic
-    private int indexForFreq(final int freq) {
-        switch (freq) {
+    private int indexForFreq(final int freq)
+    {
+        switch (freq)
+        {
             case 1:
                 return 0;
 
@@ -179,7 +181,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         Map<Integer, String> priceMap = bookingPricesForFrequenciesResponse.getFormattedPriceMap();
         //this is string because server returns formatted prices (let's not do that in new api)
 
-        for(int i = 0; i<priceArray.length; i++)
+        for (int i = 0; i < priceArray.length; i++)
         {
             priceArray[i] = priceMap.get(mRecurValues[i]);
         }
@@ -201,7 +203,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
         String[] optionsRightSubText = new String[mRecurValues.length];
         String rightSubText = "/" + mBooking.getServiceShortName();
-        for(int i = 0; i<optionsRightSubText.length; i++)
+        for (int i = 0; i < optionsRightSubText.length; i++)
         {
             optionsRightSubText[i] = rightSubText;
         }
