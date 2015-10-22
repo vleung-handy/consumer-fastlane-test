@@ -7,12 +7,14 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
 
+import com.squareup.picasso.Transformation;
+
 /**
  * Transformation to round corners of drawables, by default it rounds all the corners, but corners
  * can be picked one by one.
  */
 public class RoundedTransformation implements
-        com.squareup.picasso.Transformation
+        Transformation
 {
     private final float mRadius;
     private final float mMargin; // dp

@@ -48,7 +48,7 @@
                 android:textAppearance="@style/TextView.Bold"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_large"
-                android:text="@string/home_cleaner"/>
+                tools:text="@string/home_cleaner"/>
 
             <TextView
                 android:id="@+id/subtitle"
@@ -57,7 +57,7 @@
                 android:gravity="center"
                 android:textColor="@color/handy_text_gray"
                 android:textSize="@dimen/text_size_small"
-                android:text="@string/home_cleaner_slogan"/>
+                tools:text="@string/home_cleaner_slogan"/>
 
         </LinearLayout>
 
@@ -67,7 +67,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_cleaner"/>
+            tools:src="@drawable/img_cleaner"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
