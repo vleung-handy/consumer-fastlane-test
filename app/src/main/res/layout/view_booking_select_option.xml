@@ -48,7 +48,6 @@
 
     </RelativeLayout>
 
-    <!--TODO: simplify the gravity attributes-->
     <LinearLayout
         android:layout_weight="1.25"
         android:paddingRight="@dimen/default_padding"
@@ -56,13 +55,11 @@
         android:layout_gravity="center"
         android:gravity="center|right"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/right_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|right"
-            android:gravity="center|end|right"
             android:freezesText="false"
             android:singleLine="true"
             android:visibility="gone"
@@ -72,8 +69,6 @@
             android:id="@+id/right_subtitle_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|right"
-            android:gravity="center|end"
             android:textAllCaps="false"
             android:freezesText="false"
             android:singleLine="true"
