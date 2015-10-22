@@ -48,6 +48,7 @@
 
     </RelativeLayout>
 
+    <!--TODO: simplify the gravity attributes-->
     <LinearLayout
         android:layout_weight="1.25"
         android:paddingRight="@dimen/default_padding"
