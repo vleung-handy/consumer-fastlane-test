@@ -4,8 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Observable;
 
-public final class BookingUpdateNoteToProTransaction extends Observable {
-    @SerializedName("msg_to_pro") private String messageToPro;  //Separate message to pro containing misc information
+public final class BookingUpdateNoteToProTransaction extends Observable
+{
+    @SerializedName("msg_to_pro")
+    private String messageToPro;  //Separate message to pro containing misc information
 
     public String getMessageToPro()
     {
@@ -15,9 +17,11 @@ public final class BookingUpdateNoteToProTransaction extends Observable {
     public void setMessageToPro(String messageToPro)
     {
         this.messageToPro = messageToPro;
+        triggerObservers();
     }
 
-    private void triggerObservers() {
+    private void triggerObservers()
+    {
         setChanged();
         notifyObservers();
     }

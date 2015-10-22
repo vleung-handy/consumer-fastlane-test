@@ -9,12 +9,14 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
@@ -141,8 +143,15 @@ public abstract class DataManager
                                                 Callback<Void> cb);
 
     public abstract void updateBookingEntryInformation(int bookingId,
-                                                BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                                       BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                                       Callback<Void> cb);
+
+    public abstract void updateBookingFrequency(int bookingId,
+                                                BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
                                                 Callback<Void> cb);
+
+    public abstract void getBookingPricesForFrequencies(int bookingId,
+                                                        Callback<BookingPricesForFrequenciesResponse> cb);
 
     public abstract void ratePro(int bookingId,
                                  int rating,
@@ -176,11 +185,11 @@ public abstract class DataManager
                                               Callback<String> cb);
 
     public abstract void getRequestProInfo(int bookingId,
-                                              Callback<BookingRequestablePros> cb);
+                                           Callback<BookingRequestablePros> cb);
 
     public abstract void requestProForBooking(int bookingId,
                                               int requestedProId,
-                                                Callback<BookingProRequestResponse> cb);
+                                              Callback<BookingProRequestResponse> cb);
 
     public abstract void getHelpInfo(String nodeId,
                                      String authToken,
