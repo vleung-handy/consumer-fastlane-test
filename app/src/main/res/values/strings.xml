@@ -193,4 +193,6 @@
     <string name="how_often_should_come">How often would you like us to come?</string>
     <string name="booking_options_right_sub_text">\u2215%1$s</string>
     <string name="current">current</string>
+    <string name="clean">clean</string>
+    <string name="job">job</string>
 </resources>

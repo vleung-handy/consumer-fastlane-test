@@ -186,6 +186,20 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         return priceArray;
     }
 
+    //TODO: move to a place where this can be shared (but NOT to the Booking model)
+    private final String getServiceShortName(String serviceMachineName)
+    {
+        switch (serviceMachineName)
+        {
+            case Booking.SERVICE_CLEANING:
+            case Booking.SERVICE_HOME_CLEANING:
+            case Booking.SERVICE_OFFICE_CLEANING:
+                return getString(R.string.clean);
+            default:
+                return getString(R.string.job);
+        }
+    }
+
     private BookingOption getBookingOption(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
     {
         //TODO: mostly duplicated from checkout flow fragment, should reconsider redesigning the options logic
@@ -205,7 +219,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         String[] optionsRightSubText = new String[mRecurValues.length];
         String rightSubText = getString(
                 R.string.booking_options_right_sub_text,
-                mBooking.getServiceShortName());
+                getServiceShortName(mBooking.getServiceMachineName()));
         for (int i = 0; i < optionsRightSubText.length; i++)
         {
             optionsRightSubText[i] = rightSubText;

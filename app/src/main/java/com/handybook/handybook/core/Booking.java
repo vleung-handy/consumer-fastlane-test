@@ -14,8 +14,8 @@ import com.handybook.handybook.R;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,10 +74,6 @@ public final class Booking implements Parcelable
     private Boolean canEditHours;
     @SerializedName("can_edit_frequency")
     private Boolean canEditFrequency;
-
-    //short names derived from service machine names for display purposes
-    private final static String SERVICE_SHORT_NAME_CLEAN = "clean";
-    private final static String SERVICE_SHORT_NAME_JOB = "job";
 
     public final String getId()
     {
@@ -285,20 +281,6 @@ public final class Booking implements Parcelable
     public final ArrayList<ExtraInfo> getExtrasInfo()
     {
         return extrasInfo;
-    }
-
-    //used in edit booking frequency display
-    public final String getServiceShortName()
-    {
-        switch (serviceMachineName)
-        {
-            case SERVICE_CLEANING:
-            case SERVICE_HOME_CLEANING:
-            case SERVICE_OFFICE_CLEANING:
-                return SERVICE_SHORT_NAME_CLEAN;
-            default:
-                return SERVICE_SHORT_NAME_JOB;
-        }
     }
 
     private Booking(final Parcel in)
