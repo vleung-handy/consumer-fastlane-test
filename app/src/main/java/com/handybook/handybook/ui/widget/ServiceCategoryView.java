@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
+import com.handybook.handybook.ui.transformation.RoundedTransformation;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,7 +51,6 @@ public final class ServiceCategoryView extends FrameLayout
         LayoutInflater.from(getContext()).inflate(R.layout.view_service_category, this);
         ButterKnife.bind(this);
 
-        mCard.setPreventCornerOverlap(false); // this doesn't work when specified in the XML
         try
         {
             String serviceMachineName = service.getUniq().toUpperCase();
@@ -56,7 +58,30 @@ public final class ServiceCategoryView extends FrameLayout
             mTitle.setText(viewType.getTitleString());
             mSubtitle.setText(viewType.getSubtitleString());
             mIcon.setImageResource(viewType.getIconDrawable());
-            mImage.setImageResource(viewType.getImageDrawable());
+            int currentAPIVersion = android.os.Build.VERSION.SDK_INT;
+            // Due to expensive nature of rounded corner clipping, on platforms before L, CardView
+            // does not clip its children that intersect with rounded corners.
+            if (currentAPIVersion >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                mImage.setImageResource(viewType.getImageDrawable());
+            } else
+            {
+                Picasso.with(getContext())
+                        .load(viewType.getImageDrawable())
+                        .transform(
+                                new RoundedTransformation(
+                                        getContext().getResources()
+                                                .getDimension(R.dimen.default_corner_radius),
+                                        0,
+                                        true,
+                                        true,
+                                        false,
+                                        false
+                                )
+                        )
+                        .fit()
+                        .into(mImage);
+            }
         } catch (IllegalArgumentException e)
         {
             mTitle.setText(service.getName());
