@@ -9,12 +9,12 @@ public final class BookingUpdateFrequencyTransaction extends Observable
     @SerializedName("new_freq")
     private int mRecurringFrequency;
 
-    public int getmRecurringFrequency()
+    public int getRecurringFrequency()
     {
         return mRecurringFrequency;
     }
 
-    public void setmRecurringFrequency(int recurring)
+    public void setRecurringFrequency(int recurring)
     {
         this.mRecurringFrequency = recurring;
         triggerObservers();
