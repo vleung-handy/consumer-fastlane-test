@@ -3,9 +3,6 @@ package com.handybook.handybook.core;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.constant.BookingFrequency;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class BookingPricesForFrequenciesResponse
 {
     //server returns these prices as formatted dollar amounts
@@ -18,13 +15,19 @@ public class BookingPricesForFrequenciesResponse
     @SerializedName("current_freq")
     private int mCurrentFrequency;
 
-    public Map<Integer, String> getFormattedPriceMap() //map of frequency values to formatted prices
+    public String getFormattedPriceForFrequency(int frequency)
     {
-        Map<Integer, String> priceMap = new HashMap<>();
-        priceMap.put(BookingFrequency.WEEKLY, mWeeklyPriceFormatted);
-        priceMap.put(BookingFrequency.BIMONTHLY, mBimonthlyPriceFormatted);
-        priceMap.put(BookingFrequency.MONTHLY, mMonthlyPriceFormatted);
-        return priceMap;
+        switch (frequency)
+        {
+            case BookingFrequency.WEEKLY:
+                return mWeeklyPriceFormatted;
+            case BookingFrequency.BIMONTHLY:
+                return mBimonthlyPriceFormatted;
+            case BookingFrequency.MONTHLY:
+                return mMonthlyPriceFormatted;
+            default:
+                return null;
+        }
     }
 
     public int getCurrentFrequency()

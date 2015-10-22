@@ -22,8 +22,6 @@ import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 import com.squareup.otto.Subscribe;
 
-import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -179,12 +177,11 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     private String[] getOriginalPriceArrayForRecurValues(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
     {
         String[] priceArray = new String[mRecurValues.length];
-        Map<Integer, String> priceMap = bookingPricesForFrequenciesResponse.getFormattedPriceMap();
         //this is string because server returns formatted prices (let's not do that in new api)
 
         for (int i = 0; i < priceArray.length; i++)
         {
-            priceArray[i] = priceMap.get(mRecurValues[i]);
+            priceArray[i] = bookingPricesForFrequenciesResponse.getFormattedPriceForFrequency(mRecurValues[i]);
         }
         return priceArray;
     }
