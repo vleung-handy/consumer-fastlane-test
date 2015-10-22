@@ -2,12 +2,21 @@
 <android.support.v7.widget.CardView
     android:id="@+id/card"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="144dp"
     android:layout_marginBottom="@dimen/default_margin_quarter"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="@dimen/default_corner_radius">
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/handy_white"
+    app:cardCornerRadius="@dimen/default_corner_radius"
+    app:cardElevation="1dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="0dp"
+    app:paddingEnd="@dimen/default_margin_half"
+    app:paddingStart="@dimen/default_margin_half"
+    tools:context=".ui.activity.ServiceCategoriesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +35,8 @@
             <ImageView
                 android:id="@+id/icon"
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                tools:src="@drawable/ic_service_cleaning_outline"/>
 
             <TextView
                 android:id="@+id/title"
@@ -37,7 +47,8 @@
                 android:gravity="center"
                 android:textAppearance="@style/TextView.Bold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"/>
+                android:textSize="@dimen/text_size_large"
+                android:text="@string/home_cleaner"/>
 
             <TextView
                 android:id="@+id/subtitle"
@@ -45,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/handy_text_gray"
-                android:textSize="@dimen/text_size_small"/>
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/home_cleaner_slogan"/>
 
         </LinearLayout>
 
@@ -54,7 +66,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_cleaner"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
