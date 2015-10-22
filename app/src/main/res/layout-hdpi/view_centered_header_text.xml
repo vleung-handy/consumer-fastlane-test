@@ -5,5 +5,4 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
-    android:singleLine="true"
-    android:text="Title" />
+    android:singleLine="true"/>
