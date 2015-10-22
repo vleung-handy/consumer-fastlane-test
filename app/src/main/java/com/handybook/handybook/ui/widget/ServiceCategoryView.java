@@ -66,11 +66,11 @@ public final class ServiceCategoryView extends FrameLayout
 
     private enum ServiceCategoryViewType
     {
-        HOME_CLEANING(R.string.home_cleaner, R.string.let_your_home_shine, R.drawable.ic_cleaner_fill, R.drawable.img_cleaner),
-        HANDYMAN(R.string.handyman, R.string.install_repair_etc, R.drawable.ic_handyman_fill, R.drawable.img_handyman),
-        PLUMBING(R.string.plumber, R.string.go_with_the_flow, R.drawable.ic_plumber_fill, R.drawable.img_plumber),
-        ELECTRICIAN(R.string.electrician, R.string.get_connected, R.drawable.ic_electrician_fill, R.drawable.img_electrician),
-        PAINTING(R.string.interior_painter, R.string.color_your_world, R.drawable.ic_painter_fill, R.drawable.img_painter),;
+        HOME_CLEANING(R.string.home_cleaner, R.string.home_cleaner_slogan, R.drawable.ic_cleaner_fill, R.drawable.img_cleaner),
+        HANDYMAN(R.string.handyman, R.string.handyman_slogan, R.drawable.ic_handyman_fill, R.drawable.img_handyman),
+        PLUMBING(R.string.plumber, R.string.plumber_slogan, R.drawable.ic_plumber_fill, R.drawable.img_plumber),
+        ELECTRICIAN(R.string.electrician, R.string.electrician_slogan, R.drawable.ic_electrician_fill, R.drawable.img_electrician),
+        PAINTING(R.string.painter, R.string.painter_slogan, R.drawable.ic_painter_fill, R.drawable.img_painter),;
 
         private final int mTitleString;
         private final int mSubtitleString;
