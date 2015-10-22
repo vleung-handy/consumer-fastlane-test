@@ -162,13 +162,13 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         switch (freq)
         {
-            case 1:
+            case BookingFrequency.WEEKLY:
                 return 0;
 
-            case 2:
+            case BookingFrequency.BIMONTHLY:
                 return 1;
 
-            case 4:
+            case BookingFrequency.MONTHLY:
                 return 2;
 
             default:
