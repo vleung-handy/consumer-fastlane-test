@@ -188,5 +188,15 @@
     <string name="no_booking_card_upcoming_text">You don\'t have any\nupcoming bookings</string>
     <string name="no_booking_card_past_text">You don\'t have any\npast bookings</string>
     <string name="snackbar_recurring_will_be_generated">Bookings are generated 28 days in advance.</string>
+    <string name="home_cleaner">Home Cleaner</string>
+    <string name="home_cleaner_slogan">Let your home shine</string>
+    <string name="handyman">Handyman</string>
+    <string name="handyman_slogan">Install, repair, assemble and more</string>
+    <string name="plumber">Plumber</string>
+    <string name="plumber_slogan">Go with the flow</string>
+    <string name="electrician">Electrician</string>
+    <string name="electrician_slogan">Get connected</string>
+    <string name="painter">Interior Painter</string>
+    <string name="painter_slogan">Color your world</string>
 
 </resources>
