@@ -1,5 +1,7 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,10 +92,17 @@ public final class ServicesFragment extends BookingFlowFragment
             mIcon.setImageResource(attributes.getIcon());
             mTitle.setText(attributes.getTitle());
             mSubtitle.setText(attributes.getSlogan());
+            setStatusBarColor(attributes.getColorDark());
         } catch (IllegalArgumentException e)
         {
             Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBarColor(int color)
+    {
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(color));
     }
 
     @Override
@@ -123,21 +132,23 @@ public final class ServicesFragment extends BookingFlowFragment
 
     private enum ServiceCategoryAttributes
     {
-        HANDYMAN(R.string.handyman, R.string.handyman_slogan_long, R.drawable.ic_handyman_fill, R.color.handy_service_handyman),
-        PLUMBING(R.string.plumber, R.string.plumber_slogan_long, R.drawable.ic_plumber_fill, R.color.handy_service_plumber),
-        ELECTRICIAN(R.string.electrician, R.string.electrician_slogan_long, R.drawable.ic_electrician_fill, R.color.handy_service_electrician),;
+        HANDYMAN(R.string.handyman, R.string.handyman_slogan_long, R.drawable.ic_handyman_fill, R.color.handy_service_handyman, R.color.handy_service_handyman_darkened),
+        PLUMBING(R.string.plumber, R.string.plumber_slogan_long, R.drawable.ic_plumber_fill, R.color.handy_service_plumber, R.color.handy_service_plumber_darkened),
+        ELECTRICIAN(R.string.electrician, R.string.electrician_slogan_long, R.drawable.ic_electrician_fill, R.color.handy_service_electrician, R.color.handy_service_electrician_darkened),;
 
         private final int mTitle;
         private final int mSlogan;
         private final int mIcon;
         private final int mColor;
+        private final int mColorDark;
 
-        ServiceCategoryAttributes(int title, int slogan, int icon, int color)
+        ServiceCategoryAttributes(int title, int slogan, int icon, int color, int colorDark)
         {
             mTitle = title;
             mSlogan = slogan;
             mIcon = icon;
             mColor = color;
+            mColorDark = colorDark;
         }
 
         public int getTitle()
@@ -160,5 +171,9 @@ public final class ServicesFragment extends BookingFlowFragment
             return mColor;
         }
 
+        public int getColorDark()
+        {
+            return mColorDark;
+        }
     }
 }
