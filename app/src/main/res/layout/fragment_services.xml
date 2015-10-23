@@ -1,22 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/nav_text"
-        android:text="Service"
-        style="@style/TextView.Navbar" />
-
-    <ListView
-        android:id="@android:id/list"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nav_text"
-        android:scrollbarStyle="outsideOverlay"
-        android:clipToPadding="false"
-        android:choiceMode="singleChoice"
-        android:divider="@null"/>
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/default_padding">
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="78dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start">
+
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="56dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:src="@drawable/ic_back"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_quarter"
+                android:gravity="center"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextView.Bold"
+                android:textColor="@color/white_trans"
+                android:textSize="@dimen/text_size_xsmall"/>
+
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.3"
+                android:paddingLeft="@dimen/default_padding_double"
+                android:paddingRight="@dimen/default_padding_double"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_xlarge"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/list_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="-50dp">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_quarter"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:layout_marginRight="@dimen/default_margin_half"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="vertical"
+                app:cardBackgroundColor="@color/handy_white"
+                app:cardCornerRadius="@dimen/default_corner_radius"
+                app:cardElevation="1dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="0dp">
+
+                <LinearLayout
+                    android:id="@+id/list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical"/>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/list_wrapper"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-20dp"/>
+
+    </RelativeLayout>
+</ScrollView>

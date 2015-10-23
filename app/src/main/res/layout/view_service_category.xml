@@ -6,6 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="144dp"
+    android:layout_marginLeft="@dimen/default_margin_half"
+    android:layout_marginRight="@dimen/default_margin_half"
     android:layout_marginBottom="@dimen/default_margin_quarter"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/handy_white"

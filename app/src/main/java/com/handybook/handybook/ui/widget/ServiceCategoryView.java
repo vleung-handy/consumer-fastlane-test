@@ -2,7 +2,6 @@ package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +19,6 @@ import butterknife.ButterKnife;
 
 public final class ServiceCategoryView extends FrameLayout
 {
-    @Bind(R.id.card)
-    CardView mCard;
     @Bind(R.id.title)
     TextView mTitle;
     @Bind(R.id.subtitle)
