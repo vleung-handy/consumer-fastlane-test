@@ -9,14 +9,10 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.BookingManager;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.ui.widget.ServiceView;
 
 import java.util.ArrayList;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,11 +25,8 @@ public final class ServicesFragment extends BookingFlowFragment
     private Service mService;
     private ArrayList<Service> mServices;
 
-    @Inject
-    BookingManager bookingManager;
-    @Inject
-    UserManager userManager;
-
+    @Bind(R.id.back_button)
+    View mBackButton;
     @Bind(R.id.list)
     ViewGroup mList;
     @Bind(R.id.header)
@@ -79,6 +72,15 @@ public final class ServicesFragment extends BookingFlowFragment
     public final void onViewCreated(final View view, final Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+
+        mBackButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().onBackPressed();
+            }
+        });
 
         try
         {

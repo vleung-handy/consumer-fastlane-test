@@ -23,10 +23,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="top|start">
 
-                <RelativeLayout
-                    android:id="@+id/menu_button_layout"
-                    style="@style/MenuButtonLayout"
-                    android:layout_height="64dp"/>
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="56dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:src="@drawable/ic_back"/>
             </LinearLayout>
 
             <TextView
