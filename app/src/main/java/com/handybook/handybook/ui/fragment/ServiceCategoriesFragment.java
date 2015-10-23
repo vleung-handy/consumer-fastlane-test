@@ -132,7 +132,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     private void displayServices()
     {
         mCategoryLayout.removeAllViews();
-        int pos = 0;
         for (final Service service : services)
         {
             final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
@@ -155,7 +154,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                     }
                 }
             });
-            mCategoryLayout.addView(categoryView, pos++);
+            mCategoryLayout.addView(categoryView);
         }
     }
 
