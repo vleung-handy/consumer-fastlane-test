@@ -14,8 +14,8 @@ import com.handybook.handybook.R;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,7 +95,8 @@ public final class Booking implements Parcelable
         if (isPast)
         {
             this.isPast = 1;
-        } else
+        }
+        else
         {
             this.isPast = 0;
         }
@@ -108,7 +109,7 @@ public final class Booking implements Parcelable
 
     public final boolean isRecurring()
     {
-        return recurringId != null && !recurringId.isEmpty();
+        return recurringId != null && !recurringId.isEmpty() && !"0".equals(recurringId);
     }
 
     public final String getRecurringInfo()
@@ -347,7 +348,7 @@ public final class Booking implements Parcelable
                                 extraEntryInfo,
                                 proNote,
                                 billedStatus,
-                                recurringId
+                                recurringId,
                         }
         );
 
@@ -735,7 +736,8 @@ public final class Booking implements Parcelable
             if (EXTRAS_ICONS.containsKey(extraInfoImageName))
             {
                 return EXTRAS_ICONS.get(extraInfoImageName);
-            } else
+            }
+            else
             {
                 Crashlytics.log("ExtraInfo::getImageResource unsupported image name : " + extraInfoImageName.toString());
                 return 0;
