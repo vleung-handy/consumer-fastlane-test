@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -18,9 +20,9 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
-import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.ServiceCategoryView;
 
 import java.util.ArrayList;
@@ -36,8 +38,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     @Bind(R.id.category_layout)
     LinearLayout mCategoryLayout;
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.coupon_layout)
     View mCouponLayout;
     @Bind(R.id.promo_img)
@@ -82,10 +84,18 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
-        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(getResources().getColor(R.color.white));
-        assert true;
-        mMenuButtonLayout.addView(menuButton);
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(R.drawable.ic_menu);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+                activity.getMenuDrawer().toggleMenu();
+            }
+        });
 
         mPromoImage.setColorFilter(
                 getResources().getColor(R.color.handy_blue),

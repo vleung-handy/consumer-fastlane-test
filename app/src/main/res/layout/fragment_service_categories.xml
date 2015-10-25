@@ -21,7 +21,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/header"
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/handy_blue"
@@ -32,10 +32,6 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
-                        <RelativeLayout
-                            android:id="@+id/menu_button_layout"
-                            style="@style/MenuButtonLayout"/>
 
                         <ImageView
                             android:layout_width="wrap_content"
