@@ -64,6 +64,20 @@ public class InjectedDialogFragment extends DialogFragment {
         allowCallbacks = false;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onPause()
+    {
+        mBus.unregister(this);
+        super.onPause();
+    }
+
     protected void disableInputs() {}
 
     protected void enableInputs() {}
