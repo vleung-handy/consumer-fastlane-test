@@ -509,9 +509,9 @@ public abstract class HandyEvent
 
     public static class RateBookingEvent extends RequestEvent
     {
-        int mBookingId;
-        int mFinalRating;
-        int mTipAmountCents;
+        private final int mBookingId;
+        private final int mFinalRating;
+        private final int mTipAmountCents;
 
         public RateBookingEvent(int bookingId, int finalRating, int tipAmountCents)
         {
