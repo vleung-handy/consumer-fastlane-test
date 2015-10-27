@@ -3,10 +3,14 @@ package com.handybook.handybook.ui.fragment;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -27,12 +31,14 @@ public final class ServicesFragment extends BookingFlowFragment
     private Service mService;
     private ArrayList<Service> mServices;
 
-    @Bind(R.id.back_button)
-    View mBackButton;
+    @Bind(R.id.content)
+    ScrollView mContent;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Bind(R.id.header)
+    ViewGroup mHeader;
     @Bind(R.id.list)
     ViewGroup mList;
-    @Bind(R.id.header)
-    View mHeader;
     @Bind(R.id.icon)
     ImageView mIcon;
     @Bind(R.id.title)
@@ -67,15 +73,9 @@ public final class ServicesFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
 
-        return view;
-    }
-
-    @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-
-        mBackButton.setOnClickListener(new View.OnClickListener()
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -83,16 +83,50 @@ public final class ServicesFragment extends BookingFlowFragment
                 getActivity().onBackPressed();
             }
         });
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        return view;
+    }
+
+    @Override
+    public final void onViewCreated(final View view, final Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
         try
         {
             String serviceCategoryMachineName = mService.getUniq().toUpperCase();
-            ServiceCategoryAttributes attributes = ServiceCategoryAttributes.valueOf(serviceCategoryMachineName);
+            final ServiceCategoryAttributes attributes = ServiceCategoryAttributes.valueOf(serviceCategoryMachineName);
             mHeader.setBackgroundColor(getResources().getColor(attributes.getColor()));
             mIcon.setImageResource(attributes.getIcon());
             mTitle.setText(attributes.getTitle());
             mSubtitle.setText(attributes.getSlogan());
             setStatusBarColor(attributes.getColorDark());
+
+            mContent.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
+            {
+                @Override
+                public void onScrollChanged()
+                {
+                    int[] toolbarCoordinates = new int[2];
+                    int[] titleCoordinates = new int[2];
+                    mToolbar.getLocationOnScreen(toolbarCoordinates);
+                    mTitle.getLocationOnScreen(titleCoordinates);
+                    int toolbarY = toolbarCoordinates[1];
+                    int titleY = titleCoordinates[1];
+
+                    if (toolbarY > titleY)
+                    {
+                        mTitle.setVisibility(View.INVISIBLE);
+                        mSubtitle.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (toolbarY < titleY)
+                    {
+                        mTitle.setVisibility(View.VISIBLE);
+                        mSubtitle.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
         } catch (IllegalArgumentException e)
         {
             Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));

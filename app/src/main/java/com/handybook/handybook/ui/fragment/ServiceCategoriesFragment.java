@@ -86,7 +86,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         ButterKnife.bind(this, view);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_menu);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener()
         {
             @Override
