@@ -12,12 +12,12 @@ public class LocalizedMonetaryAmount implements Parcelable
     @SerializedName("display_amount")
     private String mDisplayAmount;
 
-    public int getmAmountInCents()
+    public int getAmountInCents()
     {
         return mAmountInCents;
     }
 
-    public String getmDisplayAmount()
+    public String getDisplayAmount()
     {
         return mDisplayAmount;
     }

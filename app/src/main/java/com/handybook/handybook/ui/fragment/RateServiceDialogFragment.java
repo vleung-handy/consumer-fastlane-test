@@ -162,10 +162,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 if (mTipAmountRadioGroup.getChildCount() > radioButtonGroupIndex)
                 {
                     RadioButton childRadioButton = (RadioButton) mTipAmountRadioGroup.getChildAt(radioButtonGroupIndex);
-                    childRadioButton.setText(defaultTipAmounts.get(i).getmDisplayAmount());
+                    childRadioButton.setText(defaultTipAmounts.get(i).getDisplayAmount());
 
                     // Create a mapping of the child radio button to the tip amount
-                    mRadioButtonToTipAmount.put(childRadioButton, defaultTipAmounts.get(i).getmAmountInCents());
+                    mRadioButtonToTipAmount.put(childRadioButton, defaultTipAmounts.get(i).getAmountInCents());
                 }
             }
         }
@@ -246,16 +246,14 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                     setSendTipAmount(true);
                     setCustomTipSelected(false);
                     mCustomTipAmountWrapperLayout.setVisibility(View.GONE);
-                }
-                else if (pickedOtherAmount(checkedRadioButton, rGroup))
+                } else if (pickedOtherAmount(checkedRadioButton, rGroup))
                 {
                     setTipAmount(0);
                     setSendTipAmount(true);
                     setCustomTipSelected(true);
                     mCustomTipAmountWrapperLayout.setVisibility(View.VISIBLE);
                     mCustomTipAmountWrapperLayout.requestFocus();
-                }
-                else
+                } else
                 {
                     setCustomTipSelected(false);
                     setSendTipAmount(false);
@@ -277,8 +275,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 if (hasFocus)
                 {
                     Utils.showSoftKeyboard(getActivity(), v);
-                }
-                else
+                } else
                 {
                     Utils.hideSoftKeyboard(getActivity(), v);
                 }
