@@ -216,7 +216,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/leave_a_tip" />
+                    android:text="@string/rating_tip_prompt" />
 
                 <RadioGroup
                     style="@style/ToggleGroupStyle"
@@ -228,7 +228,7 @@
 
                     <RadioButton
                         style="@style/TipToggle.First"
-                        android:text="@string/none"
+                        android:text="@string/no_tip_amount"
                         android:id="@+id/tip_0" />
 
                     <RadioButton
@@ -245,7 +245,7 @@
 
                     <RadioButton
                         style="@style/TipToggle.Last"
-                        android:text="@string/other"
+                        android:text="@string/other_tip_amount"
                         android:id="@+id/tip_4" />
 
                 </RadioGroup>

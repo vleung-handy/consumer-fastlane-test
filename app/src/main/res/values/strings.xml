@@ -162,9 +162,9 @@
 
     <string name="edit">Edit</string>
     <string name="add">Add</string>
-    <string name="leave_a_tip">Leave a tip? (optional)</string>
-    <string name="other">Other</string>
-    <string name="none">None</string>
+    <string name="rating_tip_prompt">Leave a tip? (optional)</string>
+    <string name="other_tip_amount">Other</string>
+    <string name="no_tip_amount">None</string>
     <string name="tip_amount">Amount:</string>
     <string name="set_dropoff">Set Drop-Off</string>
     <string name="email_receipt">Email Receipt</string>
