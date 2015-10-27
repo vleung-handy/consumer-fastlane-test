@@ -1,14 +1,16 @@
 package com.handybook.handybook.ui.fragment;
 
-import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -35,6 +37,8 @@ public final class ServicesFragment extends BookingFlowFragment
     ViewGroup mList;
     @Bind(R.id.icon)
     ImageView mIcon;
+    @Bind(R.id.toolbar_icon)
+    ImageView mToolbarIcon;
     @Bind(R.id.title)
     TextView mTitle;
     @Bind(R.id.subtitle)
@@ -81,6 +85,7 @@ public final class ServicesFragment extends BookingFlowFragment
             final ServiceCategoryAttributes attributes = ServiceCategoryAttributes.valueOf(serviceCategoryMachineName);
             mHeader.setBackgroundColor(getResources().getColor(attributes.getColor()));
             mIcon.setImageResource(attributes.getIcon());
+            mToolbarIcon.setImageResource(attributes.getIcon());
             mTitle.setText(attributes.getTitle());
             mSubtitle.setText(attributes.getSlogan());
             setStatusBarColor(attributes.getColorDark());
@@ -99,14 +104,12 @@ public final class ServicesFragment extends BookingFlowFragment
 
                     if (toolbarY > titleY)
                     {
-                        mTitle.setVisibility(View.INVISIBLE);
-                        mSubtitle.setVisibility(View.INVISIBLE);
+                        adjustForSmallerHeader(attributes.getColor());
                     }
 
                     if (toolbarY < titleY)
                     {
-                        mTitle.setVisibility(View.VISIBLE);
-                        mSubtitle.setVisibility(View.VISIBLE);
+                        adjustForLargerHeader();
                     }
                 }
             });
@@ -116,10 +119,86 @@ public final class ServicesFragment extends BookingFlowFragment
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void adjustForLargerHeader()
+    {
+        mTitle.setVisibility(View.VISIBLE);
+        mSubtitle.setVisibility(View.VISIBLE);
+        showView(mToolbarIcon, new Animation.AnimationListener()
+        {
+            @Override
+            public void onAnimationStart(Animation animation)
+            {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                hideView(mIcon, null);
+                mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation)
+            {
+            }
+        });
+    }
+
+    private void adjustForSmallerHeader(final int color)
+    {
+        mTitle.setVisibility(View.INVISIBLE);
+        mSubtitle.setVisibility(View.INVISIBLE);
+        showView(mIcon, new Animation.AnimationListener()
+        {
+            @Override
+            public void onAnimationStart(Animation animation)
+            {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                hideView(mToolbarIcon, null);
+                mToolbar.setBackgroundColor(getResources().getColor(color));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation)
+            {
+            }
+        });
+    }
+
+    private void hideView(View view, @Nullable Animation.AnimationListener listener)
+    {
+        animateVisibility(view, View.VISIBLE, android.R.anim.fade_in, listener);
+    }
+
+    private void showView(View view, @Nullable Animation.AnimationListener listener)
+    {
+        animateVisibility(view, View.INVISIBLE, android.R.anim.fade_out, listener);
+    }
+
+    private void animateVisibility(final View view, final int visibility, final int animId, @Nullable Animation.AnimationListener listener)
+    {
+        if (view.getVisibility() != visibility)
+        {
+            final Animation animation = AnimationUtils.loadAnimation(getActivity(), animId);
+            if (listener != null)
+            {
+                animation.setAnimationListener(listener);
+            }
+            view.startAnimation(animation);
+            view.setVisibility(visibility);
+        }
+    }
+
     private void setStatusBarColor(int color)
     {
-        getActivity().getWindow().setStatusBarColor(getResources().getColor(color));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(color));
+        }
     }
 
     @Override
@@ -145,6 +224,13 @@ public final class ServicesFragment extends BookingFlowFragment
 
         // remove bottom border of last element
         mList.getChildAt(mList.getChildCount() - 1).findViewById(R.id.container).setBackgroundResource(0);
+    }
+
+    @Override
+    public void onPause()
+    {
+        mIcon.setVisibility(View.VISIBLE);
+        super.onPause();
     }
 
     private enum ServiceCategoryAttributes

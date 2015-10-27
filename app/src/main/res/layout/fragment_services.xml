@@ -40,6 +40,8 @@
                     android:id="@+id/subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
                     android:gravity="center"
                     android:lineSpacingMultiplier="1.3"
                     android:paddingLeft="@dimen/default_padding_double"
@@ -89,18 +91,31 @@
                 android:layout_alignTop="@+id/list_wrapper"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="-20dp"
+                android:animateLayoutChanges="true"
                 android:transitionName="icon"/>
 
         </RelativeLayout>
     </ScrollView>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:animateLayoutChanges="true"
-        android:background="@color/transparent"
-        android:orientation="vertical"
-        app:contentInsetStart="0dp"
-        app:navigationIcon="@drawable/ic_back"/>
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/transparent"
+            android:orientation="vertical"
+            app:contentInsetStart="0dp"
+            app:navigationIcon="@drawable/ic_back"/>
+
+        <ImageView
+            android:id="@+id/toolbar_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:animateLayoutChanges="true"
+            android:visibility="invisible"/>
+    </RelativeLayout>
 </RelativeLayout>
