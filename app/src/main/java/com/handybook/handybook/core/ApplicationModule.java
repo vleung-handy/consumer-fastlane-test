@@ -27,6 +27,7 @@ import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
+import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
@@ -64,6 +65,7 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
+import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
@@ -181,6 +183,8 @@ import retrofit.converter.GsonConverter;
         BookingEditEntryInformationFragment.class,
         BookingEditFrequencyActivity.class,
         BookingEditFrequencyFragment.class,
+        BookingEditExtrasActivity.class,
+        BookingEditExtrasFragment.class,
         BlockingActivity.class,
         BlockingUpdateFragment.class,
 })

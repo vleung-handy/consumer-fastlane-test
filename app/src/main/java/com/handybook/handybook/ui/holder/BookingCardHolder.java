@@ -89,8 +89,7 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
         }
         else
         {
-            boolean canEditFrequency = masterBooking.getCanEditFrequency() == null ? false : masterBooking.getCanEditFrequency();
-            if (canEditFrequency)
+            if (masterBooking.getCanEditFrequency())
             {
                 mEditBookingCard.setVisibility(View.VISIBLE);
                 mEditBookingCard.setOnClickListener(onEditClickListener);

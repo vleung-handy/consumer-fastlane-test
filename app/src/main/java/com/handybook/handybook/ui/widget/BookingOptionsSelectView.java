@@ -1,6 +1,9 @@
 package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     protected String[] optionsSubtitles;
     protected String[] optionsRightSubText;
     protected String[] optionsRightTitleText;
+    protected int[] optionImagesResourceIds;
     private HashMap<Integer, CheckBox> checkMap;
     private int checkedIndex;
     private HashSet<Integer> checkedIndexes;
@@ -48,11 +52,23 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         super(context, attrs, defStyle);
     }
 
-    private boolean shouldDisplayOptionStringFromArray(String[] array, int index)
+    private boolean shouldDisplayOptionElementFromArray(Object[] array, int index)
     {
         return array != null &&
                 index < array.length &&
-                array[index] != null && !array[index].isEmpty();
+                array[index] != null;
+    }
+
+    //TODO: consolidate this logic
+    private boolean shouldDisplayOptionElementFromArray(int[] array, int index)
+    {
+        return array != null &&
+                index < array.length;
+    }
+
+    private boolean shouldDisplayOptionStringFromArray(String[] array, int index)
+    {
+        return shouldDisplayOptionElementFromArray(array, index) && !array[index].isEmpty();
     }
 
     private void showTextView(TextView textView, String textString)
@@ -82,7 +98,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         optionsSubtitles = option.getOptionsSubText();
         optionsRightSubText = option.getOptionsRightSubText();
         optionsRightTitleText = option.getOptionsRightTitleText();
-
+        optionImagesResourceIds = option.getImageResourceIds();
         checkMap = new HashMap<>();
 
 
@@ -128,6 +144,20 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             }
 
             final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);
+            if(shouldDisplayOptionElementFromArray(optionImagesResourceIds, i) && optionImagesResourceIds[i]!=0)
+            {
+                //TODO: clean this up
+                Drawable drawables[] = new Drawable[]
+                        {
+                            getResources().getDrawable(R.drawable.option_circle_frame),
+                                getResources().getDrawable(optionImagesResourceIds[i])
+                        };
+
+                LayerDrawable layerDrawable = new LayerDrawable(drawables);
+                int inset = (int)Utils.dpToPixels(15, this.getContext());
+                layerDrawable.setLayerInset(1, inset, inset, inset, inset);
+                checkBox.setBackground(layerDrawable);
+            }
             if (!isMulti && i == checkedIndex)
             {
                 selectOption(checkBox, true);
@@ -146,13 +176,18 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 optionView.setLayoutParams(layoutParams);
             }
 
-            optionView.setOnClickListener(new OnClickListener() {
+            optionView.setOnClickListener(new OnClickListener()
+            {
                 @Override
-                public void onClick(final View v) {
+                public void onClick(final View v)
+                {
                     final CheckBox box = ((CheckBox) optionView.findViewById(R.id.check_box));
-                    if (isMulti) {
+                    if (isMulti)
+                    {
                         box.setChecked(!box.isChecked());
-                    } else {
+                    }
+                    else
+                    {
                         box.setChecked(true);
                     }
                 }
@@ -206,8 +241,9 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         }
         checkedIndexes.clear();
 
-        for (final int i : indexes)
+        for (final Integer i : indexes)
         {
+            if(i == null) continue;
             checkMap.get(i).setChecked(true);
             checkedIndexes.add(i);
         }
@@ -258,6 +294,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             subTitle.setTextColor(getResources().getColor(R.color.handy_blue));
             rightSubtitleText.setTextColor(getResources().getColor(R.color.black));
             rightTitleText.setTextColor(getResources().getColor(R.color.black));
+            box.getBackground().setColorFilter(getResources().getColor(R.color.handy_blue), PorterDuff.Mode.SRC_IN);
             box.setChecked(true);
         }
         else
@@ -266,6 +303,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             subTitle.setTextColor(getResources().getColor(R.color.black_pressed));
             rightSubtitleText.setTextColor(getResources().getColor(R.color.black_pressed));
             rightTitleText.setTextColor(getResources().getColor(R.color.black_pressed));
+            box.getBackground().clearColorFilter();
             box.setChecked(false);
         }
     }

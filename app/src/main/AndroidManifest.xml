@@ -104,6 +104,7 @@
         <activity android:name=".ui.activity.BookingEditNoteToProActivity"/>
         <activity android:name=".ui.activity.BookingEditEntryInformationActivity"/>
         <activity android:name=".ui.activity.BookingEditFrequencyActivity"/>
+        <activity android:name=".ui.activity.BookingEditExtrasActivity"/>
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"/>

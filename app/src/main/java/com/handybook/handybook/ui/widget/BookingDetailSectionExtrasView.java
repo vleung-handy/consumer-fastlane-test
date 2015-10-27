@@ -2,7 +2,6 @@ package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.handybook.handybook.R;
@@ -38,19 +37,15 @@ public class BookingDetailSectionExtrasView extends BookingDetailSectionView
     public void updateExtrasDisplay(final Booking booking)
     {
         final ArrayList<Booking.ExtraInfo> extras = booking.getExtrasInfo();
+        extrasSection.removeAllViews();
         if (extras != null && extras.size() > 0)
         {
-            extrasSection.removeAllViews();
             for (int i = 0; i < extras.size(); i++)
             {
                 final Booking.ExtraInfo info = extras.get(i);
                 BookingDetailSectionExtrasEntryView extrasEntryView = (BookingDetailSectionExtrasEntryView) inflate(R.layout.layout_section_extras_entry, extrasSection);
                 extrasEntryView.updateDisplay(info);
             }
-        }
-        else
-        {
-            setVisibility(View.GONE);
         }
     }
 
