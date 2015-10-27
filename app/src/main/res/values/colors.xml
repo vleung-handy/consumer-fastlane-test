@@ -3,31 +3,27 @@
     <!-- Colors should be declared in lowercase -->
     <!-- Withhold the alpha declaration if the color does not have any transparency -->
     <!-- If the color does have transparency, declare it in upper case e.g. #7Effffff -->
-    <color name="handy_transparent">#00000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
     <color name="handy_blue_pressed">#00abc6</color>
     <color name="handy_green">#8cc63f</color>
     <color name="handy_green_pressed">#71a230</color>
     <color name="handy_teal">#39d2b8</color>
     <color name="handy_teal_pressed">#39b9a3</color>
     <color name="handy_yellow">#ffb600</color>
-    <color name="handy_purple">#993092</color>
     <color name="handy_bg">#eaeaea</color>
     <color name="handy_love">#f9002e</color>
-    <color name="handy_black">#000000</color>
-    <color name="handy_light_grey">#f4f4f4</color>
     <color name="handy_dark_grey">#5c5c5c</color>
     <color name="disabled">#e5eaec</color>
     <color name="nav_bg">#1d1d1d</color>
-    <color name="white">#ffffff</color>
     <color name="white_trans">#7Effffff</color>
     <color name="white_pressed">#e0e0e0</color>
-    <color name="black">#434343</color>
     <color name="black_pressed">#a1a1a1</color>
     <color name="nav_sep">#b1b1b1</color>
     <color name="light_grey">#c1cad0</color>
     <color name="dark_grey">#b1b1b1</color>
     <color name="dark_grey_pressed">#949494</color>
-    <color name="xdark_grey">#434343</color>
     <color name="steel">#8b9ba6</color>
     <color name="service_sep">#d6d6d6</color>
     <color name="cell_sep">#d6d6d6</color>
@@ -38,8 +34,6 @@
     <color name="price_green">#acc63f</color>
     <color name="facebook">#246bab</color>
     <color name="facebook_pressed">#1c4b76</color>
-    <color name="transparent">#00000000</color>
-    <color name="border_mid_grey">#cccccc</color>
     <!--Colors as defined in the Style Guide -->
     <!--https://projects.invisionapp.com/d/main#/console/2999599/66734904/preview-->
     <color name="handy_service_cleaner">#8bc53e</color>
@@ -52,7 +46,6 @@
     <color name="handy_tertiary_gray">#9cabb5</color>
     <color name="handy_background_blue">#edf5f8</color>
     <color name="handy_background_gray">#f4f4f4</color>
-    <color name="handy_white">#ffffff</color>
     <color name="handy_white_semitransparent">#88ffffff</color>
     <color name="handy_text_black">#434343</color>
     <color name="handy_text_gray">#999999</color>
@@ -60,9 +53,4 @@
     <color name="handy_dark_divider_line">#cccccc</color>
     <color name="handy_input_field_stroke">#d1d1d1</color>
     <color name="handy_hot_pink">#eb00cb</color>
-    <color name="tertiary">#9cabb5</color>
-    <color name="input_field_stroke">#d1d1d1</color>
-    <color name="divider">#eeeeee</color>
-    <color name="dark_divider">#cccccc</color>
-    <color name="text_gray">#999999</color>
 </resources>

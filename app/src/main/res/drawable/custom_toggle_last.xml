@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/handy_light_grey" />
+            <solid android:color="@color/handy_background_gray" />
             <corners
                 android:bottomRightRadius="@dimen/round_button_radius"
                 android:topRightRadius="@dimen/round_button_radius" />
@@ -11,7 +11,7 @@
 
     <item android:state_checked="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/handy_light_grey" />
+            <solid android:color="@color/handy_background_gray" />
             <corners
                 android:bottomRightRadius="@dimen/round_button_radius"
                 android:topRightRadius="@dimen/round_button_radius" />

@@ -22,7 +22,7 @@
             android:layout_marginStart="72dp"
             android:gravity="center_vertical"
             android:text="@string/my_bookings"
-            android:textColor="@color/handy_white"/>
+            android:textColor="@color/white"/>
 
         <RelativeLayout
             android:id="@+id/menu_button_layout"
@@ -35,10 +35,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabIndicatorHeight="2dp"
-        app:tabIndicatorColor="@color/handy_white"
+        app:tabIndicatorColor="@color/white"
         app:tabTextAppearance="@style/TextAppearance.TabText"
         app:tabTextColor="@color/handy_white_semitransparent"
-        app:tabSelectedTextColor="@color/handy_white"
+        app:tabSelectedTextColor="@color/white"
 
         >
     </com.handybook.handybook.ui.view.HandyTabLayout>
@@ -48,6 +48,6 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/handy_white"/>
+        android:background="@color/white"/>
 
 </LinearLayout>
