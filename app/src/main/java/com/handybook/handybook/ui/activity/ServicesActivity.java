@@ -8,13 +8,11 @@ import com.handybook.handybook.ui.fragment.ServicesFragment;
 
 public final class ServicesActivity extends MenuDrawerActivity {
     public static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
-    public static final String EXTRA_NAV_HEIGHT = "com.handy.handy.EXTRA_NAV_HEIGHT";
 
     @Override
     protected final Fragment createFragment() {
         final Service service = getIntent().getParcelableExtra(EXTRA_SERVICE);
-        final int height = getIntent().getIntExtra(EXTRA_NAV_HEIGHT, 0);
-        return ServicesFragment.newInstance(service, height);
+        return ServicesFragment.newInstance(service);
     }
 
     @Override

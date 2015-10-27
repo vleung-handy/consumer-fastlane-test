@@ -18,18 +18,12 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.ui.widget.ServiceView;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class ServicesFragment extends BookingFlowFragment
 {
-    static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
-    static final String EXTRA_NAV_HEIGHT = "com.handy.handy.EXTRA_NAV_HEIGHT";
-
     private Service mService;
-    private ArrayList<Service> mServices;
 
     @Bind(R.id.content)
     ScrollView mContent;
@@ -46,22 +40,11 @@ public final class ServicesFragment extends BookingFlowFragment
     @Bind(R.id.subtitle)
     TextView mSubtitle;
 
-    public static ServicesFragment newInstance(final Service service, final int navHeight)
+    public static ServicesFragment newInstance(final Service service)
     {
         final ServicesFragment fragment = new ServicesFragment();
-        final Bundle args = new Bundle();
-        args.putParcelable(EXTRA_SERVICE, service);
-        args.putInt(EXTRA_NAV_HEIGHT, navHeight);
-        fragment.setArguments(args);
+        fragment.mService = service;
         return fragment;
-    }
-
-    @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        mService = getArguments().getParcelable(EXTRA_SERVICE);
-        mServices = new ArrayList<>(mService.getServices());
     }
 
     @Override
@@ -143,7 +126,7 @@ public final class ServicesFragment extends BookingFlowFragment
     public final void onActivityCreated(final Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        for (final Service service : mServices)
+        for (final Service service : mService.getServices())
         {
             ServiceView serviceView = new ServiceView(getActivity());
             if (serviceView.init(service))

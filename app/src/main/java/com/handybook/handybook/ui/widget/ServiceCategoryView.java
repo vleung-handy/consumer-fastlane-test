@@ -86,6 +86,11 @@ public final class ServiceCategoryView extends FrameLayout
         }
     }
 
+    public ImageView getIcon()
+    {
+        return mIcon;
+    }
+
     private enum ServiceCategoryViewType
     {
         HOME_CLEANING(R.string.home_cleaner, R.string.home_cleaner_slogan, R.drawable.ic_cleaner_fill, R.drawable.img_cleaner),

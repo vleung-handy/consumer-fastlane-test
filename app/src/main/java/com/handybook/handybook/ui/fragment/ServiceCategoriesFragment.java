@@ -3,8 +3,10 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -33,6 +35,7 @@ import butterknife.ButterKnife;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
+    private static final String SHARED_ICON_ELEMENT_NAME = "icon";
     private List<Service> services = new ArrayList<>();
     private boolean usedCache;
 
@@ -154,8 +157,17 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                     {
                         final Intent intent = new Intent(getActivity(), ServicesActivity.class);
                         intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
-                        intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, categoryView.getHeight());
-                        startActivity(intent);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                        {
+                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                    getActivity(), categoryView.getIcon(), SHARED_ICON_ELEMENT_NAME
+                            );
+                            getActivity().startActivity(intent, options.toBundle());
+                        }
+                        else
+                        {
+                            startActivity(intent);
+                        }
                     }
                     else
                     {
