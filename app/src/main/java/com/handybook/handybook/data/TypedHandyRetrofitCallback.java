@@ -10,7 +10,9 @@ import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingRequestablePros;
+import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.core.HelpNodeWrapper;
+import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.UserBookingsWrapper;
 
 import org.json.JSONObject;
@@ -110,9 +112,25 @@ class UserBookingsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallbac
     }
 }
 
-class BookingPricesForFrequenciesCallback extends TypedHandyRetrofitCallback<BookingPricesForFrequenciesResponse>
+class BookingPricesForFrequenciesHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingPricesForFrequenciesResponse>
 {
-    BookingPricesForFrequenciesCallback(DataManager.Callback callback)
+    BookingPricesForFrequenciesHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+class ServiceExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<EditExtrasInfo>
+{
+    ServiceExtrasInfoHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+class SucessHandyRetroFitCallback extends TypedHandyRetrofitCallback<SuccessWrapper>
+{
+    SucessHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }

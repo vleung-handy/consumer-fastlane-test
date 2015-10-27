@@ -1,8 +1,13 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
+import android.content.Intent;
+
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView;
 
 import butterknife.Bind;
@@ -35,7 +40,7 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
     @Override
     protected boolean hasEnabledAction()
     {
-        return false;
+        return true;
     }
 
     @Override
@@ -57,6 +62,8 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
     @Override
     protected void onActionClick()
     {
-        //TODO: Don't support editing extras yet, will probably pop up some variant of the edit extras booking flow
+        final Intent intent = new Intent(getActivity(), BookingEditExtrasActivity.class);
+        intent.putExtra(BundleKeys.BOOKING, this.booking);
+        getParentFragment().startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
     }
 }

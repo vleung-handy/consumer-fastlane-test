@@ -18,4 +18,5 @@
     <dimen name="inner_textfield_padding">12dp</dimen>
     <dimen name="round_button_radius">5dp</dimen>
     <dimen name="round_button_stroke">1dp</dimen>
+    <dimen name="default_icon_padding">2dp</dimen>
 </resources>

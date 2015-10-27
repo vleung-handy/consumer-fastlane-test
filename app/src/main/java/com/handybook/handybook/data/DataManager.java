@@ -16,12 +16,15 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateExtrasTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
+import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
 
@@ -37,6 +40,13 @@ public abstract class DataManager
 {
     public abstract void getServices(CacheResponse<List<Service>> cache,
                                      Callback<List<Service>> cb);
+
+    public abstract void getServiceExtras(int bookingId,
+                                     Callback<EditExtrasInfo> cb);
+
+    public abstract void editServiceExtras(int bookingId,
+                                           BookingUpdateExtrasTransaction bookingUpdateExtrasTransaction,
+                                          Callback<SuccessWrapper> cb);
 
     /**
      * Requests a ShouldBlockObject defining if the app is recent enough to be used

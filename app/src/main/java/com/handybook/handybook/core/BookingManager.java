@@ -453,4 +453,43 @@ public final class BookingManager implements Observer
             clearAll();
         }
     }
+
+    @Subscribe
+    public final void onRequestEditServiceExtras(final HandyEvent.RequestEditServiceExtrasOptions event)
+    {
+        dataManager.editServiceExtras(event.bookingId, event.bookingUpdateExtrasTransaction, new DataManager.Callback<SuccessWrapper>()
+        {
+            @Override
+            public void onSuccess(SuccessWrapper response)
+            {
+                bus.post(new HandyEvent.ReceiveEditServiceExtrasOptionsSuccess(response));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveEditServiceExtrasOptionsError(error));
+
+            }
+        });
+    }
+    @Subscribe
+    public final void onRequestGetServiceExtras(final HandyEvent.RequestGetServiceExtrasOptions event)
+    {
+        dataManager.getServiceExtras(event.bookingId, new DataManager.Callback<EditExtrasInfo>()
+        {
+            @Override
+            public void onSuccess(EditExtrasInfo response)
+            {
+                bus.post(new HandyEvent.ReceiveGetServiceExtrasOptionsSuccess(response));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveGetServiceExtrasOptionsError(error));
+
+            }
+        });
+    }
 }
