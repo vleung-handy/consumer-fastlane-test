@@ -18,7 +18,6 @@ public class GroovedTimePicker extends TimePicker
     private int mInterval = 1; // 1 minute by default
     private NumberPicker mMinutePicker;
 
-
     public GroovedTimePicker(final Context context)
     {
         super(context);
@@ -64,6 +63,7 @@ public class GroovedTimePicker extends TimePicker
             mMinutePicker.setDisplayedValues(displayedValues);
         }
     }
+
 
     @NonNull
     @Override

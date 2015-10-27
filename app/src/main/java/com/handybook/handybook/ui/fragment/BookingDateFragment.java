@@ -47,13 +47,13 @@ public final class BookingDateFragment extends BookingFlowFragment
     @Bind(R.id.notice_text)
     TextView mNoticeTextView;
     private ArrayList<BookingOption> mBookingOptions;
-    private Booking mRescheduledBooking;
+    private Booking mRescheduleBooking;
     private final View.OnClickListener nextClicked = new View.OnClickListener()
     {
         @Override
         public void onClick(final View view)
         {
-            if (mRescheduledBooking != null)
+            if (mRescheduleBooking != null)
             {
                 final Calendar date = Calendar.getInstance();
                 date.set(Calendar.DAY_OF_MONTH, mDatePicker.getDayOfMonth());
@@ -63,18 +63,18 @@ public final class BookingDateFragment extends BookingFlowFragment
                 date.set(Calendar.MINUTE, mGroovedTimePicker.getCurrentMinute());
                 date.set(Calendar.SECOND, 0);
                 date.set(Calendar.MILLISECOND, 0);
-                if (mRescheduledBooking.isRecurring())
+                if (mRescheduleBooking.isRecurring())
                 {
                     final Intent intent = new Intent(
                             getActivity(),
                             BookingRescheduleOptionsActivity.class
                     );
-                    intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduledBooking);
+                    intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
                     intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTimeInMillis());
                     startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
                 } else
                 {
-                    rescheduleBooking(mRescheduledBooking, date.getTime(), false);
+                    rescheduleBooking(mRescheduleBooking, date.getTime(), false);
                 }
             } else if (mBookingOptions != null && mBookingOptions.size() > 0)
             {
@@ -92,7 +92,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             }
         }
     };
-    private Date mRescheduledDate;
+    private Date mRescheduleDate;
     private String mNotice;
 
     public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions)
@@ -119,15 +119,15 @@ public final class BookingDateFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackTime();
-        mRescheduledBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
-        if (mRescheduledBooking != null)
+        mRescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
+        if (mRescheduleBooking != null)
         {
             if (savedInstanceState != null)
             {
-                mRescheduledDate = new Date(savedInstanceState.getLong(STATE_RESCHEDULE_DATE, 0));
+                mRescheduleDate = new Date(savedInstanceState.getLong(STATE_RESCHEDULE_DATE, 0));
             } else
             {
-                mRescheduledDate = mRescheduledBooking.getStartDate();
+                mRescheduleDate = mRescheduleBooking.getStartDate();
             }
             mNotice = getArguments().getString(EXTRA_RESCHEDULE_NOTICE);
             // flash notice since it may not initially appear in view
@@ -191,7 +191,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_date, container, false);
         ButterKnife.bind(this, view);
         mGroovedTimePicker.setInterval(MINUTE_INTERVAL);
-        if (mRescheduledBooking != null)
+        if (mRescheduleBooking != null)
         {
             mNavTextView.setText(getString(R.string.reschedule));
             mNextButton.setText(getString(R.string.reschedule));
@@ -248,18 +248,18 @@ public final class BookingDateFragment extends BookingFlowFragment
     public final void onSaveInstanceState(final Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        if (mRescheduledDate != null)
+        if (mRescheduleDate != null)
         {
-            outState.putLong(STATE_RESCHEDULE_DATE, mRescheduledDate.getTime());
+            outState.putLong(STATE_RESCHEDULE_DATE, mRescheduleDate.getTime());
         }
     }
 
     private Calendar currentStartDate()
     {
-        if (mRescheduledBooking != null)
+        if (mRescheduleBooking != null)
         {
             final Calendar startDate = Calendar.getInstance();
-            startDate.setTime(mRescheduledDate);
+            startDate.setTime(mRescheduleDate);
             return startDate;
         }
         final Calendar cal = Calendar.getInstance();
@@ -307,9 +307,9 @@ public final class BookingDateFragment extends BookingFlowFragment
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
         final Date newDate = date.getTime();
-        if (mRescheduledBooking != null)
+        if (mRescheduleBooking != null)
         {
-            mRescheduledDate = newDate;
+            mRescheduleDate = newDate;
         } else
         {
             final BookingRequest request = bookingManager.getCurrentRequest();
