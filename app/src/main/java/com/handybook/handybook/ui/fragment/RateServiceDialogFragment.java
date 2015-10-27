@@ -162,10 +162,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 if (mTipAmountRadioGroup.getChildCount() > radioButtonGroupIndex)
                 {
                     RadioButton childRadioButton = (RadioButton) mTipAmountRadioGroup.getChildAt(radioButtonGroupIndex);
-                    childRadioButton.setText(defaultTipAmounts.get(i).getDisplayAmount());
+                    childRadioButton.setText(defaultTipAmounts.get(i).getmDisplayAmount());
 
                     // Create a mapping of the child radio button to the tip amount
-                    mRadioButtonToTipAmount.put(childRadioButton, defaultTipAmounts.get(i).getAmountInCents());
+                    mRadioButtonToTipAmount.put(childRadioButton, defaultTipAmounts.get(i).getmAmountInCents());
                 }
             }
         }

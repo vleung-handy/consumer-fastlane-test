@@ -8,29 +8,29 @@ import com.google.gson.annotations.SerializedName;
 public class LocalizedMonetaryAmount implements Parcelable
 {
     @SerializedName("amount_in_cents")
-    private int amountInCents;
+    private int mAmountInCents;
     @SerializedName("display_amount")
-    private String displayAmount;
+    private String mDisplayAmount;
 
-    public int getAmountInCents()
+    public int getmAmountInCents()
     {
-        return amountInCents;
+        return mAmountInCents;
     }
 
-    public String getDisplayAmount()
+    public String getmDisplayAmount()
     {
-        return displayAmount;
+        return mDisplayAmount;
     }
 
     private LocalizedMonetaryAmount(final Parcel in)
     {
         final String[] stringData = new String[1];
         in.readStringArray(stringData);
-        displayAmount = stringData[0];
+        mDisplayAmount = stringData[0];
 
         final int[] intData = new int[1];
         in.readIntArray(intData);
-        amountInCents = intData[0];
+        mAmountInCents = intData[0];
     }
 
     @Override
@@ -42,8 +42,8 @@ public class LocalizedMonetaryAmount implements Parcelable
     @Override
     public final void writeToParcel(final Parcel out, final int flags)
     {
-        out.writeIntArray(new int[]{amountInCents});
-        out.writeStringArray(new String[]{displayAmount});
+        out.writeIntArray(new int[]{mAmountInCents});
+        out.writeStringArray(new String[]{mDisplayAmount});
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
