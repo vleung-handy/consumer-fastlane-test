@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -39,7 +40,13 @@ public class GroovedTimePicker extends TimePicker
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void setMinutePicker()
+    public void setInterval(final int interval)
+    {
+        mInterval = interval;
+        setMinutePicker();
+    }
+
+    private void setMinutePicker()
     {
         int numValues = 60 / mInterval;
         String[] displayedValues = new String[numValues];
@@ -58,14 +65,18 @@ public class GroovedTimePicker extends TimePicker
         }
     }
 
-    public int getMinute()
+    @NonNull
+    @Override
+    public Integer getCurrentMinute()
     {
+        Integer result = super.getCurrentMinute();
         if (mMinutePicker != null)
         {
             return mMinutePicker.getValue() * mInterval;
         } else
         {
-            return getCurrentMinute();
+            return result;
         }
+
     }
 }
