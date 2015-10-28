@@ -106,7 +106,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             try
             {
                 optionDefaultValue = Integer.parseInt(option.getDefaultValue());
-            } 
+            }
             catch (NumberFormatException e)
             {
                 optionDefaultValue = 0;
@@ -143,11 +143,14 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);
             if (isArrayIndexValid(optionImagesResourceIds, i) && optionImagesResourceIds[i] != 0)
             {
+                //TODO: if this might be used elsewhere we should put into a function
                 Drawable drawables[] = new Drawable[]
                         {
-                                ContextCompat.getDrawable(context, R.drawable.option_circle_frame),
-                                ContextCompat.getDrawable(context, optionImagesResourceIds[i])
+                                ContextCompat.getDrawable(context, R.drawable.option_circle_frame).getConstantState().newDrawable(),
+                                ContextCompat.getDrawable(context, optionImagesResourceIds[i]).getConstantState().newDrawable()
                         };
+                //have to make copies of the resource drawables in order to use color filters
+                //if we don't, color filters will still be there when the resource is accessed again
 
                 LayerDrawable layerDrawable = new LayerDrawable(drawables);
                 int inset = (int) getResources().getDimension(R.dimen.framed_icon_inset);
