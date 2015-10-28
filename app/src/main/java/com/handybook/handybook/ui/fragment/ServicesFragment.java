@@ -22,8 +22,9 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
+import com.handybook.handybook.ui.descriptor.ServiceCategoryDescriptor;
 import com.handybook.handybook.ui.widget.ServiceView;
-import com.handybook.handybook.ui.widget.ServiceView.ServiceViewType;
+import com.handybook.handybook.ui.descriptor.ServiceDescriptor;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -87,33 +88,33 @@ public final class ServicesFragment extends BookingFlowFragment
         try
         {
             String serviceCategoryMachineName = mService.getUniq().toUpperCase();
-            final ServiceCategoryAttributes attributes = ServiceCategoryAttributes.valueOf(serviceCategoryMachineName);
-            initStatusBar(attributes);
-            initHeader(attributes);
-            initServiceIcon(attributes);
-            initToolbar(attributes);
-            initHeaderAdjustmentsOnScroll(attributes);
+            final ServiceCategoryDescriptor descriptor = ServiceCategoryDescriptor.valueOf(serviceCategoryMachineName);
+            initStatusBar(descriptor);
+            initHeader(descriptor);
+            initServiceIcon(descriptor);
+            initToolbar(descriptor);
+            initHeaderAdjustmentsOnScroll(descriptor);
         } catch (IllegalArgumentException e)
         {
             Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
         }
     }
 
-    private void initStatusBar(ServiceCategoryAttributes attributes)
+    private void initStatusBar(ServiceCategoryDescriptor descriptor)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(attributes.getColorDark()));
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(descriptor.getColorDark()));
         }
     }
 
-    private void initHeader(ServiceCategoryAttributes attributes)
+    private void initHeader(ServiceCategoryDescriptor descriptor)
     {
-        mTitle.setText(attributes.getTitle());
-        mSubtitle.setText(attributes.getSlogan());
+        mTitle.setText(descriptor.getTitle());
+        mSubtitle.setText(descriptor.getSlogan());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            mHeader.setBackgroundResource(attributes.getBackground());
+            mHeader.setBackgroundResource(descriptor.getBackground());
             new Handler().postDelayed(new Runnable()
             {
                 @Override
@@ -125,19 +126,19 @@ public final class ServicesFragment extends BookingFlowFragment
         }
         else
         {
-            mHeader.setBackgroundColor(getResources().getColor(attributes.getColor()));
+            mHeader.setBackgroundColor(getResources().getColor(descriptor.getColor()));
         }
     }
 
-    private void initToolbar(ServiceCategoryAttributes attributes)
+    private void initToolbar(ServiceCategoryDescriptor descriptor)
     {
         mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-        mToolbarIcon.setImageResource(attributes.getIcon());
+        mToolbarIcon.setImageResource(descriptor.getIcon());
     }
 
-    private void initServiceIcon(ServiceCategoryAttributes attributes)
+    private void initServiceIcon(ServiceCategoryDescriptor descriptor)
     {
-        mIcon.setImageResource(attributes.getIcon());
+        mIcon.setImageResource(descriptor.getIcon());
         mIcon.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -148,7 +149,7 @@ public final class ServicesFragment extends BookingFlowFragment
         });
     }
 
-    private void initHeaderAdjustmentsOnScroll(final ServiceCategoryAttributes attributes)
+    private void initHeaderAdjustmentsOnScroll(final ServiceCategoryDescriptor descriptor)
     {
         mContent.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
         {
@@ -164,7 +165,7 @@ public final class ServicesFragment extends BookingFlowFragment
 
                 if (toolbarY > titleY)
                 {
-                    adjustForSmallerHeader(attributes.getColor());
+                    adjustForSmallerHeader(descriptor.getColor());
                 }
 
                 if (toolbarY < titleY)
@@ -298,10 +299,10 @@ public final class ServicesFragment extends BookingFlowFragment
         {
             ServiceView serviceView = new ServiceView(getActivity());
             String serviceMachineName = service.getUniq().toUpperCase();
-            if (ServiceViewType.hasValueOf(serviceMachineName))
+            if (ServiceDescriptor.hasValueOf(serviceMachineName))
             {
-                ServiceViewType serviceViewType = ServiceViewType.valueOf(serviceMachineName);
-                serviceView.init(serviceViewType);
+                ServiceDescriptor serviceDescriptor = ServiceDescriptor.valueOf(serviceMachineName);
+                serviceView.init(serviceDescriptor);
                 serviceView.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -326,57 +327,4 @@ public final class ServicesFragment extends BookingFlowFragment
         }
     }
 
-    private enum ServiceCategoryAttributes
-    {
-        HANDYMAN(R.string.handyman, R.string.handyman_slogan_long, R.drawable.ic_handyman_fill, R.color.handy_service_handyman, R.color.handy_service_handyman_darkened, R.drawable.bg_ripple_handyman),
-        PLUMBING(R.string.plumber, R.string.plumber_slogan_long, R.drawable.ic_plumber_fill, R.color.handy_service_plumber, R.color.handy_service_plumber_darkened, R.drawable.bg_ripple_plumber),
-        ELECTRICIAN(R.string.electrician, R.string.electrician_slogan_long, R.drawable.ic_electrician_fill, R.color.handy_service_electrician, R.color.handy_service_electrician_darkened, R.drawable.bg_ripple_electrician),;
-
-        private final int mTitle;
-        private final int mSlogan;
-        private final int mIcon;
-        private final int mColor;
-        private final int mColorDark;
-        private int mBackground;
-
-        ServiceCategoryAttributes(int title, int slogan, int icon, int color, int colorDark, int background)
-        {
-            mTitle = title;
-            mSlogan = slogan;
-            mIcon = icon;
-            mColor = color;
-            mColorDark = colorDark;
-            mBackground = background;
-        }
-
-        public int getTitle()
-        {
-            return mTitle;
-        }
-
-        public int getIcon()
-        {
-            return mIcon;
-        }
-
-        public int getSlogan()
-        {
-            return mSlogan;
-        }
-
-        public int getColor()
-        {
-            return mColor;
-        }
-
-        public int getColorDark()
-        {
-            return mColorDark;
-        }
-
-        public int getBackground()
-        {
-            return mBackground;
-        }
-    }
 }
