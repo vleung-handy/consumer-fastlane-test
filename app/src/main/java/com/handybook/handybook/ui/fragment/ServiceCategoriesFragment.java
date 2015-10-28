@@ -3,8 +3,12 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -18,9 +22,9 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
-import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.ServiceCategoryView;
 
 import java.util.ArrayList;
@@ -31,13 +35,14 @@ import butterknife.ButterKnife;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
-    private List<Service> services = new ArrayList<>();
-    private boolean usedCache;
+    private static final String SHARED_ICON_ELEMENT_NAME = "icon";
+    private List<Service> mServices = new ArrayList<>();
+    private boolean mUsedCache;
 
     @Bind(R.id.category_layout)
     LinearLayout mCategoryLayout;
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.coupon_layout)
     View mCouponLayout;
     @Bind(R.id.promo_img)
@@ -82,10 +87,19 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
-        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(getResources().getColor(R.color.white));
-        assert true;
-        mMenuButtonLayout.addView(menuButton);
+
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+                activity.getMenuDrawer().toggleMenu();
+            }
+        });
 
         mPromoImage.setColorFilter(
                 getResources().getColor(R.color.handy_blue),
@@ -132,8 +146,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     private void displayServices()
     {
         mCategoryLayout.removeAllViews();
-        int pos = 0;
-        for (final Service service : services)
+        for (final Service service : mServices)
         {
             final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
             categoryView.init(service);
@@ -146,8 +159,17 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                     {
                         final Intent intent = new Intent(getActivity(), ServicesActivity.class);
                         intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
-                        intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, categoryView.getHeight());
-                        startActivity(intent);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                        {
+                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                    getActivity(), categoryView.getIcon(), SHARED_ICON_ELEMENT_NAME
+                            );
+                            getActivity().startActivity(intent, options.toBundle());
+                        }
+                        else
+                        {
+                            startActivity(intent);
+                        }
                     }
                     else
                     {
@@ -155,14 +177,14 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                     }
                 }
             });
-            mCategoryLayout.addView(categoryView, pos++);
+            mCategoryLayout.addView(categoryView);
         }
     }
 
     private void loadServices()
     {
         progressDialog.show();
-        usedCache = false;
+        mUsedCache = false;
         dataManager.getServices(new DataManager.CacheResponse<List<Service>>()
         {
             @Override
@@ -172,8 +194,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 {
                     return;
                 }
-                usedCache = true;
-                services = response;
+                mUsedCache = true;
+                mServices = response;
                 displayServices();
                 progressDialog.dismiss();
             }
@@ -186,7 +208,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 {
                     return;
                 }
-                services = response;
+                mServices = response;
                 displayServices();
                 progressDialog.dismiss();
             }
@@ -194,7 +216,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
-                if (!allowCallbacks || usedCache)
+                if (!allowCallbacks || mUsedCache)
                 {
                     return;
                 }

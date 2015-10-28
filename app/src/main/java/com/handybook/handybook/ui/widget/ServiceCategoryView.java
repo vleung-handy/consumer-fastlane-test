@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
+import com.handybook.handybook.ui.descriptor.ServiceCategoryListDescriptor;
 import com.handybook.handybook.ui.transformation.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
@@ -51,20 +52,20 @@ public final class ServiceCategoryView extends FrameLayout
         try
         {
             String serviceMachineName = service.getUniq().toUpperCase();
-            ServiceCategoryViewType viewType = ServiceCategoryViewType.valueOf(serviceMachineName);
-            mTitle.setText(viewType.getTitleString());
-            mSubtitle.setText(viewType.getSubtitleString());
-            mIcon.setImageResource(viewType.getIconDrawable());
+            ServiceCategoryListDescriptor descriptor = ServiceCategoryListDescriptor.valueOf(serviceMachineName);
+            mTitle.setText(descriptor.getTitleString());
+            mSubtitle.setText(descriptor.getSubtitleString());
+            mIcon.setImageResource(descriptor.getIconDrawable());
             int currentAPIVersion = android.os.Build.VERSION.SDK_INT;
             // Due to expensive nature of rounded corner clipping, on platforms before L, CardView
             // does not clip its children that intersect with rounded corners.
             if (currentAPIVersion >= Build.VERSION_CODES.LOLLIPOP)
             {
-                mImage.setImageResource(viewType.getImageDrawable());
+                mImage.setImageResource(descriptor.getImageDrawable());
             } else
             {
                 Picasso.with(getContext())
-                        .load(viewType.getImageDrawable())
+                        .load(descriptor.getImageDrawable())
                         .transform(
                                 new RoundedTransformation(
                                         getContext().getResources()
@@ -86,46 +87,9 @@ public final class ServiceCategoryView extends FrameLayout
         }
     }
 
-    private enum ServiceCategoryViewType
+    public ImageView getIcon()
     {
-        HOME_CLEANING(R.string.home_cleaner, R.string.home_cleaner_slogan, R.drawable.ic_cleaner_fill, R.drawable.img_cleaner),
-        HANDYMAN(R.string.handyman, R.string.handyman_slogan, R.drawable.ic_handyman_fill, R.drawable.img_handyman),
-        PLUMBING(R.string.plumber, R.string.plumber_slogan, R.drawable.ic_plumber_fill, R.drawable.img_plumber),
-        ELECTRICIAN(R.string.electrician, R.string.electrician_slogan, R.drawable.ic_electrician_fill, R.drawable.img_electrician),
-        PAINTING(R.string.painter, R.string.painter_slogan, R.drawable.ic_painter_fill, R.drawable.img_painter),;
-
-        private final int mTitleString;
-        private final int mSubtitleString;
-        private final int mIconDrawable;
-        private final int mImageDrawable;
-
-        ServiceCategoryViewType(int titleString, int subtitleString, int iconDrawable, int imageDrawable)
-        {
-
-            mTitleString = titleString;
-            mSubtitleString = subtitleString;
-            mIconDrawable = iconDrawable;
-            mImageDrawable = imageDrawable;
-        }
-
-        public int getTitleString()
-        {
-            return mTitleString;
-        }
-
-        public int getSubtitleString()
-        {
-            return mSubtitleString;
-        }
-
-        public int getIconDrawable()
-        {
-            return mIconDrawable;
-        }
-
-        public int getImageDrawable()
-        {
-            return mImageDrawable;
-        }
+        return mIcon;
     }
+
 }

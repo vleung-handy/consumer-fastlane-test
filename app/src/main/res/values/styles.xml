@@ -8,7 +8,7 @@
         <item name="colorPrimary">@color/handy_blue</item>
         <item name="colorPrimaryDark">@color/handy_darkened_blue</item>
         <item name="colorAccent">@color/handy_purple</item>
-
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="ContentLayout">
@@ -503,7 +503,7 @@
         <item name="fontPath">fonts/CircularStd-Medium.otf</item>
     </style>
 
-    <style name="abstractWheelViewStyle" />
+    <style name="abstractWheelViewStyle"/>
 
     <style name="CirclePageIndicatorStyle">
         <item name="fillColor">@color/black</item>

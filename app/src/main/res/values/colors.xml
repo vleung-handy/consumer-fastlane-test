@@ -43,6 +43,9 @@
     <color name="handy_service_handyman">#FF43d1b8</color>
     <color name="handy_service_plumber">#FFff5c5c</color>
     <color name="handy_service_electrician">#FFffb600</color>
+    <color name="handy_service_handyman_darkened">#43BAA6</color>
+    <color name="handy_service_plumber_darkened">#E35356</color>
+    <color name="handy_service_electrician_darkened">#E3A225</color>
     <color name="handy_service_painter">#FF993092</color>
     <color name="handy_blue">#FF00cded</color>
     <color name="handy_darkened_blue">#FF0bb8e3</color>

@@ -1,55 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/handy_blue"
+            android:orientation="vertical"
+            app:contentInsetStart="0dp"
+            app:navigationIcon="@drawable/ic_menu"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:padding="@dimen/default_logo_padding"
+            android:src="@drawable/ic_home_logo"/>
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_container"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/category_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/default_margin"
+            android:paddingTop="@dimen/default_margin_half"/>
 
-            <LinearLayout
-                android:id="@+id/header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/handy_blue"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top|start">
-
-                    <RelativeLayout
-                        android:id="@+id/menu_button_layout"
-                        style="@style/MenuButtonLayout"
-                        android:layout_height="64dp"/>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="96dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="80dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_home_logo"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/category_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/header"
-                android:layout_marginTop="-60dp"
-                android:orientation="vertical"/>
-
-        </RelativeLayout>
     </ScrollView>
 
     <LinearLayout

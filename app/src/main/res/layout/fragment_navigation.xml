@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:divider="@null"
-        android:paddingTop="@dimen/default_margin_x2"/>
+        android:paddingTop="@dimen/default_margin_double"/>
 
 </LinearLayout>
