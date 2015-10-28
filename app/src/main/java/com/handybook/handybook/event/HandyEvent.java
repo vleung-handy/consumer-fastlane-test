@@ -511,9 +511,9 @@ public abstract class HandyEvent
     {
         private final int mBookingId;
         private final int mFinalRating;
-        private final int mTipAmountCents;
+        private final Integer mTipAmountCents;
 
-        public RateBookingEvent(int bookingId, int finalRating, int tipAmountCents)
+        public RateBookingEvent(int bookingId, int finalRating, Integer tipAmountCents)
         {
             mBookingId = bookingId;
             mFinalRating = finalRating;
@@ -530,7 +530,7 @@ public abstract class HandyEvent
             return mFinalRating;
         }
 
-        public int getTipAmountCents()
+        public Integer getTipAmountCents()
         {
             return mTipAmountCents;
         }
