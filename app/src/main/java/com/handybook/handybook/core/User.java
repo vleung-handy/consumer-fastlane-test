@@ -11,6 +11,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
@@ -36,6 +37,7 @@ public final class User extends Observable {
     @SerializedName("booking_to_rate_pro_name") private String bookingRatePro;
     @SerializedName("schedule_laundry_booking_id") private int laundryBookingId;
     @SerializedName("add_laundry_booking_id") private int addLaundryBookingId;
+    @SerializedName("default_tip_amounts") private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
 
     public final String getAuthToken() {
         return authToken;
@@ -190,6 +192,10 @@ public final class User extends Observable {
 
     public final String getBookingRatePro() {
         return bookingRatePro;
+    }
+
+    public ArrayList<LocalizedMonetaryAmount> getDefaultTipAmounts() {
+        return defaultTipAmounts;
     }
 
     public final int getLaundryBookingId() {

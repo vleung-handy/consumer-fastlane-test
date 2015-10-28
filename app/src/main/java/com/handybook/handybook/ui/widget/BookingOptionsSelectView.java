@@ -254,10 +254,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
         if (isChecked)
         {
-            title.setTextColor(getResources().getColor(R.color.black));
+            title.setTextColor(getResources().getColor(R.color.handy_text_black));
             subTitle.setTextColor(getResources().getColor(R.color.handy_blue));
-            rightSubtitleText.setTextColor(getResources().getColor(R.color.black));
-            rightTitleText.setTextColor(getResources().getColor(R.color.black));
+            rightSubtitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
+            rightTitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
             box.setChecked(true);
         }
         else

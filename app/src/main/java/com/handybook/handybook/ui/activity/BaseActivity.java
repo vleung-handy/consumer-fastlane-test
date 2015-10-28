@@ -17,6 +17,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.LaundryDropInfo;
+import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -30,6 +31,8 @@ import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
 import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -147,8 +150,11 @@ public abstract class BaseActivity extends AppCompatActivity
                 } else if (proName != null)
                 {
                     final int bookingId = user.getBookingRateId();
+                    final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts = user.getDefaultTipAmounts();
+
                     mRateServiceDialogFragment = RateServiceDialogFragment
-                            .newInstance(bookingId, proName, -1);
+                            .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
+
                     mRateServiceDialogFragment.show(BaseActivity.this.getSupportFragmentManager(),
                             "RateServiceDialogFragment");
                     mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
