@@ -27,7 +27,7 @@ public class BookingDetailSectionFragmentPayment extends BookingDetailSectionFra
     }
 
     @Override
-    protected boolean hasEnabledAction()
+    protected boolean hasEnabledAction(Booking booking)
     {
         return false;
     }

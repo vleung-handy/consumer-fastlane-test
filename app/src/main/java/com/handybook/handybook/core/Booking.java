@@ -70,10 +70,17 @@ public final class Booking implements Parcelable
     private ArrayList<LineItem> paymentInfo;
     @SerializedName("extras_info")
     private ArrayList<ExtraInfo> extrasInfo;
-    @SerializedName("can_edit_hours")
-    private Boolean canEditHours;
+    @SerializedName("can_edit_hours") //we want them false by default
+    private boolean canEditHours;
     @SerializedName("can_edit_frequency")
-    private Boolean canEditFrequency;
+    private boolean canEditFrequency;
+    @SerializedName("can_edit_extras")
+    private boolean canEditExtras;
+
+    public boolean getCanEditExtras()
+    {
+        return canEditExtras;
+    }
 
     public final String getId()
     {
@@ -203,6 +210,47 @@ public final class Booking implements Parcelable
     {
     }
 
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            ExtrasMachineName.INSIDE_CABINETS,
+            ExtrasMachineName.INSIDE_FRIDGE,
+            ExtrasMachineName.INSIDE_OVEN,
+            ExtrasMachineName.LAUNDRY,
+            ExtrasMachineName.INTERIOR_WINDOWS,
+    })
+    public @interface ExtrasType
+    {
+
+    }
+
+    public final static class ExtrasMachineName
+    {
+        public final static String INSIDE_CABINETS = "inside_cabinets";
+        public final static String INSIDE_FRIDGE = "inside_fridge";
+        public final static String INSIDE_OVEN = "inside_oven";
+        public final static String LAUNDRY = "laundry";
+        public final static String INTERIOR_WINDOWS = "interior_windows";
+    }
+
+    //TODO: ideally we shouldn't have this logic in the model. find/create a better place for it
+    public static int getImageResourceIdForMachineName(@ExtrasType String extrasMachineName)
+    {
+        switch (extrasMachineName)
+        {
+            case Booking.ExtrasMachineName.INSIDE_CABINETS:
+                return R.drawable.ic_booking_extra_cabinets;
+            case Booking.ExtrasMachineName.INSIDE_FRIDGE:
+                return R.drawable.ic_booking_extra_fridge;
+            case Booking.ExtrasMachineName.INSIDE_OVEN:
+                return R.drawable.ic_booking_extra_oven;
+            case Booking.ExtrasMachineName.INTERIOR_WINDOWS:
+                return R.drawable.ic_booking_extra_window;
+            case Booking.ExtrasMachineName.LAUNDRY:
+                return R.drawable.ic_booking_extra_laundry;
+            default:
+                return R.drawable.ic_booking_detail_logo;
+        }
+    }
 
     public final Date getStartDate()
     {
@@ -326,6 +374,13 @@ public final class Booking implements Parcelable
 
         extrasInfo = new ArrayList<ExtraInfo>();
         in.readTypedList(extrasInfo, ExtraInfo.CREATOR);
+
+        final boolean[] booleanData = new boolean[3];
+        in.readBooleanArray(booleanData);
+
+        canEditFrequency = booleanData[0];
+        canEditExtras = booleanData[1];
+        canEditHours = booleanData[2];
     }
 
     public static Booking fromJson(final String json)
@@ -359,6 +414,12 @@ public final class Booking implements Parcelable
         out.writeParcelable(provider, 0);
         out.writeTypedList(paymentInfo);
         out.writeTypedList(extrasInfo);
+        out.writeBooleanArray(new boolean[]
+                {
+                        canEditFrequency,
+                        canEditExtras,
+                        canEditHours
+                });
     }
 
     @Override
@@ -385,12 +446,12 @@ public final class Booking implements Parcelable
         return entryType;
     }
 
-    public Boolean getCanEditHours()
+    public boolean getCanEditHours()
     {
         return canEditHours;
     }
 
-    public Boolean getCanEditFrequency()
+    public boolean getCanEditFrequency()
     {
         return canEditFrequency;
     }
@@ -708,13 +769,12 @@ public final class Booking implements Parcelable
             EXTRAS_ICONS = new HashMap<>();
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_CABINETS_DISABLED, R.drawable.ic_booking_extra_cabinets);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_FRIDGE_DISABLED, R.drawable.ic_booking_extra_fridge);
-            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_OVEN_DISABLED, R.drawable.ic_booking_detail_oven);
+            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_OVEN_DISABLED, R.drawable.ic_booking_extra_oven);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.LAUNDRY_DISABLED, R.drawable.ic_booking_extra_laundry);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.WINDOWS_DISABLED, R.drawable.ic_booking_extra_window);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.DEFAULT_IMAGE_NAME, R.drawable.ic_booking_detail_logo);
             //TODO: Need to add missing icons like ladders and painting
         }
-
 
         public final String getLabel()
         {

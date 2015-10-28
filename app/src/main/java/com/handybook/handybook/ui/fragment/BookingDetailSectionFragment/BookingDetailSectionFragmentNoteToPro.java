@@ -28,7 +28,7 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
     }
 
     @Override
-    protected boolean hasEnabledAction()
+    protected boolean hasEnabledAction(Booking booking)
     {
         return true;
     }

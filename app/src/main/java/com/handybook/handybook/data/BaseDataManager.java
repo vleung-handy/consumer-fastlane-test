@@ -19,12 +19,15 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
+import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.manager.PrefsManager;
@@ -205,6 +208,20 @@ public final class BaseDataManager extends DataManager
                 });
             }
         });
+    }
+
+    @Override
+    public void getServiceExtras(final int bookingId, final Callback<EditExtrasInfo> cb)
+    {
+        mService.getServiceExtras(bookingId, new ServiceExtrasInfoHandyRetroFitCallback(cb));
+    }
+
+    @Override
+    public void editServiceExtras(final int bookingId,
+                                  final BookingEditExtrasTransaction bookingEditExtrasTransaction,
+                                  final Callback<SuccessWrapper> cb)
+    {
+        mService.editServiceExtras(bookingId, bookingEditExtrasTransaction, new SuccessHandyRetroFitCallback(cb));
     }
 
     @Override
@@ -758,7 +775,7 @@ public final class BaseDataManager extends DataManager
     public final void getBookingPricesForFrequencies(int bookingId,
                                                      final Callback<BookingPricesForFrequenciesResponse> cb)
     {
-        mService.getBookingPricesForFrequencies(bookingId, new BookingPricesForFrequenciesCallback(cb));
+        mService.getBookingPricesForFrequencies(bookingId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
     }
 
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb)

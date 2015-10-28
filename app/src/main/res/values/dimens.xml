@@ -22,4 +22,7 @@
     <dimen name="inner_textfield_padding">12dp</dimen>
     <dimen name="round_button_radius">5dp</dimen>
     <dimen name="round_button_stroke">1dp</dimen>
+    <dimen name="icon_padding">2dp</dimen>
+    <dimen name="framed_icon_inset">8dp</dimen>
+    <dimen name="horizontal_divider_height">2dp</dimen>
 </resources>
