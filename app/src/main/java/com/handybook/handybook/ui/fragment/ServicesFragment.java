@@ -1,7 +1,10 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -83,40 +86,53 @@ public final class ServicesFragment extends BookingFlowFragment
         {
             String serviceCategoryMachineName = mService.getUniq().toUpperCase();
             final ServiceCategoryAttributes attributes = ServiceCategoryAttributes.valueOf(serviceCategoryMachineName);
-            mHeader.setBackgroundColor(getResources().getColor(attributes.getColor()));
+            mHeader.setBackgroundResource(attributes.getBackground());
             mIcon.setImageResource(attributes.getIcon());
             mToolbarIcon.setImageResource(attributes.getIcon());
             mTitle.setText(attributes.getTitle());
             mSubtitle.setText(attributes.getSlogan());
             setStatusBarColor(attributes.getColorDark());
-
-            mContent.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
+            initHeaderAdjustmentsOnScroll(attributes);
+            new Handler().postDelayed(new Runnable()
             {
                 @Override
-                public void onScrollChanged()
+                public void run()
                 {
-                    int[] toolbarCoordinates = new int[2];
-                    int[] titleCoordinates = new int[2];
-                    mToolbar.getLocationOnScreen(toolbarCoordinates);
-                    mTitle.getLocationOnScreen(titleCoordinates);
-                    int toolbarY = toolbarCoordinates[1];
-                    int titleY = titleCoordinates[1];
-
-                    if (toolbarY > titleY)
-                    {
-                        adjustForSmallerHeader(attributes.getColor());
-                    }
-
-                    if (toolbarY < titleY)
-                    {
-                        adjustForLargerHeader();
-                    }
+                    forceRippleAnimation();
                 }
-            });
-        } catch (IllegalArgumentException e)
+            }, 200);
+        }
+        catch (IllegalArgumentException e)
         {
             Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
         }
+    }
+
+    private void initHeaderAdjustmentsOnScroll(final ServiceCategoryAttributes attributes)
+    {
+        mContent.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
+        {
+            @Override
+            public void onScrollChanged()
+            {
+                int[] toolbarCoordinates = new int[2];
+                int[] titleCoordinates = new int[2];
+                mToolbar.getLocationOnScreen(toolbarCoordinates);
+                mTitle.getLocationOnScreen(titleCoordinates);
+                int toolbarY = toolbarCoordinates[1];
+                int titleY = titleCoordinates[1];
+
+                if (toolbarY > titleY)
+                {
+                    adjustForSmallerHeader(attributes.getColor());
+                }
+
+                if (toolbarY < titleY)
+                {
+                    adjustForLargerHeader();
+                }
+            }
+        });
     }
 
     private void adjustForLargerHeader()
@@ -201,6 +217,45 @@ public final class ServicesFragment extends BookingFlowFragment
         }
     }
 
+    private void forceRippleAnimation()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            Drawable background = mHeader.getBackground();
+            if (background instanceof RippleDrawable)
+            {
+                int[] iconCoordinates = new int[2];
+                mIcon.getLocationOnScreen(iconCoordinates);
+                float hotspotX = mHeader.getWidth() / 2;
+                float hotspotY = iconCoordinates[1] - getStatusBarHeight() + (mIcon.getHeight() / 2);
+
+                final RippleDrawable ripple = (RippleDrawable) background;
+                int[] state = new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled};
+                ripple.setState(state);
+                ripple.setHotspot(hotspotX, hotspotY);
+                new Handler().postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        ripple.setState(new int[]{});
+                    }
+                }, 400);
+            }
+        }
+    }
+
+    private int getStatusBarHeight()
+    {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0)
+        {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
     @Override
     public final void onActivityCreated(final Bundle savedInstanceState)
     {
@@ -235,23 +290,25 @@ public final class ServicesFragment extends BookingFlowFragment
 
     private enum ServiceCategoryAttributes
     {
-        HANDYMAN(R.string.handyman, R.string.handyman_slogan_long, R.drawable.ic_handyman_fill, R.color.handy_service_handyman, R.color.handy_service_handyman_darkened),
-        PLUMBING(R.string.plumber, R.string.plumber_slogan_long, R.drawable.ic_plumber_fill, R.color.handy_service_plumber, R.color.handy_service_plumber_darkened),
-        ELECTRICIAN(R.string.electrician, R.string.electrician_slogan_long, R.drawable.ic_electrician_fill, R.color.handy_service_electrician, R.color.handy_service_electrician_darkened),;
+        HANDYMAN(R.string.handyman, R.string.handyman_slogan_long, R.drawable.ic_handyman_fill, R.color.handy_service_handyman, R.color.handy_service_handyman_darkened, R.drawable.bg_ripple_handyman),
+        PLUMBING(R.string.plumber, R.string.plumber_slogan_long, R.drawable.ic_plumber_fill, R.color.handy_service_plumber, R.color.handy_service_plumber_darkened, R.drawable.bg_ripple_plumber),
+        ELECTRICIAN(R.string.electrician, R.string.electrician_slogan_long, R.drawable.ic_electrician_fill, R.color.handy_service_electrician, R.color.handy_service_electrician_darkened, R.drawable.bg_ripple_electrician),;
 
         private final int mTitle;
         private final int mSlogan;
         private final int mIcon;
         private final int mColor;
         private final int mColorDark;
+        private int mBackground;
 
-        ServiceCategoryAttributes(int title, int slogan, int icon, int color, int colorDark)
+        ServiceCategoryAttributes(int title, int slogan, int icon, int color, int colorDark, int background)
         {
             mTitle = title;
             mSlogan = slogan;
             mIcon = icon;
             mColor = color;
             mColorDark = colorDark;
+            mBackground = background;
         }
 
         public int getTitle()
@@ -277,6 +334,11 @@ public final class ServicesFragment extends BookingFlowFragment
         public int getColorDark()
         {
             return mColorDark;
+        }
+
+        public int getBackground()
+        {
+            return mBackground;
         }
     }
 }
