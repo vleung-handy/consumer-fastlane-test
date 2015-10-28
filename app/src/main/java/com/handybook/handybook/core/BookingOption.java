@@ -46,7 +46,7 @@ public final class BookingOption implements Parcelable
 
     //TODO: BookingOption is deserialized from a server response and used as a view model for the option view.
     //some fields in this class are not actually from the server and are set programmatically. how can we make this cleaner?
-    private int[] imageResourceIds;
+    private int[] mImageResourceIds;
 
     public BookingOption()
     {
@@ -54,12 +54,12 @@ public final class BookingOption implements Parcelable
 
     public void setImageResourceIds(int[] imageResourceIds)
     {
-        this.imageResourceIds = imageResourceIds;
+        mImageResourceIds = imageResourceIds;
     }
 
     public int[] getImageResourceIds()
     {
-        return imageResourceIds;
+        return mImageResourceIds;
     }
 
     public final String getUniq()
