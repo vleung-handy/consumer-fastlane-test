@@ -18,7 +18,7 @@ import java.util.Hashtable;
 
 public final class TextUtils {
     //TODO: split this class out into more specific ones
-    private static final DecimalFormat mDecimalFormat = new DecimalFormat("0.#");
+    private static final DecimalFormat mAtMostOneDecimalPlaceFormat = new DecimalFormat("0.#");
 
     public static final class Fonts {
         public static final String CIRCULAR_BOLD = "CircularStd-Bold.otf";
@@ -39,9 +39,10 @@ public final class TextUtils {
         }
     }
 
-    public static String formatNumberToAtMostOneDecimalPoint(final float num)
+    public static String formatNumberToAtMostOneDecimalPlace(final float num)
     {
-        return mDecimalFormat.format(num);
+        //TODO: make this rounded and not truncated
+        return mAtMostOneDecimalPlaceFormat.format(num);
     }
 
     public static String formatPrice(final float price, final String currencyChar,

@@ -14,8 +14,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.BookingEditExtrasTransaction;
+import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.event.HandyEvent;
@@ -293,7 +293,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     private String getFormattedHoursForPriceTable(float hours)
     {
         //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
-        return TextUtils.formatNumberToAtMostOneDecimalPoint(hours);
+        return TextUtils.formatNumberToAtMostOneDecimalPlace(hours);
     }
 
     /*
