@@ -43,7 +43,7 @@
                 android:calendarViewShown="false"
                 android:layout_centerHorizontal="true" />
 
-            <TimePicker
+            <com.handybook.handybook.ui.view.GroovedTimePicker
                 android:id="@+id/time_picker"
                 android:timePickerMode="spinner"
                 android:layout_width="wrap_content"
