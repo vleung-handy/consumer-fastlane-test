@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.Service;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,28 +45,17 @@ public class ServiceView extends FrameLayout
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean init(final Service service)
+    public void init(final ServiceViewType serviceViewType)
     {
         LayoutInflater.from(getContext()).inflate(R.layout.view_service, this);
         ButterKnife.bind(this);
 
-        try
-        {
-            String serviceMachineName = service.getUniq().toUpperCase();
-            ServiceViewType serviceViewType = ServiceViewType.valueOf(serviceMachineName);
-            mIcon.setImageResource(serviceViewType.getIcon());
-            mTitle.setText(serviceViewType.getTitle());
-            mSubtitle.setText(serviceViewType.getDescription());
-
-            return true;
-        } catch (IllegalArgumentException e)
-        {
-            Crashlytics.logException(new RuntimeException("Cannot display service: " + service.getUniq()));
-            return false;
-        }
+        mIcon.setImageResource(serviceViewType.getIcon());
+        mTitle.setText(serviceViewType.getTitle());
+        mSubtitle.setText(serviceViewType.getDescription());
     }
 
-    private enum ServiceViewType
+    public enum ServiceViewType
     {
         HANGING_PICTURES_SHELVES(R.string.hanging_items, R.string.hanging_items_service_description, R.drawable.ic_service_handyman_pictures),
         AC_REPAIR(R.string.ac_installation, R.string.ac_installation_service_description, R.drawable.ic_service_handyman_ac),
@@ -113,6 +101,19 @@ public class ServiceView extends FrameLayout
         public int getIcon()
         {
             return mIcon;
+        }
+
+        public static boolean hasValueOf(String name)
+        {
+            try
+            {
+                return ServiceViewType.valueOf(name) != null;
+            } catch (IllegalArgumentException e)
+            {
+                Crashlytics.logException(new RuntimeException("Cannot find service type: " + name));
+                return false;
+            }
+
         }
     }
 }

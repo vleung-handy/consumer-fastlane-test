@@ -23,6 +23,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.ui.widget.ServiceView;
+import com.handybook.handybook.ui.widget.ServiceView.ServiceViewType;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -292,11 +293,15 @@ public final class ServicesFragment extends BookingFlowFragment
     public final void onActivityCreated(final Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        ServiceView lastViewAdded = null;
         for (final Service service : mService.getServices())
         {
             ServiceView serviceView = new ServiceView(getActivity());
-            if (serviceView.init(service))
+            String serviceMachineName = service.getUniq().toUpperCase();
+            if (ServiceViewType.hasValueOf(serviceMachineName))
             {
+                ServiceViewType serviceViewType = ServiceViewType.valueOf(serviceMachineName);
+                serviceView.init(serviceViewType);
                 serviceView.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -306,11 +311,19 @@ public final class ServicesFragment extends BookingFlowFragment
                     }
                 });
                 mList.addView(serviceView);
+                lastViewAdded = serviceView;
             }
         }
 
-        // remove bottom border of last element
-        mList.getChildAt(mList.getChildCount() - 1).findViewById(R.id.container).setBackgroundResource(0);
+        if (lastViewAdded != null)
+        {
+            // remove bottom border of last element
+            final View container = lastViewAdded.findViewById(R.id.container);
+            if (container != null)
+            {
+                container.setBackgroundResource(0);
+            }
+        }
     }
 
     private enum ServiceCategoryAttributes
