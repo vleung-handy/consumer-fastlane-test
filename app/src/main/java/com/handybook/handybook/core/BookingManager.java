@@ -243,6 +243,32 @@ public final class BookingManager implements Observer
         });
     }
 
+    @Subscribe
+    public void onRequestRateBooking(HandyEvent.RateBookingEvent event)
+    {
+        dataManager.ratePro(
+                event.getBookingId(),
+                event.getFinalRating(),
+                event.getTipAmountCents(),
+                new DataManager.Callback<Void>()
+                {
+                    @Override
+                    public void onSuccess(final Void response)
+                    {
+                        bus.post(new HandyEvent.ReceiveRateBookingSuccess());
+                    }
+
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        bus.post(new HandyEvent.ReceiveRateBookingError(error));
+                    }
+                }
+        );
+    }
+
+
+
 //Old Direct References, to eventually be handled in the events way
 
     public final BookingRequest getCurrentRequest()

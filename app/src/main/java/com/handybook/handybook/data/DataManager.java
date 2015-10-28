@@ -165,6 +165,7 @@ public abstract class DataManager
 
     public abstract void ratePro(int bookingId,
                                  int rating,
+                                 Integer tipAmount,
                                  Callback<Void> cb);
 
     public abstract void submitProRatingDetails(int bookingId,

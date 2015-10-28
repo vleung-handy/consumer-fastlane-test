@@ -569,9 +569,9 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void ratePro(final int bookingId, final int rating, final Callback<Void> cb)
+    public void ratePro(final int bookingId, final int rating, final Integer tipAmount, final Callback<Void> cb)
     {
-        mService.ratePro(bookingId, rating, new HandyRetrofitCallback(cb)
+        mService.ratePro(bookingId, rating, tipAmount, new HandyRetrofitCallback(cb)
         {
             @Override
             void success(final JSONObject response)

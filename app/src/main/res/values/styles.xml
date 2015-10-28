@@ -7,7 +7,7 @@
         <item name="vpiCirclePageIndicatorStyle">@style/CirclePageIndicatorStyle</item>
         <item name="colorPrimary">@color/handy_blue</item>
         <item name="colorPrimaryDark">@color/handy_darkened_blue</item>
-        <item name="colorAccent">@color/handy_purple</item>
+        <item name="colorAccent">@color/handy_service_painter</item>
 
     </style>
 
@@ -127,7 +127,7 @@
 
     <style name="Button.White">
         <item name="android:background">@drawable/button_white</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/handy_text_black</item>
     </style>
 
     <style name="RoundedButton">
@@ -162,7 +162,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/default_text_size</item>
         <item name="android:freezesText">true</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/handy_text_black</item>
         <item name="android:textColorHint">@color/black_pressed</item>
         <item name="android:background">@drawable/bg_edit_text</item>
         <item name="android:padding">16dp</item>
@@ -307,13 +307,13 @@
     </style>
 
     <style name="TextView">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/handy_text_black</item>
         <item name="android:textSize">@dimen/default_text_size</item>
         <item name="android:freezesText">true</item>
     </style>
 
     <style name="RelativeLayout">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/handy_text_black</item>
         <item name="android:textSize">@dimen/default_text_size</item>
         <item name="android:freezesText">true</item>
     </style>
@@ -417,7 +417,7 @@
         <item name="android:gravity">center</item>
         <item name="android:singleLine">true</item>
         <item name="android:background">@drawable/nav_bar</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/handy_text_black</item>
         <item name="fontPath">fonts/CircularStd-Book.otf</item>
         <item name="android:textSize">18sp</item>
         <item name="android:paddingTop">0dp</item>
@@ -431,7 +431,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/handy_text_black</item>
         <item name="fontPath">fonts/CircularStd-Book.otf</item>
         <item name="android:textSize">18sp</item>
         <item name="android:paddingTop">0dp</item>
@@ -518,7 +518,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">56dp</item>
         <item name="android:background">@drawable/nav_bar</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/handy_text_black</item>
         <item name="fontPath">fonts/CircularStd-Book.otf</item>
         <item name="android:textSize">18sp</item>
     </style>
@@ -528,12 +528,42 @@
         <item name="android:paddingBottom">4dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/handy_white</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="BookingDetailSectionView.Transparent" parent="BookingDetailSectionView">
-        <item name="android:background">@color/handy_transparent</item>
+        <item name="android:background">@color/transparent</item>
 
+    </style>
+
+    <style name="TipToggle">
+        <item name="android:textColor">@color/toggle_button_text</item>
+        <item name="android:background">@drawable/custom_toggle</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:divider">?android:attr/dividerVertical</item>
+        <item name="android:showDividers">middle</item>
+    </style>
+
+    <style name="TipToggle.First">
+        <item name="android:background">@drawable/custom_toggle_first</item>
+    </style>
+
+    <style name="TipToggle.Last">
+        <item name="android:background">@drawable/custom_toggle_last</item>
+    </style>
+
+    <style name="ToggleGroupStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:divider">@drawable/toggle_divider</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:background">@drawable/custom_toggle_group</item>
     </style>
 
     <string name="name">Name</string>
