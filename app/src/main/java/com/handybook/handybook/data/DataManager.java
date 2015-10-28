@@ -16,7 +16,7 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingUpdateExtrasTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.EditExtrasInfo;
@@ -45,7 +45,7 @@ public abstract class DataManager
                                      Callback<EditExtrasInfo> cb);
 
     public abstract void editServiceExtras(int bookingId,
-                                           BookingUpdateExtrasTransaction bookingUpdateExtrasTransaction,
+                                           BookingEditExtrasTransaction bookingEditExtrasTransaction,
                                           Callback<SuccessWrapper> cb);
 
     /**

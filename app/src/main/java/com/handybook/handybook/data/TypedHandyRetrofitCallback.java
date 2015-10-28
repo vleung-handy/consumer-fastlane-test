@@ -128,9 +128,9 @@ class ServiceExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<
     }
 }
 
-class SucessHandyRetroFitCallback extends TypedHandyRetrofitCallback<SuccessWrapper>
+class SuccessHandyRetroFitCallback extends TypedHandyRetrofitCallback<SuccessWrapper>
 {
-    SucessHandyRetroFitCallback(DataManager.Callback callback)
+    SuccessHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }

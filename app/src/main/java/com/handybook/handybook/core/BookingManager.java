@@ -483,7 +483,7 @@ public final class BookingManager implements Observer
     @Subscribe
     public final void onRequestEditServiceExtras(final HandyEvent.RequestEditServiceExtrasOptions event)
     {
-        dataManager.editServiceExtras(event.bookingId, event.bookingUpdateExtrasTransaction, new DataManager.Callback<SuccessWrapper>()
+        dataManager.editServiceExtras(event.bookingId, event.bookingEditExtrasTransaction, new DataManager.Callback<SuccessWrapper>()
         {
             @Override
             public void onSuccess(SuccessWrapper response)

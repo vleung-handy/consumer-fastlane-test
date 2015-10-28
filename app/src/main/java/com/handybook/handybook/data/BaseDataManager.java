@@ -19,7 +19,7 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingUpdateExtrasTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.EditExtrasInfo;
@@ -218,10 +218,10 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public void editServiceExtras(final int bookingId,
-                                  final BookingUpdateExtrasTransaction bookingUpdateExtrasTransaction,
+                                  final BookingEditExtrasTransaction bookingEditExtrasTransaction,
                                   final Callback<SuccessWrapper> cb)
     {
-        mService.editServiceExtras(bookingId, bookingUpdateExtrasTransaction, new SucessHandyRetroFitCallback(cb));
+        mService.editServiceExtras(bookingId, bookingEditExtrasTransaction, new SuccessHandyRetroFitCallback(cb));
     }
 
     @Override

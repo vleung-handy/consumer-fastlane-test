@@ -15,7 +15,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.core.BookingUpdateExtrasTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.event.HandyEvent;
@@ -64,7 +64,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     private Booking mBooking;
     private EditExtrasInfo mEditExtrasInfo;
     private BookingOptionsSelectView mOptionsView;
-    private BookingUpdateExtrasTransaction mBookingUpdateExtrasTransaction;
+    private BookingEditExtrasTransaction mBookingEditExtrasTransaction;
 
     public static BookingEditExtrasFragment newInstance(Booking booking)
     {
@@ -86,7 +86,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     private void initTransaction()
     {
-        mBookingUpdateExtrasTransaction = new BookingUpdateExtrasTransaction();
+        mBookingEditExtrasTransaction = new BookingEditExtrasTransaction();
     }
 
     @Override
@@ -164,10 +164,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
                 //otherwise it was not selected and wasn't in original booking. do nothing
             }
         }
-        mBookingUpdateExtrasTransaction.setAddedExtras(addedExtras.toArray(new String[]{}));
-        mBookingUpdateExtrasTransaction.setRemovedExtras(removedExtras.toArray(new String[]{}));
+        mBookingEditExtrasTransaction.setAddedExtras(addedExtras.toArray(new String[]{}));
+        mBookingEditExtrasTransaction.setRemovedExtras(removedExtras.toArray(new String[]{}));
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditServiceExtrasOptions(Integer.parseInt(mBooking.getId()), mBookingUpdateExtrasTransaction));
+        bus.post(new HandyEvent.RequestEditServiceExtrasOptions(Integer.parseInt(mBooking.getId()), mBookingEditExtrasTransaction));
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated

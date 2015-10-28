@@ -7,7 +7,7 @@ import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingUpdateExtrasTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.EditExtrasInfo;
@@ -406,12 +406,12 @@ public abstract class HandyEvent
     public static class RequestEditServiceExtrasOptions extends RequestEvent
     {
         public final int bookingId;
-        public final BookingUpdateExtrasTransaction bookingUpdateExtrasTransaction;
+        public final BookingEditExtrasTransaction bookingEditExtrasTransaction;
 
-        public RequestEditServiceExtrasOptions(int bookingId, BookingUpdateExtrasTransaction bookingUpdateExtrasTransaction)
+        public RequestEditServiceExtrasOptions(int bookingId, BookingEditExtrasTransaction bookingEditExtrasTransaction)
         {
             this.bookingId = bookingId;
-            this.bookingUpdateExtrasTransaction = bookingUpdateExtrasTransaction;
+            this.bookingEditExtrasTransaction = bookingEditExtrasTransaction;
         }
     }
 
