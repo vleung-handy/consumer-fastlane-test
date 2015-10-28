@@ -36,8 +36,8 @@ import butterknife.ButterKnife;
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
-    private List<Service> services = new ArrayList<>();
-    private boolean usedCache;
+    private List<Service> mServices = new ArrayList<>();
+    private boolean mUsedCache;
 
     @Bind(R.id.category_layout)
     LinearLayout mCategoryLayout;
@@ -146,7 +146,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     private void displayServices()
     {
         mCategoryLayout.removeAllViews();
-        for (final Service service : services)
+        for (final Service service : mServices)
         {
             final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
             categoryView.init(service);
@@ -184,7 +184,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     private void loadServices()
     {
         progressDialog.show();
-        usedCache = false;
+        mUsedCache = false;
         dataManager.getServices(new DataManager.CacheResponse<List<Service>>()
         {
             @Override
@@ -194,8 +194,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 {
                     return;
                 }
-                usedCache = true;
-                services = response;
+                mUsedCache = true;
+                mServices = response;
                 displayServices();
                 progressDialog.dismiss();
             }
@@ -208,7 +208,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 {
                     return;
                 }
-                services = response;
+                mServices = response;
                 displayServices();
                 progressDialog.dismiss();
             }
@@ -216,7 +216,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
-                if (!allowCallbacks || usedCache)
+                if (!allowCallbacks || mUsedCache)
                 {
                     return;
                 }
