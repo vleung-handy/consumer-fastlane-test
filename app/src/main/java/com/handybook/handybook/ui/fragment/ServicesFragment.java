@@ -87,33 +87,64 @@ public final class ServicesFragment extends BookingFlowFragment
         {
             String serviceCategoryMachineName = mService.getUniq().toUpperCase();
             final ServiceCategoryAttributes attributes = ServiceCategoryAttributes.valueOf(serviceCategoryMachineName);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
-                mHeader.setBackgroundResource(attributes.getBackground());
-                new Handler().postDelayed(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        forceRippleAnimation();
-                    }
-                }, 200);
-            }
-            else
-            {
-                mHeader.setBackgroundColor(getResources().getColor(attributes.getColor()));
-            }
-            mIcon.setImageResource(attributes.getIcon());
-            mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-            mToolbarIcon.setImageResource(attributes.getIcon());
-            mTitle.setText(attributes.getTitle());
-            mSubtitle.setText(attributes.getSlogan());
-            setStatusBarColor(attributes.getColorDark());
+            initStatusBar(attributes);
+            initHeader(attributes);
+            initServiceIcon(attributes);
+            initToolbar(attributes);
             initHeaderAdjustmentsOnScroll(attributes);
         } catch (IllegalArgumentException e)
         {
             Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
         }
+    }
+
+    private void initStatusBar(ServiceCategoryAttributes attributes)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(attributes.getColorDark()));
+        }
+    }
+
+    private void initHeader(ServiceCategoryAttributes attributes)
+    {
+        mTitle.setText(attributes.getTitle());
+        mSubtitle.setText(attributes.getSlogan());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            mHeader.setBackgroundResource(attributes.getBackground());
+            new Handler().postDelayed(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    forceRippleAnimation();
+                }
+            }, 200);
+        }
+        else
+        {
+            mHeader.setBackgroundColor(getResources().getColor(attributes.getColor()));
+        }
+    }
+
+    private void initToolbar(ServiceCategoryAttributes attributes)
+    {
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mToolbarIcon.setImageResource(attributes.getIcon());
+    }
+
+    private void initServiceIcon(ServiceCategoryAttributes attributes)
+    {
+        mIcon.setImageResource(attributes.getIcon());
+        mIcon.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                forceRippleAnimation();
+            }
+        });
     }
 
     private void initHeaderAdjustmentsOnScroll(final ServiceCategoryAttributes attributes)
@@ -214,14 +245,6 @@ public final class ServicesFragment extends BookingFlowFragment
             }
             view.startAnimation(animation);
             view.setVisibility(visibility);
-        }
-    }
-
-    private void setStatusBarColor(int color)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(color));
         }
     }
 
