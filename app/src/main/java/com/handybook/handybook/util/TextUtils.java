@@ -41,7 +41,6 @@ public final class TextUtils {
 
     public static String formatNumberToAtMostOneDecimalPlace(final float num)
     {
-        //TODO: make this rounded and not truncated
         return mAtMostOneDecimalPlaceFormat.format(num);
     }
 

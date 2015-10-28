@@ -58,7 +58,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     }
 
     @Override
-    protected boolean hasEnabledAction()
+    protected boolean hasEnabledAction(Booking booking)
     {
         if (booking.hasAssignedProvider())
         {

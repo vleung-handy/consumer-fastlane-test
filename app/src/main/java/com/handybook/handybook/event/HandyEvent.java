@@ -360,6 +360,7 @@ public abstract class HandyEvent
     public static class ReceiveGetBookingPricesForFrequenciesSuccess extends ReceiveSuccessEvent
     {
         public final BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse;
+
         public ReceiveGetBookingPricesForFrequenciesSuccess(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
         {
             this.bookingPricesForFrequenciesResponse = bookingPricesForFrequenciesResponse;
@@ -388,6 +389,7 @@ public abstract class HandyEvent
     public static class ReceiveGetServiceExtrasOptionsSuccess extends ReceiveSuccessEvent
     {
         public final EditExtrasInfo editExtrasInfo;
+
         public ReceiveGetServiceExtrasOptionsSuccess(EditExtrasInfo editExtrasInfo)
         {
             this.editExtrasInfo = editExtrasInfo;
@@ -408,7 +410,10 @@ public abstract class HandyEvent
         public final int bookingId;
         public final BookingEditExtrasTransaction bookingEditExtrasTransaction;
 
-        public RequestEditServiceExtrasOptions(int bookingId, BookingEditExtrasTransaction bookingEditExtrasTransaction)
+        public RequestEditServiceExtrasOptions(
+                int bookingId,
+                BookingEditExtrasTransaction bookingEditExtrasTransaction
+        )
         {
             this.bookingId = bookingId;
             this.bookingEditExtrasTransaction = bookingEditExtrasTransaction;
@@ -418,6 +423,7 @@ public abstract class HandyEvent
     public static class ReceiveEditServiceExtrasOptionsSuccess extends ReceiveSuccessEvent
     {
         public final SuccessWrapper successWrapper;
+
         public ReceiveEditServiceExtrasOptionsSuccess(SuccessWrapper successWrapper)
         {
             this.successWrapper = successWrapper;
@@ -612,7 +618,6 @@ public abstract class HandyEvent
         }
 
     }
-
 
 
 }

@@ -2,6 +2,7 @@ package com.handybook.handybook.core;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class EditExtrasInfo
@@ -44,15 +45,6 @@ public class EditExtrasInfo
     public float[] getHourInfo()
     {
         return mHourInfo;
-    }
-
-    public final static class ExtrasMachineName
-    {
-        public final static String INSIDE_CABINETS = "inside_cabinets";
-        public final static String INSIDE_FRIDGE = "inside_fridge";
-        public final static String INSIDE_OVEN = "inside_oven";
-        public final static String LAUNDRY = "laundry";
-        public final static String INTERIOR_WINDOWS = "interior_windows";
     }
 
     public String[] getOptionsDisplayNames()
@@ -159,5 +151,28 @@ public class EditExtrasInfo
         {
             return mPriceDifferenceFormatted;
         }
+    }
+
+    //builds an array of images for each option, used for options display
+    public int[] getOptionImagesResourceIdArray()
+    {
+        int[] resourceIds = new int[getOptionsDisplayNames().length];
+        for (int i = 0; i < resourceIds.length; i++)
+        {
+            resourceIds[i] = Booking.getImageResourceIdForMachineName(getOptionsMachineNames()[i]);
+        }
+        return resourceIds;
+    }
+
+    //NOTE: the only way to know what extras a user has selected is by an array of extras display names in the booking object
+    //so we must map those display names to associated index in the options
+    public Map<String, Integer> getExtraDisplayNameToOptionIndexMap()
+    {
+        Map<String, Integer> extraDisplayNameToOptionIndexMap = new HashMap<>();
+        for (int i = 0; i < getOptionsDisplayNames().length; i++)
+        {
+            extraDisplayNameToOptionIndexMap.put(getOptionsDisplayNames()[i], i);
+        }
+        return extraDisplayNameToOptionIndexMap;
     }
 }

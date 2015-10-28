@@ -12,11 +12,11 @@ public final class BookingEditExtrasTransaction
 
     public void setAddedExtras(String[] addedExtras)
     {
-        this.mAddedExtras = addedExtras;
+        mAddedExtras = addedExtras;
     }
 
     public void setRemovedExtras(String[] removedExtras)
     {
-        this.mRemovedExtras = removedExtras;
+        mRemovedExtras = removedExtras;
     }
 }

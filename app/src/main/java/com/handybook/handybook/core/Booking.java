@@ -70,8 +70,8 @@ public final class Booking implements Parcelable
     private ArrayList<LineItem> paymentInfo;
     @SerializedName("extras_info")
     private ArrayList<ExtraInfo> extrasInfo;
-    @SerializedName("can_edit_hours")
-    private boolean canEditHours; //we want them false by default
+    @SerializedName("can_edit_hours") //we want them false by default
+    private boolean canEditHours;
     @SerializedName("can_edit_frequency")
     private boolean canEditFrequency;
     @SerializedName("can_edit_extras")
