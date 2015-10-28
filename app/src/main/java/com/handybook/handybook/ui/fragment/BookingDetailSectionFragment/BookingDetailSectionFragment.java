@@ -88,7 +88,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     {
         view.entryTitle.setText(getEntryTitleTextResourceId(booking));
         view.entryActionText.setText(getEntryActionTextResourceId(booking));
-        if (!hasEnabledAction() || booking.isPast())
+        if (!hasEnabledAction(booking) || booking.isPast())
         {
             view.entryActionText.setVisibility(View.GONE);
         }
@@ -114,9 +114,9 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         return R.string.blank_string;
     }
 
-    protected boolean hasEnabledAction()
+    protected boolean hasEnabledAction(Booking booking)
     {
-        return false;
+        return !booking.isPast();
     }
 
     //TODO: Might put all this booking action button stuff into a child class?, it's a big chunk of
