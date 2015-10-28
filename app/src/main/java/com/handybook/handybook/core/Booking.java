@@ -361,6 +361,13 @@ public final class Booking implements Parcelable
 
         extrasInfo = new ArrayList<ExtraInfo>();
         in.readTypedList(extrasInfo, ExtraInfo.CREATOR);
+
+        final boolean[] booleanData = new boolean[3];
+        in.readBooleanArray(booleanData);
+
+        canEditFrequency = booleanData[0];
+        canEditExtras = booleanData[1];
+        canEditHours = booleanData[2];
     }
 
     public static Booking fromJson(final String json)
@@ -394,6 +401,12 @@ public final class Booking implements Parcelable
         out.writeParcelable(provider, 0);
         out.writeTypedList(paymentInfo);
         out.writeTypedList(extrasInfo);
+        out.writeBooleanArray(new boolean[]
+                {
+                        canEditFrequency,
+                        canEditExtras,
+                        canEditHours
+                });
     }
 
     @Override

@@ -7,8 +7,9 @@
 
     <Button
         android:id="@+id/next_button"
+        android:onClick="onSaveButtonPressed"
         style="@style/Button.Green"
-        android:text="@string/save"/>
+        android:text="@string/update"/>
 
     <TextView
         android:id="@+id/nav_text"

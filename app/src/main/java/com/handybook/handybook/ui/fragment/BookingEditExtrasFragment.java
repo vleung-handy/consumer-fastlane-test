@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -33,6 +32,7 @@ import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingEditExtrasFragment extends BookingFlowFragment
 {
@@ -40,10 +40,6 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     ScrollView mContentContainer;
     @Bind(R.id.options_layout)
     LinearLayout mOptionsLayout;
-    @Bind(R.id.next_button)
-    Button mNextButton;
-    @Bind(R.id.nav_text)
-    TextView mNavText;
     @Bind(R.id.booking_edit_extras_booking_label_row)
     LinearLayout mBookingTableRow;
     @Bind(R.id.booking_edit_extras_booking_duration_text)
@@ -99,20 +95,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_extras, container, false);
 
         ButterKnife.bind(this, view);
-
-        mNavText.setText(R.string.edit_extras_title);
-        mNextButton.setText(R.string.update);
-        mNextButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(final View view)
-            {
-                onSaveButtonPressed();
-            }
-        });
         return view;
     }
 
+    @OnClick(R.id.next_button)
     public void onSaveButtonPressed()
     {
         //api expects 2 string arrays of service machine names
