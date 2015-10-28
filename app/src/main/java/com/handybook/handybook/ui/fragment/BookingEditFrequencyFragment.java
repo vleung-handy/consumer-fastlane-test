@@ -143,18 +143,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         }
     };
 
-    private void showUiBlockers()
-    {
-        disableInputs();
-        progressDialog.show();
-    }
-
-    private void removeUiBlockers()
-    {
-        enableInputs();
-        progressDialog.dismiss();
-    }
-
     //TODO: duplicated from BookingRecurrenceFragment. we shouldn't have to use this kind of logic
     private int indexForFreq(final int freq)
     {
@@ -237,12 +225,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         optionsView.hideTitle();
         optionsLayout.removeAllViews();
         optionsLayout.addView(optionsView);
-    }
-
-    private void onReceiveErrorEvent(HandyEvent.ReceiveErrorEvent event)
-    {
-        removeUiBlockers();
-        dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @Subscribe

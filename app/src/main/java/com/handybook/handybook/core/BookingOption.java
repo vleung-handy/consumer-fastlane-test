@@ -11,7 +11,7 @@ public final class BookingOption implements Parcelable
     //todo: auto serialized enums for type see : Booking.LaundryStatus
     public final static String TYPE_OPTION = "option";
     public final static String TYPE_TEXT = "text";
-
+    public final static String TYPE_CHECKLIST = "checklist";
 
     @SerializedName("uniq")
     private String uniq;
@@ -44,8 +44,22 @@ public final class BookingOption implements Parcelable
     @SerializedName("post")
     private int post;
 
+    //TODO: BookingOption is deserialized from a server response and used as a view model for the option view.
+    //some fields in this class are not actually from the server and are set programmatically. how can we make this cleaner?
+    private int[] mImageResourceIds;
+
     public BookingOption()
     {
+    }
+
+    public void setImageResourceIds(int[] imageResourceIds)
+    {
+        mImageResourceIds = imageResourceIds;
+    }
+
+    public int[] getImageResourceIds()
+    {
+        return mImageResourceIds;
     }
 
     public final String getUniq()

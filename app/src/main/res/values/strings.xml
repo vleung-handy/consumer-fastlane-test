@@ -199,4 +199,14 @@
     <string name="current">current</string>
     <string name="clean">clean</string>
     <string name="job">job</string>
+    <string name="no_data_indicator">--</string>
+    <string name="edit_extras_title">Edit Extras</string>
+    <string name="edit_extras_update_success_msg">Updated booking extras</string>
+    <string name="edit_extras_total_due">Total Due</string>
+    <string name="edit_extras_billed_on_date">Billed on %1$s</string>
+    <string name="edit_extras_booking_total_hours">(%1$s hours)</string>
+    <string name="edit_extras_booking_base_hours">Base time (%1$s hours)</string>
+    <string name="edit_extras_booking_extras_entry_label">%1$s (%2$s hours)</string>
+    <string name="edit_extras_booking_extras_price">+%1$s</string>
+    <string name="edit_extras_warning_msg">Your assigned pro may not be able to keep your booking due to scheduling conflicts if extras are added. If that is the case, another pro will be assigned.</string>
 </resources>

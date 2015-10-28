@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.Hashtable;
 
 public final class TextUtils {
+    //TODO: split this class out into more specific ones
+    private static final DecimalFormat AT_MOST_ONE_DECIMAL_PLACE_FORMAT = new DecimalFormat("0.#");
 
     public static final class Fonts {
         public static final String CIRCULAR_BOLD = "CircularStd-Bold.otf";
@@ -35,6 +37,11 @@ public final class TextUtils {
             }
             return cache.get(name);
         }
+    }
+
+    public static String formatNumberToAtMostOneDecimalPlace(final float num)
+    {
+        return AT_MOST_ONE_DECIMAL_PLACE_FORMAT.format(num);
     }
 
     public static String formatPrice(final float price, final String currencyChar,

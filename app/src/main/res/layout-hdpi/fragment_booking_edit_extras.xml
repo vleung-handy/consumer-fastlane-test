@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--TODO: if we are going to make the extras screen look the same as the edit extras screen, we should consolidate their layout files-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg">
+
+    <Button
+        android:id="@+id/next_button"
+        style="@style/Button.Green"
+        android:onClick="onSaveButtonPressed"
+        android:text="@string/update"/>
+
+    <TextView
+        android:id="@+id/nav_text"
+        style="@style/TextView.Navbar"
+        android:text="@string/edit_extras_title"/>
+
+    <ScrollView
+        android:id="@+id/booking_edit_extras_content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/next_button"
+        android:layout_below="@id/nav_text"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/options_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:background="@color/white"
+                android:orientation="vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/options_layout"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:orientation="vertical"
+                android:padding="@dimen/default_padding">
+
+                <include
+                    android:id="@+id/booking_edit_extras_booking_label_row"
+                    layout="@layout/element_booking_extras_price_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"/>
+
+                <LinearLayout
+                    android:id="@+id/booking_extras_price_table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+                <include layout="@layout/element_horizontal_divider"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextView.Bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/default_margin_half"
+                            android:text="@string/edit_extras_total_due"
+                            android:textAllCaps="true"
+                            android:textColor="@color/handy_text_black"
+                            android:textSize="@dimen/text_size_large"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/booking_edit_extras_booking_duration_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_medium"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/booking_edit_extras_total_due_text"
+                        style="@style/TextView.Bold"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:textColor="@color/handy_text_black"
+                        android:textSize="@dimen/text_size_xxlarge"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/booking_edit_extras_billed_on_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_pressed"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/default_padding"
+                    android:text="@string/edit_extras_warning_msg"
+                    android:textColor="@color/black_pressed"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -7,9 +7,12 @@ import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.BookingCardViewModel;
@@ -357,6 +360,7 @@ public abstract class HandyEvent
     public static class ReceiveGetBookingPricesForFrequenciesSuccess extends ReceiveSuccessEvent
     {
         public final BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse;
+
         public ReceiveGetBookingPricesForFrequenciesSuccess(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
         {
             this.bookingPricesForFrequenciesResponse = bookingPricesForFrequenciesResponse;
@@ -366,6 +370,69 @@ public abstract class HandyEvent
     public static class ReceiveGetBookingPricesForFrequenciesError extends ReceiveErrorEvent
     {
         public ReceiveGetBookingPricesForFrequenciesError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    //Get the service extras options
+    public static class RequestGetServiceExtrasOptions extends RequestEvent
+    {
+        public final int bookingId;
+
+        public RequestGetServiceExtrasOptions(int bookingId)
+        {
+            this.bookingId = bookingId;
+        }
+    }
+
+    public static class ReceiveGetServiceExtrasOptionsSuccess extends ReceiveSuccessEvent
+    {
+        public final EditExtrasInfo editExtrasInfo;
+
+        public ReceiveGetServiceExtrasOptionsSuccess(EditExtrasInfo editExtrasInfo)
+        {
+            this.editExtrasInfo = editExtrasInfo;
+        }
+    }
+
+    public static class ReceiveGetServiceExtrasOptionsError extends ReceiveErrorEvent
+    {
+        public ReceiveGetServiceExtrasOptionsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    //Update the service extras options
+    public static class RequestEditServiceExtrasOptions extends RequestEvent
+    {
+        public final int bookingId;
+        public final BookingEditExtrasTransaction bookingEditExtrasTransaction;
+
+        public RequestEditServiceExtrasOptions(
+                int bookingId,
+                BookingEditExtrasTransaction bookingEditExtrasTransaction
+        )
+        {
+            this.bookingId = bookingId;
+            this.bookingEditExtrasTransaction = bookingEditExtrasTransaction;
+        }
+    }
+
+    public static class ReceiveEditServiceExtrasOptionsSuccess extends ReceiveSuccessEvent
+    {
+        public final SuccessWrapper successWrapper;
+
+        public ReceiveEditServiceExtrasOptionsSuccess(SuccessWrapper successWrapper)
+        {
+            this.successWrapper = successWrapper;
+        }
+    }
+
+    public static class ReceiveEditServiceExtrasOptionsError extends ReceiveErrorEvent
+    {
+        public ReceiveEditServiceExtrasOptionsError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
@@ -551,7 +618,6 @@ public abstract class HandyEvent
         }
 
     }
-
 
 
 }

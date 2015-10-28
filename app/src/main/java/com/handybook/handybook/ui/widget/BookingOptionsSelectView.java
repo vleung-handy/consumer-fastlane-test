@@ -1,6 +1,8 @@
 package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     protected String[] optionsSubtitles;
     protected String[] optionsRightSubText;
     protected String[] optionsRightTitleText;
+    protected int[] optionImagesResourceIds;
     private HashMap<Integer, CheckBox> checkMap;
     private int checkedIndex;
     private HashSet<Integer> checkedIndexes;
@@ -48,6 +51,13 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         super(context, attrs, defStyle);
     }
 
+    private boolean isArrayIndexValid(int[] array, int index)
+    {
+        return array != null &&
+                index < array.length;
+    }
+
+    //TODO: is it possible to make this use isArrayIndexValid
     private boolean shouldDisplayOptionStringFromArray(String[] array, int index)
     {
         return array != null &&
@@ -82,7 +92,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         optionsSubtitles = option.getOptionsSubText();
         optionsRightSubText = option.getOptionsRightSubText();
         optionsRightTitleText = option.getOptionsRightTitleText();
-
+        optionImagesResourceIds = option.getImageResourceIds();
         checkMap = new HashMap<>();
 
 
@@ -122,12 +132,31 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 showTextView((TextView) optionView.findViewById(R.id.right_subtitle_text), optionsRightSubText[i]);
             }
 
-            if(shouldDisplayOptionStringFromArray(optionsRightTitleText, i))
+            if (shouldDisplayOptionStringFromArray(optionsRightTitleText, i))
             {
                 showTextView((TextView) optionView.findViewById(R.id.right_title_text), optionsRightTitleText[i]);
             }
 
             final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);
+            if (isArrayIndexValid(optionImagesResourceIds, i) && optionImagesResourceIds[i] != 0)
+            {
+                int inset = (int) context.getResources().getDimension(R.dimen.framed_icon_inset);
+                FramedIconDrawable framedIconDrawable = new FramedIconDrawable(
+                        getContext(),
+                        R.drawable.option_circle_frame,
+                        optionImagesResourceIds[i],
+                        inset
+                );
+
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                {
+                    checkBox.setBackground(framedIconDrawable);
+                }
+                else
+                {
+                    checkBox.setBackgroundDrawable(framedIconDrawable);
+                }
+            }
             if (!isMulti && i == checkedIndex)
             {
                 selectOption(checkBox, true);
@@ -146,13 +175,18 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 optionView.setLayoutParams(layoutParams);
             }
 
-            optionView.setOnClickListener(new OnClickListener() {
+            optionView.setOnClickListener(new OnClickListener()
+            {
                 @Override
-                public void onClick(final View v) {
+                public void onClick(final View v)
+                {
                     final CheckBox box = ((CheckBox) optionView.findViewById(R.id.check_box));
-                    if (isMulti) {
+                    if (isMulti)
+                    {
                         box.setChecked(!box.isChecked());
-                    } else {
+                    }
+                    else
+                    {
                         box.setChecked(true);
                     }
                 }
@@ -206,8 +240,12 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         }
         checkedIndexes.clear();
 
-        for (final int i : indexes)
+        for (final Integer i : indexes)
         {
+            if (i == null)
+            {
+                continue;
+            }
             checkMap.get(i).setChecked(true);
             checkedIndexes.add(i);
         }
@@ -258,6 +296,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             subTitle.setTextColor(getResources().getColor(R.color.handy_blue));
             rightSubtitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
             rightTitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
+            box.getBackground().setColorFilter(getResources().getColor(R.color.handy_blue), PorterDuff.Mode.SRC_IN);
             box.setChecked(true);
         }
         else
@@ -266,6 +305,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             subTitle.setTextColor(getResources().getColor(R.color.black_pressed));
             rightSubtitleText.setTextColor(getResources().getColor(R.color.black_pressed));
             rightTitleText.setTextColor(getResources().getColor(R.color.black_pressed));
+            box.getBackground().clearColorFilter();
             box.setChecked(false);
         }
     }
