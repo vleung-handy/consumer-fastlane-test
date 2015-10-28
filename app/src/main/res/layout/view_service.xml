@@ -9,12 +9,12 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
         android:background="@drawable/border_grey_bottom"
         android:orientation="horizontal"
         android:paddingBottom="24dp"
-        android:paddingLeft="16dp"
+        android:paddingLeft="@dimen/default_padding"
         android:paddingTop="24dp">
 
         <ImageView
