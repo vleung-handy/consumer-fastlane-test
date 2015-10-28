@@ -375,7 +375,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         private Integer getCustomTipAmount()
         {
-            return Integer.parseInt("" + mCustomTipAmountText.getText()) * 100;
+            return Utils.convertToCents(Float.parseFloat("" + mCustomTipAmountText.getText()));
         }
     };
 }

@@ -22,6 +22,7 @@ import java.util.Date;
 
 public final class Utils
 {
+    private static final int CENTS_TO_DOLLAR_CONVERSION_VALUE = 100;
 
     public static int toDP(final float px, final Context context)
     {
@@ -139,5 +140,10 @@ public final class Utils
     {
         final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static Integer convertToCents(Float dollarAmount)
+    {
+        return Math.round(dollarAmount * CENTS_TO_DOLLAR_CONVERSION_VALUE);
     }
 }
