@@ -149,8 +149,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                                 ContextCompat.getDrawable(context, R.drawable.option_circle_frame).mutate(),
                                 ContextCompat.getDrawable(context, optionImagesResourceIds[i]).mutate()
                         };
-                //have to make copies of the resource drawables in order to use color filters
-                //if we don't, color filters will still be there when the resource is accessed again
+                //have to make drawables mutable so that it won't share color filters with any other drawables
 
                 LayerDrawable layerDrawable = new LayerDrawable(drawables);
                 int inset = (int) getResources().getDimension(R.dimen.framed_icon_inset);
