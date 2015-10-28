@@ -505,4 +505,53 @@ public abstract class HandyEvent
 
     }
 
+//Rating and Tip
+
+    public static class RateBookingEvent extends RequestEvent
+    {
+        private final int mBookingId;
+        private final int mFinalRating;
+        private final Integer mTipAmountCents;
+
+        public RateBookingEvent(int bookingId, int finalRating, Integer tipAmountCents)
+        {
+            mBookingId = bookingId;
+            mFinalRating = finalRating;
+            mTipAmountCents = tipAmountCents;
+        }
+
+        public int getBookingId()
+        {
+            return mBookingId;
+        }
+
+        public int getFinalRating()
+        {
+            return mFinalRating;
+        }
+
+        public Integer getTipAmountCents()
+        {
+            return mTipAmountCents;
+        }
+    }
+
+    public static class ReceiveRateBookingSuccess extends ReceiveBookingSuccessEvent
+    {
+        public ReceiveRateBookingSuccess()
+        {
+        }
+    }
+
+    public static class ReceiveRateBookingError extends ReceiveErrorEvent
+    {
+        public ReceiveRateBookingError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+
+    }
+
+
+
 }

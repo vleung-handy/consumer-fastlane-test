@@ -137,7 +137,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
             }
             else {
                 messageText.setText(getResources().getString(R.string.good_vibes));
-                messageText.setTextColor(getResources().getColor(R.color.black));
+                messageText.setTextColor(getResources().getColor(R.color.handy_text_black));
                 feedbackText.setMaxCharacters(140);
                 feedbackText.setMaxLines(3);
                 feedbackText.setVisibility(View.VISIBLE);

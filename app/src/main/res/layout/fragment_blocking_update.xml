@@ -4,7 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/handy_white">
+                android:background="@color/white">
 
     <Space
         android:layout_width="0dp"
@@ -18,7 +18,7 @@
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/handy_light_grey"
+        android:background="@color/handy_background_gray"
         android:layout_above="@+id/s_center">
     </FrameLayout>
 
