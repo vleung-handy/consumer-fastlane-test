@@ -34,8 +34,6 @@ public final class Booking implements Parcelable
     private String id;
     @SerializedName("booking_status")
     private int isPast;   //previously isPast
-    @SerializedName("service_id")
-    private int serviceId;
     @SerializedName("service_name")
     private String serviceName;
     @SerializedName("service_machine")
@@ -79,14 +77,10 @@ public final class Booking implements Parcelable
     @SerializedName("can_edit_extras")
     private boolean canEditExtras;
 
+    //TODO: use this
     public boolean getCanEditExtras()
     {
         return canEditExtras;
-    }
-
-    public int getServiceId()
-    {
-        return serviceId;
     }
 
     public final String getId()
@@ -327,27 +321,26 @@ public final class Booking implements Parcelable
 
     private Booking(final Parcel in)
     {
-        final String[] stringData = new String[11];
+        final String[] stringData = new String[10];
         in.readStringArray(stringData);
         id = stringData[0];
-        serviceId = Integer.parseInt(stringData[1]);
-        serviceName = stringData[2];
-        serviceMachineName = stringData[3];
+        serviceName = stringData[1];
+        serviceMachineName = stringData[2];
 
         try
         {
-            laundryStatus = LaundryStatus.valueOf(stringData[4]);
+            laundryStatus = LaundryStatus.valueOf(stringData[3]);
         } catch (IllegalArgumentException x)
         {
             laundryStatus = null;
         }
 
-        recurringInfo = stringData[5];
-        entryInfo = stringData[6];
-        extraEntryInfo = stringData[7];
-        proNote = stringData[8];
-        billedStatus = stringData[9];
-        recurringId = stringData[10];
+        recurringInfo = stringData[4];
+        entryInfo = stringData[5];
+        extraEntryInfo = stringData[6];
+        proNote = stringData[7];
+        billedStatus = stringData[8];
+        recurringId = stringData[9];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -383,7 +376,6 @@ public final class Booking implements Parcelable
         out.writeStringArray(new String[]
                         {
                                 id,
-                                Integer.toString(serviceId),
                                 serviceName,
                                 serviceMachineName,
                                 laundryStatus != null ? laundryStatus.name() : "",
