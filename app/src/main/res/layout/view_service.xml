@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin_quarter"
                 android:textAppearance="@style/TextView.Bold"
-                android:textColor="@color/black"
+                android:textColor="@color/handy_text_black"
                 android:textSize="@dimen/text_size_large"/>
 
             <TextView
