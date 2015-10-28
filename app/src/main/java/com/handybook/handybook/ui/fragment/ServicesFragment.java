@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
@@ -63,8 +64,9 @@ public final class ServicesFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
 
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -73,7 +75,6 @@ public final class ServicesFragment extends BookingFlowFragment
                 getActivity().onBackPressed();
             }
         });
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         return view;
     }
@@ -101,8 +102,7 @@ public final class ServicesFragment extends BookingFlowFragment
                     forceRippleAnimation();
                 }
             }, 200);
-        }
-        catch (IllegalArgumentException e)
+        } catch (IllegalArgumentException e)
         {
             Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
         }
@@ -248,10 +248,11 @@ public final class ServicesFragment extends BookingFlowFragment
     private int getStatusBarHeight()
     {
         int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        final Resources resources = getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0)
         {
-            result = getResources().getDimensionPixelSize(resourceId);
+            result = resources.getDimensionPixelSize(resourceId);
         }
         return result;
     }
