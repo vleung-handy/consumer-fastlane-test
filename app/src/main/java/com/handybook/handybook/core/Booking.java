@@ -210,6 +210,19 @@ public final class Booking implements Parcelable
     {
     }
 
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            ExtrasMachineName.INSIDE_CABINETS,
+            ExtrasMachineName.INSIDE_FRIDGE,
+            ExtrasMachineName.INSIDE_OVEN,
+            ExtrasMachineName.LAUNDRY,
+            ExtrasMachineName.INTERIOR_WINDOWS,
+    })
+    public @interface ExtrasType
+    {
+
+    }
+
     public final static class ExtrasMachineName
     {
         public final static String INSIDE_CABINETS = "inside_cabinets";
@@ -220,7 +233,7 @@ public final class Booking implements Parcelable
     }
 
     //TODO: ideally we shouldn't have this logic in the model. find/create a better place for it
-    public static int getImageResourceIdForMachineName(String extrasMachineName)
+    public static int getImageResourceIdForMachineName(@ExtrasType String extrasMachineName)
     {
         switch (extrasMachineName)
         {
