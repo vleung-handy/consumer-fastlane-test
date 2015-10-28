@@ -328,7 +328,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     private void addExtrasDetailsRow(String displayName, float hours, String formattedPrice)
     {
         String rowLabel = getResources().getString(R.string.edit_extras_booking_extras_entry_label, displayName, hours);
-        LinearLayout extrasDetailRow = getPaymentDetailTableRow(rowLabel, formattedPrice);
+        String priceLabel = getResources().getString(R.string.edit_extras_booking_extras_price, formattedPrice);
+        LinearLayout extrasDetailRow = getPaymentDetailTableRow(rowLabel, priceLabel);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.default_margin));
         extrasDetailRow.setLayoutParams(layoutParams);

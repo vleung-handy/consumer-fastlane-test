@@ -3,7 +3,7 @@
     <item android:state_checked="false">
         <shape android:shape="oval">
             <solid android:color="@android:color/transparent" />
-            <stroke android:width="2dp" android:color="@color/border_mid_grey" />
+            <stroke android:width="2dp" android:color="@color/handy_dark_divider_line" />
         </shape>
     </item>
     <item android:state_checked="true">

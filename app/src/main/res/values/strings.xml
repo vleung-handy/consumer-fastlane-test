@@ -206,7 +206,7 @@
     <string name="edit_extras_billed_on_date">Billed on %1$s</string>
     <string name="edit_extras_booking_total_hours">(%1$s hours)</string>
     <string name="edit_extras_booking_base_hours">Base time (%1$s hours)</string>
-    <string name="edit_extras_booking_extras_entry_label">%1$s +%2$s</string>
+    <string name="edit_extras_booking_extras_entry_label">%1$s (%2$s hours)</string>
     <string name="edit_extras_booking_extras_price">+%1$s</string>
     <string name="edit_extras_warning_msg">Your assigned pro may not be able to keep your booking due to scheduling conflicts if extras are added. If that is the case, another pro will be assigned.</string>
 </resources>
