@@ -116,7 +116,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
     protected boolean hasEnabledAction(Booking booking)
     {
-        return !booking.isPast();
+        return false;
     }
 
     //TODO: Might put all this booking action button stuff into a child class?, it's a big chunk of
