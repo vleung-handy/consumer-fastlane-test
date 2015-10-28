@@ -87,21 +87,29 @@ public final class ServicesFragment extends BookingFlowFragment
         {
             String serviceCategoryMachineName = mService.getUniq().toUpperCase();
             final ServiceCategoryAttributes attributes = ServiceCategoryAttributes.valueOf(serviceCategoryMachineName);
-            mHeader.setBackgroundResource(attributes.getBackground());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                mHeader.setBackgroundResource(attributes.getBackground());
+                new Handler().postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        forceRippleAnimation();
+                    }
+                }, 200);
+            }
+            else
+            {
+                mHeader.setBackgroundColor(getResources().getColor(attributes.getColor()));
+            }
             mIcon.setImageResource(attributes.getIcon());
+            mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
             mToolbarIcon.setImageResource(attributes.getIcon());
             mTitle.setText(attributes.getTitle());
             mSubtitle.setText(attributes.getSlogan());
             setStatusBarColor(attributes.getColorDark());
             initHeaderAdjustmentsOnScroll(attributes);
-            new Handler().postDelayed(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    forceRippleAnimation();
-                }
-            }, 200);
         } catch (IllegalArgumentException e)
         {
             Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
@@ -280,13 +288,6 @@ public final class ServicesFragment extends BookingFlowFragment
 
         // remove bottom border of last element
         mList.getChildAt(mList.getChildCount() - 1).findViewById(R.id.container).setBackgroundResource(0);
-    }
-
-    @Override
-    public void onPause()
-    {
-        mIcon.setVisibility(View.VISIBLE);
-        super.onPause();
     }
 
     private enum ServiceCategoryAttributes
