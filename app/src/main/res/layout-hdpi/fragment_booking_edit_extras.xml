@@ -7,8 +7,8 @@
 
     <Button
         android:id="@+id/next_button"
-        android:onClick="onSaveButtonPressed"
         style="@style/Button.Green"
+        android:onClick="onSaveButtonPressed"
         android:text="@string/update"/>
 
     <TextView
@@ -63,9 +63,9 @@
                 <include layout="@layout/element_horizontal_divider"/>
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/default_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -75,12 +75,13 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            style="@style/TextView.Bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/default_margin_half"
                             android:text="@string/edit_extras_total_due"
                             android:textAllCaps="true"
-                            android:textColor="@color/black"
+                            android:textColor="@color/handy_text_black"
                             android:textSize="@dimen/text_size_large"
                             android:textStyle="bold"/>
 
@@ -94,11 +95,12 @@
 
                     <TextView
                         android:id="@+id/booking_edit_extras_total_due_text"
+                        style="@style/TextView.Bold"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:gravity="right"
-                        android:textColor="@color/black"
+                        android:textColor="@color/handy_text_black"
                         android:textSize="@dimen/text_size_xxlarge"
                         android:textStyle="bold"/>
 

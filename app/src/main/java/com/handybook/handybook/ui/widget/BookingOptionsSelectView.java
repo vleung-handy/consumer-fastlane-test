@@ -2,10 +2,7 @@ package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -143,24 +140,21 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);
             if (isArrayIndexValid(optionImagesResourceIds, i) && optionImagesResourceIds[i] != 0)
             {
-                //TODO: if this might be used elsewhere we should put into a function
-                Drawable drawables[] = new Drawable[]
-                        {
-                                ContextCompat.getDrawable(context, R.drawable.option_circle_frame).mutate(),
-                                ContextCompat.getDrawable(context, optionImagesResourceIds[i]).mutate()
-                        };
-                //have to make drawables mutable so that it won't share color filters with any other drawables
+                int inset = (int) context.getResources().getDimension(R.dimen.framed_icon_inset);
+                FramedIconDrawable framedIconDrawable = new FramedIconDrawable(
+                        getContext(),
+                        R.drawable.option_circle_frame,
+                        optionImagesResourceIds[i],
+                        inset
+                );
 
-                LayerDrawable layerDrawable = new LayerDrawable(drawables);
-                int inset = (int) getResources().getDimension(R.dimen.framed_icon_inset);
-                layerDrawable.setLayerInset(1, inset, inset, inset, inset);
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 {
-                    checkBox.setBackground(layerDrawable);
+                    checkBox.setBackground(framedIconDrawable);
                 }
                 else
                 {
-                    checkBox.setBackgroundDrawable(layerDrawable);
+                    checkBox.setBackgroundDrawable(framedIconDrawable);
                 }
             }
             if (!isMulti && i == checkedIndex)
