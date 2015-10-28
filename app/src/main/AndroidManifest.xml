@@ -79,7 +79,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.LoginActivity"/>
-        <activity android:name=".ui.activity.ServicesActivity"/>
+        <activity
+            android:name=".ui.activity.ServicesActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.BookingLocationActivity"/>
         <activity android:name=".ui.activity.ProfileActivity"/>
         <activity

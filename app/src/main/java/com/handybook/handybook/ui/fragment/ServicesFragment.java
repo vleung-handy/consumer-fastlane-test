@@ -1,111 +1,330 @@
 package com.handybook.handybook.ui.fragment;
 
-import android.content.Context;
-import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.BookingManager;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.ui.activity.ServicesActivity;
-import com.handybook.handybook.util.TextUtils;
-
-import java.util.ArrayList;
-
-import javax.inject.Inject;
+import com.handybook.handybook.ui.descriptor.ServiceCategoryDescriptor;
+import com.handybook.handybook.ui.widget.ServiceView;
+import com.handybook.handybook.ui.descriptor.ServiceDescriptor;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class ServicesFragment extends BookingFlowFragment {
-    static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
-    static final String EXTRA_NAV_HEIGHT = "com.handy.handy.EXTRA_NAV_HEIGHT";
+public final class ServicesFragment extends BookingFlowFragment
+{
+    private Service mService;
 
-    private Service service;
-    private ArrayList<Service> services;
+    @Bind(R.id.content)
+    ScrollView mContent;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Bind(R.id.header)
+    ViewGroup mHeader;
+    @Bind(R.id.list)
+    ViewGroup mList;
+    @Bind(R.id.icon)
+    ImageView mIcon;
+    @Bind(R.id.toolbar_icon)
+    ImageView mToolbarIcon;
+    @Bind(R.id.title)
+    TextView mTitle;
+    @Bind(R.id.subtitle)
+    TextView mSubtitle;
 
-    @Inject BookingManager bookingManager;
-    @Inject UserManager userManager;
-
-    @Bind(R.id.nav_text)
-    TextView navText;
-    @Bind(android.R.id.list)
-    ListView listView;
-
-    public static ServicesFragment newInstance(final Service service, final int navHeight) {
+    public static ServicesFragment newInstance(final Service service)
+    {
         final ServicesFragment fragment = new ServicesFragment();
-        final Bundle args = new Bundle();
-        args.putParcelable(EXTRA_SERVICE, service);
-        args.putInt(EXTRA_NAV_HEIGHT, navHeight);
-        fragment.setArguments(args);
+        fragment.mService = service;
         return fragment;
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        service = getArguments().getParcelable(EXTRA_SERVICE);
-        services = new ArrayList<>(service.getServices());
-    }
-
-    @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+                                   final Bundle savedInstanceState)
+    {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_services,container, false);
+                .inflate(R.layout.fragment_services, container, false);
 
         ButterKnife.bind(this, view);
-        navText.setText(TextUtils.toTitleCase(service.getName()));
+
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().onBackPressed();
+            }
+        });
 
         return view;
     }
 
     @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public final void onViewCreated(final View view, final Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> adapterView, final View view,
-                                    final int i, final long l) {
-                final Service next = service.getServices().get(i);
-                if (next.getServices().size() > 0) {
-                    final Intent intent = new Intent(getActivity(), ServicesActivity.class);
-                    intent.putExtra(ServicesActivity.EXTRA_SERVICE, next);
-                    intent.putExtra(ServicesActivity.EXTRA_NAV_HEIGHT, navText.getHeight());
-                    startActivity(intent);
+        try
+        {
+            String serviceCategoryMachineName = mService.getUniq().toUpperCase();
+            final ServiceCategoryDescriptor descriptor = ServiceCategoryDescriptor.valueOf(serviceCategoryMachineName);
+            initStatusBar(descriptor);
+            initHeader(descriptor);
+            initServiceIcon(descriptor);
+            initToolbar(descriptor);
+            initHeaderAdjustmentsOnScroll(descriptor);
+        } catch (IllegalArgumentException e)
+        {
+            Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
+        }
+    }
+
+    private void initStatusBar(ServiceCategoryDescriptor descriptor)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(descriptor.getColorDark()));
+        }
+    }
+
+    private void initHeader(ServiceCategoryDescriptor descriptor)
+    {
+        mTitle.setText(descriptor.getTitle());
+        mSubtitle.setText(descriptor.getSlogan());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            mHeader.setBackgroundResource(descriptor.getBackground());
+            new Handler().postDelayed(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    forceRippleAnimation();
                 }
-                else startBookingFlow(next.getId(), next.getUniq());
+            }, 200);
+        }
+        else
+        {
+            mHeader.setBackgroundColor(getResources().getColor(descriptor.getColor()));
+        }
+    }
+
+    private void initToolbar(ServiceCategoryDescriptor descriptor)
+    {
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mToolbarIcon.setImageResource(descriptor.getIcon());
+    }
+
+    private void initServiceIcon(ServiceCategoryDescriptor descriptor)
+    {
+        mIcon.setImageResource(descriptor.getIcon());
+        mIcon.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                forceRippleAnimation();
             }
         });
+    }
+
+    private void initHeaderAdjustmentsOnScroll(final ServiceCategoryDescriptor descriptor)
+    {
+        mContent.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
+        {
+            @Override
+            public void onScrollChanged()
+            {
+                int[] toolbarCoordinates = new int[2];
+                int[] titleCoordinates = new int[2];
+                mToolbar.getLocationOnScreen(toolbarCoordinates);
+                mTitle.getLocationOnScreen(titleCoordinates);
+                int toolbarY = toolbarCoordinates[1];
+                int titleY = titleCoordinates[1];
+
+                if (toolbarY > titleY)
+                {
+                    adjustForSmallerHeader(descriptor.getColor());
+                }
+
+                if (toolbarY < titleY)
+                {
+                    adjustForLargerHeader();
+                }
+            }
+        });
+    }
+
+    private void adjustForLargerHeader()
+    {
+        mTitle.setVisibility(View.VISIBLE);
+        mSubtitle.setVisibility(View.VISIBLE);
+        showView(mToolbarIcon, new Animation.AnimationListener()
+        {
+            @Override
+            public void onAnimationStart(Animation animation)
+            {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                hideView(mIcon, null);
+                mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation)
+            {
+            }
+        });
+    }
+
+    private void adjustForSmallerHeader(final int color)
+    {
+        mTitle.setVisibility(View.INVISIBLE);
+        mSubtitle.setVisibility(View.INVISIBLE);
+        showView(mIcon, new Animation.AnimationListener()
+        {
+            @Override
+            public void onAnimationStart(Animation animation)
+            {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation)
+            {
+                hideView(mToolbarIcon, null);
+                mToolbar.setBackgroundColor(getResources().getColor(color));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation)
+            {
+            }
+        });
+    }
+
+    private void hideView(View view, @Nullable Animation.AnimationListener listener)
+    {
+        animateVisibility(view, View.VISIBLE, android.R.anim.fade_in, listener);
+    }
+
+    private void showView(View view, @Nullable Animation.AnimationListener listener)
+    {
+        animateVisibility(view, View.INVISIBLE, android.R.anim.fade_out, listener);
+    }
+
+    private void animateVisibility(final View view, final int visibility, final int animId, @Nullable Animation.AnimationListener listener)
+    {
+        if (view.getVisibility() != visibility)
+        {
+            final Animation animation = AnimationUtils.loadAnimation(getActivity(), animId);
+            if (listener != null)
+            {
+                animation.setAnimationListener(listener);
+            }
+            view.startAnimation(animation);
+            view.setVisibility(visibility);
+        }
+    }
+
+    private void forceRippleAnimation()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            Drawable background = mHeader.getBackground();
+            if (background instanceof RippleDrawable)
+            {
+                int[] iconCoordinates = new int[2];
+                mIcon.getLocationOnScreen(iconCoordinates);
+                float hotspotX = mHeader.getWidth() / 2;
+                float hotspotY = iconCoordinates[1] - getStatusBarHeight() + (mIcon.getHeight() / 2);
+
+                final RippleDrawable ripple = (RippleDrawable) background;
+                int[] state = new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled};
+                ripple.setState(state);
+                ripple.setHotspot(hotspotX, hotspotY);
+                new Handler().postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        ripple.setState(new int[]{});
+                    }
+                }, 400);
+            }
+        }
+    }
+
+    private int getStatusBarHeight()
+    {
+        int result = 0;
+        final Resources resources = getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0)
+        {
+            result = resources.getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     @Override
-    public final void onActivityCreated(final Bundle savedInstanceState) {
+    public final void onActivityCreated(final Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
-        listView.setAdapter(new ArrayAdapter<Service>(getActivity(),
-                R.layout.list_item_service, services) {
-            @Override
-            public final View getView(final int position, final View convertView, final ViewGroup parent) {
-                View view = convertView;
-                if (view == null) {
-                    final LayoutInflater inflater = (LayoutInflater)getContext()
-                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    view = inflater.inflate(R.layout.list_item_service, parent, false);
-                }
-
-                final Service service = services.get(position);
-                final TextView item = (TextView)view.findViewById(R.id.service);
-                item.setText(service.getName());
-                return view;
+        ServiceView lastViewAdded = null;
+        for (final Service service : mService.getServices())
+        {
+            ServiceView serviceView = new ServiceView(getActivity());
+            String serviceMachineName = service.getUniq().toUpperCase();
+            if (ServiceDescriptor.hasValueOf(serviceMachineName))
+            {
+                ServiceDescriptor serviceDescriptor = ServiceDescriptor.valueOf(serviceMachineName);
+                serviceView.init(serviceDescriptor);
+                serviceView.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        startBookingFlow(service.getId(), service.getUniq());
+                    }
+                });
+                mList.addView(serviceView);
+                lastViewAdded = serviceView;
             }
-        });
+        }
+
+        if (lastViewAdded != null)
+        {
+            // remove bottom border of last element
+            final View container = lastViewAdded.findViewById(R.id.container);
+            if (container != null)
+            {
+                container.setBackgroundResource(0);
+            }
+        }
     }
+
 }

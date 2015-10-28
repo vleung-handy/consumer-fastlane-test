@@ -33,18 +33,18 @@ public class ServiceIconImageView extends ImageView
     {
         SERVICE_ICONS = new HashMap<>();
         //Cleaning
-        SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_clean_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_clean_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_OFFICE_CLEANING, R.drawable.ic_clean_fill);
+        SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_cleaner_fill);
+        SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_cleaner_fill);
+        SERVICE_ICONS.put(Booking.SERVICE_OFFICE_CLEANING, R.drawable.ic_cleaner_fill);
         //Handyman
-        SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handy_fill); //there are many handyman services, not sure how they all map
-        SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_paint_fill);
+        SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handyman_fill); //there are many handyman services, not sure how they all map
+        SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_painter_fill);
         SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_plumber_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_ELECTRICAL, R.drawable.ic_elec_fill);
-        SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_elec_fill);
+        SERVICE_ICONS.put(Booking.SERVICE_ELECTRICAL, R.drawable.ic_electrician_fill);
+        SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_electrician_fill);
     }
 
-    private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_clean_fill;
+    private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_cleaner_fill;
 
     public void updateServiceIconByBooking(Booking booking)
     {

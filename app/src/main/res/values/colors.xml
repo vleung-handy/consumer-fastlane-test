@@ -40,12 +40,16 @@
     <color name="handy_service_handyman">#43d1b8</color>
     <color name="handy_service_plumber">#ff5c5c</color>
     <color name="handy_service_electrician">#ffb600</color>
+    <color name="handy_service_handyman_darkened">#43baa6</color>
+    <color name="handy_service_plumber_darkened">#e35356</color>
+    <color name="handy_service_electrician_darkened">#e3a225</color>
     <color name="handy_service_painter">#993092</color>
     <color name="handy_blue">#00cded</color>
     <color name="handy_darkened_blue">#0bb8e3</color>
     <color name="handy_tertiary_gray">#9cabb5</color>
     <color name="handy_background_blue">#edf5f8</color>
     <color name="handy_background_gray">#f4f4f4</color>
+    <color name="handy_white">#ffffff</color>
     <color name="handy_white_semitransparent">#88ffffff</color>
     <color name="handy_text_black">#434343</color>
     <color name="handy_text_gray">#999999</color>
