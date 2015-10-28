@@ -6,7 +6,6 @@ public class MathUtils
     public static float roundToDecimalPlaces(float num, int decimalPlaces)
     {
         float multiplier = (float) Math.pow(10, decimalPlaces);
-        int i = (int) ((num * multiplier) + 0.5f);
-        return i/(multiplier);
+        return Math.round(num * multiplier) / (multiplier);
     }
 }
