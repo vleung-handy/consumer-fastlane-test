@@ -217,6 +217,34 @@ public final class Booking implements Parcelable
     {
     }
 
+    public final static class ExtrasMachineName
+    {
+        public final static String INSIDE_CABINETS = "inside_cabinets";
+        public final static String INSIDE_FRIDGE = "inside_fridge";
+        public final static String INSIDE_OVEN = "inside_oven";
+        public final static String LAUNDRY = "laundry";
+        public final static String INTERIOR_WINDOWS = "interior_windows";
+    }
+
+    //TODO: ideally we shouldn't have this logic in the model. find/create a better place for it
+    public static int getImageResourceIdForMachineName(String extrasMachineName)
+    {
+        switch (extrasMachineName)
+        {
+            case Booking.ExtrasMachineName.INSIDE_CABINETS:
+                return R.drawable.ic_booking_extra_cabinets;
+            case Booking.ExtrasMachineName.INSIDE_FRIDGE:
+                return R.drawable.ic_booking_extra_fridge;
+            case Booking.ExtrasMachineName.INSIDE_OVEN:
+                return R.drawable.ic_booking_extra_oven;
+            case Booking.ExtrasMachineName.INTERIOR_WINDOWS:
+                return R.drawable.ic_booking_extra_window;
+            case Booking.ExtrasMachineName.LAUNDRY:
+                return R.drawable.ic_booking_extra_laundry;
+            default:
+                return R.drawable.ic_booking_detail_logo;
+        }
+    }
 
     public final Date getStartDate()
     {
@@ -730,7 +758,6 @@ public final class Booking implements Parcelable
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.DEFAULT_IMAGE_NAME, R.drawable.ic_booking_detail_logo);
             //TODO: Need to add missing icons like ladders and painting
         }
-
 
         public final String getLabel()
         {

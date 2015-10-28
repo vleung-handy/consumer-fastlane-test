@@ -25,12 +25,6 @@ public final class Utils {
                 px, context.getResources().getDisplayMetrics()));
     }
 
-    //TODO: consolidate this logic with above
-    public static float dpToPixels(final int dp, final Context context) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,
-                dp, context.getResources().getDisplayMetrics()));
-    }
-
     static int toDP(final int px, final Context context) {
         return toDP((float) px, context);
     }

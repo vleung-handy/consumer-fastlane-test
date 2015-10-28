@@ -21,13 +21,13 @@ import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.util.TextUtils;
 import com.squareup.otto.Subscribe;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,8 +39,6 @@ import butterknife.ButterKnife;
 
 public final class BookingEditExtrasFragment extends BookingFlowFragment
 {
-    private Booking mBooking;
-
     @Inject
     SecurePreferences mSecurePrefs;
 
@@ -52,20 +50,18 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     Button mNextButton;
     @Bind(R.id.nav_text)
     TextView mNavText;
-
     @Bind(R.id.booking_edit_extras_booking_label_row)
     LinearLayout mBookingTableRow;
-
     @Bind(R.id.booking_edit_extras_booking_duration_text)
     TextView mBookingDurationText;
     @Bind(R.id.booking_edit_extras_total_due_text)
     TextView mTotalDueText;
     @Bind(R.id.booking_edit_extras_billed_on_text)
     TextView mBilledOnText;
-
     @Bind(R.id.booking_extras_price_table)
     LinearLayout mBookingExtrasPriceTableLayout;
 
+    private Booking mBooking;
     private EditExtrasInfo mEditExtrasInfo;
     private BookingOptionsSelectView mOptionsView;
     private BookingUpdateExtrasTransaction mBookingUpdateExtrasTransaction;
@@ -97,7 +93,6 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     public void onResume()
     {
         super.onResume();
-        //show blocker
         showUiBlockers();
         bus.post(new HandyEvent.RequestGetServiceExtrasOptions(Integer.parseInt(mBooking.getId())));
     }
@@ -126,30 +121,39 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     public void onSaveButtonPressed()
     {
+        //api expects 2 string arrays of service machine names
+        //one of added extras and one of removed extras, relative to the original booking
+        List<String> addedExtras = new LinkedList<>();
+        List<String> removedExtras = new LinkedList<>();
+
+        //build a set of options that user has picked
+        //so that we can check in constant time if a particular option was picked
         Set<Integer> selectedOptionIndexes = new HashSet<>();
         for (int i = 0; i < mOptionsView.getCheckedIndexes().length; i++)
         {
             selectedOptionIndexes.add(mOptionsView.getCheckedIndexes()[i]);
         }
-        //api consumes 2 string arrays of added extras and removed extras
-        List<String> addedExtras = new ArrayList<>();
-        List<String> removedExtras = new ArrayList<>();
 
+        //build a set of extras that the original booking contained
+        //so that we can check in constant time if a particular extra was already in the original booking
         Set<String> bookingExtras = new HashSet<>();
         for (int i = 0; i < mBooking.getExtrasInfo().size(); i++)
         {
             bookingExtras.add(mBooking.getExtrasInfo().get(i).getLabel());
         }
-        //booking only contains display names of extras!
+
         for (int i = 0; i < mEditExtrasInfo.getOptionsDisplayNames().length; i++)
         {
+            //unfortunately, the booking object returned from the server
+            //only contains display names (and no machine/key names) of the extras!
             boolean optionWasInOriginalBooking = bookingExtras.contains(mEditExtrasInfo.getOptionsDisplayNames()[i]);
-            if (selectedOptionIndexes.contains(i)) //if this index is selected
+            if (selectedOptionIndexes.contains(i)) //if this index is of an option that user selected
             {
                 if (!optionWasInOriginalBooking) //if was not in original booking
                 {
                     addedExtras.add(mEditExtrasInfo.getOptionsMachineNames()[i]);
                 }
+                //otherwise it was already in original booking. do nothing
             }
             else
             {
@@ -157,10 +161,12 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
                 {
                     removedExtras.add(mEditExtrasInfo.getOptionsMachineNames()[i]);
                 }
+                //otherwise it was not selected and wasn't in original booking. do nothing
             }
         }
         mBookingUpdateExtrasTransaction.setAddedExtras(addedExtras.toArray(new String[]{}));
         mBookingUpdateExtrasTransaction.setRemovedExtras(removedExtras.toArray(new String[]{}));
+        showUiBlockers();
         bus.post(new HandyEvent.RequestEditServiceExtrasOptions(Integer.parseInt(mBooking.getId()), mBookingUpdateExtrasTransaction));
     }
 
@@ -170,7 +176,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         @Override
         public void onUpdate(final BookingOptionsView view)
         {
-            updateBookingSummaryViewForOptionsSelected(mEditExtrasInfo);
+            updateBookingSummaryViewForOptionsSelected();
         }
 
         @Override
@@ -186,47 +192,25 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         }
     };
 
-
-    //TODO: move somewhere else
-    private int getImageResourceIdForMachineName(String extrasMachineName)
-    {
-        switch (extrasMachineName)
-        {
-            case EditExtrasInfo.ExtrasMachineName.INSIDE_CABINETS:
-                return R.drawable.ic_booking_extra_cabinets;
-            case EditExtrasInfo.ExtrasMachineName.INSIDE_FRIDGE:
-                return R.drawable.ic_booking_extra_fridge;
-            case EditExtrasInfo.ExtrasMachineName.INSIDE_OVEN:
-                return R.drawable.ic_booking_extra_oven;
-            case EditExtrasInfo.ExtrasMachineName.INTERIOR_WINDOWS:
-                return R.drawable.ic_booking_extra_window;
-            case EditExtrasInfo.ExtrasMachineName.LAUNDRY:
-                return R.drawable.ic_booking_extra_laundry;
-            default:
-                return R.drawable.ic_booking_detail_logo;
-        }
-    }
-
-    private int[] getOptionImagesResourceIds(EditExtrasInfo editExtrasInfo)
+    private int[] getOptionImagesResourceIdArray(EditExtrasInfo editExtrasInfo)
     {
         int[] resourceIds = new int[editExtrasInfo.getOptionsDisplayNames().length];
         for (int i = 0; i < resourceIds.length; i++)
         {
-            resourceIds[i] = getImageResourceIdForMachineName(editExtrasInfo.getOptionsMachineNames()[i]);
+            resourceIds[i] = Booking.getImageResourceIdForMachineName(editExtrasInfo.getOptionsMachineNames()[i]);
         }
-
         return resourceIds;
     }
 
     //TODO: clean up
-    private void createOptionsView(EditExtrasInfo editExtrasInfo)
+    private void createOptionsView()
     {
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_CHECKLIST);
-        bookingOption.setOptions(editExtrasInfo.getOptionsDisplayNames());
-        bookingOption.setOptionsSubText(editExtrasInfo.getOptionsSubText());
-        bookingOption.setImageResourceIds(getOptionImagesResourceIds(editExtrasInfo));
-        EditExtrasInfo.OptionPrice[] optionPrices = editExtrasInfo.getOptionPrices();
+        bookingOption.setOptions(mEditExtrasInfo.getOptionsDisplayNames());
+        bookingOption.setOptionsSubText(mEditExtrasInfo.getOptionsSubText());
+        bookingOption.setImageResourceIds(getOptionImagesResourceIdArray(mEditExtrasInfo));
+        EditExtrasInfo.OptionPrice[] optionPrices = mEditExtrasInfo.getOptionPrices();
         String[] optionsRightStrings = new String[optionPrices.length];
         for (int i = 0; i < optionPrices.length; i++)
         {
@@ -263,12 +247,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         //highlight the current selection
         ArrayList<Booking.ExtraInfo> extrasInfo = mBooking.getExtrasInfo();
 
-        //NOTE: the only way to know what extras a user has selected is by an array of extras display names in the booking object!
-        //so we must map those display names to appropriate index in the options
-
+        //the only way to know what extras a user has selected is by an array of extras display names in the booking object
         if (extrasInfo.size() > 0)
         {
-            Map<String, Integer> extraDisplayNameToOptionIndexMap = getExtraDisplayNameToOptionIndexMap(editExtrasInfo);
+            Map<String, Integer> extraDisplayNameToOptionIndexMap = getExtraDisplayNameToOptionIndexMap(mEditExtrasInfo);
             Integer checkedIndexes[] = new Integer[extrasInfo.size()];
             for (int i = 0; i < checkedIndexes.length; i++)
             {
@@ -278,11 +260,12 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
             mOptionsView.setCheckedIndexes(checkedIndexes);
         }
 
-
         mOptionsLayout.removeAllViews();
         mOptionsLayout.addView(mOptionsView, 0);
     }
 
+    //NOTE: the only way to know what extras a user has selected is by an array of extras display names in the booking object
+    //so we must map those display names to associated index in the options
     private Map<String, Integer> getExtraDisplayNameToOptionIndexMap(EditExtrasInfo editExtrasInfo)
     {
         Map<String, Integer> extraDisplayNameToOptionIndexMap = new HashMap<>();
@@ -290,11 +273,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         {
             extraDisplayNameToOptionIndexMap.put(editExtrasInfo.getOptionsDisplayNames()[i], i);
         }
-
         return extraDisplayNameToOptionIndexMap;
     }
 
-    //TODO: move to a place where this can be shared
+    //TODO: move somewhere else?
     private LinearLayout getPaymentDetailTableRow(String label, String value)
     {
         LinearLayout bookingRow = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.element_booking_extras_price_row, null);
@@ -308,61 +290,57 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         return bookingRow;
     }
 
-    //TODO: move to more general location
-    DecimalFormat mDecimalFormat = new DecimalFormat("0.#");
-
-    private String getFormattedHoursForPriceTable(float hours) //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
+    private String getFormattedHoursForPriceTable(float hours)
     {
-        return mDecimalFormat.format(hours);
+        //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
+        return TextUtils.formatNumberToAtMostOneDecimalPoint(hours);
     }
 
     /*
     updates the fields that are dependent on the options selected
      */
-    private void updateBookingSummaryViewForOptionsSelected(EditExtrasInfo editExtrasInfo) //TODO: clean this up
+    private void updateBookingSummaryViewForOptionsSelected() //TODO: clean this up
     {
         mBookingExtrasPriceTableLayout.removeAllViews();
-        //build a map of booking's extras to edit extras info hours
 
         float extrasHours = 0;
-        for (Integer i : mOptionsView.getCheckedIndexes())
+        for (Integer i : mOptionsView.getCheckedIndexes()) //build the extras details section
         {
-            String displayName = editExtrasInfo.getOptionsDisplayNames()[i]; //name of the option user selected
-            String hoursDisplay = getResources().getString(R.string.edit_extras_booking_extras_hours, editExtrasInfo.getHourInfo()[i]);
-            String priceDisplay = getResources().getString(R.string.edit_extras_booking_extras_price, editExtrasInfo.getOptionPrices()[i].getFormattedPrice());
-            addExtrasDetailsRow(displayName, hoursDisplay, priceDisplay);
-            extrasHours += editExtrasInfo.getHourInfo()[i];
+            addExtrasDetailsRow(mEditExtrasInfo.getOptionsDisplayNames()[i],
+                    mEditExtrasInfo.getHourInfo()[i],
+                    mEditExtrasInfo.getOptionPrices()[i].getFormattedPrice());
+
+            extrasHours += mEditExtrasInfo.getHourInfo()[i];
         }
 
-        float bookingBaseHours = editExtrasInfo.getBaseHours();
+        float bookingBaseHours = mEditExtrasInfo.getBaseHours();
         float totalHours = bookingBaseHours + extrasHours;
-        mBookingDurationText.setText(getResources().getString(R.string.edit_extras_booking_total_hours, totalHours));
 
-        mBilledOnText.setText(getResources().getString(R.string.edit_extras_billed_on_date, editExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
+        //build the resulting booking detail section
+        mBookingDurationText.setText(getResources().getString(R.string.edit_extras_booking_total_hours, totalHours));
+        mBilledOnText.setText(getResources().getString(R.string.edit_extras_billed_on_date, mEditExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
 
         String totalHoursFormatted = getFormattedHoursForPriceTable(totalHours);
-        Map<String, EditExtrasInfo.PriceInfo> priceTable = editExtrasInfo.getPriceTable();
-        mTotalDueText.setText(priceTable.containsKey(totalHoursFormatted) ? priceTable.get(totalHoursFormatted).getTotalDueFormatted() : "");
-
+        Map<String, EditExtrasInfo.PriceInfo> priceTable = mEditExtrasInfo.getPriceTable();
+        mTotalDueText.setText(priceTable.containsKey(totalHoursFormatted) ? priceTable.get(totalHoursFormatted).getTotalDueFormatted() : getResources().getString(R.string.no_data_indicator));
     }
 
-
-    private void addExtrasDetailsRow(String displayName, String hoursDisplay, String priceDisplay)
+    private void addExtrasDetailsRow(String displayName, float hours, String formattedPrice)
     {
-        LinearLayout extrasDetailRow = getPaymentDetailTableRow(displayName + " " + hoursDisplay, priceDisplay);
+        String rowLabel = getResources().getString(R.string.edit_extras_booking_extras_entry_label, displayName, hours);
+        LinearLayout extrasDetailRow = getPaymentDetailTableRow(rowLabel, formattedPrice);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, 0, 0, (int) Utils.dpToPixels((int) getResources().getDimension(R.dimen.default_margin), getActivity()));
+        layoutParams.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.default_margin));
         extrasDetailRow.setLayoutParams(layoutParams);
         mBookingExtrasPriceTableLayout.addView(extrasDetailRow, layoutParams);
     }
 
-    private void updateBookingSummaryText(EditExtrasInfo editExtrasInfo)
+    private void updateBookingSummaryText()
     {
-        float bookingBaseHours = editExtrasInfo.getBaseHours(); //yes, it is weird for api to return this
+        float bookingBaseHours = mEditExtrasInfo.getBaseHours(); //it is weird for api to return this
         String originalBookingBaseHours = getFormattedHoursForPriceTable(bookingBaseHours);
-        String originalBookingBasePrice = editExtrasInfo.getPriceTable().get(originalBookingBaseHours).getTotalDueFormatted();
+        String originalBookingBasePrice = mEditExtrasInfo.getPriceTable().get(originalBookingBaseHours).getTotalDueFormatted();
         updatePaymentDetailTableRow(mBookingTableRow, getResources().getString(R.string.edit_extras_booking_base_hours, bookingBaseHours), originalBookingBasePrice);
-
     }
 
     @Override
@@ -376,9 +354,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     public final void onReceiveServicesExtrasOptionsSuccess(HandyEvent.ReceiveGetServiceExtrasOptionsSuccess event)
     {
         mEditExtrasInfo = event.editExtrasInfo;
-        createOptionsView(mEditExtrasInfo);
-        updateBookingSummaryText(mEditExtrasInfo);
-        updateBookingSummaryViewForOptionsSelected(mEditExtrasInfo);
+
+        createOptionsView();
+        updateBookingSummaryText();
+        updateBookingSummaryViewForOptionsSelected();
         removeUiBlockers();
     }
 
@@ -403,5 +382,4 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         onReceiveErrorEvent(event);
     }
-
 }

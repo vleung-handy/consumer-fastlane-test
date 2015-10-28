@@ -46,15 +46,6 @@ public class EditExtrasInfo
         return mHourInfo;
     }
 
-    public final static class ExtrasMachineName
-    {
-        public final static String INSIDE_CABINETS = "inside_cabinets";
-        public final static String INSIDE_FRIDGE = "inside_fridge";
-        public final static String INSIDE_OVEN = "inside_oven";
-        public final static String LAUNDRY = "laundry";
-        public final static String INTERIOR_WINDOWS = "interior_windows";
-    }
-
     public String[] getOptionsDisplayNames()
     {
         return mOptionsDisplayNames;

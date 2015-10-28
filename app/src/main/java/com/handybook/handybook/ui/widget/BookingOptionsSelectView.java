@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,23 +54,18 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         super(context, attrs, defStyle);
     }
 
-    private boolean shouldDisplayOptionElementFromArray(Object[] array, int index)
-    {
-        return array != null &&
-                index < array.length &&
-                array[index] != null;
-    }
-
-    //TODO: consolidate this logic
-    private boolean shouldDisplayOptionElementFromArray(int[] array, int index)
+    private boolean isArrayIndexValid(int[] array, int index)
     {
         return array != null &&
                 index < array.length;
     }
 
+    //TODO: is it possible to make this use isArrayIndexValid
     private boolean shouldDisplayOptionStringFromArray(String[] array, int index)
     {
-        return shouldDisplayOptionElementFromArray(array, index) && !array[index].isEmpty();
+        return array != null &&
+                index < array.length &&
+                array[index] != null && !array[index].isEmpty();
     }
 
     private void showTextView(TextView textView, String textString)
@@ -109,8 +106,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             try
             {
                 optionDefaultValue = Integer.parseInt(option.getDefaultValue());
-            }
-            catch (NumberFormatException e)
+            } catch (NumberFormatException e)
             {
                 optionDefaultValue = 0;
             }
@@ -138,25 +134,31 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 showTextView((TextView) optionView.findViewById(R.id.right_subtitle_text), optionsRightSubText[i]);
             }
 
-            if(shouldDisplayOptionStringFromArray(optionsRightTitleText, i))
+            if (shouldDisplayOptionStringFromArray(optionsRightTitleText, i))
             {
                 showTextView((TextView) optionView.findViewById(R.id.right_title_text), optionsRightTitleText[i]);
             }
 
             final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);
-            if(shouldDisplayOptionElementFromArray(optionImagesResourceIds, i) && optionImagesResourceIds[i]!=0)
+            if (isArrayIndexValid(optionImagesResourceIds, i) && optionImagesResourceIds[i] != 0)
             {
-                //TODO: clean this up
                 Drawable drawables[] = new Drawable[]
                         {
-                            getResources().getDrawable(R.drawable.option_circle_frame),
-                                getResources().getDrawable(optionImagesResourceIds[i])
+                                ContextCompat.getDrawable(context, R.drawable.option_circle_frame),
+                                ContextCompat.getDrawable(context, optionImagesResourceIds[i])
                         };
 
                 LayerDrawable layerDrawable = new LayerDrawable(drawables);
-                int inset = (int)Utils.dpToPixels(15, this.getContext());
+                int inset = (int) getResources().getDimension(R.dimen.framed_icon_inset);
                 layerDrawable.setLayerInset(1, inset, inset, inset, inset);
-                checkBox.setBackground(layerDrawable);
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                {
+                    checkBox.setBackground(layerDrawable);
+                }
+                else
+                {
+                    checkBox.setBackgroundDrawable(layerDrawable);
+                }
             }
             if (!isMulti && i == checkedIndex)
             {
@@ -243,7 +245,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
         for (final Integer i : indexes)
         {
-            if(i == null) continue;
+            if (i == null)
+            {
+                continue;
+            }
             checkMap.get(i).setChecked(true);
             checkedIndexes.add(i);
         }

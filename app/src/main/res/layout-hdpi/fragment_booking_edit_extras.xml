@@ -17,11 +17,11 @@
 
     <ScrollView
         android:id="@+id/booking_edit_extras_content_container"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text">
+        android:layout_below="@id/nav_text"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,8 +31,8 @@
                 android:id="@+id/options_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 android:background="@color/white"
                 android:orientation="vertical"/>
 
@@ -45,27 +45,21 @@
                 android:padding="@dimen/default_padding">
 
                 <include
-                    android:layout_marginBottom="@dimen/default_margin"
                     android:id="@+id/booking_edit_extras_booking_label_row"
                     layout="@layout/element_booking_extras_price_row"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"/>
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:id="@+id/booking_extras_price_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/default_margin">
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:orientation="vertical">
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    android:scaleType="fitXY"
-                    android:src="@android:drawable/divider_horizontal_dark"
-                    android:tint="@color/black"/>
+                <include layout="@layout/element_horizontal_divider"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

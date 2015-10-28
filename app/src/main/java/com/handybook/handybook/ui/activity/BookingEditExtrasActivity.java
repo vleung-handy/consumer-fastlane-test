@@ -10,6 +10,7 @@ import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 public final class BookingEditExtrasActivity extends MenuDrawerActivity
 {
 
+    //TODO: can we consolidate this with other edit activities?
     @Override
     protected final Fragment createFragment()
     {
