@@ -63,7 +63,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment
     private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
     private static final String STATE_USE_EXISTING_CARD = "USE_EXISTING_CARD";
 
-    private boolean useExistingCard;
+    private boolean mUseExistingCard;
+    private boolean mExistingCardPresent;
 
     @Bind(R.id.next_button)
     Button nextButton;
@@ -103,7 +104,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
         {
-            useExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
+            mUseExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
         }
         mixpanel.trackEventAppTrackPayment();
     }
@@ -165,13 +166,18 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         final User.CreditCard card = user != null ? user.getCreditCard() : null;
 
         if ((card != null && card.getLast4() != null)
-                && (savedInstanceState == null || useExistingCard))
+                && (savedInstanceState == null || mUseExistingCard))
         {
-            useExistingCard = true;
+            mUseExistingCard = true;
+            mExistingCardPresent = true;
             creditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + card.getLast4());
             setCardIcon(card.getBrand());
         }
-        else allowCardInput();
+        else
+        {
+            mExistingCardPresent = false;
+            allowCardInput();
+        }
 
         creditCardText.addTextChangedListener(cardTextWatcher);
         nextButton.setOnClickListener(nextClicked);
@@ -221,7 +227,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         outState.putBoolean(STATE_CARD_NUMBER_HIGHLIGHT, creditCardText.isHighlighted());
         outState.putBoolean(STATE_CARD_EXP_HIGHLIGHT, expText.isHighlighted());
         outState.putBoolean(STATE_CARD_CVC_HIGHLIGHT, cvcText.isHighlighted());
-        outState.putBoolean(STATE_USE_EXISTING_CARD, useExistingCard);
+        outState.putBoolean(STATE_USE_EXISTING_CARD, mUseExistingCard);
     }
 
     private void setCardIcon(final String type)
@@ -308,7 +314,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
     {
         boolean validate = true;
 
-        if (!useExistingCard)
+        if (!mUseExistingCard)
         {
             if (!creditCardText.validate()) validate = false;
             if (!expText.validate()) validate = false;
@@ -325,7 +331,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         creditCardText.setDisabled(false, getString(R.string.credit_card_num));
         changeButton.setVisibility(View.GONE);
         cardExtrasLayout.setVisibility(View.VISIBLE);
-        useExistingCard = false;
+        mUseExistingCard = false;
+
+        if (!mExistingCardPresent)
+        {
+            androidPayButtonLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     public void showMaskedWalletInfo(MaskedWallet maskedWallet)
@@ -334,7 +345,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         creditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         changeButton.setVisibility(View.VISIBLE);
         cardExtrasLayout.setVisibility(View.GONE);
-        useExistingCard = true;
+        mUseExistingCard = true;
         androidPayButtonLayout.setVisibility(View.GONE);
     }
 
@@ -348,7 +359,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
                 disableInputs();
                 progressDialog.show();
 
-                if (!useExistingCard)
+                if (!mUseExistingCard)
                 {
                     final Card card = new Card(creditCardText.getCardNumber(), expText.getExpMonth(),
                             expText.getExpYear(), cvcText.getCVC());
@@ -535,7 +546,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         @Override
         public void afterTextChanged(final Editable editable)
         {
-            if (!useExistingCard) setCardIcon(creditCardText.getCardType());
+            if (!mUseExistingCard) setCardIcon(creditCardText.getCardType());
         }
     };
 
