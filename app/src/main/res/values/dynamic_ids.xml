@@ -11,4 +11,5 @@
     <item type="id" name="action_button_cancel_booking" />
     <item type="id" name="action_button_contact_phone" />
     <item type="id" name="action_button_contact_text" />
+    <item type="id" name="edit_booking_extras_button" />
 </resources>
