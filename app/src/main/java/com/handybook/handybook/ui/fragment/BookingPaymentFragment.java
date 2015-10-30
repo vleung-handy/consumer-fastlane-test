@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.android.gms.wallet.PaymentMethodTokenizationParameters;
 import com.google.android.gms.wallet.WalletConstants;
@@ -88,6 +89,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment
     ProgressBar promoProgress;
     @Bind(R.id.promo_layout)
     LinearLayout promoLayout;
+    @Bind(R.id.android_pay_button_layout)
+    ViewGroup androidPayButtonLayout;
 
     public static BookingPaymentFragment newInstance()
     {
@@ -139,7 +142,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
 
         // add Wallet fragment to the UI
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.android_pay_button, mWalletFragment)
+                .replace(R.id.android_pay_button_layout, mWalletFragment)
                 .commit();
     }
 
@@ -323,6 +326,16 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         changeButton.setVisibility(View.GONE);
         cardExtrasLayout.setVisibility(View.VISIBLE);
         useExistingCard = false;
+    }
+
+    public void showMaskedWalletInfo(MaskedWallet maskedWallet)
+    {
+        setCardIcon(CreditCard.Type.OTHER);
+        creditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
+        changeButton.setVisibility(View.VISIBLE);
+        cardExtrasLayout.setVisibility(View.GONE);
+        useExistingCard = true;
+        androidPayButtonLayout.setVisibility(View.GONE);
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener()

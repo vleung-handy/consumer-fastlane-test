@@ -12,9 +12,13 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 
 public final class BookingPaymentActivity extends MenuDrawerActivity {
+
+    private BookingPaymentFragment mBookingPaymentFragment;
+
     @Override
     protected final Fragment createFragment() {
-        return BookingPaymentFragment.newInstance();
+        mBookingPaymentFragment = BookingPaymentFragment.newInstance();
+        return mBookingPaymentFragment;
     }
 
     @Override
@@ -45,7 +49,7 @@ public final class BookingPaymentActivity extends MenuDrawerActivity {
                     case Activity.RESULT_OK:
                         MaskedWallet maskedWallet =
                                 data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
-                        launchConfirmationPage(maskedWallet);
+                        handleSuccess(maskedWallet);
                         break;
                     case Activity.RESULT_CANCELED:
                         break;
@@ -87,8 +91,8 @@ public final class BookingPaymentActivity extends MenuDrawerActivity {
         }
     }
 
-    private void launchConfirmationPage(MaskedWallet maskedWallet)
+    private void handleSuccess(MaskedWallet maskedWallet)
     {
-        Toast.makeText(this, "It worked!", Toast.LENGTH_LONG).show();
+        mBookingPaymentFragment.showMaskedWalletInfo(maskedWallet);
     }
 }
