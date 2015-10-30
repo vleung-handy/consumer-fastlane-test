@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="${PACKAGE_NAME}.permission.UA_DATA"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE"/>
 
@@ -189,6 +190,10 @@
             android:name="YozioNewInstallMetaDataCallback"
             android:value="com.handybook.handybook.yozio.YozioMetaDataCallback"/>
 
+        <!-- Enables the Android Pay API -->
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 
 </manifest>

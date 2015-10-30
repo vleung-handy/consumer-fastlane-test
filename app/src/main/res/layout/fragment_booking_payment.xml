@@ -31,7 +31,15 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_padding" />
 
+            <FrameLayout
+                android:id="@+id/android_pay_button"
+                android:layout_height="48dp"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/default_margin_double"
+                android:layout_below="@+id/info_payment_layout" />
+
             <LinearLayout
+                android:id="@+id/info_payment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/info_header_layout"
