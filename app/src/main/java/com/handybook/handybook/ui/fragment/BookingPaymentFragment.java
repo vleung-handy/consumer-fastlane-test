@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,13 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wallet.FullWallet;
+import com.google.android.gms.wallet.FullWalletRequest;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.MaskedWalletRequest;
-import com.google.android.gms.wallet.PaymentMethodTokenizationParameters;
+import com.google.android.gms.wallet.PaymentMethodToken;
+import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
-import com.google.android.gms.wallet.fragment.BuyButtonAppearance;
-import com.google.android.gms.wallet.fragment.BuyButtonText;
-import com.google.android.gms.wallet.fragment.Dimension;
 import com.google.android.gms.wallet.fragment.SupportWalletFragment;
 import com.google.android.gms.wallet.fragment.WalletFragmentInitParams;
 import com.google.android.gms.wallet.fragment.WalletFragmentMode;
@@ -53,10 +56,10 @@ import com.stripe.exception.CardException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingPaymentFragment extends BookingFlowFragment
+public final class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
-    public static final int REQUEST_CODE_MASKED_WALLET = 1001;
-    private SupportWalletFragment mWalletFragment;
+    public static final int REQUEST_CODE_LOAD_MASKED_WALLET = 1001;
+    public static final int REQUEST_CODE_LOAD_FULL_WALLET = 1002;
 
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
@@ -65,6 +68,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment
 
     private boolean mUseExistingCard;
     private boolean mExistingCardPresent;
+    private boolean mUseAndroidPay;
+    private GoogleApiClient mGoogleApiClient;
+    private MaskedWallet mMaskedWallet;
 
     @Bind(R.id.next_button)
     Button nextButton;
@@ -91,7 +97,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
     @Bind(R.id.promo_layout)
     LinearLayout promoLayout;
     @Bind(R.id.android_pay_button_layout)
-    ViewGroup androidPayButtonLayout;
+    View androidPayButtonLayout;
 
     public static BookingPaymentFragment newInstance()
     {
@@ -107,44 +113,47 @@ public final class BookingPaymentFragment extends BookingFlowFragment
             mUseExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
         }
         mixpanel.trackEventAppTrackPayment();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
+                        .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+                        .setTheme(WalletConstants.THEME_LIGHT)
+                        .build())
+                .build();
     }
 
-    private PaymentMethodTokenizationParameters mPaymentMethodParameters = null;
-
-    private void createAndAddWalletFragment(BookingQuote quote, BookingTransaction transaction)
+    @Override
+    public void onStart()
     {
-        WalletFragmentStyle walletFragmentStyle = new WalletFragmentStyle()
-                .setBuyButtonText(BuyButtonText.BUY_NOW)
-                .setBuyButtonAppearance(BuyButtonAppearance.CLASSIC)
-                .setBuyButtonWidth(Dimension.MATCH_PARENT);
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
 
-        WalletFragmentOptions walletFragmentOptions = WalletFragmentOptions.newBuilder()
-                .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
-                .setFragmentStyle(walletFragmentStyle)
-                .setTheme(WalletConstants.THEME_LIGHT)
-                .setMode(WalletFragmentMode.BUY_BUTTON)
-                .build();
-        mWalletFragment = SupportWalletFragment.newInstance(walletFragmentOptions);
+    @Override
+    public void onStop()
+    {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
 
-        // Now initialize the Wallet Fragment
-        MaskedWalletRequest maskedWalletRequest;
-        // TODO: STRIPE!
-//        if (mPaymentMethodParameters != null) {
-//            maskedWalletRequest = PaymentUtils.createStripeMaskedWalletRequest(Constants.ITEMS_FOR_SALE[mItemId],
-//                    mPaymentMethodParameters);
-//        } else {
-        maskedWalletRequest = PaymentUtils.createMaskedWalletRequest(quote, transaction, null);
-//        }
+    @Override
+    public void onConnected(Bundle bundle)
+    {
 
-        WalletFragmentInitParams.Builder startParamsBuilder = WalletFragmentInitParams.newBuilder()
-                .setMaskedWalletRequest(maskedWalletRequest)
-                .setMaskedWalletRequestCode(REQUEST_CODE_MASKED_WALLET);
-        mWalletFragment.initialize(startParamsBuilder.build());
+    }
 
-        // add Wallet fragment to the UI
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.android_pay_button_layout, mWalletFragment)
-                .commit();
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
+
     }
 
     @Override
@@ -205,6 +214,35 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         createAndAddWalletFragment(bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
 
         return view;
+    }
+
+    private void createAndAddWalletFragment(BookingQuote quote, BookingTransaction transaction)
+    {
+        WalletFragmentStyle walletFragmentStyle = new WalletFragmentStyle()
+                .setBuyButtonText(WalletFragmentStyle.BuyButtonText.BUY_WITH)
+                .setBuyButtonAppearance(WalletFragmentStyle.BuyButtonAppearance.ANDROID_PAY_LIGHT_WITH_BORDER)
+                .setBuyButtonWidth(WalletFragmentStyle.Dimension.MATCH_PARENT);
+
+        WalletFragmentOptions walletFragmentOptions = WalletFragmentOptions.newBuilder()
+                .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+                .setFragmentStyle(walletFragmentStyle)
+                .setTheme(WalletConstants.THEME_LIGHT)
+                .setMode(WalletFragmentMode.BUY_BUTTON)
+                .build();
+        SupportWalletFragment walletFragment = SupportWalletFragment.newInstance(walletFragmentOptions);
+
+        // Now initialize the Wallet Fragment
+
+        final MaskedWalletRequest maskedWalletRequest = PaymentUtils.createMaskedWalletRequest(quote, transaction);
+        WalletFragmentInitParams.Builder startParamsBuilder = WalletFragmentInitParams.newBuilder()
+                .setMaskedWalletRequest(maskedWalletRequest)
+                .setMaskedWalletRequestCode(REQUEST_CODE_LOAD_MASKED_WALLET);
+        walletFragment.initialize(startParamsBuilder.build());
+
+        // add Wallet fragment to the UI
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.android_pay_button_layout, walletFragment)
+                .commit();
     }
 
     @Override
@@ -314,7 +352,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment
     {
         boolean validate = true;
 
-        if (!mUseExistingCard)
+        if (!mUseExistingCard && !mUseAndroidPay)
         {
             if (!creditCardText.validate()) validate = false;
             if (!expText.validate()) validate = false;
@@ -331,9 +369,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         creditCardText.setDisabled(false, getString(R.string.credit_card_num));
         changeButton.setVisibility(View.GONE);
         cardExtrasLayout.setVisibility(View.VISIBLE);
+        mUseAndroidPay = false;
         mUseExistingCard = false;
 
-        if (!mExistingCardPresent)
+        if (!mExistingCardPresent /* && TODO: Add condition US only */)
         {
             androidPayButtonLayout.setVisibility(View.VISIBLE);
         }
@@ -345,8 +384,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         creditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         changeButton.setVisibility(View.VISIBLE);
         cardExtrasLayout.setVisibility(View.GONE);
-        mUseExistingCard = true;
         androidPayButtonLayout.setVisibility(View.GONE);
+        mUseExistingCard = false;
+        mUseAndroidPay = true;
+        mMaskedWallet = maskedWallet;
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener()
@@ -359,7 +400,17 @@ public final class BookingPaymentFragment extends BookingFlowFragment
                 disableInputs();
                 progressDialog.show();
 
-                if (!mUseExistingCard)
+                if (mUseAndroidPay)
+                {
+                    final FullWalletRequest fullWalletRequest = PaymentUtils.createFullWalletRequest(
+                            bookingManager.getCurrentQuote(),
+                            bookingManager.getCurrentTransaction(),
+                            mMaskedWallet
+                    );
+                    Wallet.Payments.loadFullWallet(mGoogleApiClient, fullWalletRequest,
+                            REQUEST_CODE_LOAD_FULL_WALLET);
+                }
+                else if (!mUseExistingCard)
                 {
                     final Card card = new Card(creditCardText.getCardNumber(), expText.getExpMonth(),
                             expText.getExpYear(), cvcText.getCVC());
@@ -394,6 +445,14 @@ public final class BookingPaymentFragment extends BookingFlowFragment
             }
         }
     };
+
+    public void finishAndroidPayTransaction(FullWallet fullWallet)
+    {
+        if (!allowCallbacks) return;
+        final PaymentMethodToken paymentMethodToken = fullWallet.getPaymentMethodToken();
+        bookingManager.getCurrentTransaction().setStripeToken(paymentMethodToken.getToken());
+        completeBooking();
+    }
 
     private final View.OnClickListener promoClicked = new View.OnClickListener()
     {
@@ -523,6 +582,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment
                         if (!allowCallbacks) return;
 
                         enableInputs();
+                        if (mUseAndroidPay)
+                        {
+                            allowCardInput();
+                        }
                         progressDialog.dismiss();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
@@ -577,5 +640,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment
         promoProgress.setVisibility(View.INVISIBLE);
         promoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
         promoText.setDisabled(applied, applied ? promo : getString(R.string.promo_code_opt));
+    }
+
+    public void handleError()
+    {
+        enableInputs();
+        nextButton.setClickable(true);
+        progressDialog.dismiss();
     }
 }

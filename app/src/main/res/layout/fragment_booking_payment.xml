@@ -33,11 +33,11 @@
 
             <FrameLayout
                 android:id="@+id/android_pay_button_layout"
-                android:visibility="gone"
-                android:layout_height="48dp"
                 android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/info_payment_layout"
                 android:layout_margin="@dimen/default_margin_double"
-                android:layout_below="@+id/info_payment_layout" />
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/info_payment_layout"

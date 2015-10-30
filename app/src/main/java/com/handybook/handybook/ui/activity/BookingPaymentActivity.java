@@ -6,28 +6,33 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 
-public final class BookingPaymentActivity extends MenuDrawerActivity {
+public final class BookingPaymentActivity extends MenuDrawerActivity
+{
 
     private BookingPaymentFragment mBookingPaymentFragment;
 
     @Override
-    protected final Fragment createFragment() {
+    protected final Fragment createFragment()
+    {
         mBookingPaymentFragment = BookingPaymentFragment.newInstance();
         return mBookingPaymentFragment;
     }
 
     @Override
-    protected final String getNavItemTitle() {
+    protected final String getNavItemTitle()
+    {
         return null;
     }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         disableDrawer = true;
     }
@@ -43,13 +48,34 @@ public final class BookingPaymentActivity extends MenuDrawerActivity {
         }
         switch (requestCode)
         {
-            case BookingPaymentFragment.REQUEST_CODE_MASKED_WALLET:
+            case BookingPaymentFragment.REQUEST_CODE_LOAD_MASKED_WALLET:
                 switch (resultCode)
                 {
                     case Activity.RESULT_OK:
-                        MaskedWallet maskedWallet =
-                                data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
-                        handleSuccess(maskedWallet);
+                        if (data != null && data.hasExtra(WalletConstants.EXTRA_MASKED_WALLET))
+                        {
+                            MaskedWallet maskedWallet = data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
+                            mBookingPaymentFragment.showMaskedWalletInfo(maskedWallet);
+                        }
+                        // TODO: handle non-existent extra
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        break;
+                    default:
+                        handleError(errorCode);
+                        break;
+                }
+                break;
+            case BookingPaymentFragment.REQUEST_CODE_LOAD_FULL_WALLET:
+                switch (resultCode)
+                {
+                    case Activity.RESULT_OK:
+                        if (data != null && data.hasExtra(WalletConstants.EXTRA_FULL_WALLET))
+                        {
+                            FullWallet fullWallet = data.getParcelableExtra(WalletConstants.EXTRA_FULL_WALLET);
+                            mBookingPaymentFragment.finishAndroidPayTransaction(fullWallet);
+                        }
+                        // TODO: handle non-existent extra
                         break;
                     case Activity.RESULT_CANCELED:
                         break;
@@ -89,10 +115,6 @@ public final class BookingPaymentActivity extends MenuDrawerActivity {
                 Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
                 break;
         }
-    }
-
-    private void handleSuccess(MaskedWallet maskedWallet)
-    {
-        mBookingPaymentFragment.showMaskedWalletInfo(maskedWallet);
+        mBookingPaymentFragment.handleError();
     }
 }
