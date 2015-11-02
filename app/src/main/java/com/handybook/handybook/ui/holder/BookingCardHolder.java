@@ -46,7 +46,6 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     RelativeLayout mFooter;
     @Bind(R.id.ll_booking_card_booking_row_container)
     LinearLayout mBookingRowContainer;
-
     @Bind(R.id.tv_edit_booking_card)
     TextView mEditBookingCard;
 
@@ -85,11 +84,13 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
         Booking masterBooking = getMasterBookingFromCardViewModel();
         if(masterBooking == null)
         {
-            Crashlytics.logException(new Exception(this.getClass().getCanonicalName() + ": model does not contain any bookings"));
+            Crashlytics.logException(new Exception(this.getClass().getCanonicalName()
+                            + ": model does not contain any bookings")
+            );
         }
         else
         {
-            if (masterBooking.getCanEditFrequency())
+            if (masterBooking.getCanEditFrequency() && !masterBooking.isPast())
             {
                 mEditBookingCard.setVisibility(View.VISIBLE);
                 mEditBookingCard.setOnClickListener(onEditClickListener);
@@ -122,7 +123,8 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     {
         ArrayList<Booking> bookings = mBookingCardViewModel.getBookings();
         return (bookings == null || bookings.size() == 0) ? null : bookings.get(0);
-        //this is to account for confusing api payload response - e.g. only the first booking of a recurring series will have recurring > 0
+        //this is to account for confusing api payload response - e.g. only the first booking of a
+        // recurring series will have recurring > 0
         //TODO: safer to loop through bookings list to find best booking to use
     }
 
