@@ -11,11 +11,34 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class BookingCardViewModel
 {
+    private static final Comparator<? super BookingCardViewModel> COMPARATOR_DATE_REVERSE
+            = new Comparator<BookingCardViewModel>()
+    {
+        @Override
+        public int compare(
+                @NonNull final BookingCardViewModel lhs,
+                @NonNull final BookingCardViewModel rhs
+        )
+        {
+            if (lhs.getBookings().size() < 1)
+            {
+                return -1;
+            }
+            else if (rhs.getBookings().size() < 1)
+            {
+                return +1;
+            }
+            // rhs and lhs comparison reversed on purpose below
+            return rhs.getBookings().get(0).getStartDate().compareTo(
+                    lhs.getBookings().get(0).getStartDate());
+        }
+    };
     private ArrayList<Booking> mBookings;
     private String mTitle = "";
     private String mSubtitle = "";
@@ -30,7 +53,8 @@ public class BookingCardViewModel
         if (mBookings.isEmpty())
         {
             //TODO: We received an empty collection, what should we do?
-        } else
+        }
+        else
         {
             Collections.sort(mBookings, Booking.COMPARATOR_DATE);
             final Booking firstBooking = mBookings.get(0);
@@ -90,7 +114,8 @@ public class BookingCardViewModel
          * <p/>
          * IntDef used instead of ENUMs
          *
-         * @see <a href="http://tools.android.com/tech-docs/support-annotations">Support Annotations</a>
+         * @see <a href="http://tools.android.com/tech-docs/support-annotations">Support
+         * Annotations</a>
          */
         @IntDef({TYPE_PAST, TYPE_UPCOMING, TYPE_MIXED})
         @Retention(RetentionPolicy.SOURCE)
@@ -117,6 +142,8 @@ public class BookingCardViewModel
             {
                 case TYPE_PAST:
                     final List pastList = from(bookings, true);
+                    // Reverse because we want them displayed in reverse
+                    Collections.sort(pastList, BookingCardViewModel.COMPARATOR_DATE_REVERSE);
                     pastList.setType(type);
                     return pastList;
                 case TYPE_UPCOMING:
@@ -145,7 +172,8 @@ public class BookingCardViewModel
                     bookingCardViewModels.mBookings.add(eachBooking);
                 }
                 return bookingCardViewModels;
-            } else
+            }
+            else
             {
                 return from(bookings);
             }
@@ -172,7 +200,8 @@ public class BookingCardViewModel
                         bcvm = new BookingCardViewModel(eachBooking);
                         recurringIdToBCVM.put(eachBooking.getRecurringId(), bcvm);
                         bookingCardViewModels.add(bcvm);
-                    } else
+                    }
+                    else
                     {
                         // We have seen one from this series, add it to its parent
                         bcvm.addBooking(eachBooking);
