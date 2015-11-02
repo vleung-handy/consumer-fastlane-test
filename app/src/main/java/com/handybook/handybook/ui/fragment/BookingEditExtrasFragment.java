@@ -19,6 +19,7 @@ import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
+import com.handybook.handybook.ui.widget.LabelValueView;
 import com.handybook.handybook.util.MathUtils;
 import com.handybook.handybook.util.TextUtils;
 import com.squareup.otto.Subscribe;
@@ -36,12 +37,13 @@ import butterknife.OnClick;
 
 public final class BookingEditExtrasFragment extends BookingFlowFragment
 {
+    //TODO: use ViewModel
     @Bind(R.id.booking_edit_extras_content_container)
     ScrollView mContentContainer;
     @Bind(R.id.options_layout)
     LinearLayout mOptionsLayout;
     @Bind(R.id.booking_edit_extras_booking_label_row)
-    LinearLayout mBookingTableRow;
+    LabelValueView mBookingTableRow;
     @Bind(R.id.booking_edit_extras_booking_duration_text)
     TextView mBookingDurationText;
     @Bind(R.id.booking_edit_extras_total_due_text)
@@ -215,19 +217,14 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     //TODO: move somewhere else?
-    private LinearLayout getPaymentDetailTableRow(String label, String value)
+    private LabelValueView createPaymentDetailLabelValueView(String label, String value)
     {
-        LinearLayout bookingRow = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.element_booking_extras_price_row, null);
-        return updatePaymentDetailTableRow(bookingRow, label, value);
+        LabelValueView labelValueView = (LabelValueView) getActivity().getLayoutInflater().inflate(R.layout.element_label_value_view, null);
+        labelValueView.setLabelAndValueText(label, value);
+        return labelValueView;
     }
 
-    private LinearLayout updatePaymentDetailTableRow(LinearLayout bookingRow, String label, String value)
-    {
-        ((TextView) bookingRow.findViewById(R.id.price_table_row_label_text)).setText(label);
-        ((TextView) bookingRow.findViewById(R.id.price_table_row_price_text)).setText(value);
-        return bookingRow;
-    }
-
+    //TODO: move somewhere else
     private String getFormattedHoursForPriceTable(float hours)
     {
         //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
@@ -258,8 +255,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         float totalHours = bookingBaseHours + extrasHours;
 
         //build the resulting booking detail section
-        mBookingDurationText.setText(getResources().getString(R.string.edit_extras_booking_total_hours, totalHours));
-        mBilledOnText.setText(getResources().getString(R.string.edit_extras_billed_on_date, mEditExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
+        mBookingDurationText.setText(getResources().getString(R.string.booking_edit_hours_display, totalHours));
+        mBilledOnText.setText(getResources().getString(R.string.billed_on_date, mEditExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
 
         String totalHoursFormatted = getFormattedHoursForPriceTable(totalHours);
         Map<String, EditExtrasInfo.PriceInfo> priceTable = mEditExtrasInfo.getPriceTable();
@@ -271,9 +268,9 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     private void addExtrasDetailsRow(String displayName, float hours, String formattedPrice)
     {
-        String rowLabel = getResources().getString(R.string.edit_extras_booking_extras_entry_label, displayName, hours);
-        String priceLabel = getResources().getString(R.string.edit_extras_booking_extras_price, formattedPrice);
-        LinearLayout extrasDetailRow = getPaymentDetailTableRow(rowLabel, priceLabel);
+        String rowLabel = getResources().getString(R.string.booking_edit_extras_booking_extras_entry_label, displayName, hours);
+        String priceLabel = getResources().getString(R.string.booking_edit_positive_price, formattedPrice);
+        LabelValueView extrasDetailRow = createPaymentDetailLabelValueView(rowLabel, priceLabel);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.default_margin));
@@ -286,7 +283,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         float bookingBaseHours = mEditExtrasInfo.getBaseHours(); //it is weird for api to return this
         String originalBookingBaseHours = getFormattedHoursForPriceTable(bookingBaseHours);
         String originalBookingBasePrice = mEditExtrasInfo.getPriceTable().get(originalBookingBaseHours).getTotalDueFormatted();
-        updatePaymentDetailTableRow(mBookingTableRow, getResources().getString(R.string.edit_extras_booking_base_hours, bookingBaseHours), originalBookingBasePrice);
+        mBookingTableRow.setLabelAndValueText(getResources().getString(R.string.booking_edit_base_time_label, bookingBaseHours), originalBookingBasePrice);
     }
 
     @Override

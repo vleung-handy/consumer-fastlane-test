@@ -5,9 +5,9 @@ import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.EditExtrasInfo;
@@ -15,7 +15,9 @@ import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 
 import java.util.List;
 
@@ -619,5 +621,57 @@ public abstract class HandyEvent
 
     }
 
+    public static class RequestEditHoursInfoViewModel extends RequestEvent
+    {
+        public final int bookingId;
+        public RequestEditHoursInfoViewModel(final int bookingId) {
+            this.bookingId = bookingId;
+        }
+    }
 
+    public static class ReceiveEditHoursInfoViewModelSuccess extends ReceiveBookingSuccessEvent
+    {
+        public final BookingEditHoursViewModel editHoursInfoViewModel;
+        public ReceiveEditHoursInfoViewModelSuccess(final BookingEditHoursViewModel editHoursInfoViewModel)
+        {
+            this.editHoursInfoViewModel = editHoursInfoViewModel;
+        }
+    }
+
+    public static class ReceiveEditHoursInfoViewModelError extends ReceiveErrorEvent
+    {
+        public ReceiveEditHoursInfoViewModelError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+
+    }
+
+    public static class RequestEditHours extends RequestEvent
+    {
+        public final int bookingId;
+        public final BookingEditHoursRequest bookingEditHoursRequest;
+        public RequestEditHours(final int bookingId, final BookingEditHoursRequest bookingEditHoursRequest) {
+            this.bookingId = bookingId;
+            this.bookingEditHoursRequest = bookingEditHoursRequest;
+        }
+    }
+
+    public static class ReceiveEditHoursSuccess extends ReceiveBookingSuccessEvent
+    {
+        public final SuccessWrapper successWrapper;
+        public ReceiveEditHoursSuccess(final SuccessWrapper successWrapper)
+        {
+            this.successWrapper = successWrapper;
+        }
+    }
+
+    public static class ReceiveEditHoursError extends ReceiveErrorEvent
+    {
+        public ReceiveEditHoursError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+
+    }
 }

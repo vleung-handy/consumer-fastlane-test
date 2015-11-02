@@ -110,6 +110,7 @@ public class EditExtrasInfo
         private float mAmountDollars;
     }
 
+    //TODO: move these classes out of here
     public static final class PaidStatus
     {
         public boolean isBilled()

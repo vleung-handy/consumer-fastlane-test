@@ -1,4 +1,4 @@
-package com.handybook.handybook.model;
+package com.handybook.handybook.viewmodel;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

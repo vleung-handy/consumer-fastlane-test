@@ -31,6 +31,8 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.response.EditHoursInfoResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -225,6 +227,14 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
+    public void editBookingHours(final int bookingId,
+                                  final BookingEditHoursRequest bookingEditHoursRequest,
+                                  final Callback<SuccessWrapper> cb)
+    {
+        mService.editBookingHours(bookingId, bookingEditHoursRequest, new SuccessHandyRetroFitCallback(cb));
+    }
+
+    @Override
     public void getBlockedWrapper(
             final int versionCode,
             final CacheResponse<BlockedWrapper> blockedWrapperCacheResponse,
@@ -359,6 +369,16 @@ public final class BaseDataManager extends DataManager
                 user.getAuthToken(),
                 onlyBookingValue,
                 new UserBookingsWrapperHandyRetroFitCallback(cb)
+        );
+    }
+
+    @Override
+    public final void getEditHoursInfo(final int bookingId,
+            final Callback<EditHoursInfoResponse> cb)
+    {
+        mService.getEditHoursInfo(
+                bookingId,
+                new EditHoursInfoHandyRetroFitCallback(cb)
         );
     }
 

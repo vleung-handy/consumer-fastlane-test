@@ -1,12 +1,16 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BookingAction;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,10 @@ public class BookingDetailSectionFragmentBookingActions extends BookingDetailSec
         if(!booking.isPast())
         {
             actionButtonTypes.add(BookingAction.ACTION_RESCHEDULE);
+            if(booking.getCanEditHours())
+            {
+                actionButtonTypes.add(BookingAction.ACTION_EDIT_HOURS);
+            }
             actionButtonTypes.add(BookingAction.ACTION_CANCEL);
         }
         return actionButtonTypes;
@@ -53,6 +61,8 @@ public class BookingDetailSectionFragmentBookingActions extends BookingDetailSec
                 return cancelClicked;
             case BookingAction.ACTION_RESCHEDULE:
                 return rescheduleClicked;
+            case BookingAction.ACTION_EDIT_HOURS:
+                return editHoursClicked;
         }
         return null;
     }
@@ -81,6 +91,17 @@ public class BookingDetailSectionFragmentBookingActions extends BookingDetailSec
         }
     };
 
+    private View.OnClickListener editHoursClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            final Intent intent = new Intent(getActivity(), BookingEditHoursActivity.class);
+            intent.putExtra(BundleKeys.BOOKING, booking);
+            startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
+
+        }
+    };
 
 
 

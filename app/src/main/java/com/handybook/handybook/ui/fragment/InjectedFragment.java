@@ -169,10 +169,22 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
         return validated;
     }
 
+    //TODO: why is the progress dialog in this class?
     protected void postBlockingEvent(HandyEvent event)
+    {
+        showUiBlockers();
+        bus.post(event);
+    }
+
+    protected void showUiBlockers()
     {
         disableInputs();
         progressDialog.show();
-        bus.post(event);
+    }
+
+    protected void removeUiBlockers()
+    {
+        enableInputs();
+        progressDialog.dismiss();
     }
 }

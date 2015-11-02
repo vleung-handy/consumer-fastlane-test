@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:background="@color/handy_bg"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+
+    <!--TODO: these are almost identical to the other edit screens, will make a template later-->
+    <Button
+        style="@style/Button.Green"
+        android:id="@+id/next_button"
+        android:onClick="onSaveButtonPressed"
+        android:text="@string/save"/>
+
+    <TextView
+        style="@style/TextView.Navbar"
+        android:id="@+id/nav_text"
+        android:text="@string/booking_edit_hours_title"/>
+
+    <ScrollView
+        android:id="@+id/booking_edit_hours_container"
+        android:visibility="gone"
+        android:layout_above="@id/next_button"
+        android:layout_below="@id/nav_text"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingTop="@dimen/default_padding_double"
+            android:paddingBottom="@dimen/default_padding_double"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include
+                android:id="@+id/subtitle_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_double"
+                layout="@layout/view_centered_header_text"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/booking_edit_hours_options_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:id="@+id/booking_edit_hours_detail_section"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_double"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/element_label_value_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:id="@+id/booking_edit_hours_base_time_row"/>
+
+                <include
+                    layout="@layout/element_label_value_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:id="@+id/booking_edit_hours_added_time_row"/>
+
+                <include
+                    layout="@layout/element_label_value_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:id="@+id/booking_edit_hours_extras_time_row"/>
+
+                <include layout="@layout/element_horizontal_divider"/>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextView.Bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/default_margin_half"
+                            android:text="@string/total_due"
+                            android:textAllCaps="true"
+                            android:textColor="@color/handy_text_black"
+                            android:textSize="@dimen/text_size_large"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/booking_edit_hours_booking_duration_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/handy_text_black"
+                            android:textSize="@dimen/text_size_medium"/>
+                    </LinearLayout>
+                    <TextView
+                        style="@style/TextView.Bold"
+                        android:gravity="right"
+                        android:id="@+id/booking_edit_hours_total_due_text"
+                        android:layout_gravity="right"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:textColor="@color/handy_text_black"
+                        android:textSize="@dimen/text_size_xxlarge"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/booking_edit_hours_billed_on_text"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_pressed"/>
+            </LinearLayout>
+            <ViewStub
+                android:id="@+id/booking_edit_hours_apply_to_recurring_option_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

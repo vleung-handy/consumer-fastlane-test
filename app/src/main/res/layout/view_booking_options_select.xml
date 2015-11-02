@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/cell_booking"
-    android:paddingTop="16dp">
+    android:paddingBottom="@dimen/default_padding"
+    android:paddingTop="@dimen/default_padding">
 
     <TextView android:id="@+id/title_text"
         android:layout_width="match_parent"
