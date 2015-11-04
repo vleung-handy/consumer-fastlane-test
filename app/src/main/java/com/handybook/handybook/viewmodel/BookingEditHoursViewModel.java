@@ -70,7 +70,8 @@ public class BookingEditHoursViewModel
      */
     public String getExtrasPriceFormatted()
     {
-        return mEditHoursInfo.getExtrasPrice() == null ? null : mEditHoursInfo.getExtrasPrice().getFormattedPrice();
+        return mEditHoursInfo.getExtrasPrice() == null ? null :
+                mEditHoursInfo.getExtrasPrice().getFormattedPrice();
     }
 
     public boolean isSelectedHoursLessThanBaseHours(final float selectedHours)
@@ -178,12 +179,14 @@ public class BookingEditHoursViewModel
     private String getTotalDuePriceFormatted(final String key)
     {
         Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getTotalPriceMap();
-        return ValidationUtils.mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getTotalDueFormatted() : null;
+        return ValidationUtils.mapKeyEntryValid(key, priceMap) ?
+                priceMap.get(key).getTotalDueFormatted() : null;
     }
 
     private String getPriceDifferenceFormatted(final String key)
     {
         Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getPriceMap();
-        return ValidationUtils.mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getPriceDifferenceFormatted() : null;
+        return ValidationUtils.mapKeyEntryValid(key, priceMap) ?
+                priceMap.get(key).getPriceDifferenceFormatted() : null;
     }
 }
