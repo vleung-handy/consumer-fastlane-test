@@ -67,7 +67,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private static final String STATE_USE_EXISTING_CARD = "USE_EXISTING_CARD";
 
     private boolean mUseExistingCard;
-    private boolean mExistingCardPresent;
     private boolean mUseAndroidPay;
     private GoogleApiClient mGoogleApiClient;
     private MaskedWallet mMaskedWallet;
@@ -178,13 +177,11 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                 && (savedInstanceState == null || mUseExistingCard))
         {
             mUseExistingCard = true;
-            mExistingCardPresent = true;
             creditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + card.getLast4());
             setCardIcon(card.getBrand());
         }
         else
         {
-            mExistingCardPresent = false;
             allowCardInput();
         }
 
@@ -372,7 +369,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mUseAndroidPay = false;
         mUseExistingCard = false;
 
-        if (!mExistingCardPresent /* && TODO: Add condition US only */)
+        if (true /* && TODO: Add condition US only */)
         {
             androidPayButtonLayout.setVisibility(View.VISIBLE);
         }
