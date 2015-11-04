@@ -80,7 +80,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     private void initRequestWrapper()
     {
         mBookingEditHoursRequest = new BookingEditHoursRequest();
-
     }
 
     @Override
@@ -159,6 +158,9 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
 
     }
 
+    /**
+     * Updates the price details view (which includes "Base time", "Added time", "Total Due", etc) based on the option that the user has selected
+     */
     private void updateUiForOptionSelected()
     {
         float selectedHours = Float.parseFloat(mOptionsView.getCurrentValue());
@@ -194,6 +196,9 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
 
     }
 
+    /**
+     * initializes the option selector view based on the edit hours view model
+     */
     private void inflateOptionsView()
     {
         BookingOption bookingOption = new BookingOption();
