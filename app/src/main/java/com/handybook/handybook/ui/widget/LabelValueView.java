@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -28,6 +29,13 @@ public class LabelValueView extends InjectedLinearLayout //TODO: rename this to 
 
     public LabelValueView(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public static LabelValueView newInstance(Activity activity, final String label, final String value)
+    {
+        LabelValueView labelValueView = (LabelValueView) activity.getLayoutInflater().inflate(R.layout.element_label_value_view, null);
+        labelValueView.setLabelAndValueText(label, value);
+        return labelValueView;
     }
 
     public void setLabelText(final String labelString)

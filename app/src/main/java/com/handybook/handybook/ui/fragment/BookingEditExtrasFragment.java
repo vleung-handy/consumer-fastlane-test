@@ -216,14 +216,6 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         mOptionsLayout.addView(mOptionsView, 0);
     }
 
-    //TODO: move somewhere else?
-    private LabelValueView createPaymentDetailLabelValueView(String label, String value)
-    {
-        LabelValueView labelValueView = (LabelValueView) getActivity().getLayoutInflater().inflate(R.layout.element_label_value_view, null);
-        labelValueView.setLabelAndValueText(label, value);
-        return labelValueView;
-    }
-
     //TODO: move somewhere else
     private String getFormattedHoursForPriceTable(float hours)
     {
@@ -270,7 +262,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         String rowLabel = getResources().getString(R.string.booking_edit_extras_booking_extras_entry_label, displayName, hours);
         String priceLabel = getResources().getString(R.string.booking_edit_positive_price, formattedPrice);
-        LabelValueView extrasDetailRow = createPaymentDetailLabelValueView(rowLabel, priceLabel);
+        LabelValueView extrasDetailRow = LabelValueView.newInstance(getActivity(), rowLabel, priceLabel);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.default_margin));
