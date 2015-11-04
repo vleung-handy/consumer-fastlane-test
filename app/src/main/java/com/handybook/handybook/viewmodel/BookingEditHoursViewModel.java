@@ -15,6 +15,20 @@ public class BookingEditHoursViewModel
 {
     //TODO: create a view model for other edit screens and move some of these methods to a super
     private final EditHoursInfoResponse mEditHoursInfo;
+    /**
+     * A comparator that compares strings as numbers
+     */
+    private static final Comparator<String> COMPARATOR_STRING_NUMERIC_ASCENDING = new Comparator<String>()
+    {
+        @Override
+        public int compare(final String lhs, final String rhs)
+        {
+            //note that this is less computationally efficient than other methods, but more readable
+            Float f1 = Float.parseFloat(lhs);
+            Float f2 = Float.parseFloat(rhs);
+            return f1.compareTo(f2);
+        }
+    };
 
     private BookingEditHoursViewModel(@NonNull final EditHoursInfoResponse editHoursInfo)
     {
@@ -73,7 +87,10 @@ public class BookingEditHoursViewModel
 
     public String getTotalHoursFormatted(final float selectedHours)
     {
-        return getFormattedHoursForPriceTable(mEditHoursInfo.getBaseHours() + mEditHoursInfo.getExtrasHours() + getAddedHours(selectedHours));
+        return getFormattedHoursForPriceTable(
+                mEditHoursInfo.getBaseHours()
+                        + mEditHoursInfo.getExtrasHours()
+                        + getAddedHours(selectedHours));
     }
 
     public String getFutureBillDateFormatted()
@@ -94,18 +111,9 @@ public class BookingEditHoursViewModel
     //used to create the options array
     public String[] getSortedHoursFromPriceTable()
     {
-        String optionHourStrings[] = mEditHoursInfo.getPriceTable().keySet().toArray(new String[]{}); //BookingOption.setOptions() only accepts an array of strings
-        Arrays.sort(optionHourStrings, new Comparator<String>()
-        {
-            @Override
-            public int compare(final String lhs, final String rhs)
-            {
-                //note that this is less computationally efficient than other methods, but more readable
-                Float f1 = Float.parseFloat(lhs);
-                Float f2 = Float.parseFloat(rhs);
-                return f1.compareTo(f2);
-            }
-        });
+        String optionHourStrings[] = mEditHoursInfo.getPriceTable().keySet().toArray(new String[]{});
+        //BookingOption.setOptions() only accepts an array of strings
+        Arrays.sort(optionHourStrings, COMPARATOR_STRING_NUMERIC_ASCENDING);
         return optionHourStrings;
     }
 
@@ -133,7 +141,7 @@ public class BookingEditHoursViewModel
     //checks to see if given key, map, and map.get(key) are non-null
     private boolean mapKeyEntryValid(final Object key, final Map<?, ?> map)
     {
-        return key != null && map != null && map.get(key)!=null;
+        return key != null && map != null && map.get(key) != null;
     }
 
     private String getFormattedTotalPriceFromPriceTable(final String key, final Map<String, EditExtrasInfo.PriceInfo> priceMap)

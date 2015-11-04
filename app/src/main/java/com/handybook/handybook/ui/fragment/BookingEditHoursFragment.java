@@ -21,7 +21,7 @@ import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsSpinnerView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 import com.handybook.handybook.ui.widget.LabelValueView;
-import com.handybook.handybook.util.UIUtils;
+import com.handybook.handybook.util.UiUtils;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Subscribe;
 
@@ -128,7 +128,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
             mApplyToRecurringBookingsSelectView.setCurrentIndex(0);
 
             mApplyToRecurringBookingsSelectView.hideTitle();
-            UIUtils.replaceView(mApplyToRecurringOptionPlaceholder, mApplyToRecurringBookingsSelectView);
+            UiUtils.replaceView(mApplyToRecurringOptionPlaceholder, mApplyToRecurringBookingsSelectView);
         }
     }
 
@@ -241,7 +241,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     @Subscribe
     public final void onReceiveEditHoursInfoSuccess(HandyEvent.ReceiveEditHoursInfoViewModelSuccess event)
     {
-        this.mBookingEditHoursViewModel = event.editHoursInfoViewModel;
+        mBookingEditHoursViewModel = event.editHoursInfoViewModel;
         initializeUiForEditHoursInfo();
         updateUiForOptionSelected();
         removeUiBlockers();

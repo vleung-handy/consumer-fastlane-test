@@ -10,7 +10,9 @@ import com.handybook.handybook.ui.view.InjectedLinearLayout;
 
 import butterknife.Bind;
 
-//a horizontal linear layout with two columns, which display the label and value of a field respectively
+/**
+ * A horizontal linear layout with two columns, which display the label and value of a field respectively
+ */
 public class LabelValueView extends InjectedLinearLayout //TODO: rename this to something better
 {
     @Bind(R.id.label_value_view_label_text)
