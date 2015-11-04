@@ -18,7 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.FullWalletRequest;
 import com.google.android.gms.wallet.MaskedWallet;
@@ -96,7 +98,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     @Bind(R.id.promo_layout)
     LinearLayout promoLayout;
     @Bind(R.id.android_pay_button_layout)
-    View androidPayButtonLayout;
+    View mAndroidPayButtonLayout;
 
     public static BookingPaymentFragment newInstance()
     {
@@ -140,7 +142,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     @Override
     public void onConnected(Bundle bundle)
     {
-
+        checkIsReadyToPayWithAndroidPay();
     }
 
     @Override
@@ -368,20 +370,35 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         cardExtrasLayout.setVisibility(View.VISIBLE);
         mUseAndroidPay = false;
         mUseExistingCard = false;
+        checkIsReadyToPayWithAndroidPay();
+    }
 
-        if (true /* && TODO: Add condition US only */)
+    private void checkIsReadyToPayWithAndroidPay()
+    {
+        if (mGoogleApiClient.isConnected())
         {
-            androidPayButtonLayout.setVisibility(View.VISIBLE);
+            Wallet.Payments.isReadyToPay(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<BooleanResult>()
+                    {
+                        public void onResult(@NonNull BooleanResult result)
+                        {
+                            if (!mUseExistingCard && !mUseAndroidPay && result.getStatus().isSuccess() && result.getValue()/* && TODO: Add condition US only */)
+                            {
+                                mAndroidPayButtonLayout.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
         }
     }
 
     public void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
         setCardIcon(CreditCard.Type.OTHER);
+        creditCardText.setText(null);
         creditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         changeButton.setVisibility(View.VISIBLE);
         cardExtrasLayout.setVisibility(View.GONE);
-        androidPayButtonLayout.setVisibility(View.GONE);
+        mAndroidPayButtonLayout.setVisibility(View.GONE);
         mUseExistingCard = false;
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;
