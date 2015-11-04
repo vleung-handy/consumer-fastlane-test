@@ -90,8 +90,8 @@ public interface HandyRetrofitService
                            @Body BookingEditHoursRequest bookingEditHoursRequest,
                            HandyRetrofitCallback cb);
 
-    @GET("/bookings/{bookingId}")
-    void getBooking(@Path("bookingId") String bookingId,
+    @GET("/bookings/{id}")
+    void getBooking(@Path("id") String bookingId,
                     HandyRetrofitCallback cb);
 
     @GET("/bookings/promo_prebooking")
@@ -202,7 +202,7 @@ public interface HandyRetrofitService
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
 
-    //Request a list of requestable pros for this booking. Example response : {requestable_jobs: [{:name=>"Jason Jones", :bookingId=>2462}, {:name=>"FakeJake Eubank", :bookingId=>2746}]}
+    //Request a list of requestable pros for this booking. Example response : {requestable_jobs: [{:name=>"Jason Jones", :id=>2462}, {:name=>"FakeJake Eubank", :id=>2746}]}
     @GET("/bookings/{booking}/request_pro_info")
     void getRequestProInfo(@Path("booking") int bookingId,
                            HandyRetrofitCallback cb);
@@ -217,13 +217,13 @@ public interface HandyRetrofitService
     //Help Center Self Service Center
 
     @GET("/self_service/node_details")
-    void getHelpInfo(@Query("bookingId") String nodeId,
+    void getHelpInfo(@Query("id") String nodeId,
                      @Query("auth_token") String authToken,
                      @Query("booking_id") String bookingId,
                      HandyRetrofitCallback cb);
 
     @GET("/self_service/booking_node_details")
-    void getHelpBookingsInfo(@Query("bookingId") String nodeId,
+    void getHelpBookingsInfo(@Query("id") String nodeId,
                              @Query("auth_token") String authToken,
                              @Query("booking_id") String bookingId,
                              HandyRetrofitCallback cb);
