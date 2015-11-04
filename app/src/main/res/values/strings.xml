@@ -201,6 +201,7 @@
     <string name="job">job</string>
     <string name="no_data_indicator">--</string>
     <!--TODO: make these names less ambiguous-->
+    <!--TODO: make names specify that it is a string formatter when applicable-->
     <string name="edit_extras_title">Edit Extras</string>
     <string name="edit_extras_update_success_msg">Updated booking extras</string>
     <string name="total_due">Total Due</string>
