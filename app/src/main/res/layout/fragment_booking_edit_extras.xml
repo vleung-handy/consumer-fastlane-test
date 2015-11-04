@@ -47,7 +47,7 @@
 
                 <include
                     android:id="@+id/booking_edit_extras_booking_label_row"
-                    layout="@layout/element_booking_extras_price_row"
+                    layout="@layout/element_label_value_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin"/>
@@ -79,7 +79,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/default_margin_half"
-                            android:text="@string/edit_extras_total_due"
+                            android:text="@string/total_due"
                             android:textAllCaps="true"
                             android:textColor="@color/handy_text_black"
                             android:textSize="@dimen/text_size_large"
@@ -112,13 +112,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_pressed"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="@dimen/default_padding"
-                    android:text="@string/edit_extras_warning_msg"
-                    android:textColor="@color/black_pressed"/>
+                <include layout="@layout/element_booking_edit_warning_text"/>
             </LinearLayout>
 
         </RelativeLayout>

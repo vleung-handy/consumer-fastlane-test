@@ -11,6 +11,7 @@ import com.handybook.handybook.core.BookingEditExtrasTransaction;
 import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.model.request.BookingEditHoursRequest;
 
 import java.util.Date;
 
@@ -79,6 +80,15 @@ public interface HandyRetrofitService
             @Nullable @Query("only_bookings") String bookingType,
             HandyRetrofitCallback cb
     );
+
+    @GET("/bookings/{bookingId}/edit_hours")
+    void getEditHoursInfo(@Path("bookingId") int bookingId,
+                    HandyRetrofitCallback cb);
+
+    @POST("/bookings/{bookingId}/edit_hours")
+    void editBookingHours(@Path("bookingId") int bookingId,
+                           @Body BookingEditHoursRequest bookingEditHoursRequest,
+                           HandyRetrofitCallback cb);
 
     @GET("/bookings/{id}")
     void getBooking(@Path("id") String bookingId,

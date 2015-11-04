@@ -5,17 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/cell_booking"
-    android:paddingBottom="16dp"
-    android:paddingTop="16dp">
+    android:paddingBottom="@dimen/default_padding"
+    android:paddingTop="@dimen/default_padding">
 
     <TextView android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
         android:gravity="center"
+        android:textColor="@color/handy_text_black"
         android:text="Title"
+        android:textSize="@dimen/text_size_large"
         android:freezesText="false"
         style="@style/TextView" />
 
@@ -34,7 +36,7 @@
                 android:id="@+id/options_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:itemsDimmedAlpha="100"
+                app:itemsDimmedAlpha="90"
                 app:isAllVisible="true"
                 app:itemsPadding="@dimen/options_wheel_padding"
                 android:layout_gravity="center" />
@@ -49,18 +51,19 @@
         </FrameLayout>
 
         <TextView android:id="@+id/info_text"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
             android:text="Info"
             style="@style/TextView.BookingOptionInfo" />
 
-        <TextView android:id="@+id/warning_text"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Warning"
-            style="@style/TextView.BookingOptionInfo" />
+        <TextView
+            style="@style/TextView.BookingOptionInfo"
+            android:id="@+id/warning_text"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="Warning"/>
 
     </LinearLayout>
 

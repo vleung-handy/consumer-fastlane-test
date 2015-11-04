@@ -12,7 +12,9 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.model.response.EditHoursInfoResponse;
+import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -44,6 +46,26 @@ public final class BookingManager implements Observer
     }
 
     //Event listening + sending, half way to updating our managers to work like nortal's managers and provide a layer for data access
+
+    @Subscribe
+    public void onRequestEditHoursInfoViewModel(HandyEvent.RequestEditHoursInfoViewModel event)
+    {
+        dataManager.getEditHoursInfo(event.bookingId, new DataManager.Callback<EditHoursInfoResponse>()
+        {
+            @Override
+            public void onSuccess(EditHoursInfoResponse response)
+            {
+                BookingEditHoursViewModel bookingEditHoursViewModel = BookingEditHoursViewModel.from(response);
+                bus.post(new HandyEvent.ReceiveEditHoursInfoViewModelSuccess(bookingEditHoursViewModel));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveEditHoursInfoViewModelError(error));
+            }
+        });
+    }
 
     @Subscribe
     public void onRequestPreRescheduleInfo(HandyEvent.RequestPreRescheduleInfo event)
@@ -481,6 +503,29 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
+    public final void onRequestEditBookingHours(final HandyEvent.RequestEditHours event)
+    {
+        dataManager.editBookingHours(
+                event.bookingId,
+                event.bookingEditHoursRequest,
+                new DataManager.Callback<SuccessWrapper>()
+                {
+                    @Override
+                    public void onSuccess(SuccessWrapper response)
+                    {
+                        bus.post(new HandyEvent.ReceiveEditHoursSuccess(response));
+                    }
+
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        bus.post(new HandyEvent.ReceiveEditHoursError(error));
+
+                    }
+                });
+    }
+
+    @Subscribe
     public final void onRequestEditServiceExtras(final HandyEvent.RequestEditServiceExtrasOptions event)
     {
         dataManager.editServiceExtras(
@@ -502,6 +547,7 @@ public final class BookingManager implements Observer
             }
         });
     }
+
     @Subscribe
     public final void onRequestGetServiceExtras(final HandyEvent.RequestGetServiceExtrasOptions event)
     {

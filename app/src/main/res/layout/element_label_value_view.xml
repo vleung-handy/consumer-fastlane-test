@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.handybook.handybook.ui.widget.LabelValueView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/price_table_row_label_text"
+        android:id="@+id/label_value_view_label_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -14,7 +14,7 @@
         android:textSize="@dimen/text_size_large"/>
 
     <TextView
-        android:id="@+id/price_table_row_price_text"
+        android:id="@+id/label_value_view_value_text"
         style="@style/TextView.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,4 +22,4 @@
         android:textColor="@color/handy_text_black"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"/>
-</LinearLayout>
+</com.handybook.handybook.ui.widget.LabelValueView>
