@@ -171,7 +171,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
                         addedPriceFormatted : getResources().getString(R.string.booking_edit_positive_price, addedPriceFormatted));
 
         mBookingDurationText.setText(
-                getResources().getString(R.string.booking_edit_hours_display, totalHoursFormatted));
+                getResources().getString(R.string.booking_edit_num_hours_display, totalHoursFormatted));
         mBilledOnText.setText(getResources().getString(R.string.billed_on_date,
                 mBookingEditHoursViewModel.getFutureBillDateFormatted()));
         mTotalDueText.setText(mBookingEditHoursViewModel.getTotalDuePriceFormatted(selectedHours));

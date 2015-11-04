@@ -50,6 +50,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         super(context, attrs, defStyle);
     }
 
+    //TODO: put these in a util
     private boolean isArrayIndexValid(int[] array, int index)
     {
         return array != null &&

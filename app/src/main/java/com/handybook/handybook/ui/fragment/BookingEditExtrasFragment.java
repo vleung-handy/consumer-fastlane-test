@@ -255,7 +255,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         float totalHours = bookingBaseHours + extrasHours;
 
         //build the resulting booking detail section
-        mBookingDurationText.setText(getResources().getString(R.string.booking_edit_hours_display, totalHours));
+        mBookingDurationText.setText(getResources().getString(R.string.booking_edit_num_hours_display, totalHours));
         mBilledOnText.setText(getResources().getString(R.string.billed_on_date, mEditExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
 
         String totalHoursFormatted = getFormattedHoursForPriceTable(totalHours);
