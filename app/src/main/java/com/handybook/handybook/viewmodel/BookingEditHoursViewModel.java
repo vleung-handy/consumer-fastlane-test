@@ -46,7 +46,7 @@ public class BookingEditHoursViewModel
      */
     public String getBaseHoursFormatted()
     {
-        return getFormattedHoursForPriceTable(mEditHoursInfo.getBaseHours());
+        return getHoursFormatted(mEditHoursInfo.getBaseHours());
     }
 
     /**
@@ -62,7 +62,7 @@ public class BookingEditHoursViewModel
      */
     public String getExtrasHoursFormatted()
     {
-        return getFormattedHoursForPriceTable(mEditHoursInfo.getExtrasHours());
+        return getHoursFormatted(mEditHoursInfo.getExtrasHours());
     }
 
     /**
@@ -86,7 +86,7 @@ public class BookingEditHoursViewModel
      */
     public String getSelectedHoursFormatted(final float selectedHours)
     {
-        return getFormattedHoursForPriceTable(selectedHours);
+        return getHoursFormatted(selectedHours);
     }
 
     /**
@@ -112,7 +112,7 @@ public class BookingEditHoursViewModel
      */
     public String getAddedHoursFormatted(final float selectedHours)
     {
-        return getFormattedHoursForPriceTable(getAddedHours(selectedHours));
+        return getHoursFormatted(getAddedHours(selectedHours));
     }
 
     /**
@@ -120,7 +120,7 @@ public class BookingEditHoursViewModel
      */
     public String getTotalHoursFormatted(final float selectedHours)
     {
-        return getFormattedHoursForPriceTable(
+        return getHoursFormatted(
                 mEditHoursInfo.getBaseHours()
                         + mEditHoursInfo.getExtrasHours()
                         + getAddedHours(selectedHours));
@@ -168,7 +168,12 @@ public class BookingEditHoursViewModel
     }
 
     //TODO: will rename these later
-    private String getFormattedHoursForPriceTable(float hours)
+
+    /**
+     * @param hours
+     * @return A string that represents the given number of hours, with 0-1 decimal points. For example, 3.0 becomes 3
+     */
+    private String getHoursFormatted(float hours)
     {
         //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
         //round to one decimal place in case there are floating point rounding errors
