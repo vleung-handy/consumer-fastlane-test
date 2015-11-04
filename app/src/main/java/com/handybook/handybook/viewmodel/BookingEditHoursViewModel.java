@@ -40,21 +40,33 @@ public class BookingEditHoursViewModel
         return new BookingEditHoursViewModel(editHoursInfo);
     }
 
+    /**
+     * @return A formatted string that indicates the number of base hours in the original booking
+     */
     public String getBaseHoursFormatted()
     {
         return getFormattedHoursForPriceTable(mEditHoursInfo.getBaseHours());
     }
 
+    /**
+     * @return A formatted string that indicates the base price of the original booking
+     */
     public String getBasePriceFormatted()
     {
-        return getFormattedPriceFromTotalPriceTableForDisplay(getBaseHoursFormatted());
+        return getFormattedPriceFromTotalPriceTable(getBaseHoursFormatted());
     }
 
+    /**
+     * @return A formatted string that indicates the number of hours allocated for service extras in the original booking
+     */
     public String getExtrasHoursFormatted()
     {
         return getFormattedHoursForPriceTable(mEditHoursInfo.getExtrasHours());
     }
 
+    /**
+     * @return A formatted string that indicates the total price of the service extras in the original booking
+     */
     public String getExtrasPriceFormatted()
     {
         return mEditHoursInfo.getExtrasPrice() == null ? null : mEditHoursInfo.getExtrasPrice().getFormattedPrice();
@@ -65,26 +77,45 @@ public class BookingEditHoursViewModel
         return selectedHours < mEditHoursInfo.getBaseHours();
     }
 
+    /**
+     *
+     * @param selectedHours
+     * @return A formatted string that indicates the number of hours the user has selected
+     */
     public String getSelectedHoursFormatted(final float selectedHours)
     {
         return getFormattedHoursForPriceTable(selectedHours);
     }
 
+    /**
+     *
+     * @param selectedHours
+     * @return A formatted string that indicates the difference between the selected hours and the base hours in the original booking
+     */
     public String getAddedHoursPriceFormatted(final float selectedHours)
     {
-        return getFormattedPriceDifferenceFromPriceTableForDisplay(getSelectedHoursFormatted(selectedHours));
+        return getFormattedPriceDifference(getSelectedHoursFormatted(selectedHours));
     }
 
+    /**
+     * @return A formatted string that indicates the new total price of the booking
+     */
     public String getTotalDuePriceFormatted(final float selectedHours)
     {
-        return getFormattedPriceFromTotalPriceTableForDisplay(getTotalHoursFormatted(selectedHours));
+        return getFormattedPriceFromTotalPriceTable(getTotalHoursFormatted(selectedHours));
     }
 
+    /**
+     * @return A formatted string that indicates the number of hours that the user is adding to the original booking
+     */
     public String getAddedHoursFormatted(final float selectedHours)
     {
         return getFormattedHoursForPriceTable(getAddedHours(selectedHours));
     }
 
+    /**
+     * @return A formatted string that indicates the new total hours of the booking
+     */
     public String getTotalHoursFormatted(final float selectedHours)
     {
         return getFormattedHoursForPriceTable(
@@ -117,23 +148,25 @@ public class BookingEditHoursViewModel
         return optionHourStrings;
     }
 
+    //TODO: will rename these later
     private String getFormattedHoursForPriceTable(float hours)
     {
         //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
-
         //round to one decimal place in case there are floating point rounding errors
         hours = MathUtils.roundToDecimalPlaces(hours, 1);
         return TextUtils.formatNumberToAtMostOneDecimalPlace(hours);
     }
 
-    private String getFormattedPriceFromTotalPriceTableForDisplay(final String key)
+    private String getFormattedPriceFromTotalPriceTable(final String key)
     {
-        return getFormattedTotalPriceFromPriceTable(key, mEditHoursInfo.getTotalPriceTable());
+        Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getTotalPriceTable();
+        return mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getTotalDueFormatted() : null;
     }
 
-    private String getFormattedPriceDifferenceFromPriceTableForDisplay(final String key)
+    private String getFormattedPriceDifference(final String key)
     {
-        return getFormattedPriceDifferenceFromPriceTable(key, mEditHoursInfo.getPriceTable());
+        Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getPriceTable();
+        return mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getPriceDifferenceFormatted() : null;
     }
 
     //TODO: put in util function
@@ -143,15 +176,4 @@ public class BookingEditHoursViewModel
     {
         return key != null && map != null && map.get(key) != null;
     }
-
-    private String getFormattedTotalPriceFromPriceTable(final String key, final Map<String, EditExtrasInfo.PriceInfo> priceMap)
-    {
-        return mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getTotalDueFormatted() : null;
-    }
-
-    private String getFormattedPriceDifferenceFromPriceTable(final String key, final Map<String, EditExtrasInfo.PriceInfo> priceMap)
-    {
-        return mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getPriceDifferenceFormatted() : null;
-    }
-
 }
