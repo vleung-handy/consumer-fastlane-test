@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-public final class UIUtils
+public final class UiUtils
 {
     public static void dismissOnBackPressed(Activity activity)
     {
-        UIUtils.dismissKeyboard(activity);
+        UiUtils.dismissKeyboard(activity);
         activity.onBackPressed();
     }
 
