@@ -16,6 +16,7 @@ public class EnvironmentModifier
     {
         public static final String P = "p";
         public static final String S = "s";
+        public static final String L = "l";
     }
 
 
@@ -48,6 +49,11 @@ public class EnvironmentModifier
     public boolean isProduction()
     {
         return Environment.P.equals(getEnvironment());
+    }
+
+    public boolean isLocal()
+    {
+        return Environment.L.equals(getEnvironment());
     }
 
     public void setEnvironment(String environment)
