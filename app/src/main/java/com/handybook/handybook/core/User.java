@@ -17,6 +17,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 public final class User extends Observable {
+
+    private static final String PAYMENT_METHOD_ANDROID_PAY = "android_pay";
+
     @SerializedName("auth_token") private String authToken;
     @SerializedName("id") private String id;
     @SerializedName("credits") private float credits;
@@ -32,6 +35,7 @@ public final class User extends Observable {
     @SerializedName("password_confirmation") private String passwordConfirmation;
     @SerializedName("first_address") private Address address;
     @SerializedName("card_info") private CreditCard creditCard;
+    @SerializedName("payment_method") private String paymentMethod;
     @SerializedName("analytics") private Analytics analytics;
     @SerializedName("booking_to_rate_id") private int bookingRateId;
     @SerializedName("booking_to_rate_pro_name") private String bookingRatePro;
@@ -170,6 +174,11 @@ public final class User extends Observable {
 
     public final CreditCard getCreditCard() {
         return creditCard;
+    }
+
+    public boolean isUsingAndroidPay()
+    {
+        return paymentMethod != null && paymentMethod.equalsIgnoreCase(PAYMENT_METHOD_ANDROID_PAY);
     }
 
     final void setCreditCard(final CreditCard creditCard) {

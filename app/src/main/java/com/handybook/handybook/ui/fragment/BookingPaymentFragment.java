@@ -180,7 +180,14 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         {
             mUseExistingCard = true;
             creditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + card.getLast4());
-            setCardIcon(card.getBrand());
+            if (user.isUsingAndroidPay())
+            {
+                setCardIcon(CreditCard.Type.ANDROID_PAY);
+            }
+            else
+            {
+                setCardIcon(card.getBrand());
+            }
         }
         else
         {
@@ -324,6 +331,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                 creditCardIcon.setImageResource(R.drawable.ic_card_visa);
                 break;
 
+            case ANDROID_PAY:
+                creditCardIcon.setImageResource(R.drawable.ic_android_pay);
+                break;
+
             default:
                 creditCardIcon.setImageResource(R.drawable.ic_card_blank);
         }
@@ -393,7 +404,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     public void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
-        setCardIcon(CreditCard.Type.OTHER);
+        setCardIcon(CreditCard.Type.ANDROID_PAY);
         creditCardText.setText(null);
         creditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         changeButton.setVisibility(View.VISIBLE);
