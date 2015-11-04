@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class InjectedFragment extends android.support.v4.app.Fragment {
     protected boolean allowCallbacks;
-    protected ProgressDialog progressDialog;
+    protected ProgressDialog progressDialog; //TODO: we should take this out of this class
     protected Toast toast;
 
     //UPGRADE: Move away from direct calls to these and go through the bus

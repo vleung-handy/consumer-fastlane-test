@@ -123,11 +123,9 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
             bookingOption.setType(BookingOption.TYPE_CHECKLIST);
             bookingOption.setOptions(new String[]{getResources().getString(R.string.booking_edit_apply_to_subsequent_bookings_option)});
 
-            bookingOption.setDefaultValue(Integer.toString(0)); //function expects a string but in the view this is parsed back to int and interpreted as an index. why?
-
-
             mApplyToRecurringBookingsSelectView = new BookingOptionsSelectView(getActivity(), bookingOption,
                     null);
+            mApplyToRecurringBookingsSelectView.setCurrentIndex(0);
 
             mApplyToRecurringBookingsSelectView.hideTitle();
             UIUtils.replaceView(mApplyToRecurringOptionPlaceholder, mApplyToRecurringBookingsSelectView);
