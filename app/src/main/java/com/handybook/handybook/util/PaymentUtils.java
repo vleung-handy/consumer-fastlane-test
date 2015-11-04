@@ -43,7 +43,7 @@ public class PaymentUtils
                 .setPaymentMethodTokenizationParameters(PaymentMethodTokenizationParameters.newBuilder()
                         .setPaymentMethodTokenizationType(PaymentMethodTokenizationType.PAYMENT_GATEWAY)
                         .addParameter("gateway", "stripe")
-                        .addParameter("stripe:publishableKey", "pk_qPX5iTm3zI9AebN3rxOtFUe1Z4l92")
+                        .addParameter("stripe:publishableKey", "pk_qPX5iTm3zI9AebN3rxOtFUe1Z4l92") // should be quote.getStripeKey()
                         .addParameter("stripe:version", Stripe.VERSION)
                         .build())
                 .build();

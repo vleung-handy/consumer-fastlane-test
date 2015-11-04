@@ -475,7 +475,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         if (!allowCallbacks) return;
         final PaymentMethodToken paymentMethodToken = fullWallet.getPaymentMethodToken();
-        bookingManager.getCurrentTransaction().setStripeToken(paymentMethodToken.getToken());
+        final BookingTransaction currentTransaction = bookingManager.getCurrentTransaction();
+        currentTransaction.setStripeToken(paymentMethodToken.getToken());
+        currentTransaction.setPaymentMethod(User.PAYMENT_METHOD_ANDROID_PAY);
         completeBooking();
     }
 

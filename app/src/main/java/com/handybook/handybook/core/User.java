@@ -18,7 +18,7 @@ import java.util.Observer;
 
 public final class User extends Observable {
 
-    private static final String PAYMENT_METHOD_ANDROID_PAY = "android_pay";
+    public static final String PAYMENT_METHOD_ANDROID_PAY = "android_pay";
 
     @SerializedName("auth_token") private String authToken;
     @SerializedName("id") private String id;

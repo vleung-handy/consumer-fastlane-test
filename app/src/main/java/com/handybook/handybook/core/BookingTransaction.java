@@ -33,6 +33,7 @@ public final class BookingTransaction extends Observable {
     @SerializedName("date_start") private Date startDate;
     @SerializedName("auth_token") private String authToken;
     @SerializedName("stripe_token") private String stripeToken;
+    @SerializedName("payment_method") private String mPaymentMethod;
     @SerializedName("_android_promo_applied") private String promoApplied;
 
     public final int getBookingId() {
@@ -230,10 +231,22 @@ public final class BookingTransaction extends Observable {
         };
     }
 
+    public void setPaymentMethod(String paymentMethod)
+    {
+        mPaymentMethod = paymentMethod;
+        triggerObservers();
+    }
+
+    public String getPaymentMethod()
+    {
+        return mPaymentMethod;
+    }
+
     static final class BookingTransactionSerializer implements JsonSerializer<BookingTransaction> {
         @Override
         public final JsonElement serialize(final BookingTransaction value, final Type type,
-                                           final JsonSerializationContext context) {
+                                           final JsonSerializationContext context)
+        {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("booking_id", context.serialize(value.getBookingId()));
             jsonObj.add("user_id", context.serialize(value.getUserId()));
@@ -249,6 +262,7 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("stripe_token", context.serialize(value.getStripeToken()));
+            jsonObj.add("payment_method", context.serialize(value.getPaymentMethod()));
             jsonObj.add("extra_cleaning_text", context.serialize(value.getExtraCleaningText()));
             jsonObj.add("mobile", context.serialize(1));
             jsonObj.add("_android_promo_applied", context.serialize(value.promoApplied()));
