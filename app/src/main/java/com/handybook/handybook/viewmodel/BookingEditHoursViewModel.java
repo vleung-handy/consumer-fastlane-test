@@ -6,6 +6,7 @@ import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.model.response.EditHoursInfoResponse;
 import com.handybook.handybook.util.MathUtils;
 import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.util.ValidationUtils;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -53,7 +54,7 @@ public class BookingEditHoursViewModel
      */
     public String getBasePriceFormatted()
     {
-        return getFormattedPriceFromTotalPriceTable(getBaseHoursFormatted());
+        return getTotalDuePriceFormatted(getBaseHoursFormatted());
     }
 
     /**
@@ -94,7 +95,7 @@ public class BookingEditHoursViewModel
      */
     public String getAddedHoursPriceFormatted(final float selectedHours)
     {
-        return getFormattedPriceDifference(getSelectedHoursFormatted(selectedHours));
+        return getPriceDifferenceFormatted(getSelectedHoursFormatted(selectedHours));
     }
 
     /**
@@ -102,7 +103,7 @@ public class BookingEditHoursViewModel
      */
     public String getTotalDuePriceFormatted(final float selectedHours)
     {
-        return getFormattedPriceFromTotalPriceTable(getTotalHoursFormatted(selectedHours));
+        return getTotalDuePriceFormatted(getTotalHoursFormatted(selectedHours));
     }
 
     /**
@@ -124,25 +125,42 @@ public class BookingEditHoursViewModel
                         + getAddedHours(selectedHours));
     }
 
+    /**
+     * @return A formatted string that indicates the date that the booking will be billed for
+     */
     public String getFutureBillDateFormatted()
     {
         return mEditHoursInfo.getPaidStatus().getFutureBillDateFormatted();
     }
 
+    /**
+     *
+     * @param selectedHours
+     * @return The difference in hours between the base hours in the original booking, and the number of hours that the user has selected
+     */
     private float getAddedHours(final float selectedHours)
     {
         return selectedHours - mEditHoursInfo.getBaseHours();
     }
 
+    /**
+     *
+     * @return The number of base hours (this excludes extras) in the original booking
+     */
     public float getBaseHours()
     {
         return mEditHoursInfo.getBaseHours();
     }
 
     //used to create the options array
-    public String[] getSortedHoursFromPriceTable()
+
+    /**
+     *
+     * @return A string array that contains numerically sorted hours that the user can select from
+     */
+    public String[] getSelectableHoursArray()
     {
-        String optionHourStrings[] = mEditHoursInfo.getPriceTable().keySet().toArray(new String[]{});
+        String optionHourStrings[] = mEditHoursInfo.getPriceMap().keySet().toArray(new String[]{});
         //BookingOption.setOptions() only accepts an array of strings
         Arrays.sort(optionHourStrings, COMPARATOR_STRING_NUMERIC_ASCENDING);
         return optionHourStrings;
@@ -157,23 +175,15 @@ public class BookingEditHoursViewModel
         return TextUtils.formatNumberToAtMostOneDecimalPlace(hours);
     }
 
-    private String getFormattedPriceFromTotalPriceTable(final String key)
+    private String getTotalDuePriceFormatted(final String key)
     {
-        Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getTotalPriceTable();
-        return mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getTotalDueFormatted() : null;
+        Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getTotalPriceMap();
+        return ValidationUtils.mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getTotalDueFormatted() : null;
     }
 
-    private String getFormattedPriceDifference(final String key)
+    private String getPriceDifferenceFormatted(final String key)
     {
-        Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getPriceTable();
-        return mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getPriceDifferenceFormatted() : null;
-    }
-
-    //TODO: put in util function
-    //TODO: move priceinfo class
-    //checks to see if given key, map, and map.get(key) are non-null
-    private boolean mapKeyEntryValid(final Object key, final Map<?, ?> map)
-    {
-        return key != null && map != null && map.get(key) != null;
+        Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getPriceMap();
+        return ValidationUtils.mapKeyEntryValid(key, priceMap) ? priceMap.get(key).getPriceDifferenceFormatted() : null;
     }
 }

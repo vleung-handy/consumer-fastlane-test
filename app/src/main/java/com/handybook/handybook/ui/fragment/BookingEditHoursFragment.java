@@ -194,7 +194,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION_PICKER);
 
-        String[] optionHourStrings = mBookingEditHoursViewModel.getSortedHoursFromPriceTable();
+        String[] optionHourStrings = mBookingEditHoursViewModel.getSelectableHoursArray();
         bookingOption.setOptions(optionHourStrings);
 
         //by default, the selected option will be the # of base hours in the booking
