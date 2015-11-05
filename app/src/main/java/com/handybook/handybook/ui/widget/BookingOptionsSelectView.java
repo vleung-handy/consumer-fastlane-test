@@ -118,10 +118,6 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             final LinearLayout optionView = (LinearLayout) LayoutInflater.from(context)
                     .inflate(R.layout.view_booking_select_option, this, false);
 
-            //need to give optionView a parent before setting its layout params
-            //otherwise the layout params don't work as expected
-            optionLayout.addView(optionView);
-
             final TextView title = (TextView) optionView.findViewById(R.id.title_text);
             title.setText(optionText);
 
@@ -167,15 +163,6 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             checkBox.setOnCheckedChangeListener(checkedChanged);
             checkMap.put(i, checkBox);
 
-            if (i < optionsList.length - 1)
-            {
-                final LinearLayout.LayoutParams layoutParams
-                        = (LinearLayout.LayoutParams) optionView.getLayoutParams();
-                layoutParams.bottomMargin = getResources().getDimensionPixelSize(R.dimen.default_margin);
-
-                optionView.setLayoutParams(layoutParams);
-            }
-
             optionView.setOnClickListener(new OnClickListener()
             {
                 @Override
@@ -193,6 +180,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 }
             });
 
+            optionLayout.addView(optionView);
         }
 
         handleWarnings(getCurrentIndex());
