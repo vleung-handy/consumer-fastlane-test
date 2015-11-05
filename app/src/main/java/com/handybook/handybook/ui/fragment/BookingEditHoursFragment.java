@@ -125,7 +125,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
             mApplyToRecurringBookingsSelectView = new BookingOptionsSelectView(getActivity(), bookingOption,
                     null);
             mApplyToRecurringBookingsSelectView.setCurrentIndex(0);
-
             mApplyToRecurringBookingsSelectView.hideTitle();
             UiUtils.replaceView(mApplyToRecurringOptionPlaceholder, mApplyToRecurringBookingsSelectView);
         }
@@ -172,7 +171,8 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         mAddedTimeDetailsView.setLabelAndValueText(
                 getResources().getString(R.string.booking_edit_added_hours_formatted, addedHoursFormatted),
                 mBookingEditHoursViewModel.isSelectedHoursLessThanBaseHours(selectedHours) ?
-                        addedPriceFormatted : getResources().getString(R.string.booking_edit_positive_price_formatted, addedPriceFormatted));
+                        addedPriceFormatted : getResources().getString(R.string.booking_edit_positive_price_formatted,
+                        addedPriceFormatted));
 
         mBookingDurationText.setText(
                 getResources().getString(R.string.booking_edit_num_hours_formatted, totalHoursFormatted));
