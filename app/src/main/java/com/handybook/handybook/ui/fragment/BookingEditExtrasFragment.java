@@ -247,8 +247,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         float totalHours = bookingBaseHours + extrasHours;
 
         //build the resulting booking detail section
-        mBookingDurationText.setText(getResources().getString(R.string.booking_edit_num_hours_display, totalHours));
-        mBilledOnText.setText(getResources().getString(R.string.billed_on_date, mEditExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
+        mBookingDurationText.setText(getResources().getString(R.string.booking_edit_num_hours_formatted, totalHours));
+        mBilledOnText.setText(getResources().getString(R.string.billed_on_date_formatted, mEditExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
 
         String totalHoursFormatted = getFormattedHoursForPriceTable(totalHours);
         Map<String, EditExtrasInfo.PriceInfo> priceTable = mEditExtrasInfo.getPriceTable();
@@ -260,8 +260,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     private void addExtrasDetailsRow(String displayName, float hours, String formattedPrice)
     {
-        String rowLabel = getResources().getString(R.string.booking_edit_extras_booking_extras_entry_label, displayName, hours);
-        String priceLabel = getResources().getString(R.string.booking_edit_positive_price, formattedPrice);
+        String rowLabel = getResources().getString(R.string.booking_edit_extras_booking_extras_entry_formatted, displayName, hours);
+        String priceLabel = getResources().getString(R.string.booking_edit_positive_price_formatted, formattedPrice);
         LabelValueView extrasDetailRow = LabelValueView.newInstance(getActivity(), rowLabel, priceLabel);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -275,7 +275,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         float bookingBaseHours = mEditExtrasInfo.getBaseHours(); //it is weird for api to return this
         String originalBookingBaseHours = getFormattedHoursForPriceTable(bookingBaseHours);
         String originalBookingBasePrice = mEditExtrasInfo.getPriceTable().get(originalBookingBaseHours).getTotalDueFormatted();
-        mBookingTableRow.setLabelAndValueText(getResources().getString(R.string.booking_edit_base_time_label, bookingBaseHours), originalBookingBasePrice);
+        mBookingTableRow.setLabelAndValueText(getResources().getString(R.string.booking_edit_base_hours_formatted, bookingBaseHours), originalBookingBasePrice);
     }
 
     @Override
@@ -306,7 +306,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     public final void onReceiveUpdateServiceExtrasSuccess(HandyEvent.ReceiveEditServiceExtrasOptionsSuccess event)
     {
         removeUiBlockers();
-        showToast(getString(R.string.edit_extras_update_success_msg));
+        showToast(getString(R.string.booking_edit_extras_update_success));
 
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
         getActivity().finish();
