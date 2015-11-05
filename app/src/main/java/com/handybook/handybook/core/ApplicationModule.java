@@ -207,7 +207,7 @@ public final class ApplicationModule
         EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus, prefsManager);
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
-            environmentModifier.setEnvironment(EnvironmentModifier.Environment.P);
+            environmentModifier.setEnvironment(EnvironmentModifier.Environment.PRODUCTION);
         }
         return environmentModifier;
     }
