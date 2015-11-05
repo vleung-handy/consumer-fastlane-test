@@ -27,6 +27,8 @@ import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
+import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.response.EditHoursInfoResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -48,6 +50,12 @@ public abstract class DataManager
                                            BookingEditExtrasTransaction bookingEditExtrasTransaction,
                                           Callback<SuccessWrapper> cb);
 
+    public abstract void getEditHoursInfo(int bookingId,
+                                           Callback<EditHoursInfoResponse> cb);
+
+    public abstract void editBookingHours(int bookingId,
+                                           BookingEditHoursRequest bookingEditHoursRequest,
+                                           Callback<SuccessWrapper> cb);
     /**
      * Requests a ShouldBlockObject defining if the app is recent enough to be used
      * @param versionCode Android version code (Not version name!)

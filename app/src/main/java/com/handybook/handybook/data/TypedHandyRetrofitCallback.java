@@ -14,6 +14,7 @@ import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.UserBookingsWrapper;
+import com.handybook.handybook.model.response.EditHoursInfoResponse;
 
 import org.json.JSONObject;
 
@@ -123,6 +124,14 @@ class BookingPricesForFrequenciesHandyRetroFitCallback extends TypedHandyRetrofi
 class ServiceExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<EditExtrasInfo>
 {
     ServiceExtrasInfoHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+class EditHoursInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<EditHoursInfoResponse>
+{
+    EditHoursInfoHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }

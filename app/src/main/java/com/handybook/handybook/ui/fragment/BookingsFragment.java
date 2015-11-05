@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.ui.view.HandyTabLayout;
 import com.handybook.handybook.ui.widget.MenuButton;
 

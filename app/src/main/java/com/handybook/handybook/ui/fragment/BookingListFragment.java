@@ -19,7 +19,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.ui.adapter.BookingCardAdapter;
 import com.handybook.handybook.ui.view.EmptyRecyclerView;
 import com.squareup.otto.Subscribe;

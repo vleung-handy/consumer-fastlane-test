@@ -1,6 +1,5 @@
-package com.handybook.handybook.model;
+package com.handybook.handybook.viewmodel;
 
-import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
@@ -13,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class BookingCardViewModel
 {
