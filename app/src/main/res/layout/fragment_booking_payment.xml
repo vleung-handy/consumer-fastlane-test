@@ -21,9 +21,11 @@
         android:layout_above="@id/next_button"
         android:layout_below="@id/nav_text">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
 
             <FrameLayout
                 android:id="@+id/info_header_layout"
@@ -35,15 +37,16 @@
                 android:id="@+id/android_pay_button_layout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_below="@+id/info_payment_layout"
-                android:layout_margin="@dimen/default_margin_double"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin_double"
+                android:layout_marginRight="@dimen/default_margin_double"
                 android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/info_payment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/info_header_layout"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
@@ -171,7 +174,7 @@
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 

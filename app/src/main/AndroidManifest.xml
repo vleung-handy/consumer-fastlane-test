@@ -93,7 +93,8 @@
         <activity android:name=".ui.activity.BookingOptionsActivity"/>
         <activity android:name=".ui.activity.BookingDateActivity"/>
         <activity android:name=".ui.activity.BookingAddressActivity"/>
-        <activity android:name=".ui.activity.BookingPaymentActivity"/>
+        <activity android:name=".ui.activity.BookingPaymentActivity"
+                  android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ui.activity.BookingDetailActivity"/>
         <activity android:name=".ui.activity.BookingConfirmationActivity"/>
         <activity android:name=".ui.activity.BookingRecurrenceActivity"/>
