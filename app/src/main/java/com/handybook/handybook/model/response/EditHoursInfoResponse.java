@@ -14,9 +14,9 @@ public class EditHoursInfoResponse
     @SerializedName("extras_hours")
     private float mExtrasHours;
     @SerializedName("price_table")
-    private Map<String, EditExtrasInfo.PriceInfo> mPriceTable; //TODO: move priceinfo class
+    private Map<String, EditExtrasInfo.PriceInfo> mPriceMap; //TODO: move priceinfo class
     @SerializedName("total_price_table")
-    private Map<String, EditExtrasInfo.PriceInfo> mTotalPriceTable;
+    private Map<String, EditExtrasInfo.PriceInfo> mTotalPriceMap;
     @SerializedName("extras_price")
     private EditExtrasInfo.OptionPrice mExtrasPrice;
     @SerializedName("total_hours")
@@ -54,14 +54,14 @@ public class EditHoursInfoResponse
         return mPaidStatus;
     }
 
-    public Map<String, EditExtrasInfo.PriceInfo> getTotalPriceTable()
+    public Map<String, EditExtrasInfo.PriceInfo> getTotalPriceMap()
     {
-        return mTotalPriceTable;
+        return mTotalPriceMap;
     }
 
-    public Map<String, EditExtrasInfo.PriceInfo> getPriceTable()
+    public Map<String, EditExtrasInfo.PriceInfo> getPriceMap()
     {
-        return mPriceTable;
+        return mPriceMap;
     }
 
 

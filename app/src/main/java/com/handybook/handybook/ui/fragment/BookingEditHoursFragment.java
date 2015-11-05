@@ -80,7 +80,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     private void initRequestWrapper()
     {
         mBookingEditHoursRequest = new BookingEditHoursRequest();
-
     }
 
     @Override
@@ -138,7 +137,9 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         showUiBlockers();
         float selectedHours = Float.parseFloat(mOptionsView.getCurrentValue());
         mBookingEditHoursRequest.setNewBaseHrs(selectedHours);
-        mBookingEditHoursRequest.setApplyToRecurring(mApplyToRecurringBookingsSelectView != null && mApplyToRecurringBookingsSelectView.getCheckedIndexes().length > 0);
+        mBookingEditHoursRequest.setApplyToRecurring(
+                mApplyToRecurringBookingsSelectView != null
+                        && mApplyToRecurringBookingsSelectView.getCheckedIndexes().length > 0);
         bus.post(new HandyEvent.RequestEditHours(Integer.parseInt(mBooking.getId()), mBookingEditHoursRequest));
     }
 
@@ -157,6 +158,9 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
 
     }
 
+    /**
+     * Updates the price details view (which includes "Base time", "Added time", "Total Due", etc) based on the option that the user has selected
+     */
     private void updateUiForOptionSelected()
     {
         float selectedHours = Float.parseFloat(mOptionsView.getCurrentValue());
@@ -176,8 +180,11 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
                 mBookingEditHoursViewModel.getFutureBillDateFormatted()));
         mTotalDueText.setText(mBookingEditHoursViewModel.getTotalDuePriceFormatted(selectedHours));
 
-        TextView warningText = ((TextView) mOptionsView.findViewById(R.id.warning_text)); //options view does not have a method to set this text. why?
-        if (mBookingEditHoursViewModel.isSelectedHoursLessThanBaseHours(selectedHours)) //this is the same logic that the web is using to show the edit hours warning message
+        TextView warningText = ((TextView) mOptionsView.findViewById(R.id.warning_text));
+        //options view does not have a method to set this text. why?
+
+        //this is the same logic that the web is using to show the edit hours warning message
+        if (mBookingEditHoursViewModel.isSelectedHoursLessThanBaseHours(selectedHours))
         {
             warningText.setVisibility(View.VISIBLE);
             warningText.setText(R.string.booking_edit_hours_options_warning);
@@ -189,12 +196,15 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
 
     }
 
+    /**
+     * initializes the option selector view based on the edit hours view model
+     */
     private void inflateOptionsView()
     {
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION_PICKER);
 
-        String[] optionHourStrings = mBookingEditHoursViewModel.getSortedHoursFromPriceTable();
+        String[] optionHourStrings = mBookingEditHoursViewModel.getSelectableHoursArray();
         bookingOption.setOptions(optionHourStrings);
 
         //by default, the selected option will be the # of base hours in the booking
@@ -209,7 +219,9 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
                 break;
             }
         }
-        bookingOption.setDefaultValue(Integer.toString(selectedIndex)); //for some reason this function only accepts a string, but then the view converts it to an index?
+        bookingOption.setDefaultValue(Integer.toString(selectedIndex));
+        //for some reason this function only accepts a string, but then the view converts it to an index?
+
         mOptionsView = new BookingOptionsSpinnerView(getActivity(), bookingOption,
                 new BookingOptionsView.OnUpdatedListener()
                 {
@@ -232,7 +244,9 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
                     }
                 });
 
-        ((TextView) mOptionsView.findViewById(R.id.title_text)).setText(R.string.booking_edit_hours_options_title); //seems like options view does not have a setter for this text!
+        ((TextView) mOptionsView.findViewById(R.id.title_text)).setText(
+                R.string.booking_edit_hours_options_title);
+        //seems like options view does not have a setter for this text!
 
         mOptionsViewContainer.removeAllViews();
         mOptionsViewContainer.addView(mOptionsView);
