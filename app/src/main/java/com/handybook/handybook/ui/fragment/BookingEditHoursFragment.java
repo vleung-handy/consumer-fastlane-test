@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -128,11 +127,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
             mApplyToRecurringBookingsSelectView.setCurrentIndex(0);
             mApplyToRecurringBookingsSelectView.hideTitle();
             UiUtils.replaceView(mApplyToRecurringOptionPlaceholder, mApplyToRecurringBookingsSelectView);
-
-            //TODO: the container has no bottom padding when the number of options = 1, but it is not the fault of actual options_layout. temporary hack to fix this issue
-            RelativeLayout selectViewContainer = ((RelativeLayout) mApplyToRecurringBookingsSelectView.findViewById(R.id.rel_layout));
-            selectViewContainer.setPadding(selectViewContainer.getPaddingLeft(), selectViewContainer.getPaddingTop(), selectViewContainer.getPaddingRight(), getResources().getDimensionPixelSize(R.dimen.default_padding));
-            selectViewContainer.invalidate();
         }
     }
 

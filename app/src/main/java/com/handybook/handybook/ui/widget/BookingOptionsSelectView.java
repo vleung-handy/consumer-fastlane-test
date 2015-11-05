@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.util.Utils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -119,6 +118,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             final LinearLayout optionView = (LinearLayout) LayoutInflater.from(context)
                     .inflate(R.layout.view_booking_select_option, this, false);
 
+            //need to give optionView a parent before setting its layout params
+            //otherwise the layout params don't work as expected
+            optionLayout.addView(optionView);
+
             final TextView title = (TextView) optionView.findViewById(R.id.title_text);
             title.setText(optionText);
 
@@ -167,10 +170,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             if (i < optionsList.length - 1)
             {
                 final LinearLayout.LayoutParams layoutParams
-                        = (LinearLayout.LayoutParams) optionLayout.getLayoutParams();
+                        = (LinearLayout.LayoutParams) optionView.getLayoutParams();
 
                 layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin,
-                        layoutParams.rightMargin, Utils.toDP(16, context));
+                        layoutParams.rightMargin, getResources().getDimensionPixelSize(R.dimen.default_margin));
 
                 optionView.setLayoutParams(layoutParams);
             }
@@ -192,7 +195,6 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 }
             });
 
-            optionLayout.addView(optionView);
         }
 
         handleWarnings(getCurrentIndex());
