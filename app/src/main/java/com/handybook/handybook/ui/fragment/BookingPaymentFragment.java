@@ -404,7 +404,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     public void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
-        setCardIcon(CreditCard.Type.ANDROID_PAY);
         creditCardText.setText(null);
         creditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         changeButton.setVisibility(View.VISIBLE);
@@ -413,6 +412,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mUseExistingCard = false;
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;
+        setCardIcon(CreditCard.Type.ANDROID_PAY);
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener()

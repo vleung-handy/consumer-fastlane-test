@@ -53,21 +53,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/bg_edit_text"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/card_icon"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:paddingLeft="@dimen/default_padding"
-                        android:paddingRight="0dp"
-                        android:paddingStart="@dimen/default_padding"
-                        android:paddingEnd="0dp"
-                        android:paddingBottom="@dimen/default_padding"
+                        android:layout_marginLeft="@dimen/default_margin"
+                        android:layout_marginStart="@dimen/default_margin"
                         android:paddingTop="@dimen/default_padding"
-                        android:src="@drawable/ic_card_blank"
+                        android:paddingBottom="@dimen/default_padding"
+                        android:src="@drawable/ic_android_pay"
                         android:background="@drawable/bg_edit_text"
+                        android:scaleType="fitStart"
                         android:contentDescription="@string/credit_card" />
 
                     <com.handybook.handybook.ui.widget.CreditCardNumberInputTextView
