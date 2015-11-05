@@ -116,15 +116,15 @@ public final class OnboardFragment extends BookingFlowFragment {
             // transition colors
             final int[] backgroundColors = {getResources().getColor(R.color.white),
                     getResources().getColor(R.color.handy_blue),
-                    getResources().getColor(R.color.handy_purple),
+                    getResources().getColor(R.color.handy_service_painter),
                     getResources().getColor(R.color.handy_teal),
                     getResources().getColor(R.color.white)};
 
-            final int[] indicatorFillColors = {getResources().getColor(R.color.black),
+            final int[] indicatorFillColors = {getResources().getColor(R.color.handy_text_black),
                     getResources().getColor(R.color.white),
                     getResources().getColor(R.color.white),
                     getResources().getColor(R.color.white),
-                    getResources().getColor(R.color.black)};
+                    getResources().getColor(R.color.handy_text_black)};
 
             final int[] indicatorPageColors = {getResources().getColor(R.color.dark_grey),
                     getResources().getColor(R.color.white_trans),

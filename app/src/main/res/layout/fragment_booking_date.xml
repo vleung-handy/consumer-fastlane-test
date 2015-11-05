@@ -36,14 +36,16 @@
 
             <DatePicker
                 android:id="@+id/date_picker"
+                android:datePickerMode="spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/location_text"
                 android:calendarViewShown="false"
                 android:layout_centerHorizontal="true" />
 
-            <TimePicker
+            <com.handybook.handybook.ui.view.GroovedTimePicker
                 android:id="@+id/time_picker"
+                android:timePickerMode="spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/date_picker"

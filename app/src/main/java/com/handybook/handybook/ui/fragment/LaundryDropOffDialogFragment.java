@@ -188,7 +188,7 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
                 }
 
                 textView = (TextView)row;
-                textView.setTextColor(context.getResources().getColor(R.color.black));
+                textView.setTextColor(context.getResources().getColor(R.color.handy_text_black));
             }
             else {
                 if (row == null) {
@@ -236,7 +236,7 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
                 }
 
                 textView = (TextView)row;
-                textView.setTextColor(context.getResources().getColor(R.color.black));
+                textView.setTextColor(context.getResources().getColor(R.color.handy_text_black));
             }
             else {
                 if (row == null) {

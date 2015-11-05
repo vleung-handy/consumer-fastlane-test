@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,9 @@ import java.util.HashSet;
 public final class BookingOptionsSelectView extends BookingOptionsIndexView
 {
     protected String[] optionsSubtitles;
-    protected String[] optionsRightText;
+    protected String[] optionsRightSubText;
+    protected String[] optionsRightTitleText;
+    protected int[] optionImagesResourceIds;
     private HashMap<Integer, CheckBox> checkMap;
     private int checkedIndex;
     private HashSet<Integer> checkedIndexes;
@@ -47,6 +50,26 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         super(context, attrs, defStyle);
     }
 
+    private boolean isArrayIndexValid(int[] array, int index)
+    {
+        return array != null &&
+                index < array.length;
+    }
+
+    //TODO: is it possible to make this use isArrayIndexValid
+    private boolean shouldDisplayOptionStringFromArray(String[] array, int index)
+    {
+        return array != null &&
+                index < array.length &&
+                array[index] != null && !array[index].isEmpty();
+    }
+
+    private void showTextView(TextView textView, String textString)
+    {
+        textView.setText(textString);
+        textView.setVisibility(VISIBLE);
+    }
+
     private void init(final Context context)
     {
         final String type = option.getType();
@@ -66,8 +89,9 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         final LinearLayout optionLayout = (LinearLayout) this.findViewById(R.id.options_layout);
 
         optionsSubtitles = option.getOptionsSubText();
-        optionsRightText = option.getOptionsRightText();
-
+        optionsRightSubText = option.getOptionsRightSubText();
+        optionsRightTitleText = option.getOptionsRightTitleText();
+        optionImagesResourceIds = option.getImageResourceIds();
         checkMap = new HashMap<>();
 
 
@@ -97,27 +121,41 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             final TextView title = (TextView) optionView.findViewById(R.id.title_text);
             title.setText(optionText);
 
-            String subTitleText;
-            if (optionsSubtitles != null &&
-                    optionsSubtitles.length >= i + 1 &&
-                    (subTitleText = optionsSubtitles[i]) != null && subTitleText.length() > 0)
+            if (shouldDisplayOptionStringFromArray(optionsSubtitles, i))
             {
-                final TextView subTitle = (TextView) optionView.findViewById(R.id.sub_text);
-                subTitle.setText(subTitleText);
-                subTitle.setVisibility(VISIBLE);
+                showTextView((TextView) optionView.findViewById(R.id.sub_text), optionsSubtitles[i]);
             }
 
-            String rightText;
-            if (optionsRightText != null &&
-                    optionsRightText.length >= i + 1 &&
-                    (rightText = optionsRightText[i]) != null && rightText.length() > 0)
+            if (shouldDisplayOptionStringFromArray(optionsRightSubText, i))
             {
-                final TextView rightTextView = (TextView) optionView.findViewById(R.id.right_text);
-                rightTextView.setText(rightText);
-                rightTextView.setVisibility(VISIBLE);
+                showTextView((TextView) optionView.findViewById(R.id.right_subtitle_text), optionsRightSubText[i]);
+            }
+
+            if (shouldDisplayOptionStringFromArray(optionsRightTitleText, i))
+            {
+                showTextView((TextView) optionView.findViewById(R.id.right_title_text), optionsRightTitleText[i]);
             }
 
             final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);
+            if (isArrayIndexValid(optionImagesResourceIds, i) && optionImagesResourceIds[i] != 0)
+            {
+                int inset = (int) context.getResources().getDimension(R.dimen.framed_icon_inset);
+                FramedIconDrawable framedIconDrawable = new FramedIconDrawable(
+                        getContext(),
+                        R.drawable.option_circle_frame,
+                        optionImagesResourceIds[i],
+                        inset
+                );
+
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                {
+                    checkBox.setBackground(framedIconDrawable);
+                }
+                else
+                {
+                    checkBox.setBackgroundDrawable(framedIconDrawable);
+                }
+            }
             if (!isMulti && i == checkedIndex)
             {
                 selectOption(checkBox, true);
@@ -201,8 +239,12 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         }
         checkedIndexes.clear();
 
-        for (final int i : indexes)
+        for (final Integer i : indexes)
         {
+            if (i == null)
+            {
+                continue;
+            }
             checkMap.get(i).setChecked(true);
             checkedIndexes.add(i);
         }
@@ -239,27 +281,51 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         requestLayout();
     }
 
+    private void updateCheckbox(final CheckBox box, final boolean isChecked)
+    {
+        //don't want filter applied to drawables that aren't mutable
+        //because the filter will be retained throughout the app
+        //TODO: need a better to determine and ensure checkbox drawable is mutable so we can apply filters to it
+        //TODO: should we always use Drawable.mutate() on the checkbox drawables?
+        if(box.getBackground() instanceof FramedIconDrawable)
+        {
+            if(isChecked)
+            {
+                ((FramedIconDrawable) box.getBackground()).setColor(getResources().getColor(R.color.handy_blue));
+            }
+            else
+            {
+                ((FramedIconDrawable) box.getBackground()).clearColor();
+            }
+        }
+        box.setChecked(isChecked);
+    }
+
     private void selectOption(final CheckBox box, final boolean isChecked)
     {
         final ViewGroup layout = (ViewGroup) box.getParent();
         final TextView title = (TextView) layout.findViewById(R.id.title_text);
         final TextView subTitle = (TextView) layout.findViewById(R.id.sub_text);
-        final TextView rightText = (TextView) layout.findViewById(R.id.right_text);
+        final TextView rightSubtitleText = (TextView) layout.findViewById(R.id.right_subtitle_text);
+        final TextView rightTitleText = (TextView) layout.findViewById(R.id.right_title_text);
 
+        //update the text fields
         if (isChecked)
         {
-            title.setTextColor(getResources().getColor(R.color.black));
+            title.setTextColor(getResources().getColor(R.color.handy_text_black));
             subTitle.setTextColor(getResources().getColor(R.color.handy_blue));
-            rightText.setTextColor(getResources().getColor(R.color.black));
-            box.setChecked(true);
+            rightSubtitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
+            rightTitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
         }
         else
         {
             title.setTextColor(getResources().getColor(R.color.black_pressed));
             subTitle.setTextColor(getResources().getColor(R.color.black_pressed));
-            rightText.setTextColor(getResources().getColor(R.color.black_pressed));
-            box.setChecked(false);
+            rightSubtitleText.setTextColor(getResources().getColor(R.color.black_pressed));
+            rightTitleText.setTextColor(getResources().getColor(R.color.black_pressed));
         }
+        //update the check box
+        updateCheckbox(box, isChecked);
     }
 
     private final CompoundButton.OnCheckedChangeListener checkedChanged

@@ -13,6 +13,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,8 @@ public class InjectedDialogFragment extends DialogFragment {
     @Inject Mixpanel mixpanel;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject
+    protected Bus mBus;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -59,6 +62,20 @@ public class InjectedDialogFragment extends DialogFragment {
     public void onStop() {
         super.onStop();
         allowCallbacks = false;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onPause()
+    {
+        mBus.unregister(this);
+        super.onPause();
     }
 
     protected void disableInputs() {}

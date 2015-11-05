@@ -381,35 +381,35 @@ public final class LoginFragment extends BookingFlowFragment
             if (!handleFBSessionUpdates || !allowCallbacks) return;
 
             if (exception instanceof FacebookAuthorizationException) {
-                progressDialog.dismiss();
+                mProgressDialog.dismiss();
                 enableInputs();
 
-                toast.setText(R.string.default_error_string);
-                toast.show();
+                mToast.setText(R.string.default_error_string);
+                mToast.show();
             }
             else if (session != null && session.isOpened()) {
                 disableInputs();
-                progressDialog.show();
+                mProgressDialog.show();
 
                 final Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
                     @Override
                     public void onCompleted(final GraphUser user, final Response response) {
                         if (!allowCallbacks) return;
                         if (response.getError() != null ) {
-                            progressDialog.dismiss();
+                            mProgressDialog.dismiss();
                             enableInputs();
 
-                            toast.setText(R.string.default_error_string);
-                            toast.show();
+                            mToast.setText(R.string.default_error_string);
+                            mToast.show();
                             session.closeAndClearTokenInformation();
                         }
                         else if (user != null && user.asMap().get("email") == null) {
                              // TODO if email not given, then deauthorize app
-                            progressDialog.dismiss();
+                            mProgressDialog.dismiss();
                             enableInputs();
 
-                            toast.setText(R.string.default_error_string);
-                            toast.show();
+                            mToast.setText(R.string.default_error_string);
+                            mToast.show();
                             session.closeAndClearTokenInformation();
                         }
                         else {
@@ -447,7 +447,8 @@ public final class LoginFragment extends BookingFlowFragment
                     if (session != null) session.closeAndClearTokenInformation();
 */
 
-                    if (bookingUserName != null || (authType == AuthType.FACEBOOK && findUser)) {
+                    if (bookingUserName != null || authType == AuthType.FACEBOOK && findUser)
+                    {
                         continueBookingFlow();
                         return;
                     }

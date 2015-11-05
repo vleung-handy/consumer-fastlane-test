@@ -13,6 +13,7 @@ import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
@@ -428,5 +429,23 @@ public class BookingFlowFragment extends InjectedFragment
         {
             continueFlow();
         }
+    }
+
+    protected void showUiBlockers()
+    {
+        disableInputs();
+        progressDialog.show();
+    }
+
+    protected void removeUiBlockers()
+    {
+        enableInputs();
+        progressDialog.dismiss();
+    }
+
+    protected void onReceiveErrorEvent(HandyEvent.ReceiveErrorEvent event)
+    {
+        removeUiBlockers();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 }

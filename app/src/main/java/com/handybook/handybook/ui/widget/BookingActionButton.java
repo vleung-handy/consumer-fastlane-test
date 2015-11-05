@@ -44,6 +44,7 @@ public class BookingActionButton extends Button
         setBackgroundResource(bookingActionButtonType.getBackgroundDrawableId());
         setTextAppearance(getContext(), bookingActionButtonType.getTextStyleId());
         setText(bookingActionButtonType.getDisplayNameId());
+        setId(bookingActionButtonType.getAccessibilityId());
         setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));
         if (clickListener != null)
         {

@@ -11,7 +11,6 @@ import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.HandyEndpoint;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
@@ -28,6 +27,8 @@ import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
+import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
+import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
@@ -64,9 +65,12 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
+import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
+import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
+import com.handybook.handybook.ui.fragment.BookingListFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
@@ -107,26 +111,62 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
-        ServiceCategoriesFragment.class, LoginFragment.class, NavigationFragment.class,
-        ProfileFragment.class, BookingsFragment.class, BookingDetailFragment.class,
-        ServiceCategoriesFragment.class, ServicesFragment.class, BookingLocationFragment.class,
-        BookingOptionsFragment.class, BookingDateFragment.class, BookingAddressFragment.class,
-        BookingHeaderFragment.class, BookingPaymentFragment.class, PeakPricingFragment.class,
-        PeakPricingTableFragment.class, BookingConfirmationFragment.class, PromosFragment.class,
-        BookingExtrasFragment.class, BookingRecurrenceFragment.class, BaseDataManager.class,
-        ServiceCategoriesActivity.class, ServicesActivity.class, ProfileActivity.class,
-        PeakPricingActivity.class, MenuDrawerActivity.class, LoginActivity.class,
-        BookingsActivity.class, BookingRecurrenceActivity.class, BookingPaymentActivity.class,
-        BookingOptionsActivity.class, BookingLocationActivity.class, BookingExtrasActivity.class,
-        BookingDetailActivity.class, BookingDateActivity.class, BookingConfirmationActivity.class,
-        BookingAddressActivity.class, PromosActivity.class, BaseApplication.class,
-        BookingRescheduleOptionsActivity.class, BookingRescheduleOptionsFragment.class,
-        BookingCancelOptionsActivity.class, BookingCancelOptionsFragment.class,
-        YozioMetaDataCallback.class, OnboardActivity.class, OnboardFragment.class,
-        OnboardPageFragment.class, HelpActivity.class, HelpFragment.class,
-        RateServiceDialogFragment.class, RateServiceConfirmDialogFragment.class,
-        LaundryDropOffDialogFragment.class, LaundryInfoDialogFragment.class, AddLaundryDialogFragment.class,
-        HelpContactFragment.class, HelpContactActivity.class,
+        ServiceCategoriesFragment.class,
+        LoginFragment.class,
+        NavigationFragment.class,
+        ProfileFragment.class,
+        BookingsFragment.class,
+        BookingListFragment.class,
+        BookingDetailFragment.class,
+        ServiceCategoriesFragment.class,
+        ServicesFragment.class,
+        BookingLocationFragment.class,
+        BookingOptionsFragment.class,
+        BookingDateFragment.class,
+        BookingAddressFragment.class,
+        BookingHeaderFragment.class,
+        BookingPaymentFragment.class,
+        PeakPricingFragment.class,
+        PeakPricingTableFragment.class,
+        BookingConfirmationFragment.class,
+        PromosFragment.class,
+        BookingExtrasFragment.class,
+        BookingRecurrenceFragment.class,
+        BaseDataManager.class,
+        ServiceCategoriesActivity.class,
+        ServicesActivity.class, ProfileActivity.class,
+        PeakPricingActivity.class,
+        MenuDrawerActivity.class,
+        LoginActivity.class,
+        BookingsActivity.class,
+        BookingRecurrenceActivity.class,
+        BookingPaymentActivity.class,
+        BookingOptionsActivity.class,
+        BookingLocationActivity.class,
+        BookingExtrasActivity.class,
+        BookingDetailActivity.class,
+        BookingDateActivity.class,
+        BookingConfirmationActivity.class,
+        BookingAddressActivity.class,
+        PromosActivity.class,
+        BaseApplication.class,
+        BookingRescheduleOptionsActivity.class,
+        BookingRescheduleOptionsFragment.class,
+        BookingCancelOptionsActivity.class,
+        BookingCancelOptionsFragment.class,
+        YozioMetaDataCallback.class,
+        OnboardActivity.class,
+        OnboardFragment.class,
+        OnboardPageFragment.class,
+        HelpActivity.class,
+        HelpFragment.class,
+        RateServiceDialogFragment.class,
+        RateServiceConfirmDialogFragment.class,
+        LaundryDropOffDialogFragment.class,
+        LaundryInfoDialogFragment.class,
+        AddLaundryDialogFragment.class,
+        HelpContactFragment.class,
+        HelpContactActivity.class,
         SplashActivity.class,
         BookingDetailSectionFragment.class,
         BookingDetailSectionFragmentAddress.class,
@@ -141,43 +181,59 @@ import retrofit.converter.GsonConverter;
         BookingEditNoteToProFragment.class,
         BookingEditEntryInformationActivity.class,
         BookingEditEntryInformationFragment.class,
+        BookingEditFrequencyActivity.class,
+        BookingEditFrequencyFragment.class,
+        BookingEditExtrasActivity.class,
+        BookingEditExtrasFragment.class,
         BlockingActivity.class,
         BlockingUpdateFragment.class,
 })
 public final class ApplicationModule
 {
-    private final Context context;
-    private final Properties configs;
+    private final Context mContext;
+    private final Properties mConfigs;
 
     public ApplicationModule(final Context context)
     {
-        this.context = context.getApplicationContext();
-        configs = PropertiesReader
+        mContext = context.getApplicationContext();
+        mConfigs = PropertiesReader
                 .getProperties(context, "config.properties");
     }
 
     @Provides
     @Singleton
-    final HandyEndpoint provideHandyEndpoint()
+    final EnvironmentModifier provideEnvironmentModifier(Bus bus, PrefsManager prefsManager)
     {
-        return new HandyRetrofitEndpoint(context);
+        EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus, prefsManager);
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
+            environmentModifier.setEnvironment(EnvironmentModifier.Environment.P);
+        }
+        return environmentModifier;
     }
 
     @Provides
     @Singleton
-    final HandyRetrofitService provideHandyService(final HandyEndpoint endpoint,
+    final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(EnvironmentModifier environmentModifier)
+    {
+        return new HandyRetrofitEndpoint(mContext, environmentModifier);
+    }
+
+    @Provides
+    @Singleton
+    final HandyRetrofitService provideHandyService(final HandyRetrofitEndpoint endpoint,
                                                    final UserManager userManager)
     {
 
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
 
-        final String username = configs.getProperty("api_username");
-        String password = configs.getProperty("api_password_internal");
+        final String username = mConfigs.getProperty("api_username");
+        String password = mConfigs.getProperty("api_password_internal");
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
-            password = configs.getProperty("api_password");
+            password = mConfigs.getProperty("api_password");
         }
 
         final String pwd = password;
@@ -237,16 +293,10 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final DataManager provideDataManager(final HandyRetrofitService service,
-                                         final HandyEndpoint endpoint,
-                                         final Bus bus,
+            final HandyRetrofitEndpoint endpoint,
                                          final PrefsManager prefsManager)
     {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, bus, prefsManager);
-
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-        {
-            dataManager.setEnvironment(DataManager.Environment.P, false);
-        }
+        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
 
         return dataManager;
     }
@@ -268,8 +318,8 @@ public final class ApplicationModule
     @Singleton
     final SecurePreferences providePrefs()
     {
-        return new SecurePreferences(context, null,
-                configs.getProperty("secure_prefs_key"), true);
+        return new SecurePreferences(mContext, null,
+                mConfigs.getProperty("secure_prefs_key"), true);
     }
 
     @Provides
@@ -293,14 +343,14 @@ public final class ApplicationModule
     @Provides
     final ReactiveLocationProvider provideReactiveLocationProvider()
     {
-        return new ReactiveLocationProvider(context);
+        return new ReactiveLocationProvider(mContext);
     }
 
     @Provides
     @Singleton
     final Mixpanel provideMixpanel(final PrefsManager prefsManager)
     {
-        return new Mixpanel(context, prefsManager);
+        return new Mixpanel(mContext, prefsManager);
     }
 
     @Provides
@@ -309,7 +359,7 @@ public final class ApplicationModule
                                                      final DataManager dataManager,
                                                      final DataManagerErrorHandler dataManagerErrorHandler)
     {
-        return new NavigationManager(this.context, userManager, dataManager, dataManagerErrorHandler);
+        return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
     }
 
     @Provides
@@ -344,7 +394,7 @@ public final class ApplicationModule
 
     private String getDeviceId()
     {
-        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        return Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     private String getDeviceName()

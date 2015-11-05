@@ -62,10 +62,8 @@ public class BaseApplication extends MultiDexApplication
     public void onCreate()
     {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
-
         createObjectGraph();
-
+        Fabric.with(this, new Crashlytics());
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
         {

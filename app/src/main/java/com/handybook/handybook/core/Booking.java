@@ -2,20 +2,34 @@ package com.handybook.handybook.core;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.R;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class Booking implements Parcelable
 {
+    public static final Comparator<? super Booking> COMPARATOR_DATE = new Comparator<Booking>()
+    {
+        @Override
+        public int compare(@NonNull final Booking lhs, @NonNull final Booking rhs)
+        {
+            return lhs.getStartDate().compareTo(rhs.getStartDate());
+        }
+    };
     @SerializedName("id")
     private String id;
     @SerializedName("booking_status")
@@ -56,10 +70,17 @@ public final class Booking implements Parcelable
     private ArrayList<LineItem> paymentInfo;
     @SerializedName("extras_info")
     private ArrayList<ExtraInfo> extrasInfo;
-    @SerializedName("can_edit_hours")
-    private Boolean canEditHours;
+    @SerializedName("can_edit_hours") //we want them false by default
+    private boolean canEditHours;
     @SerializedName("can_edit_frequency")
-    private Boolean canEditFrequency;
+    private boolean canEditFrequency;
+    @SerializedName("can_edit_extras")
+    private boolean canEditExtras;
+
+    public boolean getCanEditExtras()
+    {
+        return canEditExtras;
+    }
 
     public final String getId()
     {
@@ -90,12 +111,12 @@ public final class Booking implements Parcelable
 
     public final boolean hasAssignedProvider()
     {
-        return (provider != null && provider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED);
+        return provider != null && provider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED;
     }
 
     public final boolean isRecurring()
     {
-        return recurringId != null && !recurringId.isEmpty();
+        return recurringId != null && !recurringId.isEmpty() && !"0".equals(recurringId);
     }
 
     public final String getRecurringInfo()
@@ -129,16 +150,107 @@ public final class Booking implements Parcelable
     }
 
     //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table , select distinct(machine_name) from service
-    public final static String SERVICE_CLEANING = "cleaning";
-    public final static String SERVICE_HOME_CLEANING = "home_cleaning";
-    public final static String SERVICE_OFFICE_CLEANING = "office_cleaning";
+    public static final String SERVICE_CLEANING = "cleaning";
+    public static final String SERVICE_HOME_CLEANING = "home_cleaning";
+    public static final String SERVICE_OFFICE_CLEANING = "office_cleaning";
+    public static final String SERVICE_HANDYMAN = "handyman";
+    public static final String SERVICE_PLUMBING = "plumbing";
+    public static final String SERVICE_ELECTRICIAN = "electrician";
+    public static final String SERVICE_ELECTRICAL = "electrical";
+    public static final String SERVICE_PAINTING = "painting";
 
-    public final static String SERVICE_HANDYMAN = "handyman";
-    public final static String SERVICE_PLUMBING = "plumbing";
-    public final static String SERVICE_ELECTRICIAN = "electrician";
-    public final static String SERVICE_ELECTRICAL = "electrical";
-    public final static String SERVICE_PAINTING = "painting";
 
+    /*
+    Service list from api/v3/services:
+    cleaning
+    handyman
+    home_cleaning
+    office_cleaning
+    hanging_pictures_shelves
+    ac_repair
+    furniture_assembly
+    general_labor
+    key_courier
+    moving_help
+    other_handyman_service
+    unclog_drains
+    faucets_replacement
+    toilet_trouble
+    water_heater_issues
+    other_plumbing
+    vacation_rental_cleanup
+    mount_tv
+    painting
+    install_window_treatments
+    install_knobs_locks
+    garbage_disposal
+    electrician
+    light_fixtures
+    ceiling_fan
+    outlets
+    thermostat
+    other_electrical
+    other_service
+    vacation_rental_cleaning
+    home_cleaning_job_block
+    */
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            SERVICE_CLEANING,
+            SERVICE_HOME_CLEANING,
+            SERVICE_OFFICE_CLEANING,
+            SERVICE_HANDYMAN,
+            SERVICE_PLUMBING,
+            SERVICE_ELECTRICIAN,
+            SERVICE_ELECTRICAL,
+            SERVICE_PAINTING
+            //TODO:Implement the rest of service types from above
+    })
+    public @interface ServiceType
+    {
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            ExtrasMachineName.INSIDE_CABINETS,
+            ExtrasMachineName.INSIDE_FRIDGE,
+            ExtrasMachineName.INSIDE_OVEN,
+            ExtrasMachineName.LAUNDRY,
+            ExtrasMachineName.INTERIOR_WINDOWS,
+    })
+    public @interface ExtrasType
+    {
+
+    }
+
+    public final static class ExtrasMachineName
+    {
+        public final static String INSIDE_CABINETS = "inside_cabinets";
+        public final static String INSIDE_FRIDGE = "inside_fridge";
+        public final static String INSIDE_OVEN = "inside_oven";
+        public final static String LAUNDRY = "laundry";
+        public final static String INTERIOR_WINDOWS = "interior_windows";
+    }
+
+    //TODO: ideally we shouldn't have this logic in the model. find/create a better place for it
+    public static int getImageResourceIdForMachineName(@ExtrasType String extrasMachineName)
+    {
+        switch (extrasMachineName)
+        {
+            case Booking.ExtrasMachineName.INSIDE_CABINETS:
+                return R.drawable.ic_booking_extra_cabinets;
+            case Booking.ExtrasMachineName.INSIDE_FRIDGE:
+                return R.drawable.ic_booking_extra_fridge;
+            case Booking.ExtrasMachineName.INSIDE_OVEN:
+                return R.drawable.ic_booking_extra_oven;
+            case Booking.ExtrasMachineName.INTERIOR_WINDOWS:
+                return R.drawable.ic_booking_extra_window;
+            case Booking.ExtrasMachineName.LAUNDRY:
+                return R.drawable.ic_booking_extra_laundry;
+            default:
+                return R.drawable.ic_booking_detail_logo;
+        }
+    }
 
     public final Date getStartDate()
     {
@@ -155,7 +267,7 @@ public final class Booking implements Parcelable
         final Calendar endDate = Calendar.getInstance();
         endDate.setTime(this.getStartDate());
         //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
-        endDate.add(Calendar.MINUTE, (int)(60 * this.getHours()));
+        endDate.add(Calendar.MINUTE, (int) (60 * this.getHours()));
         return endDate.getTime();
     }
 
@@ -230,8 +342,7 @@ public final class Booking implements Parcelable
         try
         {
             laundryStatus = LaundryStatus.valueOf(stringData[3]);
-        }
-        catch (IllegalArgumentException x)
+        } catch (IllegalArgumentException x)
         {
             laundryStatus = null;
         }
@@ -263,6 +374,13 @@ public final class Booking implements Parcelable
 
         extrasInfo = new ArrayList<ExtraInfo>();
         in.readTypedList(extrasInfo, ExtraInfo.CREATOR);
+
+        final boolean[] booleanData = new boolean[3];
+        in.readBooleanArray(booleanData);
+
+        canEditFrequency = booleanData[0];
+        canEditExtras = booleanData[1];
+        canEditHours = booleanData[2];
     }
 
     public static Booking fromJson(final String json)
@@ -275,18 +393,18 @@ public final class Booking implements Parcelable
     public final void writeToParcel(final Parcel out, final int flags)
     {
         out.writeStringArray(new String[]
-                {
-                        id,
-                        serviceName,
-                        serviceMachineName,
-                        laundryStatus != null ? laundryStatus.name() : "",
-                        recurringInfo,
-                        entryInfo,
-                        extraEntryInfo,
-                        proNote,
-                        billedStatus,
-                        recurringId
-                }
+                        {
+                                id,
+                                serviceName,
+                                serviceMachineName,
+                                laundryStatus != null ? laundryStatus.name() : "",
+                                recurringInfo,
+                                entryInfo,
+                                extraEntryInfo,
+                                proNote,
+                                billedStatus,
+                                recurringId,
+                        }
         );
 
         out.writeIntArray(new int[]{isPast, entryType});
@@ -296,6 +414,12 @@ public final class Booking implements Parcelable
         out.writeParcelable(provider, 0);
         out.writeTypedList(paymentInfo);
         out.writeTypedList(extrasInfo);
+        out.writeBooleanArray(new boolean[]
+                {
+                        canEditFrequency,
+                        canEditExtras,
+                        canEditHours
+                });
     }
 
     @Override
@@ -322,14 +446,34 @@ public final class Booking implements Parcelable
         return entryType;
     }
 
-    public Boolean getCanEditHours()
+    public boolean getCanEditHours()
     {
         return canEditHours;
     }
 
-    public Boolean getCanEditFrequency()
+    public boolean getCanEditFrequency()
     {
         return canEditFrequency;
+    }
+
+    /**
+     * Tries to convert String representation of recurringId to Long
+     *
+     * @return Long value or null if the String value couldn't be converted.
+     */
+    @Nullable
+    public Long getRecurringId()
+    {
+        Long longValue = null;
+        try
+        {
+            longValue = Long.parseLong(recurringId);
+        } catch (NumberFormatException nfe)
+        {
+            Crashlytics.log("Error converting recurringId to Long");
+            Crashlytics.logException(nfe);
+        }
+        return longValue;
     }
 
     public static final class Address implements Parcelable
@@ -432,6 +576,7 @@ public final class Booking implements Parcelable
         };
     }
 
+
     public static final class Provider implements Parcelable
     {
         @SerializedName("status")
@@ -485,7 +630,7 @@ public final class Booking implements Parcelable
 
         public final String getFullName()
         {
-            return ((firstName != null ? firstName : "") + " " + (lastName != null ? lastName : ""));
+            return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
         }
 
         private Provider(final Parcel in)
@@ -530,6 +675,7 @@ public final class Booking implements Parcelable
         public static final int PROVIDER_STATUS_ASSIGNED = 3; //TODO: Not sure what this is, just conjecturing based on code
 
     }
+
 
     public static final class LineItem implements Parcelable
     {
@@ -594,12 +740,14 @@ public final class Booking implements Parcelable
         };
     }
 
+
     public static final class ExtraInfo implements Parcelable
     {
         @SerializedName("label")
         private String label;
         @SerializedName("image_name")
         private ExtraInfoImageName imageName;
+
 
         public enum ExtraInfoImageName
         {
@@ -613,6 +761,7 @@ public final class Booking implements Parcelable
             @SerializedName("default.png")DEFAULT_IMAGE_NAME,
         }
 
+
         private static final Map<ExtraInfoImageName, Integer> EXTRAS_ICONS;
 
         static
@@ -620,7 +769,7 @@ public final class Booking implements Parcelable
             EXTRAS_ICONS = new HashMap<>();
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_CABINETS_DISABLED, R.drawable.ic_booking_extra_cabinets);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_FRIDGE_DISABLED, R.drawable.ic_booking_extra_fridge);
-            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_OVEN_DISABLED, R.drawable.ic_booking_detail_oven);
+            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_OVEN_DISABLED, R.drawable.ic_booking_extra_oven);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.LAUNDRY_DISABLED, R.drawable.ic_booking_extra_laundry);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.WINDOWS_DISABLED, R.drawable.ic_booking_extra_window);
             EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.DEFAULT_IMAGE_NAME, R.drawable.ic_booking_detail_logo);
@@ -660,17 +809,15 @@ public final class Booking implements Parcelable
             final String[] stringData = new String[2];
             in.readStringArray(stringData);
             label = stringData[0];
-
             try
             {
                 imageName = ExtraInfoImageName.valueOf(stringData[1]);
-            }
-            catch (IllegalArgumentException e)
+            } catch (IllegalArgumentException e)
             {
                 Crashlytics.log("Could not convert string : " + stringData[1] + " to extras image name");
             }
 
-            if(imageName == null)
+            if (imageName == null)
             {
                 imageName = ExtraInfoImageName.DEFAULT_IMAGE_NAME;
             }
@@ -681,8 +828,10 @@ public final class Booking implements Parcelable
         {
             out.writeStringArray(new String[]{
                     label,
-                    (imageName != null ? imageName.toString() : ExtraInfoImageName.DEFAULT_IMAGE_NAME.toString() )
-                    });
+                    imageName != null ?
+                            imageName.toString()
+                            : ExtraInfoImageName.DEFAULT_IMAGE_NAME.toString()
+            });
         }
 
         @Override
@@ -705,6 +854,7 @@ public final class Booking implements Parcelable
         };
     }
 
+
     public enum LaundryStatus
     {
         @SerializedName("ready_for_pickup")READY_FOR_PICKUP,
@@ -714,8 +864,24 @@ public final class Booking implements Parcelable
         @SerializedName("skipped")SKIPPED,
     }
 
+
     public static final int ENTRY_TYPE_WILL_BE_HOME = 0;
     public static final int ENTRY_TYPE_DOORMAN = 1;
     public static final int ENTRY_TYPE_HIDE_THE_KEYS = 2;
+
+
+    public static class List extends ArrayList<Booking>
+    {
+        public static final String VALUE_ONLY_BOOKINGS_PAST = "past";
+        public static final String VALUE_ONLY_BOOKINGS_UPCOMING = "upcoming";
+
+
+        @Retention(RetentionPolicy.SOURCE)
+        @StringDef({VALUE_ONLY_BOOKINGS_PAST, VALUE_ONLY_BOOKINGS_UPCOMING})
+        public @interface OnlyBookingValues
+        {
+        }
+    }
+
 
 }

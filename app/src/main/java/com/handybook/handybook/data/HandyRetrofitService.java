@@ -1,10 +1,14 @@
 package com.handybook.handybook.data;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
+import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.User;
 
@@ -31,6 +35,14 @@ public interface HandyRetrofitService
 
     @GET("/services")
     void getServices(HandyRetrofitCallback cb);
+
+    @GET("/bookings/{id}/edit_extras")
+    void getServiceExtras(@Path("id") int bookingId, HandyRetrofitCallback cb);
+
+    @POST("/bookings/{id}/edit_extras")
+    void editServiceExtras(@Path("id") int bookingId,
+                          @Body BookingEditExtrasTransaction bookingEditExtrasTransaction,
+                          HandyRetrofitCallback cb);
 
     @GET("/quotes/new")
     void getQuoteOptions(@Query("service_id") int serviceId, @Query("user_id") String userId,
@@ -62,7 +74,11 @@ public interface HandyRetrofitService
                             @Query("entered_code") String promoCode, HandyRetrofitCallback cb);
 
     @GET("/bookings")
-    void getBookings(@Query("auth_token") String authToken, HandyRetrofitCallback cb);
+    void getBookings(
+            @Query("auth_token") String authToken,
+            @Nullable @Query("only_bookings") String bookingType,
+            HandyRetrofitCallback cb
+    );
 
     @GET("/bookings/{id}")
     void getBooking(@Path("id") String bookingId,
@@ -73,7 +89,7 @@ public interface HandyRetrofitService
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/rate_pro")
-    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating,
+    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating, @Field("tip_amount") Integer tipAmount,
                  HandyRetrofitCallback cb);
 
     @POST("/bookings/{booking}/rating_flow")
@@ -97,6 +113,14 @@ public interface HandyRetrofitService
                                        @Body BookingUpdateEntryInformationTransaction entryInformationTransaction,
                                        HandyRetrofitCallback cb);
 
+    @POST("/bookings/{booking}/edit_frequency")
+    void updateBookingFrequency(@Path("booking") int bookingId,
+                                @Body BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
+                                HandyRetrofitCallback cb);
+
+    @GET("/bookings/{booking}/edit_frequency")
+    void getBookingPricesForFrequencies(@Path("booking") int bookingId,
+                                        HandyRetrofitCallback cb);
 
     @GET("/bookings/prereschedule_info")
     void getPreRescheduleInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
@@ -176,9 +200,9 @@ public interface HandyRetrofitService
     //Request a specific pro for a specific booking.
     @POST("/bookings/{booking}/request_pro")
     void requestProForBooking(@Path("booking") int bookingId,
-                           @Query("requested_pro") int requestedProId,
-                           @Query("fail_on_conflict") boolean failOnConflict,
-                           HandyRetrofitCallback cb);
+                              @Query("requested_pro") int requestedProId,
+                              @Query("fail_on_conflict") boolean failOnConflict,
+                              HandyRetrofitCallback cb);
 
     //Help Center Self Service Center
 
@@ -197,7 +221,7 @@ public interface HandyRetrofitService
     @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
-    static final class UserUpdateRequest
+    final class UserUpdateRequest
     {
         @SerializedName("user")
         private User user;
@@ -211,7 +235,8 @@ public interface HandyRetrofitService
         }
     }
 
-    static final class RateProRequest
+
+    final class RateProRequest
     {
         @SerializedName("positive_feedback")
         private String positiveFeedback;

@@ -1,15 +1,21 @@
 package com.handybook.handybook.event;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
+import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.model.BookingCardViewModel;
 
 import java.util.List;
 
@@ -19,43 +25,110 @@ public abstract class HandyEvent
 {
     public abstract static class RequestEvent extends HandyEvent
     {
+        public static class BookingCardViewModelsEvent extends RequestEvent
+        {
+            private User mUser;
+            @Booking.List.OnlyBookingValues
+            private String mOnlyBookingValue;
+
+            public BookingCardViewModelsEvent(
+                    @NonNull final User user,
+                    @NonNull @Booking.List.OnlyBookingValues final String onlyBookingsValue)
+            {
+                mUser = user;
+                mOnlyBookingValue = onlyBookingsValue;
+            }
+
+            public BookingCardViewModelsEvent(@NonNull final User user)
+            {
+                mUser = user;
+            }
+
+            public User getUser()
+            {
+                return mUser;
+            }
+
+            @Booking.List.OnlyBookingValues
+            public String getOnlyBookingValue()
+            {
+                return mOnlyBookingValue;
+            }
+        }
     }
+
+
+    public abstract static class ResponseEvent<T> extends HandyEvent
+    {
+        private T mPayload;
+
+        public ResponseEvent(T payload)
+        {
+            this.mPayload = payload;
+        }
+
+        public T getPayload()
+        {
+            return mPayload;
+        }
+
+        public static class BookingCardViewModels extends ResponseEvent<BookingCardViewModel.List>
+        {
+
+            public BookingCardViewModels(BookingCardViewModel.List payload)
+            {
+                super(payload);
+            }
+        }
+
+
+        public static class BookingCardViewModelsError extends ResponseEvent<DataManager.DataManagerError>
+        {
+            public BookingCardViewModelsError(DataManager.DataManagerError payload)
+            {
+                super(payload);
+            }
+        }
+
+    }
+
 
     public abstract static class RequestBookingActionEvent extends RequestEvent
     {
         public String bookingId;
     }
 
+
     public abstract static class ReceiveSuccessEvent extends HandyEvent
     {
     }
+
 
     public abstract static class ReceiveBookingSuccessEvent extends ReceiveSuccessEvent
     {
         public Booking booking;
     }
 
+
     public abstract static class ReceiveErrorEvent extends HandyEvent
     {
         public DataManager.DataManagerError error;
     }
 
-    public abstract static class ApplicationLifeCycleEvent extends HandyEvent
-    {
-        public Activity sender;
-    }
-
 
     //Bookings
+
 
     public static class RequestBookingsForUser extends RequestEvent
     {
         public User user;
+
         public RequestBookingsForUser(User user)
         {
             this.user = user;
         }
     }
+
 
     public static class ReceiveBookingsSuccess extends ReceiveSuccessEvent
     {
@@ -68,6 +141,7 @@ public abstract class HandyEvent
 
     }
 
+
     public static class ReceiveBookingsError extends ReceiveErrorEvent
     {
         public ReceiveBookingsError(DataManager.DataManagerError error)
@@ -79,14 +153,17 @@ public abstract class HandyEvent
 
 //Booking Details
 
+
     public static class RequestBookingDetails extends RequestEvent
     {
         public String bookingId;
+
         public RequestBookingDetails(String bookingId)
         {
             this.bookingId = bookingId;
         }
     }
+
 
     public static class ReceiveBookingDetailsSuccess extends ReceiveBookingSuccessEvent
     {
@@ -95,6 +172,7 @@ public abstract class HandyEvent
             this.booking = booking;
         }
     }
+
 
     public static class ReceiveBookingDetailsError extends ReceiveErrorEvent
     {
@@ -116,6 +194,7 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class ReceivePreRescheduleInfoSuccess extends ReceiveSuccessEvent
     {
         public String notice;
@@ -127,6 +206,7 @@ public abstract class HandyEvent
 
     }
 
+
     public static class ReceivePreRescheduleInfoError extends ReceiveErrorEvent
     {
         public ReceivePreRescheduleInfoError(DataManager.DataManagerError error)
@@ -135,14 +215,17 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class RequestPreCancelationInfo extends RequestEvent
     {
         public String bookingId;
+
         public RequestPreCancelationInfo(String bookingId)
         {
             this.bookingId = bookingId;
         }
     }
+
 
     public static class ReceivePreCancelationInfoSuccess extends ReceiveSuccessEvent
     {
@@ -155,6 +238,7 @@ public abstract class HandyEvent
 
     }
 
+
     public static class ReceivePreCancelationInfoError extends ReceiveErrorEvent
     {
         public ReceivePreCancelationInfoError(DataManager.DataManagerError error)
@@ -165,6 +249,7 @@ public abstract class HandyEvent
 
 
 //Edit Booking Events
+
 
     //Update the note to pro for a booking
     public static class RequestUpdateBookingNoteToPro extends RequestEvent
@@ -179,6 +264,7 @@ public abstract class HandyEvent
         }
     }
 
+
     //
     public static class ReceiveUpdateBookingNoteToProSuccess extends ReceiveSuccessEvent
     {
@@ -188,6 +274,7 @@ public abstract class HandyEvent
         }
     }
 
+
     //
     public static class ReceiveUpdateBookingNoteToProError extends ReceiveErrorEvent
     {
@@ -196,6 +283,7 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
 
     //Update the entry information for a booking
     public static class RequestUpdateBookingEntryInformation extends RequestEvent
@@ -210,6 +298,7 @@ public abstract class HandyEvent
         }
     }
 
+
     //
     public static class ReceiveUpdateBookingEntryInformationSuccess extends ReceiveSuccessEvent
     {
@@ -218,6 +307,7 @@ public abstract class HandyEvent
 
         }
     }
+
 
     //
     public static class ReceiveUpdateBookingEntryInformationError extends ReceiveErrorEvent
@@ -228,11 +318,132 @@ public abstract class HandyEvent
         }
     }
 
-   //UI
+    //Update the frequency of a booking
+    public static class RequestUpdateBookingFrequency extends RequestEvent
+    {
+        public final int bookingId;
+        public final BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction;
+
+        public RequestUpdateBookingFrequency(int bookingId, BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction)
+        {
+            this.bookingId = bookingId;
+            this.bookingUpdateFrequencyTransaction = bookingUpdateFrequencyTransaction;
+        }
+    }
+
+    public static class ReceiveUpdateBookingFrequencySuccess extends ReceiveSuccessEvent
+    {
+        public ReceiveUpdateBookingFrequencySuccess()
+        {
+        }
+    }
+
+    public static class ReceiveUpdateBookingFrequencyError extends ReceiveErrorEvent
+    {
+        public ReceiveUpdateBookingFrequencyError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    //Get the booking prices for each booking frequency
+    public static class RequestGetBookingPricesForFrequencies extends RequestEvent
+    {
+        public final int bookingId;
+
+        public RequestGetBookingPricesForFrequencies(int bookingId)
+        {
+            this.bookingId = bookingId;
+        }
+    }
+
+    public static class ReceiveGetBookingPricesForFrequenciesSuccess extends ReceiveSuccessEvent
+    {
+        public final BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse;
+
+        public ReceiveGetBookingPricesForFrequenciesSuccess(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
+        {
+            this.bookingPricesForFrequenciesResponse = bookingPricesForFrequenciesResponse;
+        }
+    }
+
+    public static class ReceiveGetBookingPricesForFrequenciesError extends ReceiveErrorEvent
+    {
+        public ReceiveGetBookingPricesForFrequenciesError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    //Get the service extras options
+    public static class RequestGetServiceExtrasOptions extends RequestEvent
+    {
+        public final int bookingId;
+
+        public RequestGetServiceExtrasOptions(int bookingId)
+        {
+            this.bookingId = bookingId;
+        }
+    }
+
+    public static class ReceiveGetServiceExtrasOptionsSuccess extends ReceiveSuccessEvent
+    {
+        public final EditExtrasInfo editExtrasInfo;
+
+        public ReceiveGetServiceExtrasOptionsSuccess(EditExtrasInfo editExtrasInfo)
+        {
+            this.editExtrasInfo = editExtrasInfo;
+        }
+    }
+
+    public static class ReceiveGetServiceExtrasOptionsError extends ReceiveErrorEvent
+    {
+        public ReceiveGetServiceExtrasOptionsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    //Update the service extras options
+    public static class RequestEditServiceExtrasOptions extends RequestEvent
+    {
+        public final int bookingId;
+        public final BookingEditExtrasTransaction bookingEditExtrasTransaction;
+
+        public RequestEditServiceExtrasOptions(
+                int bookingId,
+                BookingEditExtrasTransaction bookingEditExtrasTransaction
+        )
+        {
+            this.bookingId = bookingId;
+            this.bookingEditExtrasTransaction = bookingEditExtrasTransaction;
+        }
+    }
+
+    public static class ReceiveEditServiceExtrasOptionsSuccess extends ReceiveSuccessEvent
+    {
+        public final SuccessWrapper successWrapper;
+
+        public ReceiveEditServiceExtrasOptionsSuccess(SuccessWrapper successWrapper)
+        {
+            this.successWrapper = successWrapper;
+        }
+    }
+
+    public static class ReceiveEditServiceExtrasOptionsError extends ReceiveErrorEvent
+    {
+        public ReceiveEditServiceExtrasOptionsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+    //UI
+
 
     public static class SetBookingDetailSectionFragmentActionControlsEnabled extends HandyEvent
     {
         public boolean enabled;
+
         public SetBookingDetailSectionFragmentActionControlsEnabled(boolean enabled)
         {
             this.enabled = enabled;
@@ -240,7 +451,7 @@ public abstract class HandyEvent
     }
 
 
-//Help Self Service Center
+    //Help Self Service Center
     public static class RequestHelpNode extends HandyEvent
     {
         public String nodeId;
@@ -253,6 +464,7 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class ReceiveHelpNodeSuccess extends ReceiveSuccessEvent
     {
         public HelpNode helpNode;
@@ -263,6 +475,7 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class ReceiveHelpNodeError extends ReceiveErrorEvent
     {
         public ReceiveHelpNodeError(DataManager.DataManagerError error)
@@ -270,6 +483,7 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
 
     //Help Booking Node - help node associated with a particular booking
     public static class RequestHelpBookingNode extends HandyEvent
@@ -284,6 +498,7 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class ReceiveHelpBookingNodeSuccess extends ReceiveSuccessEvent
     {
         public HelpNode helpNode;
@@ -294,6 +509,7 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class ReceiveHelpBookingNodeError extends ReceiveErrorEvent
     {
         public ReceiveHelpBookingNodeError(DataManager.DataManagerError error)
@@ -301,6 +517,7 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
 
     //Help Contact Message
     @Track("pro help contact form submitted")
@@ -314,12 +531,14 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class ReceiveNotifyHelpContactSuccess extends ReceiveSuccessEvent
     {
         public ReceiveNotifyHelpContactSuccess()
         {
         }
     }
+
 
     public static class ReceiveNotifyHelpContactError extends ReceiveErrorEvent
     {
@@ -329,20 +548,76 @@ public abstract class HandyEvent
         }
     }
 
+
     @Track("consumer app blocking screen displayed")
-    public static class BlockingScreenDisplayed extends HandyEvent{
+    public static class BlockingScreenDisplayed extends HandyEvent
+    {
     }
+
 
     @Track("consumer app blocking screen button clicked")
-    public static class BlockingScreenButtonPressed extends HandyEvent{
+    public static class BlockingScreenButtonPressed extends HandyEvent
+    {
     }
 
-    public static class StartBlockingAppEvent extends HandyEvent{
+
+    public static class StartBlockingAppEvent extends HandyEvent
+    {
 
     }
 
-    public static class StopBlockingAppEvent extends HandyEvent{
+
+    public static class StopBlockingAppEvent extends HandyEvent
+    {
 
     }
+
+//Rating and Tip
+
+    public static class RateBookingEvent extends RequestEvent
+    {
+        private final int mBookingId;
+        private final int mFinalRating;
+        private final Integer mTipAmountCents;
+
+        public RateBookingEvent(int bookingId, int finalRating, Integer tipAmountCents)
+        {
+            mBookingId = bookingId;
+            mFinalRating = finalRating;
+            mTipAmountCents = tipAmountCents;
+        }
+
+        public int getBookingId()
+        {
+            return mBookingId;
+        }
+
+        public int getFinalRating()
+        {
+            return mFinalRating;
+        }
+
+        public Integer getTipAmountCents()
+        {
+            return mTipAmountCents;
+        }
+    }
+
+    public static class ReceiveRateBookingSuccess extends ReceiveBookingSuccessEvent
+    {
+        public ReceiveRateBookingSuccess()
+        {
+        }
+    }
+
+    public static class ReceiveRateBookingError extends ReceiveErrorEvent
+    {
+        public ReceiveRateBookingError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+
+    }
+
 
 }

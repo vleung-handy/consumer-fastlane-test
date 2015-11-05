@@ -34,9 +34,9 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
     {
         super.onCreate(savedInstanceState);
 
-        menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT,
+        menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY, Position.LEFT,
                 MenuDrawer.MENU_DRAG_WINDOW);
-        menuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
+        menuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
         menuDrawer.setDropShadowSize(1);
         menuDrawer.setContentView(R.layout.activity_menu_drawer);
         menuDrawer.setMenuView(R.layout.activity_menu_nav);

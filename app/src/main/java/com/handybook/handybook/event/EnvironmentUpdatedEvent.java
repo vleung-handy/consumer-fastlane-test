@@ -1,21 +1,22 @@
 package com.handybook.handybook.event;
 
-import com.handybook.handybook.data.DataManager;
-
 public final class EnvironmentUpdatedEvent {
-    private final DataManager.Environment prev;
-    private final DataManager.Environment current;
+    private final String mPreviousEnvironment;
+    private final String mCurrentEnvironment;
 
-    public EnvironmentUpdatedEvent(final DataManager.Environment current,
-                            final DataManager.Environment prev) {
-        this.current = current;
-        this.prev = prev;
+    public EnvironmentUpdatedEvent(final String currentEnvironment, final String previousEnvironment)
+    {
+        mCurrentEnvironment = currentEnvironment;
+        mPreviousEnvironment = previousEnvironment;
     }
 
-    public final DataManager.Environment getEnvironment() {
-        return current;
+    public final String getEnvironment()
+    {
+        return mCurrentEnvironment;
     }
-    public final DataManager.Environment getPrevEnvironment() {
-        return prev;
+
+    public final String getPrevEnvironment()
+    {
+        return mPreviousEnvironment;
     }
 }

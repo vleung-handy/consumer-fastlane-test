@@ -118,7 +118,7 @@
                             android:id="@+id/icon_recur"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:contentDescription="@string/image_content_description_icon_recuring"
+                            android:contentDescription="@string/image_content_description_icon_recurring"
                             android:scaleX="-1"
                             android:src="@drawable/ic_recurring"/>
 
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_clean_fill"
+                    android:src="@drawable/ic_cleaner_fill"
                     android:layout_alignParentLeft="false"
                     android:layout_alignParentTop="true"/>
 

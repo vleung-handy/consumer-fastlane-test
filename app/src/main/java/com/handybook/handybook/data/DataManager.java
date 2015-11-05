@@ -1,66 +1,52 @@
 package com.handybook.handybook.data;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingEditExtrasTransaction;
+import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
-import com.handybook.handybook.core.BlockedWrapper;
+import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.EnvironmentUpdatedEvent;
-import com.squareup.otto.Bus;
+import com.handybook.handybook.core.UserBookingsWrapper;
 
 import java.util.Date;
 import java.util.List;
 
 import retrofit.mime.TypedInput;
 
-//TODO: Don't need to manually pass auth tokens for any endpoint, auth token is now auto added as part of the intercept
+//TODO: Don't need to manually pass auth tokens for any endpoint, auth token is now auto added as
+// part of the intercept
 
 public abstract class DataManager
 {
-    public static enum Environment
-    {
-        P, S, Q1, Q2, Q3, Q4, Q6, Q7, D1
-    }
-
-    private Environment env = Environment.S;
-    private final Bus bus;
-
-    DataManager(final Bus bus)
-    {
-        this.bus = bus;
-    }
-
-    public Environment getEnvironment()
-    {
-        return env;
-    }
-
-    public void setEnvironment(final Environment env, final boolean notify)
-    {
-        if (notify)
-        {
-            bus.post(new EnvironmentUpdatedEvent(env, this.env));
-        }
-        this.env = env;
-    }
-
     public abstract void getServices(CacheResponse<List<Service>> cache,
                                      Callback<List<Service>> cb);
+
+    public abstract void getServiceExtras(int bookingId,
+                                     Callback<EditExtrasInfo> cb);
+
+    public abstract void editServiceExtras(int bookingId,
+                                           BookingEditExtrasTransaction bookingEditExtrasTransaction,
+                                          Callback<SuccessWrapper> cb);
 
     /**
      * Requests a ShouldBlockObject defining if the app is recent enough to be used
@@ -106,7 +92,12 @@ public abstract class DataManager
                                             Callback<Void> cb);
 
     public abstract void getBookings(User user,
-                                     Callback<List<Booking>> cb);
+            Callback<UserBookingsWrapper> cb);
+
+    public abstract void getBookings(
+            @NonNull final User user,
+            @NonNull @Booking.List.OnlyBookingValues String onlyBookingValues,
+            @NonNull Callback<UserBookingsWrapper> cb);
 
     public abstract void getBooking(String bookingId,
                                     Callback<Booking> cb);
@@ -162,11 +153,19 @@ public abstract class DataManager
                                                 Callback<Void> cb);
 
     public abstract void updateBookingEntryInformation(int bookingId,
-                                                BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                                       BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                                       Callback<Void> cb);
+
+    public abstract void updateBookingFrequency(int bookingId,
+                                                BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
                                                 Callback<Void> cb);
+
+    public abstract void getBookingPricesForFrequencies(int bookingId,
+                                                        Callback<BookingPricesForFrequenciesResponse> cb);
 
     public abstract void ratePro(int bookingId,
                                  int rating,
+                                 Integer tipAmount,
                                  Callback<Void> cb);
 
     public abstract void submitProRatingDetails(int bookingId,
@@ -197,11 +196,11 @@ public abstract class DataManager
                                               Callback<String> cb);
 
     public abstract void getRequestProInfo(int bookingId,
-                                              Callback<BookingRequestablePros> cb);
+                                           Callback<BookingRequestablePros> cb);
 
     public abstract void requestProForBooking(int bookingId,
                                               int requestedProId,
-                                                Callback<BookingProRequestResponse> cb);
+                                              Callback<BookingProRequestResponse> cb);
 
     public abstract void getHelpInfo(String nodeId,
                                      String authToken,
@@ -218,19 +217,21 @@ public abstract class DataManager
 
     public abstract String getBaseUrl();
 
-    public static interface Callback<T>
+    public interface Callback<T>
     {
         void onSuccess(T response);
 
         void onError(DataManagerError error);
     }
 
-    public static interface CacheResponse<T>
+
+    public interface CacheResponse<T>
     {
         void onResponse(T response);
     }
 
-    static enum Type
+
+    enum Type
     {
         OTHER, SERVER, CLIENT, NETWORK
     }

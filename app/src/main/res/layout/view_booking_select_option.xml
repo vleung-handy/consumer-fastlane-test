@@ -8,6 +8,7 @@
         android:id="@+id/check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="@dimen/icon_padding"
         android:layout_gravity="center"
         android:gravity="center"
         android:background="@drawable/option_checkbox"
@@ -48,18 +49,34 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/right_text"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center|end"
+    <LinearLayout
         android:layout_weight="1.25"
-        android:text="Text"
-        android:freezesText="false"
-        android:singleLine="true"
-        android:visibility="gone"
-        android:textColor="@color/black_pressed"
-        style="@style/TextView.Headline.XSmall.Bold" />
+        android:paddingRight="@dimen/default_padding"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center|right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/right_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:freezesText="false"
+            android:singleLine="true"
+            android:visibility="gone"
+            android:textColor="@color/black_pressed"
+            style="@style/TextView.XLarge.Bold" />
+        <TextView
+            android:id="@+id/right_subtitle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:freezesText="false"
+            android:singleLine="true"
+            android:visibility="gone"
+            android:textColor="@color/black_pressed"
+            style="@style/TextView.Headline.XSmall.Bold" />
+    </LinearLayout>
+
 
 </LinearLayout>
