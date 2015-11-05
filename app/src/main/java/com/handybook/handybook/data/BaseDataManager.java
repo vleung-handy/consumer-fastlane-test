@@ -12,17 +12,17 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
-import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
+import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingEditExtrasTransaction;
-import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
+import com.handybook.handybook.model.request.BookingEditExtrasRequest;
+import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.core.EditExtrasInfo;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
@@ -32,7 +32,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
-import com.handybook.handybook.model.response.EditHoursInfoResponse;
+import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -213,17 +213,17 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void getServiceExtras(final int bookingId, final Callback<EditExtrasInfo> cb)
+    public void getServiceExtras(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
     {
         mService.getServiceExtras(bookingId, new ServiceExtrasInfoHandyRetroFitCallback(cb));
     }
 
     @Override
     public void editServiceExtras(final int bookingId,
-                                  final BookingEditExtrasTransaction bookingEditExtrasTransaction,
+                                  final BookingEditExtrasRequest bookingEditExtrasRequest,
                                   final Callback<SuccessWrapper> cb)
     {
-        mService.editServiceExtras(bookingId, bookingEditExtrasTransaction, new SuccessHandyRetroFitCallback(cb));
+        mService.editServiceExtras(bookingId, bookingEditExtrasRequest, new SuccessHandyRetroFitCallback(cb));
     }
 
     @Override
@@ -374,7 +374,7 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public final void getEditHoursInfo(final int bookingId,
-            final Callback<EditHoursInfoResponse> cb)
+            final Callback<BookingEditHoursInfoResponse> cb)
     {
         mService.getEditHoursInfo(
                 bookingId,
@@ -778,10 +778,10 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public final void updateBookingFrequency(int bookingId,
-                                             BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
+                                             BookingEditFrequencyRequest bookingEditFrequencyRequest,
                                              final Callback<Void> cb)
     {
-        mService.updateBookingFrequency(bookingId, bookingUpdateFrequencyTransaction, new HandyRetrofitCallback(cb)
+        mService.updateBookingFrequency(bookingId, bookingEditFrequencyRequest, new HandyRetrofitCallback(cb)
         {
             @Override
             void success(final JSONObject response)
@@ -793,7 +793,7 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public final void getBookingPricesForFrequencies(int bookingId,
-                                                     final Callback<BookingPricesForFrequenciesResponse> cb)
+                                                     final Callback<BookingEditFrequencyInfoResponse> cb)
     {
         mService.getBookingPricesForFrequencies(bookingId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
     }

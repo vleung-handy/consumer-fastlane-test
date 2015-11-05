@@ -1,24 +1,23 @@
 package com.handybook.handybook.model.response;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.core.EditExtrasInfo;
 
 import java.util.Map;
 
-public class EditHoursInfoResponse
+public class BookingEditHoursInfoResponse
 {
     @SerializedName("hours")
     private float mBaseHours;
     @SerializedName("paid_status")
-    private EditExtrasInfo.PaidStatus mPaidStatus;
+    private BookingEditExtrasInfoResponse.PaidStatus mPaidStatus;
     @SerializedName("extras_hours")
     private float mExtrasHours;
     @SerializedName("price_table")
-    private Map<String, EditExtrasInfo.PriceInfo> mPriceMap; //TODO: move priceinfo class
+    private Map<String, BookingEditExtrasInfoResponse.PriceInfo> mPriceMap; //TODO: move priceinfo class
     @SerializedName("total_price_table")
-    private Map<String, EditExtrasInfo.PriceInfo> mTotalPriceMap;
+    private Map<String, BookingEditExtrasInfoResponse.PriceInfo> mTotalPriceMap;
     @SerializedName("extras_price")
-    private EditExtrasInfo.OptionPrice mExtrasPrice;
+    private BookingEditExtrasInfoResponse.OptionPrice mExtrasPrice;
     @SerializedName("total_hours")
     private float mTotalHours;
     @SerializedName("total_formatted")
@@ -34,7 +33,7 @@ public class EditHoursInfoResponse
         return mExtrasHours;
     }
 
-    public EditExtrasInfo.OptionPrice getExtrasPrice()
+    public BookingEditExtrasInfoResponse.OptionPrice getExtrasPrice()
     {
         return mExtrasPrice;
     }
@@ -49,17 +48,17 @@ public class EditHoursInfoResponse
         return mTotalPriceFormattedDollars;
     }
 
-    public EditExtrasInfo.PaidStatus getPaidStatus() //TODO: move paidstatus class
+    public BookingEditExtrasInfoResponse.PaidStatus getPaidStatus() //TODO: move paidstatus class
     {
         return mPaidStatus;
     }
 
-    public Map<String, EditExtrasInfo.PriceInfo> getTotalPriceMap()
+    public Map<String, BookingEditExtrasInfoResponse.PriceInfo> getTotalPriceMap()
     {
         return mTotalPriceMap;
     }
 
-    public Map<String, EditExtrasInfo.PriceInfo> getPriceMap()
+    public Map<String, BookingEditExtrasInfoResponse.PriceInfo> getPriceMap()
     {
         return mPriceMap;
     }
