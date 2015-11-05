@@ -12,7 +12,7 @@ public class ValidationUtils
      * @param map
      * @return true if given key, map and map.get(key) are non-null
      */
-    public static boolean mapKeyEntryValid(final Object key, final Map<?, ?> map)
+    public static boolean isMapKeyEntryValid(final Object key, final Map<?, ?> map)
     {
         return key != null && map != null && map.get(key) != null;
     }

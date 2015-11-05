@@ -184,14 +184,14 @@ public class BookingEditHoursViewModel
     private String getTotalDuePriceFormatted(final String key)
     {
         Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getTotalPriceMap();
-        return ValidationUtils.mapKeyEntryValid(key, priceMap) ?
+        return ValidationUtils.isMapKeyEntryValid(key, priceMap) ?
                 priceMap.get(key).getTotalDueFormatted() : null;
     }
 
     private String getPriceDifferenceFormatted(final String key)
     {
         Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getPriceMap();
-        return ValidationUtils.mapKeyEntryValid(key, priceMap) ?
+        return ValidationUtils.isMapKeyEntryValid(key, priceMap) ?
                 priceMap.get(key).getPriceDifferenceFormatted() : null;
     }
 }
