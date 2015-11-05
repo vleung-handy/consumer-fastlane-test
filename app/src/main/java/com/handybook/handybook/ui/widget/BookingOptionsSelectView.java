@@ -171,9 +171,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             {
                 final LinearLayout.LayoutParams layoutParams
                         = (LinearLayout.LayoutParams) optionView.getLayoutParams();
-
-                layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin,
-                        layoutParams.rightMargin, getResources().getDimensionPixelSize(R.dimen.default_margin));
+                layoutParams.bottomMargin = getResources().getDimensionPixelSize(R.dimen.default_margin);
 
                 optionView.setLayoutParams(layoutParams);
             }
