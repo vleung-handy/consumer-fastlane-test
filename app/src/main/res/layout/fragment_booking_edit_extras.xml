@@ -14,7 +14,7 @@
     <TextView
         android:id="@+id/nav_text"
         style="@style/TextView.Navbar"
-        android:text="@string/edit_extras_title"/>
+        android:text="@string/booking_edit_extras_title"/>
 
     <ScrollView
         android:id="@+id/booking_edit_extras_content_container"
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_pressed"/>
 
-                <include layout="@layout/element_booking_edit_warning_text"/>
+                <include layout="@layout/element_booking_edit_extras_warning_text"/>
             </LinearLayout>
 
         </RelativeLayout>

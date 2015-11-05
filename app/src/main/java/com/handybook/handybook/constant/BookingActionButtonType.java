@@ -6,7 +6,7 @@ public enum BookingActionButtonType
 {
     RESCHEDULE(BookingAction.ACTION_RESCHEDULE, R.string.reschedule,
             BookingActionButtonStyle.BLUE, R.id.action_button_reschedule_booking),
-    EDIT_HOURS(BookingAction.ACTION_EDIT_HOURS, R.string.booking_action_edit_hours,
+    EDIT_HOURS(BookingAction.ACTION_EDIT_HOURS, R.string.booking_edit_hours_action_button,
             BookingActionButtonStyle.BLUE, R.id.action_button_edit_hours),
     CANCEL(BookingAction.ACTION_CANCEL, R.string.cancel_booking,
             BookingActionButtonStyle.GREY, R.id.action_button_cancel_booking),

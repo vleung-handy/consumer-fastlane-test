@@ -113,7 +113,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     public void onViewCreated(final View view, final Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        mSubtitleText.setText(R.string.booking_edit_pro_assignment_warning_msg);
+        mSubtitleText.setText(R.string.booking_edit_pro_assignment_warning);
         //have to set text here because view was added using the <include> tag, which does not accept params
 
         if (mBooking.isRecurring())
@@ -121,7 +121,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
             //show the "apply to recurring bookings" option
             BookingOption bookingOption = new BookingOption(); //TODO: is there a standalone checkbox widget?
             bookingOption.setType(BookingOption.TYPE_CHECKLIST);
-            bookingOption.setOptions(new String[]{getResources().getString(R.string.booking_edit_apply_to_subsequent_bookings_option)});
+            bookingOption.setOptions(new String[]{getResources().getString(R.string.booking_edit_should_apply_to_subsequent_bookings_option_label)});
 
             mApplyToRecurringBookingsSelectView = new BookingOptionsSelectView(getActivity(), bookingOption,
                     null);
@@ -150,10 +150,10 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         String baseHoursFormatted = mBookingEditHoursViewModel.getBaseHoursFormatted();
         String basePriceFormatted = mBookingEditHoursViewModel.getBasePriceFormatted();
         mBaseTimeDetailsView.setLabelAndValueText(
-                getResources().getString(R.string.booking_edit_base_time_label, baseHoursFormatted), basePriceFormatted);
+                getResources().getString(R.string.booking_edit_base_hours_formatted, baseHoursFormatted), basePriceFormatted);
         mExtrasTimeDetailsView.setLabelAndValueText(
-                getResources().getString(R.string.booking_edit_extras_time_label, mBookingEditHoursViewModel.getExtrasHoursFormatted()),
-                getResources().getString(R.string.booking_edit_positive_price, mBookingEditHoursViewModel.getExtrasPriceFormatted()));
+                getResources().getString(R.string.booking_edit_extra_hours_formatted, mBookingEditHoursViewModel.getExtrasHoursFormatted()),
+                getResources().getString(R.string.booking_edit_positive_price_formatted, mBookingEditHoursViewModel.getExtrasPriceFormatted()));
 
     }
 
@@ -166,13 +166,13 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         String totalHoursFormatted = mBookingEditHoursViewModel.getTotalHoursFormatted(selectedHours);
 
         mAddedTimeDetailsView.setLabelAndValueText(
-                getResources().getString(R.string.booking_edit_added_time_label, addedHoursFormatted),
+                getResources().getString(R.string.booking_edit_added_hours_formatted, addedHoursFormatted),
                 mBookingEditHoursViewModel.isSelectedHoursLessThanBaseHours(selectedHours) ?
-                        addedPriceFormatted : getResources().getString(R.string.booking_edit_positive_price, addedPriceFormatted));
+                        addedPriceFormatted : getResources().getString(R.string.booking_edit_positive_price_formatted, addedPriceFormatted));
 
         mBookingDurationText.setText(
-                getResources().getString(R.string.booking_edit_num_hours_display, totalHoursFormatted));
-        mBilledOnText.setText(getResources().getString(R.string.billed_on_date,
+                getResources().getString(R.string.booking_edit_num_hours_formatted, totalHoursFormatted));
+        mBilledOnText.setText(getResources().getString(R.string.billed_on_date_formatted,
                 mBookingEditHoursViewModel.getFutureBillDateFormatted()));
         mTotalDueText.setText(mBookingEditHoursViewModel.getTotalDuePriceFormatted(selectedHours));
 
