@@ -80,7 +80,7 @@ public class UserManager implements Observer
     @Subscribe
     public final void environmentUpdated(final EnvironmentUpdatedEvent event)
     {
-        if (event.getEnvironment() != event.getPrevEnvironment())
+        if (event.getEnvironment() != null && !event.getEnvironment().equals(event.getPrevEnvironment()))
         {
             setCurrentUser(null);
         }
