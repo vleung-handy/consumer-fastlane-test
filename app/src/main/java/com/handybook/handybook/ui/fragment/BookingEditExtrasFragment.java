@@ -13,9 +13,9 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.core.BookingEditExtrasTransaction;
+import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.core.EditExtrasInfo;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
@@ -54,9 +54,9 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     LinearLayout mBookingExtrasPriceTableLayout;
 
     private Booking mBooking;
-    private EditExtrasInfo mEditExtrasInfo;
+    private BookingEditExtrasInfoResponse mEditExtrasInfo;
     private BookingOptionsSelectView mOptionsView;
-    private BookingEditExtrasTransaction mBookingEditExtrasTransaction;
+    private BookingEditExtrasRequest mBookingEditExtrasRequest;
 
     public static BookingEditExtrasFragment newInstance(Booking booking)
     {
@@ -78,7 +78,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     private void initTransaction()
     {
-        mBookingEditExtrasTransaction = new BookingEditExtrasTransaction();
+        mBookingEditExtrasRequest = new BookingEditExtrasRequest();
     }
 
     @Override
@@ -86,7 +86,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestGetServiceExtrasOptions(Integer.parseInt(mBooking.getId())));
+        bus.post(new HandyEvent.RequestGetEditExtrasInfo(Integer.parseInt(mBooking.getId())));
     }
 
     @Override
@@ -146,10 +146,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
                 //otherwise it was not selected and wasn't in original booking. do nothing
             }
         }
-        mBookingEditExtrasTransaction.setAddedExtras(addedExtras.toArray(new String[]{}));
-        mBookingEditExtrasTransaction.setRemovedExtras(removedExtras.toArray(new String[]{}));
+        mBookingEditExtrasRequest.setAddedExtras(addedExtras.toArray(new String[]{}));
+        mBookingEditExtrasRequest.setRemovedExtras(removedExtras.toArray(new String[]{}));
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditServiceExtrasOptions(Integer.parseInt(mBooking.getId()), mBookingEditExtrasTransaction));
+        bus.post(new HandyEvent.RequestEditExtras(Integer.parseInt(mBooking.getId()), mBookingEditExtrasRequest));
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated
@@ -182,7 +182,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         bookingOption.setOptions(mEditExtrasInfo.getOptionsDisplayNames());
         bookingOption.setOptionsSubText(mEditExtrasInfo.getOptionsSubText());
         bookingOption.setImageResourceIds(mEditExtrasInfo.getOptionImagesResourceIdArray());
-        EditExtrasInfo.OptionPrice[] optionPrices = mEditExtrasInfo.getOptionPrices();
+        BookingEditExtrasInfoResponse.OptionPrice[] optionPrices = mEditExtrasInfo.getOptionPrices();
         String[] optionsRightStrings = new String[optionPrices.length];
         for (int i = 0; i < optionPrices.length; i++)
         {
@@ -251,7 +251,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         mBilledOnText.setText(getResources().getString(R.string.billed_on_date_formatted, mEditExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
 
         String totalHoursFormatted = getFormattedHoursForPriceTable(totalHours);
-        Map<String, EditExtrasInfo.PriceInfo> priceTable = mEditExtrasInfo.getPriceTable();
+        Map<String, BookingEditExtrasInfoResponse.PriceInfo> priceTable = mEditExtrasInfo.getPriceTable();
         mTotalDueText.setText(priceTable.containsKey(
                 totalHoursFormatted) ?
                 priceTable.get(totalHoursFormatted).getTotalDueFormatted() :
@@ -286,9 +286,9 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveServicesExtrasOptionsSuccess(HandyEvent.ReceiveGetServiceExtrasOptionsSuccess event)
+    public final void onReceiveServicesExtrasOptionsSuccess(HandyEvent.ReceiveGetEditExtrasInfoSuccess event)
     {
-        mEditExtrasInfo = event.editExtrasInfo;
+        mEditExtrasInfo = event.bookingEditExtrasInfoResponse;
 
         createOptionsView();
         updateBookingSummaryText();
@@ -297,13 +297,13 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveServicesExtrasOptionsError(HandyEvent.ReceiveGetServiceExtrasOptionsError event)
+    public final void onReceiveServicesExtrasOptionsError(HandyEvent.ReceiveGetEditExtrasInfoError event)
     {
         onReceiveErrorEvent(event);
     }
 
     @Subscribe
-    public final void onReceiveUpdateServiceExtrasSuccess(HandyEvent.ReceiveEditServiceExtrasOptionsSuccess event)
+    public final void onReceiveUpdateServiceExtrasSuccess(HandyEvent.ReceiveEditExtrasSuccess event)
     {
         removeUiBlockers();
         showToast(getString(R.string.booking_edit_extras_update_success));
@@ -313,7 +313,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveUpdateServiceExtrasError(HandyEvent.ReceiveEditServiceExtrasOptionsError event)
+    public final void onReceiveUpdateServiceExtrasError(HandyEvent.ReceiveEditExtrasError event)
     {
         onReceiveErrorEvent(event);
     }

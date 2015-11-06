@@ -2,8 +2,8 @@ package com.handybook.handybook.viewmodel;
 
 import android.support.annotation.NonNull;
 
-import com.handybook.handybook.core.EditExtrasInfo;
-import com.handybook.handybook.model.response.EditHoursInfoResponse;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
 import com.handybook.handybook.util.MathUtils;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.ValidationUtils;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class BookingEditHoursViewModel
 {
     //TODO: create a view model for other edit screens and move some of these methods to a super
-    private final EditHoursInfoResponse mEditHoursInfo;
+    private final BookingEditHoursInfoResponse mEditHoursInfo;
     /**
      * A comparator that compares strings as numbers
      */
@@ -31,12 +31,12 @@ public class BookingEditHoursViewModel
         }
     };
 
-    private BookingEditHoursViewModel(@NonNull final EditHoursInfoResponse editHoursInfo)
+    private BookingEditHoursViewModel(@NonNull final BookingEditHoursInfoResponse editHoursInfo)
     {
         mEditHoursInfo = editHoursInfo;
     }
 
-    public static BookingEditHoursViewModel from(@NonNull final EditHoursInfoResponse editHoursInfo)
+    public static BookingEditHoursViewModel from(@NonNull final BookingEditHoursInfoResponse editHoursInfo)
     {
         return new BookingEditHoursViewModel(editHoursInfo);
     }
@@ -183,14 +183,14 @@ public class BookingEditHoursViewModel
 
     private String getTotalDuePriceFormatted(final String key)
     {
-        Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getTotalPriceMap();
+        Map<String, BookingEditExtrasInfoResponse.PriceInfo> priceMap = mEditHoursInfo.getTotalPriceMap();
         return ValidationUtils.isMapKeyEntryValid(key, priceMap) ?
                 priceMap.get(key).getTotalDueFormatted() : null;
     }
 
     private String getPriceDifferenceFormatted(final String key)
     {
-        Map<String, EditExtrasInfo.PriceInfo> priceMap = mEditHoursInfo.getPriceMap();
+        Map<String, BookingEditExtrasInfoResponse.PriceInfo> priceMap = mEditHoursInfo.getPriceMap();
         return ValidationUtils.isMapKeyEntryValid(key, priceMap) ?
                 priceMap.get(key).getPriceDifferenceFormatted() : null;
     }

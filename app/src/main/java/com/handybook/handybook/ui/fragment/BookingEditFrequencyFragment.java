@@ -15,8 +15,8 @@ import com.handybook.handybook.constant.BookingFrequency;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
-import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
+import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
+import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
     //TODO: need to consolidate all booking edit fragments with booking flow fragments that are used in booking creation
-    private BookingUpdateFrequencyTransaction mBookingUpdateFrequencyTransaction;
+    private BookingEditFrequencyRequest mBookingEditFrequencyRequest;
     private Booking mBooking;
     private int[] mRecurValues;
 
@@ -62,13 +62,13 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestGetBookingPricesForFrequencies(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
+        bus.post(new HandyEvent.RequestGetEditFrequencyInfo(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
     }
 
     private void initTransaction()
     {
-        mBookingUpdateFrequencyTransaction = new BookingUpdateFrequencyTransaction();
-        mBookingUpdateFrequencyTransaction.setRecurringFrequency(0);
+        mBookingEditFrequencyRequest = new BookingEditFrequencyRequest();
+        mBookingEditFrequencyRequest.setRecurringFrequency(0);
     }
 
 
@@ -106,13 +106,14 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         nextButton.setClickable(true);
     }
 
+    //TODO: use onClick annotation
     private final View.OnClickListener nextClicked = new View.OnClickListener()
     {
         @Override
         public void onClick(final View view)
         {
             showUiBlockers();
-            bus.post(new HandyEvent.RequestUpdateBookingFrequency(Integer.parseInt(mBooking.getId()), mBookingUpdateFrequencyTransaction));
+            bus.post(new HandyEvent.RequestEditBookingFrequency(Integer.parseInt(mBooking.getId()), mBookingEditFrequencyRequest));
         }
     };
 
@@ -123,7 +124,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         public void onUpdate(final BookingOptionsView view)
         {
             final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-            mBookingUpdateFrequencyTransaction.setRecurringFrequency(mRecurValues[index]);
+            mBookingEditFrequencyRequest.setRecurringFrequency(mRecurValues[index]);
             if (bookingManager.getCurrentTransaction() != null)
             {
                 bookingManager.getCurrentTransaction().setRecurringFrequency(mRecurValues[index]);
@@ -162,14 +163,14 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         }
     }
 
-    private String[] getOriginalPriceArrayForRecurValues(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
+    private String[] getOriginalPriceArrayForRecurValues(BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse)
     {
         String[] priceArray = new String[mRecurValues.length];
         //this is string because server returns formatted prices (let's not do that in new api)
 
         for (int i = 0; i < priceArray.length; i++)
         {
-            priceArray[i] = bookingPricesForFrequenciesResponse.getFormattedPriceForFrequency(mRecurValues[i]);
+            priceArray[i] = bookingEditFrequencyInfoResponse.getFormattedPriceForFrequency(mRecurValues[i]);
         }
         return priceArray;
     }
@@ -188,7 +189,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         }
     }
 
-    private BookingOption getBookingOption(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
+    private BookingOption getBookingOption(BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse)
     {
         //TODO: mostly duplicated from checkout flow fragment, should reconsider redesigning the options logic
         final BookingOption option = new BookingOption();
@@ -198,11 +199,11 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         mRecurValues = new int[]{BookingFrequency.WEEKLY, BookingFrequency.BIMONTHLY, BookingFrequency.MONTHLY}; //allowing edit frequency only for recurring bookings
 
         //update the options right-hand text views
-        int indexForFreq = indexForFreq(bookingPricesForFrequenciesResponse.getCurrentFrequency());
+        int indexForFreq = indexForFreq(bookingEditFrequencyInfoResponse.getCurrentFrequency());
         String optionsSubText[] = new String[mRecurValues.length];
         optionsSubText[indexForFreq] = getString(R.string.current);
         option.setOptionsSubText(optionsSubText);
-        option.setOptionsRightTitleText(getOriginalPriceArrayForRecurValues(bookingPricesForFrequenciesResponse));
+        option.setOptionsRightTitleText(getOriginalPriceArrayForRecurValues(bookingEditFrequencyInfoResponse));
 
         String[] optionsRightSubText = new String[mRecurValues.length];
         String rightSubText = getString(
@@ -216,19 +217,19 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         return option;
     }
 
-    private void createOptionsView(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
+    private void createOptionsView(BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse)
     {
         //create the options view
         final BookingOptionsSelectView optionsView
-                = new BookingOptionsSelectView(getActivity(), getBookingOption(bookingPricesForFrequenciesResponse), optionUpdated);
-        optionsView.setCurrentIndex(indexForFreq(bookingPricesForFrequenciesResponse.getCurrentFrequency()));
+                = new BookingOptionsSelectView(getActivity(), getBookingOption(bookingEditFrequencyInfoResponse), optionUpdated);
+        optionsView.setCurrentIndex(indexForFreq(bookingEditFrequencyInfoResponse.getCurrentFrequency()));
         optionsView.hideTitle();
         optionsLayout.removeAllViews();
         optionsLayout.addView(optionsView);
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingFrequencySuccess(HandyEvent.ReceiveUpdateBookingFrequencySuccess event)
+    public final void onReceiveUpdateBookingFrequencySuccess(HandyEvent.ReceiveEditBookingFrequencySuccess event)
     {
         removeUiBlockers();
         showToast(R.string.updated_booking_frequency);
@@ -238,20 +239,20 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingFrequencyError(HandyEvent.ReceiveUpdateBookingFrequencyError event)
+    public final void onReceiveUpdateBookingFrequencyError(HandyEvent.ReceiveEditBookingFrequencyError event)
     {
         onReceiveErrorEvent(event);
     }
 
     @Subscribe
-    public final void onReceiveBookingPricesForFrequenciesSuccess(HandyEvent.ReceiveGetBookingPricesForFrequenciesSuccess event)
+    public final void onReceiveBookingPricesForFrequenciesSuccess(HandyEvent.ReceiveGetEditFrequencyInfoSuccess event)
     {
-        createOptionsView(event.bookingPricesForFrequenciesResponse);
+        createOptionsView(event.bookingEditFrequencyInfoResponse);
         removeUiBlockers();
     }
 
     @Subscribe
-    public final void onReceiveBookingPricesForFrequenciesError(HandyEvent.ReceiveGetBookingPricesForFrequenciesError event)
+    public final void onReceiveBookingPricesForFrequenciesError(HandyEvent.ReceiveGetEditFrequencyInfoError event)
     {
         onReceiveErrorEvent(event);
     }

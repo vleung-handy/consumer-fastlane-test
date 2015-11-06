@@ -7,8 +7,8 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingEditExtrasTransaction;
-import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
+import com.handybook.handybook.model.request.BookingEditExtrasRequest;
+import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
@@ -42,7 +42,7 @@ public interface HandyRetrofitService
 
     @POST("/bookings/{id}/edit_extras")
     void editServiceExtras(@Path("id") int bookingId,
-                          @Body BookingEditExtrasTransaction bookingEditExtrasTransaction,
+                          @Body BookingEditExtrasRequest bookingEditExtrasRequest,
                           HandyRetrofitCallback cb);
 
     @GET("/quotes/new")
@@ -125,7 +125,7 @@ public interface HandyRetrofitService
 
     @POST("/bookings/{booking}/edit_frequency")
     void updateBookingFrequency(@Path("booking") int bookingId,
-                                @Body BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
+                                @Body BookingEditFrequencyRequest bookingEditFrequencyRequest,
                                 HandyRetrofitCallback cb);
 
     @GET("/bookings/{booking}/edit_frequency")
