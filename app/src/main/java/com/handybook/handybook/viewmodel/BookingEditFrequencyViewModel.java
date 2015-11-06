@@ -33,7 +33,7 @@ public class BookingEditFrequencyViewModel
      * @param booking
      * @return A BookingOption object that models the booking options view
      */
-    public BookingOption getBookingOptionFromBooking(Context context, Booking booking)
+    public BookingOption getBookingOptionFromBooking(final Context context, final Booking booking)
     {
         //TODO: mostly duplicated from checkout flow fragment, should reconsider redesigning the options logic
         final BookingOption option = new BookingOption();
@@ -67,7 +67,7 @@ public class BookingEditFrequencyViewModel
      * @param booking
      * @return
      */
-    public final String getServiceShortNameFromBooking(Context context, Booking booking)
+    public final String getServiceShortNameFromBooking(final Context context, final Booking booking)
     {
         switch (booking.getServiceMachineName())
         {
@@ -84,7 +84,7 @@ public class BookingEditFrequencyViewModel
      *
      * @return An array of formatted strings that represent frequencies, to be displayed as the main options text
      */
-    public String[] getFormattedPricesForFrequencyArray()
+    private String[] getFormattedPricesForFrequencyArray()
     {
         String[] priceArray = new String[mFrequencyOptionsArray.length];
         //this is string because server returns formatted prices (let's not do that in new api)
@@ -94,6 +94,26 @@ public class BookingEditFrequencyViewModel
             priceArray[i] = getFormattedPriceForFrequency(mFrequencyOptionsArray[i]);
         }
         return priceArray;
+    }
+
+    /**
+     *
+     * @param frequency
+     * @return The new booking price for a given booking frequency
+     */
+    private String getFormattedPriceForFrequency(final int frequency)
+    {
+        switch (frequency)
+        {
+            case BookingFrequency.WEEKLY:
+                return mEditFrequencyInfoResponse.getWeeklyPriceFormatted();
+            case BookingFrequency.BIMONTHLY:
+                return mEditFrequencyInfoResponse.getBimonthlyPriceFormatted();
+            case BookingFrequency.MONTHLY:
+                return mEditFrequencyInfoResponse.getMonthlyPriceFormatted();
+            default:
+                return null;
+        }
     }
 
     /**
@@ -110,17 +130,7 @@ public class BookingEditFrequencyViewModel
         return -1;
     }
 
-    /**
-     *
-     * @param index
-     * @return The frequency value for a given option index
-     */
-    public int getFrequencyOptionValue(int index) //TODO: need better name
-    {
-        return mFrequencyOptionsArray[index];
-    }
-
-    private String[] getDisplayStringsArray(Context context)
+    private String[] getDisplayStringsArray(final Context context)
     {
         String[] displayStrings = new String[mFrequencyOptionsArray.length];
         for(int i = 0; i<mFrequencyOptionsArray.length; i++)
@@ -131,7 +141,7 @@ public class BookingEditFrequencyViewModel
         return displayStrings;
     }
 
-    private String getDisplayStringForBookingFrequency(Context context, int frequency)
+    private String getDisplayStringForBookingFrequency(final Context context, final int frequency)
     {
         switch(frequency)
         {
@@ -148,21 +158,11 @@ public class BookingEditFrequencyViewModel
 
     /**
      *
-     * @param frequency
-     * @return The new booking price for a given booking frequency
+     * @param index
+     * @return The frequency value for a given option index
      */
-    private String getFormattedPriceForFrequency(int frequency)
+    public int getFrequencyOptionValue(final int index) //TODO: need better name
     {
-        switch (frequency)
-        {
-            case BookingFrequency.WEEKLY:
-                return mEditFrequencyInfoResponse.getWeeklyPriceFormatted();
-            case BookingFrequency.BIMONTHLY:
-                return mEditFrequencyInfoResponse.getBimonthlyPriceFormatted();
-            case BookingFrequency.MONTHLY:
-                return mEditFrequencyInfoResponse.getMonthlyPriceFormatted();
-            default:
-                return null;
-        }
+        return mFrequencyOptionsArray[index];
     }
 }
