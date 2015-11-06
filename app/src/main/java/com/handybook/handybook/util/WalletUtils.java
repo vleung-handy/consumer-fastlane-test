@@ -14,53 +14,61 @@ import com.stripe.Stripe;
 
 import java.util.List;
 
-public class PaymentUtils
+public class WalletUtils
 {
+    public static final int REQUEST_CODE_LOAD_MASKED_WALLET = 1001;
+    public static final int REQUEST_CODE_LOAD_FULL_WALLET = 1002;
+    private static final String CURRENCY_CODE_USD = "USD";
+    private static final String HANDY_MERCHANT_NAME = "Handy Technologies Inc.";
+
     public static MaskedWalletRequest createMaskedWalletRequest(BookingQuote quote, BookingTransaction transaction)
     {
-        final float hours = transaction.getHours() + transaction.getExtraHours();
-        final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
-        String itemPrice = Float.toString(pricing[0] == pricing[1] ? pricing[0] : pricing[1]);
+        String itemPrice = getItemPrice(quote, transaction);
 
         List<LineItem> lineItems = Lists.newArrayList(LineItem.newBuilder()
-                .setCurrencyCode("USD")
+                .setCurrencyCode(CURRENCY_CODE_USD)
                 .setQuantity("1")
                 .setUnitPrice(itemPrice)
                 .setTotalPrice(itemPrice)
                 .build());
 
         return MaskedWalletRequest.newBuilder()
-                .setMerchantName("Handy Technologies Inc.")
+                .setMerchantName(HANDY_MERCHANT_NAME)
                 .setPhoneNumberRequired(false)
                 .setShippingAddressRequired(false)
-                .setCurrencyCode("USD")
+                .setCurrencyCode(CURRENCY_CODE_USD)
                 .setEstimatedTotalPrice(itemPrice)
                 .setCart(Cart.newBuilder()
-                        .setCurrencyCode("USD")
+                        .setCurrencyCode(CURRENCY_CODE_USD)
                         .setTotalPrice(itemPrice)
                         .setLineItems(lineItems)
                         .build())
                 .setPaymentMethodTokenizationParameters(PaymentMethodTokenizationParameters.newBuilder()
                         .setPaymentMethodTokenizationType(PaymentMethodTokenizationType.PAYMENT_GATEWAY)
                         .addParameter("gateway", "stripe")
-                        .addParameter("stripe:publishableKey", "pk_qPX5iTm3zI9AebN3rxOtFUe1Z4l92") // should be quote.getStripeKey()
+                        .addParameter("stripe:publishableKey", quote.getStripeKey())
                         .addParameter("stripe:version", Stripe.VERSION)
                         .build())
                 .build();
     }
 
-    public static FullWalletRequest createFullWalletRequest(BookingQuote quote, BookingTransaction transaction, MaskedWallet maskedWallet)
+    public static FullWalletRequest createFullWalletRequest(final BookingQuote quote, final BookingTransaction transaction, MaskedWallet maskedWallet)
     {
-        final float hours = transaction.getHours() + transaction.getExtraHours();
-        final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
-        String itemPrice = Float.toString(pricing[0] == pricing[1] ? pricing[0] : pricing[1]);
+        String itemPrice = getItemPrice(quote, transaction);
 
         return FullWalletRequest.newBuilder()
                 .setGoogleTransactionId(maskedWallet.getGoogleTransactionId())
                 .setCart(Cart.newBuilder()
-                        .setCurrencyCode("USD")
+                        .setCurrencyCode(CURRENCY_CODE_USD)
                         .setTotalPrice(itemPrice)
                         .build())
                 .build();
+    }
+
+    private static String getItemPrice(final BookingQuote quote, final BookingTransaction transaction)
+    {
+        final float hours = transaction.getHours() + transaction.getExtraHours();
+        final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
+        return Float.toString(pricing[0] == pricing[1] ? pricing[0] : pricing[1]);
     }
 }
