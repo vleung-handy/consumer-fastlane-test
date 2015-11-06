@@ -118,7 +118,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
-                        .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+                        .setEnvironment(WalletUtils.getEnvironment())
                         .setTheme(WalletConstants.THEME_LIGHT)
                         .build())
                 .build();
@@ -229,7 +229,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                 .setBuyButtonWidth(WalletFragmentStyle.Dimension.MATCH_PARENT);
 
         WalletFragmentOptions walletFragmentOptions = WalletFragmentOptions.newBuilder()
-                .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+                .setEnvironment(WalletUtils.getEnvironment())
                 .setFragmentStyle(walletFragmentStyle)
                 .setTheme(WalletConstants.THEME_LIGHT)
                 .setMode(WalletFragmentMode.BUY_BUTTON)

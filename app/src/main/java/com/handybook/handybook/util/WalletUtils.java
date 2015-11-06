@@ -7,7 +7,10 @@ import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.android.gms.wallet.PaymentMethodTokenizationParameters;
 import com.google.android.gms.wallet.PaymentMethodTokenizationType;
+import com.google.android.gms.wallet.WalletConstants;
 import com.google.common.collect.Lists;
+import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingTransaction;
 import com.stripe.Stripe;
@@ -20,6 +23,18 @@ public class WalletUtils
     public static final int REQUEST_CODE_LOAD_FULL_WALLET = 1002;
     private static final String CURRENCY_CODE_USD = "USD";
     private static final String HANDY_MERCHANT_NAME = "Handy Technologies Inc.";
+
+    public static int getEnvironment()
+    {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase(BaseApplication.FLAVOR_PROD))
+        {
+            return WalletConstants.ENVIRONMENT_PRODUCTION;
+        }
+        else
+        {
+            return WalletConstants.ENVIRONMENT_TEST;
+        }
+    }
 
     public static MaskedWalletRequest createMaskedWalletRequest(BookingQuote quote, BookingTransaction transaction)
     {
