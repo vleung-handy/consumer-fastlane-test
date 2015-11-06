@@ -76,19 +76,25 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
             @Override
             public void onClick(final View v)
             {
-                onSaveButtonPressed();
+                sendEditFrequencyRequest();
             }
         });
         return view;
     }
 
-    public void onSaveButtonPressed()
+    public void sendEditFrequencyRequest()
     {
         showUiBlockers();
+
+        //get the current selected index of the options view
         final int selectedIndex = mOptionsView.getCurrentIndex();
+
+        //create and set the booking request object
         BookingEditFrequencyRequest bookingEditFrequencyRequest = new BookingEditFrequencyRequest();
         bookingEditFrequencyRequest.setRecurringFrequency(
                 mBookingEditFrequencyViewModel.getFrequencyOptionValue(selectedIndex));
+
+        //post the booking request object
         bus.post(new HandyEvent.RequestEditBookingFrequency(
                 Integer.parseInt(mBooking.getId()),
                 bookingEditFrequencyRequest));
