@@ -149,7 +149,7 @@ public final class BookingManager implements Observer
     @Subscribe
     public void onRequestUpdateBookingFrequency(HandyEvent.RequestEditBookingFrequency event)
     {
-        dataManager.updateBookingFrequency(event.bookingId, event.mBookingEditFrequencyRequest, new DataManager.Callback<Void>()
+        dataManager.updateBookingFrequency(event.bookingId, event.bookingEditFrequencyRequest, new DataManager.Callback<Void>()
         {
             @Override
             public void onSuccess(Void response)
@@ -532,7 +532,7 @@ public final class BookingManager implements Observer
     {
         dataManager.editServiceExtras(
                 event.bookingId,
-                event.mBookingEditExtrasRequest,
+                event.bookingEditExtrasRequest,
                 new DataManager.Callback<SuccessWrapper>()
         {
             @Override
