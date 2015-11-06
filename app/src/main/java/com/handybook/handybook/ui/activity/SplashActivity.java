@@ -71,7 +71,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE) {
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
             openServiceCategoriesActivity();
         }
     }
@@ -102,7 +102,7 @@ public class SplashActivity extends BaseActivity {
                                 final Intent intent = new Intent(SplashActivity.this, BookingDateActivity.class);
                                 intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
                                 intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
-                                startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
+                                startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
                             }
 
                             @Override

@@ -258,5 +258,6 @@
     <string name="other_plumbing_service_description">Have something more specific in mind? Tell us!</string>
     <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
     <string name="android_pay_unavailable">Android Pay is unavailable</string>
+    <string name="last4">•••• %1$s</string>
 
 </resources>

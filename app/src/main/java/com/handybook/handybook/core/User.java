@@ -16,211 +16,273 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
-public final class User extends Observable {
-
+public final class User extends Observable
+{
     public static final String PAYMENT_METHOD_ANDROID_PAY = "android_pay";
 
-    @SerializedName("auth_token") private String authToken;
-    @SerializedName("id") private String id;
-    @SerializedName("credits") private float credits;
-    @SerializedName("first_name") private String firstName;
-    @SerializedName("last_name") private String lastName;
-    @SerializedName("email") private String email;
-    @SerializedName("phone_country_prefix") private String phonePrefix;
-    @SerializedName("phone") private String phone;
-    @SerializedName("currency_char") private String currencyChar;
-    @SerializedName("currency_suffix") private String currencySuffix;
-    @SerializedName("password") private String password;
-    @SerializedName("current_password") private String currentPassword;
-    @SerializedName("password_confirmation") private String passwordConfirmation;
-    @SerializedName("first_address") private Address address;
-    @SerializedName("card_info") private CreditCard creditCard;
-    @SerializedName("payment_method") private String paymentMethod;
-    @SerializedName("analytics") private Analytics analytics;
-    @SerializedName("booking_to_rate_id") private int bookingRateId;
-    @SerializedName("booking_to_rate_pro_name") private String bookingRatePro;
-    @SerializedName("schedule_laundry_booking_id") private int laundryBookingId;
-    @SerializedName("add_laundry_booking_id") private int addLaundryBookingId;
-    @SerializedName("default_tip_amounts") private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
+    @SerializedName("auth_token")
+    private String mAuthToken;
+    @SerializedName("id")
+    private String mId;
+    @SerializedName("credits")
+    private float mCredits;
+    @SerializedName("first_name")
+    private String mFirstName;
+    @SerializedName("last_name")
+    private String mLastName;
+    @SerializedName("email")
+    private String mEmail;
+    @SerializedName("phone_country_prefix")
+    private String mPhonePrefix;
+    @SerializedName("phone")
+    private String mPhone;
+    @SerializedName("currency_char")
+    private String mCurrencyChar;
+    @SerializedName("currency_suffix")
+    private String mCurrencySuffix;
+    @SerializedName("password")
+    private String mPassword;
+    @SerializedName("current_password")
+    private String mCurrentPassword;
+    @SerializedName("password_confirmation")
+    private String mPasswordConfirmation;
+    @SerializedName("first_address")
+    private Address mAddress;
+    @SerializedName("card_info")
+    private CreditCard mCreditCard;
+    @SerializedName("payment_method")
+    private String mPaymentMethod;
+    @SerializedName("analytics")
+    private Analytics mAnalytics;
+    @SerializedName("booking_to_rate_id")
+    private int mBookingRateId;
+    @SerializedName("booking_to_rate_pro_name")
+    private String mBookingRatePro;
+    @SerializedName("schedule_laundry_booking_id")
+    private int mLaundryBookingId;
+    @SerializedName("add_laundry_booking_id")
+    private int mAddLaundryBookingId;
+    @SerializedName("default_tip_amounts")
+    private ArrayList<LocalizedMonetaryAmount> mDefaultTipAmounts;
 
-    public final String getAuthToken() {
-        return authToken;
+    public final String getAuthToken()
+    {
+        return mAuthToken;
     }
 
-    public final void setAuthToken(final String authToken) {
-        this.authToken = authToken;
+    public final void setAuthToken(final String authToken)
+    {
+        mAuthToken = authToken;
         triggerObservers();
     }
 
-    public final String getId() {
-        return id;
+    public final String getId()
+    {
+        return mId;
     }
 
-    public final void setId(final String id) {
-        this.id = id;
+    public final void setId(final String id)
+    {
+        mId = id;
         triggerObservers();
     }
 
-    public final float getCredits() {
-        return credits;
+    public final float getCredits()
+    {
+        return mCredits;
     }
 
-    final void setCredits(final float credits) {
-        this.credits = credits;
+    final void setCredits(final float credits)
+    {
+        mCredits = credits;
         triggerObservers();
     }
 
-    public final String getFirstName() {
-        return firstName;
+    public final String getFirstName()
+    {
+        return mFirstName;
     }
 
-    public final void setFirstName(final String firstName) {
-        this.firstName = firstName;
+    public final void setFirstName(final String firstName)
+    {
+        mFirstName = firstName;
         triggerObservers();
     }
 
-    public final String getLastName() {
-        return lastName;
+    public final String getLastName()
+    {
+        return mLastName;
     }
 
-    public final void setLastName(final String lastName) {
-        this.lastName = lastName;
+    public final void setLastName(final String lastName)
+    {
+        mLastName = lastName;
         triggerObservers();
     }
 
-    public final String getFullName() {
-        return firstName + " " + lastName;
+    public final String getFullName()
+    {
+        return mFirstName + " " + mLastName;
     }
 
-    public final String getEmail() {
-        return email;
+    public final String getEmail()
+    {
+        return mEmail;
     }
 
-    public final void setEmail(final String email) {
-        this.email = email;
+    public final void setEmail(final String email)
+    {
+        mEmail = email;
         triggerObservers();
     }
 
-    public final String getPhonePrefix() {
-        return phonePrefix;
+    public final String getPhonePrefix()
+    {
+        return mPhonePrefix;
     }
 
-    final void setPhonePrefix(final String phonePrefix) {
-        this.phonePrefix = phonePrefix;
+    final void setPhonePrefix(final String phonePrefix)
+    {
+        mPhonePrefix = phonePrefix;
         triggerObservers();
     }
 
-    public final String getPhone() {
-        final int phoneLen = phone != null ? phone.length() : 0;
-        if (phone != null & phoneLen > 10) return phone.substring(phoneLen - 10);
-        return phone;
+    public final String getPhone()
+    {
+        final int phoneLen = mPhone != null ? mPhone.length() : 0;
+        if (mPhone != null & phoneLen > 10) { return mPhone.substring(phoneLen - 10); }
+        return mPhone;
     }
 
-    public final void setPhone(final String phone) {
-        this.phone = phone;
+    public final void setPhone(final String phone)
+    {
+        mPhone = phone;
         triggerObservers();
     }
 
-    public final String getCurrencyChar() {
-        return currencyChar;
+    public final String getCurrencyChar()
+    {
+        return mCurrencyChar;
     }
 
-    final void setCurrencyChar(final String currencyChar) {
-        this.currencyChar = currencyChar;
+    final void setCurrencyChar(final String currencyChar)
+    {
+        mCurrencyChar = currencyChar;
         triggerObservers();
     }
 
-    final String getCurrencySuffix() {
-        return currencySuffix;
+    final String getCurrencySuffix()
+    {
+        return mCurrencySuffix;
     }
 
-    final void setCurrencySuffix(final String currencySuffix) {
-        this.currencySuffix = currencySuffix;
+    final void setCurrencySuffix(final String currencySuffix)
+    {
+        mCurrencySuffix = currencySuffix;
         triggerObservers();
     }
 
-    final String getPassword() {
-        return password;
+    final String getPassword()
+    {
+        return mPassword;
     }
 
-    public final void setPassword(final String password) {
-        this.password = password;
+    public final void setPassword(final String password)
+    {
+        mPassword = password;
     }
 
-    final String getCurrentPassword() {
-        return currentPassword;
+    final String getCurrentPassword()
+    {
+        return mCurrentPassword;
     }
 
-    public final void setCurrentPassword(final String currentPassword) {
-        this.currentPassword = currentPassword;
+    public final void setCurrentPassword(final String currentPassword)
+    {
+        mCurrentPassword = currentPassword;
     }
 
-    final String getPasswordConfirmation() {
-        return passwordConfirmation;
+    final String getPasswordConfirmation()
+    {
+        return mPasswordConfirmation;
     }
 
-    public final void setPasswordConfirmation(final String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
+    public final void setPasswordConfirmation(final String passwordConfirmation)
+    {
+        mPasswordConfirmation = passwordConfirmation;
     }
 
-    public final Address getAddress() {
-        return address;
+    public final Address getAddress()
+    {
+        return mAddress;
     }
 
-    final void setAddress(final Address address) {
-        this.address = address;
+    final void setAddress(final Address address)
+    {
+        mAddress = address;
         triggerObservers();
     }
 
-    public final CreditCard getCreditCard() {
-        return creditCard;
+    public final CreditCard getCreditCard()
+    {
+        return mCreditCard;
     }
 
     public boolean isUsingAndroidPay()
     {
-        return paymentMethod != null && paymentMethod.equalsIgnoreCase(PAYMENT_METHOD_ANDROID_PAY);
+        return mPaymentMethod != null && mPaymentMethod.equalsIgnoreCase(PAYMENT_METHOD_ANDROID_PAY);
     }
 
-    final void setCreditCard(final CreditCard creditCard) {
-        this.creditCard = creditCard;
+    final void setCreditCard(final CreditCard creditCard)
+    {
+        mCreditCard = creditCard;
         triggerObservers();
     }
 
-    public final Analytics getAnalytics() {
-        return analytics;
+    public final Analytics getAnalytics()
+    {
+        return mAnalytics;
     }
 
-    final void setAnalytics(final Analytics analytics) {
-        this.analytics = analytics;
+    final void setAnalytics(final Analytics analytics)
+    {
+        mAnalytics = analytics;
         triggerObservers();
     }
 
-    public final int getBookingRateId() {
-        return bookingRateId;
+    public final int getBookingRateId()
+    {
+        return mBookingRateId;
     }
 
-    public final String getBookingRatePro() {
-        return bookingRatePro;
+    public final String getBookingRatePro()
+    {
+        return mBookingRatePro;
     }
 
-    public ArrayList<LocalizedMonetaryAmount> getDefaultTipAmounts() {
-        return defaultTipAmounts;
+    public ArrayList<LocalizedMonetaryAmount> getDefaultTipAmounts()
+    {
+        return mDefaultTipAmounts;
     }
 
-    public final int getLaundryBookingId() {
-        return laundryBookingId;
+    public final int getLaundryBookingId()
+    {
+        return mLaundryBookingId;
     }
 
-    public final int getAddLaundryBookingId() {
-        return addLaundryBookingId;
+    public final int getAddLaundryBookingId()
+    {
+        return mAddLaundryBookingId;
     }
 
-    private void triggerObservers() {
+    private void triggerObservers()
+    {
         setChanged();
         notifyObservers();
     }
 
-    final String toJson() {
+    final String toJson()
+    {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .setExclusionStrategies(getExclusionStrategy())
                 .registerTypeAdapter(User.class, new UserSerializer()).create();
@@ -228,29 +290,36 @@ public final class User extends Observable {
         return gson.toJson(this);
     }
 
-    public static User fromJson(final String json) {
+    public static User fromJson(final String json)
+    {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
                 .fromJson(json, User.class);
     }
 
-    static ExclusionStrategy getExclusionStrategy() {
-        return new ExclusionStrategy() {
+    static ExclusionStrategy getExclusionStrategy()
+    {
+        return new ExclusionStrategy()
+        {
             @Override
-            public boolean shouldSkipField(final FieldAttributes f) {
+            public boolean shouldSkipField(final FieldAttributes f)
+            {
                 return false;
             }
 
             @Override
-            public boolean shouldSkipClass(final Class<?> clazz) {
+            public boolean shouldSkipClass(final Class<?> clazz)
+            {
                 return clazz.equals(Observer.class);
             }
         };
     }
 
-    static final class UserSerializer implements JsonSerializer<User> {
+    static final class UserSerializer implements JsonSerializer<User>
+    {
         @Override
         public final JsonElement serialize(final User value, final Type type,
-                                     final JsonSerializationContext context) {
+                                           final JsonSerializationContext context)
+        {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("id", context.serialize(value.getId()));
@@ -277,87 +346,123 @@ public final class User extends Observable {
         }
     }
 
-    public static final class Address {
-        @SerializedName("zipcode") private String zip;
-        @SerializedName("address1") private String address1;
-        @SerializedName("address2") private String address2;
 
-        public final String getZip() {
-            return zip;
+    public static final class Address
+    {
+        @SerializedName("zipcode")
+        private String mZip;
+        @SerializedName("address1")
+        private String mAddress1;
+        @SerializedName("address2")
+        private String mAddress2;
+
+        public final String getZip()
+        {
+            return mZip;
         }
 
-        public final String getAddress1() {
-            return address1;
+        public final String getAddress1()
+        {
+            return mAddress1;
         }
 
-        public final String getAddress2() {
-            return address2;
-        }
-    }
-
-    public static final class CreditCard {
-        @SerializedName("last4") private String last4;
-        @SerializedName("brand") private String brand;
-
-        public final String getLast4() {
-            return last4;
-        }
-
-        public final String getBrand() {
-            return brand;
+        public final String getAddress2()
+        {
+            return mAddress2;
         }
     }
 
-    public static final class Analytics {
-        @SerializedName("last_booking_end") private Date lastBookingEnd;
-        @SerializedName("partner") private String partner;
-        @SerializedName("bookings") private int bookings;
-        @SerializedName("total_bookings_count") private int totalBookings;
-        @SerializedName("past_bookings_count") private int pastBookings;
-        @SerializedName("upcoming_bookings_count") private int upcomingBookings;
-        @SerializedName("recurring_bookings_count") private int recurringBookings;
-        @SerializedName("provider") private boolean isProvider;
-        @SerializedName("vip") private boolean isVip;
-        @SerializedName("facebook_login") private boolean isFacebookLogin;
 
-        public final Date getLastBookingEnd() {
-            return lastBookingEnd;
+    public static final class CreditCard
+    {
+        @SerializedName("last4")
+        private String mLast4;
+        @SerializedName("brand")
+        private String mBrand;
+
+        public final String getLast4()
+        {
+            return mLast4;
         }
 
-        public final String getPartner() {
-            return partner;
+        public final String getBrand()
+        {
+            return mBrand;
+        }
+    }
+
+
+    public static final class Analytics
+    {
+        @SerializedName("last_booking_end")
+        private Date mLastBookingEnd;
+        @SerializedName("partner")
+        private String mPartner;
+        @SerializedName("bookings")
+        private int mBookings;
+        @SerializedName("total_bookings_count")
+        private int mTotalBookings;
+        @SerializedName("past_bookings_count")
+        private int mPastBookings;
+        @SerializedName("upcoming_bookings_count")
+        private int mUpcomingBookings;
+        @SerializedName("recurring_bookings_count")
+        private int mRecurringBookings;
+        @SerializedName("provider")
+        private boolean mIsProvider;
+        @SerializedName("vip")
+        private boolean mIsVip;
+        @SerializedName("facebook_login")
+        private boolean mIsFacebookLogin;
+
+        public final Date getLastBookingEnd()
+        {
+            return mLastBookingEnd;
         }
 
-        public final int getBookings() {
-            return bookings;
+        public final String getPartner()
+        {
+            return mPartner;
         }
 
-        public final int getTotalBookings() {
-            return totalBookings;
+        public final int getBookings()
+        {
+            return mBookings;
         }
 
-        public final int getPastBookings() {
-            return pastBookings;
+        public final int getTotalBookings()
+        {
+            return mTotalBookings;
         }
 
-        public final int getUpcomingBookings() {
-            return upcomingBookings;
+        public final int getPastBookings()
+        {
+            return mPastBookings;
         }
 
-        public final int getRecurringBookings() {
-            return recurringBookings;
+        public final int getUpcomingBookings()
+        {
+            return mUpcomingBookings;
         }
 
-        public final boolean isProvider() {
-            return isProvider;
+        public final int getRecurringBookings()
+        {
+            return mRecurringBookings;
         }
 
-        public final boolean isVip() {
-            return isVip;
+        public final boolean isProvider()
+        {
+            return mIsProvider;
         }
 
-        public final boolean isFacebookLogin() {
-            return isFacebookLogin;
+        public final boolean isVip()
+        {
+            return mIsVip;
+        }
+
+        public final boolean isFacebookLogin()
+        {
+            return mIsFacebookLogin;
         }
     }
 }

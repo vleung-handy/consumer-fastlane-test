@@ -19,10 +19,15 @@ import java.util.List;
 
 public class WalletUtils
 {
-    public static final int REQUEST_CODE_LOAD_MASKED_WALLET = 1001;
-    public static final int REQUEST_CODE_LOAD_FULL_WALLET = 1002;
+    // TODO: Eventually use GBP and CAD when applicable. Right now, Android Pay is only available in the US.
     private static final String CURRENCY_CODE_USD = "USD";
     private static final String HANDY_MERCHANT_NAME = "Handy Technologies Inc.";
+
+    /* Payment method tokenization parameters */
+    private static final String PARAM_STRIPE_PUBLISHABLE_KEY = "stripe:publishableKey";
+    private static final String PARAM_STRIPE_VERSION = "stripe:version";
+    private static final String PARAM_GATEWAY = "gateway";
+    private static final String VALUE_STRIPE = "stripe";
 
     public static int getEnvironment()
     {
@@ -36,7 +41,8 @@ public class WalletUtils
         }
     }
 
-    public static MaskedWalletRequest createMaskedWalletRequest(BookingQuote quote, BookingTransaction transaction)
+    public static MaskedWalletRequest createMaskedWalletRequest(final BookingQuote quote,
+                                                                final BookingTransaction transaction)
     {
         String itemPrice = getItemPrice(quote, transaction);
 
@@ -60,14 +66,16 @@ public class WalletUtils
                         .build())
                 .setPaymentMethodTokenizationParameters(PaymentMethodTokenizationParameters.newBuilder()
                         .setPaymentMethodTokenizationType(PaymentMethodTokenizationType.PAYMENT_GATEWAY)
-                        .addParameter("gateway", "stripe")
-                        .addParameter("stripe:publishableKey", quote.getStripeKey())
-                        .addParameter("stripe:version", Stripe.VERSION)
+                        .addParameter(PARAM_GATEWAY, VALUE_STRIPE)
+                        .addParameter(PARAM_STRIPE_PUBLISHABLE_KEY, quote.getStripeKey())
+                        .addParameter(PARAM_STRIPE_VERSION, Stripe.VERSION)
                         .build())
                 .build();
     }
 
-    public static FullWalletRequest createFullWalletRequest(final BookingQuote quote, final BookingTransaction transaction, MaskedWallet maskedWallet)
+    public static FullWalletRequest createFullWalletRequest(final BookingQuote quote,
+                                                            final BookingTransaction transaction,
+                                                            MaskedWallet maskedWallet)
     {
         String itemPrice = getItemPrice(quote, transaction);
 
@@ -80,7 +88,8 @@ public class WalletUtils
                 .build();
     }
 
-    private static String getItemPrice(final BookingQuote quote, final BookingTransaction transaction)
+    private static String getItemPrice(final BookingQuote quote,
+                                       final BookingTransaction transaction)
     {
         final float hours = transaction.getHours() + transaction.getExtraHours();
         final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());

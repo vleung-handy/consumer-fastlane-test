@@ -150,7 +150,7 @@ public class BookingFlowFragment extends InjectedFragment
                             intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
                             intent.putExtra(BundleKeys.RESCHEDULE_PRICE_TABLE, peakTable);
                             intent.putExtra(BundleKeys.RESCHEDULE_ALL, rescheduleAll);
-                            startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
+                            startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
                             return;
                         }
 
@@ -160,19 +160,19 @@ public class BookingFlowFragment extends InjectedFragment
                         {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
 
-                            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
+                            getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
                         }
                         else if (BookingFlowFragment.this instanceof BookingDateFragment)
                         {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
 
-                            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
+                            getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
                         }
                         else if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment)
                         {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
 
-                            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
+                            getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
                         }
 
                         getActivity().finish();
@@ -283,7 +283,7 @@ public class BookingFlowFragment extends InjectedFragment
         // if user logged in, hide login view on back
         if (user != null && BookingFlowFragment.this instanceof LoginFragment)
         {
-            getActivity().setResult(ActivityResult.RESULT_LOGIN_FINISH);
+            getActivity().setResult(ActivityResult.LOGIN_FINISH);
             getActivity().finish();
         }
 
@@ -356,7 +356,7 @@ public class BookingFlowFragment extends InjectedFragment
 
         if (BookingFlowFragment.this instanceof LoginFragment)
         {
-            getActivity().setResult(ActivityResult.RESULT_LOGIN_FINISH);
+            getActivity().setResult(ActivityResult.LOGIN_FINISH);
             getActivity().finish();
         }
     }

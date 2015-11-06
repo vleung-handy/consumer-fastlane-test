@@ -97,7 +97,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
         //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
 
-        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
         {
             if (data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
             {
@@ -107,12 +107,12 @@ public final class BookingDetailFragment extends InjectedFragment
                 setUpdatedBookingResult();
             }
         }
-        else if (resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
+        else if (resultCode == ActivityResult.BOOKING_CANCELED)
         {
             setCanceledBookingResult();
             getActivity().finish();
         }
-        else if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED)
+        else if (resultCode == ActivityResult.BOOKING_UPDATED)
         {
             //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
             postBlockingEvent(new HandyEvent.RequestBookingDetails(booking.getId()));
@@ -233,7 +233,7 @@ public final class BookingDetailFragment extends InjectedFragment
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, this.booking);
         intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, event.notice);
-        startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
+        startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }
 
     @Subscribe
@@ -257,7 +257,7 @@ public final class BookingDetailFragment extends InjectedFragment
         intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
         intent.putExtra(BundleKeys.NOTICE, result.first);
         intent.putExtra(BundleKeys.BOOKING, booking);
-        startActivityForResult(intent, ActivityResult.RESULT_BOOKING_CANCELED);
+        startActivityForResult(intent, ActivityResult.BOOKING_CANCELED);
     }
 
     @Subscribe
@@ -295,13 +295,13 @@ public final class BookingDetailFragment extends InjectedFragment
         updatedBooking = true;
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.UPDATED_BOOKING, booking);
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, intent);
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, intent);
     }
 
     private void setCanceledBookingResult()
     {
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.CANCELLED_BOOKING, booking);
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, intent);
+        getActivity().setResult(ActivityResult.BOOKING_CANCELED, intent);
     }
 }

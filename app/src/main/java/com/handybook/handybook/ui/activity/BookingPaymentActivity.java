@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.google.android.gms.wallet.WalletConstants;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
-import com.handybook.handybook.util.WalletUtils;
 
 public final class BookingPaymentActivity extends MenuDrawerActivity
 {
@@ -46,10 +46,10 @@ public final class BookingPaymentActivity extends MenuDrawerActivity
             }
             switch (requestCode)
             {
-                case WalletUtils.REQUEST_CODE_LOAD_MASKED_WALLET:
+                case ActivityResult.LOAD_MASKED_WALLET:
                     mBookingPaymentFragment.handleLoadMaskedWalletResult(resultCode, data, errorCode);
                     break;
-                case WalletUtils.REQUEST_CODE_LOAD_FULL_WALLET:
+                case ActivityResult.LOAD_FULL_WALLET:
                     mBookingPaymentFragment.handleLoadFullWalletResult(resultCode, data, errorCode);
                     break;
             }

@@ -52,6 +52,6 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     {
         final Intent intent = new Intent(getActivity(), BookingEditEntryInformationActivity.class);
         intent.putExtra(BundleKeys.BOOKING, this.booking);
-        getParentFragment().startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
+        getParentFragment().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
     }
 }
