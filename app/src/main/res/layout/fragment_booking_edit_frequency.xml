@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/handy_bg"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <!--TODO: create templates for the booking flow screens-->
+    <Button
+        style="@style/Button.Green"
+        android:id="@+id/next_button"
+        android:text="@string/update" />
+
+    <TextView
+        style="@style/TextView.Navbar"
+        android:id="@+id/nav_text"
+        android:text="@string/edit_frequency" />
+
+    <ScrollView
+        android:layout_above="@id/next_button"
+        android:layout_below="@id/nav_text"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/default_padding"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <include
+                android:id="@+id/subtitle_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                layout="@layout/view_centered_header_text"/>
+
+            <LinearLayout
+                android:background="@color/white"
+                android:id="@+id/options_layout"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_width="match_parent"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -16,6 +16,7 @@ import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -167,21 +168,22 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
-    public void onRequestBookingPricesForFrequencies(HandyEvent.RequestGetEditFrequencyInfo event)
+    public void onRequestEditFrequencyViewModel(HandyEvent.RequestGetEditFrequencyViewModel event)
     {
         dataManager.getBookingPricesForFrequencies(event.bookingId, new DataManager.Callback<BookingEditFrequencyInfoResponse>()
         {
             @Override
             public void onSuccess(BookingEditFrequencyInfoResponse response)
             {
-                bus.post(new HandyEvent.ReceiveGetEditFrequencyInfoSuccess(response));
+                BookingEditFrequencyViewModel bookingEditFrequencyViewModel = BookingEditFrequencyViewModel.from(response);
+                bus.post(new HandyEvent.ReceiveGetEditFrequencyViewModelSuccess(bookingEditFrequencyViewModel));
 
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveGetEditFrequencyInfoError(error));
+                bus.post(new HandyEvent.ReceiveGetEditFrequencyViewModelError(error));
             }
         });
     }

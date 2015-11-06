@@ -5,18 +5,18 @@ import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.model.request.BookingEditExtrasRequest;
-import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.model.request.BookingEditExtrasRequest;
+import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 
 import java.util.List;
@@ -349,29 +349,29 @@ public abstract class HandyEvent
     }
 
     //Get the booking prices for each booking frequency
-    public static class RequestGetEditFrequencyInfo extends RequestEvent
+    public static class RequestGetEditFrequencyViewModel extends RequestEvent
     {
         public final int bookingId;
 
-        public RequestGetEditFrequencyInfo(int bookingId)
+        public RequestGetEditFrequencyViewModel(int bookingId)
         {
             this.bookingId = bookingId;
         }
     }
 
-    public static class ReceiveGetEditFrequencyInfoSuccess extends ReceiveSuccessEvent
+    public static class ReceiveGetEditFrequencyViewModelSuccess extends ReceiveSuccessEvent
     {
-        public final BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse;
+        public final BookingEditFrequencyViewModel bookingEditFrequencyViewModel;
 
-        public ReceiveGetEditFrequencyInfoSuccess(BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse)
+        public ReceiveGetEditFrequencyViewModelSuccess(BookingEditFrequencyViewModel bookingEditFrequencyViewModel)
         {
-            this.bookingEditFrequencyInfoResponse = bookingEditFrequencyInfoResponse;
+            this.bookingEditFrequencyViewModel = bookingEditFrequencyViewModel;
         }
     }
 
-    public static class ReceiveGetEditFrequencyInfoError extends ReceiveErrorEvent
+    public static class ReceiveGetEditFrequencyViewModelError extends ReceiveErrorEvent
     {
-        public ReceiveGetEditFrequencyInfoError(DataManager.DataManagerError error)
+        public ReceiveGetEditFrequencyViewModelError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
