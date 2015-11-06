@@ -123,8 +123,8 @@ public class BookingListFragment extends InjectedFragment
     )
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED
-                || resultCode == ActivityResult.RESULT_BOOKING_CANCELED)
+        if (resultCode == ActivityResult.BOOKING_UPDATED
+                || resultCode == ActivityResult.BOOKING_CANCELED)
         {
             loadBookings();
         }

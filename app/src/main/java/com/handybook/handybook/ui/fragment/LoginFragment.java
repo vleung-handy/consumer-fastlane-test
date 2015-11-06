@@ -312,7 +312,7 @@ public final class LoginFragment extends BookingFlowFragment
                                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, name);
                                 intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, email);
-                                startActivityForResult(intent, ActivityResult.RESULT_LOGIN_FINISH);
+                                startActivityForResult(intent, ActivityResult.LOGIN_FINISH);
 
                                 progressDialog.dismiss();
                                 enableInputs();

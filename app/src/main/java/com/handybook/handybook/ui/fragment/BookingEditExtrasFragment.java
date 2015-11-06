@@ -319,7 +319,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         removeUiBlockers();
         showToast(getString(R.string.edit_extras_update_success_msg));
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 

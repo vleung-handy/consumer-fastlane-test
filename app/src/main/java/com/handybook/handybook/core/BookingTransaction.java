@@ -16,184 +16,185 @@ import java.util.Observable;
 import java.util.Observer;
 
 public final class BookingTransaction extends Observable {
-    @SerializedName("booking_id") private int bookingId;
-    @SerializedName("user_id") private String userId;
-    @SerializedName("service_id") private int serviceId;
-    @SerializedName("first_name") private String firstName;
-    @SerializedName("last_name") private String lastName;
-    @SerializedName("address1") private String address1;
-    @SerializedName("address2") private String address2;
-    @SerializedName("phone") private String phone;
-    @SerializedName("zipcode") private String zipCode;
-    @SerializedName("email") private String email;
-    @SerializedName("hrs") private float hours;
-    @SerializedName("updated_recurring_freq") private int recurringFrequency;
-    @SerializedName("extra_cleaning_text") private String extraCleaningText;
-    @SerializedName("extra_hours") private float extraHours;
-    @SerializedName("date_start") private Date startDate;
-    @SerializedName("auth_token") private String authToken;
-    @SerializedName("stripe_token") private String stripeToken;
-    @SerializedName("_android_promo_applied") private String promoApplied;
+    @SerializedName("booking_id") private int mBookingId;
+    @SerializedName("user_id") private String mUserId;
+    @SerializedName("service_id") private int mServiceId;
+    @SerializedName("first_name") private String mFirstName;
+    @SerializedName("last_name") private String mLastName;
+    @SerializedName("address1") private String mAddress1;
+    @SerializedName("address2") private String mAddress2;
+    @SerializedName("phone") private String mPhone;
+    @SerializedName("zipcode") private String mZipCode;
+    @SerializedName("email") private String mEmail;
+    @SerializedName("hrs") private float mHours;
+    @SerializedName("updated_recurring_freq") private int mRecurringFrequency;
+    @SerializedName("extra_cleaning_text") private String mExtraCleaningText;
+    @SerializedName("extra_hours") private float mExtraHours;
+    @SerializedName("date_start") private Date mStartDate;
+    @SerializedName("auth_token") private String mAuthToken;
+    @SerializedName("stripe_token") private String mStripeToken;
+    @SerializedName("payment_method") private String mPaymentMethod;
+    @SerializedName("_android_promo_applied") private String mPromoApplied;
 
     public final int getBookingId() {
-        return bookingId;
+        return mBookingId;
     }
 
     public final void setBookingId(final int bookingId) {
-        this.bookingId = bookingId;
+        this.mBookingId = bookingId;
         triggerObservers();
     }
 
     final String getUserId() {
-        return userId;
+        return mUserId;
     }
 
     public final void setUserId(final String userId) {
-        this.userId = userId;
+        this.mUserId = userId;
         triggerObservers();
     }
 
     final int getServiceId() {
-        return serviceId;
+        return mServiceId;
     }
 
     public final void setServiceId(final int serviceId) {
-        this.serviceId = serviceId;
+        this.mServiceId = serviceId;
         triggerObservers();
     }
 
     final String getFirstName() {
-        return firstName;
+        return mFirstName;
     }
 
     public final void setFirstName(final String firstName) {
-        this.firstName = firstName;
+        this.mFirstName = firstName;
         triggerObservers();
     }
 
     final String getLastName() {
-        return lastName;
+        return mLastName;
     }
 
     public final void setLastName(final String lastName) {
-        this.lastName = lastName;
+        this.mLastName = lastName;
         triggerObservers();
     }
 
     final String getAddress1() {
-        return address1;
+        return mAddress1;
     }
 
     public final void setAddress1(final String address1) {
-        this.address1 = address1;
+        this.mAddress1 = address1;
         triggerObservers();
     }
 
     final String getAddress2() {
-        return address2;
+        return mAddress2;
     }
 
     public final void setAddress2(final String address2) {
-        this.address2 = address2;
+        this.mAddress2 = address2;
         triggerObservers();
     }
 
     final String getPhone() {
-        return phone;
+        return mPhone;
     }
 
     public final void setPhone(final String phone) {
-        this.phone = phone;
+        this.mPhone = phone;
         triggerObservers();
     }
 
     final String getZipCode() {
-        return zipCode;
+        return mZipCode;
     }
 
     public final void setZipCode(final String zipCode) {
-        this.zipCode = zipCode;
+        mZipCode = zipCode;
         triggerObservers();
     }
 
     final String getEmail() {
-        return email;
+        return mEmail;
     }
 
     public final void setEmail(final String email) {
-        this.email = email;
+        mEmail = email;
         triggerObservers();
     }
 
     public final float getHours() {
-        return hours;
+        return mHours;
     }
 
     public final void setHours(final float hours) {
-        this.hours = hours;
+        mHours = hours;
         triggerObservers();
     }
 
     public final int getRecurringFrequency() {
-        return recurringFrequency;
+        return mRecurringFrequency;
     }
 
     public final void setRecurringFrequency(final int recurringFrequency) {
-        this.recurringFrequency = recurringFrequency;
+        mRecurringFrequency = recurringFrequency;
         triggerObservers();
     }
 
     public final String getExtraCleaningText() {
-        return extraCleaningText;
+        return mExtraCleaningText;
     }
 
     public final void setExtraCleaningText(final String extraCleaningText) {
-        this.extraCleaningText = extraCleaningText;
+        mExtraCleaningText = extraCleaningText;
         triggerObservers();
     }
 
     public final float getExtraHours() {
-        return extraHours;
+        return mExtraHours;
     }
 
     public final void setExtraHours(final float extraHours) {
-        this.extraHours = extraHours;
+        mExtraHours = extraHours;
         triggerObservers();
     }
 
     public final Date getStartDate() {
-        return startDate;
+        return mStartDate;
     }
 
     public final void setStartDate(final Date startDate) {
-        this.startDate = startDate;
+        mStartDate = startDate;
         triggerObservers();
     }
 
     final String getAuthToken() {
-        return authToken;
+        return mAuthToken;
     }
 
     public final void setAuthToken(final String authToken) {
-        this.authToken = authToken;
+        mAuthToken = authToken;
         triggerObservers();
     }
 
     final String getStripeToken() {
-        return stripeToken;
+        return mStripeToken;
     }
 
     public final void setStripeToken(final String stripeToken) {
-        this.stripeToken = stripeToken;
+        mStripeToken = stripeToken;
         triggerObservers();
     }
 
     public final String promoApplied() {
-        return promoApplied;
+        return mPromoApplied;
     }
 
     public final void setPromoApplied(final String promoApplied) {
-        this.promoApplied = promoApplied;
+        mPromoApplied = promoApplied;
         triggerObservers();
     }
 
@@ -230,10 +231,22 @@ public final class BookingTransaction extends Observable {
         };
     }
 
+    public void setPaymentMethod(String paymentMethod)
+    {
+        mPaymentMethod = paymentMethod;
+        triggerObservers();
+    }
+
+    public String getPaymentMethod()
+    {
+        return mPaymentMethod;
+    }
+
     static final class BookingTransactionSerializer implements JsonSerializer<BookingTransaction> {
         @Override
         public final JsonElement serialize(final BookingTransaction value, final Type type,
-                                           final JsonSerializationContext context) {
+                                           final JsonSerializationContext context)
+        {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("booking_id", context.serialize(value.getBookingId()));
             jsonObj.add("user_id", context.serialize(value.getUserId()));
@@ -249,6 +262,7 @@ public final class BookingTransaction extends Observable {
             jsonObj.add("date_start", context.serialize(value.getStartDate()));
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("stripe_token", context.serialize(value.getStripeToken()));
+            jsonObj.add("payment_method", context.serialize(value.getPaymentMethod()));
             jsonObj.add("extra_cleaning_text", context.serialize(value.getExtraCleaningText()));
             jsonObj.add("mobile", context.serialize(1));
             jsonObj.add("_android_promo_applied", context.serialize(value.promoApplied()));
