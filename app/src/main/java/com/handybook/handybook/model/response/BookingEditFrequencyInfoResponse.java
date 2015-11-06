@@ -1,9 +1,9 @@
-package com.handybook.handybook.core;
+package com.handybook.handybook.model.response;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.constant.BookingFrequency;
 
-public class BookingPricesForFrequenciesResponse
+public class BookingEditFrequencyInfoResponse
 {
     //server returns these prices as formatted dollar amounts
     @SerializedName("weekly_price_formatted")
@@ -15,6 +15,7 @@ public class BookingPricesForFrequenciesResponse
     @SerializedName("current_freq")
     private int mCurrentFrequency;
 
+    //TODO: move this to a ViewModel
     public String getFormattedPriceForFrequency(int frequency)
     {
         switch (frequency)

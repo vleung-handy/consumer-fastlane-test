@@ -12,8 +12,10 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.model.response.EditHoursInfoResponse;
+import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -50,10 +52,10 @@ public final class BookingManager implements Observer
     @Subscribe
     public void onRequestEditHoursInfoViewModel(HandyEvent.RequestEditHoursInfoViewModel event)
     {
-        dataManager.getEditHoursInfo(event.bookingId, new DataManager.Callback<EditHoursInfoResponse>()
+        dataManager.getEditHoursInfo(event.bookingId, new DataManager.Callback<BookingEditHoursInfoResponse>()
         {
             @Override
-            public void onSuccess(EditHoursInfoResponse response)
+            public void onSuccess(BookingEditHoursInfoResponse response)
             {
                 BookingEditHoursViewModel bookingEditHoursViewModel = BookingEditHoursViewModel.from(response);
                 bus.post(new HandyEvent.ReceiveEditHoursInfoViewModelSuccess(bookingEditHoursViewModel));
@@ -145,41 +147,41 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
-    public void onRequestUpdateBookingFrequency(HandyEvent.RequestUpdateBookingFrequency event)
+    public void onRequestUpdateBookingFrequency(HandyEvent.RequestEditBookingFrequency event)
     {
-        dataManager.updateBookingFrequency(event.bookingId, event.bookingUpdateFrequencyTransaction, new DataManager.Callback<Void>()
+        dataManager.updateBookingFrequency(event.bookingId, event.bookingEditFrequencyRequest, new DataManager.Callback<Void>()
         {
             @Override
             public void onSuccess(Void response)
             {
-                bus.post(new HandyEvent.ReceiveUpdateBookingFrequencySuccess());
+                bus.post(new HandyEvent.ReceiveEditBookingFrequencySuccess());
 
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveUpdateBookingFrequencyError(error));
+                bus.post(new HandyEvent.ReceiveEditBookingFrequencyError(error));
             }
         });
     }
 
     @Subscribe
-    public void onRequestBookingPricesForFrequencies(HandyEvent.RequestGetBookingPricesForFrequencies event)
+    public void onRequestBookingPricesForFrequencies(HandyEvent.RequestGetEditFrequencyInfo event)
     {
-        dataManager.getBookingPricesForFrequencies(event.bookingId, new DataManager.Callback<BookingPricesForFrequenciesResponse>()
+        dataManager.getBookingPricesForFrequencies(event.bookingId, new DataManager.Callback<BookingEditFrequencyInfoResponse>()
         {
             @Override
-            public void onSuccess(BookingPricesForFrequenciesResponse response)
+            public void onSuccess(BookingEditFrequencyInfoResponse response)
             {
-                bus.post(new HandyEvent.ReceiveGetBookingPricesForFrequenciesSuccess(response));
+                bus.post(new HandyEvent.ReceiveGetEditFrequencyInfoSuccess(response));
 
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveGetBookingPricesForFrequenciesError(error));
+                bus.post(new HandyEvent.ReceiveGetEditFrequencyInfoError(error));
             }
         });
     }
@@ -526,43 +528,43 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestEditServiceExtras(final HandyEvent.RequestEditServiceExtrasOptions event)
+    public final void onRequestEditServiceExtras(final HandyEvent.RequestEditExtras event)
     {
         dataManager.editServiceExtras(
                 event.bookingId,
-                event.bookingEditExtrasTransaction,
+                event.bookingEditExtrasRequest,
                 new DataManager.Callback<SuccessWrapper>()
         {
             @Override
             public void onSuccess(SuccessWrapper response)
             {
-                bus.post(new HandyEvent.ReceiveEditServiceExtrasOptionsSuccess(response));
+                bus.post(new HandyEvent.ReceiveEditExtrasSuccess(response));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveEditServiceExtrasOptionsError(error));
+                bus.post(new HandyEvent.ReceiveEditExtrasError(error));
 
             }
         });
     }
 
     @Subscribe
-    public final void onRequestGetServiceExtras(final HandyEvent.RequestGetServiceExtrasOptions event)
+    public final void onRequestGetServiceExtras(final HandyEvent.RequestGetEditExtrasInfo event)
     {
-        dataManager.getServiceExtras(event.bookingId, new DataManager.Callback<EditExtrasInfo>()
+        dataManager.getServiceExtras(event.bookingId, new DataManager.Callback<BookingEditExtrasInfoResponse>()
         {
             @Override
-            public void onSuccess(EditExtrasInfo response)
+            public void onSuccess(BookingEditExtrasInfoResponse response)
             {
-                bus.post(new HandyEvent.ReceiveGetServiceExtrasOptionsSuccess(response));
+                bus.post(new HandyEvent.ReceiveGetEditExtrasInfoSuccess(response));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveGetServiceExtrasOptionsError(error));
+                bus.post(new HandyEvent.ReceiveGetEditExtrasInfoError(error));
 
             }
         });
