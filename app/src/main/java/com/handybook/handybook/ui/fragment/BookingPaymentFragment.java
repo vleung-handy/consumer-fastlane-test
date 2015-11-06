@@ -319,7 +319,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
     }
 
-    public void handleWalletError(int errorCode)
+    private void handleWalletError(int errorCode)
     {
         switch (errorCode)
         {

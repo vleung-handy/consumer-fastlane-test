@@ -36,6 +36,7 @@ public final class BookingPaymentActivity extends MenuDrawerActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
         if (mBookingPaymentFragment != null)
         {
             int errorCode = -1;
@@ -51,11 +52,6 @@ public final class BookingPaymentActivity extends MenuDrawerActivity
                 case WalletUtils.REQUEST_CODE_LOAD_FULL_WALLET:
                     mBookingPaymentFragment.handleLoadFullWalletResult(resultCode, data, errorCode);
                     break;
-                case WalletConstants.RESULT_ERROR:
-                    mBookingPaymentFragment.handleWalletError(errorCode);
-                    break;
-                default:
-                    super.onActivityResult(requestCode, resultCode, data);
             }
         }
     }
