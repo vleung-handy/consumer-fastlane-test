@@ -26,7 +26,6 @@ import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.FullWalletRequest;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.MaskedWalletRequest;
-import com.google.android.gms.wallet.PaymentMethodToken;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.google.android.gms.wallet.fragment.SupportWalletFragment;
@@ -539,9 +538,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private void finishAndroidPayTransaction(FullWallet fullWallet)
     {
         if (!allowCallbacks) { return; }
-        final PaymentMethodToken paymentMethodToken = fullWallet.getPaymentMethodToken();
+        String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
+        com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(tokenJSON, com.stripe.model.Token.class);
         final BookingTransaction currentTransaction = bookingManager.getCurrentTransaction();
-        currentTransaction.setStripeToken(paymentMethodToken.getToken());
+        currentTransaction.setStripeToken(token.getId());
         currentTransaction.setPaymentMethod(User.PAYMENT_METHOD_ANDROID_PAY);
         completeBooking();
     }

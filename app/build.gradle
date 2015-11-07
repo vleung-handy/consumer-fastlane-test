@@ -135,7 +135,7 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     //Stripe payment processing
-    compile 'com.stripe:stripe-android:1.0.0'
+    compile 'com.stripe:stripe-android:1.0.0.1'
 
     //Menu drawer for navigation
     compile 'net.simonvt.menudrawer:menudrawer:3.0.6'
