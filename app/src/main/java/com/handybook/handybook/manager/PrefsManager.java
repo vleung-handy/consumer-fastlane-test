@@ -3,6 +3,7 @@ package com.handybook.handybook.manager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.SecurePreferences;
 
@@ -10,7 +11,7 @@ import javax.inject.Inject;
 
 /**
  * Manager that handles CRUD operations on SharedPreferences
- * <p/>
+ * <p>
  * <p/>(SharedPreferences is currently a SecurePreferences instance.)
  */
 public class PrefsManager
@@ -38,7 +39,7 @@ public class PrefsManager
 
     /**
      * Get a String from SecurePreferences or <b>null</b> if key doesn't exist.
-     * <p/>
+     * <p>
      * See also the method {@link #getString(PrefsKey, String)}.
      *
      * @param prefsKey {@link com.handybook.handybook.constant.PrefsKey} used to retrieve the value
@@ -60,27 +61,19 @@ public class PrefsManager
     @Nullable
     public String getString(@NonNull final PrefsKey prefsKey, @Nullable final String defaultValue)
     {
-        if (!prefs.containsKey(prefsKey.getKey()))
+        if (prefs.containsKey(prefsKey.getKey()))
         {
-            return defaultValue;
+            try
+            {
+                return prefs.getString(prefsKey.getKey());
+            }
+            catch (SecurePreferences.SecurePreferencesException | NullPointerException e)
+            {
+                Crashlytics.logException(e);
+                e.printStackTrace();
+            }
         }
-        return prefs.getString(prefsKey.getKey());
-    }
-
-    /**
-     * Get a <p>boolean</p> from SecurePreferences or <b>defaultValue</b> if the key doesn't exist.
-     *
-     * @param prefsKey     the key that will be used
-     * @param defaultValue value to be returned if key doesn't exist
-     * @return Requested value or defaultValue
-     */
-    public boolean getBoolean(@NonNull final PrefsKey prefsKey, final boolean defaultValue)
-    {
-        if (!prefs.containsKey(prefsKey.getKey()))
-        {
-            return defaultValue;
-        }
-        return Boolean.valueOf(prefs.getString(prefsKey.getKey()));
+        return defaultValue;
     }
 
     /**
@@ -95,6 +88,30 @@ public class PrefsManager
     }
 
     /**
+     * Get a <p>boolean</p> from SecurePreferences or <b>defaultValue</b> if the key doesn't exist.
+     *
+     * @param prefsKey     the key that will be used
+     * @param defaultValue value to be returned if key doesn't exist
+     * @return Requested value or defaultValue
+     */
+    public boolean getBoolean(@NonNull final PrefsKey prefsKey, final boolean defaultValue)
+    {
+        if (prefs.containsKey(prefsKey.getKey()))
+        {
+            try
+            {
+                return Boolean.valueOf(prefs.getString(prefsKey.getKey()));
+            }
+            catch (SecurePreferences.SecurePreferencesException | NullPointerException e)
+            {
+                Crashlytics.logException(e);
+                e.printStackTrace();
+            }
+        }
+        return defaultValue;
+    }
+
+    /**
      * Store an <b>int</b> value in SharedPreferences
      *
      * @param prefsKey the key used to store the value
@@ -106,35 +123,27 @@ public class PrefsManager
     }
 
     /**
-     * Get an <b>int</b> value from SharedPreference or return defultValue
-     * <p/>
-     * <p/>See also the method {@link #getInt(PrefsKey)}.
+     * Get an <b>int</b> value from SharedPreference
      *
      * @param prefsKey     the key that will be used to retrieve the value
      * @param defaultValue the value that that will be returned in case key doesn't exist
-     * @return int value from SharedPreferences
+     * @return int value from SharedPreferences or defaultValue
      */
     public int getInt(@NonNull final PrefsKey prefsKey, final int defaultValue)
     {
-        if (!prefs.containsKey(prefsKey.getKey()))
+        if (prefs.containsKey(prefsKey.getKey()))
         {
-            return defaultValue;
+            try
+            {
+                return Integer.valueOf(prefs.getString(prefsKey.getKey()));
+            }
+            catch (SecurePreferences.SecurePreferencesException | NullPointerException e)
+            {
+                Crashlytics.logException(e);
+                e.printStackTrace();
+            }
         }
-        return getInt(prefsKey);
-    }
-
-    /**
-     * Get an <b>int</b> value from SharedPreference
-     * <p/>
-     * Throws {@link java.lang.NumberFormatException} if key doesn't exist.
-     * <p/>See also the method {@link #getInt(PrefsKey, int)}.
-     *
-     * @param prefsKey the key used to retrieve the value
-     * @return int value from SharedPreferences
-     */
-    public int getInt(@NonNull final PrefsKey prefsKey)
-    {
-        return Integer.valueOf(prefs.getString(prefsKey.getKey()));
+        return defaultValue;
     }
 
     /**
@@ -150,8 +159,6 @@ public class PrefsManager
 
     /**
      * Get a <b>long</b> value from SharedPreferences
-     * <p/>
-     * See also the method {@link #getLong(PrefsKey)}.
      *
      * @param prefsKey     the key used to retrieve the value
      * @param defaultValue value to be stored in SharedPreferences
@@ -159,24 +166,19 @@ public class PrefsManager
      */
     public long getLong(PrefsKey prefsKey, long defaultValue)
     {
-        if (!prefs.containsKey(prefsKey.getKey()))
+        if (prefs.containsKey(prefsKey.getKey()))
         {
-            return defaultValue;
-        }
-        return getLong(prefsKey);
-    }
+            try
+            {
+                return Long.valueOf(prefs.getString(prefsKey.getKey()));
+            }
+            catch (SecurePreferences.SecurePreferencesException | NullPointerException e)
+            {
+                Crashlytics.logException(e);
+                e.printStackTrace();
+            }
 
-    /**
-     * Get <b>long</b> value from SharedPreferences
-     * <p/>
-     * Throws {@link java.lang.NumberFormatException} if key doesn't exist.
-     * <p/>See also the method {@link #getLong(PrefsKey, long)}.
-     *
-     * @param prefsKey the key used to retreive the value
-     * @return the <b>long</b> value from SharedPreferences
-     */
-    public long getLong(@NonNull final PrefsKey prefsKey)
-    {
-        return Long.valueOf(prefs.getString(prefsKey.getKey()));
+        }
+        return defaultValue;
     }
 }
