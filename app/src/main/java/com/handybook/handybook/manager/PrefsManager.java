@@ -67,7 +67,7 @@ public class PrefsManager
             {
                 return prefs.getString(prefsKey.getKey());
             }
-            catch (SecurePreferences.SecurePreferencesException | NullPointerException e)
+            catch (Exception e)
             {
                 Crashlytics.logException(e);
                 e.printStackTrace();
@@ -102,7 +102,7 @@ public class PrefsManager
             {
                 return Boolean.valueOf(prefs.getString(prefsKey.getKey()));
             }
-            catch (SecurePreferences.SecurePreferencesException | NullPointerException e)
+            catch (Exception e)
             {
                 Crashlytics.logException(e);
                 e.printStackTrace();
@@ -137,7 +137,7 @@ public class PrefsManager
             {
                 return Integer.valueOf(prefs.getString(prefsKey.getKey()));
             }
-            catch (SecurePreferences.SecurePreferencesException | NullPointerException e)
+            catch (Exception e)
             {
                 Crashlytics.logException(e);
                 e.printStackTrace();
@@ -172,7 +172,7 @@ public class PrefsManager
             {
                 return Long.valueOf(prefs.getString(prefsKey.getKey()));
             }
-            catch (SecurePreferences.SecurePreferencesException | NullPointerException e)
+            catch (Exception e)
             {
                 Crashlytics.logException(e);
                 e.printStackTrace();
