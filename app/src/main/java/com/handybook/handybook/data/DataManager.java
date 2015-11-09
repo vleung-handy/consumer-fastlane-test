@@ -9,17 +9,17 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
-import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
+import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingEditExtrasTransaction;
-import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
+import com.handybook.handybook.model.request.BookingEditExtrasRequest;
+import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.core.EditExtrasInfo;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
@@ -27,6 +27,8 @@ import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
+import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -42,12 +44,18 @@ public abstract class DataManager
                                      Callback<List<Service>> cb);
 
     public abstract void getServiceExtras(int bookingId,
-                                     Callback<EditExtrasInfo> cb);
+                                     Callback<BookingEditExtrasInfoResponse> cb);
 
     public abstract void editServiceExtras(int bookingId,
-                                           BookingEditExtrasTransaction bookingEditExtrasTransaction,
+                                           BookingEditExtrasRequest bookingEditExtrasRequest,
                                           Callback<SuccessWrapper> cb);
 
+    public abstract void getEditHoursInfo(int bookingId,
+                                           Callback<BookingEditHoursInfoResponse> cb);
+
+    public abstract void editBookingHours(int bookingId,
+                                           BookingEditHoursRequest bookingEditHoursRequest,
+                                           Callback<SuccessWrapper> cb);
     /**
      * Requests a ShouldBlockObject defining if the app is recent enough to be used
      * @param versionCode Android version code (Not version name!)
@@ -157,11 +165,11 @@ public abstract class DataManager
                                                        Callback<Void> cb);
 
     public abstract void updateBookingFrequency(int bookingId,
-                                                BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
+                                                BookingEditFrequencyRequest bookingEditFrequencyRequest,
                                                 Callback<Void> cb);
 
     public abstract void getBookingPricesForFrequencies(int bookingId,
-                                                        Callback<BookingPricesForFrequenciesResponse> cb);
+                                                        Callback<BookingEditFrequencyInfoResponse> cb);
 
     public abstract void ratePro(int bookingId,
                                  int rating,

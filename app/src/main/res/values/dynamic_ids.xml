@@ -8,6 +8,7 @@
     <item type="id" name="nav_menu_log_out" />
     <item type="id" name="nav_menu_log_in" />
     <item type="id" name="action_button_reschedule_booking" />
+    <item type="id" name="action_button_edit_hours" />
     <item type="id" name="action_button_cancel_booking" />
     <item type="id" name="action_button_contact_phone" />
     <item type="id" name="action_button_contact_text" />

@@ -200,15 +200,32 @@
     <string name="clean">clean</string>
     <string name="job">job</string>
     <string name="no_data_indicator">--</string>
-    <string name="edit_extras_title">Edit Extras</string>
-    <string name="edit_extras_update_success_msg">Updated booking extras</string>
-    <string name="edit_extras_total_due">Total Due</string>
-    <string name="edit_extras_billed_on_date">Billed on %1$s</string>
-    <string name="edit_extras_booking_total_hours">(%1$s hours)</string>
-    <string name="edit_extras_booking_base_hours">Base time (%1$s hours)</string>
-    <string name="edit_extras_booking_extras_entry_label">%1$s (%2$s hours)</string>
-    <string name="edit_extras_booking_extras_price">+%1$s</string>
-    <string name="edit_extras_warning_msg">Your assigned pro may not be able to keep your booking due to scheduling conflicts if extras are added. If that is the case, another pro will be assigned.</string>
+    <string name="total_due">Total Due</string>
+    <string name="billed_on_date_formatted">Billed on %1$s</string>
+
+    <!--shared between booking edit screens-->
+    <string name="booking_edit_num_hours_formatted">(%1$s hours)</string>
+    <string name="booking_edit_base_hours_formatted">Base time (%1$s hours)</string>
+    <string name="booking_edit_added_hours_formatted">Added time (%1$s hours)</string>
+    <string name="booking_edit_extra_hours_formatted">Extras (%1$s hours)</string>
+    <string name="booking_edit_positive_price_formatted">+%1$s</string>
+    <string name="booking_edit_pro_assignment_warning">If your pro is unable to commit to your edit, another pro will be assigned.</string>
+    <string name="booking_edit_should_apply_to_subsequent_bookings_option_label">Apply to all subsequent bookings in this series</string>
+
+    <!--booking edit extras-->
+    <string name="booking_edit_extras_title">Edit Extras</string>
+    <string name="booking_edit_extras_update_success">Updated booking extras</string>
+    <string name="booking_edit_extras_booking_extras_entry_formatted">%1$s (%2$s hours)</string>
+    <!--TODO: below string not needed when we upgrade to new edit extras screen-->
+    <string name="booking_edit_extras_warning">Your assigned pro may not be able to keep your booking due to scheduling conflicts if extras are added. If that is the case, another pro will be assigned.</string>
+
+    <!--booking edit hours-->
+    <string name="booking_edit_hours_title">Edit Hours</string>
+    <string name="booking_edit_hours_options_title">Base hours</string>
+    <string name="booking_edit_hours_update_success">Successfully updated booking hours</string>
+    <string name="booking_edit_hours_options_warning">Because you are booking less time than recommended, we may not be able to do a complete job.</string>
+    <string name="booking_edit_hours_action_button">Add/Remove Hours</string>
+
     <string name="home_cleaner">Home Cleaner</string>
     <string name="home_cleaner_slogan">Let your home shine</string>
     <string name="handyman">Handyman</string>

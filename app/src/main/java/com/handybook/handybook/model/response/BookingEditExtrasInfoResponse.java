@@ -1,11 +1,12 @@
-package com.handybook.handybook.core;
+package com.handybook.handybook.model.response;
 
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.core.Booking;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditExtrasInfo
+public class BookingEditExtrasInfoResponse
 {
     @SerializedName("base_hours")
     private float mBaseHours;
@@ -110,6 +111,7 @@ public class EditExtrasInfo
         private float mAmountDollars;
     }
 
+    //TODO: move these classes out of here
     public static final class PaidStatus
     {
         public boolean isBilled()

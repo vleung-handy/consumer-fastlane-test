@@ -19,7 +19,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.ui.adapter.BookingCardAdapter;
 import com.handybook.handybook.ui.view.EmptyRecyclerView;
 import com.squareup.otto.Subscribe;
@@ -33,8 +33,8 @@ public class BookingListFragment extends InjectedFragment
         implements SwipeRefreshLayout.OnRefreshListener
 {
     public static final String TAG = "BookingListFragment";
-    public static final String KEY_BOOKINGS = "key:bookings";
-    public static final String KEY_BOOKINGS_RECEIVED = "key:bookings_received";
+    public static final String STATE_BOOKINGS = "state:bookings";
+    public static final String STATE_BOOKINGS_RECEIVED = "state:bookings_received";
     private static final String KEY_LIST_TYPE = "key:booking_list_type";
 
     private final BookingCardViewModel.List mBookingCardViewModels = new BookingCardViewModel.List();
@@ -78,8 +78,8 @@ public class BookingListFragment extends InjectedFragment
         mContext = getActivity();
         if (savedInstanceState != null)
         {
-            mBookingsWereReceived = savedInstanceState.getBoolean(KEY_BOOKINGS_RECEIVED, false);
-            ArrayList<Booking> bookings = savedInstanceState.getParcelableArrayList(KEY_BOOKINGS);
+            mBookingsWereReceived = savedInstanceState.getBoolean(STATE_BOOKINGS_RECEIVED, false);
+            ArrayList<Booking> bookings = savedInstanceState.getParcelableArrayList(STATE_BOOKINGS);
             if (bookings != null)
             {
                 mBookingCardViewModels.addAll(BookingCardViewModel.List.from(bookings));
@@ -182,8 +182,8 @@ public class BookingListFragment extends InjectedFragment
         super.onSaveInstanceState(outState);
         if (mBookingsWereReceived)
         {
-            outState.putParcelableArrayList(KEY_BOOKINGS, mBookingCardViewModels.getBookings());
-            outState.putBoolean(KEY_BOOKINGS_RECEIVED, mBookingsWereReceived);
+            outState.putParcelableArrayList(STATE_BOOKINGS, mBookingCardViewModels.getBookings());
+            outState.putBoolean(STATE_BOOKINGS_RECEIVED, mBookingsWereReceived);
         }
     }
 

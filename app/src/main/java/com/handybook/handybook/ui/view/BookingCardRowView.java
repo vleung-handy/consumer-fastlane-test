@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.model.BookingCardRowViewModel;
+import com.handybook.handybook.viewmodel.BookingCardRowViewModel;
 
 public class BookingCardRowView extends RelativeLayout
 {

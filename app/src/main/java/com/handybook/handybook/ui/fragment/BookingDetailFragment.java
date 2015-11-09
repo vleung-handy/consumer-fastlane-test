@@ -227,8 +227,7 @@ public final class BookingDetailFragment extends InjectedFragment
     @Subscribe
     public void onReceivePreRescheduleInfoSuccess(HandyEvent.ReceivePreRescheduleInfoSuccess event)
     {
-        enableInputs();
-        progressDialog.dismiss();
+        removeUiBlockers();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, this.booking);
@@ -239,8 +238,7 @@ public final class BookingDetailFragment extends InjectedFragment
     @Subscribe
     public void onReceivePreRescheduleInfoError(HandyEvent.ReceivePreRescheduleInfoError event)
     {
-        enableInputs();
-        progressDialog.dismiss();
+        removeUiBlockers();
 
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
@@ -248,8 +246,7 @@ public final class BookingDetailFragment extends InjectedFragment
     @Subscribe
     public void onReceivePreCancelationInfoSuccess(HandyEvent.ReceivePreCancelationInfoSuccess event)
     {
-        enableInputs();
-        progressDialog.dismiss();
+        removeUiBlockers();
 
         Pair<String, List<String>> result = event.result;
 
@@ -263,17 +260,14 @@ public final class BookingDetailFragment extends InjectedFragment
     @Subscribe
     public void onReceivePreCancelationInfoError(HandyEvent.ReceivePreCancelationInfoError event)
     {
-        enableInputs();
-        progressDialog.dismiss();
-
+        removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @Subscribe
     public void onReceiveBookingDetailsSuccess(HandyEvent.ReceiveBookingDetailsSuccess event)
     {
-        enableInputs();
-        progressDialog.dismiss();
+        removeUiBlockers();
 
         this.booking = event.booking;
         getArguments().putParcelable(BundleKeys.BOOKING, event.booking);
@@ -284,8 +278,7 @@ public final class BookingDetailFragment extends InjectedFragment
     @Subscribe
     public void onReceiveBookingDetailsError(HandyEvent.ReceiveBookingDetailsError event)
     {
-        enableInputs();
-        progressDialog.dismiss();
+        removeUiBlockers();
 
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
