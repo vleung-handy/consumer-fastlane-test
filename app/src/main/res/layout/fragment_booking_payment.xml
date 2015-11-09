@@ -46,7 +46,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    style="@style/TextView.Large.Med"
+                    style="@style/TextView.Large"
                     android:id="@+id/booking_select_payment_promo_text"
                     android:gravity="center"
                     android:layout_height="wrap_content"
