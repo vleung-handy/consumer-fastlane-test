@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.BooleanResult;
@@ -103,6 +104,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     View mApplyPromoButton;
     @Bind(R.id.change_button)
     View mChangeButton;
+    @Bind(R.id.booking_select_payment_promo_text)
+    TextView mSelectPaymentPromoText;
 
     @OnClick(R.id.enter_credit_card_button)
     public void onEnterCreditCardButtonClicked()
@@ -482,10 +485,40 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mInfoPaymentLayout.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * shows the layout that allows the user to select between Android Pay and credit card
+     */
     private void showSelectPaymentLayout()
     {
+        updateSelectPaymentPromoText();
+
         mSelectPaymentLayout.setVisibility(View.VISIBLE);
         mInfoPaymentLayout.setVisibility(View.GONE);
+    }
+
+    /**
+     * updates the select payment promo text visibility and value,
+     * currently based on whether or not the user has Android Pay promo savings
+     */
+    private void updateSelectPaymentPromoText()
+    {
+        //TODO: test only! replace with check to see if user has an android pay promo coupon
+        boolean hasAndroidPayPromoSavings = true;
+
+        //TODO: test only! replace with real formatted promo savings amount
+        String androidPayPromoSavingsFormatted = "$123";
+
+        if (hasAndroidPayPromoSavings)
+        {
+            mSelectPaymentPromoText.setText(getString(
+                    R.string.booking_payment_android_pay_promo_savings_formatted,
+                    androidPayPromoSavingsFormatted));
+            mSelectPaymentPromoText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mSelectPaymentPromoText.setVisibility(View.GONE);
+        }
     }
 
     private void showPaymentMethodSelection()
