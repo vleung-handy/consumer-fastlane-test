@@ -502,12 +502,17 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
      */
     private void updateSelectPaymentPromoText()
     {
-        boolean hasAndroidPayPromoSavings = true; //TODO: test only! replace with check to see if user has an android pay promo coupon
-        String androidPayPromoSavingsFormatted = "$123"; //TODO: test only! replace with real formatted promo savings amount
+        //TODO: test only! replace with check to see if user has an android pay promo coupon
+        boolean hasAndroidPayPromoSavings = true;
 
-        if(hasAndroidPayPromoSavings)
+        //TODO: test only! replace with real formatted promo savings amount
+        String androidPayPromoSavingsFormatted = "$123";
+
+        if (hasAndroidPayPromoSavings)
         {
-            mSelectPaymentPromoText.setText(getString(R.string.booking_payment_android_pay_promo_savings_formatted, androidPayPromoSavingsFormatted));
+            mSelectPaymentPromoText.setText(getString(
+                    R.string.booking_payment_android_pay_promo_savings_formatted,
+                    androidPayPromoSavingsFormatted));
             mSelectPaymentPromoText.setVisibility(View.VISIBLE);
         }
         else
