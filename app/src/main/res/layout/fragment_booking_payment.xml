@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:background="@color/handy_bg"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent">
@@ -43,6 +44,7 @@
                 android:paddingLeft="@dimen/select_payment_horizontal_padding"
                 android:paddingRight="@dimen/select_payment_horizontal_padding"
                 android:paddingTop="@dimen/select_payment_vertical_padding"
+                tools:visibility="visible"
                 android:visibility="gone">
 
                 <TextView
@@ -51,6 +53,7 @@
                     android:gravity="center"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    tools:visibility="visible"
                     android:visibility="gone"/>
 
                 <FrameLayout
