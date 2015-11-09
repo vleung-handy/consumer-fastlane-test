@@ -485,10 +485,35 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mInfoPaymentLayout.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * shows the layout that allows the user to select between Android Pay and credit card
+     */
     private void showSelectPaymentLayout()
     {
+        updateSelectPaymentPromoText();
+
         mSelectPaymentLayout.setVisibility(View.VISIBLE);
         mInfoPaymentLayout.setVisibility(View.GONE);
+    }
+
+    /**
+     * updates the select payment promo text visibility and value,
+     * currently based on whether or not the user has Android Pay promo savings
+     */
+    private void updateSelectPaymentPromoText()
+    {
+        boolean hasAndroidPayPromoSavings = true; //TODO: test only! replace with check to see if user has an android pay promo coupon
+        String androidPayPromoSavingsFormatted = "$123"; //TODO: test only! replace with real formatted promo savings amount
+
+        if(hasAndroidPayPromoSavings)
+        {
+            mSelectPaymentPromoText.setText(getString(R.string.booking_payment_android_pay_promo_savings_formatted, androidPayPromoSavingsFormatted));
+            mSelectPaymentPromoText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mSelectPaymentPromoText.setVisibility(View.GONE);
+        }
     }
 
     private void showPaymentMethodSelection()
@@ -541,16 +566,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         setCardIcon(CreditCard.Type.ANDROID_PAY);
     }
 
-    private void showSelectPaymentPromoText(String text)
-    {
-        mSelectPaymentPromoText.setVisibility(View.VISIBLE);
-        mSelectPaymentPromoText.setText(text);
-    }
 
-    private void hideSelectPaymentPromoText()
-    {
-        mSelectPaymentPromoText.setVisibility(View.GONE);
-    }
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
     {
