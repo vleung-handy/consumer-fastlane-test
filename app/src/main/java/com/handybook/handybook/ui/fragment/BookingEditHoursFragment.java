@@ -272,7 +272,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     {
         showToast(getString(R.string.booking_edit_hours_update_success));
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
         //TODO: booking details screen not calling onActivityResult() and updating the booking
     }
