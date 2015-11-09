@@ -465,22 +465,27 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         return validate;
     }
 
-    private void allowPaymentMethodSelection()
-    {
-        mSelectPaymentLayout.setVisibility(View.VISIBLE);
-        mInfoPaymentLayout.setVisibility(View.GONE);
-    }
-
     private void allowCardInput()
     {
-        mSelectPaymentLayout.setVisibility(View.GONE);
-        mInfoPaymentLayout.setVisibility(View.VISIBLE);
+        showInfoPaymentLayout();
         setCardIcon(CreditCard.Type.OTHER);
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
         mUseAndroidPay = false;
         mUseExistingCard = false;
+    }
+
+    private void showInfoPaymentLayout()
+    {
+        mSelectPaymentLayout.setVisibility(View.GONE);
+        mInfoPaymentLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showSelectPaymentLayout()
+    {
+        mSelectPaymentLayout.setVisibility(View.VISIBLE);
+        mInfoPaymentLayout.setVisibility(View.GONE);
     }
 
     private void showPaymentMethodSelection()
@@ -498,7 +503,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                             {
                                 if (result.getStatus().isSuccess() && result.getValue())
                                 {
-                                    allowPaymentMethodSelection();
+                                    showSelectPaymentLayout();
                                 }
                                 else
                                 {
@@ -523,12 +528,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     private void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
-        mSelectPaymentLayout.setVisibility(View.GONE);
-        mInfoPaymentLayout.setVisibility(View.VISIBLE);
+        showInfoPaymentLayout();
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         mCardExtrasLayout.setVisibility(View.GONE);
-        mSelectPaymentLayout.setVisibility(View.GONE);
         mUseExistingCard = false;
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;

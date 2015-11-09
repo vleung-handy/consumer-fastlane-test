@@ -39,10 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:paddingBottom="30dp"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:paddingTop="30dp"
+                android:paddingBottom="@dimen/select_payment_vertical_padding"
+                android:paddingLeft="@dimen/select_payment_horizontal_padding"
+                android:paddingRight="@dimen/select_payment_horizontal_padding"
+                android:paddingTop="@dimen/select_payment_vertical_padding"
                 android:visibility="gone">
 
                 <FrameLayout
@@ -57,8 +57,8 @@
                     android:id="@+id/enter_credit_card_button"
                     android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="@dimen/default_margin_quarter"
+                    android:layout_marginRight="@dimen/default_margin_quarter"
                     android:layout_width="match_parent"
                     android:text="@string/enter_credit_card"
                     android:textAllCaps="false"
