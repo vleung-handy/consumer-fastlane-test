@@ -25,4 +25,6 @@
     <dimen name="icon_padding">2dp</dimen>
     <dimen name="framed_icon_inset">8dp</dimen>
     <dimen name="horizontal_divider_height">2dp</dimen>
+    <dimen name="select_payment_vertical_padding">30dp</dimen>
+    <dimen name="select_payment_horizontal_padding">40dp</dimen>
 </resources>

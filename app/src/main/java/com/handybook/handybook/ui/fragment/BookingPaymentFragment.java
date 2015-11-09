@@ -26,7 +26,6 @@ import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.FullWalletRequest;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.MaskedWalletRequest;
-import com.google.android.gms.wallet.PaymentMethodToken;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.google.android.gms.wallet.fragment.SupportWalletFragment;
@@ -59,6 +58,7 @@ import com.stripe.exception.CardException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
@@ -75,8 +75,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     @Bind(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.change_button)
-    Button mChangeButton;
     @Bind(R.id.promo_button)
     Button mPromoButton;
     @Bind(R.id.credit_card_text)
@@ -97,8 +95,34 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     ProgressBar mPromoProgress;
     @Bind(R.id.promo_layout)
     LinearLayout mPromoLayout;
-    @Bind(R.id.android_pay_button_layout)
-    View mAndroidPayButtonLayout;
+    @Bind(R.id.select_payment_layout)
+    View mSelectPaymentLayout;
+    @Bind(R.id.info_payment_layout)
+    View mInfoPaymentLayout;
+    @Bind(R.id.apply_promo_button)
+    View mApplyPromoButton;
+    @Bind(R.id.change_button)
+    View mChangeButton;
+
+    @OnClick(R.id.enter_credit_card_button)
+    public void onEnterCreditCardButtonClicked()
+    {
+        allowCardInput();
+    }
+
+    @OnClick(R.id.change_button)
+    public void onChangeButtonClicked()
+    {
+        mUseExistingCard = false;
+        showPaymentMethodSelection();
+    }
+
+    @OnClick(R.id.apply_promo_button)
+    public void onApplyPromoButtonClicked()
+    {
+        mPromoLayout.setVisibility(View.VISIBLE);
+        mApplyPromoButton.setVisibility(View.GONE);
+    }
 
     public static BookingPaymentFragment newInstance()
     {
@@ -142,7 +166,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     @Override
     public void onConnected(Bundle bundle)
     {
-        checkIsReadyToPayWithAndroidPay();
+        showPaymentMethodSelection();
     }
 
     @Override
@@ -181,6 +205,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         {
             mUseExistingCard = true;
             mCreditCardText.setDisabled(true, getString(R.string.last4, card.getLast4()));
+            mInfoPaymentLayout.setVisibility(View.VISIBLE);
             if (user.isUsingAndroidPay())
             {
                 setCardIcon(CreditCard.Type.ANDROID_PAY);
@@ -192,19 +217,11 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
         else
         {
-            allowCardInput();
+            showPaymentMethodSelection();
         }
 
         mCreditCardText.addTextChangedListener(cardTextWatcher);
         mNextButton.setOnClickListener(nextClicked);
-        mChangeButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(final View v)
-            {
-                allowCardInput();
-            }
-        });
 
         mLockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
@@ -227,7 +244,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         WalletFragmentStyle walletFragmentStyle = new WalletFragmentStyle()
                 .setBuyButtonText(WalletFragmentStyle.BuyButtonText.BUY_WITH)
-                .setBuyButtonAppearance(WalletFragmentStyle.BuyButtonAppearance.ANDROID_PAY_LIGHT_WITH_BORDER)
+                .setBuyButtonAppearance(WalletFragmentStyle.BuyButtonAppearance.ANDROID_PAY_DARK)
                 .setBuyButtonWidth(WalletFragmentStyle.Dimension.MATCH_PARENT);
 
         WalletFragmentOptions walletFragmentOptions = WalletFragmentOptions.newBuilder()
@@ -450,18 +467,30 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     private void allowCardInput()
     {
+        showInfoPaymentLayout();
         setCardIcon(CreditCard.Type.OTHER);
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
-        mChangeButton.setVisibility(View.GONE);
         mCardExtrasLayout.setVisibility(View.VISIBLE);
         mUseAndroidPay = false;
         mUseExistingCard = false;
-        checkIsReadyToPayWithAndroidPay();
     }
 
-    private void checkIsReadyToPayWithAndroidPay()
+    private void showInfoPaymentLayout()
     {
+        mSelectPaymentLayout.setVisibility(View.GONE);
+        mInfoPaymentLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showSelectPaymentLayout()
+    {
+        mSelectPaymentLayout.setVisibility(View.VISIBLE);
+        mInfoPaymentLayout.setVisibility(View.GONE);
+    }
+
+    private void showPaymentMethodSelection()
+    {
+        progressDialog.show();
         if (mGoogleApiClient.isConnected())
         {
             Wallet.Payments.isReadyToPay(mGoogleApiClient).setResultCallback(
@@ -469,22 +498,40 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                     {
                         public void onResult(@NonNull BooleanResult result)
                         {
-                            if (!mUseExistingCard && !mUseAndroidPay && result.getStatus().isSuccess() && result.getValue()/* && TODO: Add condition US only */)
+                            /* TODO: Add condition US only */
+                            if (!mUseExistingCard)
                             {
-                                mAndroidPayButtonLayout.setVisibility(View.VISIBLE);
+                                if (result.getStatus().isSuccess() && result.getValue())
+                                {
+                                    showSelectPaymentLayout();
+                                }
+                                else
+                                {
+                                    // since Android Pay cannot be used, go ahead and display credit card input fields
+                                    mChangeButton.setVisibility(View.GONE);
+                                    allowCardInput();
+                                }
                             }
+                            if (mApplyPromoButton.getVisibility() != View.VISIBLE && mPromoLayout.getVisibility() != View.VISIBLE)
+                            {
+                                mApplyPromoButton.setVisibility(View.VISIBLE);
+                            }
+                            progressDialog.dismiss();
                         }
                     });
+        }
+        else
+        {
+            progressDialog.dismiss();
         }
     }
 
     private void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
+        showInfoPaymentLayout();
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
-        mChangeButton.setVisibility(View.VISIBLE);
         mCardExtrasLayout.setVisibility(View.GONE);
-        mAndroidPayButtonLayout.setVisibility(View.GONE);
         mUseExistingCard = false;
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;
@@ -494,9 +541,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private void finishAndroidPayTransaction(FullWallet fullWallet)
     {
         if (!allowCallbacks) { return; }
-        final PaymentMethodToken paymentMethodToken = fullWallet.getPaymentMethodToken();
+        String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
+        com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(tokenJSON, com.stripe.model.Token.class);
         final BookingTransaction currentTransaction = bookingManager.getCurrentTransaction();
-        currentTransaction.setStripeToken(paymentMethodToken.getToken());
+        currentTransaction.setStripeToken(token.getId());
         currentTransaction.setPaymentMethod(User.PAYMENT_METHOD_ANDROID_PAY);
         completeBooking();
     }
@@ -689,12 +737,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                     public void onError(final DataManager.DataManagerError error)
                     {
                         if (!allowCallbacks) { return; }
-
                         enableInputs();
-                        if (mUseAndroidPay)
-                        {
-                            allowCardInput();
-                        }
+                        showPaymentMethodSelection();
                         progressDialog.dismiss();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
