@@ -204,19 +204,13 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         final User.CreditCard card = user != null ? user.getCreditCard() : null;
 
         if ((card != null && card.getLast4() != null)
-                && (savedInstanceState == null || mUseExistingCard))
+                && (savedInstanceState == null || mUseExistingCard)
+                && !user.isUsingAndroidPay())
         {
             mUseExistingCard = true;
             mCreditCardText.setDisabled(true, getString(R.string.last4, card.getLast4()));
             mInfoPaymentLayout.setVisibility(View.VISIBLE);
-            if (user.isUsingAndroidPay())
-            {
-                setCardIcon(CreditCard.Type.ANDROID_PAY);
-            }
-            else
-            {
-                setCardIcon(card.getBrand());
-            }
+            setCardIcon(card.getBrand());
         }
         else
         {
