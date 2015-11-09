@@ -261,5 +261,5 @@
     <string name="last4">•••• %1$s</string>
     <string name="enter_credit_card">Enter a Credit Card</string>
     <string name="apply_promo_code">Apply promo code</string>
-
+    <string name="booking_payment_android_pay_promo_savings_formatted">Use Android Pay to save %1$s now!</string>
 </resources>

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.BooleanResult;
@@ -103,6 +104,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     View mApplyPromoButton;
     @Bind(R.id.change_button)
     View mChangeButton;
+    @Bind(R.id.booking_select_payment_promo_text)
+    TextView mSelectPaymentPromoText;
 
     @OnClick(R.id.enter_credit_card_button)
     public void onEnterCreditCardButtonClicked()
@@ -467,12 +470,15 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     private void allowPaymentMethodSelection()
     {
+        String androidPayPromoSavingsAmountFormatted = "$123"; //TODO: test only - replace with real promo amount!
+        showSelectPaymentPromoText(getString(R.string.booking_payment_android_pay_promo_savings_formatted, androidPayPromoSavingsAmountFormatted));
         mSelectPaymentLayout.setVisibility(View.VISIBLE);
         mInfoPaymentLayout.setVisibility(View.GONE);
     }
 
     private void allowCardInput()
     {
+        hideSelectPaymentPromoText();
         mSelectPaymentLayout.setVisibility(View.GONE);
         mInfoPaymentLayout.setVisibility(View.VISIBLE);
         setCardIcon(CreditCard.Type.OTHER);
@@ -523,6 +529,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     private void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
+        hideSelectPaymentPromoText();
         mSelectPaymentLayout.setVisibility(View.GONE);
         mInfoPaymentLayout.setVisibility(View.VISIBLE);
         mCreditCardText.setText(null);
@@ -533,6 +540,17 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;
         setCardIcon(CreditCard.Type.ANDROID_PAY);
+    }
+
+    private void showSelectPaymentPromoText(String text)
+    {
+        mSelectPaymentPromoText.setVisibility(View.VISIBLE);
+        mSelectPaymentPromoText.setText(text);
+    }
+
+    private void hideSelectPaymentPromoText()
+    {
+        mSelectPaymentPromoText.setVisibility(View.GONE);
     }
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
