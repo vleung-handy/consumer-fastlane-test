@@ -48,8 +48,9 @@
                 <TextView
                     style="@style/TextView.Large.Med"
                     android:id="@+id/booking_select_payment_promo_text"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:visibility="gone"/>
 
                 <FrameLayout
