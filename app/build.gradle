@@ -65,7 +65,7 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 10902
+        versionCode 10903
         versionName computeVersionName(versionCode)
         multiDexEnabled true
     }
