@@ -45,6 +45,14 @@
                 android:paddingTop="@dimen/select_payment_vertical_padding"
                 android:visibility="gone">
 
+                <TextView
+                    style="@style/TextView.Large"
+                    android:id="@+id/booking_select_payment_promo_text"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"/>
+
                 <FrameLayout
                     android:id="@+id/android_pay_button_layout"
                     android:layout_height="48dp"
