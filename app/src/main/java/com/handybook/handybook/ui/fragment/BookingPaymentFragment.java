@@ -556,8 +556,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     private void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
-        mSelectPaymentLayout.setVisibility(View.GONE);
-        mInfoPaymentLayout.setVisibility(View.VISIBLE);
+        showInfoPaymentLayout();
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         mCardExtrasLayout.setVisibility(View.GONE);
@@ -566,8 +565,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mMaskedWallet = maskedWallet;
         setCardIcon(CreditCard.Type.ANDROID_PAY);
     }
-
-
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
     {
