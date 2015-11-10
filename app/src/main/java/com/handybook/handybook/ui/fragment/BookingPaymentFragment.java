@@ -478,8 +478,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         String androidPayPromoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
         String promoApplied = bookingManager.getCurrentTransaction().promoApplied();
-        return (androidPayPromoCode != null
-                && !androidPayPromoCode.isEmpty()
+        return (!ValidationUtils.isStringNullOrEmpty(androidPayPromoCode)
                 && androidPayPromoCode.equalsIgnoreCase(promoApplied));
     }
 
@@ -755,7 +754,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     //TODO: this was stripped out of promoClicked and may need to be refactored
     private void applyPromo(final String promoCode)
     {
-        if(promoCode == null || promoCode.isEmpty()) return;
+        if(ValidationUtils.isStringNullOrEmpty(promoCode)) return;
 
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
         final int bookingId = bookingTransaction.getBookingId();
