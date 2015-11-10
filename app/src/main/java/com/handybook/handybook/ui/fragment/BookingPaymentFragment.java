@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -153,20 +154,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @Override
-    public void onStart()
-    {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onStop()
-    {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    @Override
     public void onConnected(Bundle bundle)
     {
         checkAndShowPaymentMethodSelection();
@@ -181,7 +168,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
     {
-
+        checkAndShowPaymentMethodSelection();
     }
 
     @Override
@@ -212,10 +199,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
             mInfoPaymentLayout.setVisibility(View.VISIBLE);
             setCardIcon(card.getBrand());
         }
-        else
-        {
-            checkAndShowPaymentMethodSelection();
-        }
 
         mCreditCardText.addTextChangedListener(cardTextWatcher);
         mNextButton.setOnClickListener(nextClicked);
@@ -234,7 +217,16 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         createAndAddWalletFragment(bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
 
+        mGoogleApiClient.connect();
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        mGoogleApiClient.disconnect();
+        super.onDestroyView();
     }
 
     private void createAndAddWalletFragment(BookingQuote quote, BookingTransaction transaction)
@@ -547,11 +539,13 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
         else
         {
+            showPaymentMethodSelection(null);
+            showApplyPromoButtonIfNeeded();
             progressDialog.dismiss();
         }
     }
 
-    private void showPaymentMethodSelection(final @NonNull BooleanResult result)
+    private void showPaymentMethodSelection(final @Nullable BooleanResult result)
     {
         if (!mUseExistingCard)
         {
@@ -583,7 +577,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     // Only show Android Pay for new customers and for customers who already used Android Pay
-    private boolean shouldShowAndroidPay(final BooleanResult result)
+    private boolean shouldShowAndroidPay(final @Nullable BooleanResult result)
     {
         /* TODO: Add condition US only */
         if (result != null && result.getStatus().isSuccess() && result.getValue())
