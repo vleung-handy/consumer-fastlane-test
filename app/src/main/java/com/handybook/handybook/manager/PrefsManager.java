@@ -21,7 +21,7 @@ public class PrefsManager
     @Inject
     public PrefsManager(final SecurePreferences prefs)
     {
-        this.mSecurePreferences = prefs;
+        mSecurePreferences = prefs;
     }
 
     /**
