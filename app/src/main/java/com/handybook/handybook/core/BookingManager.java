@@ -465,7 +465,7 @@ public final class BookingManager implements Observer
     @Subscribe
     public final void environmentUpdated(final EnvironmentUpdatedEvent event)
     {
-        if (event.getEnvironment() != event.getPrevEnvironment())
+        if (!event.getEnvironment().equals(event.getPrevEnvironment()))
         {
             clearAll();
         }
