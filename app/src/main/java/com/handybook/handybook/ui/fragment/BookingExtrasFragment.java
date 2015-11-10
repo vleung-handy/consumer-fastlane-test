@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 
@@ -25,35 +27,35 @@ import butterknife.ButterKnife;
 
 public final class BookingExtrasFragment extends BookingFlowFragment
 {
-    private BookingTransaction bookingTransaction;
-    private BookingQuote bookingQuote;
+    private BookingTransaction mBookingTransaction;
+    private BookingQuote mBookingQuote;
 
     @Inject
-    SecurePreferences securePrefs;
-
+    PrefsManager mPrefsManager;
     @Bind(R.id.options_layout)
-    LinearLayout optionsLayout;
+    LinearLayout mOptionsLayout;
     @Bind(R.id.next_button)
-    Button nextButton;
+    Button mNextButton;
 
     public static BookingExtrasFragment newInstance()
     {
-        final BookingExtrasFragment fragment = new BookingExtrasFragment();
-        return fragment;
+        return new BookingExtrasFragment();
     }
 
     @Override
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        bookingTransaction = bookingManager.getCurrentTransaction();
-        bookingQuote = bookingManager.getCurrentQuote();
+        mBookingTransaction = bookingManager.getCurrentTransaction();
+        mBookingQuote = bookingManager.getCurrentQuote();
         mixpanel.trackEventAppTrackExtras();
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_extras, container, false);
@@ -64,32 +66,37 @@ public final class BookingExtrasFragment extends BookingFlowFragment
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();
 
-        final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(getActivity(),
-                bookingQuote.getExtrasOptions(), optionUpdated);
+        final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
+                getActivity(),
+                mBookingQuote.getExtrasOptions(),
+                optionUpdated
+        );
 
         optionsView.hideTitle();
 
-        final String selected = securePrefs.getString("STATE_BOOKING_CLEANING_EXTRAS_SEL");
+        final String selected = mPrefsManager.getString(
+                PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION
+        );
         if (selected != null)
         {
             final String[] indexes = selected.split(",");
             final ArrayList<Integer> checked = new ArrayList<>();
-
-            for (int i = 0; i < indexes.length; i++)
+            for (String eachIndex : indexes)
             {
                 try
                 {
-                    checked.add(Integer.parseInt(indexes[i]));
-                } catch (final NumberFormatException e)
+                    checked.add(Integer.parseInt(eachIndex));
+                }
+                catch (final NumberFormatException e)
                 {
+                    Crashlytics.logException(e);
                 }
             }
-
             optionsView.setCheckedIndexes(checked.toArray(new Integer[checked.size()]));
         }
 
-        optionsLayout.addView(optionsView, 0);
-        nextButton.setOnClickListener(new View.OnClickListener()
+        mOptionsLayout.addView(optionsView, 0);
+        mNextButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View view)
@@ -107,7 +114,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment
         public void onUpdate(final BookingOptionsView view)
         {
             final Integer[] indexes = ((BookingOptionsSelectView) view).getCheckedIndexes();
-            final BookingOption option = bookingQuote.getExtrasOptions();
+            final BookingOption option = mBookingQuote.getExtrasOptions();
             final float[] hoursMap = option.getHoursInfo();
             final String[] options = option.getOptions();
 
@@ -125,20 +132,18 @@ public final class BookingExtrasFragment extends BookingFlowFragment
             }
 
             //TODO integrate put call into booking manager like promo tab coupon
-            securePrefs.put("STATE_BOOKING_CLEANING_EXTRAS_SEL", selected);
-            bookingTransaction.setExtraHours(extraHours);
-            bookingTransaction.setExtraCleaningText(extraText.length() > 0 ? extraText : null);
+            mPrefsManager.setString(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION, selected);
+            mBookingTransaction.setExtraHours(extraHours);
+            mBookingTransaction.setExtraCleaningText(extraText.length() > 0 ? extraText : null);
         }
 
         @Override
-        public void onShowChildren(final BookingOptionsView view,
-                                   final String[] items)
+        public void onShowChildren(final BookingOptionsView view, final String[] items)
         {
         }
 
         @Override
-        public void onHideChildren(final BookingOptionsView view,
-                                   final String[] items)
+        public void onHideChildren(final BookingOptionsView view, final String[] items)
         {
         }
     };
