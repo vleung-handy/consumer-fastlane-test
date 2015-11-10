@@ -297,7 +297,7 @@ public final class BookingManager implements Observer
         if (newRequest == null)
         {
             request = null;
-            prefsManager.setString(PrefsKey.BOOKING_REQUEST, null);
+            prefsManager.removeValue(PrefsKey.BOOKING_REQUEST);
             return;
         }
 
@@ -333,7 +333,7 @@ public final class BookingManager implements Observer
         if (newQuote == null)
         {
             quote = null;
-            prefsManager.setString(PrefsKey.BOOKING_QUOTE, null);
+            prefsManager.removeValue(PrefsKey.BOOKING_QUOTE);
             return;
         }
 
@@ -368,7 +368,7 @@ public final class BookingManager implements Observer
         if (newTransaction == null)
         {
             transaction = null;
-            prefsManager.setString(PrefsKey.BOOKING_TRANSACTION, null);
+            prefsManager.removeValue(PrefsKey.BOOKING_TRANSACTION);
             return;
         }
 
@@ -403,7 +403,7 @@ public final class BookingManager implements Observer
         if (newInfo == null)
         {
             postInfo = null;
-            prefsManager.setString(PrefsKey.BOOKING_POST, null);
+            prefsManager.removeValue(PrefsKey.BOOKING_POST);
             return;
         }
 
@@ -452,13 +452,13 @@ public final class BookingManager implements Observer
         setCurrentQuote(null);
         setCurrentTransaction(null);
         setCurrentPostInfo(null);
-        prefsManager.setString(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION, null);
+        prefsManager.removeValue(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION);
         bus.post(new BookingFlowClearedEvent());
     }
 
     public void clearAll()
     {
-        prefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, null);
+        prefsManager.removeValue(PrefsKey.BOOKING_PROMO_TAB_COUPON);
         clear();
     }
 

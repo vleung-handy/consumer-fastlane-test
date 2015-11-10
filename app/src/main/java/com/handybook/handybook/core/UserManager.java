@@ -53,7 +53,7 @@ public class UserManager implements Observer
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
         {
             user = null;
-            prefsManager.setString(PrefsKey.USER, null);
+            prefsManager.removeValue(PrefsKey.USER);
             bus.post(new UserLoggedInEvent(false));
             return;
         }
