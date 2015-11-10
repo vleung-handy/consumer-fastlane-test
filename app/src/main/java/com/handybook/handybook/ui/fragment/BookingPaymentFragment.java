@@ -605,7 +605,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         setCardIcon(CreditCard.Type.ANDROID_PAY);
 
         applyAndroidPayCoupon();
-        //TODO: need to make sure AP coupon isn't applied when user chooses another payment method!
     }
 
     private void applyAndroidPayCoupon()
@@ -613,8 +612,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         //apply android pay coupon
         String promoCode = bookingManager.getCurrentQuote().getGooglePayCoupon();
         applyPromo(promoCode);
-        mPromoText.setText("****"); //make this obfuscated
-        //TODO: put in strings.xml
+
+        //TODO: make AP promo code obfuscated
     }
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
@@ -717,7 +716,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
     };
 
-    //TODO: this was stripped out of promoClicked and needs to be refactored
+    //TODO: this was stripped out of promoClicked and may need to be refactored
     private void removePromo()
     {
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
@@ -740,7 +739,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         });
     }
 
-    //TODO: this was stripped out of promoClicked and needs to be refactored
+    //TODO: this was stripped out of promoClicked and may need to be refactored
     private void applyPromo(final String promoCode)
     {
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
