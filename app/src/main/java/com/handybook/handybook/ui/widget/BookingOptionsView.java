@@ -40,7 +40,7 @@ public abstract class BookingOptionsView extends FrameLayout
         LayoutInflater.from(context).inflate(layout, this);
     }
 
-    public static interface OnUpdatedListener
+    public interface OnUpdatedListener
     {
         void onUpdate(BookingOptionsView view);
 
