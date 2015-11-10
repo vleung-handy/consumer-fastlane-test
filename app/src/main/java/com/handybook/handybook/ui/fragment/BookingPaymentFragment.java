@@ -46,6 +46,7 @@ import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.MixpanelEvent;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
@@ -497,6 +498,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         mSelectPaymentLayout.setVisibility(View.VISIBLE);
         mInfoPaymentLayout.setVisibility(View.GONE);
+
+        bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
     /**
@@ -783,6 +786,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
                         //UPGRADE: Should we use this trans or ask the manager for current trans? So much inconsistency....
 
+                        if (mUseAndroidPay)
+                        {
+                            bus.post(new MixpanelEvent.TrackBookingMadeWithPaymentMethodEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
+                        }
                         mixpanel.trackEventSubmitPayment(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
                         mixpanel.trackEventBookingMade(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
 
