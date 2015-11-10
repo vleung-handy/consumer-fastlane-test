@@ -36,6 +36,20 @@ public final class BookingQuote extends Observable {
     @SerializedName("stripe_key") private String stripeKey;
     @SerializedName("phone_country_prefix") private String phonePrefix;
     @SerializedName("special_extras_options") private BookingOption extrasOptions;
+    @SerializedName("is_android_pay_enabled") private boolean mIsAndroidPayEnabled;
+    @SerializedName("android_pay_coupon") private String mAndroidPayCouponCode;
+
+    //TODO: TEST ONLY! REPLACE WITH REAL DATA LATER
+    public boolean isAndroidPayEnabled()
+    {
+        return true;
+    }
+
+    //TODO: TEST ONLY! REPLACE WITH REAL DATA LATER
+    public String getAndroidPayCouponCode()
+    {
+        return "MAYANKDEMO";
+    }
 
     private HashMap<Float, BookingPriceInfo> priceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable;
