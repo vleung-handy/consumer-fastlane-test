@@ -117,7 +117,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     public void onChangeButtonClicked()
     {
         mUseExistingCard = false;
-        showPaymentMethodSelection();
+        checkAndShowPaymentMethodSelection();
     }
 
     @OnClick(R.id.apply_promo_button)
@@ -169,7 +169,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     @Override
     public void onConnected(Bundle bundle)
     {
-        showPaymentMethodSelection();
+        checkAndShowPaymentMethodSelection();
     }
 
     @Override
@@ -214,7 +214,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
         else
         {
-            showPaymentMethodSelection();
+            checkAndShowPaymentMethodSelection();
         }
 
         mCreditCardText.addTextChangedListener(cardTextWatcher);
@@ -515,7 +515,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
     }
 
-    private void showPaymentMethodSelection()
+    private void checkAndShowPaymentMethodSelection()
     {
         progressDialog.show();
         if (mGoogleApiClient.isConnected())
@@ -525,24 +525,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                     {
                         public void onResult(@NonNull BooleanResult result)
                         {
-                            /* TODO: Add condition US only */
-                            if (!mUseExistingCard)
-                            {
-                                if (result.getStatus().isSuccess() && result.getValue())
-                                {
-                                    showSelectPaymentLayout();
-                                }
-                                else
-                                {
-                                    // since Android Pay cannot be used, go ahead and display credit card input fields
-                                    mChangeButton.setVisibility(View.GONE);
-                                    allowCardInput();
-                                }
-                            }
-                            if (mApplyPromoButton.getVisibility() != View.VISIBLE && mPromoLayout.getVisibility() != View.VISIBLE)
-                            {
-                                mApplyPromoButton.setVisibility(View.VISIBLE);
-                            }
+                            showPaymentMethodSelection(result);
+                            showApplyPromoButtonIfNeeded();
                             progressDialog.dismiss();
                         }
                     });
@@ -550,6 +534,52 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         else
         {
             progressDialog.dismiss();
+        }
+    }
+
+    private void showPaymentMethodSelection(final @NonNull BooleanResult result)
+    {
+        if (!mUseExistingCard)
+        {
+            if (shouldShowAndroidPay(result))
+            {
+                showSelectPaymentLayout();
+            }
+            else
+            {
+                // since Android Pay cannot be used, go ahead and display credit card input fields
+                showUnchangeableCardInputFields();
+            }
+        }
+    }
+
+    private void showUnchangeableCardInputFields()
+    {
+        mChangeButton.setVisibility(View.GONE);
+        allowCardInput();
+    }
+
+    private void showApplyPromoButtonIfNeeded()
+    {
+        if (mApplyPromoButton.getVisibility() != View.VISIBLE
+                && mPromoLayout.getVisibility() != View.VISIBLE)
+        {
+            mApplyPromoButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // Only show Android Pay for new customers and for customers who already used Android Pay
+    private boolean shouldShowAndroidPay(final BooleanResult result)
+    {
+        /* TODO: Add condition US only */
+        if (result != null && result.getStatus().isSuccess() && result.getValue())
+        {
+            final User currentUser = userManager.getCurrentUser();
+            return currentUser == null || currentUser.isUsingAndroidPay();
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -765,7 +795,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                     {
                         if (!allowCallbacks) { return; }
                         enableInputs();
-                        showPaymentMethodSelection();
+                        checkAndShowPaymentMethodSelection();
                         progressDialog.dismiss();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
