@@ -7,6 +7,7 @@ import com.handybook.handybook.annotation.TrackField;
 
 public abstract class MixpanelEvent
 {
+    //TODO: move event trackers from Mixpanel.java here
     private static class EventKey
     {
         public static final String APP_TRACK_INSTALL = "App Track Install";
@@ -21,8 +22,10 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_EXTRAS = "App Track Extras";
         public static final String APP_TRACK_ADDRESS = "App Track Address";
         public static final String APP_TRACK_PAYMENT = "App Track Payment";
+        //TODO: ^this event key already exists in Mixpanel.java, need to move it out
         public static final String APP_TRACK_CONFIRMATION = "App Track Confirmation";
         public static final String APP_TRACK_BOOKING_MADE = "booking made";
+        //TODO: ^this event key already exists in Mixpanel.java, need to move it out
         public static final String APP_TRACK_PAYMENT_TOKEN = "App Track Payment Token";
     }
 
@@ -44,7 +47,7 @@ public abstract class MixpanelEvent
         }
     }
 
-    @Track(EventKey.APP_TRACK_PAYMENT) //TODO: this already exists in Mixpanel.java, need to move it out of there
+    @Track(EventKey.APP_TRACK_PAYMENT)
     public static class TrackPaymentMethodShownEvent extends MixpanelEvent
     {
         @TrackField("Payment method shown")
@@ -56,7 +59,7 @@ public abstract class MixpanelEvent
         }
     }
 
-    @Track(EventKey.APP_TRACK_BOOKING_MADE) //TODO: this already exists in Mixpanel.java, need to move it out of there
+    @Track(EventKey.APP_TRACK_BOOKING_MADE)
     public static class TrackBookingMadeWithPaymentMethodEvent extends MixpanelEvent
     {
         @TrackField("Payment method")

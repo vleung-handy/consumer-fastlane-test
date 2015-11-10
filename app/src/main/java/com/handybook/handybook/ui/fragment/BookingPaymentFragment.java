@@ -610,6 +610,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         setCardIcon(CreditCard.Type.ANDROID_PAY);
 
         applyAndroidPayCoupon();
+        //TODO: add tracking
     }
 
     private void applyAndroidPayCoupon()
@@ -617,8 +618,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         //apply android pay coupon
         String promoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
         applyPromo(promoCode);
-
-        //TODO: make AP promo code obfuscated
     }
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
