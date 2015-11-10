@@ -590,7 +590,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private boolean shouldShowAndroidPay(final @Nullable BooleanResult result)
     {
         /* TODO: Add condition US only */
-        if (result != null && result.getStatus().isSuccess() && result.getValue())
+        if (result != null && result.getStatus().isSuccess() && result.getValue() && bookingManager.getCurrentQuote().isAndroidPayEnabled())
         {
             final User currentUser = userManager.getCurrentUser();
             return currentUser == null || currentUser.isUsingAndroidPay();
