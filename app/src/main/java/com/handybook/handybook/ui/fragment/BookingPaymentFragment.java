@@ -63,7 +63,7 @@ import butterknife.OnClick;
 
 public final class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
-
+    //TODO: would be nice to have a ViewModel
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
     private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
@@ -468,6 +468,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         return validate;
     }
 
+    /**
+     * User is using a credit card. Show the relevant display
+     */
     private void allowCardInput()
     {
         showInfoPaymentLayout();
@@ -475,6 +478,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
+        if(mUseAndroidPay) //TODO: quicky for proof of concept, need cleaner way of determining whether an AP promo code was used
+        {
+            //If they were using Android pay and then switched to credit card, we don't want the AP promo code to be applied
+            //If they were not using Android pay, we will not do anything with the promo
+            handleUpdateBookingCoupon(mPromoText.getText().toString());
+        }
         mUseAndroidPay = false;
         mUseExistingCard = false;
     }
@@ -556,6 +565,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
     }
 
+    /**
+     * User is using Android Pay. Show the relevant info
+     * @param maskedWallet
+     */
     private void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
         showInfoPaymentLayout();
@@ -578,7 +591,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mPromoText.setText("****"); //make this obfuscated
         //TODO: put in strings.xml
 
-        applyPromoCode(promoCode);
+        handleUpdateBookingCoupon(promoCode);
     }
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
@@ -617,6 +630,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                     final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                             mExpText.getExpYear(), mCvcText.getCVC());
 
+                    //TODO: we should move these to a service
                     final Stripe stripe = new Stripe();
                     stripe.createToken(card, bookingManager.getCurrentQuote().getStripeKey(),
                             new TokenCallback()
@@ -654,7 +668,18 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
     };
 
-    private final void applyPromoCode(final String promoCode)
+    private final View.OnClickListener promoClicked = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            final String promoCode = mPromoText.getText().toString();
+            handleUpdateBookingCoupon(promoCode);
+        }
+    };
+
+    //TODO: this function was stripped out of promoClicked and needs to be refactored
+    private void handleUpdateBookingCoupon(final String promoCode)
     {
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
         final boolean hasPromo = (bookingTransaction.promoApplied() != null);
@@ -710,16 +735,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
             }
         }
     }
-
-    private final View.OnClickListener promoClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View v)
-        {
-            final String promoCode = mPromoText.getText().toString();
-            applyPromoCode(promoCode);
-        }
-    };
 
     private void completeBooking()
     {
