@@ -275,8 +275,9 @@
     <string name="other_plumbing_service_description">Have something more specific in mind? Tell us!</string>
     <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
     <string name="android_pay_unavailable">Android Pay is unavailable</string>
-    <string name="last4">•••• %1$s</string>
+    <string name="last4">\u2022\u2022\u2022\u2022 %1$s</string>
     <string name="enter_credit_card">Enter a Credit Card</string>
     <string name="apply_promo_code">Apply promo code</string>
     <string name="booking_payment_android_pay_promo_savings">Use Android Pay to save up to $15 now!</string>
+    <string name="android_pay_obfuscated_promo_code">\u2022\u2022\u2022\u2022</string>
 </resources>

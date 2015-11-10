@@ -891,7 +891,24 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         mPromoProgress.setVisibility(View.INVISIBLE);
         mPromoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
-        mPromoText.setDisabled(applied, applied ? promo : getString(R.string.promo_code_opt));
+
+        String promoCodeDisplayString;
+        if(applied)
+        {
+            if(isAndroidPayPromoApplied()) //show the obfuscated Android pay promo code
+            {
+                promoCodeDisplayString = getString(R.string.android_pay_obfuscated_promo_code);
+            }
+            else //show the actual promo code
+            {
+                promoCodeDisplayString = promo;
+            }
+        }
+        else //show a hint
+        {
+            promoCodeDisplayString = getString(R.string.promo_code_opt);
+        }
+        mPromoText.setDisabled(applied, promoCodeDisplayString);
     }
 
     public void handleError()
