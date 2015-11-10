@@ -6,6 +6,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.util.TextUtils;
 import com.stripe.android.model.Card;
 
@@ -92,7 +93,11 @@ public final class CreditCardExpDateInputTextView extends InputTextField {
                 expMonth = Integer.parseInt(date[0]);
                 expYear = Integer.parseInt(date[1]);
             }
-        } catch (NumberFormatException e) {}
+        }
+        catch (NumberFormatException e)
+        {
+            Crashlytics.logException(e);
+        }
 
         return new int[]{expMonth, expYear};
     }
