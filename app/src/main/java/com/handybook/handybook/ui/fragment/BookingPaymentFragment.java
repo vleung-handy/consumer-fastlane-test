@@ -51,6 +51,7 @@ import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.FreezableInputTextView;
+import com.handybook.handybook.util.ValidationUtils;
 import com.handybook.handybook.util.WalletUtils;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
@@ -505,14 +506,24 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
      */
     private void updateSelectPaymentPromoText()
     {
-        //TODO: test only! replace with check to see if user has an android pay promo coupon
-        String googlePayCoupon = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
-        boolean hasAndroidPayPromoSavings = googlePayCoupon != null && !googlePayCoupon.isEmpty();
+        BookingQuote bookingQuote = bookingManager.getCurrentQuote();
+        String androidPayCoupon = bookingQuote.getAndroidPayCouponCode();
+        String androidPayCouponValueFormatted = bookingQuote.getAndroidPayCouponValueFormatted();
+
+        boolean hasAndroidPayPromoSavings = !ValidationUtils.isStringNullOrEmpty(androidPayCoupon)
+                && !ValidationUtils.isStringNullOrEmpty(androidPayCouponValueFormatted);
+        /*
+        check to see if either the coupon code or coupon value is null or empty
+        checking both just in case we get something like:
+
+        coupon = "COUPONCODE"
+        formatted value = ""
+         */
 
         if (hasAndroidPayPromoSavings)
         {
             mSelectPaymentPromoText.setText(getString(
-                    R.string.booking_payment_android_pay_promo_savings));
+                    R.string.booking_payment_android_pay_promo_savings_formatted, androidPayCouponValueFormatted));
             mSelectPaymentPromoText.setVisibility(View.VISIBLE);
         }
         else
