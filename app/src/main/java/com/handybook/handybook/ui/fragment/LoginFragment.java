@@ -11,7 +11,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
@@ -170,7 +172,11 @@ public final class LoginFragment extends BookingFlowFragment
                             {
                                 if (response.getError() != null)
                                 {
-                                    // handle error
+                                    Crashlytics.logException(
+                                            new FacebookAuthorizationException(
+                                                    response.getError().toString()
+                                            )
+                                    );
                                     //TODO: Handle error
                                 } else
                                 {
@@ -197,18 +203,16 @@ public final class LoginFragment extends BookingFlowFragment
             public void onCancel()
             {
                 assert true;
-                // App code
                 //TODO: Handle case when user cancels Facebook login
             }
 
             @Override
             public void onError(FacebookException exception)
             {
+                Crashlytics.logException(exception);
                 progressDialog.dismiss();
                 enableInputs();
                 toast.setText(R.string.default_error_string);
-
-
                 toast.show();
             }
         });
