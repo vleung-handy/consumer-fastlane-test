@@ -566,6 +566,19 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;
         setCardIcon(CreditCard.Type.ANDROID_PAY);
+
+        applyAndroidPayCoupon();
+        //TODO: need to make sure AP coupon isn't applied when user chooses another payment method!
+    }
+
+    private void applyAndroidPayCoupon()
+    {
+        //apply android pay coupon
+        String promoCode = bookingManager.getCurrentQuote().getGooglePayCoupon();
+        mPromoText.setText("****"); //make this obfuscated
+        //TODO: put in strings.xml
+
+        applyPromoCode(promoCode);
     }
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
@@ -641,65 +654,70 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
     };
 
+    private final void applyPromoCode(final String promoCode)
+    {
+        final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
+        final boolean hasPromo = (bookingTransaction.promoApplied() != null);
+
+        if (hasPromo || promoCode.length() > 0)
+        {
+            mPromoProgress.setVisibility(View.VISIBLE);
+            mPromoButton.setText(null);
+
+            final BookingQuote quote = bookingManager.getCurrentQuote();
+            final int bookingId = bookingTransaction.getBookingId();
+
+            if (hasPromo)
+            {
+                dataManager.removePromo(bookingId, new DataManager.Callback<BookingCoupon>()
+                {
+                    @Override
+                    public void onSuccess(final BookingCoupon coupon)
+                    {
+                        handlePromoSuccess(coupon, quote, bookingTransaction, null);
+                        bookingManager.setPromoTabCoupon(null);
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        handlePromoFailure(error);
+                    }
+                });
+            }
+            else
+            {
+                final User user = userManager.getCurrentUser();
+                final String userId = user != null ? user.getId() : null;
+                final String email = user != null ? user.getEmail() : null;
+                final String authToken = user != null ? user.getAuthToken() : null;
+
+                dataManager.applyPromo(promoCode, bookingId, userId, email, authToken,
+                        new DataManager.Callback<BookingCoupon>()
+                        {
+                            @Override
+                            public void onSuccess(final BookingCoupon coupon)
+                            {
+                                handlePromoSuccess(coupon, quote, bookingTransaction, promoCode);
+                            }
+
+                            @Override
+                            public void onError(final DataManager.DataManagerError error)
+                            {
+                                handlePromoFailure(error);
+                            }
+                        });
+            }
+        }
+    }
+
     private final View.OnClickListener promoClicked = new View.OnClickListener()
     {
         @Override
         public void onClick(final View v)
         {
             final String promoCode = mPromoText.getText().toString();
-            final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-            final boolean hasPromo = (bookingTransaction.promoApplied() != null);
-
-            if (hasPromo || promoCode.length() > 0)
-            {
-                mPromoProgress.setVisibility(View.VISIBLE);
-                mPromoButton.setText(null);
-
-                final BookingQuote quote = bookingManager.getCurrentQuote();
-                final int bookingId = bookingTransaction.getBookingId();
-
-                if (hasPromo)
-                {
-                    dataManager.removePromo(bookingId, new DataManager.Callback<BookingCoupon>()
-                    {
-                        @Override
-                        public void onSuccess(final BookingCoupon coupon)
-                        {
-                            handlePromoSuccess(coupon, quote, bookingTransaction, null);
-                            bookingManager.setPromoTabCoupon(null);
-                        }
-
-                        @Override
-                        public void onError(final DataManager.DataManagerError error)
-                        {
-                            handlePromoFailure(error);
-                        }
-                    });
-                }
-                else
-                {
-                    final User user = userManager.getCurrentUser();
-                    final String userId = user != null ? user.getId() : null;
-                    final String email = user != null ? user.getEmail() : null;
-                    final String authToken = user != null ? user.getAuthToken() : null;
-
-                    dataManager.applyPromo(promoCode, bookingId, userId, email, authToken,
-                            new DataManager.Callback<BookingCoupon>()
-                            {
-                                @Override
-                                public void onSuccess(final BookingCoupon coupon)
-                                {
-                                    handlePromoSuccess(coupon, quote, bookingTransaction, promoCode);
-                                }
-
-                                @Override
-                                public void onError(final DataManager.DataManagerError error)
-                                {
-                                    handlePromoFailure(error);
-                                }
-                            });
-                }
-            }
+            applyPromoCode(promoCode);
         }
     };
 
