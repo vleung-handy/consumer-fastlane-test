@@ -483,7 +483,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     private boolean isAndroidPayPromoApplied()
     {
-        String androidPayPromoCode = bookingManager.getCurrentQuote().getGooglePayCoupon();
+        String androidPayPromoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
         String promoApplied = bookingManager.getCurrentTransaction().promoApplied();
         return (androidPayPromoCode != null
                 && !androidPayPromoCode.isEmpty()
@@ -514,7 +514,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private void updateSelectPaymentPromoText()
     {
         //TODO: test only! replace with check to see if user has an android pay promo coupon
-        String googlePayCoupon = bookingManager.getCurrentQuote().getGooglePayCoupon();
+        String googlePayCoupon = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
         boolean hasAndroidPayPromoSavings = googlePayCoupon != null && !googlePayCoupon.isEmpty();
 
         if (hasAndroidPayPromoSavings)
@@ -618,7 +618,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private void applyAndroidPayCoupon()
     {
         //apply android pay coupon
-        String promoCode = bookingManager.getCurrentQuote().getGooglePayCoupon();
+        String promoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
         applyPromo(promoCode);
 
         //TODO: make AP promo code obfuscated
