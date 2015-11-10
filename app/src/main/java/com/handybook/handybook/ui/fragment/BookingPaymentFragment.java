@@ -899,7 +899,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mPromoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
 
         String promoCodeDisplayString = applied ?
-                (isAndroidPayPromoApplied() ? getString(R.string.value_obfuscated_indicator) : promo)
+                (isAndroidPayPromoApplied() ? getString(R.string.android_pay_obfuscated_promo_code) : promo)
                 : getString(R.string.promo_code_opt);
         mPromoText.setDisabled(applied, promoCodeDisplayString);
     }
