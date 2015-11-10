@@ -472,14 +472,22 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
-        if(mUseAndroidPay) //TODO: quicky for proof of concept, need cleaner way of determining whether an AP promo code was used
+        if(isAndroidPayPromoApplied())
         {
-            //If they were using Android pay and then switched to credit card, we don't want the AP promo code to be applied
-            //If they were not using Android pay, we will not do anything with the promo
+            //Remove the applied promo if it is an Android pay one because we don't want credit card users to be able to use it
             removePromo();
         }
         mUseAndroidPay = false;
         mUseExistingCard = false;
+    }
+
+    private boolean isAndroidPayPromoApplied()
+    {
+        String androidPayPromoCode = bookingManager.getCurrentQuote().getGooglePayCoupon();
+        String promoApplied = bookingManager.getCurrentTransaction().promoApplied();
+        return (androidPayPromoCode != null
+                && !androidPayPromoCode.isEmpty()
+                && androidPayPromoCode.equalsIgnoreCase(promoApplied));
     }
 
     private void showInfoPaymentLayout()
