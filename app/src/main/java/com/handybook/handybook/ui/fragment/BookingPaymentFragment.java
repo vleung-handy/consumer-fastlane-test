@@ -610,7 +610,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         setCardIcon(CreditCard.Type.ANDROID_PAY);
 
         applyAndroidPayCoupon();
-        //TODO: add tracking
+
+        bus.post(new MixpanelEvent.TrackPaymentMethodSelectedEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
     private void applyAndroidPayCoupon()
@@ -787,7 +788,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
                         if (mUseAndroidPay)
                         {
-                            bus.post(new MixpanelEvent.TrackBookingMadeWithPaymentMethodEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
+                            bus.post(new MixpanelEvent.TrackBookingCompletedWithPaymentMethodEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
                         }
                         mixpanel.trackEventSubmitPayment(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
                         mixpanel.trackEventBookingMade(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());

@@ -26,7 +26,7 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_CONFIRMATION = "App Track Confirmation";
         public static final String APP_TRACK_BOOKING_MADE = "booking made";
         //TODO: ^this event key already exists in Mixpanel.java, need to move it out
-        public static final String APP_TRACK_PAYMENT_TOKEN = "App Track Payment Token";
+        public static final String APP_TRACK_PAYMENT_METHOD_SELECTED = "App Track Payment Method Selected";
     }
 
     public enum PaymentMethod
@@ -60,24 +60,24 @@ public abstract class MixpanelEvent
     }
 
     @Track(EventKey.APP_TRACK_BOOKING_MADE)
-    public static class TrackBookingMadeWithPaymentMethodEvent extends MixpanelEvent
+    public static class TrackBookingCompletedWithPaymentMethodEvent extends MixpanelEvent
     {
         @TrackField("Payment method")
         public final String paymentMethod;
 
-        public TrackBookingMadeWithPaymentMethodEvent(@NonNull PaymentMethod paymentMethod)
+        public TrackBookingCompletedWithPaymentMethodEvent(@NonNull PaymentMethod paymentMethod)
         {
             this.paymentMethod = paymentMethod.toString();
         }
     }
 
-    @Track(EventKey.APP_TRACK_PAYMENT_TOKEN) //TODO
-    public static class TrackReceivedPaymentTokenEvent extends MixpanelEvent
+    @Track(EventKey.APP_TRACK_PAYMENT_METHOD_SELECTED)
+    public static class TrackPaymentMethodSelectedEvent extends MixpanelEvent
     {
         @TrackField("Payment method")
         public final String paymentMethod;
 
-        public TrackReceivedPaymentTokenEvent(@NonNull PaymentMethod paymentMethod)
+        public TrackPaymentMethodSelectedEvent(@NonNull PaymentMethod paymentMethod)
         {
             this.paymentMethod = paymentMethod.toString();
         }
