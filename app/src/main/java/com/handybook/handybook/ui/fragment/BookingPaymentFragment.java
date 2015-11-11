@@ -143,8 +143,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     @OnClick(R.id.apply_promo_button)
     public void onApplyPromoButtonClicked()
     {
-        mPromoLayout.setVisibility(View.VISIBLE);
-        mApplyPromoButton.setVisibility(View.GONE);
+        showAndUpdatePromoCodeInput();
     }
 
     public static BookingPaymentFragment newInstance()
@@ -227,16 +226,57 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         final BookingRequest request = bookingManager.getCurrentRequest();
 
-        if (request.getPromoCode() != null) { mPromoLayout.setVisibility(View.GONE); }
-        else
-        {
-            mPromoButton.setOnClickListener(promoClicked);
-            updatePromoUI();
-        }
+        //show the apply promo code views
+        mPromoButton.setOnClickListener(promoClicked);
+        showPromoCodeView(request.getPromoCode());
 
         mGoogleApiClient.connect();
 
         return view;
+    }
+
+    /**
+     * Show either "apply promo code" button or the promo code input field
+     * based on the given applied promo code
+     * @param appliedPromoCode
+     */
+    private void showPromoCodeView(String appliedPromoCode)
+    {
+        //TODO: better name?
+        //TODO: use BookingRequest.getPromoCode() or BookingTransaction.promoApplied()?
+        //not sure which one to use so accepting a promo code string for now
+        //and not touching the get promo code logic
+
+        if (ValidationUtils.isNullOrEmpty(appliedPromoCode))
+        {
+            //no promo code. show the "Apply Promo Code" button
+            showApplyPromoCodeButton();
+        }
+        else //has a promo code. display it
+        {
+            showAndUpdatePromoCodeInput();
+        }
+    }
+
+    /**
+     * shows and updates the promo code input layout
+     * also hides the "apply promo code" button
+     */
+    private void showAndUpdatePromoCodeInput()
+    {
+        mApplyPromoButton.setVisibility(View.GONE);
+        mPromoLayout.setVisibility(View.VISIBLE);
+        updatePromoUI(); //update the promo input UI
+    }
+
+    /**
+     * shows the "apply promo code" button
+     * also hides the promo code input layout
+     */
+    private void showApplyPromoCodeButton()
+    {
+        mPromoLayout.setVisibility(View.GONE);
+        mApplyPromoButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -448,6 +488,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private void allowCardInput()
     {
         showInfoPaymentLayout();
+        showAndUpdatePromoCodeInput(); //show the promo code input field
         setCardIcon(CreditCard.Type.OTHER);
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
@@ -487,6 +528,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
             removePromo();
         }
 
+        final String isPromoApplied = bookingManager.getCurrentTransaction().promoApplied();
+        showPromoCodeView(isPromoApplied);
         bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
@@ -540,7 +583,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                         public void onResult(@NonNull BooleanResult result)
                         {
                             showPaymentMethodSelection(result);
-                            showApplyPromoButtonIfNeeded();
                             progressDialog.dismiss();
                         }
                     });
@@ -548,7 +590,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         else
         {
             showPaymentMethodSelection(null);
-            showApplyPromoButtonIfNeeded();
             progressDialog.dismiss();
         }
     }
@@ -575,15 +616,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         allowCardInput();
     }
 
-    private void showApplyPromoButtonIfNeeded()
-    {
-        if (mApplyPromoButton.getVisibility() != View.VISIBLE
-                && mPromoLayout.getVisibility() != View.VISIBLE)
-        {
-            mApplyPromoButton.setVisibility(View.VISIBLE);
-        }
-    }
-
     // Only show Android Pay for new customers and for customers who already used Android Pay
     private boolean shouldShowAndroidPay(final @Nullable BooleanResult result)
     {
@@ -607,6 +639,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
         showInfoPaymentLayout();
+        showAndUpdatePromoCodeInput(); //show the promo code input field
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         mCardExtrasLayout.setVisibility(View.GONE);
