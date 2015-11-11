@@ -236,10 +236,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
      * Show either "apply promo code" button or the promo code input field
      * based on the applied promo code
      */
-    private void showPromoCodeView()
+    private void showPromoCodeView() //TODO: better name?
     {
         String appliedPromoCode = bookingManager.getCurrentTransaction().promoApplied();
-        //TODO: better name?
 
         if (ValidationUtils.isNullOrEmpty(appliedPromoCode))
         {
