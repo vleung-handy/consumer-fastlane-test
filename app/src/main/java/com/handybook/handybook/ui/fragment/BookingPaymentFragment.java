@@ -452,11 +452,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
-        if(isAndroidPayPromoApplied())
-        {
-            //Remove the applied promo if it is an Android pay one because we don't want credit card users to be able to use it
-            removePromo();
-        }
         mUseAndroidPay = false;
         mUseExistingCard = false;
     }
@@ -484,6 +479,13 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         mSelectPaymentLayout.setVisibility(View.VISIBLE);
         mInfoPaymentLayout.setVisibility(View.GONE);
+
+        if(isAndroidPayPromoApplied())
+        {
+            //Remove the applied promo if it is an Android pay one
+            //because we don't want credit card users to be able to use it
+            removePromo();
+        }
 
         bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
