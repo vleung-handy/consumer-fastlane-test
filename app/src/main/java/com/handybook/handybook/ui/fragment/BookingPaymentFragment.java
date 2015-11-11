@@ -225,7 +225,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         //show the apply promo code views
         mPromoButton.setOnClickListener(promoClicked);
-        showPromoCodeView();
+        showViewForPromoCodeApplied();
 
         mGoogleApiClient.connect();
 
@@ -236,7 +236,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
      * Show either "apply promo code" button or the promo code input field
      * based on the applied promo code
      */
-    private void showPromoCodeView() //TODO: better name?
+    private void showViewForPromoCodeApplied() //TODO: better name?
     {
         String appliedPromoCode = bookingManager.getCurrentTransaction().promoApplied();
 
@@ -521,7 +521,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
             removePromo();
         }
 
-        showPromoCodeView();
+        showViewForPromoCodeApplied();
         bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
