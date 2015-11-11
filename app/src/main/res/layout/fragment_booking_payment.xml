@@ -56,20 +56,32 @@
                     tools:visibility="visible"
                     android:visibility="gone"/>
 
-                <FrameLayout
-                    android:id="@+id/android_pay_button_layout"
-                    android:layout_height="48dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"/>
+                <LinearLayout
+                    android:id="@+id/android_pay_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/select_payment_button_height"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/select_payment_button_gap"
+                    android:padding="@dimen/default_padding_eighth"
+                    android:background="@drawable/android_pay_button_rounded"
+                    android:layout_marginBottom="@dimen/select_payment_button_gap"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/android_pay_button"/>
+                </LinearLayout>
 
                 <Button
                     android:background="@drawable/grey_button_rounded"
                     android:id="@+id/enter_credit_card_button"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="@dimen/default_margin_quarter"
-                    android:layout_marginRight="@dimen/default_margin_quarter"
+                    android:layout_height="@dimen/select_payment_button_height"
+                    android:layout_marginBottom="@dimen/select_payment_button_gap"
+                    android:foreground="?attr/selectableItemBackground"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:text="@string/enter_credit_card"
                     android:textAllCaps="false"
