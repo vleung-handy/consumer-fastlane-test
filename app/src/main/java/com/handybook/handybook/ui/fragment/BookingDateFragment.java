@@ -53,6 +53,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         @Override
         public void onClick(final View view)
         {
+            updateRequestDate(mDatePicker);
             if (mRescheduleBooking != null)
             {
                 final Calendar date = Calendar.getInstance();
