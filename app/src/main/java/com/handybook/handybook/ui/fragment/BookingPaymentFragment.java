@@ -499,18 +499,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mInfoPaymentLayout.setVisibility(View.GONE);
     }
 
-    /**
-     * updates the select payment promo text visibility and value,
-     * currently based on whether or not the user has Android Pay promo savings
-     */
-    private void updateSelectPaymentPromoText()
+    private boolean hasAndroidPayPromoSavings()
     {
         BookingQuote bookingQuote = bookingManager.getCurrentQuote();
         String androidPayCoupon = bookingQuote.getAndroidPayCouponCode();
         String androidPayCouponValueFormatted = bookingQuote.getAndroidPayCouponValueFormatted();
 
-        boolean hasAndroidPayPromoSavings = !ValidationUtils.isStringNullOrEmpty(androidPayCoupon)
-                && !ValidationUtils.isStringNullOrEmpty(androidPayCouponValueFormatted);
         /*
         check to see if either the coupon code or coupon value is null or empty
         checking both just in case we get something like:
@@ -519,8 +513,20 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         formatted value = ""
          */
 
-        if (hasAndroidPayPromoSavings)
+        return !ValidationUtils.isStringNullOrEmpty(androidPayCoupon)
+                && !ValidationUtils.isStringNullOrEmpty(androidPayCouponValueFormatted);
+    }
+
+    /**
+     * updates the select payment promo text visibility and value,
+     * currently based on whether or not the user has Android Pay promo savings
+     */
+    private void updateSelectPaymentPromoText()
+    {
+        if (hasAndroidPayPromoSavings())
         {
+            String androidPayCouponValueFormatted = bookingManager.getCurrentQuote().getAndroidPayCouponValueFormatted();
+
             mSelectPaymentPromoText.setText(getString(
                     R.string.booking_payment_android_pay_promo_savings_formatted, androidPayCouponValueFormatted));
             mSelectPaymentPromoText.setVisibility(View.VISIBLE);
