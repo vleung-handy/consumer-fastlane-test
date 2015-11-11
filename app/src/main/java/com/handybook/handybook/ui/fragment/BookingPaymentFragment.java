@@ -236,7 +236,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
      * Show either "apply promo code" button or the promo code input field
      * based on the applied promo code
      */
-    private void showViewForPromoCodeApplied() //TODO: better name?
+    private void showViewForPromoCodeApplied()
     {
         String appliedPromoCode = bookingManager.getCurrentTransaction().promoApplied();
 
@@ -551,7 +551,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         if (hasAndroidPayPromoSavings())
         {
-            String androidPayCouponValueFormatted = bookingManager.getCurrentQuote().getAndroidPayCouponValueFormatted();
+            String androidPayCouponValueFormatted =
+                    bookingManager.getCurrentQuote().getAndroidPayCouponValueFormatted();
 
             mSelectPaymentPromoText.setText(getString(
                     R.string.booking_payment_android_pay_promo_savings_formatted,
@@ -642,7 +643,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         applyAndroidPayCoupon();
 
-        bus.post(new MixpanelEvent.TrackPaymentMethodProvidedEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
+        bus.post(new MixpanelEvent.TrackPaymentMethodProvidedEvent(
+                MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
     private void applyAndroidPayCoupon()
