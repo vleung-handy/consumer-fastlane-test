@@ -30,11 +30,6 @@ import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
-import com.google.android.gms.wallet.fragment.SupportWalletFragment;
-import com.google.android.gms.wallet.fragment.WalletFragmentInitParams;
-import com.google.android.gms.wallet.fragment.WalletFragmentMode;
-import com.google.android.gms.wallet.fragment.WalletFragmentOptions;
-import com.google.android.gms.wallet.fragment.WalletFragmentStyle;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.BookingCompleteTransaction;
@@ -112,6 +107,28 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     public void onEnterCreditCardButtonClicked()
     {
         allowCardInput();
+    }
+
+    @OnClick(R.id.android_pay_button)
+    public void onBookWithAndroidPayClicked()
+    {
+        if (mMaskedWallet != null)
+        {
+            Wallet.Payments.changeMaskedWallet(mGoogleApiClient,
+                    mMaskedWallet.getGoogleTransactionId(),
+                    null,
+                    ActivityResult.LOAD_MASKED_WALLET);
+        }
+        else
+        {
+            final MaskedWalletRequest maskedWalletRequest = WalletUtils.createMaskedWalletRequest(
+                    bookingManager.getCurrentQuote(),
+                    bookingManager.getCurrentTransaction()
+            );
+            Wallet.Payments.loadMaskedWallet(mGoogleApiClient,
+                    maskedWalletRequest,
+                    ActivityResult.LOAD_MASKED_WALLET);
+        }
     }
 
     @OnClick(R.id.change_button)
@@ -215,8 +232,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
             updatePromoUI();
         }
 
-        createAndAddWalletFragment(bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
-
         mGoogleApiClient.connect();
 
         return view;
@@ -227,35 +242,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         mGoogleApiClient.disconnect();
         super.onDestroyView();
-    }
-
-    private void createAndAddWalletFragment(BookingQuote quote, BookingTransaction transaction)
-    {
-        WalletFragmentStyle walletFragmentStyle = new WalletFragmentStyle()
-                .setBuyButtonText(WalletFragmentStyle.BuyButtonText.BUY_WITH)
-                .setBuyButtonAppearance(WalletFragmentStyle.BuyButtonAppearance.ANDROID_PAY_DARK)
-                .setBuyButtonWidth(WalletFragmentStyle.Dimension.MATCH_PARENT);
-
-        WalletFragmentOptions walletFragmentOptions = WalletFragmentOptions.newBuilder()
-                .setEnvironment(WalletUtils.getEnvironment())
-                .setFragmentStyle(walletFragmentStyle)
-                .setTheme(WalletConstants.THEME_LIGHT)
-                .setMode(WalletFragmentMode.BUY_BUTTON)
-                .build();
-        SupportWalletFragment walletFragment = SupportWalletFragment.newInstance(walletFragmentOptions);
-
-        // Now initialize the Wallet Fragment
-
-        final MaskedWalletRequest maskedWalletRequest = WalletUtils.createMaskedWalletRequest(quote, transaction);
-        WalletFragmentInitParams.Builder startParamsBuilder = WalletFragmentInitParams.newBuilder()
-                .setMaskedWalletRequest(maskedWalletRequest)
-                .setMaskedWalletRequestCode(ActivityResult.LOAD_MASKED_WALLET);
-        walletFragment.initialize(startParamsBuilder.build());
-
-        // add Wallet fragment to the UI
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.android_pay_button_layout, walletFragment)
-                .commit();
     }
 
     @Override

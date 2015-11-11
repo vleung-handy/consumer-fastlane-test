@@ -4,9 +4,11 @@
     <dimen name="default_logo_padding">6dp</dimen>
     <dimen name="default_margin_quarter">4dp</dimen>
     <dimen name="default_margin">16dp</dimen>
+    <dimen name="default_corner_radius_half">2dp</dimen>
     <dimen name="default_corner_radius">4dp</dimen>
     <dimen name="default_margin_half">8dp</dimen>
     <dimen name="default_margin_double">32dp</dimen>
+    <dimen name="default_padding_eighth">2dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_padding_double">32dp</dimen>
     <dimen name="default_padding_half">8dp</dimen>
@@ -27,4 +29,6 @@
     <dimen name="horizontal_divider_height">2dp</dimen>
     <dimen name="select_payment_vertical_padding">30dp</dimen>
     <dimen name="select_payment_horizontal_padding">40dp</dimen>
+    <dimen name="select_payment_button_gap">10dp</dimen>
+    <dimen name="select_payment_button_height">48dp</dimen>
 </resources>
