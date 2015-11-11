@@ -38,17 +38,21 @@ public final class BookingQuote extends Observable {
     @SerializedName("special_extras_options") private BookingOption extrasOptions;
     @SerializedName("is_android_pay_enabled") private boolean mIsAndroidPayEnabled;
     @SerializedName("android_pay_coupon") private String mAndroidPayCouponCode;
+    @SerializedName("android_pay_coupon_value_formatted") private String mAndroidPayCouponValueFormatted;
 
-    //TODO: TEST ONLY! REPLACE WITH REAL DATA LATER
-    public boolean isAndroidPayEnabled()
+    public String getAndroidPayCouponValueFormatted()
     {
-        return true;
+        return mAndroidPayCouponValueFormatted;
     }
 
-    //TODO: TEST ONLY! REPLACE WITH REAL DATA LATER
+    public boolean isAndroidPayEnabled()
+    {
+        return mIsAndroidPayEnabled;
+    }
+
     public String getAndroidPayCouponCode()
     {
-        return "MAYANKDEMO";
+        return mAndroidPayCouponCode;
     }
 
     private HashMap<Float, BookingPriceInfo> priceTableMap;

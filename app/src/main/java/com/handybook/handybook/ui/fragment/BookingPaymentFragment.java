@@ -52,6 +52,7 @@ import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.FreezableInputTextView;
+import com.handybook.handybook.util.ValidationUtils;
 import com.handybook.handybook.util.WalletUtils;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
@@ -478,8 +479,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         String androidPayPromoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
         String promoApplied = bookingManager.getCurrentTransaction().promoApplied();
-        return (androidPayPromoCode != null
-                && !androidPayPromoCode.isEmpty()
+        return (!ValidationUtils.isNullOrEmpty(androidPayPromoCode)
                 && androidPayPromoCode.equalsIgnoreCase(promoApplied));
     }
 
@@ -502,20 +502,37 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
+    private boolean hasAndroidPayPromoSavings()
+    {
+        BookingQuote bookingQuote = bookingManager.getCurrentQuote();
+        String androidPayCoupon = bookingQuote.getAndroidPayCouponCode();
+        String androidPayCouponValueFormatted = bookingQuote.getAndroidPayCouponValueFormatted();
+
+        /*
+        check to see if either the coupon code or coupon value is null or empty
+        checking both just in case we get something like:
+
+        coupon = "COUPONCODE"
+        formatted value = ""
+         */
+
+        return !ValidationUtils.isNullOrEmpty(androidPayCoupon)
+                && !ValidationUtils.isNullOrEmpty(androidPayCouponValueFormatted);
+    }
+
     /**
      * updates the select payment promo text visibility and value,
      * currently based on whether or not the user has Android Pay promo savings
      */
     private void updateSelectPaymentPromoText()
     {
-        //TODO: test only! replace with check to see if user has an android pay promo coupon
-        String googlePayCoupon = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
-        boolean hasAndroidPayPromoSavings = googlePayCoupon != null && !googlePayCoupon.isEmpty();
-
-        if (hasAndroidPayPromoSavings)
+        if (hasAndroidPayPromoSavings())
         {
+            String androidPayCouponValueFormatted = bookingManager.getCurrentQuote().getAndroidPayCouponValueFormatted();
+
             mSelectPaymentPromoText.setText(getString(
-                    R.string.booking_payment_android_pay_promo_savings));
+                    R.string.booking_payment_android_pay_promo_savings_formatted,
+                    androidPayCouponValueFormatted));
             mSelectPaymentPromoText.setVisibility(View.VISIBLE);
         }
         else
@@ -583,7 +600,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private boolean shouldShowAndroidPay(final @Nullable BooleanResult result)
     {
         /* TODO: Add condition US only */
-        if (result != null && result.getStatus().isSuccess() && result.getValue())
+        if (result != null && result.getStatus().isSuccess() && result.getValue()
+                && bookingManager.getCurrentQuote().isAndroidPayEnabled())
         {
             final User currentUser = userManager.getCurrentUser();
             return currentUser == null || currentUser.isUsingAndroidPay();
@@ -747,7 +765,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     //TODO: this was stripped out of promoClicked and may need to be refactored
     private void applyPromo(final String promoCode)
     {
-        if(promoCode == null || promoCode.isEmpty()) return;
+        if(ValidationUtils.isNullOrEmpty(promoCode)) return;
 
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
         final int bookingId = bookingTransaction.getBookingId();
