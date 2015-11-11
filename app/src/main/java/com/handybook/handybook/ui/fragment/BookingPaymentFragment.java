@@ -632,8 +632,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         //apply android pay coupon
         String promoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
         applyPromo(promoCode);
-
-        //TODO: make AP promo code obfuscated
     }
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
