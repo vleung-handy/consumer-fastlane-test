@@ -478,7 +478,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         String androidPayPromoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
         String promoApplied = bookingManager.getCurrentTransaction().promoApplied();
-        return (!ValidationUtils.isStringNullOrEmpty(androidPayPromoCode)
+        return (ValidationUtils.isStringNotNullOrEmpty(androidPayPromoCode)
                 && androidPayPromoCode.equalsIgnoreCase(promoApplied));
     }
 
@@ -513,8 +513,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         formatted value = ""
          */
 
-        return !ValidationUtils.isStringNullOrEmpty(androidPayCoupon)
-                && !ValidationUtils.isStringNullOrEmpty(androidPayCouponValueFormatted);
+        return ValidationUtils.isStringNotNullOrEmpty(androidPayCoupon)
+                && ValidationUtils.isStringNotNullOrEmpty(androidPayCouponValueFormatted);
     }
 
     /**
@@ -528,7 +528,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
             String androidPayCouponValueFormatted = bookingManager.getCurrentQuote().getAndroidPayCouponValueFormatted();
 
             mSelectPaymentPromoText.setText(getString(
-                    R.string.booking_payment_android_pay_promo_savings_formatted, androidPayCouponValueFormatted));
+                    R.string.booking_payment_android_pay_promo_savings_formatted,
+                    androidPayCouponValueFormatted));
             mSelectPaymentPromoText.setVisibility(View.VISIBLE);
         }
         else
@@ -596,7 +597,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private boolean shouldShowAndroidPay(final @Nullable BooleanResult result)
     {
         /* TODO: Add condition US only */
-        if (result != null && result.getStatus().isSuccess() && result.getValue() && bookingManager.getCurrentQuote().isAndroidPayEnabled())
+        if (result != null && result.getStatus().isSuccess() && result.getValue()
+                && bookingManager.getCurrentQuote().isAndroidPayEnabled())
         {
             final User currentUser = userManager.getCurrentUser();
             return currentUser == null || currentUser.isUsingAndroidPay();
@@ -760,7 +762,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     //TODO: this was stripped out of promoClicked and may need to be refactored
     private void applyPromo(final String promoCode)
     {
-        if(ValidationUtils.isStringNullOrEmpty(promoCode)) return;
+        if(!ValidationUtils.isStringNotNullOrEmpty(promoCode)) return;
 
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
         final int bookingId = bookingTransaction.getBookingId();
