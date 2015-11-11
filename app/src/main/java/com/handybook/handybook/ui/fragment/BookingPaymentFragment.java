@@ -36,7 +36,6 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingQuote;
-import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
@@ -224,11 +223,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mLockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
 
-        final BookingRequest request = bookingManager.getCurrentRequest();
-
         //show the apply promo code views
         mPromoButton.setOnClickListener(promoClicked);
-        showPromoCodeView(request.getPromoCode());
+        showPromoCodeView();
 
         mGoogleApiClient.connect();
 
@@ -237,15 +234,12 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     /**
      * Show either "apply promo code" button or the promo code input field
-     * based on the given applied promo code
-     * @param appliedPromoCode
+     * based on the applied promo code
      */
-    private void showPromoCodeView(String appliedPromoCode)
+    private void showPromoCodeView()
     {
+        String appliedPromoCode = bookingManager.getCurrentTransaction().promoApplied();
         //TODO: better name?
-        //TODO: use BookingRequest.getPromoCode() or BookingTransaction.promoApplied()?
-        //not sure which one to use so accepting a promo code string for now
-        //and not touching the get promo code logic
 
         if (ValidationUtils.isNullOrEmpty(appliedPromoCode))
         {
@@ -528,8 +522,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
             removePromo();
         }
 
-        final String isPromoApplied = bookingManager.getCurrentTransaction().promoApplied();
-        showPromoCodeView(isPromoApplied);
+        showPromoCodeView();
         bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
