@@ -522,7 +522,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
 
         showViewForPromoCodeApplied();
-        bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
+        bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(
+                MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
     private boolean hasAndroidPayPromoSavings()
