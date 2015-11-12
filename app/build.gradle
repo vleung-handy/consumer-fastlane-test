@@ -1,3 +1,6 @@
+import org.gradle.logging.StyledTextOutputFactory
+import static org.gradle.logging.StyledTextOutput.Style
+
 buildscript {
     repositories {
         mavenCentral()
@@ -37,11 +40,20 @@ dexcount {
     verbose = false
 }
 
-def computeVersionName(versionCode) {
-    def major = (versionCode / 10000).intValue() % 10000
-    def minor = (versionCode / 100).intValue() % 100
-    def bugfix = versionCode % 100
-    "${major}.${minor}.${bugfix}"
+def computeVersionCode(versionName) {
+    def versionNameMatcher = (versionName =~ /^([1-9]\d*)\.(\d{1,2})\.(\d{1,2})$/)
+    if (versionNameMatcher.matches()) {
+        def identifiers = (versionNameMatcher[0] - [versionName])
+        def (major, minor, patch) = identifiers.collect { it.toInteger() }
+        def versionCode = (major * 1000000) + (minor * 10000) + (patch * 100)
+
+        def out = services.get(StyledTextOutputFactory).create("debug")
+        out.withStyle(Style.Info).println("\nBuilding version ${versionName} (${versionCode})\n")
+
+        return versionCode
+    } else {
+        throw new InvalidUserDataException("Illegal version name ${versionName}")
+    }
 }
 
 android {
@@ -65,8 +77,8 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 10904
-        versionName computeVersionName(versionCode)
+        versionName '1.10.0'
+        versionCode computeVersionCode(versionName)
         multiDexEnabled true
     }
     buildTypes {
