@@ -1,10 +1,11 @@
-package com.handybook.handybook.core;
+package com.handybook.handybook.model.request;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Observable;
 
-public final class BookingUpdateFrequencyTransaction extends Observable
+//TODO: we will remove the need for making this Observable soon
+public final class BookingEditFrequencyRequest extends Observable
 {
     @SerializedName("new_freq")
     private int mRecurringFrequency;

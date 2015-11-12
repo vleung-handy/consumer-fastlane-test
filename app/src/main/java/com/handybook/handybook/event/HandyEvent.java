@@ -5,17 +5,19 @@ import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingEditExtrasTransaction;
-import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.core.EditExtrasInfo;
 import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.model.request.BookingEditExtrasRequest;
+import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
+import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
+import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 
 import java.util.List;
 
@@ -319,120 +321,120 @@ public abstract class HandyEvent
     }
 
     //Update the frequency of a booking
-    public static class RequestUpdateBookingFrequency extends RequestEvent
+    public static class RequestEditBookingFrequency extends RequestEvent
     {
         public final int bookingId;
-        public final BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction;
+        public final BookingEditFrequencyRequest bookingEditFrequencyRequest;
 
-        public RequestUpdateBookingFrequency(int bookingId, BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction)
+        public RequestEditBookingFrequency(int bookingId, BookingEditFrequencyRequest bookingEditFrequencyRequest)
         {
             this.bookingId = bookingId;
-            this.bookingUpdateFrequencyTransaction = bookingUpdateFrequencyTransaction;
+            this.bookingEditFrequencyRequest = bookingEditFrequencyRequest;
         }
     }
 
-    public static class ReceiveUpdateBookingFrequencySuccess extends ReceiveSuccessEvent
+    public static class ReceiveEditBookingFrequencySuccess extends ReceiveSuccessEvent
     {
-        public ReceiveUpdateBookingFrequencySuccess()
+        public ReceiveEditBookingFrequencySuccess()
         {
         }
     }
 
-    public static class ReceiveUpdateBookingFrequencyError extends ReceiveErrorEvent
+    public static class ReceiveEditBookingFrequencyError extends ReceiveErrorEvent
     {
-        public ReceiveUpdateBookingFrequencyError(DataManager.DataManagerError error)
+        public ReceiveEditBookingFrequencyError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
     }
 
     //Get the booking prices for each booking frequency
-    public static class RequestGetBookingPricesForFrequencies extends RequestEvent
+    public static class RequestGetEditFrequencyViewModel extends RequestEvent
     {
         public final int bookingId;
 
-        public RequestGetBookingPricesForFrequencies(int bookingId)
+        public RequestGetEditFrequencyViewModel(int bookingId)
         {
             this.bookingId = bookingId;
         }
     }
 
-    public static class ReceiveGetBookingPricesForFrequenciesSuccess extends ReceiveSuccessEvent
+    public static class ReceiveGetEditFrequencyViewModelSuccess extends ReceiveSuccessEvent
     {
-        public final BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse;
+        public final BookingEditFrequencyViewModel bookingEditFrequencyViewModel;
 
-        public ReceiveGetBookingPricesForFrequenciesSuccess(BookingPricesForFrequenciesResponse bookingPricesForFrequenciesResponse)
+        public ReceiveGetEditFrequencyViewModelSuccess(BookingEditFrequencyViewModel bookingEditFrequencyViewModel)
         {
-            this.bookingPricesForFrequenciesResponse = bookingPricesForFrequenciesResponse;
+            this.bookingEditFrequencyViewModel = bookingEditFrequencyViewModel;
         }
     }
 
-    public static class ReceiveGetBookingPricesForFrequenciesError extends ReceiveErrorEvent
+    public static class ReceiveGetEditFrequencyViewModelError extends ReceiveErrorEvent
     {
-        public ReceiveGetBookingPricesForFrequenciesError(DataManager.DataManagerError error)
+        public ReceiveGetEditFrequencyViewModelError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
     }
 
     //Get the service extras options
-    public static class RequestGetServiceExtrasOptions extends RequestEvent
+    public static class RequestGetEditExtrasInfo extends RequestEvent
     {
         public final int bookingId;
 
-        public RequestGetServiceExtrasOptions(int bookingId)
+        public RequestGetEditExtrasInfo(int bookingId)
         {
             this.bookingId = bookingId;
         }
     }
 
-    public static class ReceiveGetServiceExtrasOptionsSuccess extends ReceiveSuccessEvent
+    public static class ReceiveGetEditExtrasInfoSuccess extends ReceiveSuccessEvent
     {
-        public final EditExtrasInfo editExtrasInfo;
+        public final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse;
 
-        public ReceiveGetServiceExtrasOptionsSuccess(EditExtrasInfo editExtrasInfo)
+        public ReceiveGetEditExtrasInfoSuccess(BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
         {
-            this.editExtrasInfo = editExtrasInfo;
+            this.bookingEditExtrasInfoResponse = bookingEditExtrasInfoResponse;
         }
     }
 
-    public static class ReceiveGetServiceExtrasOptionsError extends ReceiveErrorEvent
+    public static class ReceiveGetEditExtrasInfoError extends ReceiveErrorEvent
     {
-        public ReceiveGetServiceExtrasOptionsError(DataManager.DataManagerError error)
+        public ReceiveGetEditExtrasInfoError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
     }
 
     //Update the service extras options
-    public static class RequestEditServiceExtrasOptions extends RequestEvent
+    public static class RequestEditExtras extends RequestEvent
     {
         public final int bookingId;
-        public final BookingEditExtrasTransaction bookingEditExtrasTransaction;
+        public final BookingEditExtrasRequest bookingEditExtrasRequest;
 
-        public RequestEditServiceExtrasOptions(
+        public RequestEditExtras(
                 int bookingId,
-                BookingEditExtrasTransaction bookingEditExtrasTransaction
+                BookingEditExtrasRequest bookingEditExtrasRequest
         )
         {
             this.bookingId = bookingId;
-            this.bookingEditExtrasTransaction = bookingEditExtrasTransaction;
+            this.bookingEditExtrasRequest = bookingEditExtrasRequest;
         }
     }
 
-    public static class ReceiveEditServiceExtrasOptionsSuccess extends ReceiveSuccessEvent
+    public static class ReceiveEditExtrasSuccess extends ReceiveSuccessEvent
     {
         public final SuccessWrapper successWrapper;
 
-        public ReceiveEditServiceExtrasOptionsSuccess(SuccessWrapper successWrapper)
+        public ReceiveEditExtrasSuccess(SuccessWrapper successWrapper)
         {
             this.successWrapper = successWrapper;
         }
     }
 
-    public static class ReceiveEditServiceExtrasOptionsError extends ReceiveErrorEvent
+    public static class ReceiveEditExtrasError extends ReceiveErrorEvent
     {
-        public ReceiveEditServiceExtrasOptionsError(DataManager.DataManagerError error)
+        public ReceiveEditExtrasError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
@@ -619,5 +621,57 @@ public abstract class HandyEvent
 
     }
 
+    public static class RequestEditHoursInfoViewModel extends RequestEvent
+    {
+        public final int bookingId;
+        public RequestEditHoursInfoViewModel(final int bookingId) {
+            this.bookingId = bookingId;
+        }
+    }
 
+    public static class ReceiveEditHoursInfoViewModelSuccess extends ReceiveBookingSuccessEvent
+    {
+        public final BookingEditHoursViewModel editHoursInfoViewModel;
+        public ReceiveEditHoursInfoViewModelSuccess(final BookingEditHoursViewModel editHoursInfoViewModel)
+        {
+            this.editHoursInfoViewModel = editHoursInfoViewModel;
+        }
+    }
+
+    public static class ReceiveEditHoursInfoViewModelError extends ReceiveErrorEvent
+    {
+        public ReceiveEditHoursInfoViewModelError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+
+    }
+
+    public static class RequestEditHours extends RequestEvent
+    {
+        public final int bookingId;
+        public final BookingEditHoursRequest bookingEditHoursRequest;
+        public RequestEditHours(final int bookingId, final BookingEditHoursRequest bookingEditHoursRequest) {
+            this.bookingId = bookingId;
+            this.bookingEditHoursRequest = bookingEditHoursRequest;
+        }
+    }
+
+    public static class ReceiveEditHoursSuccess extends ReceiveBookingSuccessEvent
+    {
+        public final SuccessWrapper successWrapper;
+        public ReceiveEditHoursSuccess(final SuccessWrapper successWrapper)
+        {
+            this.successWrapper = successWrapper;
+        }
+    }
+
+    public static class ReceiveEditHoursError extends ReceiveErrorEvent
+    {
+        public ReceiveEditHoursError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+
+    }
 }

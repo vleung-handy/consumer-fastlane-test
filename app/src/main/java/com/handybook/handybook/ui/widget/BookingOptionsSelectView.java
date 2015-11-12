@@ -1,7 +1,6 @@
 package com.handybook.handybook.ui.widget;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.util.Utils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,6 +49,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         super(context, attrs, defStyle);
     }
 
+    //TODO: put these in a util
     private boolean isArrayIndexValid(int[] array, int index)
     {
         return array != null &&
@@ -164,17 +163,6 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             checkBox.setOnCheckedChangeListener(checkedChanged);
             checkMap.put(i, checkBox);
 
-            if (i < optionsList.length - 1)
-            {
-                final LinearLayout.LayoutParams layoutParams
-                        = (LinearLayout.LayoutParams) optionLayout.getLayoutParams();
-
-                layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin,
-                        layoutParams.rightMargin, Utils.toDP(16, context));
-
-                optionView.setLayoutParams(layoutParams);
-            }
-
             optionView.setOnClickListener(new OnClickListener()
             {
                 @Override
@@ -282,6 +270,26 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         requestLayout();
     }
 
+    private void updateCheckbox(final CheckBox box, final boolean isChecked)
+    {
+        //don't want filter applied to drawables that aren't mutable
+        //because the filter will be retained throughout the app
+        //TODO: need a better to determine and ensure checkbox drawable is mutable so we can apply filters to it
+        //TODO: should we always use Drawable.mutate() on the checkbox drawables?
+        if(box.getBackground() instanceof FramedIconDrawable)
+        {
+            if(isChecked)
+            {
+                ((FramedIconDrawable) box.getBackground()).setColor(getResources().getColor(R.color.handy_blue));
+            }
+            else
+            {
+                ((FramedIconDrawable) box.getBackground()).clearColor();
+            }
+        }
+        box.setChecked(isChecked);
+    }
+
     private void selectOption(final CheckBox box, final boolean isChecked)
     {
         final ViewGroup layout = (ViewGroup) box.getParent();
@@ -290,14 +298,13 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         final TextView rightSubtitleText = (TextView) layout.findViewById(R.id.right_subtitle_text);
         final TextView rightTitleText = (TextView) layout.findViewById(R.id.right_title_text);
 
+        //update the text fields
         if (isChecked)
         {
             title.setTextColor(getResources().getColor(R.color.handy_text_black));
             subTitle.setTextColor(getResources().getColor(R.color.handy_blue));
             rightSubtitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
             rightTitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
-            box.getBackground().setColorFilter(getResources().getColor(R.color.handy_blue), PorterDuff.Mode.SRC_IN);
-            box.setChecked(true);
         }
         else
         {
@@ -305,9 +312,9 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             subTitle.setTextColor(getResources().getColor(R.color.black_pressed));
             rightSubtitleText.setTextColor(getResources().getColor(R.color.black_pressed));
             rightTitleText.setTextColor(getResources().getColor(R.color.black_pressed));
-            box.getBackground().clearColorFilter();
-            box.setChecked(false);
         }
+        //update the check box
+        updateCheckbox(box, isChecked);
     }
 
     private final CompoundButton.OnCheckedChangeListener checkedChanged

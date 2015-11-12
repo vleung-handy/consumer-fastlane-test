@@ -29,6 +29,7 @@ import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
 import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
@@ -67,6 +68,7 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
+import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
 import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
@@ -185,6 +187,8 @@ import retrofit.converter.GsonConverter;
         BookingEditFrequencyFragment.class,
         BookingEditExtrasActivity.class,
         BookingEditExtrasFragment.class,
+        BookingEditHoursActivity.class,
+        BookingEditHoursFragment.class,
         BlockingActivity.class,
         BlockingUpdateFragment.class,
 })
@@ -207,7 +211,7 @@ public final class ApplicationModule
         EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus, prefsManager);
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
-            environmentModifier.setEnvironment(EnvironmentModifier.Environment.P);
+            environmentModifier.setEnvironment(EnvironmentModifier.Environment.PRODUCTION);
         }
         return environmentModifier;
     }

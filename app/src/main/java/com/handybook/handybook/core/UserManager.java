@@ -53,7 +53,7 @@ public class UserManager implements Observer
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
         {
             user = null;
-            prefsManager.setString(PrefsKey.USER, null);
+            prefsManager.removeValue(PrefsKey.USER);
             bus.post(new UserLoggedInEvent(false));
             return;
         }
@@ -80,7 +80,7 @@ public class UserManager implements Observer
     @Subscribe
     public final void environmentUpdated(final EnvironmentUpdatedEvent event)
     {
-        if (event.getEnvironment() != event.getPrevEnvironment())
+        if (event.getEnvironment() != null && !event.getEnvironment().equals(event.getPrevEnvironment()))
         {
             setCurrentUser(null);
         }

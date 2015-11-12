@@ -2,6 +2,7 @@ package com.handybook.handybook.core;
 
 import android.content.Context;
 
+import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
@@ -14,8 +15,9 @@ public class EnvironmentModifier
 {
     public static final class Environment
     {
-        public static final String P = "p";
-        public static final String S = "s";
+        public static final String PRODUCTION = "p";
+        public static final String STAGING = "s";
+        public static final String LOCAL = "l";
     }
 
 
@@ -30,7 +32,7 @@ public class EnvironmentModifier
         try
         {
             Properties properties = PropertiesReader.getProperties(context, "override.properties");
-            String environment = properties.getProperty("environment", Environment.S);
+            String environment = properties.getProperty("environment", Environment.STAGING);
             environment = prefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, environment); // whatever is stored in prefs is higher priority
 
             prefsManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
@@ -42,12 +44,19 @@ public class EnvironmentModifier
 
     public String getEnvironment()
     {
-        return mPrefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, Environment.S);
+        String defaultEnvironment = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
+                Environment.PRODUCTION : Environment.STAGING;
+        return mPrefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, defaultEnvironment);
     }
 
     public boolean isProduction()
     {
-        return Environment.P.equals(getEnvironment());
+        return Environment.PRODUCTION.equals(getEnvironment());
+    }
+
+    public boolean isLocal()
+    {
+        return Environment.LOCAL.equals(getEnvironment());
     }
 
     public void setEnvironment(String environment)

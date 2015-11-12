@@ -34,6 +34,14 @@ public class BookingDetailSectionExtrasView extends BookingDetailSectionView
         super(context, attrs, defStyle);
     }
 
+    @Override
+    protected void onFinishInflate()
+    {
+        super.onFinishInflate();
+        entryActionText.setId(R.id.edit_booking_extras_button);
+        //need this here so butterknife has finished inflating this injected view
+    }
+
     public void updateExtrasDisplay(final Booking booking)
     {
         final ArrayList<Booking.ExtraInfo> extras = booking.getExtrasInfo();

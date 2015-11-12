@@ -10,8 +10,10 @@ public final class BookingOption implements Parcelable
 
     //todo: auto serialized enums for type see : Booking.LaundryStatus
     public final static String TYPE_OPTION = "option";
+    public final static String TYPE_QUANTITY = "quantity"; //what does this look like
     public final static String TYPE_TEXT = "text";
     public final static String TYPE_CHECKLIST = "checklist";
+    public final static String TYPE_OPTION_PICKER = "option_picker"; //TODO: what's the difference between this and "option"?
 
     @SerializedName("uniq")
     private String uniq;
