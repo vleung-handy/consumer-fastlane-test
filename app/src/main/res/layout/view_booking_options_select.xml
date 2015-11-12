@@ -3,9 +3,7 @@
     android:id="@+id/rel_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/cell_booking"
-    android:paddingBottom="@dimen/default_padding"
-    android:paddingTop="@dimen/default_padding">
+    android:background="@drawable/cell_booking">
 
     <TextView android:id="@+id/title_text"
         android:layout_width="match_parent"
@@ -22,9 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title_text"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp"
         android:animateLayoutChanges="true">
 
         <LinearLayout
