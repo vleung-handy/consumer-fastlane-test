@@ -204,6 +204,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tip_layout"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:layout_marginBottom="25dp">
 
                 <View
