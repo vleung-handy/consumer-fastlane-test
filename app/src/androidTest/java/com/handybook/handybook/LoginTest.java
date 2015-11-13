@@ -19,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class LoginTest{
 
     @Rule
-    public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule(LoginActivity.class);
+    public ActivityTestRule<LoginActivity> activityTestRule = new ActivityTestRule(LoginActivity.class);
 
     @Test
     public void LoginHeaderVisibleTest() {
