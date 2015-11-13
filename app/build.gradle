@@ -80,6 +80,7 @@ android {
         versionName '1.10.0'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -120,7 +121,6 @@ android {
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
 
     //Android Support Libraries
     compile 'com.android.support:multidex:1.0.0'
@@ -194,6 +194,16 @@ dependencies {
     compile files('../libs/yozio-android-sdk.jar')
     compile project(':simplealertdialog')
     compile project(':androidspinner')
+
+    //Espresso libraries for automation testing
+    androidTestCompile ('com.android.support.test:runner:0.4.1') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.1') {
+        exclude module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
+    //need to exclude certain modules because they cause dependency conflicts
 
     //Testing with juint and robolectric
     testCompile 'junit:junit:4.12'
