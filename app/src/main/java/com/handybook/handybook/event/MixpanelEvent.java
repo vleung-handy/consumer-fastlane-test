@@ -53,14 +53,17 @@ public abstract class MixpanelEvent
     }
 
 
-    public enum TipFlowType
+    /**
+     * denotes the flow where the tip option is shown
+     */
+    public enum TipParentFlow //TODO: give this a better name?
     {
-        RATING_FLOW_TIP("rating flow tip"),
-        BOOKING_DETAILS_FLOW_TIP("booking details tip");
+        RATING_FLOW("rating flow tip"),
+        BOOKING_DETAILS_FLOW("booking details tip");
 
         private final String mStringValue;
 
-        TipFlowType(String stringValue)
+        TipParentFlow(String stringValue)
         {
             mStringValue = stringValue;
         }
@@ -73,37 +76,46 @@ public abstract class MixpanelEvent
     }
 
 
+    /**
+     * tracks when the rating dialog is shown
+     */
     @Track(EventKey.APP_TRACK_SHOW_RATING_PROMPT)
     public static class TrackShowRatingPrompt extends MixpanelEvent
     {
     }
 
 
+    /**
+     * tracks when the tip layout is shown
+     */
     @Track(EventKey.APP_TRACK_SHOW_TIP_PROMPT)
     public static class TrackShowTipPrompt extends MixpanelEvent
     {
         @TrackField("flow")
-        public final String flow;
+        public final String tipParentFlow;
 
-        public TrackShowTipPrompt(@NonNull final TipFlowType tipFlowType)
+        public TrackShowTipPrompt(@NonNull final TipParentFlow tipParentFlow)
         {
-            this.flow = tipFlowType.toString();
+            this.tipParentFlow = tipParentFlow.toString();
         }
     }
 
 
+    /**
+     * tracks when a tip is submitted
+     */
     @Track(EventKey.APP_TRACK_SUBMIT_TIP)
     public static class TrackSubmitTip extends MixpanelEvent
     {
         @TrackField("amount")
         public final int tipAmountCents;
         @TrackField("flow")
-        public final String flow;
+        public final String tipParentFlow;
 
-        public TrackSubmitTip(final int tipAmountCents, @NonNull final TrackShowTipPrompt.TipFlowType tipFlowType)
+        public TrackSubmitTip(final int tipAmountCents, @NonNull final TipParentFlow tipParentFlow)
         {
             this.tipAmountCents = tipAmountCents;
-            this.flow = tipFlowType.toString();
+            this.tipParentFlow = tipParentFlow.toString();
 
         }
     }

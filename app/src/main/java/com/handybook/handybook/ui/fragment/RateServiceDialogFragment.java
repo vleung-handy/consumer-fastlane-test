@@ -172,7 +172,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 }
             }
 
-            mBus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipFlowType.RATING_FLOW_TIP));
+            mBus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.RATING_FLOW));
         }
     }
 
@@ -366,7 +366,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             mBus.post(new HandyEvent.RateBookingEvent(mBookingId, finalRating, tipAmountCents));
             if (tipAmountCents != null)
             {
-                mBus.post(new MixpanelEvent.TrackSubmitTip(tipAmountCents, MixpanelEvent.TipFlowType.RATING_FLOW_TIP));
+                mBus.post(new MixpanelEvent.TrackSubmitTip(tipAmountCents, MixpanelEvent.TipParentFlow.RATING_FLOW));
             }
         }
 
