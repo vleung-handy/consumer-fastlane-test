@@ -364,7 +364,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             final Integer tipAmountCents = getTipAmount();
 
             mBus.post(new HandyEvent.RateBookingEvent(mBookingId, finalRating, tipAmountCents));
-            mBus.post(new MixpanelEvent.TrackSubmitTips(tipAmountCents, MixpanelEvent.TipFlowType.RATING_FLOW_TIP));
+            if (tipAmountCents != null)
+            {
+                mBus.post(new MixpanelEvent.TrackSubmitTips(tipAmountCents, MixpanelEvent.TipFlowType.RATING_FLOW_TIP));
+            }
         }
 
         private Integer getTipAmount()
