@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.login.LoginManager;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
@@ -274,7 +275,11 @@ public final class NavigationFragment extends InjectedFragment
     {
         if (requestCode == REQUEST_LOGOUT)
         {
+            //TODO: we should invalidate the auth token also!
             mUserManager.setCurrentUser(null);
+
+            //log out of Facebook also
+            LoginManager.getInstance().logOut();
         }
     }
 
