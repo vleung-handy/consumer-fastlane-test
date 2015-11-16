@@ -21,6 +21,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.event.MixpanelEvent;
 import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
 
@@ -146,6 +147,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             }
         });
 
+        mBus.post(new MixpanelEvent.TrackRatePrompt());
+
         return view;
     }
 
@@ -168,6 +171,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                     mRadioButtonToTipAmount.put(childRadioButton, defaultTipAmounts.get(i).getAmountInCents());
                 }
             }
+
+            mBus.post(new MixpanelEvent.TrackPresentTips(MixpanelEvent.TipFlowType.RATING_FLOW_TIP));
         }
     }
 
@@ -359,6 +364,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             final Integer tipAmountCents = getTipAmount();
 
             mBus.post(new HandyEvent.RateBookingEvent(mBookingId, finalRating, tipAmountCents));
+            mBus.post(new MixpanelEvent.TrackSubmitTips(tipAmountCents, MixpanelEvent.TipFlowType.RATING_FLOW_TIP));
         }
 
         private Integer getTipAmount()
