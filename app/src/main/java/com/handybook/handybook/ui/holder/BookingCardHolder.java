@@ -106,7 +106,6 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
                 mRecurringSubtitleContainer.setVisibility(View.VISIBLE);
                 mRecurringText.setVisibility(View.VISIBLE);
                 mRecurringText.setText(mBookingCardViewModel.getSubtitle());
-
                 mFooter.setVisibility(masterBooking.isPast() ? View.GONE : View.VISIBLE);
             }
             else
