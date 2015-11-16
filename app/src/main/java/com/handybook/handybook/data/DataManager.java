@@ -188,8 +188,8 @@ public abstract class DataManager
                                  String authToken,
                                  Callback<User> cb);
 
-    public abstract void getUser(String email,
-                                 Callback<String> cb);
+    public abstract void getFirstName(String email,
+                                      Callback<String> cb);
 
     public abstract void updateUser(User user,
                                     Callback<User> cb);
@@ -239,7 +239,7 @@ public abstract class DataManager
     }
 
 
-    enum Type
+    public enum Type
     {
         OTHER, SERVER, CLIENT, NETWORK
     }
@@ -277,7 +277,7 @@ public abstract class DataManager
             return message;
         }
 
-        final Type getType()
+        public final Type getType()
         {
             return type;
         }
