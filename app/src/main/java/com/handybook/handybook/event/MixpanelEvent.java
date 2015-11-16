@@ -27,10 +27,9 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_BOOKING_MADE = "booking made";
         //TODO: ^this event key already exists in Mixpanel.java, need to move it out
         public static final String APP_TRACK_PAYMENT_METHOD_PROVIDED = "App Track Payment Method Provided";
-        public static final String APP_TRACK_RATE_PROMPT = "app rate prompt";
-        public static final String APP_TRACK_PRESENT_TIPS = "present tips";
-        public static final String APP_TRACK_SUBMIT_TIPS = "submit tips";
-
+        public static final String APP_TRACK_SHOW_RATING_PROMPT = "app rate prompt";
+        public static final String APP_TRACK_SHOW_TIP_PROMPT = "present tips";
+        public static final String APP_TRACK_SUBMIT_TIP = "submit tips";
     }
 
 
@@ -74,34 +73,34 @@ public abstract class MixpanelEvent
     }
 
 
-    @Track(EventKey.APP_TRACK_RATE_PROMPT)
-    public static class TrackRatePrompt extends MixpanelEvent
+    @Track(EventKey.APP_TRACK_SHOW_RATING_PROMPT)
+    public static class TrackShowRatingPrompt extends MixpanelEvent
     {
     }
 
 
-    @Track(EventKey.APP_TRACK_PRESENT_TIPS)
-    public static class TrackPresentTips extends MixpanelEvent
+    @Track(EventKey.APP_TRACK_SHOW_TIP_PROMPT)
+    public static class TrackShowTipPrompt extends MixpanelEvent
     {
         @TrackField("flow")
         public final String flow;
 
-        public TrackPresentTips(@NonNull final TipFlowType tipFlowType)
+        public TrackShowTipPrompt(@NonNull final TipFlowType tipFlowType)
         {
             this.flow = tipFlowType.toString();
         }
     }
 
 
-    @Track(EventKey.APP_TRACK_SUBMIT_TIPS)
-    public static class TrackSubmitTips extends MixpanelEvent
+    @Track(EventKey.APP_TRACK_SUBMIT_TIP)
+    public static class TrackSubmitTip extends MixpanelEvent
     {
         @TrackField("amount")
         public final int tipAmountCents;
         @TrackField("flow")
         public final String flow;
 
-        public TrackSubmitTips(final int tipAmountCents, @NonNull final TrackPresentTips.TipFlowType tipFlowType)
+        public TrackSubmitTip(final int tipAmountCents, @NonNull final TrackShowTipPrompt.TipFlowType tipFlowType)
         {
             this.tipAmountCents = tipAmountCents;
             this.flow = tipFlowType.toString();
