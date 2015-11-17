@@ -666,7 +666,7 @@ public final class BaseDataManager extends DataManager
     @Override
     public final void getFirstName(final String email, final Callback<String> cb)
     {
-        mService.getUserInfo(email, new HandyRetrofitCallback(cb)
+        mService.getFirstName(email, new HandyRetrofitCallback(cb)
         {
             @Override
             void success(final JSONObject response)
