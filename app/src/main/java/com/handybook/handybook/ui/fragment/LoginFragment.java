@@ -298,10 +298,9 @@ public final class LoginFragment extends BookingFlowFragment
 
     private boolean validateFields()
     {
-        boolean validate = true;
-        if (!mEmailText.validate()) { validate = false; }
-        if (!mFindUser && !mPasswordText.validate()) { validate = false; }
-        return validate;
+        if (!mEmailText.validate()) { return false; }
+        if (!mFindUser && !mPasswordText.validate()) { return false; }
+        return true;
     }
 
     @Override
