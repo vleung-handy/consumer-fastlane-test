@@ -11,6 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BookingAction;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.widget.BookingDetailSectionProInfoView;
 import com.handybook.handybook.util.Utils;
 
@@ -21,6 +22,8 @@ import butterknife.Bind;
 
 public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
 {
+    static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
+
     private static final long HOURS_TO_ALLOW_CONTACT_PAST_BOOKING = 72L;
 
     public static final String TAG = "BookingDetailSectionFragmentProInformation";
@@ -75,11 +78,17 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         }
     }
 
+    @Override
+    protected void setupClickListeners(final Booking booking)
+    {
+        view.entryActionText.setOnClickListener(actionClicked);
+    }
 
     @Override
     protected void onActionClick()
     {
-
+        TipDialogFragment.newInstance(booking.getProvider().getFirstName())
+                .show(getActivity().getSupportFragmentManager(), null);
     }
 
     //Setup the contact booking action buttons

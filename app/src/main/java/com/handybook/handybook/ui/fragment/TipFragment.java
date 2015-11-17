@@ -28,8 +28,6 @@ public class TipFragment extends Fragment
 
     @Bind(R.id.tip_amount_radio_group)
     RadioGroup mTipAmountRadioGroup;
-    @Bind(R.id.tip_layout)
-    LinearLayout mTipLayout;
     @Bind(R.id.custom_tip_amount_wrapper)
     LinearLayout mCustomTipAmountWrapperLayout;
     @Bind(R.id.custom_tip_amount)
@@ -102,7 +100,6 @@ public class TipFragment extends Fragment
     {
         if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
         {
-            mTipLayout.setVisibility(View.VISIBLE);
             int maxEntriesToDisplay = Math.min(defaultTipAmounts.size(), MAX_CUSTOM_TIP_VALUES);
 
             for (int i = 0; i < maxEntriesToDisplay; i++)

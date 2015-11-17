@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.data.Mixpanel;
@@ -65,6 +64,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ImageView mStar4;
     @Bind(R.id.star_5)
     ImageView mStar5;
+    @Bind(R.id.tip_section)
+    View tipSection;
 
     public static RateServiceDialogFragment newInstance(
             final int bookingId,
@@ -128,9 +129,15 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
                 getArguments().getParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS);
         TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts);
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.tip_layout_container, tipFragment)
-                .commit();
+
+        if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
+        {
+            tipSection.setVisibility(View.VISIBLE);
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.tip_layout_container, tipFragment)
+                    .commit();
+            mBus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.RATING_FLOW));
+        }
 
         mBus.post(new MixpanelEvent.TrackShowRatingPrompt());
 
@@ -270,14 +277,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     {
         final TipFragment tipFragment = (TipFragment) getChildFragmentManager()
                 .findFragmentById(R.id.tip_layout_container);
-        if (tipFragment != null)
-        {
-            return tipFragment.getTipAmount();
-        }
-        else
-        {
-            Crashlytics.logException(new RuntimeException("Tip fragment not found"));
-            return 0;
-        }
+        return tipFragment != null ? tipFragment.getTipAmount() : null;
     }
 }
