@@ -39,7 +39,9 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
     }
 
     /**
-     * assumptions: user A is logged in and has the following attributes: phone number: 1234567890
+     * assumptions:
+     * user A is logged in and has the following attributes:
+     * phone number: 1234567890
      * password: password
      */
     public void testCanUpdateProfile()
