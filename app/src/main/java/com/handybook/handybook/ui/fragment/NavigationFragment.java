@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
@@ -86,6 +87,9 @@ public final class NavigationFragment extends InjectedFragment
         {
             mSelectedItem = args.getString(ARG_SELECTED_ITEM);
         }
+
+        //need to make sure FB is initialized to be able to log the user out of facebook
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
     }
 
     @Override
