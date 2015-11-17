@@ -71,8 +71,9 @@ public class TipDialogFragment extends BaseDialogFragment
     }
 
     @OnClick(R.id.submit_button)
-    public void onSubmitButtonClicked()
+    public void onSubmitButtonClicked(View view)
     {
+        view.setClickable(false);
         final int bookingId = getArguments().getInt(EXTRA_BOOKING_ID);
         final Integer tipAmount = getTipAmount();
         if (tipAmount != null && tipAmount > 0)
