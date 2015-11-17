@@ -176,6 +176,10 @@ public abstract class DataManager
                                  Integer tipAmount,
                                  Callback<Void> cb);
 
+    public abstract void tipPro(int bookingId,
+                                Integer tipAmount,
+                                Callback<Void> cb);
+
     public abstract void submitProRatingDetails(int bookingId,
                                                 final String positiveFeedback,
                                                 Callback<Void> cb);

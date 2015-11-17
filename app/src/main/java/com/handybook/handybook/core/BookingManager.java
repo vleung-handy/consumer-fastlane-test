@@ -14,8 +14,8 @@ import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
-import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Bus;
@@ -293,7 +293,24 @@ public final class BookingManager implements Observer
         );
     }
 
+    @Subscribe
+    public void onRequestTipPro(HandyEvent.RequestTipPro event)
+    {
+        dataManager.tipPro(event.bookingId, event.tipAmount, new DataManager.Callback<Void>()
+        {
+            @Override
+            public void onSuccess(final Void response)
+            {
+                bus.post(new HandyEvent.ReceiveTipProSuccess());
+            }
 
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveTipProError());
+            }
+        });
+    }
 
 //Old Direct References, to eventually be handled in the events way
 

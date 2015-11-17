@@ -11,9 +11,11 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BookingAction;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.widget.BookingDetailSectionProInfoView;
 import com.handybook.handybook.util.Utils;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +89,14 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected void onActionClick()
     {
-        TipDialogFragment.newInstance(booking.getProvider().getFirstName())
+        TipDialogFragment.newInstance(Integer.parseInt(booking.getId()), booking.getProvider().getFirstName())
                 .show(getActivity().getSupportFragmentManager(), null);
+    }
+
+    @Subscribe
+    public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
+    {
+        view.entryActionText.setVisibility(View.GONE);
     }
 
     //Setup the contact booking action buttons

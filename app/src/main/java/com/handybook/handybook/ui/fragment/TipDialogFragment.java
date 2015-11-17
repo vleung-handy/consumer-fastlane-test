@@ -11,6 +11,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.event.HandyEvent;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -23,6 +25,7 @@ import butterknife.OnClick;
 public class TipDialogFragment extends BaseDialogFragment
 {
     static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
+    static final String EXTRA_BOOKING_ID = "com.handy.handy.EXTRA_BOOKING_ID";
 
     @Inject
     UserManager mUserManager;
@@ -30,13 +33,14 @@ public class TipDialogFragment extends BaseDialogFragment
     @Bind(R.id.title_text)
     TextView mTitleText;
 
-    public static TipDialogFragment newInstance(String proName)
+    public static TipDialogFragment newInstance(int bookingId, String proName)
     {
         TipDialogFragment tipDialogFragment = new TipDialogFragment();
         tipDialogFragment.canDismiss = true;
 
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_PRO_NAME, proName);
+        bundle.putInt(EXTRA_BOOKING_ID, bookingId);
         tipDialogFragment.setArguments(bundle);
 
         return tipDialogFragment;
@@ -69,7 +73,30 @@ public class TipDialogFragment extends BaseDialogFragment
     @OnClick(R.id.submit_button)
     public void onSubmitButtonClicked()
     {
+        final int bookingId = getArguments().getInt(EXTRA_BOOKING_ID);
+        final Integer tipAmount = getTipAmount();
+        if (tipAmount != null && tipAmount > 0)
+        {
+            mBus.post(new HandyEvent.RequestTipPro(bookingId, tipAmount));
+        }
+        else
+        {
+            dismiss();
+        }
+    }
 
+    @Subscribe
+    public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
+    {
+        showToast(R.string.thanks_for_leaving_a_tip);
+        dismiss();
+    }
+
+    @Subscribe
+    public void onReceiveTipProError(HandyEvent.ReceiveTipProError event)
+    {
+        showToast(R.string.an_error_has_occurred);
+        dismiss();
     }
 
     private Integer getTipAmount()

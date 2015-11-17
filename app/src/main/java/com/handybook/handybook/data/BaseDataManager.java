@@ -602,6 +602,19 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
+    public void tipPro(final int bookingId, final Integer tipAmount, final Callback<Void> cb)
+    {
+        mService.tipPro(bookingId, tipAmount, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+            }
+        });
+    }
+
+    @Override
     public void submitProRatingDetails(final int bookingId, final String positiveFeedback,
                                        final Callback<Void> cb)
     {
