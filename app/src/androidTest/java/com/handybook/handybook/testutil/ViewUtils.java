@@ -24,6 +24,13 @@ public class ViewUtils
         waitForViewVisibility(viewId, false);
     }
 
+    /**
+     * waits for the view with the given id to be a given visibility
+     *
+     * TODO: cleaner way to do this?
+     * @param viewId
+     * @param visible
+     */
     private static void waitForViewVisibility(final int viewId, final boolean visible)
     {
         final long startTime = System.currentTimeMillis();
@@ -38,10 +45,17 @@ public class ViewUtils
             sleep(QUERY_INTERVAL_MS);
         }
         throw new PerformException.Builder()
+                .withActionDescription("wait for view visibility " + visible)
+                .withViewDescription("view id: " + viewId)
                 .withCause(new TimeoutException())
                 .build();
     }
 
+    /**
+     * checks to see if a view is displayed without throwing an exception if it isn't displayed
+     * @param viewId
+     * @return
+     */
     public static boolean isViewDisplayed(int viewId)
     {
         try

@@ -10,6 +10,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -18,7 +19,6 @@ import static org.hamcrest.Matchers.allOf;
 
 public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 {
-
     public UpdateProfileTest()
     {
         super(ServiceCategoriesActivity.class);
@@ -39,23 +39,19 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 
     /**
      * assumptions:
-     * user A is logged in with the following attributes:
+     * user A is logged in and has the following attributes:
      * phone number: 1234567890
      * password: password
      */
     public void testCanUpdateProfile() {
-
-//        onView(withId(R.id.start_button)).perform(click());
-
         //TODO: we should add a resource id to the nav button!
         //click the nav button
         onView(allOf(withContentDescription("Navigate up"), isAssignableFrom(ImageButton.class))).perform(click());
 
         //click the profile tab
-        onView(allOf(withId(R.id.nav_item), withText("PROFILE"))).perform(click());
+        onView(withId(R.id.nav_menu_profile)).perform(click());
 
-        //wait for progress bar
-        ViewUtils.waitForViewNotVisible(android.R.id.progress);
+        waitForProgressDialog();
 
         //replace the phone number text
         onView(withId(R.id.phone_text)).perform(replaceText("9876543210"));
@@ -66,8 +62,24 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         //press the update button
         onView(withId(R.id.update_button)).perform(click());
 
-        //verify that we get a success message
-        //TODO: how to check for toasts?
+        waitForProgressDialog();
+
+        /**
+         * we currently show a toast to reflect the success/failure of the request
+         * TODO: how can we detect that a specific toast has been shown?
+         *
+         * for now, we can assert that the password fields are cleared (this is not ideal!)
+         * if they are cleared, request was successful
+         * if not, it was a failure
+         */
+
+        onView(withId(R.id.old_password_text));
+        onView(withId(R.id.new_password_text)).check(matches(withText("")));
     }
 
+    private void waitForProgressDialog()
+    {
+        ViewUtils.waitForViewVisible(android.R.id.progress);
+        ViewUtils.waitForViewNotVisible(android.R.id.progress);
+    }
 }
