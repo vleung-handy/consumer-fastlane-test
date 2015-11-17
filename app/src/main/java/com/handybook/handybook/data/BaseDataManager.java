@@ -671,7 +671,8 @@ public final class BaseDataManager extends DataManager
             @Override
             void success(final JSONObject response)
             {
-                cb.onSuccess(response.isNull("name") ? null : response.optString("name"));
+                final String firstNameKey = "first_name";
+                cb.onSuccess(response.isNull(firstNameKey) ? null : response.optString(firstNameKey));
             }
         });
     }
