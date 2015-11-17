@@ -1,5 +1,6 @@
 package com.handybook.handybook;
 
+import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ImageButton;
 
@@ -10,15 +11,15 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 {
+    private Activity mActivity;
+
     public UpdateProfileTest()
     {
         super(ServiceCategoriesActivity.class);
@@ -28,7 +29,7 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
     protected void setUp() throws Exception
     {
         super.setUp();
-        getActivity();
+        mActivity = getActivity();
     }
 
     @Override
@@ -51,7 +52,8 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         //click the profile tab
         onView(withId(R.id.nav_menu_profile)).perform(click());
 
-        waitForProgressDialog();
+        //wait for progress dialog
+        ViewUtils.waitForViewToAppearThenDisappear(android.R.id.progress);
 
         //replace the phone number text
         onView(withId(R.id.phone_text)).perform(replaceText("9876543210"));
@@ -62,7 +64,8 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         //press the update button
         onView(withId(R.id.update_button)).perform(click());
 
-        waitForProgressDialog();
+        //wait for progress dialog
+        ViewUtils.waitForViewToAppearThenDisappear(android.R.id.progress);
 
         /**
          * we currently show a toast to reflect the success/failure of the request
@@ -73,13 +76,7 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
          * if not, it was a failure
          */
 
-        onView(withId(R.id.old_password_text));
-        onView(withId(R.id.new_password_text)).check(matches(withText("")));
+        ViewUtils.checkToastDisplayed(R.string.info_updated, mActivity);
     }
 
-    private void waitForProgressDialog()
-    {
-        ViewUtils.waitForViewVisible(android.R.id.progress);
-        ViewUtils.waitForViewNotVisible(android.R.id.progress);
-    }
 }

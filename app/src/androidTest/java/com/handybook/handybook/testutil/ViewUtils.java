@@ -1,13 +1,17 @@
 package com.handybook.handybook.testutil;
 
+import android.app.Activity;
 import android.support.test.espresso.PerformException;
 
 import java.util.concurrent.TimeoutException;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 
 public class ViewUtils
 {
@@ -24,10 +28,22 @@ public class ViewUtils
         waitForViewVisibility(viewId, false);
     }
 
+    public static void waitForViewToAppearThenDisappear(int viewId)
+    {
+        ViewUtils.waitForViewVisible(viewId);
+        ViewUtils.waitForViewNotVisible(viewId);
+    }
+
+    public static void checkToastDisplayed(int toastStringResourceId, Activity activity)
+    {
+        onView(withText(toastStringResourceId)).inRoot(withDecorView(not(activity.getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
     /**
      * waits for the view with the given id to be a given visibility
-     *
+     * <p/>
      * TODO: cleaner way to do this?
+     *
      * @param viewId
      * @param visible
      */
@@ -53,6 +69,7 @@ public class ViewUtils
 
     /**
      * checks to see if a view is displayed without throwing an exception if it isn't displayed
+     *
      * @param viewId
      * @return
      */
