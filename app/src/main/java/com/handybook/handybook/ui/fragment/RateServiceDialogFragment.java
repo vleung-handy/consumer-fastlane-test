@@ -8,26 +8,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.MixpanelEvent;
-import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,20 +32,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
-    static final String EXTRA_DEFAULT_TIP_AMOUNTS = "com.handy.handy.EXTRA_DEFAULT_TIP_AMOUNTS";
     private static final String STATE_RATING = "RATING";
-
-    static final int MAX_CUSTOM_TIP_VALUES = 3; //our UI currently supports None, Custom, and 3 pre-defined tip amounts coming from the server
 
     private ArrayList<ImageView> mStars = new ArrayList<>();
     private int mBookingId;
     private String mProName;
     private int mRating;
-    private int mTipAmount;
-    private Map<RadioButton, Integer> mRadioButtonToTipAmount = new HashMap<>();
-
-    private boolean mSendTipAmount = false;
-    private boolean mCustomTipSelected = false;
 
     @Bind(R.id.service_icon)
     ImageView mServiceIcon;
@@ -78,17 +65,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ImageView mStar4;
     @Bind(R.id.star_5)
     ImageView mStar5;
-    @Bind(R.id.tip_amount_radio_group)
-    RadioGroup mTipAmountRadioGroup;
-    @Bind(R.id.tip_layout)
-    LinearLayout mTipLayout;
-    @Bind(R.id.custom_tip_amount_wrapper)
-    LinearLayout mCustomTipAmountWrapperLayout;
-    @Bind(R.id.custom_tip_amount)
-    EditText mCustomTipAmountText;
 
-    public static RateServiceDialogFragment newInstance(final int bookingId, final String proName,
-                                                        final int rating, final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts)
+    public static RateServiceDialogFragment newInstance(
+            final int bookingId,
+            final String proName,
+            final int rating,
+            final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts)
     {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
         final Bundle bundle = new Bundle();
@@ -96,7 +78,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         bundle.putInt(EXTRA_BOOKING, bookingId);
         bundle.putString(EXTRA_PRO_NAME, proName);
         bundle.putInt(EXTRA_RATING, rating);
-        bundle.putParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS, defaultTipAmounts);
+        bundle.putParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS, defaultTipAmounts);
 
         rateServiceDialogFragment.setArguments(bundle);
         return rateServiceDialogFragment;
@@ -125,11 +107,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         mBookingId = args.getInt(EXTRA_BOOKING);
         mProName = args.getString(EXTRA_PRO_NAME);
 
-        ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = args.getParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS);
-        updateTipAmountDisplay(defaultTipAmounts);
-
         initStars();
-        initTipListeners();
         setRating(mRating);
 
         mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
@@ -147,33 +125,16 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             }
         });
 
+        ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
+                getArguments().getParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS);
+        TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts);
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.tip_layout_container, tipFragment)
+                .commit();
+
         mBus.post(new MixpanelEvent.TrackShowRatingPrompt());
 
         return view;
-    }
-
-    private void updateTipAmountDisplay(final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts)
-    {
-        if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
-        {
-            mTipLayout.setVisibility(View.VISIBLE);
-            int maxEntriesToDisplay = Math.min(defaultTipAmounts.size(), MAX_CUSTOM_TIP_VALUES);
-
-            for (int i = 0; i < maxEntriesToDisplay; i++)
-            {
-                int radioButtonGroupIndex = i + 1;
-                if (mTipAmountRadioGroup.getChildCount() > radioButtonGroupIndex)
-                {
-                    RadioButton childRadioButton = (RadioButton) mTipAmountRadioGroup.getChildAt(radioButtonGroupIndex);
-                    childRadioButton.setText(defaultTipAmounts.get(i).getDisplayAmount());
-
-                    // Create a mapping of the child radio button to the tip amount
-                    mRadioButtonToTipAmount.put(childRadioButton, defaultTipAmounts.get(i).getAmountInCents());
-                }
-            }
-
-            mBus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.RATING_FLOW));
-        }
     }
 
     @Override
@@ -235,72 +196,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 return true;
             }
         });
-    }
-
-    private void initTipListeners()
-    {
-        mTipAmountRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(RadioGroup rGroup, int checkedId)
-            {
-                RadioButton checkedRadioButton = (RadioButton) rGroup.findViewById(checkedId);
-
-                if (mRadioButtonToTipAmount.containsKey(checkedRadioButton))
-                {
-                    setTipAmount(mRadioButtonToTipAmount.get(checkedRadioButton));
-                    setSendTipAmount(true);
-                    setCustomTipSelected(false);
-                    mCustomTipAmountWrapperLayout.setVisibility(View.GONE);
-                } else if (pickedOtherAmount(checkedRadioButton, rGroup))
-                {
-                    setTipAmount(0);
-                    setSendTipAmount(true);
-                    setCustomTipSelected(true);
-                    mCustomTipAmountWrapperLayout.setVisibility(View.VISIBLE);
-                    mCustomTipAmountWrapperLayout.requestFocus();
-                } else
-                {
-                    setCustomTipSelected(false);
-                    setSendTipAmount(false);
-                    mCustomTipAmountWrapperLayout.setVisibility(View.GONE);
-                }
-            }
-
-            private boolean pickedOtherAmount(final RadioButton checkedRadioButton, final RadioGroup radioGroup)
-            {
-                return checkedRadioButton.getId() == radioGroup.getChildAt(radioGroup.getChildCount() - 1).getId();
-            }
-        });
-
-        mCustomTipAmountText.setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus)
-            {
-                if (hasFocus)
-                {
-                    Utils.showSoftKeyboard(getActivity(), v);
-                } else
-                {
-                    Utils.hideSoftKeyboard(getActivity(), v);
-                }
-            }
-        });
-    }
-
-    private void setTipAmount(final int tipAmount)
-    {
-        mTipAmount = tipAmount;
-    }
-
-    private void setSendTipAmount(final boolean sendTipAmount)
-    {
-        mSendTipAmount = sendTipAmount;
-    }
-
-    private void setCustomTipSelected(final boolean customTipSelected)
-    {
-        mCustomTipSelected = customTipSelected;
     }
 
     private void setRating(final int rating)
@@ -369,22 +264,20 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 mBus.post(new MixpanelEvent.TrackSubmitTip(tipAmountCents, MixpanelEvent.TipParentFlow.RATING_FLOW));
             }
         }
-
-        private Integer getTipAmount()
-        {
-            if (mSendTipAmount)
-            {
-                return mCustomTipSelected ? getCustomTipAmount() : mTipAmount;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private Integer getCustomTipAmount()
-        {
-            return Utils.convertToCents(Float.parseFloat(mCustomTipAmountText.getText().toString()));
-        }
     };
+
+    private Integer getTipAmount()
+    {
+        final TipFragment tipFragment = (TipFragment) getChildFragmentManager()
+                .findFragmentById(R.id.tip_layout_container);
+        if (tipFragment != null)
+        {
+            return tipFragment.getTipAmount();
+        }
+        else
+        {
+            Crashlytics.logException(new RuntimeException("Tip fragment not found"));
+            return 0;
+        }
+    }
 }

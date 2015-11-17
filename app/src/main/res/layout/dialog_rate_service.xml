@@ -199,90 +199,10 @@
             android:layout_below="@+id/ratings_layout"
             android:visibility="gone">
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/tip_layout_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tip_layout"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginBottom="25dp">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/handy_divider_line"
-                    android:layout_marginBottom="25dp"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/rating_tip_prompt" />
-
-                <RadioGroup
-                    style="@style/ToggleGroupStyle"
-                    android:id="@+id/tip_amount_radio_group"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:checkedButton="@+id/tip_0"
-                    android:layout_marginTop="20dp">
-
-                    <RadioButton
-                        style="@style/TipToggle.First"
-                        android:text="@string/no_tip_amount"
-                        android:id="@+id/tip_0" />
-
-                    <RadioButton
-                        style="@style/TipToggle"
-                        android:id="@+id/tip_1" />
-
-                    <RadioButton
-                        style="@style/TipToggle"
-                        android:id="@+id/tip_2" />
-
-                    <RadioButton
-                        style="@style/TipToggle"
-                        android:id="@+id/tip_3" />
-
-                    <RadioButton
-                        style="@style/TipToggle.Last"
-                        android:text="@string/other_tip_amount"
-                        android:id="@+id/tip_4" />
-
-                </RadioGroup>
-
-                <LinearLayout
-                    android:id="@+id/custom_tip_amount_wrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:layout_marginTop="10dp"
-                    android:gravity="right"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tip_amount"
-                        android:textSize="@dimen/text_size_small"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="8dp"/>
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:inputType="number"
-                        android:width="80dp"
-                        android:id="@+id/custom_tip_amount"
-                        android:layout_gravity="right|bottom"
-                        android:padding="10dp"
-                        android:background="@drawable/rounded_border_input"
-                        android:textCursorDrawable="@drawable/handy_cursor"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
