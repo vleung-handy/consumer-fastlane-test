@@ -19,14 +19,11 @@ import java.util.List;
 
 import butterknife.Bind;
 
-
-//TODO: Request a pro feature requires breaking down the BookingOptionsFragment into a usable fragment, request a pro disabled until that time
-
 public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
 {
     private static final long HOURS_TO_ALLOW_CONTACT_PAST_BOOKING = 72L;
 
-    public static final String TAG= "BookingDetailSectionFragmentProInformation";
+    public static final String TAG = "BookingDetailSectionFragmentProInformation";
 
     @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionProInfoView view;
@@ -46,29 +43,13 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected int getEntryActionTextResourceId(Booking booking)
     {
-        if (booking.hasAssignedProvider())
-        {
-            return R.string.blank_string;
-        }
-        else
-        {
-            //TODO: Request a pro functionality
-            return R.string.request_pro;
-        }
+        return booking.canLeaveTip() ? R.string.leave_a_tip : R.string.blank_string;
     }
 
     @Override
     protected boolean hasEnabledAction(Booking booking)
     {
-        if (booking.hasAssignedProvider())
-        {
-            return false;
-        }
-        else
-        {
-            //TODO: Request a pro functionality
-            return false;
-        }
+        return booking.canLeaveTip();
     }
 
     @Override
@@ -77,6 +58,11 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         super.updateDisplay(booking, user);
 
         final Booking.Provider pro = booking.getProvider();
+
+        if (booking.canLeaveTip())
+        {
+            view.entryActionText.setVisibility(View.VISIBLE);
+        }
 
         if (booking.hasAssignedProvider())
         {
@@ -93,14 +79,8 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected void onActionClick()
     {
-        //If no pro assigned can request a pro
-        if (!booking.hasAssignedProvider())
-        {
-            //TODO: Request a pro functionality
-            //need a new UI where we request the requestable pros, then display them, then get the result back
-        }
-    }
 
+    }
 
     //Setup the contact booking action buttons
 
@@ -121,10 +101,10 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     protected List<String> getActionButtonTypeList(Booking booking)
     {
         List<String> actionButtonTypes = new ArrayList<>();
-        if(booking.hasAssignedProvider())
+        if (booking.hasAssignedProvider())
         {
             //Make sure it is not an empty phone number
-            if(validateProPhoneInformation(booking))
+            if (validateProPhoneInformation(booking))
             {
                 actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
                 actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
@@ -164,7 +144,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            if(validateProPhoneInformation(booking))
+            if (validateProPhoneInformation(booking))
             {
                 callPhoneNumber(booking.getProvider().getPhone());
             }
@@ -180,7 +160,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            if(validateProPhoneInformation(booking))
+            if (validateProPhoneInformation(booking))
             {
                 textPhoneNumber(booking.getProvider().getPhone());
             }
@@ -195,7 +175,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     {
         boolean validPhoneNumber = false;
 
-        if(booking.getProvider() != null &&
+        if (booking.getProvider() != null &&
                 booking.getProvider().getPhone() != null &&
                 !booking.getProvider().getPhone().isEmpty())
         {
@@ -208,7 +188,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     //use native functionality to trigger a phone call
     private void callPhoneNumber(final String phoneNumber)
     {
-        if(phoneNumber == null || phoneNumber.isEmpty())
+        if (phoneNumber == null || phoneNumber.isEmpty())
         {
             return;
         }
@@ -226,7 +206,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     //use native functionality to trigger a text message interface
     private void textPhoneNumber(final String phoneNumber)
     {
-        if(phoneNumber == null || phoneNumber.isEmpty())
+        if (phoneNumber == null || phoneNumber.isEmpty())
         {
             return;
         }

@@ -163,6 +163,7 @@
     <string name="edit">Edit</string>
     <string name="add">Add</string>
     <string name="rating_tip_prompt">Leave a tip? (optional)</string>
+    <string name="leave_a_tip">Leave a Tip</string>
     <string name="other_tip_amount">Other</string>
     <string name="no_tip_amount">None</string>
     <string name="tip_amount">Amount:</string>

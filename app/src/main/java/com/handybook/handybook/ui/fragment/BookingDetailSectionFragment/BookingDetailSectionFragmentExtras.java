@@ -40,7 +40,7 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
     @Override
     protected boolean hasEnabledAction(Booking booking)
     {
-        return booking.getCanEditExtras();
+        return booking.canEditExtras();
     }
 
     @Override

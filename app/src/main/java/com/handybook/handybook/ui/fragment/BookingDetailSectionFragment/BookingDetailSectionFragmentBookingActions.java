@@ -43,7 +43,7 @@ public class BookingDetailSectionFragmentBookingActions extends BookingDetailSec
         if(!booking.isPast())
         {
             actionButtonTypes.add(BookingAction.ACTION_RESCHEDULE);
-            if(booking.getCanEditHours())
+            if(booking.canEditHours())
             {
                 actionButtonTypes.add(BookingAction.ACTION_EDIT_HOURS);
             }

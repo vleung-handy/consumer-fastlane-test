@@ -31,122 +31,124 @@ public final class Booking implements Parcelable
         }
     };
     @SerializedName("id")
-    private String id;
+    private String mId;
     @SerializedName("booking_status")
-    private int isPast;   //previously isPast
+    private int mIsPast;
     @SerializedName("service_name")
-    private String serviceName;
+    private String mServiceName;
     @SerializedName("service_machine")
-    private String serviceMachineName;
+    private String mServiceMachineName;
     @SerializedName("date_start")
-    private Date startDate;
+    private Date mStartDate;
     @SerializedName("hours")
-    private float hours;
+    private float mHours;
     @SerializedName("price")
-    private float price;
+    private float mPrice;
     @SerializedName("recurring")
-    private int recurring; //WARNING DECEPTIVE VARIABLE NAME! THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
+    private int mRecurring; //WARNING DECEPTIVE VARIABLE NAME! THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
     @SerializedName("recurring_id")
-    private String recurringId;  //This actually indicates if a booking is isRecurring, non-null/empty id
+    private String mRecurringId;  //This actually indicates if a booking is isRecurring, non-null/empty id
     @SerializedName("recurring_string")
-    private String recurringInfo; //User facing display string of frequency, i.e. once, every 2 weeks, every 4 weeks
+    private String mRecurringInfo; //User facing display string of frequency, i.e. once, every 2 weeks, every 4 weeks
     @SerializedName("getin")
-    private int entryType; //numeric, must keep synced against server, start using an auto deserialized enum?
+    private int mEntryType; //numeric, must keep synced against server, start using an auto deserialized enum?
     @SerializedName("getin_string")
-    private String entryInfo;   //string descriptor of the entry type
+    private String mEntryInfo;   //string descriptor of the entry type
     @SerializedName("getintxt")
-    private String extraEntryInfo; //additional information i.e. where user will hide the key
+    private String mExtraEntryInfo; //additional information i.e. where user will hide the key
     @SerializedName("msg_to_pro")
-    private String proNote;
+    private String mProNote;
     @SerializedName("laundry_status")
-    private LaundryStatus laundryStatus;
+    private LaundryStatus mLaundryStatus;
     @SerializedName("address")
-    private Address address;
+    private Address mAddress;
     @SerializedName("provider")
-    private Provider provider;
+    private Provider mProvider;
     @SerializedName("billed_status")
-    private String billedStatus;
+    private String mBilledStatus;
     @SerializedName("payment_hash")
-    private ArrayList<LineItem> paymentInfo;
+    private ArrayList<LineItem> mPaymentInfo;
     @SerializedName("extras_info")
-    private ArrayList<ExtraInfo> extrasInfo;
+    private ArrayList<ExtraInfo> mExtrasInfo;
     @SerializedName("can_edit_hours") //we want them false by default
-    private boolean canEditHours;
+    private boolean mCanEditHours;
     @SerializedName("can_edit_frequency")
-    private boolean canEditFrequency;
+    private boolean mCanEditFrequency;
     @SerializedName("can_edit_extras")
-    private boolean canEditExtras;
+    private boolean mCanEditExtras;
+    @SerializedName("can_leave_tip")
+    private boolean mCanLeaveTip;
 
-    public boolean getCanEditExtras()
+    public boolean canEditExtras()
     {
-        return canEditExtras;
+        return mCanEditExtras;
     }
 
     public final String getId()
     {
-        return id;
+        return mId;
     }
 
     public final void setId(final String id)
     {
-        this.id = id;
+        this.mId = id;
     }
 
     public final boolean isPast()
     {
-        return isPast == 1;
+        return mIsPast == 1;
     }
 
     final void setIsPast(final boolean isPast)
     {
         if (isPast)
         {
-            this.isPast = 1;
+            this.mIsPast = 1;
         }
         else
         {
-            this.isPast = 0;
+            this.mIsPast = 0;
         }
     }
 
     public final boolean hasAssignedProvider()
     {
-        return provider != null && provider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED;
+        return mProvider != null && mProvider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED;
     }
 
     public final boolean isRecurring()
     {
-        return recurringId != null && !recurringId.isEmpty() && !"0".equals(recurringId);
+        return mRecurringId != null && !mRecurringId.isEmpty() && !"0".equals(mRecurringId);
     }
 
     public final String getRecurringInfo()
     {
-        return recurringInfo;
+        return mRecurringInfo;
     }
 
     public final String getEntryInfo()
     {
-        return entryInfo;
+        return mEntryInfo;
     }
 
     public final String getExtraEntryInfo()
     {
-        return extraEntryInfo;
+        return mExtraEntryInfo;
     }
 
     public final String getProNote()
     {
-        return proNote;
+        return mProNote;
     }
 
     public final String getServiceName()
     {
-        return serviceName;
+        return mServiceName;
     }
 
     public final String getServiceMachineName()
     {
-        return serviceMachineName;
+        return mServiceMachineName;
     }
 
     //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table , select distinct(machine_name) from service
@@ -158,6 +160,11 @@ public final class Booking implements Parcelable
     public static final String SERVICE_ELECTRICIAN = "electrician";
     public static final String SERVICE_ELECTRICAL = "electrical";
     public static final String SERVICE_PAINTING = "painting";
+
+    public boolean canLeaveTip()
+    {
+        return mCanLeaveTip;
+    }
 
 
     /*
@@ -210,6 +217,7 @@ public final class Booking implements Parcelable
     {
     }
 
+
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
             ExtrasMachineName.INSIDE_CABINETS,
@@ -222,6 +230,7 @@ public final class Booking implements Parcelable
     {
 
     }
+
 
     public final static class ExtrasMachineName
     {
@@ -254,12 +263,12 @@ public final class Booking implements Parcelable
 
     public final Date getStartDate()
     {
-        return startDate;
+        return mStartDate;
     }
 
     public final void setStartDate(final Date startDate)
     {
-        this.startDate = startDate;
+        this.mStartDate = startDate;
     }
 
     public final Date getEndDate()
@@ -273,114 +282,115 @@ public final class Booking implements Parcelable
 
     public final float getHours()
     {
-        return hours;
+        return mHours;
     }
 
     final void setHours(float hours)
     {
-        this.hours = hours;
+        this.mHours = hours;
     }
 
     public final float getPrice()
     {
-        return price;
+        return mPrice;
     }
 
     final void setPrice(float price)
     {
-        this.price = price;
+        this.mPrice = price;
     }
 
     public final Address getAddress()
     {
-        return address;
+        return mAddress;
     }
 
     final void setAddress(final Address address)
     {
-        this.address = address;
+        this.mAddress = address;
     }
 
     public final Provider getProvider()
     {
-        return provider;
+        return mProvider;
     }
 
     final void setProvider(final Provider provider)
     {
-        this.provider = provider;
+        this.mProvider = provider;
     }
 
     public final LaundryStatus getLaundryStatus()
     {
-        return laundryStatus;
+        return mLaundryStatus;
     }
 
     public final String getBilledStatus()
     {
-        return billedStatus;
+        return mBilledStatus;
     }
 
     public final ArrayList<LineItem> getPaymentInfo()
     {
-        return paymentInfo;
+        return mPaymentInfo;
     }
 
     public final ArrayList<ExtraInfo> getExtrasInfo()
     {
-        return extrasInfo;
+        return mExtrasInfo;
     }
 
     private Booking(final Parcel in)
     {
         final String[] stringData = new String[10];
         in.readStringArray(stringData);
-        id = stringData[0];
-        serviceName = stringData[1];
-        serviceMachineName = stringData[2];
+        mId = stringData[0];
+        mServiceName = stringData[1];
+        mServiceMachineName = stringData[2];
 
         try
         {
-            laundryStatus = LaundryStatus.valueOf(stringData[3]);
-        } catch (IllegalArgumentException x)
+            mLaundryStatus = LaundryStatus.valueOf(stringData[3]);
+        }
+        catch (IllegalArgumentException x)
         {
-            laundryStatus = null;
+            mLaundryStatus = null;
         }
 
-        recurringInfo = stringData[4];
-        entryInfo = stringData[5];
-        extraEntryInfo = stringData[6];
-        proNote = stringData[7];
-        billedStatus = stringData[8];
-        recurringId = stringData[9];
+        mRecurringInfo = stringData[4];
+        mEntryInfo = stringData[5];
+        mExtraEntryInfo = stringData[6];
+        mProNote = stringData[7];
+        mBilledStatus = stringData[8];
+        mRecurringId = stringData[9];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
-        isPast = intData[0];
-        entryType = intData[1];
-
+        mIsPast = intData[0];
+        mEntryType = intData[1];
 
         final float[] floatData = new float[2];
         in.readFloatArray(floatData);
-        hours = floatData[0];
-        price = floatData[1];
+        mHours = floatData[0];
+        mPrice = floatData[1];
 
-        startDate = new Date(in.readLong());
-        address = in.readParcelable(Address.class.getClassLoader());
-        provider = in.readParcelable(Provider.class.getClassLoader());
+        mStartDate = new Date(in.readLong());
+        mAddress = in.readParcelable(Address.class.getClassLoader());
+        mProvider = in.readParcelable(Provider.class.getClassLoader());
 
-        paymentInfo = new ArrayList<LineItem>();
-        in.readTypedList(paymentInfo, LineItem.CREATOR);
+        mPaymentInfo = new ArrayList<LineItem>();
+        in.readTypedList(mPaymentInfo, LineItem.CREATOR);
 
-        extrasInfo = new ArrayList<ExtraInfo>();
-        in.readTypedList(extrasInfo, ExtraInfo.CREATOR);
+        mExtrasInfo = new ArrayList<ExtraInfo>();
+        in.readTypedList(mExtrasInfo, ExtraInfo.CREATOR);
 
-        final boolean[] booleanData = new boolean[3];
+        final boolean[] booleanData = new boolean[4];
         in.readBooleanArray(booleanData);
 
-        canEditFrequency = booleanData[0];
-        canEditExtras = booleanData[1];
-        canEditHours = booleanData[2];
+        mCanEditFrequency = booleanData[0];
+        mCanEditExtras = booleanData[1];
+        mCanEditHours = booleanData[2];
+        mCanLeaveTip = booleanData[3];
     }
 
     public static Booking fromJson(final String json)
@@ -394,31 +404,32 @@ public final class Booking implements Parcelable
     {
         out.writeStringArray(new String[]
                         {
-                                id,
-                                serviceName,
-                                serviceMachineName,
-                                laundryStatus != null ? laundryStatus.name() : "",
-                                recurringInfo,
-                                entryInfo,
-                                extraEntryInfo,
-                                proNote,
-                                billedStatus,
-                                recurringId,
+                                mId,
+                                mServiceName,
+                                mServiceMachineName,
+                                mLaundryStatus != null ? mLaundryStatus.name() : "",
+                                mRecurringInfo,
+                                mEntryInfo,
+                                mExtraEntryInfo,
+                                mProNote,
+                                mBilledStatus,
+                                mRecurringId,
                         }
         );
 
-        out.writeIntArray(new int[]{isPast, entryType});
-        out.writeFloatArray(new float[]{hours, price});
-        out.writeLong(startDate.getTime());
-        out.writeParcelable(address, 0);
-        out.writeParcelable(provider, 0);
-        out.writeTypedList(paymentInfo);
-        out.writeTypedList(extrasInfo);
+        out.writeIntArray(new int[]{mIsPast, mEntryType});
+        out.writeFloatArray(new float[]{mHours, mPrice});
+        out.writeLong(mStartDate.getTime());
+        out.writeParcelable(mAddress, 0);
+        out.writeParcelable(mProvider, 0);
+        out.writeTypedList(mPaymentInfo);
+        out.writeTypedList(mExtrasInfo);
         out.writeBooleanArray(new boolean[]
                 {
-                        canEditFrequency,
-                        canEditExtras,
-                        canEditHours
+                        mCanEditFrequency,
+                        mCanEditExtras,
+                        mCanEditHours,
+                        mCanLeaveTip,
                 });
     }
 
@@ -443,17 +454,17 @@ public final class Booking implements Parcelable
 
     public int getEntryType()
     {
-        return entryType;
+        return mEntryType;
     }
 
-    public boolean getCanEditHours()
+    public boolean canEditHours()
     {
-        return canEditHours;
+        return mCanEditHours;
     }
 
-    public boolean getCanEditFrequency()
+    public boolean canEditFrequency()
     {
-        return canEditFrequency;
+        return mCanEditFrequency;
     }
 
     /**
@@ -467,8 +478,9 @@ public final class Booking implements Parcelable
         Long longValue = null;
         try
         {
-            longValue = Long.parseLong(recurringId);
-        } catch (NumberFormatException nfe)
+            longValue = Long.parseLong(mRecurringId);
+        }
+        catch (NumberFormatException nfe)
         {
             Crashlytics.log("Error converting recurringId to Long");
             Crashlytics.logException(nfe);
@@ -812,7 +824,8 @@ public final class Booking implements Parcelable
             try
             {
                 imageName = ExtraInfoImageName.valueOf(stringData[1]);
-            } catch (IllegalArgumentException e)
+            }
+            catch (IllegalArgumentException e)
             {
                 Crashlytics.log("Could not convert string : " + stringData[1] + " to extras image name");
             }
