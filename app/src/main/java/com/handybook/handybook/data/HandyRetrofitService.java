@@ -192,7 +192,7 @@ public interface HandyRetrofitService
     void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken,
                      HandyRetrofitCallback cb);
 
-    @GET("/users/first_name")
+    @GET("/users/find")
     void getFirstName(@Query("email") String email, HandyRetrofitCallback cb);
 
     @PUT("/users/{user}")
