@@ -10,6 +10,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BookingAction;
 import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
@@ -48,13 +49,13 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected int getEntryActionTextResourceId(Booking booking)
     {
-        return booking.canLeaveTip() ? R.string.leave_a_tip : R.string.blank_string;
+        return userCanLeaveTip(booking) ? R.string.leave_a_tip : R.string.blank_string;
     }
 
     @Override
     protected boolean hasEnabledAction(Booking booking)
     {
-        return booking.canLeaveTip();
+        return userCanLeaveTip(booking);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
 
         final Booking.Provider pro = booking.getProvider();
 
-        if (booking.canLeaveTip())
+        if (userCanLeaveTip(booking))
         {
             view.entryActionText.setVisibility(View.VISIBLE);
         }
@@ -154,6 +155,13 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
                 return contactTextClicked;
         }
         return null;
+    }
+
+    private boolean userCanLeaveTip(final Booking booking)
+    {
+        final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
+                userManager.getCurrentUser().getDefaultTipAmounts();
+        return booking.canLeaveTip() && defaultTipAmounts != null && !defaultTipAmounts.isEmpty();
     }
 
     private View.OnClickListener contactPhoneClicked = new View.OnClickListener()
