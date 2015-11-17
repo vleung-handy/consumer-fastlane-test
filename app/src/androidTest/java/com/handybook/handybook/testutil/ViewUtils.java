@@ -36,7 +36,9 @@ public class ViewUtils
 
     public static void checkToastDisplayed(int toastStringResourceId, Activity activity)
     {
-        onView(withText(toastStringResourceId)).inRoot(withDecorView(not(activity.getWindow().getDecorView()))).check(matches(isDisplayed()));
+        onView(withText(toastStringResourceId)).
+                inRoot(withDecorView(not(activity.getWindow().getDecorView()))).
+                check(matches(isDisplayed()));
     }
 
     /**

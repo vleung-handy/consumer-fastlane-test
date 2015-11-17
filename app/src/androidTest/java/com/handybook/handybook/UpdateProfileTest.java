@@ -54,15 +54,18 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
     {
         //TODO: we should add a resource id to the nav button!
         //click the nav button
-        onView(allOf(withContentDescription("Navigate up"), isAssignableFrom(ImageButton.class))).perform(click());
+        onView(allOf(withContentDescription("Navigate up"), isAssignableFrom(ImageButton.class))).
+                perform(click());
 
         /* log in as the test user */
         //click the login tab
         onView(withId(R.id.nav_menu_log_in)).perform(click());
 
         //input credentials
-        onView(withId(R.id.email_text)).perform(click()).perform(typeText(mTestUser.getEmail()));
-        onView(withId(R.id.password_text)).perform(click()).perform(typeText(mTestUser.getPassword()));
+        onView(withId(R.id.email_text)).perform(click()).
+                perform(typeText(mTestUser.getEmail()));
+        onView(withId(R.id.password_text)).perform(click()).
+                perform(typeText(mTestUser.getPassword()));
 
         //click the login button
         onView(withId(R.id.login_button)).perform(click());
@@ -79,7 +82,8 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 
         /* update the test user's phone and password*/
         //click the nav button
-        onView(allOf(withContentDescription("Navigate up"), isAssignableFrom(ImageButton.class))).perform(click());
+        onView(allOf(withContentDescription("Navigate up"), isAssignableFrom(ImageButton.class))).
+                perform(click());
 
         //click the profile tab
         onView(withId(R.id.nav_menu_profile)).perform(click());
