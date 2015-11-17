@@ -39,12 +39,11 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
     }
 
     /**
-     * assumptions:
-     * user A is logged in and has the following attributes:
-     * phone number: 1234567890
+     * assumptions: user A is logged in and has the following attributes: phone number: 1234567890
      * password: password
      */
-    public void testCanUpdateProfile() {
+    public void testCanUpdateProfile()
+    {
         //TODO: we should add a resource id to the nav button!
         //click the nav button
         onView(allOf(withContentDescription("Navigate up"), isAssignableFrom(ImageButton.class))).perform(click());
@@ -66,15 +65,6 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 
         //wait for progress dialog
         ViewUtils.waitForViewToAppearThenDisappear(android.R.id.progress);
-
-        /**
-         * we currently show a toast to reflect the success/failure of the request
-         * TODO: how can we detect that a specific toast has been shown?
-         *
-         * for now, we can assert that the password fields are cleared (this is not ideal!)
-         * if they are cleared, request was successful
-         * if not, it was a failure
-         */
 
         ViewUtils.checkToastDisplayed(R.string.info_updated, mActivity);
     }
