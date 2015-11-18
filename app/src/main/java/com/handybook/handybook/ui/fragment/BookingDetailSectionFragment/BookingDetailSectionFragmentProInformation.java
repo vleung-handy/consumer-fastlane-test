@@ -13,6 +13,7 @@ import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.event.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.widget.BookingDetailSectionProInfoView;
 import com.handybook.handybook.util.Utils;
@@ -90,6 +91,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected void onActionClick()
     {
+        bus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.BOOKING_DETAILS_FLOW));
         TipDialogFragment.newInstance(Integer.parseInt(booking.getId()), booking.getProvider().getFirstName())
                 .show(getActivity().getSupportFragmentManager(), null);
     }
