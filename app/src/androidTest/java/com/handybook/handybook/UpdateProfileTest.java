@@ -2,7 +2,6 @@ package com.handybook.handybook;
 
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.ImageButton;
 
 import com.handybook.handybook.testdata.TestUser;
 import com.handybook.handybook.testutil.AppInteractionUtils;
@@ -13,10 +12,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.allOf;
 
 public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 {
@@ -77,8 +73,7 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 
         /* update the test user's phone and password*/
         //click the nav button
-        onView(allOf(withContentDescription("Navigate up"), isAssignableFrom(ImageButton.class))).
-                perform(click());
+        AppInteractionUtils.clickOpenNavigationMenuButton();
 
         //click the profile tab
         onView(withId(R.id.nav_menu_profile)).perform(click());
