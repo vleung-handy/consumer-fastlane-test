@@ -33,8 +33,6 @@ public class TipFragment extends Fragment
     @Bind(R.id.custom_tip_amount)
     EditText mCustomTipAmountText;
 
-    static final int MAX_CUSTOM_TIP_VALUES = 3; //our UI currently supports None, Custom, and 3 pre-defined tip amounts coming from the server
-
     private int mTipAmount;
     private Map<RadioButton, Integer> mRadioButtonToTipAmount = new HashMap<>();
     private boolean mSendTipAmount = false;
@@ -100,19 +98,15 @@ public class TipFragment extends Fragment
     {
         if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
         {
-            int maxEntriesToDisplay = Math.min(defaultTipAmounts.size(), MAX_CUSTOM_TIP_VALUES);
-
-            for (int i = 0; i < maxEntriesToDisplay; i++)
+            for (LocalizedMonetaryAmount amount : defaultTipAmounts)
             {
-                int radioButtonGroupIndex = i + 1;
-                if (mTipAmountRadioGroup.getChildCount() > radioButtonGroupIndex)
-                {
-                    RadioButton childRadioButton = (RadioButton) mTipAmountRadioGroup.getChildAt(radioButtonGroupIndex);
-                    childRadioButton.setText(defaultTipAmounts.get(i).getDisplayAmount());
+                RadioButton radioButton = (RadioButton) getActivity().getLayoutInflater()
+                        .inflate(R.layout.view_tip_toggle, mTipAmountRadioGroup, false);
+                radioButton.setText(amount.getDisplayAmount());
 
-                    // Create a mapping of the child radio button to the tip amount
-                    mRadioButtonToTipAmount.put(childRadioButton, defaultTipAmounts.get(i).getAmountInCents());
-                }
+                mTipAmountRadioGroup.addView(radioButton, mTipAmountRadioGroup.getChildCount() - 1);
+
+                mRadioButtonToTipAmount.put(radioButton, amount.getAmountInCents());
             }
         }
     }

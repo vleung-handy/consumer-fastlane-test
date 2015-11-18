@@ -8,31 +8,18 @@
 
     <RadioGroup
         style="@style/ToggleGroupStyle"
-        android:checkedButton="@+id/tip_0"
+        android:checkedButton="@+id/tip_none"
         android:id="@+id/tip_amount_radio_group"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin">
 
         <RadioButton
             style="@style/TipToggle.First"
-            android:id="@+id/tip_0"
+            android:id="@+id/tip_none"
             android:text="@string/no_tip_amount"/>
 
         <RadioButton
-            style="@style/TipToggle"
-            android:id="@+id/tip_1"/>
-
-        <RadioButton
-            style="@style/TipToggle"
-            android:id="@+id/tip_2"/>
-
-        <RadioButton
-            style="@style/TipToggle"
-            android:id="@+id/tip_3"/>
-
-        <RadioButton
             style="@style/TipToggle.Last"
-            android:id="@+id/tip_4"
             android:text="@string/other_tip_amount"/>
 
     </RadioGroup>
