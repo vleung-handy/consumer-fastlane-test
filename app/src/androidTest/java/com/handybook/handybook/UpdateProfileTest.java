@@ -84,7 +84,7 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         //replace the phone number text
         onView(withId(R.id.phone_text)).perform(replaceText("9876543210"));
 
-        onView(withId(R.id.old_password_text)).perform(click()).perform(typeText("password"));
+        onView(withId(R.id.old_password_text)).perform(click()).perform(typeText(mTestUser.getPassword()));
         onView(withId(R.id.new_password_text)).perform(click()).perform(typeText("newpassword"));
 
         //press the update button
