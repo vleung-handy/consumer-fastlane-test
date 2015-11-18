@@ -1,29 +1,107 @@
 package com.handybook.handybook;
 
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import android.test.ActivityInstrumentationTestCase2;
+import android.widget.ImageButton;
 
-import com.handybook.handybook.ui.activity.LoginActivity;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.handybook.handybook.testdata.TestUser;
+import com.handybook.handybook.testutil.ViewUtils;
+import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 
-//super simple espresso test for proof of concept only
-@RunWith(AndroidJUnit4.class)
-public class LoginTest{
+//note that animations should be disabled on the device running these tests
+public class LoginTest extends ActivityInstrumentationTestCase2
+{
+    private final TestUser mTestUser = TestUser.TEST_USER_NY;
 
-    @Rule
-    public ActivityTestRule<LoginActivity> activityTestRule = new ActivityTestRule(LoginActivity.class);
-
-    @Test
-    public void LoginHeaderVisibleTest() {
-        onView(withId(R.id.nav_text)).check(matches(withText("Log In")));
+    public LoginTest()
+    {
+        super(ServiceCategoriesActivity.class);
     }
 
+    @Override
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+        getActivity();
+    }
+
+    @Override
+    protected void tearDown() throws Exception
+    {
+        super.tearDown();
+    }
+
+    /**
+     * Logs in as the test user and then logs out
+     *
+     * Assumptions:
+     * - no one is logged into the app
+     * - there are no modals that show on app launch
+     * - not the first time the app is launched after install (will show an extra screen otherwise)
+     */
+    public void testCanLogInAndLogOut()
+    {
+        //TODO: we should add a resource id to the nav button!
+        clickOpenNavigationMenuButton();
+
+        /* log in as the test user */
+        //click the login tab
+        onView(withId(R.id.nav_menu_log_in)).perform(click());
+
+        //input credentials
+        onView(withId(R.id.email_text)).perform(click()).
+                perform(typeText(mTestUser.getEmail()));
+        onView(withId(R.id.password_text)).perform(click()).
+                perform(typeText(mTestUser.getPassword()));
+
+        //click the login button
+        onView(withId(R.id.login_button)).perform(click());
+
+        //wait for progress dialog
+        ViewUtils.waitForViewToAppearThenDisappear(android.R.id.progress);
+
+        waitForHomeScreenAndNavMenuDance();
+
+        clickOpenNavigationMenuButton();
+
+        //click the log out button
+        onView(withId(R.id.nav_menu_log_out)).perform(click());
+
+        onView(withId(R.id.button_positive_label)).perform(click());
+
+        //check that home screen is displayed
+        //TODO: the nav bar doesn't pop in and out this time. investigate the behavior
+        onView(withId(R.id.category_layout)).check(matches(isDisplayed()));
+
+        clickOpenNavigationMenuButton();
+
+        //verify that the navigation bar says "log in"
+        onView(withId(R.id.nav_menu_log_in)).check(matches(isDisplayed()));
+    }
+
+    private void clickOpenNavigationMenuButton()
+    {
+        //click the nav button
+        onView(allOf(withContentDescription("Navigate up"), isAssignableFrom(ImageButton.class))).
+                perform(click());
+    }
+
+    private void waitForHomeScreenAndNavMenuDance()
+    {
+        //wait for the nav menu to go away
+        //TODO: why is the nav menu popping in and out? shouldn't be doing that
+        ViewUtils.waitForViewToAppearThenDisappear(R.id.nav_fragment_container);
+
+        //check that home screen is displayed
+        onView(withId(R.id.category_layout)).check(matches(isDisplayed()));
+    }
 }

@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.allOf;
 public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 {
     private Activity mActivity;
-    private final TestUser mTestUser = TestUser.TEST_USER_NY;
+    private final TestUser mTestUser = TestUser.TEST_USER_UPDATE_PROFILE;
 
     public UpdateProfileTest()
     {
@@ -49,6 +49,9 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
      * Assumptions:
      * - no one is logged into the app
      * - there are no modals that show on app launch
+     * - not the first time the app is launched after install (will show an extra screen otherwise)
+     *
+     * TODO: can we make this use a persistent auth token so we don't have to log in?
      */
     public void testCanUpdateProfile()
     {
