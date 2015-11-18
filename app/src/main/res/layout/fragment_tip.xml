@@ -30,14 +30,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/default_margin_half"
         android:layout_width="match_parent"
         android:visibility="gone">
 
         <TextView
             android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="@dimen/default_margin_half"
             android:layout_width="wrap_content"
             android:text="@string/tip_amount"
             android:textSize="@dimen/text_size_small"/>
@@ -49,7 +49,7 @@
             android:layout_gravity="right|bottom"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:padding="10dp"
+            android:padding="@dimen/default_padding_half"
             android:textCursorDrawable="@drawable/handy_cursor"
             android:width="80dp"/>
 
