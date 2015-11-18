@@ -91,7 +91,7 @@ public final class Booking implements Parcelable
 
     public final void setId(final String id)
     {
-        this.mId = id;
+        mId = id;
     }
 
     public final boolean isPast()
@@ -103,11 +103,11 @@ public final class Booking implements Parcelable
     {
         if (isPast)
         {
-            this.mIsPast = 1;
+            mIsPast = 1;
         }
         else
         {
-            this.mIsPast = 0;
+            mIsPast = 0;
         }
     }
 
@@ -268,7 +268,7 @@ public final class Booking implements Parcelable
 
     public final void setStartDate(final Date startDate)
     {
-        this.mStartDate = startDate;
+        mStartDate = startDate;
     }
 
     public final Date getEndDate()
@@ -287,7 +287,7 @@ public final class Booking implements Parcelable
 
     final void setHours(float hours)
     {
-        this.mHours = hours;
+        mHours = hours;
     }
 
     public final float getPrice()
@@ -297,7 +297,7 @@ public final class Booking implements Parcelable
 
     final void setPrice(float price)
     {
-        this.mPrice = price;
+        mPrice = price;
     }
 
     public final Address getAddress()
@@ -307,7 +307,7 @@ public final class Booking implements Parcelable
 
     final void setAddress(final Address address)
     {
-        this.mAddress = address;
+        mAddress = address;
     }
 
     public final Provider getProvider()
@@ -317,7 +317,7 @@ public final class Booking implements Parcelable
 
     final void setProvider(final Provider provider)
     {
-        this.mProvider = provider;
+        mProvider = provider;
     }
 
     public final LaundryStatus getLaundryStatus()
