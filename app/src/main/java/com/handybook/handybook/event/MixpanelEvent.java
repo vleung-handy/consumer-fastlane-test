@@ -27,7 +27,11 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_BOOKING_MADE = "booking made";
         //TODO: ^this event key already exists in Mixpanel.java, need to move it out
         public static final String APP_TRACK_PAYMENT_METHOD_PROVIDED = "App Track Payment Method Provided";
+        public static final String APP_TRACK_SHOW_RATING_PROMPT = "app rate prompt";
+        public static final String APP_TRACK_SHOW_TIP_PROMPT = "present tips";
+        public static final String APP_TRACK_SUBMIT_TIP = "submit tips";
     }
+
 
     public enum PaymentMethod
     {
@@ -35,6 +39,7 @@ public abstract class MixpanelEvent
         //more methods to come
 
         private final String mStringValue;
+
         PaymentMethod(String stringValue)
         {
             mStringValue = stringValue;
@@ -47,6 +52,75 @@ public abstract class MixpanelEvent
         }
     }
 
+
+    /**
+     * denotes the flow where the tip option is shown
+     */
+    public enum TipParentFlow //TODO: give this a better name?
+    {
+        RATING_FLOW("rating flow tip"),
+        BOOKING_DETAILS_FLOW("booking details tip");
+
+        private final String mStringValue;
+
+        TipParentFlow(String stringValue)
+        {
+            mStringValue = stringValue;
+        }
+
+        @Override
+        public String toString()
+        {
+            return mStringValue;
+        }
+    }
+
+
+    /**
+     * tracks when the rating dialog is shown
+     */
+    @Track(EventKey.APP_TRACK_SHOW_RATING_PROMPT)
+    public static class TrackShowRatingPrompt extends MixpanelEvent
+    {
+    }
+
+
+    /**
+     * tracks when the tip layout is shown
+     */
+    @Track(EventKey.APP_TRACK_SHOW_TIP_PROMPT)
+    public static class TrackShowTipPrompt extends MixpanelEvent
+    {
+        @TrackField("flow")
+        public final String tipParentFlow;
+
+        public TrackShowTipPrompt(@NonNull final TipParentFlow tipParentFlow)
+        {
+            this.tipParentFlow = tipParentFlow.toString();
+        }
+    }
+
+
+    /**
+     * tracks when a tip is submitted
+     */
+    @Track(EventKey.APP_TRACK_SUBMIT_TIP)
+    public static class TrackSubmitTip extends MixpanelEvent
+    {
+        @TrackField("amount")
+        public final int tipAmountCents;
+        @TrackField("flow")
+        public final String tipParentFlow;
+
+        public TrackSubmitTip(final int tipAmountCents, @NonNull final TipParentFlow tipParentFlow)
+        {
+            this.tipAmountCents = tipAmountCents;
+            this.tipParentFlow = tipParentFlow.toString();
+
+        }
+    }
+
+
     @Track(EventKey.APP_TRACK_PAYMENT)
     public static class TrackPaymentMethodShownEvent extends MixpanelEvent
     {
@@ -58,6 +132,7 @@ public abstract class MixpanelEvent
             this.paymentMethodShown = paymentMethod.toString();
         }
     }
+
 
     @Track(EventKey.APP_TRACK_BOOKING_MADE)
     public static class TrackBookingCompletedWithPaymentMethodEvent extends MixpanelEvent
@@ -73,7 +148,8 @@ public abstract class MixpanelEvent
 
 
     /**
-     * Given payment method (such as Android Pay) was successfully set up and provided in the booking
+     * Given payment method (such as Android Pay) was successfully set up and provided in the
+     * booking
      */
     @Track(EventKey.APP_TRACK_PAYMENT_METHOD_PROVIDED)
     public static class TrackPaymentMethodProvidedEvent extends MixpanelEvent
@@ -86,4 +162,5 @@ public abstract class MixpanelEvent
             this.paymentMethod = paymentMethod.toString();
         }
     }
+
 }
