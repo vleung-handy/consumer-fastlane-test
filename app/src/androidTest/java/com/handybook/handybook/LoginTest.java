@@ -8,6 +8,7 @@ import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -54,10 +55,10 @@ public class LoginTest extends ActivityInstrumentationTestCase2
         onView(withId(R.id.nav_menu_log_in)).perform(click());
 
         //input credentials
-        onView(withId(R.id.email_text)).perform(click()).
-                perform(typeText(mTestUser.getEmail()));
-        onView(withId(R.id.password_text)).perform(click()).
-                perform(typeText(mTestUser.getPassword()));
+        onView(withId(R.id.email_text)).
+                perform(click(), typeText(mTestUser.getEmail()), closeSoftKeyboard());
+        onView(withId(R.id.password_text)).
+                perform(click(), typeText(mTestUser.getPassword()), closeSoftKeyboard());
 
         //click the login button
         onView(withId(R.id.login_button)).perform(click());
