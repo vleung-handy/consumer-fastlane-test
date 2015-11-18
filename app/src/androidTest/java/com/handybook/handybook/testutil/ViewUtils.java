@@ -13,6 +13,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
+/**
+ * utility class containing non-app-specific methods to check for certain view states
+ */
 public class ViewUtils
 {
     private final static long MAX_WAITING_TIME_MS = 10000;

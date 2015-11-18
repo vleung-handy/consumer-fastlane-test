@@ -7,6 +7,11 @@ public class TestUser
             "password"
     );
 
+    public static TestUser TEST_USER_UPDATE_PROFILE = new TestUser(
+            "test+updateprofile@handybook.com",
+            "password"
+    );
+
     private final String mEmail;
     private final String mPassword;
 
