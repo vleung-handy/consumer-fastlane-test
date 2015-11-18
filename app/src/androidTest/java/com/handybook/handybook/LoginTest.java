@@ -41,7 +41,7 @@ public class LoginTest extends ActivityInstrumentationTestCase2
      *
      * Assumptions:
      * - no one is logged into the app
-     * - there are no modals that show on app launch
+     * - there are no popup modals (for example, promos)
      */
     public void testCanLogInAndLogOut()
     {

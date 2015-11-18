@@ -47,7 +47,7 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
      *
      * Assumptions:
      * - no one is logged into the app
-     * - there are no modals that show on app launch
+     * - there are no popup modals (for example, promos)
      *
      * TODO: can we make this use a persistent auth token so we don't have to log in?
      */
