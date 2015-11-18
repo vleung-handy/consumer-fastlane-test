@@ -65,7 +65,7 @@ public class LoginTest extends ActivityInstrumentationTestCase2
         //wait for progress dialog
         AppInteractionUtils.waitForProgressDialog();
 
-        AppInteractionUtils.waitForHomeScreenAndNavMenuDance();
+        AppInteractionUtils.waitForNavMenuDanceAndHomeScreen();
 
         AppInteractionUtils.clickOpenNavigationMenuButton();
 

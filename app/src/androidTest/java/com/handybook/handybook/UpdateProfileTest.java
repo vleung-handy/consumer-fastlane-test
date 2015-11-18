@@ -72,7 +72,7 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         //wait for progress dialog
         AppInteractionUtils.waitForProgressDialog();
 
-        AppInteractionUtils.waitForHomeScreenAndNavMenuDance();
+        AppInteractionUtils.waitForNavMenuDanceAndHomeScreen();
 
         /* update the test user's phone and password*/
         //click the nav button

@@ -19,6 +19,9 @@ import static org.hamcrest.Matchers.allOf;
  */
 public class AppInteractionUtils
 {
+    /**
+     * clicks the button on the top left that opens the navigation menu
+     */
     public static void clickOpenNavigationMenuButton()
     {
         //click the nav button
@@ -26,7 +29,11 @@ public class AppInteractionUtils
                 perform(click());
     }
 
-    public static void waitForHomeScreenAndNavMenuDance()
+    /**
+     * waits for the weird nav menu dance,
+     * then checks that home screen is displayed
+     */
+    public static void waitForNavMenuDanceAndHomeScreen()
     {
         //wait for the nav menu to go away
         //TODO: why is the nav menu popping in and out? shouldn't be doing that
