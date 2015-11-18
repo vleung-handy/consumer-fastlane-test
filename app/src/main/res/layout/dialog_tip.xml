@@ -1,55 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:id="@+id/tip_dialog_container"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+
+    <RelativeLayout
+        android:clickable="true"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_width="300dp">
+
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_icon_size"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextView.XLarge.Bold"
+                android:gravity="center"
+                android:id="@+id/title_text"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginTop="64dp"
+                android:layout_width="match_parent"
+                tools:text="Would you like to leave a tip for Jennifer?"/>
+
+            <TextView
                 android:gravity="center"
                 android:layout_height="wrap_content"
-                android:layout_width="300dp">
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:layout_width="match_parent"
+                android:text="@string/opt"
+                android:textColor="@color/handy_text_gray"/>
 
-    <LinearLayout
-        android:background="@color/white"
+            <FrameLayout
+                android:id="@+id/tip_layout_container"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+
+            <Button
+                style="@style/Button.Green"
+                android:id="@+id/submit_button"
+                android:text="@string/leave_a_tip"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_height="@dimen/default_icon_size_double"
+            android:layout_width="@dimen/default_icon_size_double"
+            android:src="@drawable/ic_heart_fill"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tip_notice"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_icon_size"
         android:layout_width="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/TextView.XLarge.Bold"
-            android:gravity="center"
-            android:id="@+id/title_text"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginTop="64dp"
-            android:layout_width="match_parent"
-            tools:text="Would you like to leave a tip for Jennifer?"/>
-
-        <TextView
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin_half"
-            android:layout_width="match_parent"
-            android:text="@string/opt"
-            android:textColor="@color/handy_text_gray"/>
-
-        <FrameLayout
-            android:id="@+id/tip_layout_container"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
-
-        <Button
-            style="@style/Button.Green"
-            android:id="@+id/submit_button"
-            android:text="@string/leave_a_tip"
-            android:textAllCaps="false"/>
-
-    </LinearLayout>
-
-    <ImageView
-        android:layout_centerHorizontal="true"
-        android:layout_height="@dimen/default_icon_size_double"
-        android:layout_width="@dimen/default_icon_size_double"
-        android:src="@drawable/ic_heart_fill"/>
-
+        android:padding="@dimen/default_padding"
+        android:text="@string/tip_usage_notice"
+        android:textColor="@color/handy_white"/>
 </RelativeLayout>

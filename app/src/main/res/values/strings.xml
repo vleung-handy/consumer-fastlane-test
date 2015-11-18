@@ -277,5 +277,6 @@
     <string name="garbage_disposals_service_description">Dispose of that mesh strainer and start with a clean sink.</string>
     <string name="other_plumbing">Something else</string>
     <string name="other_plumbing_service_description">Have something more specific in mind? Tell us!</string>
+    <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
 
 </resources>

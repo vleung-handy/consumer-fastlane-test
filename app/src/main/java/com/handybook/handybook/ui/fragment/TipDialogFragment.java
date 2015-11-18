@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,8 @@ public class TipDialogFragment extends BaseDialogFragment
 
     @Bind(R.id.title_text)
     TextView mTitleText;
+    @Bind(R.id.tip_notice)
+    View mTipNotice;
 
     public static TipDialogFragment newInstance(int bookingId, String proName)
     {
@@ -67,7 +70,17 @@ public class TipDialogFragment extends BaseDialogFragment
                 .replace(R.id.tip_layout_container, tipFragment)
                 .commit();
 
+        final int screenOrientation = getResources().getConfiguration().orientation;
+        boolean isPortrait = screenOrientation == Configuration.ORIENTATION_PORTRAIT;
+        mTipNotice.setVisibility(isPortrait ? View.VISIBLE : View.GONE);
+
         return view;
+    }
+
+    @OnClick(R.id.tip_dialog_container)
+    public void onTipDialogContainerClicked()
+    {
+        dismiss();
     }
 
     @OnClick(R.id.submit_button)
