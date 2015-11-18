@@ -60,7 +60,7 @@ public class TipDialogFragment extends BaseDialogFragment
         ButterKnife.bind(this, view);
 
         String proName = getArguments().getString(EXTRA_PRO_NAME);
-        mTitleText.setText(getString(R.string.leave_tip_prompt, proName));
+        mTitleText.setText(getString(R.string.leave_tip_prompt_formatted, proName));
 
         final User currentUser = mUserManager.getCurrentUser();
         final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = currentUser.getDefaultTipAmounts();
