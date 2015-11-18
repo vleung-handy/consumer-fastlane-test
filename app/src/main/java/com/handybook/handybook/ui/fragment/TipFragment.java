@@ -53,7 +53,7 @@ public class TipFragment extends Fragment
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
     {
         super.onCreateView(inflater, container, savedInstanceState);
-        final View view = inflater.inflate(R.layout.layout_tip, container, false);
+        final View view = inflater.inflate(R.layout.fragment_tip, container, false);
         ButterKnife.bind(this, view);
 
         ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = getArguments().getParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS);
