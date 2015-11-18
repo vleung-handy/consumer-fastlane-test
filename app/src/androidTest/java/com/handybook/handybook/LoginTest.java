@@ -42,11 +42,11 @@ public class LoginTest extends ActivityInstrumentationTestCase2
      * Assumptions:
      * - no one is logged into the app
      * - there are no modals that show on app launch
-     * - not the first time the app is launched after install (will show an extra screen otherwise)
      */
     public void testCanLogInAndLogOut()
     {
-        //TODO: we should add a resource id to the nav button!
+        AppInteractionUtils.clickGetStartedButtonIfPresent();
+
         AppInteractionUtils.clickOpenNavigationMenuButton();
 
         /* log in as the test user */

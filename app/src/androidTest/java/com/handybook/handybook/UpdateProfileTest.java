@@ -48,12 +48,13 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
      * Assumptions:
      * - no one is logged into the app
      * - there are no modals that show on app launch
-     * - not the first time the app is launched after install (will show an extra screen otherwise)
      *
      * TODO: can we make this use a persistent auth token so we don't have to log in?
      */
     public void testCanUpdateProfile()
     {
+        AppInteractionUtils.clickGetStartedButtonIfPresent();
+
         AppInteractionUtils.clickOpenNavigationMenuButton();
 
         /* log in as the test user */

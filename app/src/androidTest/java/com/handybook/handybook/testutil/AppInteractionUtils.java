@@ -20,6 +20,23 @@ import static org.hamcrest.Matchers.allOf;
 public class AppInteractionUtils
 {
     /**
+     * when the app first launches after an install
+     * skip the extra screen that is displayed
+     * that shows "log in" and "get started" buttons
+     */
+    public static void clickGetStartedButtonIfPresent()
+    {
+        try
+        {
+            onView(withId(R.id.start_button)).perform(click());
+        }
+        catch (Throwable e)
+        {
+            //do nothing
+        }
+    }
+
+    /**
      * clicks the button on the top left that opens the navigation menu
      */
     public static void clickOpenNavigationMenuButton()
