@@ -30,6 +30,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.model.response.UserExistsResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -193,8 +194,8 @@ public abstract class DataManager
                                  String authToken,
                                  Callback<User> cb);
 
-    public abstract void getUser(String email,
-                                 Callback<String> cb);
+    public abstract void getUserExists(String email,
+                                       Callback<UserExistsResponse> cb);
 
     public abstract void updateUser(UpdateUserRequest updateUserRequest,
                                     String authToken,
@@ -245,7 +246,7 @@ public abstract class DataManager
     }
 
 
-    enum Type
+    public enum Type
     {
         OTHER, SERVER, CLIENT, NETWORK
     }
@@ -283,7 +284,7 @@ public abstract class DataManager
             return message;
         }
 
-        final Type getType()
+        public final Type getType()
         {
             return type;
         }
