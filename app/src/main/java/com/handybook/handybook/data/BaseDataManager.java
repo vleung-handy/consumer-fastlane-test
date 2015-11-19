@@ -12,6 +12,7 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
@@ -689,16 +690,24 @@ public final class BaseDataManager extends DataManager
         });
     }
 
+    /**
+     *
+     * @param updateUserRequest
+     * @param authToken needed because the success callback sets this
+     *                  to the User object it creates.
+     *                  ideally, it should not be used this way.
+     * @param cb
+     */
     @Override
-    public final void updateUser(final User user, final Callback<User> cb)
+    public final void updateUser(final UpdateUserRequest updateUserRequest, final String authToken, final Callback<User> cb)
     {
-        mService.updateUserInfo(user.getId(), new HandyRetrofitService.UserUpdateRequest(user,
-                user.getAuthToken()), new HandyRetrofitCallback(cb)
+        mService.updateUserInfo(updateUserRequest.getUserId(), updateUserRequest, new HandyRetrofitCallback(cb)
         {
             @Override
             void success(JSONObject response)
             {
-                handleUserResponse(user.getId(), user.getAuthToken(), response, cb);
+                //TODO: auth token should not be set this way!
+                handleUserResponse(updateUserRequest.getUserId(), authToken, response, cb);
             }
         });
     }
