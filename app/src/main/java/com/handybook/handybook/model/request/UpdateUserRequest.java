@@ -21,11 +21,6 @@ public class UpdateUserRequest
     @SerializedName("password_confirmation")
     private String mPasswordConfirmation;
 
-    public UpdateUserRequest()
-    {
-
-    }
-
     public String getUserId()
     {
         return mUserId;
