@@ -587,7 +587,7 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestGetServiceExtras(final HandyEvent.RequestGetEditExtrasInfo event)
+    public final void onRequestGetServiceExtras(final HandyEvent.RequestEditExtrasInfo event)
     {
         dataManager.getServiceExtras(event.bookingId,
                 new DataManager.Callback<BookingEditExtrasInfoResponse>()

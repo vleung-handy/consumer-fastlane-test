@@ -13,8 +13,10 @@ import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
@@ -37,6 +39,8 @@ import static org.mockito.Mockito.when;
         BookingEditFrequencyFragment.class,
         BookingEditHoursActivity.class,
         BookingEditHoursFragment.class,
+        BookingEditExtrasActivity.class,
+        BookingEditExtrasFragment.class,
 }, library = true)
 public class TestApplicationModule
 {

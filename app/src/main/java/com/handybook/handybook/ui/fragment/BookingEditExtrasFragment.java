@@ -86,7 +86,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestGetEditExtrasInfo(Integer.parseInt(mBooking.getId())));
+        bus.post(new HandyEvent.RequestEditExtrasInfo(Integer.parseInt(mBooking.getId())));
     }
 
     @Override
