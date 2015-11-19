@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.model.request.UserUpdateRequest;
+import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
@@ -239,22 +239,22 @@ public final class ProfileFragment extends InjectedFragment {
                 disableInputs();
                 progressDialog.show();
 
-                UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
-                userUpdateRequest.setUserId(user.getId());
-                userUpdateRequest.setFirstName(fullNameText.getFirstName());
-                userUpdateRequest.setLastName(fullNameText.getLastName());
-                userUpdateRequest.setEmail(emailText.getEmail());
-                userUpdateRequest.setPhone(phoneText.getPhoneNumber());
+                UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+                updateUserRequest.setUserId(user.getId());
+                updateUserRequest.setFirstName(fullNameText.getFirstName());
+                updateUserRequest.setLastName(fullNameText.getLastName());
+                updateUserRequest.setEmail(emailText.getEmail());
+                updateUserRequest.setPhone(phoneText.getPhoneNumber());
 
                 if (oldPasswordtext.getPassword().length() > 0
                         && newPasswordtext.getPassword().length() > 0) {
-                    userUpdateRequest.setCurrentPassword(oldPasswordtext.getPassword());
-                    userUpdateRequest.setPassword(newPasswordtext.getPassword());
-                    userUpdateRequest.setPasswordConfirmation(newPasswordtext.getPassword());
+                    updateUserRequest.setCurrentPassword(oldPasswordtext.getPassword());
+                    updateUserRequest.setPassword(newPasswordtext.getPassword());
+                    updateUserRequest.setPasswordConfirmation(newPasswordtext.getPassword());
                 }
 
                 updatingInfo = true;
-                dataManager.updateUser(userUpdateRequest, user.getAuthToken(), userCallback);
+                dataManager.updateUser(updateUserRequest, user.getAuthToken(), userCallback);
             }
         }
     };

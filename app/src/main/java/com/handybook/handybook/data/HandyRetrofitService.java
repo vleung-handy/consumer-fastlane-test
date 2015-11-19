@@ -11,7 +11,7 @@ import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
-import com.handybook.handybook.model.request.UserUpdateRequest;
+import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;
 
@@ -196,7 +196,7 @@ public interface HandyRetrofitService
     void getUserInfo(@Query("email") String email, HandyRetrofitCallback cb);
 
     @PUT("/users/{user}")
-    void updateUserInfo(@Path("user") String userId, @Body UserUpdateRequest req,
+    void updateUserInfo(@Path("user") String userId, @Body UpdateUserRequest req,
                         HandyRetrofitCallback cb);
 
     @GET("/password_resets/new")

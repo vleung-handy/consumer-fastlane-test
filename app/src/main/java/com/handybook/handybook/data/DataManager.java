@@ -9,7 +9,7 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
-import com.handybook.handybook.model.request.UserUpdateRequest;
+import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
@@ -192,7 +192,7 @@ public abstract class DataManager
     public abstract void getUser(String email,
                                  Callback<String> cb);
 
-    public abstract void updateUser(UserUpdateRequest userUpdateRequest,
+    public abstract void updateUser(UpdateUserRequest updateUserRequest,
                                     String authToken,
                                     Callback<User> cb);
 
