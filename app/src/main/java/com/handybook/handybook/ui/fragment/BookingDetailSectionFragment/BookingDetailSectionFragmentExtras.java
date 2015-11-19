@@ -14,8 +14,6 @@ import butterknife.Bind;
 
 public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFragment
 {
-    public static final String TAG= "BookingDetailSectionExtras";
-
     @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionExtrasView view;
 
@@ -55,7 +53,7 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
     {
         if (!booking.isPast())
         {
-            view.entryActionText.setOnClickListener(actionClicked);
+            getSectionView().getEntryActionText().setOnClickListener(actionClicked);
         }
     }
 

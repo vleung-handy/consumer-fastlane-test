@@ -11,15 +11,15 @@ import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.ui.widget.BookingDetailSectionBookingActionsView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class BookingDetailSectionFragmentBookingActions extends BookingDetailSectionFragment
+public class BookingDetailSectionFragmentBookingActions
+        extends BookingDetailSectionFragment<BookingDetailSectionBookingActionsView>
 {
-    public static final String TAG= "BookingDetailSectionFragmentBookingAction";
-
     @Override
     protected int getFragmentResourceId()
     {
@@ -30,9 +30,9 @@ public class BookingDetailSectionFragmentBookingActions extends BookingDetailSec
     public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
-        view.entryText.setVisibility(View.GONE);
-        view.entryActionText.setVisibility(View.GONE);
-        view.entryTitle.setVisibility(View.GONE);
+        getSectionView().getEntryText().setVisibility(View.GONE);
+        getSectionView().getEntryActionText().setVisibility(View.GONE);
+        getSectionView().getEntryTitle().setVisibility(View.GONE);
     }
 
     //Setup the contact booking action buttons

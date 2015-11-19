@@ -96,11 +96,11 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
         final String billedStatus = booking.getBilledStatus();
         if (billedStatus != null)
         {
-            entryText.setText(billedStatus);
+            getEntryText().setText(billedStatus);
         }
         else
         {
-            entryText.setVisibility(View.GONE);
+            getEntryText().setVisibility(View.GONE);
         }
     }
 

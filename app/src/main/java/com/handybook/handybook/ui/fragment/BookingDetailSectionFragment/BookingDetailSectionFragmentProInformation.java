@@ -22,13 +22,9 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-
-public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
+public class BookingDetailSectionFragmentProInformation extends
+        BookingDetailSectionFragment<BookingDetailSectionProInfoView>
 {
-    @Bind(R.id.booking_detail_section_view)
-    protected BookingDetailSectionProInfoView view;
-
     @Override
     protected int getFragmentResourceId()
     {
@@ -62,24 +58,24 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
 
         if (userCanLeaveTip(booking))
         {
-            view.entryActionText.setVisibility(View.VISIBLE);
+            getSectionView().getEntryActionText().setVisibility(View.VISIBLE);
         }
 
         if (booking.hasAssignedProvider())
         {
-            view.entryText.setText(pro.getFullName());
+            getSectionView().getEntryText().setText(pro.getFullName());
         }
         else
         {
             //if no pro has been assigned indicate the ability to request a pro
-            view.entryText.setText(R.string.pro_assignment_pending);
+            getSectionView().getEntryText().setText(R.string.pro_assignment_pending);
         }
     }
 
     @Override
     protected void setupClickListeners(final Booking booking)
     {
-        view.entryActionText.setOnClickListener(actionClicked);
+        view.getEntryActionText().setOnClickListener(actionClicked);
     }
 
     @Override
@@ -97,7 +93,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Subscribe
     public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
     {
-        view.entryActionText.setVisibility(View.GONE);
+        view.getEntryActionText().setVisibility(View.GONE);
     }
 
     //Setup the contact booking action buttons
@@ -105,14 +101,14 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected void clearBookingActionButtons()
     {
-        view.actionButtonsLayoutSlot1.removeAllViews();
-        view.actionButtonsLayoutSlot2.removeAllViews();
+        getSectionView().actionButtonsLayoutSlot1.removeAllViews();
+        getSectionView().actionButtonsLayoutSlot2.removeAllViews();
     }
 
     @Override
     protected ViewGroup getBookingActionButtonLayout()
     {
-        return view.actionButtonsLayout;
+        return getSectionView().getActionButtonsLayout();
     }
 
     @Override
@@ -137,9 +133,9 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         switch (actionButtonType)
         {
             case BookingAction.ACTION_CONTACT_PHONE:
-                return view.actionButtonsLayoutSlot1;
+                return getSectionView().actionButtonsLayoutSlot1;
             case BookingAction.ACTION_CONTACT_TEXT:
-                return view.actionButtonsLayoutSlot2;
+                return getSectionView().actionButtonsLayoutSlot2;
         }
         return null;
     }
