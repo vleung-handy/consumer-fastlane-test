@@ -2,7 +2,7 @@ package com.handybook.handybook.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UserExistsResponse extends BaseResponse
+public class UserExistsResponse
 {
     @SerializedName("exists")
     private boolean mExists;
