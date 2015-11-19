@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class UpdateUserRequest
 {
     @SerializedName("id")
-    private String mUserId;
+    private String mUserId; //this is set in the request path for logging purposes
     @SerializedName("first_name")
     private String mFirstName;
     @SerializedName("last_name")
