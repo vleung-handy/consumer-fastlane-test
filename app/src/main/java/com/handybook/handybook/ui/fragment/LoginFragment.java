@@ -338,7 +338,7 @@ public final class LoginFragment extends BookingFlowFragment
 
                 if (mFindUser)
                 {
-                    dataManager.getFirstName(email, new DataManager.Callback<UserExistsResponse>()
+                    dataManager.getUserExists(email, new DataManager.Callback<UserExistsResponse>()
                     {
                         @Override
                         public void onSuccess(final UserExistsResponse userExistsResponse)
@@ -470,7 +470,7 @@ public final class LoginFragment extends BookingFlowFragment
                         else {
                             mAuthType = AuthType.FACEBOOK;
                             dataManager.authFBUser(user.getId(), session.getAccessToken(),
-                                    user.asMap().get("email").toString(),  user.getFirstName(),
+                                    user.asMap().get("email").toString(),  user.getUserExists(),
                                     user.getLastName(), userCallback);
                         }
                     }

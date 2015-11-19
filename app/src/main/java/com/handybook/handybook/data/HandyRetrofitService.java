@@ -199,7 +199,7 @@ public interface HandyRetrofitService
                      HandyRetrofitCallback cb);
 
     @GET("/users/exists")
-    void getFirstName(@Query("email") String email, HandyRetrofitCallback cb);
+    void getUserExists(@Query("email") String email, HandyRetrofitCallback cb);
 
     @PUT("/users/{user}")
     void updateUserInfo(@Path("user") String userId, @Body UserUpdateRequest req,

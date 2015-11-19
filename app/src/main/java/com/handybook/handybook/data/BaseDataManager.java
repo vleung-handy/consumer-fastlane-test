@@ -678,9 +678,9 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public final void getFirstName(final String email, final Callback<UserExistsResponse> cb)
+    public final void getUserExists(final String email, final Callback<UserExistsResponse> cb)
     {
-        mService.getFirstName(email, new UserExistsHandyRetrofitCallback(cb));
+        mService.getUserExists(email, new UserExistsHandyRetrofitCallback(cb));
     }
 
     @Override

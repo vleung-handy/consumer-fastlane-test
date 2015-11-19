@@ -193,8 +193,8 @@ public abstract class DataManager
                                  String authToken,
                                  Callback<User> cb);
 
-    public abstract void getFirstName(String email,
-                                      Callback<UserExistsResponse> cb);
+    public abstract void getUserExists(String email,
+                                       Callback<UserExistsResponse> cb);
 
     public abstract void updateUser(User user,
                                     Callback<User> cb);
