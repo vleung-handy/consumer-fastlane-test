@@ -99,8 +99,14 @@ public interface HandyRetrofitService
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/rate_pro")
-    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating, @Field("tip_amount") Integer tipAmount,
+    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating,
+                 @Field("tip_amount") Integer tipAmount,
                  HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
+    @POST("/bookings/{booking}/tip")
+    void tipPro(@Path("booking") int bookingId, @Field("tip_amount") Integer tipAmount,
+                HandyRetrofitCallback cb);
 
     @POST("/bookings/{booking}/rating_flow")
     void submitProRatingDetails(@Path("booking") int bookingId, @Body RateProRequest req,

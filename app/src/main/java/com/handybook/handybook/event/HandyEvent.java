@@ -674,4 +674,24 @@ public abstract class HandyEvent
         }
 
     }
+
+    public static class RequestTipPro extends RequestEvent
+    {
+        public final Integer tipAmount;
+        public final int bookingId;
+
+        public RequestTipPro(final int bookingId, final Integer tipAmount)
+        {
+            this.bookingId = bookingId;
+            this.tipAmount = tipAmount;
+        }
+    }
+
+    public static class ReceiveTipProSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveTipProError extends ReceiveErrorEvent
+    {
+    }
 }

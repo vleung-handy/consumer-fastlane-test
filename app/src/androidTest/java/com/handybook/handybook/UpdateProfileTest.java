@@ -1,24 +1,25 @@
 package com.handybook.handybook;
 
+import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.handybook.handybook.testdata.TestUser;
 import com.handybook.handybook.testutil.AppInteractionUtils;
+import com.handybook.handybook.testutil.ViewUtils;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-//note that animations should be disabled on the device running these tests
-public class LoginTest extends ActivityInstrumentationTestCase2
+public class UpdateProfileTest extends ActivityInstrumentationTestCase2
 {
-    private final TestUser mTestUser = TestUser.TEST_USER_NY;
+    private Activity mActivity;
+    private final TestUser mTestUser = TestUser.TEST_USER_UPDATE_PROFILE;
 
-    public LoginTest()
+    public UpdateProfileTest()
     {
         super(ServiceCategoriesActivity.class);
     }
@@ -27,7 +28,7 @@ public class LoginTest extends ActivityInstrumentationTestCase2
     protected void setUp() throws Exception
     {
         super.setUp();
-        getActivity();
+        mActivity = getActivity();
     }
 
     @Override
@@ -37,13 +38,16 @@ public class LoginTest extends ActivityInstrumentationTestCase2
     }
 
     /**
-     * Logs in as the test user and then logs out
+     * Logs in as the test user and updates their profile
+     * with a new phone number and password
      *
      * Assumptions:
      * - no one is logged into the app
      * - there are no popup modals (for example, promos)
+     *
+     * TODO: can we make this use a persistent auth token so we don't have to log in?
      */
-    public void testCanLogInAndLogOut()
+    public void testCanUpdateProfile()
     {
         AppInteractionUtils.clickGetStartedButtonIfPresent();
 
@@ -67,20 +71,29 @@ public class LoginTest extends ActivityInstrumentationTestCase2
 
         AppInteractionUtils.waitForNavMenuDanceAndHomeScreen();
 
+        /* update the test user's phone and password*/
+        //click the nav button
         AppInteractionUtils.clickOpenNavigationMenuButton();
 
-        //click the log out button
-        onView(withId(R.id.nav_menu_log_out)).perform(click());
+        //click the profile tab
+        onView(withId(R.id.nav_menu_profile)).perform(click());
 
-        onView(withId(R.id.button_positive_label)).perform(click());
+        //wait for progress dialog
+        AppInteractionUtils.waitForProgressDialog();
 
-        //check that home screen is displayed
-        //TODO: the nav bar doesn't pop in and out this time. investigate the behavior
-        onView(withId(R.id.category_layout)).check(matches(isDisplayed()));
+        //replace the phone number text
+        onView(withId(R.id.phone_text)).perform(replaceText("9876543210"));
 
-        AppInteractionUtils.clickOpenNavigationMenuButton();
+        onView(withId(R.id.old_password_text)).perform(click()).perform(typeText(mTestUser.getPassword()));
+        onView(withId(R.id.new_password_text)).perform(click()).perform(typeText("newpassword"));
 
-        //verify that the navigation bar says "log in"
-        onView(withId(R.id.nav_menu_log_in)).check(matches(isDisplayed()));
+        //press the update button
+        onView(withId(R.id.update_button)).perform(click());
+
+        //wait for progress dialog
+        AppInteractionUtils.waitForProgressDialog();
+
+        ViewUtils.checkToastDisplayed(R.string.info_updated, mActivity);
     }
+
 }
