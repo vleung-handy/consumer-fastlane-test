@@ -7,11 +7,11 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
-import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.request.UserUpdateRequest;
 
 import java.util.Date;
 
@@ -230,20 +230,6 @@ public interface HandyRetrofitService
 
     @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
-
-    final class UserUpdateRequest
-    {
-        @SerializedName("user")
-        private User user;
-        @SerializedName("auth_token")
-        private String authToken;
-
-        UserUpdateRequest(final User user, final String authToken)
-        {
-            this.user = user;
-            this.authToken = authToken;
-        }
-    }
 
 
     final class RateProRequest

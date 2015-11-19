@@ -12,6 +12,7 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.model.request.UserUpdateRequest;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
@@ -677,15 +678,15 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public final void updateUser(final User user, final Callback<User> cb)
+    public final void updateUser(final UserUpdateRequest userUpdateRequest, final String authToken, final Callback<User> cb)
     {
-        mService.updateUserInfo(user.getId(), new HandyRetrofitService.UserUpdateRequest(user,
-                user.getAuthToken()), new HandyRetrofitCallback(cb)
+        mService.updateUserInfo(userUpdateRequest.getUserId(), userUpdateRequest, new HandyRetrofitCallback(cb)
         {
             @Override
             void success(JSONObject response)
             {
-                handleUserResponse(user.getId(), user.getAuthToken(), response, cb);
+                //TODO: auth token should not be set this way!
+                handleUserResponse(userUpdateRequest.getUserId(), authToken, response, cb);
             }
         });
     }
