@@ -26,12 +26,6 @@ import butterknife.Bind;
 
 public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
 {
-    static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
-
-    private static final long HOURS_TO_ALLOW_CONTACT_PAST_BOOKING = 72L;
-
-    public static final String TAG = "BookingDetailSectionFragmentProInformation";
-
     @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionProInfoView view;
 
@@ -91,9 +85,13 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected void onActionClick()
     {
-        bus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.BOOKING_DETAILS_FLOW));
-        TipDialogFragment.newInstance(Integer.parseInt(booking.getId()), booking.getProvider().getFirstName())
-                .show(getActivity().getSupportFragmentManager(), null);
+        bus.post(new MixpanelEvent.TrackShowTipPrompt(
+                MixpanelEvent.TipParentFlow.BOOKING_DETAILS_FLOW));
+
+        TipDialogFragment tipDialogFragment = TipDialogFragment.newInstance(
+                Integer.parseInt(booking.getId()),
+                booking.getProvider().getFirstName());
+        tipDialogFragment.show(getActivity().getSupportFragmentManager(), null);
     }
 
     @Subscribe

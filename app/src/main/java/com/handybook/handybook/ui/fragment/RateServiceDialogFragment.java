@@ -65,7 +65,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     @Bind(R.id.star_5)
     ImageView mStar5;
     @Bind(R.id.tip_section)
-    View tipSection;
+    View mTipSection;
 
     public static RateServiceDialogFragment newInstance(
             final int bookingId,
@@ -132,7 +132,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
         {
-            tipSection.setVisibility(View.VISIBLE);
+            mTipSection.setVisibility(View.VISIBLE);
             getChildFragmentManager().beginTransaction()
                     .replace(R.id.tip_layout_container, tipFragment)
                     .commit();
