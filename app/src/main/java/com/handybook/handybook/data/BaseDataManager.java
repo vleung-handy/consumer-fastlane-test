@@ -33,6 +33,7 @@ import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.model.response.UserExistsResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -677,17 +678,9 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public final void getFirstName(final String email, final Callback<String> cb)
+    public final void getFirstName(final String email, final Callback<UserExistsResponse> cb)
     {
-        mService.getFirstName(email, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            void success(final JSONObject response)
-            {
-                final String firstNameKey = "first_name";
-                cb.onSuccess(response.isNull(firstNameKey) ? null : response.optString(firstNameKey));
-            }
-        });
+        mService.getFirstName(email, new UserExistsHandyRetrofitCallback(cb));
     }
 
     @Override

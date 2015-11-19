@@ -27,6 +27,7 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
@@ -337,19 +338,22 @@ public final class LoginFragment extends BookingFlowFragment
 
                 if (mFindUser)
                 {
-                    dataManager.getFirstName(email, new DataManager.Callback<String>()
+                    dataManager.getFirstName(email, new DataManager.Callback<UserExistsResponse>()
                     {
                         @Override
-                        public void onSuccess(final String name)
+                        public void onSuccess(final UserExistsResponse userExistsResponse)
                         {
                             if (!allowCallbacks)
                             { return; }
 
-                            if (name != null)
+                            if (userExistsResponse.exists())
                             {
                                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, name);
                                 intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, email);
+                                intent.putExtra(
+                                        LoginActivity.EXTRA_BOOKING_USER_NAME,
+                                        userExistsResponse.getFirstName()
+                                );
                                 startActivityForResult(intent, ActivityResult.RESULT_LOGIN_FINISH);
 
                                 progressDialog.dismiss();
@@ -369,22 +373,8 @@ public final class LoginFragment extends BookingFlowFragment
                             {
                                 return;
                             }
-                            // Right now this is the best way to check if the reason we find our-
-                            // selves here is not a network error, since both success and failure
-                            // methods in HandyRetrofitCallback can call .onError.
-                            // To be able to even check fo this I had to make
-                            // DataManagerError.getType() and DataManager.Type public.
-                            // TODO: Rewrite HAndyRetrofitCallback and make the net layer better
-                            if (error != null && error.getType().equals(DataManager.Type.CLIENT))
-                            {
-                                mBookingRequest.setEmail(email);
-                                continueBookingFlow();
-                            }
-                            else
-                            {
-                                dataManagerErrorHandler.handleError(getActivity(), error);
-                                enableInputs();
-                            }
+                            dataManagerErrorHandler.handleError(getActivity(), error);
+                            enableInputs();
                             progressDialog.dismiss();
 
                         }

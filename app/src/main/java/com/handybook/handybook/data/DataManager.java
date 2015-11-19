@@ -29,6 +29,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.model.response.UserExistsResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -193,7 +194,7 @@ public abstract class DataManager
                                  Callback<User> cb);
 
     public abstract void getFirstName(String email,
-                                      Callback<String> cb);
+                                      Callback<UserExistsResponse> cb);
 
     public abstract void updateUser(User user,
                                     Callback<User> cb);
