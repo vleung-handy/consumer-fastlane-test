@@ -23,7 +23,7 @@ public final class BaseDataManagerErrorHandler implements DataManagerErrorHandle
         String message = context.getString(R.string.default_error_string);
         if (error == null)
         {
-            Crashlytics.log("BaseDataManagerErrorHandler receive a null error value.");
+            Crashlytics.log("BaseDataManagerErrorHandler received a null error value.");
         }
         else
         {
