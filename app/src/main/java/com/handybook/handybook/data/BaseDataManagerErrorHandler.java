@@ -10,7 +10,7 @@ import com.handybook.handybook.ui.widget.InputTextField;
 
 import java.util.Map;
 
-public final class BaseDataManagerErrorHandler implements DataManagerErrorHandler {
+public class BaseDataManagerErrorHandler implements DataManagerErrorHandler {
     private Toast toast;
 
     public final void handleError(final Context context, final DataManager.DataManagerError error,

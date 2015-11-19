@@ -1,7 +1,9 @@
 package com.handybook.handybook.ui.fragment;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
@@ -14,8 +16,10 @@ import org.mockito.Answers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.robolectric.shadows.ShadowToast;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
@@ -71,13 +75,22 @@ public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper
                 "1.0", "2.0", "3.0"
         });
         when(mBookingEditHoursViewModel.getBaseHours()).thenReturn(1f);
-//        BookingEditHoursViewModel editHoursViewModel =
-//                BookingEditHoursViewModel.from(mBookingEditHoursInfoResponse);
 
         mFragment.onReceiveEditHoursInfoSuccess(new HandyEvent
                 .ReceiveEditHoursInfoViewModelSuccess(mBookingEditHoursViewModel));
         mFragment.onSaveButtonPressed();
         assertBusPost(instanceOf(HandyEvent.RequestEditHours.class));
+    }
+
+    @Test
+    public void shouldShowErrorToastWhenServerError() throws Exception
+    {
+        String errorMessage = mFragment.getString(R.string
+                .default_error_string);
+        mFragment.onReceiveEditHoursInfoError(new HandyEvent
+                .ReceiveEditHoursInfoViewModelError(new DataManager.DataManagerError(DataManager
+                .Type.SERVER)));
+        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }
 
     //TODO: put in util

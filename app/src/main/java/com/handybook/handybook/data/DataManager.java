@@ -243,7 +243,7 @@ public abstract class DataManager
     }
 
 
-    enum Type
+    public enum Type
     {
         OTHER, SERVER, CLIENT, NETWORK
     }
@@ -254,13 +254,13 @@ public abstract class DataManager
         private final String message;
         private String[] invalidInputs;
 
-        DataManagerError(final Type type)
+        public DataManagerError(final Type type)
         {
             this.type = type;
             this.message = null;
         }
 
-        DataManagerError(final Type type, final String message)
+        public DataManagerError(final Type type, final String message)
         {
             this.type = type;
             this.message = message;

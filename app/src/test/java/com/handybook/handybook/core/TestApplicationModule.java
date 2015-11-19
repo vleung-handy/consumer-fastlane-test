@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.login.LoginManager;
+import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
@@ -54,7 +55,7 @@ public class TestApplicationModule
     @Provides
     final DataManagerErrorHandler provideDataManagerHandler()
     {
-        return mock(DataManagerErrorHandler.class);
+        return mock(BaseDataManagerErrorHandler.class);
     }
 
     @Provides
