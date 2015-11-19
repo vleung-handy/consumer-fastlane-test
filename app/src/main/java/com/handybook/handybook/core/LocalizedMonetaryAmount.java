@@ -24,13 +24,13 @@ public class LocalizedMonetaryAmount implements Parcelable
 
     private LocalizedMonetaryAmount(final Parcel in)
     {
-        final String[] stringData = new String[1];
-        in.readStringArray(stringData);
-        mDisplayAmount = stringData[0];
-
         final int[] intData = new int[1];
         in.readIntArray(intData);
         mAmountInCents = intData[0];
+
+        final String[] stringData = new String[1];
+        in.readStringArray(stringData);
+        mDisplayAmount = stringData[0];
     }
 
     @Override

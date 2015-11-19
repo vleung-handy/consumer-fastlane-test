@@ -10,27 +10,21 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BookingAction;
 import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.event.MixpanelEvent;
+import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.widget.BookingDetailSectionProInfoView;
 import com.handybook.handybook.util.Utils;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-
-
-//TODO: Request a pro feature requires breaking down the BookingOptionsFragment into a usable fragment, request a pro disabled until that time
-
-public class BookingDetailSectionFragmentProInformation extends BookingDetailSectionFragment
+public class BookingDetailSectionFragmentProInformation extends
+        BookingDetailSectionFragment<BookingDetailSectionProInfoView>
 {
-    private static final long HOURS_TO_ALLOW_CONTACT_PAST_BOOKING = 72L;
-
-    public static final String TAG= "BookingDetailSectionFragmentProInformation";
-
-    @Bind(R.id.booking_detail_section_view)
-    protected BookingDetailSectionProInfoView view;
-
     @Override
     protected int getFragmentResourceId()
     {
@@ -46,29 +40,13 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     @Override
     protected int getEntryActionTextResourceId(Booking booking)
     {
-        if (booking.hasAssignedProvider())
-        {
-            return R.string.blank_string;
-        }
-        else
-        {
-            //TODO: Request a pro functionality
-            return R.string.request_pro;
-        }
+        return userCanLeaveTip(booking) ? R.string.leave_a_tip : R.string.blank_string;
     }
 
     @Override
     protected boolean hasEnabledAction(Booking booking)
     {
-        if (booking.hasAssignedProvider())
-        {
-            return false;
-        }
-        else
-        {
-            //TODO: Request a pro functionality
-            return false;
-        }
+        return userCanLeaveTip(booking);
     }
 
     @Override
@@ -78,53 +56,69 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
 
         final Booking.Provider pro = booking.getProvider();
 
+        if (userCanLeaveTip(booking))
+        {
+            getSectionView().getEntryActionText().setVisibility(View.VISIBLE);
+        }
+
         if (booking.hasAssignedProvider())
         {
-            view.entryText.setText(pro.getFullName());
+            getSectionView().getEntryText().setText(pro.getFullName());
         }
         else
         {
             //if no pro has been assigned indicate the ability to request a pro
-            view.entryText.setText(R.string.pro_assignment_pending);
+            getSectionView().getEntryText().setText(R.string.pro_assignment_pending);
         }
     }
 
+    @Override
+    protected void setupClickListeners(final Booking booking)
+    {
+        view.getEntryActionText().setOnClickListener(actionClicked);
+    }
 
     @Override
     protected void onActionClick()
     {
-        //If no pro assigned can request a pro
-        if (!booking.hasAssignedProvider())
-        {
-            //TODO: Request a pro functionality
-            //need a new UI where we request the requestable pros, then display them, then get the result back
-        }
+        bus.post(new MixpanelEvent.TrackShowTipPrompt(
+                MixpanelEvent.TipParentFlow.BOOKING_DETAILS_FLOW));
+
+        TipDialogFragment tipDialogFragment = TipDialogFragment.newInstance(
+                Integer.parseInt(booking.getId()),
+                booking.getProvider().getFirstName());
+        tipDialogFragment.show(getActivity().getSupportFragmentManager(), null);
     }
 
+    @Subscribe
+    public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
+    {
+        view.getEntryActionText().setVisibility(View.GONE);
+    }
 
     //Setup the contact booking action buttons
 
     @Override
     protected void clearBookingActionButtons()
     {
-        view.actionButtonsLayoutSlot1.removeAllViews();
-        view.actionButtonsLayoutSlot2.removeAllViews();
+        getSectionView().actionButtonsLayoutSlot1.removeAllViews();
+        getSectionView().actionButtonsLayoutSlot2.removeAllViews();
     }
 
     @Override
     protected ViewGroup getBookingActionButtonLayout()
     {
-        return view.actionButtonsLayout;
+        return getSectionView().getActionButtonsLayout();
     }
 
     @Override
     protected List<String> getActionButtonTypeList(Booking booking)
     {
         List<String> actionButtonTypes = new ArrayList<>();
-        if(booking.hasAssignedProvider())
+        if (booking.hasAssignedProvider())
         {
             //Make sure it is not an empty phone number
-            if(validateProPhoneInformation(booking))
+            if (validateProPhoneInformation(booking))
             {
                 actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
                 actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
@@ -139,9 +133,9 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         switch (actionButtonType)
         {
             case BookingAction.ACTION_CONTACT_PHONE:
-                return view.actionButtonsLayoutSlot1;
+                return getSectionView().actionButtonsLayoutSlot1;
             case BookingAction.ACTION_CONTACT_TEXT:
-                return view.actionButtonsLayoutSlot2;
+                return getSectionView().actionButtonsLayoutSlot2;
         }
         return null;
     }
@@ -159,12 +153,19 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         return null;
     }
 
+    private boolean userCanLeaveTip(final Booking booking)
+    {
+        final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
+                userManager.getCurrentUser().getDefaultTipAmounts();
+        return booking.canLeaveTip() && defaultTipAmounts != null && !defaultTipAmounts.isEmpty();
+    }
+
     private View.OnClickListener contactPhoneClicked = new View.OnClickListener()
     {
         @Override
         public void onClick(final View v)
         {
-            if(validateProPhoneInformation(booking))
+            if (validateProPhoneInformation(booking))
             {
                 callPhoneNumber(booking.getProvider().getPhone());
             }
@@ -180,7 +181,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
         @Override
         public void onClick(final View v)
         {
-            if(validateProPhoneInformation(booking))
+            if (validateProPhoneInformation(booking))
             {
                 textPhoneNumber(booking.getProvider().getPhone());
             }
@@ -195,7 +196,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     {
         boolean validPhoneNumber = false;
 
-        if(booking.getProvider() != null &&
+        if (booking.getProvider() != null &&
                 booking.getProvider().getPhone() != null &&
                 !booking.getProvider().getPhone().isEmpty())
         {
@@ -208,7 +209,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     //use native functionality to trigger a phone call
     private void callPhoneNumber(final String phoneNumber)
     {
-        if(phoneNumber == null || phoneNumber.isEmpty())
+        if (phoneNumber == null || phoneNumber.isEmpty())
         {
             return;
         }
@@ -226,7 +227,7 @@ public class BookingDetailSectionFragmentProInformation extends BookingDetailSec
     //use native functionality to trigger a text message interface
     private void textPhoneNumber(final String phoneNumber)
     {
-        if(phoneNumber == null || phoneNumber.isEmpty())
+        if (phoneNumber == null || phoneNumber.isEmpty())
         {
             return;
         }

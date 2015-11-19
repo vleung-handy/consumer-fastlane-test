@@ -11,19 +11,16 @@ import com.handybook.handybook.ui.view.InjectedRelativeLayout;
 import butterknife.Bind;
 
 
-/**
- * Created by cdavis on 9/1/15.
- */
 public class BookingDetailSectionView extends InjectedRelativeLayout
 {
     @Bind(R.id.entry_title)
-    public TextView entryTitle;
+    TextView mEntryTitle;
     @Bind(R.id.entry_text)
-    public TextView entryText;
+    TextView mEntryText;
     @Bind(R.id.entry_action_text)
-    public TextView entryActionText;
+    TextView mEntryActionText;
     @Bind(R.id.action_buttons_layout)
-    public LinearLayout actionButtonsLayout;
+    LinearLayout mActionButtonsLayout;
 
     public BookingDetailSectionView(final Context context)
     {
@@ -38,5 +35,25 @@ public class BookingDetailSectionView extends InjectedRelativeLayout
     public BookingDetailSectionView(final Context context, final AttributeSet attrs, final int defStyle)
     {
         super(context, attrs, defStyle);
+    }
+
+    public TextView getEntryTitle()
+    {
+        return mEntryTitle;
+    }
+
+    public TextView getEntryText()
+    {
+        return mEntryText;
+    }
+
+    public TextView getEntryActionText()
+    {
+        return mEntryActionText;
+    }
+
+    public LinearLayout getActionButtonsLayout()
+    {
+        return mActionButtonsLayout;
     }
 }

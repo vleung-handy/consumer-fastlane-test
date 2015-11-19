@@ -12,9 +12,6 @@ import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 
 public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionFragment
 {
-
-    public static final String TAG= "BookingDetailSectionFragmentNoteToPro";
-
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {
@@ -40,12 +37,12 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
         final String proNote = booking.getProNote();
         if (proNote != null)
         {
-            view.entryText.setVisibility(View.VISIBLE);
-            view.entryText.setText(proNote);
+            getSectionView().getEntryText().setVisibility(View.VISIBLE);
+            getSectionView().getEntryText().setText(proNote);
         }
         else
         {
-            view.entryText.setVisibility(View.GONE);
+            getSectionView().getEntryText().setVisibility(View.GONE);
         }
     }
 

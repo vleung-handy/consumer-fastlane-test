@@ -23,10 +23,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public abstract class BookingDetailSectionFragment extends InjectedFragment
+public abstract class BookingDetailSectionFragment<T extends BookingDetailSectionView>
+        extends InjectedFragment
 {
-    public static final String TAG = "BookingDetailSectionFragment";
-
     protected Booking booking;
 
     @Bind(R.id.booking_detail_section_view)
@@ -41,6 +40,11 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         }
     };
 
+    protected T getSectionView()
+    {
+        return (T) view;
+    }
+
     @Override
     public final void onCreate(final Bundle savedInstanceState)
     {
@@ -52,7 +56,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     protected void disableInputs()
     {
         super.disableInputs();
-        view.entryActionText.setClickable(false);
+        view.getEntryActionText().setClickable(false);
         setActionButtonsEnabled(false);
     }
 
@@ -60,7 +64,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
     protected final void enableInputs()
     {
         super.enableInputs();
-        view.entryActionText.setClickable(true);
+        view.getEntryActionText().setClickable(true);
         setActionButtonsEnabled(true);
     }
 
@@ -86,11 +90,11 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
     public void updateDisplay(Booking booking, User user)
     {
-        view.entryTitle.setText(getEntryTitleTextResourceId(booking));
-        view.entryActionText.setText(getEntryActionTextResourceId(booking));
+        view.getEntryTitle().setText(getEntryTitleTextResourceId(booking));
+        view.getEntryActionText().setText(getEntryActionTextResourceId(booking));
         if (!hasEnabledAction(booking) || booking.isPast())
         {
-            view.entryActionText.setVisibility(View.GONE);
+            view.getEntryActionText().setVisibility(View.GONE);
         }
         setupBookingActionButtons(booking);
     }
@@ -100,7 +104,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
         //TODO: Probably some additional constraints on this for certain edit actions?
         if (!booking.isPast())
         {
-            view.entryActionText.setOnClickListener(actionClicked);
+            view.getEntryActionText().setOnClickListener(actionClicked);
         }
     }
 
@@ -161,7 +165,7 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
     protected void clearBookingActionButtons()
     {
-        view.actionButtonsLayout.removeAllViews();
+        view.getActionButtonsLayout().removeAllViews();
     }
 
     //Nothing by default
@@ -172,13 +176,13 @@ public abstract class BookingDetailSectionFragment extends InjectedFragment
 
     protected ViewGroup getBookingActionButtonLayout()
     {
-        return view.actionButtonsLayout;
+        return view.getActionButtonsLayout();
     }
 
     protected ViewGroup getParentForActionButtonType(String actionButtonType)
     {
         //default is directly into parent, some sub classes will further sub divide this section
-        return view.actionButtonsLayout;
+        return view.getActionButtonsLayout();
     }
 
     //nothing by default
