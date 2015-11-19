@@ -154,8 +154,12 @@ public final class LoginFragment extends BookingFlowFragment
             mFbLayout.setVisibility(View.GONE);
             mOrText.setVisibility(View.GONE);
             mEmailText.setText(mBookingUserEmail);
-            mWelcomeText.setText(String.format(getString(R.string.welcome_back), mBookingUserName));
-            mWelcomeText.setVisibility(mBookingUserName == null ? View.GONE :View.VISIBLE);
+            if(mBookingUserName == null || mBookingUserName.isEmpty()){
+                mWelcomeText.setVisibility(View.GONE);
+            } else {
+                mWelcomeText.setText(String.format(getString(R.string.welcome_back), mBookingUserName));
+                mWelcomeText.setVisibility(View.VISIBLE);
+            }
             mBookingRequest.setEmail(mBookingUserEmail);
             mixpanel.trackEventAppTrackLogIn();
         }
@@ -470,7 +474,7 @@ public final class LoginFragment extends BookingFlowFragment
                         else {
                             mAuthType = AuthType.FACEBOOK;
                             dataManager.authFBUser(user.getId(), session.getAccessToken(),
-                                    user.asMap().get("email").toString(),  user.getUserExists(),
+                                    user.asMap().get("email").toString(),  user.getFirstName(),
                                     user.getLastName(), userCallback);
                         }
                     }
