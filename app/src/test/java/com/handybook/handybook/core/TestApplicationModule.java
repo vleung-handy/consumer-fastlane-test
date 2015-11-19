@@ -5,12 +5,17 @@ import android.content.Context;
 
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
+import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.squareup.otto.Bus;
 
 import dagger.Module;
@@ -24,8 +29,10 @@ import static org.mockito.Mockito.when;
  */
 @Module(injects = {
         TestBaseApplication.class,
-
-
+        BaseActivity.class,
+        BookingEditFrequencyActivity.class,
+        BookingEditFrequencyFragment.class,
+        NavigationFragment.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -34,6 +41,12 @@ public class TestApplicationModule
     public TestApplicationModule(Context context)
     {
         this.context = context;
+    }
+
+    @Provides
+    final DataManagerErrorHandler provideDataManagerHandler()
+    {
+        return mock(DataManagerErrorHandler.class);
     }
 
     @Provides
