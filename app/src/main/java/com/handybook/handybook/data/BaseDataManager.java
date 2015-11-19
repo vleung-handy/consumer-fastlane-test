@@ -677,6 +677,14 @@ public final class BaseDataManager extends DataManager
         });
     }
 
+    /**
+     *
+     * @param updateUserRequest
+     * @param authToken needed because the success callback sets this
+     *                  to the User object it creates.
+     *                  ideally, it should not be used this way.
+     * @param cb
+     */
     @Override
     public final void updateUser(final UpdateUserRequest updateUserRequest, final String authToken, final Callback<User> cb)
     {
