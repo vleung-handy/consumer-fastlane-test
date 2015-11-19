@@ -148,14 +148,14 @@ public final class LoginFragment extends BookingFlowFragment
             mEmailText.setText(mBookingRequest.getEmail());
             mixpanel.trackEventAppTrackContact();
         }
-        else if (mBookingUserName != null)
+        else if (mBookingUserEmail != null)
         {
             activity.setDrawerDisabled(true);
             mFbLayout.setVisibility(View.GONE);
             mOrText.setVisibility(View.GONE);
             mEmailText.setText(mBookingUserEmail);
             mWelcomeText.setText(String.format(getString(R.string.welcome_back), mBookingUserName));
-            mWelcomeText.setVisibility(View.VISIBLE);
+            mWelcomeText.setVisibility(mBookingUserName == null ? View.GONE :View.VISIBLE);
             mBookingRequest.setEmail(mBookingUserEmail);
             mixpanel.trackEventAppTrackLogIn();
         }
