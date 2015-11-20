@@ -50,6 +50,7 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
 
     @Mock
     private PriceInfo mPriceInfo;
+
     @Mock
     BookingEditExtrasInfoResponse mBookingEditExtrasInfoResponse;
 
@@ -102,7 +103,11 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
         when(mPaidStatus.getFutureBillDateFormatted()).thenReturn("Jan 1");
         when(mBookingEditExtrasInfoResponse.getPaidStatus()).thenReturn(mPaidStatus);
 
-        mFragment.onReceiveServicesExtrasOptionsSuccess(new HandyEvent.ReceiveEditExtrasInfoSuccess(mBookingEditExtrasInfoResponse));
+        //get the edit extras info response
+        mFragment.onReceiveServicesExtrasOptionsSuccess(
+                new HandyEvent.ReceiveEditExtrasInfoSuccess(mBookingEditExtrasInfoResponse));
+
+        //press the save button
         mFragment.onSaveButtonPressed();
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent.RequestEditExtras
                 .class));
