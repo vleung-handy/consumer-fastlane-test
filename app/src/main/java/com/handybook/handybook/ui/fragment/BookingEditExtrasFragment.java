@@ -208,8 +208,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
                 .getFutureBillDateFormatted()));
 
         mTotalDueText.setText(mBookingEditExtrasViewModel.getTotalDueText(
-                mOptionsView.getCheckedIndexes(), this
-                .getActivity()));
+                mOptionsView.getCheckedIndexes(),
+                this.getActivity()));
     }
 
     private void addExtrasDetailsRow(String displayName, float hours, String formattedPrice)

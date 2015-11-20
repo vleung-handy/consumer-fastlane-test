@@ -32,7 +32,9 @@ public class BookingEditExtrasViewModel
         return new BookingEditExtrasViewModel(bookingEditFrequencyInfoResponse);
     }
 
-    //builds an array of images for each option, used for options display
+    /**
+     * @return an array of images for each option, used for options display
+     */
     public int[] getOptionImagesResourceIdArray()
     {
         int[] resourceIds = new int[mBookingEditExtrasInfoResponse.getOptionsDisplayNames().length];
@@ -43,6 +45,10 @@ public class BookingEditExtrasViewModel
         return resourceIds;
     }
 
+    /**
+     * @param booking
+     * @return an array of the indexes that should be checked, based on the booking extras
+     */
     public Integer[] getCheckedIndexesForBooking(Booking booking)
     {
         ArrayList<Booking.ExtraInfo> extrasInfo = booking.getExtrasInfo();
@@ -69,8 +75,11 @@ public class BookingEditExtrasViewModel
         return originalBookingBasePrice;
     }
 
-    //NOTE: the only way to know what extras a user has selected is by an array of extras display names in the booking object
-    //so we must map those display names to associated index in the options
+    /**
+     * NOTE: the only way to know what extras a user has selected is by an array of extras display names in the booking object
+     * so we must map those display names to associated index in the options
+     * @return
+     */
     public Map<String, Integer> getExtraDisplayNameToOptionIndexMap()
     {
         Map<String, Integer> extraDisplayNameToOptionIndexMap = new HashMap<>();
@@ -81,6 +90,9 @@ public class BookingEditExtrasViewModel
         return extraDisplayNameToOptionIndexMap;
     }
 
+    /**
+     * @return the BookingOption model to be used to render the options view
+     */
     public BookingOption getBookingOption()
     {
         BookingOption bookingOption = new BookingOption();
@@ -99,6 +111,11 @@ public class BookingEditExtrasViewModel
         return bookingOption;
     }
 
+    /**
+     * //TODO: investigate why options view returns Integer[]
+     * @param checkedIndexes the indexes of the booking extra options selected
+     * @return the total number of hours for the booking extras selected
+     */
     public float getExtraHoursForCheckedIndexes(Integer[] checkedIndexes)
     {
         float extrasHours = 0;
@@ -109,6 +126,11 @@ public class BookingEditExtrasViewModel
         return extrasHours;
     }
 
+    /**
+     * //TODO: investigate why options view returns Integer[]
+     * @param checkedIndexes the indexes of the booking extra options selected
+     * @return the total number of hours for the booking, including the extras selected
+     */
     public float getTotalHoursForCheckedIndexes(Integer[] checkedIndexes)
     {
         float bookingBaseHours = mBookingEditExtrasInfoResponse.getBaseHours();
@@ -116,14 +138,23 @@ public class BookingEditExtrasViewModel
         return bookingBaseHours + extrasHours;
     }
 
+    /**
+     * @return the formatted date that the customer is expected to be charged for this
+     */
     public String getFutureBillDateFormatted()
     {
         return mBookingEditExtrasInfoResponse.getPaidStatus().getFutureBillDateFormatted();
     }
 
+    /**
+     * @param checkedIndexes
+     * @param context
+     * @return the string to display as "Total Due"
+     */
     public String getTotalDueText(Integer[] checkedIndexes, Context context)
     {
-        String totalHoursFormatted = getFormattedHoursForPriceTable(getTotalHoursForCheckedIndexes(checkedIndexes));
+        String totalHoursFormatted = getFormattedHoursForPriceTable(
+                getTotalHoursForCheckedIndexes(checkedIndexes));
         Map<String, PriceInfo> priceTable = mBookingEditExtrasInfoResponse.getPriceTable();
         return priceTable.containsKey(
                 totalHoursFormatted) ?
@@ -131,6 +162,9 @@ public class BookingEditExtrasViewModel
                 context.getResources().getString(R.string.no_data_indicator);
     }
 
+    /**
+     * @return the number of options available to choose from
+     */
     public int getNumberOfOptions()
     {
         return mBookingEditExtrasInfoResponse.getOptionsDisplayNames().length;
