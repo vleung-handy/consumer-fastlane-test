@@ -17,6 +17,8 @@ import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.model.response.OptionPrice;
+import com.handybook.handybook.model.response.PriceInfo;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.ui.widget.BookingOptionsView;
 import com.handybook.handybook.ui.widget.LabelValueView;
@@ -182,7 +184,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         bookingOption.setOptions(mEditExtrasInfo.getOptionsDisplayNames());
         bookingOption.setOptionsSubText(mEditExtrasInfo.getOptionsSubText());
         bookingOption.setImageResourceIds(mEditExtrasInfo.getOptionImagesResourceIdArray());
-        BookingEditExtrasInfoResponse.OptionPrice[] optionPrices = mEditExtrasInfo.getOptionPrices();
+        OptionPrice[] optionPrices = mEditExtrasInfo.getOptionPrices();
         String[] optionsRightStrings = new String[optionPrices.length];
         for (int i = 0; i < optionPrices.length; i++)
         {
@@ -251,7 +253,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         mBilledOnText.setText(getResources().getString(R.string.billed_on_date_formatted, mEditExtrasInfo.getPaidStatus().getFutureBillDateFormatted()));
 
         String totalHoursFormatted = getFormattedHoursForPriceTable(totalHours);
-        Map<String, BookingEditExtrasInfoResponse.PriceInfo> priceTable = mEditExtrasInfo.getPriceTable();
+        Map<String, PriceInfo> priceTable = mEditExtrasInfo.getPriceTable();
         mTotalDueText.setText(priceTable.containsKey(
                 totalHoursFormatted) ?
                 priceTable.get(totalHoursFormatted).getTotalDueFormatted() :
@@ -286,7 +288,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveServicesExtrasOptionsSuccess(HandyEvent.ReceiveGetEditExtrasInfoSuccess event)
+    public final void onReceiveServicesExtrasOptionsSuccess(HandyEvent.ReceiveEditExtrasInfoSuccess event)
     {
         mEditExtrasInfo = event.bookingEditExtrasInfoResponse;
 
@@ -297,7 +299,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveServicesExtrasOptionsError(HandyEvent.ReceiveGetEditExtrasInfoError event)
+    public final void onReceiveServicesExtrasOptionsError(HandyEvent.ReceiveEditExtrasInfoError event)
     {
         onReceiveErrorEvent(event);
     }
