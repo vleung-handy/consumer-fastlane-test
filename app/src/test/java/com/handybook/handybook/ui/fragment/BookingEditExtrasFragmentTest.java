@@ -4,7 +4,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.model.response.OptionPrice;
@@ -28,9 +27,6 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -61,9 +57,6 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     public void setUp() throws Exception
     {
         initMocks(this);
-
-        Mixpanel mockMixpanel = mock(Mixpanel.class);
-        doNothing().when(mockMixpanel).trackEvent(any());
 
         when(mBooking.getId()).thenReturn("12345");
         mFragment = BookingEditExtrasFragment.newInstance(mBooking);
