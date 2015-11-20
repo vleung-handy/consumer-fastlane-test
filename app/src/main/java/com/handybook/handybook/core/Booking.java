@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Booking implements Parcelable
+public class Booking implements Parcelable
 {
     public static final Comparator<? super Booking> COMPARATOR_DATE = new Comparator<Booking>()
     {
@@ -84,7 +84,7 @@ public final class Booking implements Parcelable
         return mCanEditExtras;
     }
 
-    public final String getId()
+    public String getId()
     {
         return mId;
     }
@@ -146,7 +146,7 @@ public final class Booking implements Parcelable
         return mServiceName;
     }
 
-    public final String getServiceMachineName()
+    public String getServiceMachineName()
     {
         return mServiceMachineName;
     }

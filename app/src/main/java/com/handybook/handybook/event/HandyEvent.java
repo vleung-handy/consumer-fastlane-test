@@ -378,11 +378,11 @@ public abstract class HandyEvent
     }
 
     //Get the service extras options
-    public static class RequestGetEditExtrasInfo extends RequestEvent
+    public static class RequestEditExtrasInfo extends RequestEvent
     {
         public final int bookingId;
 
-        public RequestGetEditExtrasInfo(int bookingId)
+        public RequestEditExtrasInfo(int bookingId)
         {
             this.bookingId = bookingId;
         }

@@ -29,7 +29,7 @@ import java.util.Observer;
 import javax.inject.Inject;
 
 //TODO: Add caching like we do for portal, navigating back and forth from my bookings page is painfully slow right now
-public final class BookingManager implements Observer
+public class BookingManager implements Observer
 {
     private final PrefsManager prefsManager;
     private final DataManager dataManager;
@@ -587,7 +587,7 @@ public final class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestGetServiceExtras(final HandyEvent.RequestGetEditExtrasInfo event)
+    public final void onRequestGetServiceExtras(final HandyEvent.RequestEditExtrasInfo event)
     {
         dataManager.getServiceExtras(event.bookingId,
                 new DataManager.Callback<BookingEditExtrasInfoResponse>()
