@@ -388,19 +388,19 @@ public abstract class HandyEvent
         }
     }
 
-    public static class ReceiveGetEditExtrasInfoSuccess extends ReceiveSuccessEvent
+    public static class ReceiveEditExtrasInfoSuccess extends ReceiveSuccessEvent
     {
         public final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse;
 
-        public ReceiveGetEditExtrasInfoSuccess(BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
+        public ReceiveEditExtrasInfoSuccess(BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
         {
             this.bookingEditExtrasInfoResponse = bookingEditExtrasInfoResponse;
         }
     }
 
-    public static class ReceiveGetEditExtrasInfoError extends ReceiveErrorEvent
+    public static class ReceiveEditExtrasInfoError extends ReceiveErrorEvent
     {
-        public ReceiveGetEditExtrasInfoError(DataManager.DataManagerError error)
+        public ReceiveEditExtrasInfoError(DataManager.DataManagerError error)
         {
             this.error = error;
         }

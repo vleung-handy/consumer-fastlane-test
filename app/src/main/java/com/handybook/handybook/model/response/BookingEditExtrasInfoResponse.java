@@ -93,68 +93,6 @@ public class BookingEditExtrasInfoResponse
         return mIsRecurring;
     }
 
-    public static final class OptionPrice
-    {
-        public String getFormattedPrice()
-        {
-            return mFormattedPrice;
-        }
-
-        public float getAmountDollars()
-        {
-            return mAmountDollars;
-        }
-
-        @SerializedName("formatted")
-        private String mFormattedPrice;
-        @SerializedName("amount")
-        private float mAmountDollars;
-    }
-
-    //TODO: move these classes out of here
-    public static final class PaidStatus
-    {
-        public boolean isBilled()
-        {
-            return mBilled;
-        }
-
-        public String getFutureBillDateFormatted()
-        {
-            return mFutureBillDateFormatted;
-        }
-
-        @SerializedName("billed")
-        private boolean mBilled;
-        @SerializedName("future_bill_date")
-        private String mFutureBillDateFormatted;
-    }
-
-    public final static class PriceInfo
-    {
-        @SerializedName("label")
-        private String mLabel;
-        @SerializedName("price_diff")
-        private String mPriceDifferenceFormatted;
-        @SerializedName("total_due")
-        private String mTotalDueFormatted;
-
-        public String getLabel()
-        {
-            return mLabel;
-        }
-
-        public String getTotalDueFormatted()
-        {
-            return mTotalDueFormatted;
-        }
-
-        public String getPriceDifferenceFormatted()
-        {
-            return mPriceDifferenceFormatted;
-        }
-    }
-
     //builds an array of images for each option, used for options display
     public int[] getOptionImagesResourceIdArray()
     {

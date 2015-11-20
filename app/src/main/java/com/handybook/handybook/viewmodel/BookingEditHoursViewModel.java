@@ -2,8 +2,8 @@ package com.handybook.handybook.viewmodel;
 
 import android.support.annotation.NonNull;
 
-import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.model.response.PriceInfo;
 import com.handybook.handybook.util.MathUtils;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.ValidationUtils;
@@ -183,14 +183,14 @@ public class BookingEditHoursViewModel
 
     private String getTotalDuePriceFormatted(final String key)
     {
-        Map<String, BookingEditExtrasInfoResponse.PriceInfo> priceMap = mEditHoursInfo.getTotalPriceMap();
+        Map<String, PriceInfo> priceMap = mEditHoursInfo.getTotalPriceMap();
         return ValidationUtils.isMapKeyEntryValid(key, priceMap) ?
                 priceMap.get(key).getTotalDueFormatted() : null;
     }
 
     private String getPriceDifferenceFormatted(final String key)
     {
-        Map<String, BookingEditExtrasInfoResponse.PriceInfo> priceMap = mEditHoursInfo.getPriceMap();
+        Map<String, PriceInfo> priceMap = mEditHoursInfo.getPriceMap();
         return ValidationUtils.isMapKeyEntryValid(key, priceMap) ?
                 priceMap.get(key).getPriceDifferenceFormatted() : null;
     }

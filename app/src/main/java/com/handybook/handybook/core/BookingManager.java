@@ -595,13 +595,13 @@ public class BookingManager implements Observer
             @Override
             public void onSuccess(BookingEditExtrasInfoResponse response)
             {
-                bus.post(new HandyEvent.ReceiveGetEditExtrasInfoSuccess(response));
+                bus.post(new HandyEvent.ReceiveEditExtrasInfoSuccess(response));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveGetEditExtrasInfoError(error));
+                bus.post(new HandyEvent.ReceiveEditExtrasInfoError(error));
 
             }
         });

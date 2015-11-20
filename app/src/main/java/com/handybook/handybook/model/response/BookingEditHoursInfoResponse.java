@@ -9,15 +9,15 @@ public class BookingEditHoursInfoResponse
     @SerializedName("hours")
     private float mBaseHours;
     @SerializedName("paid_status")
-    private BookingEditExtrasInfoResponse.PaidStatus mPaidStatus;
+    private PaidStatus mPaidStatus;
     @SerializedName("extras_hours")
     private float mExtrasHours;
     @SerializedName("price_table")
-    private Map<String, BookingEditExtrasInfoResponse.PriceInfo> mPriceMap; //TODO: move priceinfo class
+    private Map<String, PriceInfo> mPriceMap; //TODO: move priceinfo class
     @SerializedName("total_price_table")
-    private Map<String, BookingEditExtrasInfoResponse.PriceInfo> mTotalPriceMap;
+    private Map<String, PriceInfo> mTotalPriceMap;
     @SerializedName("extras_price")
-    private BookingEditExtrasInfoResponse.OptionPrice mExtrasPrice;
+    private OptionPrice mExtrasPrice;
     @SerializedName("total_hours")
     private float mTotalHours;
     @SerializedName("total_formatted")
@@ -33,7 +33,7 @@ public class BookingEditHoursInfoResponse
         return mExtrasHours;
     }
 
-    public BookingEditExtrasInfoResponse.OptionPrice getExtrasPrice()
+    public OptionPrice getExtrasPrice()
     {
         return mExtrasPrice;
     }
@@ -48,17 +48,17 @@ public class BookingEditHoursInfoResponse
         return mTotalPriceFormattedDollars;
     }
 
-    public BookingEditExtrasInfoResponse.PaidStatus getPaidStatus() //TODO: move paidstatus class
+    public PaidStatus getPaidStatus() //TODO: move paidstatus class
     {
         return mPaidStatus;
     }
 
-    public Map<String, BookingEditExtrasInfoResponse.PriceInfo> getTotalPriceMap()
+    public Map<String, PriceInfo> getTotalPriceMap()
     {
         return mTotalPriceMap;
     }
 
-    public Map<String, BookingEditExtrasInfoResponse.PriceInfo> getPriceMap()
+    public Map<String, PriceInfo> getPriceMap()
     {
         return mPriceMap;
     }
