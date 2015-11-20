@@ -2,7 +2,7 @@ package com.handybook.handybook.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class PriceInfo
+public class PriceInfo
 {
     @SerializedName("label")
     private String mLabel;

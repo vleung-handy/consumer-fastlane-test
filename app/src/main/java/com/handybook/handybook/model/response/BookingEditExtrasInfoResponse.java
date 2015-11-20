@@ -93,6 +93,7 @@ public class BookingEditExtrasInfoResponse
         return mIsRecurring;
     }
 
+    //TODO: create a view model for edit extras and move these functions to it
     //builds an array of images for each option, used for options display
     public int[] getOptionImagesResourceIdArray()
     {

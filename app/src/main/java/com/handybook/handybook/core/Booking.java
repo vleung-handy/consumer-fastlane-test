@@ -335,7 +335,7 @@ public class Booking implements Parcelable
         return mPaymentInfo;
     }
 
-    public final ArrayList<ExtraInfo> getExtrasInfo()
+    public ArrayList<ExtraInfo> getExtrasInfo()
     {
         return mExtrasInfo;
     }
@@ -753,7 +753,7 @@ public class Booking implements Parcelable
     }
 
 
-    public static final class ExtraInfo implements Parcelable
+    public static class ExtraInfo implements Parcelable
     {
         @SerializedName("label")
         private String label;

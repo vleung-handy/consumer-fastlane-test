@@ -2,7 +2,7 @@ package com.handybook.handybook.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class PaidStatus
+public class PaidStatus
 {
     public boolean isBilled()
     {
