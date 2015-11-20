@@ -41,7 +41,7 @@ public class BlockingActivity extends BaseActivity
     }
 
     @Subscribe
-    public void onStopBlockingEvent(final HandyEvent.StopBlockingAppEvent _)
+    public void onStopBlockingEvent(final HandyEvent.StopBlockingAppEvent aVoid)
     {
         Intent restartAppIntent = new Intent(this, ServiceCategoriesActivity.class);
         restartAppIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
