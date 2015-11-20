@@ -8,9 +8,9 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
+import com.handybook.handybook.testutil.AppAssertionUtils;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
@@ -21,20 +21,17 @@ import org.robolectric.shadows.ShadowToast;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapper
 {
-
+    //TODO: add a test to verify that the request reflects the options selected
     private BookingEditFrequencyFragment mFragment;
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
@@ -63,7 +60,7 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
     @Test
     public void shouldRequestEditFrequencyViewModelOnCreateView() throws Exception
     {
-        assertBusPost(instanceOf(HandyEvent.RequestGetEditFrequencyViewModel.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent.RequestGetEditFrequencyViewModel.class));
     }
 
     @Test
@@ -78,7 +75,8 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
         mFragment.onReceiveBookingPricesForFrequenciesSuccess(new HandyEvent
                 .ReceiveGetEditFrequencyViewModelSuccess(editFrequencyViewModel));
         mFragment.mSaveButton.performClick();
-        assertBusPost(instanceOf(HandyEvent.RequestEditBookingFrequency.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent
+                .RequestEditBookingFrequency.class));
     }
 
     @Test
@@ -90,12 +88,5 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
                 .ReceiveEditBookingFrequencyError(new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
-    }
-
-    //TODO: put in util
-    private void assertBusPost(Matcher matcher)
-    {
-        verify(mFragment.bus, atLeastOnce()).post(mCaptor.capture());
-        assertThat(mCaptor.getAllValues(), hasItem(matcher));
     }
 }

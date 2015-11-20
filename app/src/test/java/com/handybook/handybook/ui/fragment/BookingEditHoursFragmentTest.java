@@ -7,9 +7,9 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.testutil.AppAssertionUtils;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
@@ -20,20 +20,17 @@ import org.robolectric.shadows.ShadowToast;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper
 {
-
+    //TODO: add a test to verify that the request reflects the options selected
     private BookingEditHoursFragment mFragment;
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
@@ -65,7 +62,7 @@ public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldRequestEditHoursViewModelOnCreateView() throws Exception
     {
-        assertBusPost(instanceOf(HandyEvent.RequestEditHoursInfoViewModel.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent.RequestEditHoursInfoViewModel.class));
     }
 
     @Test
@@ -79,7 +76,7 @@ public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper
         mFragment.onReceiveEditHoursInfoSuccess(new HandyEvent
                 .ReceiveEditHoursInfoViewModelSuccess(mBookingEditHoursViewModel));
         mFragment.onSaveButtonPressed();
-        assertBusPost(instanceOf(HandyEvent.RequestEditHours.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent.RequestEditHours.class));
     }
 
     @Test
@@ -91,12 +88,5 @@ public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper
                 .ReceiveEditHoursInfoViewModelError(new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
-    }
-
-    //TODO: put in util
-    private void assertBusPost(Matcher matcher)
-    {
-        verify(mFragment.bus, atLeastOnce()).post(mCaptor.capture());
-        assertThat(mCaptor.getAllValues(), hasItem(matcher));
     }
 }
