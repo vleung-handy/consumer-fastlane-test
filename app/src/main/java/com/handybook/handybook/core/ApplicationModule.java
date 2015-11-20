@@ -29,6 +29,7 @@ import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
 import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.ui.activity.BookingEditNoteToProActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
@@ -67,6 +68,7 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
+import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
 import com.handybook.handybook.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
@@ -93,6 +95,7 @@ import com.handybook.handybook.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
+import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -185,8 +188,11 @@ import retrofit.converter.GsonConverter;
         BookingEditFrequencyFragment.class,
         BookingEditExtrasActivity.class,
         BookingEditExtrasFragment.class,
+        BookingEditHoursActivity.class,
+        BookingEditHoursFragment.class,
         BlockingActivity.class,
         BlockingUpdateFragment.class,
+        TipDialogFragment.class,
 })
 public final class ApplicationModule
 {

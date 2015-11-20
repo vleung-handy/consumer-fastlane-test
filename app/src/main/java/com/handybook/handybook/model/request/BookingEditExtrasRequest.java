@@ -1,8 +1,8 @@
-package com.handybook.handybook.core;
+package com.handybook.handybook.model.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class BookingEditExtrasTransaction
+public final class BookingEditExtrasRequest
 {
     @SerializedName("added_extras")
     private String[] mAddedExtras;

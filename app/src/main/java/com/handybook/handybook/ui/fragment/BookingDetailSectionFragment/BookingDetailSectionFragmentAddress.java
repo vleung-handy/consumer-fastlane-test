@@ -7,8 +7,6 @@ import com.handybook.handybook.util.TextUtils;
 
 public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFragment
 {
-    public static final String TAG= "BookingDetailSectionFragmentAddress";
-
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {
@@ -32,7 +30,8 @@ public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFra
     {
         super.updateDisplay(booking, user);
         final Booking.Address address = booking.getAddress();
-        view.entryText.setText(TextUtils.formatAddress(address.getAddress1(), address.getAddress2(),
+        getSectionView().getEntryText().setText(TextUtils.formatAddress(address.getAddress1(),
+                address.getAddress2(),
                 address.getCity(), address.getState(), address.getZip()));
     }
 

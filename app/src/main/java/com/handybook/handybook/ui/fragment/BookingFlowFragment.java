@@ -431,18 +431,6 @@ public class BookingFlowFragment extends InjectedFragment
         }
     }
 
-    protected void showUiBlockers()
-    {
-        disableInputs();
-        progressDialog.show();
-    }
-
-    protected void removeUiBlockers()
-    {
-        enableInputs();
-        progressDialog.dismiss();
-    }
-
     protected void onReceiveErrorEvent(HandyEvent.ReceiveErrorEvent event)
     {
         removeUiBlockers();

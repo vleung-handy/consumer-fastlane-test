@@ -1,3 +1,6 @@
+import org.gradle.logging.StyledTextOutputFactory
+import static org.gradle.logging.StyledTextOutput.Style
+
 buildscript {
     repositories {
         mavenCentral()
@@ -5,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.newrelic.agent.android:agent-gradle-plugin:5.3.1'
+        classpath 'com.newrelic.agent.android:agent-gradle-plugin:5.3.2'
         classpath 'io.fabric.tools:gradle:1.19.2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
     }
@@ -37,11 +40,20 @@ dexcount {
     verbose = false
 }
 
-def computeVersionName(versionCode) {
-    def major = (versionCode / 10000).intValue() % 10000
-    def minor = (versionCode / 100).intValue() % 100
-    def bugfix = versionCode % 100
-    "${major}.${minor}.${bugfix}"
+def computeVersionCode(versionName) {
+    def versionNameMatcher = (versionName =~ /^([1-9]\d*)\.(\d{1,2})\.(\d{1,2})$/)
+    if (versionNameMatcher.matches()) {
+        def identifiers = (versionNameMatcher[0] - [versionName])
+        def (major, minor, patch) = identifiers.collect { it.toInteger() }
+        def versionCode = (major * 1000000) + (minor * 10000) + (patch * 100)
+
+        def out = services.get(StyledTextOutputFactory).create("debug")
+        out.withStyle(Style.Info).println("\nBuilding version ${versionName} (${versionCode})\n")
+
+        return versionCode
+    } else {
+        throw new InvalidUserDataException("Illegal version name ${versionName}")
+    }
 }
 
 android {
@@ -65,9 +77,10 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 10904
-        versionName computeVersionName(versionCode)
+        versionName '1.10.0'
+        versionCode computeVersionCode(versionName)
         multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -90,6 +103,16 @@ android {
             signingConfig signingConfigs.prod
             manifestPlaceholders = [PACKAGE_NAME: "com.handy.handy.prod"]
         }
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def buildInfo = "${flavorName}-${variant.buildType.name}"
+                def versionInfo = "${variant.versionName}-${variant.versionCode}"
+                def formattedDate = new Date().format("yyyyMMddHHmm")
+                output.outputFile = new File(output.outputFile.parentFile,
+                        "handy-${buildInfo}-${versionInfo}-${formattedDate}.apk");
+            }
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -98,7 +121,6 @@ android {
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
 
     //Android Support Libraries
     compile 'com.android.support:multidex:1.0.0'
@@ -121,7 +143,7 @@ dependencies {
     }
 
     //New Relic
-    compile 'com.newrelic.agent.android:android-agent:5.3.1'
+    compile 'com.newrelic.agent.android:android-agent:5.3.2'
 
     //Awesome Square Libraries
     compile 'com.squareup.retrofit:retrofit:1.9.0'
@@ -173,9 +195,20 @@ dependencies {
     compile project(':simplealertdialog')
     compile project(':androidspinner')
 
+    //Espresso libraries for automation testing
+    androidTestCompile ('com.android.support.test:runner:0.4.1') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.1') {
+        exclude module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
+    //need to exclude certain modules because they cause dependency conflicts
+
     //Testing with juint and robolectric
+    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.robolectric:shadows-support-v4:3.0'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:2.4' //TODO: Update to 3.0 (and fix 6 tests)
-    testCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
-    testCompile 'com.squareup.okhttp:mockwebserver:2.3.0'
+    testCompile 'org.mockito:mockito-core:1.9.5'
+    testCompile 'org.robolectric:shadows-multidex:3.0'
 }

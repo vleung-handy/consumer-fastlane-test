@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BookingOption;
-import com.handybook.handybook.util.Utils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,6 +49,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         super(context, attrs, defStyle);
     }
 
+    //TODO: put these in a util
     private boolean isArrayIndexValid(int[] array, int index)
     {
         return array != null &&
@@ -162,17 +162,6 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             }
             checkBox.setOnCheckedChangeListener(checkedChanged);
             checkMap.put(i, checkBox);
-
-            if (i < optionsList.length - 1)
-            {
-                final LinearLayout.LayoutParams layoutParams
-                        = (LinearLayout.LayoutParams) optionLayout.getLayoutParams();
-
-                layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin,
-                        layoutParams.rightMargin, Utils.toDP(16, context));
-
-                optionView.setLayoutParams(layoutParams);
-            }
 
             optionView.setOnClickListener(new OnClickListener()
             {

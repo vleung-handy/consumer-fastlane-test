@@ -7,10 +7,11 @@ import com.handybook.handybook.core.BookingPostInfo;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingEditExtrasTransaction;
-import com.handybook.handybook.core.BookingUpdateFrequencyTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.core.User;
+import com.handybook.handybook.model.request.BookingEditExtrasRequest;
+import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
+import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;
 
@@ -41,7 +42,7 @@ public interface HandyRetrofitService
 
     @POST("/bookings/{id}/edit_extras")
     void editServiceExtras(@Path("id") int bookingId,
-                          @Body BookingEditExtrasTransaction bookingEditExtrasTransaction,
+                          @Body BookingEditExtrasRequest bookingEditExtrasRequest,
                           HandyRetrofitCallback cb);
 
     @GET("/quotes/new")
@@ -80,6 +81,15 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+    @GET("/bookings/{bookingId}/edit_hours")
+    void getEditHoursInfo(@Path("bookingId") int bookingId,
+                    HandyRetrofitCallback cb);
+
+    @POST("/bookings/{bookingId}/edit_hours")
+    void editBookingHours(@Path("bookingId") int bookingId,
+                           @Body BookingEditHoursRequest bookingEditHoursRequest,
+                           HandyRetrofitCallback cb);
+
     @GET("/bookings/{id}")
     void getBooking(@Path("id") String bookingId,
                     HandyRetrofitCallback cb);
@@ -89,8 +99,14 @@ public interface HandyRetrofitService
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/rate_pro")
-    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating, @Field("tip_amount") Integer tipAmount,
+    void ratePro(@Path("booking") int bookingId, @Field("rating_int") int rating,
+                 @Field("tip_amount") Integer tipAmount,
                  HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
+    @POST("/bookings/{booking}/tip")
+    void tipPro(@Path("booking") int bookingId, @Field("tip_amount") Integer tipAmount,
+                HandyRetrofitCallback cb);
 
     @POST("/bookings/{booking}/rating_flow")
     void submitProRatingDetails(@Path("booking") int bookingId, @Body RateProRequest req,
@@ -115,7 +131,7 @@ public interface HandyRetrofitService
 
     @POST("/bookings/{booking}/edit_frequency")
     void updateBookingFrequency(@Path("booking") int bookingId,
-                                @Body BookingUpdateFrequencyTransaction bookingUpdateFrequencyTransaction,
+                                @Body BookingEditFrequencyRequest bookingEditFrequencyRequest,
                                 HandyRetrofitCallback cb);
 
     @GET("/bookings/{booking}/edit_frequency")
@@ -182,11 +198,11 @@ public interface HandyRetrofitService
     void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken,
                      HandyRetrofitCallback cb);
 
-    @GET("/users/dont_look_at_this")
-    void getUserInfo(@Query("email") String email, HandyRetrofitCallback cb);
+    @GET("/users/exists")
+    void getUserExists(@Query("email") String email, HandyRetrofitCallback cb);
 
     @PUT("/users/{user}")
-    void updateUserInfo(@Path("user") String userId, @Body UserUpdateRequest req,
+    void updateUserInfo(@Path("user") String userId, @Body UpdateUserRequest req,
                         HandyRetrofitCallback cb);
 
     @GET("/password_resets/new")
@@ -220,20 +236,6 @@ public interface HandyRetrofitService
 
     @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
-
-    final class UserUpdateRequest
-    {
-        @SerializedName("user")
-        private User user;
-        @SerializedName("auth_token")
-        private String authToken;
-
-        UserUpdateRequest(final User user, final String authToken)
-        {
-            this.user = user;
-            this.authToken = authToken;
-        }
-    }
 
 
     final class RateProRequest

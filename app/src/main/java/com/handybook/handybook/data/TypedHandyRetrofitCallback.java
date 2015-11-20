@@ -7,13 +7,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOptionsWrapper;
-import com.handybook.handybook.core.BookingPricesForFrequenciesResponse;
+import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingRequestablePros;
-import com.handybook.handybook.core.EditExtrasInfo;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.UserBookingsWrapper;
+import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
 
 import org.json.JSONObject;
 
@@ -36,7 +38,8 @@ public abstract class TypedHandyRetrofitCallback<T> extends HandyRetrofitCallbac
             {
             };
             returnData = gsonBuilder.fromJson(response.toString(), typeToken.getType());
-        } catch (JsonSyntaxException e)
+        }
+        catch (JsonSyntaxException e)
         {
             Crashlytics.logException(e);
         }
@@ -112,7 +115,8 @@ class UserBookingsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallbac
     }
 }
 
-class BookingPricesForFrequenciesHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingPricesForFrequenciesResponse>
+
+class BookingPricesForFrequenciesHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingEditFrequencyInfoResponse>
 {
     BookingPricesForFrequenciesHandyRetroFitCallback(DataManager.Callback callback)
     {
@@ -120,13 +124,24 @@ class BookingPricesForFrequenciesHandyRetroFitCallback extends TypedHandyRetrofi
     }
 }
 
-class ServiceExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<EditExtrasInfo>
+
+class ServiceExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingEditExtrasInfoResponse>
 {
     ServiceExtrasInfoHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }
 }
+
+
+class EditHoursInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingEditHoursInfoResponse>
+{
+    EditHoursInfoHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
 
 class SuccessHandyRetroFitCallback extends TypedHandyRetrofitCallback<SuccessWrapper>
 {
@@ -135,6 +150,17 @@ class SuccessHandyRetroFitCallback extends TypedHandyRetrofitCallback<SuccessWra
         super(callback);
     }
 }
+
+
+class UserExistsHandyRetrofitCallback extends TypedHandyRetrofitCallback<UserExistsResponse>
+{
+
+    UserExistsHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
 
 class EmptyHandyRetroFitCallback extends TypedHandyRetrofitCallback<Void>
 {

@@ -16,8 +16,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.model.BookingCardRowViewModel;
-import com.handybook.handybook.model.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingCardRowViewModel;
+import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.view.BookingCardRowView;
@@ -90,7 +90,7 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
         }
         else
         {
-            if (masterBooking.getCanEditFrequency() && !masterBooking.isPast())
+            if (masterBooking.canEditFrequency() && !masterBooking.isPast())
             {
                 mEditBookingCard.setVisibility(View.VISIBLE);
                 mEditBookingCard.setOnClickListener(onEditClickListener);
@@ -104,9 +104,9 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
             if (masterBooking.isRecurring())
             {
                 mRecurringSubtitleContainer.setVisibility(View.VISIBLE);
-                mFooter.setVisibility(View.VISIBLE);
                 mRecurringText.setVisibility(View.VISIBLE);
                 mRecurringText.setText(mBookingCardViewModel.getSubtitle());
+                mFooter.setVisibility(masterBooking.isPast() ? View.GONE : View.VISIBLE);
             }
             else
             {

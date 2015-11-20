@@ -1,185 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@android:color/transparent">
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
         android:layout_height="wrap_content"
         android:layout_marginTop="46dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:animateLayoutChanges="true">
+        android:layout_width="300dp"
+        android:orientation="vertical">
 
         <TextView
+            style="@style/TextView.XLarge.Bold"
+            android:gravity="center"
             android:id="@+id/title_text"
-            android:gravity="center"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
-            android:text="Title"
-            style="@style/TextView.XLarge.Bold" />
+            android:layout_marginTop="64dp"
+            android:layout_width="match_parent"
+            android:text="Title"/>
 
         <TextView
-            android:id="@+id/message_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TextView.Medium"
             android:gravity="center"
-            android:layout_marginTop="4dp"
+            android:id="@+id/message_text"
+            android:layout_below="@id/title_text"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
-            android:layout_below="@id/title_text"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
             android:text="Message"
-            android:textColor="@color/dark_grey_pressed"
-            style="@style/TextView.Medium" />
+            android:textColor="@color/dark_grey_pressed"/>
 
         <LinearLayout
+            android:gravity="center_horizontal"
             android:id="@+id/ratings_layout"
-            android:layout_width="match_parent"
+            android:layout_below="@id/message_text"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginBottom="24dp"
-            android:layout_below="@id/message_text"
-            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
 
                 <ImageView
+                    android:contentDescription="star"
                     android:id="@+id/star_1"
-                    android:layout_width="36dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_height="36dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_star"
-                    android:contentDescription="star" />
+                    android:layout_width="36dp"
+                    android:src="@drawable/ic_star"/>
 
                 <TextView
+                    style="@style/TextView.XSmall"
                     android:layout_below="@id/star_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:textColor="@color/dark_grey_pressed"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="@string/awful"
-                    style="@style/TextView.XSmall" />
+                    android:textColor="@color/dark_grey_pressed"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    style="@style/TextView.XSmall"
                     android:layout_below="@id/star_1"
-                    android:textColor="@color/dark_grey_pressed"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="@string/amazing"
-                    android:visibility="invisible"
-                    style="@style/TextView.XSmall" />
+                    android:textColor="@color/dark_grey_pressed"
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
 
                 <ImageView
+                    android:contentDescription="star"
                     android:id="@+id/star_2"
-                    android:layout_width="36dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_height="36dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_star"
-                    android:contentDescription="star" />
+                    android:layout_width="36dp"
+                    android:src="@drawable/ic_star"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    style="@style/TextView.XSmall"
                     android:layout_below="@id/star_2"
-                    android:textColor="@color/dark_grey_pressed"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="@string/amazing"
-                    android:visibility="invisible"
-                    style="@style/TextView.XSmall" />
+                    android:textColor="@color/dark_grey_pressed"
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
 
                 <ImageView
+                    android:contentDescription="star"
                     android:id="@+id/star_3"
-                    android:layout_width="36dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_height="36dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_star"
-                    android:contentDescription="star" />
+                    android:layout_width="36dp"
+                    android:src="@drawable/ic_star"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    style="@style/TextView.XSmall"
                     android:layout_below="@id/star_3"
-                    android:textColor="@color/dark_grey_pressed"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="@string/amazing"
-                    android:visibility="invisible"
-                    style="@style/TextView.XSmall" />
+                    android:textColor="@color/dark_grey_pressed"
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 
-
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
 
                 <ImageView
+                    android:contentDescription="star"
                     android:id="@+id/star_4"
-                    android:layout_width="36dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_height="36dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_star"
-                    android:contentDescription="star" />
+                    android:layout_width="36dp"
+                    android:src="@drawable/ic_star"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    style="@style/TextView.XSmall"
                     android:layout_below="@id/star_4"
-                    android:textColor="@color/dark_grey_pressed"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="@string/amazing"
-                    android:visibility="invisible"
-                    style="@style/TextView.XSmall" />
+                    android:textColor="@color/dark_grey_pressed"
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
 
                 <ImageView
+                    android:contentDescription="star"
                     android:id="@+id/star_5"
-                    android:layout_width="36dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_height="36dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_star"
-                    android:contentDescription="star" />
+                    android:layout_width="36dp"
+                    android:src="@drawable/ic_star"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    style="@style/TextView.XSmall"
                     android:layout_below="@id/star_5"
-                    android:textColor="@color/dark_grey_pressed"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="@string/amazing"
-                    style="@style/TextView.XSmall" />
+                    android:textColor="@color/dark_grey_pressed"/>
 
             </RelativeLayout>
 
@@ -188,128 +187,70 @@
         <!--Used to fix margin on older devices-->
         <View
             android:layout_below="@id/ratings_layout"
-            android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:layout_width="0dp"/>
 
         <LinearLayout
             android:id="@+id/submit_button_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_below="@+id/ratings_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
             android:visibility="gone">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/tip_section"
                 android:layout_height="wrap_content"
-                android:id="@+id/tip_layout"
+                android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_marginBottom="25dp">
+                android:visibility="gone">
 
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
                     android:background="@color/handy_divider_line"
-                    android:layout_marginBottom="25dp"/>
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_width="match_parent"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/rating_tip_prompt" />
-
-                <RadioGroup
-                    style="@style/ToggleGroupStyle"
-                    android:id="@+id/tip_amount_radio_group"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:checkedButton="@+id/tip_0"
-                    android:layout_marginTop="20dp">
-
-                    <RadioButton
-                        style="@style/TipToggle.First"
-                        android:text="@string/no_tip_amount"
-                        android:id="@+id/tip_0" />
-
-                    <RadioButton
-                        style="@style/TipToggle"
-                        android:id="@+id/tip_1" />
-
-                    <RadioButton
-                        style="@style/TipToggle"
-                        android:id="@+id/tip_2" />
-
-                    <RadioButton
-                        style="@style/TipToggle"
-                        android:id="@+id/tip_3" />
-
-                    <RadioButton
-                        style="@style/TipToggle.Last"
-                        android:text="@string/other_tip_amount"
-                        android:id="@+id/tip_4" />
-
-                </RadioGroup>
-
-                <LinearLayout
-                    android:id="@+id/custom_tip_amount_wrapper"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:layout_marginTop="10dp"
-                    android:gravity="right"
-                    android:visibility="gone">
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:layout_width="match_parent"
+                    android:text="@string/rating_tip_prompt"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tip_amount"
-                        android:textSize="@dimen/text_size_small"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="8dp"/>
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:inputType="number"
-                        android:width="80dp"
-                        android:id="@+id/custom_tip_amount"
-                        android:layout_gravity="right|bottom"
-                        android:padding="10dp"
-                        android:background="@drawable/rounded_border_input"
-                        android:textCursorDrawable="@drawable/handy_cursor"/>
-
-                </LinearLayout>
-
+                <FrameLayout
+                    android:id="@+id/tip_layout_container"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
 
                 <Button
+                    style="@style/Button.Grey"
                     android:id="@+id/skip_button"
-                    android:text="@string/skip"
                     android:layout_weight="2"
-                    android:visibility="gone"
-                    style="@style/Button.Grey"/>
+                    android:text="@string/skip"
+                    android:visibility="gone"/>
 
                 <FrameLayout
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_width="match_parent">
 
                     <Button
+                        style="@style/Button.Green"
                         android:id="@+id/submit_button"
-                        android:text="@string/submit"
-                        style="@style/Button.Green"/>
+                        android:text="@string/submit"/>
 
                     <ProgressBar
                         android:id="@+id/submit_progress"
                         android:layout_gravity="center"
-                        android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:visibility="invisible" />
+                        android:layout_width="32dp"
+                        android:visibility="invisible"/>
 
                 </FrameLayout>
 
@@ -320,24 +261,24 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-24dp">
+        android:layout_marginBottom="-24dp"
+        android:layout_width="300dp">
 
         <ImageView
+            android:contentDescription="rate"
             android:id="@+id/service_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/circle_green"
             android:layout_centerInParent="true"
-            android:contentDescription="rate" />
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/circle_green"/>
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_clean"
+            android:contentDescription="rate"
             android:layout_centerInParent="true"
-            android:contentDescription="rate" />
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            android:src="@drawable/ic_clean"/>
 
     </RelativeLayout>
 

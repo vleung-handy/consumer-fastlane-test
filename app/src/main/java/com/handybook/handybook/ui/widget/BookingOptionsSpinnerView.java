@@ -35,7 +35,7 @@ public final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
 
     private void init(final Context context) {
         final String type = option.getType();
-        if (!type.equals("quantity") && !type.equals("option_picker")) return;
+        if (!type.equals(BookingOption.TYPE_QUANTITY) && !type.equals(BookingOption.TYPE_OPTION_PICKER)) return;
 
         mainLayout = (RelativeLayout)this.findViewById(R.id.rel_layout);
         circleView = BookingOptionsSpinnerView.this.findViewById(R.id.circle_view);
