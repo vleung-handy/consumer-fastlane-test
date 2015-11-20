@@ -565,7 +565,7 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestEditServiceExtras(final HandyEvent.RequestEditExtras event)
+    public final void onRequestEditBookingExtras(final HandyEvent.RequestEditBookingExtras event)
     {
         dataManager.editBookingExtras(
                 event.bookingId,
@@ -588,7 +588,8 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestEditExtrasViewModel(final HandyEvent.RequestEditExtrasViewModel event)
+    public final void onRequestEditBookingExtrasViewModel(
+            final HandyEvent.RequestEditBookingExtrasViewModel event)
     {
         dataManager.getEditBookingExtrasInfo(event.bookingId,
                 new DataManager.Callback<BookingEditExtrasInfoResponse>()
@@ -596,15 +597,15 @@ public class BookingManager implements Observer
                     @Override
                     public void onSuccess(BookingEditExtrasInfoResponse response)
                     {
-                        BookingEditExtrasViewModel editExtrasViewModel =
+                        BookingEditExtrasViewModel editBookingExtrasViewModel =
                                 BookingEditExtrasViewModel.from(response);
-                        bus.post(new HandyEvent.ReceiveEditExtrasViewModelSuccess(editExtrasViewModel));
+                        bus.post(new HandyEvent.ReceiveEditBookingExtrasViewModelSuccess(editBookingExtrasViewModel));
                     }
 
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        bus.post(new HandyEvent.ReceiveEditExtrasViewModelError(error));
+                        bus.post(new HandyEvent.ReceiveEditBookingExtrasViewModelError(error));
 
                     }
                 });

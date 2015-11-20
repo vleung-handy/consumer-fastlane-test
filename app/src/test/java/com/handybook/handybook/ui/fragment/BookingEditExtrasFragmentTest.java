@@ -69,7 +69,7 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     public void shouldRequestEditHoursViewModelOnCreateView() throws Exception
     {
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
-                instanceOf(HandyEvent.RequestEditExtrasViewModel.class));
+                instanceOf(HandyEvent.RequestEditBookingExtrasViewModel.class));
     }
 
     @Test
@@ -104,12 +104,12 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
                 (mBookingEditExtrasInfoResponse);
         //get the edit extras info response
         mFragment.onReceiveServicesExtrasOptionsSuccess(
-                new HandyEvent.ReceiveEditExtrasViewModelSuccess(bookingEditExtrasViewModel));
+                new HandyEvent.ReceiveEditBookingExtrasViewModelSuccess(bookingEditExtrasViewModel));
 
         //press the save button
         mFragment.onSaveButtonPressed();
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
-                instanceOf(HandyEvent.RequestEditExtras.class));
+                instanceOf(HandyEvent.RequestEditBookingExtras.class));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     {
         String errorMessage = mFragment.getString(R.string
                 .default_error_string);
-        mFragment.onReceiveServicesExtrasOptionsError(new HandyEvent.ReceiveEditExtrasViewModelError(
+        mFragment.onReceiveServicesExtrasOptionsError(new HandyEvent.ReceiveEditBookingExtrasViewModelError(
                 new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));

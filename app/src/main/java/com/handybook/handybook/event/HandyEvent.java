@@ -378,41 +378,41 @@ public abstract class HandyEvent
     }
 
     //Get the service extras options
-    public static class RequestEditExtrasViewModel extends RequestEvent
+    public static class RequestEditBookingExtrasViewModel extends RequestEvent
     {
         public final int bookingId;
 
-        public RequestEditExtrasViewModel(int bookingId)
+        public RequestEditBookingExtrasViewModel(int bookingId)
         {
             this.bookingId = bookingId;
         }
     }
 
-    public static class ReceiveEditExtrasViewModelSuccess extends ReceiveSuccessEvent
+    public static class ReceiveEditBookingExtrasViewModelSuccess extends ReceiveSuccessEvent
     {
         public final BookingEditExtrasViewModel mBookingEditExtrasViewModel;
 
-        public ReceiveEditExtrasViewModelSuccess(BookingEditExtrasViewModel bookingEditExtrasViewModel)
+        public ReceiveEditBookingExtrasViewModelSuccess(BookingEditExtrasViewModel bookingEditExtrasViewModel)
         {
             this.mBookingEditExtrasViewModel = bookingEditExtrasViewModel;
         }
     }
 
-    public static class ReceiveEditExtrasViewModelError extends ReceiveErrorEvent
+    public static class ReceiveEditBookingExtrasViewModelError extends ReceiveErrorEvent
     {
-        public ReceiveEditExtrasViewModelError(DataManager.DataManagerError error)
+        public ReceiveEditBookingExtrasViewModelError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
     }
 
     //Update the service extras options
-    public static class RequestEditExtras extends RequestEvent
+    public static class RequestEditBookingExtras extends RequestEvent
     {
         public final int bookingId;
         public final BookingEditExtrasRequest bookingEditExtrasRequest;
 
-        public RequestEditExtras(
+        public RequestEditBookingExtras(
                 int bookingId,
                 BookingEditExtrasRequest bookingEditExtrasRequest
         )

@@ -75,7 +75,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditExtrasViewModel(Integer.parseInt(mBooking.getId())));
+        bus.post(new HandyEvent.RequestEditBookingExtrasViewModel(Integer.parseInt(mBooking.getId())));
     }
 
     @Override
@@ -141,7 +141,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         bookingEditExtrasRequest.setAddedExtras(addedExtras.toArray(new String[]{}));
         bookingEditExtrasRequest.setRemovedExtras(removedExtras.toArray(new String[]{}));
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditExtras(Integer.parseInt(mBooking.getId()), bookingEditExtrasRequest));
+        bus.post(new HandyEvent.RequestEditBookingExtras(Integer.parseInt(mBooking.getId()), bookingEditExtrasRequest));
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated
@@ -227,8 +227,11 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     private void updateBookingSummaryText()
     {
         float bookingBaseHours = mBookingEditExtrasViewModel.getBookingBaseHours();
-        String originalBookingBasePrice =mBookingEditExtrasViewModel.getOriginalBookingBasePriceFormatted();
-        mBookingTableRow.setLabelAndValueText(getResources().getString(R.string.booking_edit_base_hours_formatted, bookingBaseHours), originalBookingBasePrice);
+        String originalBookingBasePrice = mBookingEditExtrasViewModel
+                .getOriginalBookingBasePriceFormatted();
+        mBookingTableRow.setLabelAndValueText(
+                getResources().getString(R.string.booking_edit_base_hours_formatted, bookingBaseHours),
+                originalBookingBasePrice);
     }
 
     @Override
@@ -239,7 +242,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveServicesExtrasOptionsSuccess(HandyEvent.ReceiveEditExtrasViewModelSuccess event)
+    public final void onReceiveServicesExtrasOptionsSuccess(HandyEvent.ReceiveEditBookingExtrasViewModelSuccess event)
     {
         mBookingEditExtrasViewModel = event.mBookingEditExtrasViewModel;
 
@@ -250,7 +253,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveServicesExtrasOptionsError(HandyEvent.ReceiveEditExtrasViewModelError event)
+    public final void onReceiveServicesExtrasOptionsError(HandyEvent.ReceiveEditBookingExtrasViewModelError event)
     {
         onReceiveErrorEvent(event);
     }
