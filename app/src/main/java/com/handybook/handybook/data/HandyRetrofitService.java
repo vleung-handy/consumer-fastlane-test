@@ -38,7 +38,7 @@ public interface HandyRetrofitService
     void getServices(HandyRetrofitCallback cb);
 
     @GET("/bookings/{id}/edit_extras")
-    void getServiceExtras(@Path("id") int bookingId, HandyRetrofitCallback cb);
+    void getEditExtrasInfo(@Path("id") int bookingId, HandyRetrofitCallback cb);
 
     @POST("/bookings/{id}/edit_extras")
     void editServiceExtras(@Path("id") int bookingId,

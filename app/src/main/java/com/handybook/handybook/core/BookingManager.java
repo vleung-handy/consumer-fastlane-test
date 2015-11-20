@@ -16,6 +16,7 @@ import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Bus;
@@ -566,7 +567,7 @@ public class BookingManager implements Observer
     @Subscribe
     public final void onRequestEditServiceExtras(final HandyEvent.RequestEditExtras event)
     {
-        dataManager.editServiceExtras(
+        dataManager.editBookingExtras(
                 event.bookingId,
                 event.bookingEditExtrasRequest,
                 new DataManager.Callback<SuccessWrapper>()
@@ -587,23 +588,25 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestGetServiceExtras(final HandyEvent.RequestEditExtrasInfo event)
+    public final void onRequestEditExtrasViewModel(final HandyEvent.RequestEditExtrasViewModel event)
     {
-        dataManager.getServiceExtras(event.bookingId,
+        dataManager.getEditBookingExtrasInfo(event.bookingId,
                 new DataManager.Callback<BookingEditExtrasInfoResponse>()
-        {
-            @Override
-            public void onSuccess(BookingEditExtrasInfoResponse response)
-            {
-                bus.post(new HandyEvent.ReceiveEditExtrasInfoSuccess(response));
-            }
+                {
+                    @Override
+                    public void onSuccess(BookingEditExtrasInfoResponse response)
+                    {
+                        BookingEditExtrasViewModel editExtrasViewModel =
+                                BookingEditExtrasViewModel.from(response);
+                        bus.post(new HandyEvent.ReceiveEditExtrasViewModelSuccess(editExtrasViewModel));
+                    }
 
-            @Override
-            public void onError(DataManager.DataManagerError error)
-            {
-                bus.post(new HandyEvent.ReceiveEditExtrasInfoError(error));
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        bus.post(new HandyEvent.ReceiveEditExtrasViewModelError(error));
 
-            }
-        });
+                    }
+                });
     }
 }

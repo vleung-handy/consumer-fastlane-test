@@ -45,12 +45,12 @@ public abstract class DataManager
     public abstract void getServices(CacheResponse<List<Service>> cache,
                                      Callback<List<Service>> cb);
 
-    public abstract void getServiceExtras(int bookingId,
-                                     Callback<BookingEditExtrasInfoResponse> cb);
+    public abstract void getEditBookingExtrasInfo(int bookingId,
+                                                  Callback<BookingEditExtrasInfoResponse> cb);
 
-    public abstract void editServiceExtras(int bookingId,
+    public abstract void editBookingExtras(int bookingId,
                                            BookingEditExtrasRequest bookingEditExtrasRequest,
-                                          Callback<SuccessWrapper> cb);
+                                           Callback<SuccessWrapper> cb);
 
     public abstract void getEditHoursInfo(int bookingId,
                                            Callback<BookingEditHoursInfoResponse> cb);

@@ -14,8 +14,8 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
-import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 
@@ -378,29 +378,29 @@ public abstract class HandyEvent
     }
 
     //Get the service extras options
-    public static class RequestEditExtrasInfo extends RequestEvent
+    public static class RequestEditExtrasViewModel extends RequestEvent
     {
         public final int bookingId;
 
-        public RequestEditExtrasInfo(int bookingId)
+        public RequestEditExtrasViewModel(int bookingId)
         {
             this.bookingId = bookingId;
         }
     }
 
-    public static class ReceiveEditExtrasInfoSuccess extends ReceiveSuccessEvent
+    public static class ReceiveEditExtrasViewModelSuccess extends ReceiveSuccessEvent
     {
-        public final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse;
+        public final BookingEditExtrasViewModel mBookingEditExtrasViewModel;
 
-        public ReceiveEditExtrasInfoSuccess(BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
+        public ReceiveEditExtrasViewModelSuccess(BookingEditExtrasViewModel bookingEditExtrasViewModel)
         {
-            this.bookingEditExtrasInfoResponse = bookingEditExtrasInfoResponse;
+            this.mBookingEditExtrasViewModel = bookingEditExtrasViewModel;
         }
     }
 
-    public static class ReceiveEditExtrasInfoError extends ReceiveErrorEvent
+    public static class ReceiveEditExtrasViewModelError extends ReceiveErrorEvent
     {
-        public ReceiveEditExtrasInfoError(DataManager.DataManagerError error)
+        public ReceiveEditExtrasViewModelError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
