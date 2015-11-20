@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
@@ -238,23 +239,22 @@ public final class ProfileFragment extends InjectedFragment {
                 disableInputs();
                 progressDialog.show();
 
-                User updateUser = new User();
-                updateUser.setAuthToken(user.getAuthToken());
-                updateUser.setId(user.getId());
-                updateUser.setFirstName(fullNameText.getFirstName());
-                updateUser.setLastName(fullNameText.getLastName());
-                updateUser.setEmail(emailText.getEmail());
-                updateUser.setPhone(phoneText.getPhoneNumber());
+                UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+                updateUserRequest.setUserId(user.getId());
+                updateUserRequest.setFirstName(fullNameText.getFirstName());
+                updateUserRequest.setLastName(fullNameText.getLastName());
+                updateUserRequest.setEmail(emailText.getEmail());
+                updateUserRequest.setPhone(phoneText.getPhoneNumber());
 
                 if (oldPasswordtext.getPassword().length() > 0
                         && newPasswordtext.getPassword().length() > 0) {
-                    updateUser.setCurrentPassword(oldPasswordtext.getPassword());
-                    updateUser.setPassword(newPasswordtext.getPassword());
-                    updateUser.setPasswordConfirmation(newPasswordtext.getPassword());
+                    updateUserRequest.setCurrentPassword(oldPasswordtext.getPassword());
+                    updateUserRequest.setPassword(newPasswordtext.getPassword());
+                    updateUserRequest.setPasswordConfirmation(newPasswordtext.getPassword());
                 }
 
                 updatingInfo = true;
-                dataManager.updateUser(updateUser, userCallback);
+                dataManager.updateUser(updateUserRequest, user.getAuthToken(), userCallback);
             }
         }
     };

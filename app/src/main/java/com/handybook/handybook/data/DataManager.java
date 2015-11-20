@@ -9,6 +9,7 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
@@ -29,6 +30,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.model.response.UserExistsResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -192,10 +194,11 @@ public abstract class DataManager
                                  String authToken,
                                  Callback<User> cb);
 
-    public abstract void getUser(String email,
-                                 Callback<String> cb);
+    public abstract void getUserExists(String email,
+                                       Callback<UserExistsResponse> cb);
 
-    public abstract void updateUser(User user,
+    public abstract void updateUser(UpdateUserRequest updateUserRequest,
+                                    String authToken,
                                     Callback<User> cb);
 
     public abstract void authFBUser(String fbid,
@@ -281,7 +284,7 @@ public abstract class DataManager
             return message;
         }
 
-        final Type getType()
+        public final Type getType()
         {
             return type;
         }
