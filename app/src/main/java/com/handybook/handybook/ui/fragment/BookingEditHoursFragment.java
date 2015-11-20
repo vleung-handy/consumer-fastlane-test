@@ -53,7 +53,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     ViewStub mApplyToRecurringOptionPlaceholder;
 
     private Booking mBooking;
-    private BookingEditHoursRequest mBookingEditHoursRequest;
 
     private BookingEditHoursViewModel mBookingEditHoursViewModel;
     private BookingOptionsSelectView mApplyToRecurringBookingsSelectView;
@@ -74,12 +73,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mixpanel.trackEventAppTrackExtras();
-        initRequestWrapper();
-    }
-
-    private void initRequestWrapper()
-    {
-        mBookingEditHoursRequest = new BookingEditHoursRequest();
     }
 
     @Override
@@ -135,11 +128,12 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     {
         showUiBlockers();
         float selectedHours = Float.parseFloat(mOptionsView.getCurrentValue());
-        mBookingEditHoursRequest.setNewBaseHrs(selectedHours);
-        mBookingEditHoursRequest.setApplyToRecurring(
+        BookingEditHoursRequest bookingEditHoursRequest = new BookingEditHoursRequest();
+        bookingEditHoursRequest.setNewBaseHrs(selectedHours);
+        bookingEditHoursRequest.setApplyToRecurring(
                 mApplyToRecurringBookingsSelectView != null
                         && mApplyToRecurringBookingsSelectView.getCheckedIndexes().length > 0);
-        bus.post(new HandyEvent.RequestEditHours(Integer.parseInt(mBooking.getId()), mBookingEditHoursRequest));
+        bus.post(new HandyEvent.RequestEditHours(Integer.parseInt(mBooking.getId()), bookingEditHoursRequest));
     }
 
     private void initializeUiForEditHoursInfo()
