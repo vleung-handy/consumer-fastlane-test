@@ -345,7 +345,7 @@ public class BookingManager implements Observer
         }
     }
 
-    public final void setCurrentRequest(final BookingRequest newRequest)
+    public void setCurrentRequest(final BookingRequest newRequest)
     {
         if (request != null)
         {
@@ -479,7 +479,7 @@ public class BookingManager implements Observer
     }
 
     @Nullable
-    public final String getPromoTabCoupon()
+    public String getPromoTabCoupon()
     {
         return prefsManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
     }

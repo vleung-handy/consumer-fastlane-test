@@ -17,10 +17,12 @@ import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
+import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.squareup.otto.Bus;
 
 import dagger.Module;
@@ -42,6 +44,8 @@ import static org.mockito.Mockito.when;
         BookingEditHoursFragment.class,
         BookingEditExtrasActivity.class,
         BookingEditExtrasFragment.class,
+        ServiceCategoriesActivity.class,
+        ServiceCategoriesFragment.class,
 }, library = true)
 public class TestApplicationModule
 {
