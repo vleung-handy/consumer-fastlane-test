@@ -328,7 +328,7 @@ public class BookingManager implements Observer
 
 //Old Direct References, to eventually be handled in the events way
 
-    public final BookingRequest getCurrentRequest()
+    public BookingRequest getCurrentRequest()
     {
         if (request != null)
         {

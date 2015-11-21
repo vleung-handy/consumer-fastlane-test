@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public final class BookingRequest extends Observable {
+public class BookingRequest extends Observable {
     @SerializedName("service_id") private int serviceId;
     @SerializedName("uniq") private String uniq;
     @SerializedName("zipcode") private String zipCode;
@@ -92,7 +92,7 @@ public final class BookingRequest extends Observable {
         triggerObservers();
     }
 
-    public final String getPromoCode() {
+    public String getPromoCode() {
         return promoCode;
     }
 
