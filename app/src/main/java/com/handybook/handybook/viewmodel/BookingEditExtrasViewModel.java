@@ -46,6 +46,7 @@ public class BookingEditExtrasViewModel
     }
 
     /**
+     * //TODO: options view widget expects Integer rather than int, but seems not necessary
      * @param booking
      * @return an array of the indexes that should be checked, based on the booking extras
      */
