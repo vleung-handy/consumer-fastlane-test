@@ -27,9 +27,9 @@ public class BookingEditExtrasViewModel
     }
 
     public static BookingEditExtrasViewModel from(
-            @NonNull final BookingEditExtrasInfoResponse bookingEditFrequencyInfoResponse)
+            @NonNull final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
     {
-        return new BookingEditExtrasViewModel(bookingEditFrequencyInfoResponse);
+        return new BookingEditExtrasViewModel(bookingEditExtrasInfoResponse);
     }
 
     /**
