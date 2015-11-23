@@ -1,9 +1,7 @@
 package com.handybook.handybook.model.response;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.core.Booking;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class BookingEditExtrasInfoResponse
@@ -91,29 +89,5 @@ public class BookingEditExtrasInfoResponse
     public boolean isRecurring()
     {
         return mIsRecurring;
-    }
-
-    //TODO: create a view model for edit extras and move these functions to it
-    //builds an array of images for each option, used for options display
-    public int[] getOptionImagesResourceIdArray()
-    {
-        int[] resourceIds = new int[getOptionsDisplayNames().length];
-        for (int i = 0; i < resourceIds.length; i++)
-        {
-            resourceIds[i] = Booking.getImageResourceIdForMachineName(getOptionsMachineNames()[i]);
-        }
-        return resourceIds;
-    }
-
-    //NOTE: the only way to know what extras a user has selected is by an array of extras display names in the booking object
-    //so we must map those display names to associated index in the options
-    public Map<String, Integer> getExtraDisplayNameToOptionIndexMap()
-    {
-        Map<String, Integer> extraDisplayNameToOptionIndexMap = new HashMap<>();
-        for (int i = 0; i < getOptionsDisplayNames().length; i++)
-        {
-            extraDisplayNameToOptionIndexMap.put(getOptionsDisplayNames()[i], i);
-        }
-        return extraDisplayNameToOptionIndexMap;
     }
 }
