@@ -39,11 +39,13 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
         final String entryInfo = booking.getEntryInfo();
         if (entryInfo != null)
         {
-            view.entryText.setText(entryInfo + " " + (booking.getExtraEntryInfo() != null ? booking.getExtraEntryInfo() : ""));
+            String extraEntryInfo = booking.getExtraEntryInfo();
+            getSectionView().getEntryText()
+                    .setText(entryInfo + " " + (extraEntryInfo != null ? extraEntryInfo : ""));
         }
         else
         {
-            view.entryText.setText(R.string.no_information);
+            getSectionView().getEntryText().setText(R.string.no_information);
         }
     }
 

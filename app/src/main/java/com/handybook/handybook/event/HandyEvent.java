@@ -378,29 +378,29 @@ public abstract class HandyEvent
     }
 
     //Get the service extras options
-    public static class RequestGetEditExtrasInfo extends RequestEvent
+    public static class RequestEditExtrasInfo extends RequestEvent
     {
         public final int bookingId;
 
-        public RequestGetEditExtrasInfo(int bookingId)
+        public RequestEditExtrasInfo(int bookingId)
         {
             this.bookingId = bookingId;
         }
     }
 
-    public static class ReceiveGetEditExtrasInfoSuccess extends ReceiveSuccessEvent
+    public static class ReceiveEditExtrasInfoSuccess extends ReceiveSuccessEvent
     {
         public final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse;
 
-        public ReceiveGetEditExtrasInfoSuccess(BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
+        public ReceiveEditExtrasInfoSuccess(BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
         {
             this.bookingEditExtrasInfoResponse = bookingEditExtrasInfoResponse;
         }
     }
 
-    public static class ReceiveGetEditExtrasInfoError extends ReceiveErrorEvent
+    public static class ReceiveEditExtrasInfoError extends ReceiveErrorEvent
     {
-        public ReceiveGetEditExtrasInfoError(DataManager.DataManagerError error)
+        public ReceiveEditExtrasInfoError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
@@ -673,5 +673,25 @@ public abstract class HandyEvent
             this.error = error;
         }
 
+    }
+
+    public static class RequestTipPro extends RequestEvent
+    {
+        public final Integer tipAmount;
+        public final int bookingId;
+
+        public RequestTipPro(final int bookingId, final Integer tipAmount)
+        {
+            this.bookingId = bookingId;
+            this.tipAmount = tipAmount;
+        }
+    }
+
+    public static class ReceiveTipProSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveTipProError extends ReceiveErrorEvent
+    {
     }
 }

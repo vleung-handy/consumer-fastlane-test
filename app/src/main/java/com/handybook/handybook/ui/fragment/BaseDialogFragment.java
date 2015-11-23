@@ -5,10 +5,12 @@ import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.handybook.handybook.data.DataManager;
 
@@ -58,5 +60,28 @@ public class BaseDialogFragment extends InjectedDialogFragment
         });
 
         return view;
+    }
+
+    //Helpers
+    protected void showToast(int stringId)
+    {
+        showToast(getString(stringId));
+    }
+
+    protected void showToast(String message)
+    {
+        showToast(message, Toast.LENGTH_SHORT);
+    }
+
+    protected void showToast(int stringId, int length)
+    {
+        showToast(getString(stringId), length);
+    }
+
+    protected void showToast(String message, int length)
+    {
+        toast = Toast.makeText(getActivity().getApplicationContext(), message, length);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }

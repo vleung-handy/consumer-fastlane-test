@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/default_margin_double"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        style="@style/ToggleGroupStyle"
+        android:checkedButton="@+id/tip_none"
+        android:id="@+id/tip_amount_radio_group"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin">
+
+        <RadioButton
+            style="@style/TipToggle.First"
+            android:id="@+id/tip_none"
+            android:text="@string/no_tip_amount"/>
+
+        <RadioButton
+            style="@style/TipToggle.Last"
+            android:text="@string/other_tip_amount"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:gravity="right"
+        android:id="@+id/custom_tip_amount_wrapper"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_width="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/default_margin_half"
+            android:layout_width="wrap_content"
+            android:text="@string/tip_amount"
+            android:textSize="@dimen/text_size_small"/>
+
+        <EditText
+            android:background="@drawable/rounded_border_input"
+            android:id="@+id/custom_tip_amount"
+            android:inputType="number"
+            android:layout_gravity="right|bottom"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:padding="@dimen/default_padding_half"
+            android:textCursorDrawable="@drawable/handy_cursor"
+            android:width="80dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
