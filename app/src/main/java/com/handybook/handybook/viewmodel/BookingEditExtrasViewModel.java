@@ -40,7 +40,8 @@ public class BookingEditExtrasViewModel
         int[] resourceIds = new int[mBookingEditExtrasInfoResponse.getOptionsDisplayNames().length];
         for (int i = 0; i < resourceIds.length; i++)
         {
-            resourceIds[i] = Booking.getImageResourceIdForMachineName(mBookingEditExtrasInfoResponse.getOptionsMachineNames()[i]);
+            resourceIds[i] = Booking.getImageResourceIdForMachineName(
+                    mBookingEditExtrasInfoResponse.getOptionsMachineNames()[i]);
         }
         return resourceIds;
     }
@@ -70,14 +71,17 @@ public class BookingEditExtrasViewModel
 
     public String getOriginalBookingBasePriceFormatted()
     {
-        float bookingBaseHours = mBookingEditExtrasInfoResponse.getBaseHours(); //it is weird for api to return this
+        float bookingBaseHours = mBookingEditExtrasInfoResponse.getBaseHours();
+        //it is weird for api to return this
         String originalBookingBaseHours = getFormattedHoursForPriceTable(bookingBaseHours);
-        String originalBookingBasePrice = mBookingEditExtrasInfoResponse.getPriceTable().get(originalBookingBaseHours).getTotalDueFormatted();
+        String originalBookingBasePrice = mBookingEditExtrasInfoResponse.getPriceTable().
+                get(originalBookingBaseHours).getTotalDueFormatted();
         return originalBookingBasePrice;
     }
 
     /**
-     * NOTE: the only way to know what extras a user has selected is by an array of extras display names in the booking object
+     * NOTE: the only way to know what extras a user has selected
+     * is by an array of extras display names in the booking object
      * so we must map those display names to associated index in the options
      * @return
      */
@@ -86,7 +90,8 @@ public class BookingEditExtrasViewModel
         Map<String, Integer> extraDisplayNameToOptionIndexMap = new HashMap<>();
         for (int i = 0; i < mBookingEditExtrasInfoResponse.getOptionsDisplayNames().length; i++)
         {
-            extraDisplayNameToOptionIndexMap.put(mBookingEditExtrasInfoResponse.getOptionsDisplayNames()[i], i);
+            extraDisplayNameToOptionIndexMap.put(
+                    mBookingEditExtrasInfoResponse.getOptionsDisplayNames()[i], i);
         }
         return extraDisplayNameToOptionIndexMap;
     }
@@ -193,7 +198,8 @@ public class BookingEditExtrasViewModel
 
     private String getFormattedHoursForPriceTable(float hours)
     {
-        //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
+        //have to do this because the price table returned from the api has key values
+        // like 2, 2.5, 3, 3.5, etc
 
         //round to one decimal place in case there are floating point rounding errors
         hours = MathUtils.roundToDecimalPlaces(hours, 1);

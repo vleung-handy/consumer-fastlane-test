@@ -103,7 +103,7 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
         BookingEditExtrasViewModel bookingEditExtrasViewModel = BookingEditExtrasViewModel.from
                 (mBookingEditExtrasInfoResponse);
         //get the edit extras info response
-        mFragment.onReceiveServicesExtrasOptionsSuccess(
+        mFragment.onReceiveEditExtrasViewModelSuccess(
                 new HandyEvent.ReceiveEditBookingExtrasViewModelSuccess(bookingEditExtrasViewModel));
 
         //press the save button
@@ -115,9 +115,9 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldShowErrorToastWhenServerError() throws Exception
     {
-        String errorMessage = mFragment.getString(R.string
-                .default_error_string);
-        mFragment.onReceiveServicesExtrasOptionsError(new HandyEvent.ReceiveEditBookingExtrasViewModelError(
+        String errorMessage = mFragment.getString(R.string.default_error_string);
+        mFragment.onReceiveServicesExtrasOptionsError(
+                new HandyEvent.ReceiveEditBookingExtrasViewModelError(
                 new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));

@@ -133,7 +133,8 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         bookingEditHoursRequest.setApplyToRecurring(
                 mApplyToRecurringBookingsSelectView != null
                         && mApplyToRecurringBookingsSelectView.getCheckedIndexes().length > 0);
-        bus.post(new HandyEvent.RequestEditHours(Integer.parseInt(mBooking.getId()), bookingEditHoursRequest));
+        bus.post(new HandyEvent.RequestEditHours(
+                Integer.parseInt(mBooking.getId()), bookingEditHoursRequest));
     }
 
     private void initializeUiForEditHoursInfo()

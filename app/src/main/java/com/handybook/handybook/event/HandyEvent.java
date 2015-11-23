@@ -392,7 +392,8 @@ public abstract class HandyEvent
     {
         public final BookingEditExtrasViewModel mBookingEditExtrasViewModel;
 
-        public ReceiveEditBookingExtrasViewModelSuccess(BookingEditExtrasViewModel bookingEditExtrasViewModel)
+        public ReceiveEditBookingExtrasViewModelSuccess(
+                BookingEditExtrasViewModel bookingEditExtrasViewModel)
         {
             this.mBookingEditExtrasViewModel = bookingEditExtrasViewModel;
         }
@@ -632,7 +633,8 @@ public abstract class HandyEvent
     public static class ReceiveEditHoursInfoViewModelSuccess extends ReceiveBookingSuccessEvent
     {
         public final BookingEditHoursViewModel editHoursInfoViewModel;
-        public ReceiveEditHoursInfoViewModelSuccess(final BookingEditHoursViewModel editHoursInfoViewModel)
+        public ReceiveEditHoursInfoViewModelSuccess(
+                final BookingEditHoursViewModel editHoursInfoViewModel)
         {
             this.editHoursInfoViewModel = editHoursInfoViewModel;
         }
@@ -651,7 +653,8 @@ public abstract class HandyEvent
     {
         public final int bookingId;
         public final BookingEditHoursRequest bookingEditHoursRequest;
-        public RequestEditHours(final int bookingId, final BookingEditHoursRequest bookingEditHoursRequest) {
+        public RequestEditHours(final int bookingId,
+                                final BookingEditHoursRequest bookingEditHoursRequest) {
             this.bookingId = bookingId;
             this.bookingEditHoursRequest = bookingEditHoursRequest;
         }

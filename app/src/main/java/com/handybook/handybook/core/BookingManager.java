@@ -599,7 +599,8 @@ public class BookingManager implements Observer
                     {
                         BookingEditExtrasViewModel editBookingExtrasViewModel =
                                 BookingEditExtrasViewModel.from(response);
-                        bus.post(new HandyEvent.ReceiveEditBookingExtrasViewModelSuccess(editBookingExtrasViewModel));
+                        bus.post(new HandyEvent.ReceiveEditBookingExtrasViewModelSuccess(
+                                editBookingExtrasViewModel));
                     }
 
                     @Override

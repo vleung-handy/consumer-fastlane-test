@@ -75,7 +75,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditBookingExtrasViewModel(Integer.parseInt(mBooking.getId())));
+        bus.post(new HandyEvent.RequestEditBookingExtrasViewModel(
+                Integer.parseInt(mBooking.getId())));
     }
 
     @Override
@@ -141,7 +142,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         bookingEditExtrasRequest.setAddedExtras(addedExtras.toArray(new String[]{}));
         bookingEditExtrasRequest.setRemovedExtras(removedExtras.toArray(new String[]{}));
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditBookingExtras(Integer.parseInt(mBooking.getId()), bookingEditExtrasRequest));
+        bus.post(new HandyEvent.RequestEditBookingExtras(
+                Integer.parseInt(mBooking.getId()), bookingEditExtrasRequest));
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated
@@ -242,7 +244,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveServicesExtrasOptionsSuccess(HandyEvent.ReceiveEditBookingExtrasViewModelSuccess event)
+    public final void onReceiveEditExtrasViewModelSuccess(
+            HandyEvent.ReceiveEditBookingExtrasViewModelSuccess event)
     {
         mBookingEditExtrasViewModel = event.mBookingEditExtrasViewModel;
 
@@ -253,13 +256,14 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveServicesExtrasOptionsError(HandyEvent.ReceiveEditBookingExtrasViewModelError event)
+    public final void onReceiveEditExtrasViewModelError(
+            HandyEvent.ReceiveEditBookingExtrasViewModelError event)
     {
         onReceiveErrorEvent(event);
     }
 
     @Subscribe
-    public final void onReceiveUpdateServiceExtrasSuccess(HandyEvent.ReceiveEditExtrasSuccess event)
+    public final void onReceiveEditBookingExtrasSuccess(HandyEvent.ReceiveEditExtrasSuccess event)
     {
         removeUiBlockers();
         showToast(getString(R.string.booking_edit_extras_update_success));
@@ -269,7 +273,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveUpdateServiceExtrasError(HandyEvent.ReceiveEditExtrasError event)
+    public final void onReceiveEditBookingExtrasError(HandyEvent.ReceiveEditExtrasError event)
     {
         onReceiveErrorEvent(event);
     }
