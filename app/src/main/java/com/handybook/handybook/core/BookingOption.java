@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class BookingOption implements Parcelable
+public class BookingOption implements Parcelable
 {
 
     //todo: auto serialized enums for type see : Booking.LaundryStatus
