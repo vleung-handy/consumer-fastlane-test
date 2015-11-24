@@ -116,7 +116,7 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     public void shouldShowErrorToastWhenServerError() throws Exception
     {
         String errorMessage = mFragment.getString(R.string.default_error_string);
-        mFragment.onReceiveServicesExtrasOptionsError(
+        mFragment.onReceiveEditExtrasViewModelError(
                 new HandyEvent.ReceiveEditBookingExtrasViewModelError(
                 new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));

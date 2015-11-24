@@ -14,12 +14,15 @@ import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.ui.fragment.BookingDateFragment;
+import com.handybook.handybook.ui.fragment.BookingDateFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
@@ -58,6 +61,9 @@ import static org.mockito.Mockito.when;
         BookingOptionsActivity.class,
         BookingOptionsFragment.class,
         BookingOptionsFragmentTest.class,
+        BookingDateActivity.class,
+        BookingDateFragment.class,
+        BookingDateFragmentTest.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -103,6 +109,13 @@ public class TestApplicationModule
     final DataManager provideDataManager()
     {
         return mock(DataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    final UserManager provideUserManager()
+    {
+        return mock(UserManager.class);
     }
 
     @Provides
