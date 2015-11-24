@@ -719,4 +719,32 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
+    public static class RequestRecurringBookingsForUser extends RequestEvent
+    {
+        public User user;
+
+        public RequestRecurringBookingsForUser(User user)
+        {
+            this.user = user;
+        }
+    }
+
+    public static class ReceiveRecurringBookingsSuccess extends ReceiveSuccessEvent
+    {
+        public List<Booking> bookings;
+
+        public ReceiveRecurringBookingsSuccess(List<Booking> bookings)
+        {
+            this.bookings = bookings;
+        }
+    }
+
+    public static class ReceiveRecurringBookingsError extends ReceiveErrorEvent
+    {
+        public ReceiveRecurringBookingsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
 }

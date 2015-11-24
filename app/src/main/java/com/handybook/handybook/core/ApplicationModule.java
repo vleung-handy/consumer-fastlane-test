@@ -38,6 +38,7 @@ import com.handybook.handybook.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
+import com.handybook.handybook.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
@@ -79,6 +80,7 @@ import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
+import com.handybook.handybook.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
@@ -193,6 +195,8 @@ import retrofit.converter.GsonConverter;
         BlockingActivity.class,
         BlockingUpdateFragment.class,
         TipDialogFragment.class,
+        CancelRecurringBookingActivity.class,
+        CancelRecurringBookingFragment.class,
 })
 public final class ApplicationModule
 {

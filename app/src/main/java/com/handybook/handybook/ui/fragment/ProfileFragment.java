@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spannable;
@@ -18,6 +19,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
@@ -74,12 +76,13 @@ public final class ProfileFragment extends InjectedFragment {
     @OnClick(R.id.cancel_cleaning_plan_button)
     public void onClickCancelCleaningButton()
     {
-        sendCancelCleaningEmail();
+        showRecurringBookingsToCancel();
     }
 
-    private void sendCancelCleaningEmail()
+    private void showRecurringBookingsToCancel()
     {
-
+        final Intent intent = new Intent(getActivity(), CancelRecurringBookingActivity.class);
+        getActivity().startActivity(intent);
 //        bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail());
     }
 

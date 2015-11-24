@@ -116,6 +116,16 @@ public class Booking implements Parcelable
         return mProvider != null && mProvider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED;
     }
 
+    /**
+     * unfortunately this is the only way to tell if a booking is the first one in a recurring
+     * series
+     * @return
+     */
+    public final boolean isFirstInRecurringSeries()
+    {
+        return isRecurring() && mRecurring > 0;
+    }
+
     public final boolean isRecurring()
     {
         return mRecurringId != null && !mRecurringId.isEmpty() && !"0".equals(mRecurringId);

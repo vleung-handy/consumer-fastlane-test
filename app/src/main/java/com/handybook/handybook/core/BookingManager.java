@@ -22,6 +22,7 @@ import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
@@ -632,5 +633,37 @@ public class BookingManager implements Observer
 
                     }
                 });
+    }
+
+    @Subscribe
+    public final void onRequestRecurringBookings(
+            final HandyEvent.RequestRecurringBookingsForUser event)
+    {
+        //TODO: no endpoint to only return the recurring bookings, have to use this one for now
+        //TODO: would be nice to have caching
+        dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
+        {
+            @Override
+            public void onSuccess(final UserBookingsWrapper result)
+            {
+
+                List<Booking> recurringBookings = new ArrayList<Booking>();
+                for(Booking booking : result.getBookings())
+                {
+                    if(!booking.isPast() && booking.isFirstInRecurringSeries())
+                    {
+                        recurringBookings.add(booking);
+                    }
+                }
+
+                bus.post(new HandyEvent.ReceiveRecurringBookingsSuccess(recurringBookings));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveRecurringBookingsError(error));
+            }
+        });
     }
 }

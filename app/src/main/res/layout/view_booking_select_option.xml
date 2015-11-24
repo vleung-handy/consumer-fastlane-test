@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/cell_options_list_entry"
-    android:paddingTop="@dimen/default_padding_half"
-    android:paddingBottom="@dimen/default_padding_half"
-    android:paddingLeft="@dimen/default_padding"
-    android:paddingRight="@dimen/default_padding"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@drawable/cell_options_list_entry"
+              android:paddingTop="@dimen/default_padding_half"
+              android:paddingBottom="@dimen/default_padding_half"
+              android:paddingLeft="@dimen/default_padding"
+              android:paddingRight="@dimen/default_padding"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
 
     <CheckBox
         android:id="@+id/check_box"
@@ -33,7 +34,7 @@
             android:id="@+id/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
+            tools:text="Title"
             android:freezesText="false"
             android:ellipsize="end"
             android:maxLines="2"
@@ -45,10 +46,11 @@
             android:layout_below="@id/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Subtitle"
+            android:textAllCaps="true"
             android:freezesText="false"
-            android:singleLine="true"
             android:visibility="gone"
+            tools:text="Subtitle\nSubtitle Line 2"
+            tools:visibility="visible"
             android:textColor="@color/black_pressed"
             style="@style/TextView.Headline.XSmall.Blue" />
 
