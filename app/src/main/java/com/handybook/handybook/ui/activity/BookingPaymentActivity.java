@@ -5,19 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.google.android.gms.wallet.WalletConstants;
+import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 
 public final class BookingPaymentActivity extends MenuDrawerActivity
 {
-
-    private BookingPaymentFragment mBookingPaymentFragment;
-
     @Override
     protected final Fragment createFragment()
     {
-        mBookingPaymentFragment = BookingPaymentFragment.newInstance();
-        return mBookingPaymentFragment;
+        return BookingPaymentFragment.newInstance();
     }
 
     @Override
@@ -37,7 +34,9 @@ public final class BookingPaymentActivity extends MenuDrawerActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (mBookingPaymentFragment != null)
+        BookingPaymentFragment bookingPaymentFragment =
+                (BookingPaymentFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (bookingPaymentFragment != null)
         {
             int errorCode = -1;
             if (data != null)
@@ -47,10 +46,10 @@ public final class BookingPaymentActivity extends MenuDrawerActivity
             switch (requestCode)
             {
                 case ActivityResult.LOAD_MASKED_WALLET:
-                    mBookingPaymentFragment.handleLoadMaskedWalletResult(resultCode, data, errorCode);
+                    bookingPaymentFragment.handleLoadMaskedWalletResult(resultCode, data, errorCode);
                     break;
                 case ActivityResult.LOAD_FULL_WALLET:
-                    mBookingPaymentFragment.handleLoadFullWalletResult(resultCode, data, errorCode);
+                    bookingPaymentFragment.handleLoadFullWalletResult(resultCode, data, errorCode);
                     break;
             }
         }
