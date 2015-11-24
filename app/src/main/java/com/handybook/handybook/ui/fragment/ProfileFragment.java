@@ -27,6 +27,7 @@ import com.handybook.handybook.util.TextUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class ProfileFragment extends InjectedFragment {
@@ -68,6 +69,18 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = userManager.getCurrentUser();
+    }
+
+    @OnClick(R.id.cancel_cleaning_plan_button)
+    public void onClickCancelCleaningButton()
+    {
+        sendCancelCleaningEmail();
+    }
+
+    private void sendCancelCleaningEmail()
+    {
+
+//        bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail());
     }
 
     @Override

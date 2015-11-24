@@ -697,4 +697,26 @@ public abstract class HandyEvent
     public static class ReceiveTipProError extends ReceiveErrorEvent
     {
     }
+
+    public static class RequestSendCancelRecurringBookingEmail extends RequestEvent
+    {
+        public final int bookingId;
+
+        public RequestSendCancelRecurringBookingEmail(final int bookingId)
+        {
+            this.bookingId = bookingId;
+        }
+    }
+
+    public static class ReceiveSendCancelRecurringBookingEmailSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveSendCancelRecurringBookingEmailError extends ReceiveErrorEvent
+    {
+        public ReceiveSendCancelRecurringBookingEmailError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
 }

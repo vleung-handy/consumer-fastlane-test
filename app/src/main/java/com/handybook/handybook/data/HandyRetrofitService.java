@@ -28,6 +28,10 @@ import retrofit.mime.TypedInput;
 public interface HandyRetrofitService
 {
 
+    @POST("/bookings/{id}/recurring_cancel_send_cancel_email")
+    void sendCancelRecurringBookingEmail(@Path("id") int bookingId,
+                                         HandyRetrofitCallback cb);
+
     @GET("/app_updates")
     void getBlockedWrapper(@Query("version_code") int versionCode, HandyRetrofitCallback cb);
 
