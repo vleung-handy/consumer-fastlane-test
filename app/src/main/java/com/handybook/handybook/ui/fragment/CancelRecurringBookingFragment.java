@@ -54,7 +54,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
                 .inflate(R.layout.fragment_cancel_recurring_booking, container, false);
 
         ButterKnife.bind(this, view);
-        mSubtitleText.setText("Which series do you want to cancel?");
+        mSubtitleText.setText(R.string.cancel_regular_cleanings_subtitle);
         //TODO: use onclick annotation
 
         return view;
@@ -73,7 +73,8 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         //create the options view
         BookingOption bookingOption = mBookingCancelRecurringViewModel.getBookingOption();
         mOptionsView
-                = new BookingOptionsSelectView(getActivity(), bookingOption, null);
+                = new BookingOptionsSelectView(getActivity(), R.layout
+                .view_booking_select_option_booking, bookingOption, null);
         mOptionsView.hideTitle();
         optionsLayout.removeAllViews(); //TODO: use a stub or replaceview instead
         optionsLayout.addView(mOptionsView);
@@ -94,8 +95,10 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     private void showEmailSentConfirmationDialog()
     {
         //TODO: replace with dialog
-        showToast("Sent instructions to your email address");
-        getActivity().finish();
+//        showToast("Sent instructions to your email address");
+        String userEmailAddress = userManager.getCurrentUser().getEmail();
+        EmailCancellationDialogFragment emailCancellationDialogFragment = EmailCancellationDialogFragment.newInstance(userEmailAddress);
+        emailCancellationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
     }
 
     private void handleErrorEvent(HandyEvent.ReceiveErrorEvent event)
@@ -132,6 +135,8 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         else
         {
             //no recurring bookings to cancel
+
+            //TODO: put in strings.xml
             showToast("No recurring bookings to cancel");
             getActivity().finish();
         }

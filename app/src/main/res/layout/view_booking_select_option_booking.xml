@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--TODO: this needs a better name-->
+<!--TODO: this is a temporary hack to create a custom style for the cancel recurring options-->
+<!--this is a custom style for the select recurring booking to cancel options view,
+which has different styling than the other option views-->
+<!--mostly duplicated from view_booking_select_option-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:background="@drawable/cell_options_list_entry"
@@ -9,7 +14,6 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="horizontal">
-
     <CheckBox
         android:id="@+id/check_box"
         android:layout_width="wrap_content"
@@ -25,7 +29,7 @@
 
     <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_weight="4">
@@ -39,20 +43,19 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
-            style="@style/TextView" />
+            style="@style/TextView.Bold" />
 
         <TextView
             android:id="@+id/sub_text"
             android:layout_below="@id/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="true"
             android:freezesText="false"
             android:visibility="gone"
             tools:text="Subtitle\nSubtitle Line 2"
             tools:visibility="visible"
-            android:textColor="@drawable/black_text_blue_selected_color_selector"
-            style="@style/TextView.Headline.XSmall.Blue" />
+            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+            style="@style/TextView" />
 
     </RelativeLayout>
 

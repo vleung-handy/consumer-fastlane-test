@@ -10,7 +10,7 @@
     <TextView
         style="@style/TextView.Navbar"
         android:id="@+id/nav_text"
-        android:text="Cancel Regular Cleanings"/>
+        android:text="@string/cancel_recurring_booking_title"/>
 
     <ScrollView
         android:layout_weight="1"

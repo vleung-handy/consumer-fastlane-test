@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:bottomLeftRadius="@dimen/default_corner_radius_double"
+                     android:bottomRightRadius="@dimen/default_corner_radius_double"
+                     android:radius="@dimen/default_corner_radius_double"
+                     android:topLeftRadius="0dp"
+                     android:topRightRadius="0dp"
+                />
+            <stroke android:color="@color/handy_green_pressed" android:width="1dip"/>
+            <solid android:color="@color/handy_green_pressed"/>
+        </shape>
+    </item>
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle">
+            <corners android:bottomLeftRadius="@dimen/default_corner_radius_double"
+                     android:bottomRightRadius="@dimen/default_corner_radius_double"
+                     android:radius="@dimen/default_corner_radius_double"
+                     android:topLeftRadius="0dp"
+                     android:topRightRadius="0dp"
+                />
+            <stroke android:color="@color/handy_green" android:width="1dip"/>
+            <solid android:color="@color/handy_green"/>
+        </shape>
+    </item>
+</selector>
+    <!--need this file because don't know of a way to clip views inside its parent's shape-->

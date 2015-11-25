@@ -278,5 +278,8 @@
     <string name="other_plumbing">Something else</string>
     <string name="other_plumbing_service_description">Have something more specific in mind? Tell us!</string>
     <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
+    <string name="email_cancellation_info_formatted">Cancellation instructions were sent to %1$s.</string>
+    <string name="cancel_recurring_booking_title">Cancel Regular Cleanings</string>
+    <string name="cancel_regular_cleanings_subtitle">Which series do you want to cancel?</string>
 
 </resources>
