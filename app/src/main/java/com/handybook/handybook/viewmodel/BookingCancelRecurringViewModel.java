@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.util.DateTimeUtils;
+import com.handybook.handybook.util.StringUtils;
 
 import java.util.List;
 
@@ -34,7 +35,10 @@ public class BookingCancelRecurringViewModel
         for(int i = 0; i<optionStrings.length; i++)
         {
             Booking booking = mBookingList.get(i);
-            optionStrings[i] = booking.getRecurringInfo();
+
+            //server sends us "every 2 weeks" but we want to display "Every 2 weeks"
+            optionStrings[i] = StringUtils.capitalizeFirstCharacter(
+                    booking.getRecurringInfoShort());
             optionSubtitleStrings[i] = "Next recurrence:\n" + DateTimeUtils.getFormattedDate
                     (booking.getStartDate(), DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER);
         }
