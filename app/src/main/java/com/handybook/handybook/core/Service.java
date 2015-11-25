@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Service implements Parcelable {
+public class Service implements Parcelable {
     @SerializedName("id") private int id;
     @SerializedName("name") private String name;
     @SerializedName("uniq") private String uniq;
@@ -34,7 +34,7 @@ public final class Service implements Parcelable {
         this.name = name;
     }
 
-    public final String getUniq() {
+    public String getUniq() {
         return uniq;
     }
 
@@ -58,7 +58,7 @@ public final class Service implements Parcelable {
         this.parentId = parentId;
     }
 
-    public final List<Service> getServices() {
+    public List<Service> getServices() {
         if (services == null) services = new ArrayList<>();
         return services;
     }

@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
-public final class User extends Observable {
+public class User extends Observable {
     @SerializedName("auth_token") private String authToken;
     @SerializedName("id") private String id;
     @SerializedName("credits") private float credits;
@@ -39,25 +39,25 @@ public final class User extends Observable {
     @SerializedName("add_laundry_booking_id") private int addLaundryBookingId;
     @SerializedName("default_tip_amounts") private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
 
-    public final String getAuthToken() {
+    public String getAuthToken() {
         return authToken;
     }
 
-    public final void setAuthToken(final String authToken) {
+    public void setAuthToken(final String authToken) {
         this.authToken = authToken;
         triggerObservers();
     }
 
-    public final String getId() {
+    public String getId() {
         return id;
     }
 
-    public final void setId(final String id) {
+    public void setId(final String id) {
         this.id = id;
         triggerObservers();
     }
 
-    public final float getCredits() {
+    public float getCredits() {
         return credits;
     }
 
@@ -66,38 +66,38 @@ public final class User extends Observable {
         triggerObservers();
     }
 
-    public final String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public final void setFirstName(final String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
         triggerObservers();
     }
 
-    public final String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    public final void setLastName(final String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
         triggerObservers();
     }
 
-    public final String getFullName() {
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 
-    public final String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public final void setEmail(final String email) {
+    public void setEmail(final String email) {
         this.email = email;
         triggerObservers();
     }
 
-    public final String getPhonePrefix() {
+    public String getPhonePrefix() {
         return phonePrefix;
     }
 
@@ -106,18 +106,18 @@ public final class User extends Observable {
         triggerObservers();
     }
 
-    public final String getPhone() {
+    public String getPhone() {
         final int phoneLen = phone != null ? phone.length() : 0;
         if (phone != null & phoneLen > 10) return phone.substring(phoneLen - 10);
         return phone;
     }
 
-    public final void setPhone(final String phone) {
+    public void setPhone(final String phone) {
         this.phone = phone;
         triggerObservers();
     }
 
-    public final String getCurrencyChar() {
+    public String getCurrencyChar() {
         return currencyChar;
     }
 
@@ -139,7 +139,7 @@ public final class User extends Observable {
         return password;
     }
 
-    public final void setPassword(final String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -147,7 +147,7 @@ public final class User extends Observable {
         return currentPassword;
     }
 
-    public final void setCurrentPassword(final String currentPassword) {
+    public void setCurrentPassword(final String currentPassword) {
         this.currentPassword = currentPassword;
     }
 
@@ -155,11 +155,11 @@ public final class User extends Observable {
         return passwordConfirmation;
     }
 
-    public final void setPasswordConfirmation(final String passwordConfirmation) {
+    public void setPasswordConfirmation(final String passwordConfirmation) {
         this.passwordConfirmation = passwordConfirmation;
     }
 
-    public final Address getAddress() {
+    public Address getAddress() {
         return address;
     }
 
@@ -168,7 +168,7 @@ public final class User extends Observable {
         triggerObservers();
     }
 
-    public final CreditCard getCreditCard() {
+    public CreditCard getCreditCard() {
         return creditCard;
     }
 
@@ -177,7 +177,7 @@ public final class User extends Observable {
         triggerObservers();
     }
 
-    public final Analytics getAnalytics() {
+    public Analytics getAnalytics() {
         return analytics;
     }
 
@@ -186,11 +186,11 @@ public final class User extends Observable {
         triggerObservers();
     }
 
-    public final int getBookingRateId() {
+    public int getBookingRateId() {
         return bookingRateId;
     }
 
-    public final String getBookingRatePro() {
+    public String getBookingRatePro() {
         return bookingRatePro;
     }
 
@@ -198,11 +198,11 @@ public final class User extends Observable {
         return defaultTipAmounts;
     }
 
-    public final int getLaundryBookingId() {
+    public int getLaundryBookingId() {
         return laundryBookingId;
     }
 
-    public final int getAddLaundryBookingId() {
+    public int getAddLaundryBookingId() {
         return addLaundryBookingId;
     }
 

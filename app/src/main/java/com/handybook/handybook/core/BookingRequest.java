@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public final class BookingRequest extends Observable {
+public class BookingRequest extends Observable {
     @SerializedName("service_id") private int serviceId;
     @SerializedName("uniq") private String uniq;
     @SerializedName("zipcode") private String zipCode;
@@ -28,38 +28,38 @@ public final class BookingRequest extends Observable {
     @SerializedName("entered_code") private String promoCode;
     @SerializedName("_android_promo_type") private PromoCode.Type promoType;
 
-    public final int getServiceId() {
+    public int getServiceId() {
         return serviceId;
     }
 
-    public final void setServiceId(final int serviceId) {
+    public void setServiceId(final int serviceId) {
         this.serviceId = serviceId;
         triggerObservers();
     }
 
-    public final String getUniq() {
+    public String getUniq() {
         return uniq;
     }
 
-    public final void setUniq(final String uniq) {
+    public void setUniq(final String uniq) {
         this.uniq = uniq;
         triggerObservers();
     }
 
-    public final String getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public final void setZipCode(final String zipCode) {
+    public void setZipCode(final String zipCode) {
         this.zipCode = zipCode;
         triggerObservers();
     }
 
-    public final String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public final void setEmail(final String email) {
+    public void setEmail(final String email) {
         this.email = email;
         triggerObservers();
     }
@@ -68,44 +68,44 @@ public final class BookingRequest extends Observable {
         return userId;
     }
 
-    public final void setUserId(final String userId) {
+    public void setUserId(final String userId) {
         this.userId = userId;
         triggerObservers();
     }
 
-    public final Date getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public final void setStartDate(final Date startDate) {
+    public void setStartDate(final Date startDate) {
         this.startDate = startDate;
         triggerObservers();
     }
 
-    public final HashMap<String, String> getOptions() {
+    public HashMap<String, String> getOptions() {
         if (options == null) options = new HashMap<>();
         return options;
     }
 
-    public final void setOptions(final HashMap<String, String> options) {
+    public void setOptions(final HashMap<String, String> options) {
         this.options = options;
         triggerObservers();
     }
 
-    public final String getPromoCode() {
+    public String getPromoCode() {
         return promoCode;
     }
 
-    public final void setPromoCode(final String promoCode) {
+    public void setPromoCode(final String promoCode) {
         this.promoCode = promoCode;
         triggerObservers();
     }
 
-    public final PromoCode.Type getPromoType() {
+    public PromoCode.Type getPromoType() {
         return promoType;
     }
 
-    public final void setPromoType(final PromoCode.Type promoType) {
+    public void setPromoType(final PromoCode.Type promoType) {
         this.promoType = promoType;
         triggerObservers();
     }
@@ -144,7 +144,7 @@ public final class BookingRequest extends Observable {
 
     static final class BookingRequestSerializer implements JsonSerializer<BookingRequest> {
         @Override
-        public final JsonElement serialize(final BookingRequest value, final Type type,
+        public JsonElement serialize(final BookingRequest value, final Type type,
                                            final JsonSerializationContext context) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("service_id", context.serialize(value.getServiceId()));

@@ -328,7 +328,7 @@ public class BookingManager implements Observer
 
 //Old Direct References, to eventually be handled in the events way
 
-    public final BookingRequest getCurrentRequest()
+    public BookingRequest getCurrentRequest()
     {
         if (request != null)
         {
@@ -345,7 +345,7 @@ public class BookingManager implements Observer
         }
     }
 
-    public final void setCurrentRequest(final BookingRequest newRequest)
+    public void setCurrentRequest(final BookingRequest newRequest)
     {
         if (request != null)
         {
@@ -365,7 +365,7 @@ public class BookingManager implements Observer
         prefsManager.setString(PrefsKey.BOOKING_REQUEST, request.toJson());
     }
 
-    public final BookingQuote getCurrentQuote()
+    public BookingQuote getCurrentQuote()
     {
         if (quote != null)
         {
@@ -382,7 +382,7 @@ public class BookingManager implements Observer
         }
     }
 
-    public final void setCurrentQuote(final BookingQuote newQuote)
+    public void setCurrentQuote(final BookingQuote newQuote)
     {
         if (quote != null)
         {
@@ -401,7 +401,7 @@ public class BookingManager implements Observer
         prefsManager.setString(PrefsKey.BOOKING_QUOTE, quote.toJson());
     }
 
-    public final BookingTransaction getCurrentTransaction()
+    public BookingTransaction getCurrentTransaction()
     {
         if (transaction != null)
         {
@@ -418,7 +418,7 @@ public class BookingManager implements Observer
         }
     }
 
-    public final void setCurrentTransaction(final BookingTransaction newTransaction)
+    public void setCurrentTransaction(final BookingTransaction newTransaction)
     {
         if (transaction != null)
         {
@@ -437,7 +437,7 @@ public class BookingManager implements Observer
         prefsManager.setString(PrefsKey.BOOKING_TRANSACTION, transaction.toJson());
     }
 
-    public final BookingPostInfo getCurrentPostInfo()
+    public BookingPostInfo getCurrentPostInfo()
     {
         if (postInfo != null)
         {
@@ -454,7 +454,7 @@ public class BookingManager implements Observer
         }
     }
 
-    public final void setCurrentPostInfo(final BookingPostInfo newInfo)
+    public void setCurrentPostInfo(final BookingPostInfo newInfo)
     {
         if (postInfo != null)
         {
@@ -473,13 +473,13 @@ public class BookingManager implements Observer
         prefsManager.setString(PrefsKey.BOOKING_POST, postInfo.toJson());
     }
 
-    public final void setPromoTabCoupon(final String code)
+    public void setPromoTabCoupon(final String code)
     {
         prefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
     }
 
     @Nullable
-    public final String getPromoTabCoupon()
+    public String getPromoTabCoupon()
     {
         return prefsManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
     }
@@ -524,7 +524,7 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void environmentUpdated(final EnvironmentUpdatedEvent event)
+    public void environmentUpdated(final EnvironmentUpdatedEvent event)
     {
         if (!event.getEnvironment().equals(event.getPrevEnvironment()))
         {
@@ -533,7 +533,7 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void userAuthUpdated(final UserLoggedInEvent event)
+    public void userAuthUpdated(final UserLoggedInEvent event)
     {
         if (!event.isLoggedIn())
         {
@@ -542,7 +542,7 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestEditBookingHours(final HandyEvent.RequestEditHours event)
+    public void onRequestEditBookingHours(final HandyEvent.RequestEditHours event)
     {
         dataManager.editBookingHours(
                 event.bookingId,
@@ -565,7 +565,7 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestEditBookingExtras(final HandyEvent.RequestEditBookingExtras event)
+    public void onRequestEditBookingExtras(final HandyEvent.RequestEditBookingExtras event)
     {
         dataManager.editBookingExtras(
                 event.bookingId,
@@ -588,7 +588,7 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public final void onRequestEditBookingExtrasViewModel(
+    public void onRequestEditBookingExtrasViewModel(
             final HandyEvent.RequestEditBookingExtrasViewModel event)
     {
         dataManager.getEditBookingExtrasInfo(event.bookingId,
