@@ -5,14 +5,12 @@ import android.content.Intent;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.core.BookingManager;
 import com.handybook.handybook.core.BookingQuote;
-import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.TestBaseApplication;
-import com.handybook.handybook.ui.activity.BookingExtrasActivity;
+import com.handybook.handybook.ui.activity.BookingPaymentActivity;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Answers;
 import org.mockito.Mock;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
@@ -27,16 +25,14 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingRecurrenceFragmentTest extends RobolectricGradleTestWrapper
+public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
 {
-    private BookingRecurrenceFragment mFragment;
+    private BookingAddressFragment mFragment;
 
     @Mock
     private BookingTransaction mMockTransaction;
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    private BookingQuote mMockQuote;
     @Mock
-    private BookingRequest mMockRequest;
+    private BookingQuote mMockQuote;
     @Inject
     BookingManager mBookingManager;
 
@@ -48,21 +44,22 @@ public class BookingRecurrenceFragmentTest extends RobolectricGradleTestWrapper
                 .inject(this);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
         when(mMockQuote.getPricing(anyFloat(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
-        when(mMockQuote.getPeakPriceTable()).thenReturn(null);
-        when(mMockRequest.getUniq()).thenReturn("home_cleaning");
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
-        when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
-        mFragment = BookingRecurrenceFragment.newInstance();
+        mFragment = BookingAddressFragment.newInstance();
         SupportFragmentTestUtil.startVisibleFragment(mFragment);
     }
 
     @Test
-    public void shouldLaunchBookingExtrasActivity() throws Exception
+    public void shouldLaunchBookingPaymentActivity() throws Exception
     {
+        mFragment.fullNameText.setText("John Doe");
+        mFragment.streetAddrText.setText("123 Handy St");
+        mFragment.phoneText.setText("1111111111");
+
         mFragment.nextButton.performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingExtrasActivity.class.getName()));
+                equalTo(BookingPaymentActivity.class.getName()));
     }
 }
