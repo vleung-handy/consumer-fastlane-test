@@ -76,9 +76,9 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 22
-        versionName '1.10.1_notification_feed'
+        versionName '1.10.3notificationfeed'
         //versionCode computeVersionCode(versionName)
-        versionCode 11001
+        versionCode 11003
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
