@@ -20,16 +20,20 @@ import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
+import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.ui.fragment.BookingDateFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
+import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingOptionsFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
+import com.handybook.handybook.ui.fragment.BookingRecurrenceFragmentTest;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.squareup.otto.Bus;
@@ -64,6 +68,10 @@ import static org.mockito.Mockito.when;
         BookingDateActivity.class,
         BookingDateFragment.class,
         BookingDateFragmentTest.class,
+        BookingRecurrenceActivity.class,
+        BookingRecurrenceFragment.class,
+        BookingRecurrenceFragmentTest.class,
+        BookingHeaderFragment.class,
 }, library = true)
 public class TestApplicationModule
 {
