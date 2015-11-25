@@ -18,6 +18,7 @@ import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
@@ -27,6 +28,8 @@ import com.handybook.handybook.ui.fragment.BookingDateFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
+import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
+import com.handybook.handybook.ui.fragment.BookingExtrasFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragmentTest;
@@ -72,6 +75,9 @@ import static org.mockito.Mockito.when;
         BookingRecurrenceFragment.class,
         BookingRecurrenceFragmentTest.class,
         BookingHeaderFragment.class,
+        BookingExtrasActivity.class,
+        BookingExtrasFragment.class,
+        BookingExtrasFragmentTest.class,
 }, library = true)
 public class TestApplicationModule
 {

@@ -64,82 +64,82 @@ public class BookingOption implements Parcelable
         return mImageResourceIds;
     }
 
-    public final String getUniq()
+    public String getUniq()
     {
         return uniq;
     }
 
-    final void setUniq(final String uniq)
+    void setUniq(final String uniq)
     {
         this.uniq = uniq;
     }
 
-    public final String getType()
+    public String getType()
     {
         return type;
     }
 
-    public final void setType(final String type)
+    public void setType(final String type)
     {
         this.type = type;
     }
 
-    public final String getTitle()
+    public String getTitle()
     {
         return title;
     }
 
-    final void setTitle(final String title)
+    void setTitle(final String title)
     {
         this.title = title;
     }
 
-    public final String getInfo()
+    public String getInfo()
     {
         return info;
     }
 
-    final void setInfo(final String info)
+    void setInfo(final String info)
     {
         this.info = info;
     }
 
-    public final String getDefaultValue()
+    public String getDefaultValue()
     {
         return defaultValue;
     }
 
-    public final void setDefaultValue(final String defaultValue)
+    public void setDefaultValue(final String defaultValue)
     {
         this.defaultValue = defaultValue;
     }
 
-    public final String[] getOptions()
+    public String[] getOptions()
     {
         return options;
     }
 
-    public final void setOptions(final String[] options)
+    public void setOptions(final String[] options)
     {
         this.options = options;
     }
 
-    public final String[] getOptionsSubText()
+    public String[] getOptionsSubText()
     {
         return optionsSubText;
     }
 
-    public final void setOptionsSubText(final String[] optionsSubText)
+    public void setOptionsSubText(final String[] optionsSubText)
     {
         this.optionsSubText = optionsSubText;
     }
 
-    public final String[] getOptionsRightSubText()
+    public String[] getOptionsRightSubText()
     {
         return optionsRightSubText;
     }
 
-    public final String[] getOptionsRightTitleText()
+    public String[] getOptionsRightTitleText()
     {
         return optionsRightTitleText;
     }
@@ -149,67 +149,67 @@ public class BookingOption implements Parcelable
         this.optionsRightTitleText = optionsRightTitleText;
     }
 
-    public final void setOptionsRightSubText(final String[] optionsRightSubText)
+    public void setOptionsRightSubText(final String[] optionsRightSubText)
     {
         this.optionsRightSubText = optionsRightSubText;
     }
 
-    final String[][] getOptionsImages()
+    String[][] getOptionsImages()
     {
         return optionsImages;
     }
 
-    final void setOptionsImages(final String[][] optionsImages)
+    void setOptionsImages(final String[][] optionsImages)
     {
         this.optionsImages = optionsImages;
     }
 
-    public final float[] getHoursInfo()
+    public float[] getHoursInfo()
     {
         return hoursInfo;
     }
 
-    final void setHoursInfo(final float[] hoursInfo)
+    void setHoursInfo(final float[] hoursInfo)
     {
         this.hoursInfo = hoursInfo;
     }
 
-    public final String[][] getWarnings()
+    public String[][] getWarnings()
     {
         return warnings;
     }
 
-    final void setWarnings(final String[][] warnings)
+    void setWarnings(final String[][] warnings)
     {
         this.warnings = warnings;
     }
 
-    public final String[][] getChildren()
+    public String[][] getChildren()
     {
         return children;
     }
 
-    final void setChildren(final String[][] children)
+    void setChildren(final String[][] children)
     {
         this.children = children;
     }
 
-    public final int getPage()
+    public int getPage()
     {
         return page;
     }
 
-    final void setPage(final int page)
+    void setPage(final int page)
     {
         this.page = page;
     }
 
-    public final boolean isPost()
+    public boolean isPost()
     {
         return post == 1;
     }
 
-    final void setPost(final boolean post)
+    void setPost(final boolean post)
     {
         this.post = post ? 1 : 0;
     }
