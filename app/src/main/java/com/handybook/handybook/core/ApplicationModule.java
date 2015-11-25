@@ -257,6 +257,10 @@ public final class ApplicationModule
                         request.addHeader("Accept", "application/json");
                         request.addQueryParam("client", "android");
                         request.addQueryParam("app_version", BuildConfig.VERSION_NAME);
+                        request.addQueryParam(
+                                "app_version_code",
+                                String.valueOf(BuildConfig.VERSION_CODE)
+                        );
                         request.addQueryParam("api_sub_version", "6.0");
                         request.addQueryParam("app_device_id", getDeviceId());
                         request.addQueryParam("app_device_model", getDeviceName());

@@ -164,7 +164,9 @@ public class BaseApplication extends MultiDexApplication
     private void initFabric()
     {
         Fabric.with(this, new Crashlytics());
-        Crashlytics.setUserIdentifier(Settings.Secure.ANDROID_ID);
+        Crashlytics.setUserIdentifier(
+                Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID)
+        );
         User currentUser = userManager.getCurrentUser();
         if (currentUser != null){
             Crashlytics.setUserEmail(currentUser.getEmail());
