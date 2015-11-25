@@ -220,6 +220,7 @@ public final class BaseDataManager extends DataManager
     {
         mService.sendCancelRecurringBookingEmail(bookingId, new SuccessHandyRetroFitCallback(cb));
     }
+
     @Override
     public void getEditBookingExtrasInfo(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
     {

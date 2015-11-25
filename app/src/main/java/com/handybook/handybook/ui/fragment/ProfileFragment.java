@@ -83,7 +83,6 @@ public final class ProfileFragment extends InjectedFragment {
     {
         final Intent intent = new Intent(getActivity(), CancelRecurringBookingActivity.class);
         getActivity().startActivity(intent);
-//        bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail());
     }
 
     @Override

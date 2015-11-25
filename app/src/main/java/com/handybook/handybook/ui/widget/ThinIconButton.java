@@ -51,7 +51,6 @@ public class ThinIconButton extends LinearLayout //TODO: give better name
                 0, 0);
         try
         {
-
             Drawable iconDrawable = a.getDrawable(R.styleable.ThinIconButton_iconResourceId);
             if (iconDrawable != null)
             {
@@ -66,7 +65,6 @@ public class ThinIconButton extends LinearLayout //TODO: give better name
                 TextView textView = (TextView) findViewById(R.id.thin_icon_button_text);
                 textView.setText(text);
             }
-
         }
         finally
         {
