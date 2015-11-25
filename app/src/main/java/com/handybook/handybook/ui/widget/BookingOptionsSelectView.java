@@ -275,7 +275,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     {
         super.hideTitle();
 
-        mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, mainLayout.getPaddingRight(), mainLayout.getPaddingBottom());
+        if (mainLayout != null)
+        {
+            mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, mainLayout.getPaddingRight(), mainLayout.getPaddingBottom());
+        }
 
         invalidate();
         requestLayout();

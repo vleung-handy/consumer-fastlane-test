@@ -37,6 +37,8 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.CardException;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -72,6 +74,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     ProgressBar promoProgress;
     @Bind(R.id.promo_layout)
     LinearLayout promoLayout;
+
+    @Inject
+    Stripe mStripe;
 
     public static BookingPaymentFragment newInstance() {
         return new BookingPaymentFragment();
@@ -257,8 +262,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                     final Card card = new Card(creditCardText.getCardNumber(), expText.getExpMonth(),
                             expText.getExpYear(), cvcText.getCVC());
 
-                    final Stripe stripe = new Stripe();
-                    stripe.createToken(card, bookingManager.getCurrentQuote().getStripeKey(),
+                    mStripe.createToken(card, bookingManager.getCurrentQuote().getStripeKey(),
                             new TokenCallback() {
                         @Override
                         public void onError(final Exception e) {

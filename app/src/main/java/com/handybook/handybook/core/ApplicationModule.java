@@ -102,6 +102,7 @@ import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
+import com.stripe.android.Stripe;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -402,6 +403,12 @@ public final class ApplicationModule
     )
     {
         return new AppBlockManager(bus, dataManager, prefsManager);
+    }
+
+    @Provides
+    final Stripe provideStripe()
+    {
+        return new Stripe();
     }
 
     private String getDeviceId()

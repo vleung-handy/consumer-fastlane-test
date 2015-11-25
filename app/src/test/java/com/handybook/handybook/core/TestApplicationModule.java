@@ -14,24 +14,49 @@ import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.BookingAddressActivity;
+import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.ui.activity.BookingExtrasActivity;
+import com.handybook.handybook.ui.activity.BookingLocationActivity;
+import com.handybook.handybook.ui.activity.BookingOptionsActivity;
+import com.handybook.handybook.ui.activity.BookingPaymentActivity;
+import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
+import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.ui.fragment.BookingAddressFragment;
+import com.handybook.handybook.ui.fragment.BookingAddressFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingDateFragment;
+import com.handybook.handybook.ui.fragment.BookingDateFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
+import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
+import com.handybook.handybook.ui.fragment.BookingExtrasFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
+import com.handybook.handybook.ui.fragment.BookingLocationFragment;
+import com.handybook.handybook.ui.fragment.BookingLocationFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
+import com.handybook.handybook.ui.fragment.BookingOptionsFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
+import com.handybook.handybook.ui.fragment.BookingPaymentFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
+import com.handybook.handybook.ui.fragment.BookingRecurrenceFragmentTest;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
+import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.squareup.otto.Bus;
+import com.stripe.android.Stripe;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by jwilliams on 2/17/15.
- */
 @Module(injects = {
         TestBaseApplication.class,
         BaseActivity.class,
@@ -42,23 +67,49 @@ import static org.mockito.Mockito.when;
         BookingEditHoursFragment.class,
         BookingEditExtrasActivity.class,
         BookingEditExtrasFragment.class,
+        ServiceCategoriesActivity.class,
+        ServiceCategoriesFragment.class,
+        BookingLocationActivity.class,
+        BookingLocationFragment.class,
+        BookingLocationFragmentTest.class,
+        BookingOptionsActivity.class,
+        BookingOptionsFragment.class,
+        BookingOptionsFragmentTest.class,
+        BookingDateActivity.class,
+        BookingDateFragment.class,
+        BookingDateFragmentTest.class,
+        BookingRecurrenceActivity.class,
+        BookingRecurrenceFragment.class,
+        BookingRecurrenceFragmentTest.class,
+        BookingHeaderFragment.class,
+        BookingExtrasActivity.class,
+        BookingExtrasFragment.class,
+        BookingExtrasFragmentTest.class,
+        BookingAddressActivity.class,
+        BookingAddressFragment.class,
+        BookingAddressFragmentTest.class,
+        BookingPaymentActivity.class,
+        BookingPaymentFragment.class,
+        BookingPaymentFragmentTest.class,
 }, library = true)
 public class TestApplicationModule
 {
-
     public final Context context;
+
     public TestApplicationModule(Context context)
     {
         this.context = context;
     }
 
     @Provides
+    @Singleton
     final DataManagerErrorHandler provideDataManagerHandler()
     {
         return mock(BaseDataManagerErrorHandler.class);
     }
 
     @Provides
+    @Singleton
     final EnvironmentModifier provideEnvironmentModifier()
     {
         EnvironmentModifier environmentModifier = mock(EnvironmentModifier.class);
@@ -67,54 +118,70 @@ public class TestApplicationModule
     }
 
     @Provides
+    @Singleton
     final HandyRetrofitEndpoint provideHandyEndpoint()
     {
         return mock(HandyRetrofitEndpoint.class);
     }
 
     @Provides
+    @Singleton
     final HandyRetrofitService provideHandyService()
     {
         return mock(HandyRetrofitService.class);
     }
 
     @Provides
+    @Singleton
     final DataManager provideDataManager()
     {
         return mock(DataManager.class);
     }
 
     @Provides
+    @Singleton
+    final UserManager provideUserManager()
+    {
+        return mock(UserManager.class);
+    }
+
+    @Provides
+    @Singleton
     final Bus provideBus()
     {
         return mock(Bus.class);
     }
 
     @Provides
+    @Singleton
     final Application provideApplication()
     {
         return mock(Application.class);
     }
 
     @Provides
+    @Singleton
     final com.securepreferences.SecurePreferences providePrefs()
     {
         return mock(com.securepreferences.SecurePreferences.class);
     }
 
     @Provides
+    @Singleton
     final BookingManager provideBookingManager()
     {
         return mock(BookingManager.class);
     }
 
     @Provides
+    @Singleton
     final LoginManager provideLoginManager()
     {
         return mock(LoginManager.class);
     }
 
     @Provides
+    @Singleton
     final PrefsManager providePrefsManager()
     {
         return mock(PrefsManager.class);
@@ -122,6 +189,7 @@ public class TestApplicationModule
 
 
     @Provides
+    @Singleton
     final Mixpanel provideMixpanel()
     {
         return mock(Mixpanel.class);
@@ -129,20 +197,37 @@ public class TestApplicationModule
 
 
     @Provides
+    @Singleton
     final SecurePreferences provideSecurePreferences()
     {
         return mock(SecurePreferences.class);
     }
 
     @Provides
+    @Singleton
     final AppBlockManager provideAppBlockManager()
     {
         return mock(AppBlockManager.class);
     }
 
     @Provides
+    @Singleton
     final Context provideContext()
     {
         return context;
+    }
+
+    @Provides
+    @Singleton
+    final ReactiveLocationProvider provideReactiveLocationProvider()
+    {
+        return mock(ReactiveLocationProvider.class);
+    }
+
+    @Provides
+    @Singleton
+    final Stripe provideStripe()
+    {
+        return mock(Stripe.class);
     }
 }
