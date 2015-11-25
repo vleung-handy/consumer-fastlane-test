@@ -1,8 +1,8 @@
 package com.handybook.handybook.core;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
@@ -63,7 +63,7 @@ public class BaseApplication extends MultiDexApplication
     {
         super.onCreate();
         createObjectGraph();
-        Fabric.with(this, new Crashlytics());
+        initFabric();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
         {
@@ -159,6 +159,16 @@ public class BaseApplication extends MultiDexApplication
                 bus.post(new ActivityEvent.Destroyed(activity));
             }
         });
+    }
+
+    private void initFabric()
+    {
+        Fabric.with(this, new Crashlytics());
+        Crashlytics.setUserIdentifier(Settings.Secure.ANDROID_ID);
+        User currentUser = userManager.getCurrentUser();
+        if (currentUser != null){
+            Crashlytics.setUserEmail(currentUser.getEmail());
+        }
     }
 
     public final void inject(final Object object)
