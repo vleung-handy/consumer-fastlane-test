@@ -10,27 +10,27 @@ import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
 
-public final class BookingCompleteTransaction {
+public class BookingCompleteTransaction {
     @SerializedName("id") private int id;
     @SerializedName("user_info") private User user;
 
-    public final int getId() {
+    public int getId() {
         return id;
     }
 
-    public final void setId(final int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
-    public final User getUser() {
+    public User getUser() {
         return user;
     }
 
-    final void setUser(final User user) {
+    void setUser(final User user) {
         this.user = user;
     }
 
-    final String toJson() {
+    String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .registerTypeAdapter(BookingCompleteTransaction.class,
                         new BookingCompleteTransaction()).create();
@@ -43,10 +43,10 @@ public final class BookingCompleteTransaction {
                 .fromJson(json, BookingCompleteTransaction.class);
     }
 
-    static final class BookingCompleteTransactionSerializer
+    static class BookingCompleteTransactionSerializer
             implements JsonSerializer<BookingCompleteTransaction> {
         @Override
-        public final JsonElement serialize(final BookingCompleteTransaction value, final Type type,
+        public JsonElement serialize(final BookingCompleteTransaction value, final Type type,
                                            final JsonSerializationContext context) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("id", context.serialize(value.getId()));
@@ -55,15 +55,15 @@ public final class BookingCompleteTransaction {
         }
     }
 
-    public static final class User {
+    public static class User {
         @SerializedName("auth_token") private String authToken;
         @SerializedName("id") private String id;
 
-        public final String getAuthToken() {
+        public String getAuthToken() {
             return authToken;
         }
 
-        public final String getId() {
+        public String getId() {
             return id;
         }
     }

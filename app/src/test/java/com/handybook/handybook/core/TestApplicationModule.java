@@ -22,6 +22,7 @@ import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.ui.activity.BookingOptionsActivity;
+import com.handybook.handybook.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
@@ -38,11 +39,14 @@ import com.handybook.handybook.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.ui.fragment.BookingLocationFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingOptionsFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
+import com.handybook.handybook.ui.fragment.BookingPaymentFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragmentTest;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.squareup.otto.Bus;
+import com.stripe.android.Stripe;
 
 import javax.inject.Singleton;
 
@@ -84,6 +88,9 @@ import static org.mockito.Mockito.when;
         BookingAddressActivity.class,
         BookingAddressFragment.class,
         BookingAddressFragmentTest.class,
+        BookingPaymentActivity.class,
+        BookingPaymentFragment.class,
+        BookingPaymentFragmentTest.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -215,5 +222,12 @@ public class TestApplicationModule
     final ReactiveLocationProvider provideReactiveLocationProvider()
     {
         return mock(ReactiveLocationProvider.class);
+    }
+
+    @Provides
+    @Singleton
+    final Stripe provideStripe()
+    {
+        return mock(Stripe.class);
     }
 }
