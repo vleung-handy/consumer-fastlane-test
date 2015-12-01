@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,6 +48,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     TextView mBilledOnText;
     @Bind(R.id.booking_extras_price_table)
     LinearLayout mBookingExtrasPriceTableLayout;
+    @Bind(R.id.next_button)
+    Button mSaveButton;
 
     private Booking mBooking;
 
@@ -236,11 +239,24 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
                 originalBookingBasePrice);
     }
 
+    private void setSaveButtonEnabled(boolean enabled)
+    {
+        mSaveButton.setEnabled(enabled);
+    }
+
+    @Override
+    protected void showUiBlockers()
+    {
+        super.showUiBlockers();
+        setSaveButtonEnabled(false);
+    }
+
     @Override
     protected void removeUiBlockers()
     {
         super.removeUiBlockers();
         mContentContainer.setVisibility(View.VISIBLE);
+        setSaveButtonEnabled(true);
     }
 
     @Subscribe
@@ -260,12 +276,12 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
             HandyEvent.ReceiveEditBookingExtrasViewModelError event)
     {
         onReceiveErrorEvent(event);
+        setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
     @Subscribe
     public final void onReceiveEditBookingExtrasSuccess(HandyEvent.ReceiveEditExtrasSuccess event)
     {
-        removeUiBlockers();
         showToast(getString(R.string.booking_edit_extras_update_success));
 
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
@@ -276,5 +292,6 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     public final void onReceiveEditBookingExtrasError(HandyEvent.ReceiveEditExtrasError event)
     {
         onReceiveErrorEvent(event);
+        removeUiBlockers(); //allow user to try again
     }
 }
