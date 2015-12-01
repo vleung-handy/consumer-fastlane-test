@@ -25,6 +25,7 @@ import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
+import com.handybook.handybook.ui.widget.ThinIconButton;
 import com.handybook.handybook.util.TextUtils;
 
 import butterknife.Bind;
@@ -62,7 +63,7 @@ public final class ProfileFragment extends InjectedFragment {
     @Bind(R.id.menu_button_layout)
     ViewGroup menuButtonLayout;
     @Bind(R.id.cancel_cleaning_plan_button)
-    Button mCancelCleaningPlanButton;
+    ThinIconButton mCancelCleaningPlanButton;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
