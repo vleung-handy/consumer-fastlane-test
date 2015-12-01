@@ -278,5 +278,7 @@
     <string name="other_plumbing">Something else</string>
     <string name="other_plumbing_service_description">Have something more specific in mind? Tell us!</string>
     <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
+    <string name="title_activity_notification_feed">NotificationFeedActivity</string>
+    <string name="cd_notification_feed_button">Open notificaton center</string>
 
 </resources>

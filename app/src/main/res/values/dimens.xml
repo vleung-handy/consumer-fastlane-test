@@ -26,4 +26,5 @@
     <dimen name="icon_padding">2dp</dimen>
     <dimen name="framed_icon_inset">8dp</dimen>
     <dimen name="horizontal_divider_height">2dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
 </resources>
