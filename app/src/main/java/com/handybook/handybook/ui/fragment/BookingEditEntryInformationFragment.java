@@ -180,17 +180,24 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
             @Override
             public void onUpdate(final BookingOptionsView view)
             {
-                final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-
-                entryInformationTransaction.setGetInId(index);
-
-                if (index == ENTRY_INFORMATION_HIDE_KEY)
+                //this function can be called after butterknife unbinds the views
+                //TODO: need to prevent listener from being called when view is unbound
+                //below line is needed to prevent NPE caused by above issue
+                if (keysText != null)
                 {
-                    keysText.setVisibility(View.VISIBLE);
-                } else
-                {
-                    keysText.unHighlight();
-                    keysText.setVisibility(View.GONE);
+                    final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
+
+                    entryInformationTransaction.setGetInId(index);
+
+                    if (index == ENTRY_INFORMATION_HIDE_KEY)
+                    {
+                        keysText.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        keysText.unHighlight();
+                        keysText.setVisibility(View.GONE);
+                    }
                 }
             }
 
