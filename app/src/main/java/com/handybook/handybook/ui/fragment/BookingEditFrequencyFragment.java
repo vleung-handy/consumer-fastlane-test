@@ -113,6 +113,25 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         optionsLayout.addView(mOptionsView);
     }
 
+    private void setSaveButtonEnabled(boolean enabled)
+    {
+        mSaveButton.setEnabled(enabled);
+    }
+
+    @Override
+    protected void showUiBlockers()
+    {
+        super.showUiBlockers();
+        setSaveButtonEnabled(false);
+    }
+
+    @Override
+    protected void removeUiBlockers()
+    {
+        super.removeUiBlockers();
+        setSaveButtonEnabled(true);
+    }
+
     @Subscribe
     public final void onReceiveUpdateBookingFrequencySuccess(HandyEvent.ReceiveEditBookingFrequencySuccess event)
     {
@@ -127,6 +146,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     public final void onReceiveUpdateBookingFrequencyError(HandyEvent.ReceiveEditBookingFrequencyError event)
     {
         onReceiveErrorEvent(event);
+        setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
     @Subscribe
@@ -141,5 +161,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     public final void onReceiveBookingPricesForFrequenciesError(HandyEvent.ReceiveGetEditFrequencyViewModelError event)
     {
         onReceiveErrorEvent(event);
+        removeUiBlockers(); //allow user to try again
     }
 }
