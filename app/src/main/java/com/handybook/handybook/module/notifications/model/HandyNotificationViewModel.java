@@ -3,9 +3,15 @@ package com.handybook.handybook.module.notifications.model;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class HandyNotificationViewModel
 {
     private HandyNotification mHandyNotification;
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
 
     public HandyNotificationViewModel(final HandyNotification handyNotification)
     {
@@ -30,9 +36,37 @@ public class HandyNotificationViewModel
             case DisplayMetrics.DENSITY_XXXHIGH:
                 return mHandyNotification.getImages()[5].getUrl();
             default:
-                return mHandyNotification.getImages()[0].getUrl();
+                return mHandyNotification.getImages()[1].getUrl();
         }
+        // TODO: Seriously! Did you redo this?
+    }
+
+    public String getTitle()
+    {
+        return mHandyNotification.getTitle();
+    }
+
+    public String getBody()
+    {
+        return mHandyNotification.getBody();
+    }
+
+    public String getTimestamp()
+    {
+        return DATE_FORMAT.format(mHandyNotification.getCreatedOn().getTime());
     }
 
 
+    public static class List extends ArrayList<HandyNotificationViewModel>
+    {
+        public static List from(final Collection<HandyNotification> notifications)
+        {
+            final List notificationViewModelList = new List();
+            for (HandyNotification eachNotification : notifications)
+            {
+                notificationViewModelList.add(new HandyNotificationViewModel(eachNotification));
+            }
+            return notificationViewModelList;
+        }
+    }
 }
