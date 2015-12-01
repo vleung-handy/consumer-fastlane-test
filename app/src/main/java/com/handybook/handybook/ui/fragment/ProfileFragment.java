@@ -29,7 +29,6 @@ import com.handybook.handybook.util.TextUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class ProfileFragment extends InjectedFragment {
@@ -62,6 +61,8 @@ public final class ProfileFragment extends InjectedFragment {
     PasswordInputTextView newPasswordtext;
     @Bind(R.id.menu_button_layout)
     ViewGroup menuButtonLayout;
+    @Bind(R.id.cancel_cleaning_plan_button)
+    Button mCancelCleaningPlanButton;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -71,12 +72,6 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = userManager.getCurrentUser();
-    }
-
-    @OnClick(R.id.cancel_cleaning_plan_button)
-    public void onClickCancelCleaningButton()
-    {
-        showRecurringBookingsToCancel();
     }
 
     private void showRecurringBookingsToCancel()
@@ -187,6 +182,24 @@ public final class ProfileFragment extends InjectedFragment {
 
         newPasswordtext.unHighlight();
         newPasswordtext.setText("");
+
+        //only show cancel cleaning plan button if user has recurring bookings
+        if(user.getAnalytics() != null && user.getAnalytics().getRecurringBookings() > 0)
+        {
+            mCancelCleaningPlanButton.setVisibility(View.VISIBLE);
+            mCancelCleaningPlanButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(final View v)
+                {
+                    showRecurringBookingsToCancel();
+                }
+            });
+        }
+        else
+        {
+            mCancelCleaningPlanButton.setVisibility(View.GONE);
+        }
     }
 
     private boolean validateFields() {

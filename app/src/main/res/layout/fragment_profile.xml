@@ -110,9 +110,9 @@
 
             <!--TODO: put into strings.xml and see if we can use android:text-->
             <com.handybook.handybook.ui.widget.ThinIconButton
-                android:onClick="onClickCancelCleaningButton"
                 custom:iconResourceId="@drawable/ic_calendar_dark"
                 custom:text="Cancel cleaning plan"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/cancel_cleaning_plan_button"
