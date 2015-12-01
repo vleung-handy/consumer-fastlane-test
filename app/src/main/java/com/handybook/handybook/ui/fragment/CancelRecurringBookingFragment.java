@@ -64,6 +64,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     {
         //get selected booking
         //TODO: wtf is booking's recurringId type Long?
+        showUiBlockers();
         int recurringId = (int)(booking.getRecurringId().longValue());
         bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail(recurringId));
     }
@@ -126,6 +127,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             if(event.bookings.size() > 1)
             {
                 createOptionsView();
+                removeUiBlockers();
             }
             else
             {
@@ -140,8 +142,6 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             showToast("No recurring bookings to cancel");
             getActivity().finish();
         }
-
-        removeUiBlockers();
     }
 
     @Subscribe

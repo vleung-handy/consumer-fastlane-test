@@ -588,7 +588,8 @@ public class BookingManager implements Observer
                 });
     }
 
-    public final void onRequestSendCancelRecurringBookingEmail(
+    @Subscribe
+    public void onRequestSendCancelRecurringBookingEmail(
             final HandyEvent.RequestSendCancelRecurringBookingEmail event)
     {
         dataManager.sendCancelRecurringBookingEmail(event.bookingId, new DataManager
