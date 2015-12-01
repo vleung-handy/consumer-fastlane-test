@@ -302,30 +302,29 @@ public final class BookingDateFragment extends BookingFlowFragment
         //this function can be called after butterknife unbinds the views
         //TODO: need to prevent listener from being called when view is unbound
         //below line is needed to prevent NPE caused by above issue
-        if (datePicker != null && mGroovedTimePicker != null)
+        if (datePicker == null || mGroovedTimePicker == null) return;
+
+        final Calendar date = Calendar.getInstance();
+        date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+        date.set(Calendar.MONTH, datePicker.getMonth());
+        date.set(Calendar.YEAR, datePicker.getYear());
+        date.set(Calendar.HOUR_OF_DAY, mGroovedTimePicker.getCurrentHour());
+        date.set(Calendar.MINUTE, mGroovedTimePicker.getCurrentMinute());
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        final Date newDate = date.getTime();
+        if (mRescheduleBooking != null)
         {
-            final Calendar date = Calendar.getInstance();
-            date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
-            date.set(Calendar.MONTH, datePicker.getMonth());
-            date.set(Calendar.YEAR, datePicker.getYear());
-            date.set(Calendar.HOUR_OF_DAY, mGroovedTimePicker.getCurrentHour());
-            date.set(Calendar.MINUTE, mGroovedTimePicker.getCurrentMinute());
-            date.set(Calendar.SECOND, 0);
-            date.set(Calendar.MILLISECOND, 0);
-            final Date newDate = date.getTime();
-            if (mRescheduleBooking != null)
+            mRescheduleDate = newDate;
+        }
+        else
+        {
+            final BookingRequest request = bookingManager.getCurrentRequest();
+            request.setStartDate(newDate);
+            final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+            if (transaction != null)
             {
-                mRescheduleDate = newDate;
-            }
-            else
-            {
-                final BookingRequest request = bookingManager.getCurrentRequest();
-                request.setStartDate(newDate);
-                final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-                if (transaction != null)
-                {
-                    transaction.setStartDate(newDate);
-                }
+                transaction.setStartDate(newDate);
             }
         }
     }
