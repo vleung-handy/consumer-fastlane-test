@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_height="match_parent"
+              android:layout_width="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <!--TODO: put this into a separate layout file-->
+        <RelativeLayout
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                style="@style/TextView.Navbar"
+                android:id="@+id/nav_text"
+                tools:text="Title"
+                />
+
+            <ImageButton
+                android:background="@android:color/transparent"
+                android:id="@+id/exit_button"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_width="@dimen/default_icon_size"
+                android:onClick="onExitButtonClick"
+                android:padding="@dimen/icon_padding"
+                android:src="@drawable/ic_x_dark"
+                />
+        </RelativeLayout>
+
+        <com.handybook.handybook.ui.view.HandyWebView
+            android:id="@+id/handy_webview"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            />
+
+    </LinearLayout>
+</LinearLayout>

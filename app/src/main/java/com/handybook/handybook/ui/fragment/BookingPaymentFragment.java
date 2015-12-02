@@ -7,10 +7,17 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
+import android.text.Html;
+import android.text.Layout;
+import android.text.Spannable;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -46,6 +53,7 @@ import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.FreezableInputTextView;
+import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.ValidationUtils;
 import com.handybook.handybook.util.WalletUtils;
 import com.stripe.android.Stripe;
@@ -103,6 +111,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     View mChangeButton;
     @Bind(R.id.booking_select_payment_promo_text)
     TextView mSelectPaymentPromoText;
+    @Bind(R.id.booking_payment_terms_of_use_text)
+    TextView mTermsOfUseText;
 
     @OnClick(R.id.enter_credit_card_button)
     public void onEnterCreditCardButtonClicked()
@@ -229,7 +239,51 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         mGoogleApiClient.connect();
 
+        //set the terms of use text and remove the underlines from the link
+        //must do this in code because cannot specify textview to render text as html from the
+        // layout xml
+        mTermsOfUseText.setText(Html.fromHtml(getResources().getString(R.string.booking_payment_terms_of_use)));
+        TextUtils.stripUnderlines(mTermsOfUseText);
+        mTermsOfUseText.setMovementMethod(new TermsLinkMovementMethod());
+
         return view;
+    }
+
+
+
+    private void showTermsWebViewModal()
+    {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag(NavbarWebViewDialogFragment.FRAGMENT_TAG) == null) //only show if there isn't
+        // an instance of the fragment showing already
+        {
+            NavbarWebViewDialogFragment webViewNavBarWebViewDialogFragment = NavbarWebViewDialogFragment
+                    .newInstance(getString(R.string.handy_terms_of_use_title), getString(R.string
+                            .handy_terms_of_use_url));
+            webViewNavBarWebViewDialogFragment.show(fragmentManager, NavbarWebViewDialogFragment.FRAGMENT_TAG);
+        }
+    }
+    private class TermsLinkMovementMethod extends LinkMovementMethod
+    {
+        @Override
+        public boolean onTouchEvent(final TextView widget, final Spannable buffer, final MotionEvent event)
+        {
+            final int action = event.getAction();
+            if (action == MotionEvent.ACTION_DOWN) {
+
+                final int x = (int) event.getX() - widget.getTotalPaddingLeft() + widget.getScrollX();
+                final int y = (int) event.getY() - widget.getTotalPaddingTop() + widget.getScrollY();
+                final Layout layout = widget.getLayout();
+                final int line = layout.getLineForVertical(y);
+                final int off = layout.getOffsetForHorizontal(line, x);
+                final ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
+                if (link.length != 0) {
+                    showTermsWebViewModal();
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     /**
