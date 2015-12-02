@@ -146,12 +146,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     public final void onReceiveUpdateBookingFrequencyError(HandyEvent.ReceiveEditBookingFrequencyError event)
     {
         onReceiveErrorEvent(event);
-        removeUiBlockers(); //allow user to try again
     }
 
     @Subscribe
-    public final void onReceiveEditFrequencyViewModelSuccess(
-            HandyEvent.ReceiveGetEditFrequencyViewModelSuccess event)
+    public final void onReceiveBookingPricesForFrequenciesSuccess(HandyEvent.ReceiveGetEditFrequencyViewModelSuccess event)
     {
         mBookingEditFrequencyViewModel = event.bookingEditFrequencyViewModel;
         createOptionsView();
@@ -159,10 +157,9 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditFrequencyViewModelError(
-            HandyEvent.ReceiveGetEditFrequencyViewModelError event)
+    public final void onReceiveBookingPricesForFrequenciesError(HandyEvent.ReceiveGetEditFrequencyViewModelError event)
     {
         onReceiveErrorEvent(event);
-        setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
+        removeUiBlockers(); //allow user to try again
     }
 }

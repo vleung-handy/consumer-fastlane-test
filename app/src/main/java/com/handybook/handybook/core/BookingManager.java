@@ -647,10 +647,10 @@ public class BookingManager implements Observer
             public void onSuccess(final UserBookingsWrapper result)
             {
 
-                List<Booking> recurringBookings = new ArrayList<Booking>();
+                List<Booking> recurringBookings = new ArrayList<>();
                 for(Booking booking : result.getBookings())
                 {
-                    if(!booking.isPast() && booking.isFirstInRecurringSeries())
+                    if(booking.isFirstInRecurringSeries())
                     {
                         recurringBookings.add(booking);
                     }

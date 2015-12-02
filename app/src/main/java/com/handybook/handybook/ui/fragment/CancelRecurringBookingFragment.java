@@ -39,6 +39,15 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         final CancelRecurringBookingFragment fragment = new CancelRecurringBookingFragment();
         return fragment;
     }
+
+    private void setFragentVisible(boolean visible)
+    {
+        if(getView() != null)
+        {
+            getView().setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
     public void onResume()
     {
         super.onResume();
@@ -56,8 +65,15 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         ButterKnife.bind(this, view);
         mSubtitleText.setText(R.string.cancel_regular_cleanings_subtitle);
         //TODO: use onclick annotation
-
+        view.setVisibility(View.GONE);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(final View view, final Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        setFragentVisible(false);
     }
 
     private void sendCancelRecurringBookingEmail(Booking booking)
@@ -95,8 +111,6 @@ public class CancelRecurringBookingFragment extends InjectedFragment
 
     private void showEmailSentConfirmationDialog()
     {
-        //TODO: replace with dialog
-//        showToast("Sent instructions to your email address");
         String userEmailAddress = userManager.getCurrentUser().getEmail();
         EmailCancellationDialogFragment emailCancellationDialogFragment = EmailCancellationDialogFragment.newInstance(userEmailAddress);
         emailCancellationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
@@ -106,6 +120,11 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
+
+    private void setSaveButtonEnabled(boolean enabled)
+    {
+        mSaveButton.setEnabled(enabled);
     }
 
     @Subscribe
@@ -126,22 +145,28 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         {
             if(event.bookings.size() > 1)
             {
+                //allow user to select which recurrence they want to cancel
                 createOptionsView();
                 removeUiBlockers();
+                setFragentVisible(true);
             }
             else
             {
+                //send cancellation email for the only recurring booking that user has
                 sendCancelRecurringBookingEmail(event.bookings.get(0));
             }
         }
         else
         {
-            //no recurring bookings to cancel
-
+            //this can happen if the user's analytics.recurring_bookings_count > 0
+            //but user doesn't actually have any recurring bookings
+            //if this logic is reached, then we are using recurring_bookings_count wrong
             //TODO: put in strings.xml
             showToast("No recurring bookings to cancel");
             getActivity().finish();
         }
+
+
     }
 
     @Subscribe
@@ -149,11 +174,18 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             HandyEvent.ReceiveSendCancelRecurringBookingEmailError event)
     {
         handleErrorEvent(event);
+        removeUiBlockers();
     }
 
     @Subscribe
     public void onReceiveRecurringBookingsError(HandyEvent.ReceiveRecurringBookingsError event)
     {
-        handleErrorEvent(event);
+//        handleErrorEvent(event);
+//        setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
+
+        //exit and show toast
+        showToast("Sorry, there was an error fetching your recurring bookings. Please try again " +
+                "later.");
+        getActivity().finish();
     }
 }
