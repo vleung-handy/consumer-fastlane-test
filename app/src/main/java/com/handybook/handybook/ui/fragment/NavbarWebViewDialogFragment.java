@@ -31,13 +31,13 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment
 
     public static NavbarWebViewDialogFragment newInstance(String navbarTitleString, String webviewUrl)
     {
-        NavbarWebViewDialogFragment webViewNavBarWebViewDialogFragment = new NavbarWebViewDialogFragment();
+        NavbarWebViewDialogFragment navbarWebViewDialogFragment = new NavbarWebViewDialogFragment();
 
         final Bundle args = new Bundle();
         args.putString(BUNDLE_KEY_WEBVIEW_URL, webviewUrl);
         args.putString(BUNDLE_KEY_NAVBAR_TITLE, navbarTitleString);
-        webViewNavBarWebViewDialogFragment.setArguments(args);
-        return webViewNavBarWebViewDialogFragment;
+        navbarWebViewDialogFragment.setArguments(args);
+        return navbarWebViewDialogFragment;
     }
 
     @OnClick(R.id.exit_button)

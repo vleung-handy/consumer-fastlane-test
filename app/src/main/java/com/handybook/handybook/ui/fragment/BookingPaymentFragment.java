@@ -292,10 +292,10 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         if (fragmentManager.findFragmentByTag(NavbarWebViewDialogFragment.FRAGMENT_TAG) == null) //only show if there isn't
         // an instance of the fragment showing already
         {
-            NavbarWebViewDialogFragment webViewNavBarWebViewDialogFragment = NavbarWebViewDialogFragment
+            NavbarWebViewDialogFragment navbarWebViewDialogFragment = NavbarWebViewDialogFragment
                     .newInstance(getString(R.string.handy_terms_of_use_title), getString(R.string
                             .handy_terms_of_use_url));
-            webViewNavBarWebViewDialogFragment.show(fragmentManager, NavbarWebViewDialogFragment.FRAGMENT_TAG);
+            navbarWebViewDialogFragment.show(fragmentManager, NavbarWebViewDialogFragment.FRAGMENT_TAG);
         }
     }
 
