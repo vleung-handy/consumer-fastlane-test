@@ -4,12 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public final class BookingOptionsWrapper
+public class BookingOptionsWrapper
 {
-    @SerializedName("booking_options") private List<BookingOption> bookingOptions;
+    @SerializedName("booking_options")
+    private List<BookingOption> mBookingOptions;
+
     public BookingOptionsWrapper() {}
-    public final List<BookingOption> getBookingOptions()
-        {
-            return bookingOptions;
-        }
+
+    public List<BookingOption> getBookingOptions()
+    {
+        return mBookingOptions;
+    }
 }

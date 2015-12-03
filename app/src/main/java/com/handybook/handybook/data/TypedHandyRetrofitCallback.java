@@ -125,9 +125,9 @@ class BookingPricesForFrequenciesHandyRetroFitCallback extends TypedHandyRetrofi
 }
 
 
-class ServiceExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingEditExtrasInfoResponse>
+class EditExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingEditExtrasInfoResponse>
 {
-    ServiceExtrasInfoHandyRetroFitCallback(DataManager.Callback callback)
+    EditExtrasInfoHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }
