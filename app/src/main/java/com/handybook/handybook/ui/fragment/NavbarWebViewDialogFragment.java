@@ -18,7 +18,7 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment
 {
     public final static String FRAGMENT_TAG = "WEBVIEW_DIALOG_FRAGMENT";
     private final static String BUNDLE_KEY_WEBVIEW_URL = "WEBVIEW_URL";
-    private final static String BUNDLE_KEY_TITLE = "NAVBAR_TITLE";
+    private final static String BUNDLE_KEY_NAVBAR_TITLE = "NAVBAR_TITLE";
 
     @Bind(R.id.handy_webview)
     protected HandyWebView mHandyWebView;
@@ -27,15 +27,15 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment
     protected TextView mTitleText;
 
     private String mWebViewUrl;
-    private String mTitleString;
+    private String mNavbarTitleString;
 
-    public static NavbarWebViewDialogFragment newInstance(String titleString, String webviewUrl)
+    public static NavbarWebViewDialogFragment newInstance(String navbarTitleString, String webviewUrl)
     {
         NavbarWebViewDialogFragment webViewNavBarWebViewDialogFragment = new NavbarWebViewDialogFragment();
 
         final Bundle args = new Bundle();
         args.putString(BUNDLE_KEY_WEBVIEW_URL, webviewUrl);
-        args.putString(BUNDLE_KEY_TITLE, titleString);
+        args.putString(BUNDLE_KEY_NAVBAR_TITLE, navbarTitleString);
         webViewNavBarWebViewDialogFragment.setArguments(args);
         return webViewNavBarWebViewDialogFragment;
     }
@@ -52,7 +52,7 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         mWebViewUrl = getArguments().getString(BUNDLE_KEY_WEBVIEW_URL);
-        mTitleString = getArguments().getString(BUNDLE_KEY_TITLE);
+        mNavbarTitleString = getArguments().getString(BUNDLE_KEY_NAVBAR_TITLE);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment
         View view = inflater.inflate(R.layout.fragment_webview_with_navbar, container, false);
         ButterKnife.bind(this, view);
         mHandyWebView.loadUrl(mWebViewUrl);
-        mTitleText.setText(mTitleString);
+        mTitleText.setText(mNavbarTitleString);
         return view;
     }
 }
