@@ -239,9 +239,18 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
         mGoogleApiClient.connect();
 
-        //set the terms of use text and remove the underlines from the link
-        //must do this in code because cannot specify textview to render text as html from the
-        // layout xml
+        initializeTermsOfUseText();
+
+        return view;
+    }
+
+    /**
+     * set the terms of use text and remove the underlines from the link
+     * must do this in code because cannot specify textview to render text as html
+     * from the layout xml
+     */
+    private void initializeTermsOfUseText()
+    {
         mTermsOfUseText.setText(Html.fromHtml(getString(R.string.booking_payment_terms_of_use_agreement)));
         TextUtils.stripUnderlines(mTermsOfUseText);
         mTermsOfUseText.setMovementMethod(new LinkMovementMethod()
@@ -270,8 +279,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                 return false;
             }
         });
-
-        return view;
     }
 
     private void showTermsWebViewModal()
