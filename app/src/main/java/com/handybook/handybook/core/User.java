@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
-public final class User extends Observable
+public class User extends Observable
 {
     public static final String PAYMENT_METHOD_ANDROID_PAY = "android_pay";
 

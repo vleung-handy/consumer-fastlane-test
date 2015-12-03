@@ -83,11 +83,11 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldGetStripeTokenAndCompleteBooking() throws Exception
     {
-        mFragment.creditCardText.setText("4242424242424242");
-        mFragment.expText.setText("01/30");
-        mFragment.cvcText.setText("123");
+        mFragment.mCreditCardText.setText("4242424242424242");
+        mFragment.mExpText.setText("01/30");
+        mFragment.mCvcText.setText("123");
 
-        mFragment.nextButton.performClick();
+        mFragment.mNextButton.performClick();
 
         verify(mFragment.mStripe).createToken(any(Card.class), anyString(),
                 mTokenCallbackCaptor.capture());

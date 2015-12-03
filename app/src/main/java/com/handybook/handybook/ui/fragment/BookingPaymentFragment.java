@@ -28,7 +28,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.FullWalletRequest;
 import com.google.android.gms.wallet.MaskedWallet;
@@ -68,6 +70,7 @@ import butterknife.OnClick;
 
 public final class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
+    //TODO: would be nice to have a ViewModel
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
     private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
@@ -80,8 +83,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     @Bind(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.change_button)
-    Button changeButton;
     @Bind(R.id.promo_button)
     Button mPromoButton;
     @Bind(R.id.credit_card_text)

@@ -65,7 +65,7 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
 
         when(mBooking.getServiceMachineName()).thenReturn(Booking.SERVICE_CLEANING);
 
-        mFragment.onReceiveBookingPricesForFrequenciesSuccess(new HandyEvent
+        mFragment.onReceiveEditFrequencyViewModelSuccess(new HandyEvent
                 .ReceiveGetEditFrequencyViewModelSuccess(editFrequencyViewModel));
         mFragment.mSaveButton.performClick();
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent

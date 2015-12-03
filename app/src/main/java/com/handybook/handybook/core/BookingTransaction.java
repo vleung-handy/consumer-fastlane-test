@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
-public final class BookingTransaction extends Observable {
+public class BookingTransaction extends Observable {
     @SerializedName("booking_id") private int mBookingId;
     @SerializedName("user_id") private String mUserId;
     @SerializedName("service_id") private int mServiceId;

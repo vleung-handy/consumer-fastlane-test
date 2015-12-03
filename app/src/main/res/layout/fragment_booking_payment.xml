@@ -239,14 +239,17 @@
     </ScrollView>
 
     <TextView
-        style="@style/TextView.Medium"
+        style="@style/TextView.Small"
         android:gravity="center"
         android:id="@+id/booking_payment_terms_of_use_text"
         android:layout_alignBottom="@+id/scroll_view"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:linksClickable="true"
-        android:padding="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding"
+        android:paddingBottom="@dimen/default_padding_double"
         android:textColor="@color/handy_tertiary_gray"
         android:textColorLink="@color/handy_darkened_blue"
         tools:text="Terms of use text"/>

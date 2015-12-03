@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public final class BookingQuote extends Observable {
+public class BookingQuote extends Observable {
     @SerializedName("id") private int bookingId;
     @SerializedName("service_id") private int serviceId;
     @SerializedName("user_id") private String userId;
@@ -42,6 +42,21 @@ public final class BookingQuote extends Observable {
 
     private HashMap<Float, BookingPriceInfo> priceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable;
+
+    public String getAndroidPayCouponValueFormatted()
+    {
+        return mAndroidPayCouponValueFormatted;
+    }
+
+    public boolean isAndroidPayEnabled()
+    {
+        return mIsAndroidPayEnabled;
+    }
+
+    public String getAndroidPayCouponCode()
+    {
+        return mAndroidPayCouponCode;
+    }
 
     public int getBookingId()
     {
