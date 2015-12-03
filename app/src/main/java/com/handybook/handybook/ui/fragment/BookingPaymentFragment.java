@@ -253,6 +253,11 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         mTermsOfUseText.setText(Html.fromHtml(getString(R.string.booking_payment_terms_of_use_agreement)));
         TextUtils.stripUnderlines(mTermsOfUseText);
+
+        //need to override the click event for the link.
+        // TODO: is there a cleaner way to override click events for links?
+        //splitting out link into a new text view seems too cumbersome
+        //due to additional layout xml complexity
         mTermsOfUseText.setMovementMethod(new LinkMovementMethod()
         {
             @Override
