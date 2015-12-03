@@ -8,6 +8,8 @@ import com.stripe.android.model.Card;
 
 public final class CreditCardCVCInputTextView extends InputTextField {
 
+    private static final int MAX_INPUT_LENGTH = 4;
+
     public CreditCardCVCInputTextView(final Context context) {
         super(context);
         init();
@@ -26,7 +28,7 @@ public final class CreditCardCVCInputTextView extends InputTextField {
 
     void init() {
         super.init();
-        InputFilter[] filterArray = new InputFilter[]{ new InputFilter.LengthFilter(3)};
+        InputFilter[] filterArray = new InputFilter[]{ new InputFilter.LengthFilter(MAX_INPUT_LENGTH)};
         this.setFilters(filterArray);
     }
 
