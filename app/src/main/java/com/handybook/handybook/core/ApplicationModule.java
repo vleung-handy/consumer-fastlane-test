@@ -96,6 +96,7 @@ import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
+import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -193,6 +194,7 @@ import retrofit.converter.GsonConverter;
         BlockingActivity.class,
         BlockingUpdateFragment.class,
         TipDialogFragment.class,
+        NavbarWebViewDialogFragment.class
 })
 public final class ApplicationModule
 {

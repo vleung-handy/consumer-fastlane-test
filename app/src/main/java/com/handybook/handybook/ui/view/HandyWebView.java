@@ -103,6 +103,7 @@ public class HandyWebView extends WebView //TODO: refactor class name
             public void onPageFinished(WebView webView, String url)
             {
                 super.onPageFinished(webView, url);
+                //TODO: would be nice to have a loading indicator
             }
         });
     }
