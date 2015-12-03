@@ -251,7 +251,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
      */
     private void initializeTermsOfUseText()
     {
-        mTermsOfUseText.setText(Html.fromHtml(getString(R.string.booking_payment_terms_of_use_agreement)));
+        mTermsOfUseText.setText(Html.fromHtml(
+                getString(R.string.booking_payment_terms_of_use_agreement)));
         TextUtils.stripUnderlines(mTermsOfUseText);
 
         //need to override the click event for the link.
@@ -261,7 +262,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mTermsOfUseText.setMovementMethod(new LinkMovementMethod()
         {
             @Override
-            public boolean onTouchEvent(final TextView widget, final Spannable buffer, final MotionEvent event)
+            public boolean onTouchEvent(final TextView widget,
+                                        final Spannable buffer, final MotionEvent event)
             {
                 final int action = event.getAction();
                 if (action == MotionEvent.ACTION_DOWN)
@@ -289,8 +291,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     private void showTermsWebViewModal()
     {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag(NavbarWebViewDialogFragment.FRAGMENT_TAG) == null) //only show if there isn't
-        // an instance of the fragment showing already
+        if (fragmentManager.findFragmentByTag(NavbarWebViewDialogFragment.FRAGMENT_TAG) == null)
+        //only show if there isn't an instance of the fragment showing already
         {
             NavbarWebViewDialogFragment navbarWebViewDialogFragment = NavbarWebViewDialogFragment
                     .newInstance(getString(R.string.handy_terms_of_use_title), getString(R.string
