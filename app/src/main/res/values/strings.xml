@@ -285,7 +285,7 @@
     <string name="apply_promo_code">Apply promo code</string>
     <string name="booking_payment_android_pay_promo_savings_formatted">Use Android Pay to save %1$s now!</string>
     <string name="android_pay_obfuscated_promo_code">ANDROIDPAY\u2022\u2022\u2022\u2022</string>
-    <string name="booking_payment_terms_of_use">By tapping the button below, I accept &lt;br>Handy\'s
+    <string name="booking_payment_terms_of_use_agreement">By tapping the button below, I accept &lt;br>Handy\'s
         &lt;a href="">Terms Of Use&lt;/a></string>
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>

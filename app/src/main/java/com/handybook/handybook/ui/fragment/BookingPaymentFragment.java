@@ -242,14 +242,37 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         //set the terms of use text and remove the underlines from the link
         //must do this in code because cannot specify textview to render text as html from the
         // layout xml
-        mTermsOfUseText.setText(Html.fromHtml(getResources().getString(R.string.booking_payment_terms_of_use)));
+        mTermsOfUseText.setText(Html.fromHtml(getString(R.string.booking_payment_terms_of_use_agreement)));
         TextUtils.stripUnderlines(mTermsOfUseText);
-        mTermsOfUseText.setMovementMethod(new TermsLinkMovementMethod());
+        mTermsOfUseText.setMovementMethod(new LinkMovementMethod()
+        {
+            @Override
+            public boolean onTouchEvent(final TextView widget, final Spannable buffer, final MotionEvent event)
+            {
+                final int action = event.getAction();
+                if (action == MotionEvent.ACTION_DOWN)
+                {
+                    final int x = (int) event.getX() - widget.getTotalPaddingLeft() + widget.getScrollX();
+                    final int y = (int) event.getY() - widget.getTotalPaddingTop() + widget.getScrollY();
+                    final Layout layout = widget.getLayout();
+                    final int line = layout.getLineForVertical(y);
+                    //get the tap position
+                    final int off = layout.getOffsetForHorizontal(line, x);
+
+                    //get the link at the tap position
+                    final ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
+                    if (link.length != 0)
+                    {
+                        showTermsWebViewModal();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         return view;
     }
-
-
 
     private void showTermsWebViewModal()
     {
@@ -261,28 +284,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                     .newInstance(getString(R.string.handy_terms_of_use_title), getString(R.string
                             .handy_terms_of_use_url));
             webViewNavBarWebViewDialogFragment.show(fragmentManager, NavbarWebViewDialogFragment.FRAGMENT_TAG);
-        }
-    }
-    private class TermsLinkMovementMethod extends LinkMovementMethod
-    {
-        @Override
-        public boolean onTouchEvent(final TextView widget, final Spannable buffer, final MotionEvent event)
-        {
-            final int action = event.getAction();
-            if (action == MotionEvent.ACTION_DOWN) {
-
-                final int x = (int) event.getX() - widget.getTotalPaddingLeft() + widget.getScrollX();
-                final int y = (int) event.getY() - widget.getTotalPaddingTop() + widget.getScrollY();
-                final Layout layout = widget.getLayout();
-                final int line = layout.getLineForVertical(y);
-                final int off = layout.getOffsetForHorizontal(line, x);
-                final ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
-                if (link.length != 0) {
-                    showTermsWebViewModal();
-                    return true;
-                }
-            }
-            return false;
         }
     }
 
