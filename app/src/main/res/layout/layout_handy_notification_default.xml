@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/notification_root"
+    style="@style/HandyNotification.Root">
+
+    <LinearLayout
+        android:id="@+id/notification_container"
+        style="@style/HandyNotification.Container">
+
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:id="@+id/notification_icon"
+                tools:src="@drawable/ic_star"
+                style="@style/HandyNotification.Icon"/>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/HandyNotification.TextView.Body"
+                    android:id="@+id/notification_card_body"
+                    tools:text="Don't forget to rate your pro, Tiffany S., and leave an optional tip."
+                    />
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/notification_card_link_container"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical">
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/notification_card_button_container"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        android:showDividers="middle"
+                        android:divider="@drawable/divider_clear_8dp"
+                        >
+                        <Button
+                            style="@style/HandyNotification.Button"
+                            tools:text="Call"
+                            />
+                        <Button
+                            style="@style/HandyNotification.Button"
+                            tools:text="Call"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    style="@style/HandyNotification.TextView.Timestamp"
+                    android:id="@+id/notification_card_timestamp"
+                    tools:text="Sept 12, 2015 - 1:18 PM"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+<FrameLayout
+    android:id="@+id/notification_card_divider"
+    android:layout_width="match_parent"
+    android:layout_height="2dp"
+    android:background="@color/handy_tertiary_gray"/>
+</FrameLayout>

@@ -29,7 +29,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_card_notification_default, parent, false);
+                .inflate(R.layout.layout_handy_notification_default, parent, false);
         return new ViewHolder(view);
     }
 
