@@ -36,11 +36,11 @@ public final class BookingTransaction extends Observable {
     @SerializedName("payment_method") private String mPaymentMethod;
     @SerializedName("_android_promo_applied") private String mPromoApplied;
 
-    public final int getBookingId() {
+    public int getBookingId() {
         return mBookingId;
     }
 
-    public final void setBookingId(final int bookingId) {
+    public void setBookingId(final int bookingId) {
         this.mBookingId = bookingId;
         triggerObservers();
     }
@@ -49,7 +49,7 @@ public final class BookingTransaction extends Observable {
         return mUserId;
     }
 
-    public final void setUserId(final String userId) {
+    public void setUserId(final String userId) {
         this.mUserId = userId;
         triggerObservers();
     }
@@ -58,7 +58,7 @@ public final class BookingTransaction extends Observable {
         return mServiceId;
     }
 
-    public final void setServiceId(final int serviceId) {
+    public void setServiceId(final int serviceId) {
         this.mServiceId = serviceId;
         triggerObservers();
     }
@@ -67,7 +67,7 @@ public final class BookingTransaction extends Observable {
         return mFirstName;
     }
 
-    public final void setFirstName(final String firstName) {
+    public void setFirstName(final String firstName) {
         this.mFirstName = firstName;
         triggerObservers();
     }
@@ -76,7 +76,7 @@ public final class BookingTransaction extends Observable {
         return mLastName;
     }
 
-    public final void setLastName(final String lastName) {
+    public void setLastName(final String lastName) {
         this.mLastName = lastName;
         triggerObservers();
     }
@@ -85,7 +85,7 @@ public final class BookingTransaction extends Observable {
         return mAddress1;
     }
 
-    public final void setAddress1(final String address1) {
+    public void setAddress1(final String address1) {
         this.mAddress1 = address1;
         triggerObservers();
     }
@@ -94,7 +94,7 @@ public final class BookingTransaction extends Observable {
         return mAddress2;
     }
 
-    public final void setAddress2(final String address2) {
+    public void setAddress2(final String address2) {
         this.mAddress2 = address2;
         triggerObservers();
     }
@@ -103,7 +103,7 @@ public final class BookingTransaction extends Observable {
         return mPhone;
     }
 
-    public final void setPhone(final String phone) {
+    public void setPhone(final String phone) {
         this.mPhone = phone;
         triggerObservers();
     }
@@ -112,7 +112,7 @@ public final class BookingTransaction extends Observable {
         return mZipCode;
     }
 
-    public final void setZipCode(final String zipCode) {
+    public void setZipCode(final String zipCode) {
         mZipCode = zipCode;
         triggerObservers();
     }
@@ -121,52 +121,52 @@ public final class BookingTransaction extends Observable {
         return mEmail;
     }
 
-    public final void setEmail(final String email) {
+    public void setEmail(final String email) {
         mEmail = email;
         triggerObservers();
     }
 
-    public final float getHours() {
+    public float getHours() {
         return mHours;
     }
 
-    public final void setHours(final float hours) {
+    public void setHours(final float hours) {
         mHours = hours;
         triggerObservers();
     }
 
-    public final int getRecurringFrequency() {
+    public int getRecurringFrequency() {
         return mRecurringFrequency;
     }
 
-    public final void setRecurringFrequency(final int recurringFrequency) {
+    public void setRecurringFrequency(final int recurringFrequency) {
         mRecurringFrequency = recurringFrequency;
         triggerObservers();
     }
 
-    public final String getExtraCleaningText() {
+    public String getExtraCleaningText() {
         return mExtraCleaningText;
     }
 
-    public final void setExtraCleaningText(final String extraCleaningText) {
+    public void setExtraCleaningText(final String extraCleaningText) {
         mExtraCleaningText = extraCleaningText;
         triggerObservers();
     }
 
-    public final float getExtraHours() {
+    public float getExtraHours() {
         return mExtraHours;
     }
 
-    public final void setExtraHours(final float extraHours) {
+    public void setExtraHours(final float extraHours) {
         mExtraHours = extraHours;
         triggerObservers();
     }
 
-    public final Date getStartDate() {
+    public Date getStartDate() {
         return mStartDate;
     }
 
-    public final void setStartDate(final Date startDate) {
+    public void setStartDate(final Date startDate) {
         mStartDate = startDate;
         triggerObservers();
     }
@@ -175,7 +175,7 @@ public final class BookingTransaction extends Observable {
         return mAuthToken;
     }
 
-    public final void setAuthToken(final String authToken) {
+    public void setAuthToken(final String authToken) {
         mAuthToken = authToken;
         triggerObservers();
     }
@@ -184,16 +184,16 @@ public final class BookingTransaction extends Observable {
         return mStripeToken;
     }
 
-    public final void setStripeToken(final String stripeToken) {
+    public void setStripeToken(final String stripeToken) {
         mStripeToken = stripeToken;
         triggerObservers();
     }
 
-    public final String promoApplied() {
+    public String promoApplied() {
         return mPromoApplied;
     }
 
-    public final void setPromoApplied(final String promoApplied) {
+    public void setPromoApplied(final String promoApplied) {
         mPromoApplied = promoApplied;
         triggerObservers();
     }

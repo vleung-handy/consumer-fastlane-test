@@ -14,8 +14,8 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
-import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 
@@ -378,41 +378,42 @@ public abstract class HandyEvent
     }
 
     //Get the service extras options
-    public static class RequestEditExtrasInfo extends RequestEvent
+    public static class RequestEditBookingExtrasViewModel extends RequestEvent
     {
         public final int bookingId;
 
-        public RequestEditExtrasInfo(int bookingId)
+        public RequestEditBookingExtrasViewModel(int bookingId)
         {
             this.bookingId = bookingId;
         }
     }
 
-    public static class ReceiveEditExtrasInfoSuccess extends ReceiveSuccessEvent
+    public static class ReceiveEditBookingExtrasViewModelSuccess extends ReceiveSuccessEvent
     {
-        public final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse;
+        public final BookingEditExtrasViewModel mBookingEditExtrasViewModel;
 
-        public ReceiveEditExtrasInfoSuccess(BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
+        public ReceiveEditBookingExtrasViewModelSuccess(
+                BookingEditExtrasViewModel bookingEditExtrasViewModel)
         {
-            this.bookingEditExtrasInfoResponse = bookingEditExtrasInfoResponse;
+            this.mBookingEditExtrasViewModel = bookingEditExtrasViewModel;
         }
     }
 
-    public static class ReceiveEditExtrasInfoError extends ReceiveErrorEvent
+    public static class ReceiveEditBookingExtrasViewModelError extends ReceiveErrorEvent
     {
-        public ReceiveEditExtrasInfoError(DataManager.DataManagerError error)
+        public ReceiveEditBookingExtrasViewModelError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
     }
 
     //Update the service extras options
-    public static class RequestEditExtras extends RequestEvent
+    public static class RequestEditBookingExtras extends RequestEvent
     {
         public final int bookingId;
         public final BookingEditExtrasRequest bookingEditExtrasRequest;
 
-        public RequestEditExtras(
+        public RequestEditBookingExtras(
                 int bookingId,
                 BookingEditExtrasRequest bookingEditExtrasRequest
         )
@@ -632,7 +633,8 @@ public abstract class HandyEvent
     public static class ReceiveEditHoursInfoViewModelSuccess extends ReceiveBookingSuccessEvent
     {
         public final BookingEditHoursViewModel editHoursInfoViewModel;
-        public ReceiveEditHoursInfoViewModelSuccess(final BookingEditHoursViewModel editHoursInfoViewModel)
+        public ReceiveEditHoursInfoViewModelSuccess(
+                final BookingEditHoursViewModel editHoursInfoViewModel)
         {
             this.editHoursInfoViewModel = editHoursInfoViewModel;
         }
@@ -651,7 +653,8 @@ public abstract class HandyEvent
     {
         public final int bookingId;
         public final BookingEditHoursRequest bookingEditHoursRequest;
-        public RequestEditHours(final int bookingId, final BookingEditHoursRequest bookingEditHoursRequest) {
+        public RequestEditHours(final int bookingId,
+                                final BookingEditHoursRequest bookingEditHoursRequest) {
             this.bookingId = bookingId;
             this.bookingEditHoursRequest = bookingEditHoursRequest;
         }

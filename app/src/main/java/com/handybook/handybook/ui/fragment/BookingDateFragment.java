@@ -299,6 +299,11 @@ public final class BookingDateFragment extends BookingFlowFragment
 
     private void updateRequestDate(final DatePicker datePicker)
     {
+        //this function can be called after butterknife unbinds the views
+        //TODO: need to prevent listener from being called when view is unbound
+        //below line is needed to prevent NPE caused by above issue
+        if (datePicker == null || mGroovedTimePicker == null) return;
+
         final Calendar date = Calendar.getInstance();
         date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
         date.set(Calendar.MONTH, datePicker.getMonth());
@@ -311,7 +316,8 @@ public final class BookingDateFragment extends BookingFlowFragment
         if (mRescheduleBooking != null)
         {
             mRescheduleDate = newDate;
-        } else
+        }
+        else
         {
             final BookingRequest request = bookingManager.getCurrentRequest();
             request.setStartDate(newDate);

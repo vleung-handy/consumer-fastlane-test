@@ -28,9 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.FullWalletRequest;
 import com.google.android.gms.wallet.MaskedWallet;
@@ -62,13 +60,14 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.CardException;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
-    //TODO: would be nice to have a ViewModel
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
     private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
@@ -81,6 +80,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
 
     @Bind(R.id.next_button)
     Button mNextButton;
+    @Bind(R.id.change_button)
+    Button changeButton;
     @Bind(R.id.promo_button)
     Button mPromoButton;
     @Bind(R.id.credit_card_text)
@@ -113,6 +114,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     TextView mSelectPaymentPromoText;
     @Bind(R.id.booking_payment_terms_of_use_text)
     TextView mTermsOfUseText;
+
+    @Inject
+    Stripe mStripe;
 
     @OnClick(R.id.enter_credit_card_button)
     public void onEnterCreditCardButtonClicked()
@@ -760,15 +764,11 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                     final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                             mExpText.getExpYear(), mCvcText.getCVC());
 
-                    //TODO: we should move these to a service
-                    final Stripe stripe = new Stripe();
-                    stripe.createToken(card, bookingManager.getCurrentQuote().getStripeKey(),
-                            new TokenCallback()
-                            {
-                                @Override
-                                public void onError(final Exception e)
-                                {
-                                    if (!allowCallbacks) { return; }
+                    mStripe.createToken(card, bookingManager.getCurrentQuote().getStripeKey(),
+                            new TokenCallback() {
+                        @Override
+                        public void onError(final Exception e) {
+                            if (!allowCallbacks) return;
 
                                     enableInputs();
                                     progressDialog.dismiss();

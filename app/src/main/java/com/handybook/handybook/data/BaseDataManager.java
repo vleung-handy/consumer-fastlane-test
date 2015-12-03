@@ -215,13 +215,13 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void getServiceExtras(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
+    public void getEditBookingExtrasInfo(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
     {
-        mService.getServiceExtras(bookingId, new ServiceExtrasInfoHandyRetroFitCallback(cb));
+        mService.getEditExtrasInfo(bookingId, new EditExtrasInfoHandyRetroFitCallback(cb));
     }
 
     @Override
-    public void editServiceExtras(final int bookingId,
+    public void editBookingExtras(final int bookingId,
                                   final BookingEditExtrasRequest bookingEditExtrasRequest,
                                   final Callback<SuccessWrapper> cb)
     {

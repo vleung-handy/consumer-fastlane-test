@@ -76,11 +76,6 @@ public class BookingOptionsFragment extends BookingFlowFragment
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        options = getArguments().getParcelableArrayList(EXTRA_OPTIONS);
-        page = getArguments().getInt(EXTRA_PAGE);
-        childDisplayMap = (HashMap) getArguments().getSerializable(EXTRA_CHILD_DISPLAY_MAP);
-        postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
-        isPost = getArguments().getBoolean(EXTRA_IS_POST);
 
         if (savedInstanceState != null)
         {
@@ -113,14 +108,14 @@ public class BookingOptionsFragment extends BookingFlowFragment
 
         nextButton.setOnClickListener(nextClicked);
 
-        return view;
-    }
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
+        options = getArguments().getParcelableArrayList(EXTRA_OPTIONS);
+        page = getArguments().getInt(EXTRA_PAGE);
+        childDisplayMap = (HashMap) getArguments().getSerializable(EXTRA_CHILD_DISPLAY_MAP);
+        postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
+        isPost = getArguments().getBoolean(EXTRA_IS_POST);
         displayOptions();
+
+        return view;
     }
 
     @Override
