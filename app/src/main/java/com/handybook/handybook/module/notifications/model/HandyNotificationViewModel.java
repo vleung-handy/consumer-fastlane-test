@@ -55,7 +55,7 @@ public class HandyNotificationViewModel
 
     public String getTimestamp()
     {
-        return DATE_FORMAT.format(mHandyNotification.getCreatedOn().getTime());
+        return DATE_FORMAT.format(mHandyNotification.getCreatedAt().getTime());
     }
 
 

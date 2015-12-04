@@ -152,7 +152,7 @@ public class HandyNotification implements Serializable, Parcelable
     }
 
 
-    static class Image implements Serializable, Parcelable
+    public static class Image implements Serializable, Parcelable
     {
         @SerializedName("scale")
         private float mScale;
@@ -196,7 +196,7 @@ public class HandyNotification implements Serializable, Parcelable
     }
 
 
-    static class Action implements Serializable, Parcelable
+    public static class Action implements Serializable, Parcelable
     {
         @SerializedName("deeplink")
         private String mDeeplink;
