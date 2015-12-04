@@ -23,7 +23,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.activity.NotificationsActivity;
+import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.widget.ServiceCategoryView;

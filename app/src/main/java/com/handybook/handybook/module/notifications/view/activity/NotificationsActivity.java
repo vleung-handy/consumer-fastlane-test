@@ -1,9 +1,10 @@
-package com.handybook.handybook.ui.activity;
+package com.handybook.handybook.module.notifications.view.activity;
 
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.fragment.NotificationFeedFragment;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
 
 
 public final class NotificationsActivity extends MenuDrawerActivity

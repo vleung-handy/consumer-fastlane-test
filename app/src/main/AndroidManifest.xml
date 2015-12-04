@@ -123,7 +123,7 @@
         <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
         <activity
             android:label="@string/title_activity_notification_feed"
-            android:name=".ui.activity.NotificationsActivity"
+            android:name=".module.notifications.view.activity.NotificationsActivity"
             android:parentActivityName=".ui.activity.ServicesActivity"
             android:theme="@style/Theme.Base">
             <meta-data

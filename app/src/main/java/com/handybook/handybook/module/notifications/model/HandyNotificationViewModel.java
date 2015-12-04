@@ -3,6 +3,8 @@ package com.handybook.handybook.module.notifications.model;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import com.handybook.handybook.module.notifications.model.response.HandyNotification;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;

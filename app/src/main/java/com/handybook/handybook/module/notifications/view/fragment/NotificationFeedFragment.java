@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.module.notifications.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.notifications.model.HandyNotification;
+import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 import com.handybook.handybook.module.notifications.model.HandyNotificationViewModel;
+import com.handybook.handybook.ui.fragment.NotificationRecyclerViewAdapter;
 
 public class NotificationFeedFragment extends Fragment
 {

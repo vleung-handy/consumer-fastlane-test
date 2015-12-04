@@ -42,7 +42,7 @@ import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.activity.NotificationsActivity;
+import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
