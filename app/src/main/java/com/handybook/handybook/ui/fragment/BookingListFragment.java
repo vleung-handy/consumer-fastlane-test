@@ -21,7 +21,7 @@ import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.ui.adapter.BookingCardAdapter;
-import com.handybook.handybook.ui.view.EmptyRecyclerView;
+import com.handybook.handybook.ui.view.EmptiableRecyclerView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class BookingListFragment extends InjectedFragment
     @Bind(R.id.fragment_booking_list_swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.fragment_booking_list_booking_card_recycler_view)
-    EmptyRecyclerView mEmptyRecyclerView;
+    EmptiableRecyclerView mEmptiableRecyclerView;
     @Bind(R.id.card_no_bookings)
     CardView mNoBookingsView;
     @Bind(R.id.card_no_bookings_text)
@@ -145,11 +145,11 @@ public class BookingListFragment extends InjectedFragment
                 R.color.handy_service_plumber
         );
         mLayoutManager = new LinearLayoutManager(mContext);
-        mEmptyRecyclerView.setLayoutManager(mLayoutManager);
-        mEmptyRecyclerView.setAdapter(mBookingCardAdapter);
-        mEmptyRecyclerView.setEmptyView(mNoBookingsView);
+        mEmptiableRecyclerView.setLayoutManager(mLayoutManager);
+        mEmptiableRecyclerView.setAdapter(mBookingCardAdapter);
+        mEmptiableRecyclerView.setEmptyView(mNoBookingsView);
         // Only allow SwipeRefresh when Recycler scrolled all the way up
-        mEmptyRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        mEmptiableRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
