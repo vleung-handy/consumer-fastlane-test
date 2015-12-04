@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:background="@color/handy_background_gray">
 
-            <include layout="@layout/layout_card_no_bookings"/>
+            <include layout="@layout/layout_card_empty"/>
 
             <com.handybook.handybook.ui.view.EmptiableRecyclerView
                 android:id="@+id/fragment_booking_list_booking_card_recycler_view"

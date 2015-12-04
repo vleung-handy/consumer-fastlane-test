@@ -42,9 +42,9 @@ public class BookingListFragment extends InjectedFragment
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.fragment_booking_list_booking_card_recycler_view)
     EmptiableRecyclerView mEmptiableRecyclerView;
-    @Bind(R.id.card_no_bookings)
+    @Bind(R.id.card_empty)
     CardView mNoBookingsView;
-    @Bind(R.id.card_no_bookings_text)
+    @Bind(R.id.card_empty_text)
     TextView mNoBookingsText;
     private Context mContext;
     private int mListType;
@@ -187,11 +187,13 @@ public class BookingListFragment extends InjectedFragment
         }
     }
 
+/* TODO: Seems like this is not needed anymore
     @Subscribe
     public void onReceiveBookingsSuccess(HandyEvent.ReceiveBookingsSuccess event)
     {
         mSwipeRefreshLayout.setRefreshing(false);
     }
+*/
 
     @Subscribe
     public void onModelsReceived(@NonNull final HandyEvent.ResponseEvent.BookingCardViewModels e)

@@ -257,4 +257,47 @@ public class HandyNotification implements Serializable, Parcelable
             public Action[] newArray(int size) {return new Action[size];}
         };
     }
+
+
+    public static class ResultSet implements Serializable, Parcelable
+    {
+        @SerializedName("notifications")
+        HandyNotification.List mHandyNotifications;
+
+        private ResultSet() {} //No-one is allowed! Only GSON
+
+        protected ResultSet(Parcel in)
+        {
+        }
+
+        public static final Creator<ResultSet> CREATOR = new Creator<ResultSet>()
+        {
+            @Override
+            public ResultSet createFromParcel(Parcel in)
+            {
+                return new ResultSet(in);
+            }
+
+            @Override
+            public ResultSet[] newArray(int size)
+            {
+                return new ResultSet[size];
+            }
+        };
+
+        public List getHandyNotifications()
+        {
+            return mHandyNotifications;
+        }
+
+        @Override
+        public int describeContents()
+        {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(final Parcel dest, final int flags)
+        {}
+    }
 }
