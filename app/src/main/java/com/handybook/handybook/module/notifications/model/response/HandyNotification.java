@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class HandyNotification implements Serializable
+public class HandyNotification implements Serializable, Parcelable
 {
     @SerializedName("id")
     private long mId;
@@ -32,7 +32,105 @@ public class HandyNotification implements Serializable
     @SerializedName("actions")
     private Action[] mActions;
 
+    private HandyNotification() {}//Only server can create notifications
 
+    public long getId()
+    {
+        return mId;
+    }
+
+    public HandyNotificationType getType()
+    {
+        return mType;
+    }
+
+    public String getTitle()
+    {
+        return mTitle;
+    }
+
+    public String getBody()
+    {
+        return mBody;
+    }
+
+    public Calendar getCreatedAt()
+    {
+        return mCreatedAt;
+    }
+
+    public Calendar getExpiresAt()
+    {
+        return mExpiresAt;
+    }
+
+    public long getPriority()
+    {
+        return mPriority;
+    }
+
+    public long getReadStatus()
+    {
+        return mReadStatus;
+    }
+
+    public Image[] getImages()
+    {
+        return mImages;
+    }
+
+    public Action[] getActions()
+    {
+        return mActions;
+    }
+
+
+    @Override
+    public int describeContents() { return 0; }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeLong(this.mId);
+        dest.writeInt(this.mType == null ? -1 : this.mType.ordinal());
+        dest.writeString(this.mTitle);
+        dest.writeString(this.mBody);
+        dest.writeSerializable(this.mCreatedAt);
+        dest.writeSerializable(this.mExpiresAt);
+        dest.writeLong(this.mPriority);
+        dest.writeLong(this.mReadStatus);
+        dest.writeParcelableArray(this.mImages, 0);
+        dest.writeParcelableArray(this.mActions, 0);
+    }
+
+    protected HandyNotification(Parcel in)
+    {
+        this.mId = in.readLong();
+        int tmpMType = in.readInt();
+        this.mType = tmpMType == -1 ? null : HandyNotificationType.values()[tmpMType];
+        this.mTitle = in.readString();
+        this.mBody = in.readString();
+        this.mCreatedAt = (Calendar) in.readSerializable();
+        this.mExpiresAt = (Calendar) in.readSerializable();
+        this.mPriority = in.readLong();
+        this.mReadStatus = in.readLong();
+        this.mImages = (Image[]) in.readParcelableArray(Image.class.getClassLoader());
+        this.mActions = (Action[]) in.readParcelableArray(Action.class.getClassLoader());
+    }
+
+    public static final Creator<HandyNotification> CREATOR = new Creator<HandyNotification>()
+    {
+        public HandyNotification createFromParcel(Parcel source) {return new HandyNotification(source);}
+
+        public HandyNotification[] newArray(int size) {return new HandyNotification[size];}
+    };
+
+
+    /**
+     * List of HandyNotifications
+     * <p>
+     * Currently implemented as ArrayList
+     */
     public static class List extends ArrayList<HandyNotification> implements Serializable {}
 
 
