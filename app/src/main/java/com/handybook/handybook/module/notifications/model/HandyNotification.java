@@ -1,5 +1,8 @@
 package com.handybook.handybook.module.notifications.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -10,91 +13,55 @@ public class HandyNotification implements Serializable
 {
     @SerializedName("id")
     private long mId;
+    @SerializedName("type")
+    private HandyNotificationType mType;
     @SerializedName("title")
     private String mTitle;
     @SerializedName("body")
     private String mBody;
-    @SerializedName("type")
-    private HandyNotification.Type mType;
-    @SerializedName("images")
-    private HandyNotification.Image[] mImages;
     @SerializedName("created_at")
-    private Calendar mCreatedOn;
+    private Calendar mCreatedAt;
     @SerializedName("expires_at")
-    private Calendar mExpiresOn;
+    private Calendar mExpiresAt;
+    @SerializedName("priority")
+    private long mPriority;
+    @SerializedName("read_status")
+    private long mReadStatus;
+    @SerializedName("images")
+    private Image[] mImages;
     @SerializedName("actions")
     private Action[] mActions;
 
-    public long getId()
-    {
-        return mId;
-    }
 
-    public void setId(final long id)
-    {
-        mId = id;
-    }
-
-    public String getTitle()
-    {
-        return mTitle;
-    }
-
-    public String getBody()
-    {
-        return mBody;
-    }
-
-    public Type getType()
-    {
-        return mType;
-    }
-
-    public Image[] getImages()
-    {
-        return mImages;
-    }
-
-    public Calendar getCreatedOn()
-    {
-        return mCreatedOn;
-    }
-
-    public Calendar getExpiresOn()
-    {
-        return mExpiresOn;
-    }
-
-    public Action[] getActions()
-    {
-        return mActions;
-    }
-
-    public static class List extends ArrayList<HandyNotification>
-    {
-
-    }
+    public static class List extends ArrayList<HandyNotification> implements Serializable {}
 
 
-    public enum Type implements Serializable
+    public enum HandyNotificationType implements Serializable
     {
         @SerializedName("notification")
-        NOTIFICATION
+        NOTIFICATION,
+        @SerializedName("promo")
+        PROMO
     }
 
 
-    static class Image implements Serializable
+    public enum HandyNotificationActionType implements Serializable
+    {
+        @SerializedName("notification")
+        NOTIFICATION,
+        @SerializedName("call_to_action")
+        CALL_TO_ACTION
+    }
+
+
+    static class Image implements Serializable, Parcelable
     {
         @SerializedName("scale")
         private float mScale;
         @SerializedName("url")
         private String mUrl;
 
-        public Image(final float scale, final String url)
-        {
-            mScale = scale;
-            mUrl = url;
-        }
+        private Image() {} //No-one is allowed! Only GSON
 
         public float getScale()
         {
@@ -105,63 +72,53 @@ public class HandyNotification implements Serializable
         {
             return mUrl;
         }
+
+        @Override
+        public int describeContents() { return 0; }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags)
+        {
+            dest.writeFloat(this.mScale);
+            dest.writeString(this.mUrl);
+        }
+
+        protected Image(Parcel in)
+        {
+            this.mScale = in.readFloat();
+            this.mUrl = in.readString();
+        }
+
+        public static final Parcelable.Creator<Image> CREATOR = new Parcelable.Creator<Image>()
+        {
+            public Image createFromParcel(Parcel source) {return new Image(source);}
+
+            public Image[] newArray(int size) {return new Image[size];}
+        };
     }
 
 
-    static class Action implements Serializable
+    static class Action implements Serializable, Parcelable
     {
-        @SerializedName("deeplink_path")
-        private String mDeeplinkPath;
-        @SerializedName("type")
-        private String mType;
         @SerializedName("deeplink")
         private String mDeeplink;
-        @SerializedName("promo_code")
-        private String mPromoCode;
-        @SerializedName("promo_url")
-        private String mPromoUrl;
+        @SerializedName("type")
+        private HandyNotificationActionType mType;
         @SerializedName("text")
         private String mText;
         @SerializedName("booking_id")
         private Long mBookingId;
-        @SerializedName("deeplink_type")
-        private String mDeeplinkType;
 
-        public Action(final String deeplinkPath, final String type, final String deeplink, final String promoCode, final String promoUrl, final String text, final Long bookingId, final String deeplinkType)
-        {
-            mDeeplinkPath = deeplinkPath;
-            mType = type;
-            mDeeplink = deeplink;
-            mPromoCode = promoCode;
-            mPromoUrl = promoUrl;
-            mText = text;
-            mBookingId = bookingId;
-            mDeeplinkType = deeplinkType;
-        }
-
-        public String getDeeplinkPath()
-        {
-            return mDeeplinkPath;
-        }
-
-        public String getType()
-        {
-            return mType;
-        }
+        private Action() {} //No-one is allowed! Only GSON
 
         public String getDeeplink()
         {
             return mDeeplink;
         }
 
-        public String getPromoCode()
+        public HandyNotificationActionType getType()
         {
-            return mPromoCode;
-        }
-
-        public String getPromoUrl()
-        {
-            return mPromoUrl;
+            return mType;
         }
 
         public String getText()
@@ -174,9 +131,32 @@ public class HandyNotification implements Serializable
             return mBookingId;
         }
 
-        public String getDeeplinkType()
+        @Override
+        public int describeContents() { return 0; }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags)
         {
-            return mDeeplinkType;
+            dest.writeString(this.mDeeplink);
+            dest.writeInt(this.mType == null ? -1 : this.mType.ordinal());
+            dest.writeString(this.mText);
+            dest.writeValue(this.mBookingId);
         }
+
+        protected Action(Parcel in)
+        {
+            this.mDeeplink = in.readString();
+            int tmpMType = in.readInt();
+            this.mType = tmpMType == -1 ? null : HandyNotificationActionType.values()[tmpMType];
+            this.mText = in.readString();
+            this.mBookingId = (Long) in.readValue(Long.class.getClassLoader());
+        }
+
+        public static final Parcelable.Creator<Action> CREATOR = new Parcelable.Creator<Action>()
+        {
+            public Action createFromParcel(Parcel source) {return new Action(source);}
+
+            public Action[] newArray(int size) {return new Action[size];}
+        };
     }
 }
