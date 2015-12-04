@@ -46,6 +46,7 @@
     <Button
         style="@style/Button.Green"
         android:id="@+id/next_button"
+        android:onClick="onNextButtonClicked"
         android:textAllCaps="false"
         android:text="@string/select"/>
 </LinearLayout>

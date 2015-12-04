@@ -1,7 +1,9 @@
 package com.handybook.handybook.viewmodel;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.util.DateTimeUtils;
@@ -25,7 +27,12 @@ public class BookingCancelRecurringViewModel
         return new BookingCancelRecurringViewModel(bookingList);
     }
 
-    public BookingOption getBookingOption()
+    /**
+     *
+     * @param context needed to resolve string resource ids
+     * @return
+     */
+    public BookingOption getBookingOption(Context context)
     {
         //TODO: put stuff in strings.xml
         final BookingOption option = new BookingOption();
@@ -39,8 +46,10 @@ public class BookingCancelRecurringViewModel
             //server sends us "every 2 weeks" but we want to display "Every 2 weeks"
             optionStrings[i] = StringUtils.capitalizeFirstCharacter(
                     booking.getRecurringInfoShort());
-            optionSubtitleStrings[i] = "Next recurrence:\n" + DateTimeUtils.getFormattedDate
-                    (booking.getStartDate(), DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER);
+            optionSubtitleStrings[i] = context.getString(R.string
+                    .cancel_recurring_booking_option_entry_subtitle_formatted, DateTimeUtils
+                .getFormattedDate
+                    (booking.getStartDate(), DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER));
         }
         option.setOptions(optionStrings);
         option.setOptionsSubText(optionSubtitleStrings);

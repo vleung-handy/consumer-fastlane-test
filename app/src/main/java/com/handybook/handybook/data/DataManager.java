@@ -42,7 +42,7 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
-    public abstract void sendCancelRecurringBookingEmail(int bookingId,
+    public abstract void sendCancelRecurringBookingEmail(int bookingRecurringId,
                                      Callback<SuccessWrapper> cb);
 
     public abstract void getServices(CacheResponse<List<Service>> cache,

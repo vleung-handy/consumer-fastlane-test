@@ -191,11 +191,9 @@ public final class ProfileFragment extends InjectedFragment {
     {
         //only show cancel cleaning plan button if user has recurring bookings + config params on
         if(
-//                user.isRecurringCancellationsEnabled()
-//                && user.isRecurringCancellationsEmailFlowEnabled()
-//                &&
-                        user.getAnalytics() != null
-                && user.getAnalytics().getUpcomingBookings() > 0
+                user.isRecurringCancellationsEnabled()
+                && user.isRecurringCancellationsEmailFlowEnabled()
+                && user.getAnalytics() != null
                 && user.getAnalytics().getRecurringBookings() > 0)
         {
             mCancelCleaningPlanButton.setVisibility(View.VISIBLE);

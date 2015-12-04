@@ -215,10 +215,10 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void sendCancelRecurringBookingEmail(final int bookingId, final
+    public void sendCancelRecurringBookingEmail(final int bookingRecurringId, final
                                                 Callback<SuccessWrapper> cb)
     {
-        mService.sendCancelRecurringBookingEmail(bookingId, new SuccessHandyRetroFitCallback(cb));
+        mService.sendCancelRecurringBookingEmail(bookingRecurringId, new SuccessHandyRetroFitCallback(cb));
     }
 
     @Override

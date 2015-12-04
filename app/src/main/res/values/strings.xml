@@ -281,6 +281,13 @@
     <string name="email_cancellation_info_formatted">Cancellation instructions were sent to %1$s.</string>
     <string name="cancel_recurring_booking_title">Cancel Cleaning Plan</string>
     <string name="cancel_regular_cleanings_subtitle">Which series do you want to cancel?</string>
+    <string name="cancel_recurring_booking_none_to_cancel_error_msg">No cleaning plans to
+        cancel</string>
+    <string name="cancel_recurring_booking_option_entry_subtitle_formatted">Next recurrence
+        :\n%1$s</string>
+
     <string name="select">Select</string>
+    <string name="email_cancellation_dialog_title">Check your email</string>
+    <string name="email_cancellation_dialog_next_button">Got It</string>
 
 </resources>

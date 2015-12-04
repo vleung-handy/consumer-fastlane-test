@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,14 +18,13 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CancelRecurringBookingFragment extends InjectedFragment
 {
     //TODO: clean up
     @Bind(R.id.subtitle_text)
     TextView mSubtitleText;
-    @Bind(R.id.next_button)
-    Button mSaveButton;
 
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
@@ -41,7 +39,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         return fragment;
     }
 
-    private void setFragentVisible(boolean visible)
+    private void setContentViewVisible(boolean visible)
     {
         if(getView() != null)
         {
@@ -72,18 +70,18 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     {
         super.onViewCreated(view, savedInstanceState);
         mSubtitleText.setText(R.string.cancel_regular_cleanings_subtitle);
-        setFragentVisible(false); //want the fragment to be invisible until options can be rendered
+        setContentViewVisible(false); //want the fragment to be invisible until options can be rendered
     }
 
     private void sendCancelRecurringBookingEmail(Booking booking)
     {
-        //get selected booking
-        //TODO: wtf is booking's recurringId type Long?
+        //get selected recurring series
+        //TODO: why is booking's recurringId type Long?
         if(booking.getRecurringId() == null)
         {
             Crashlytics.logException(new Exception("Recurring id for booking #" + booking.getId() +
                     " is null!"));
-            showToastAndExit("Sorry, we encountered a problem. Please try again later.");
+            showToastAndExit(R.string.default_error_string);
             return;
         }
         showUiBlockers();
@@ -91,28 +89,24 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail(recurringId));
     }
 
+    @OnClick(R.id.next_button)
+    public void onNextButtonClicked()
+    {
+        Booking selectedBooking = mBookingCancelRecurringViewModel.getBookingForIndex
+                (mOptionsView.getCurrentIndex());
+        sendCancelRecurringBookingEmail(selectedBooking);
+    }
+
     private void createOptionsView()
     {
         //create the options view
-        BookingOption bookingOption = mBookingCancelRecurringViewModel.getBookingOption();
+        BookingOption bookingOption = mBookingCancelRecurringViewModel.getBookingOption(getActivity());
         mOptionsView
                 = new BookingOptionsSelectView(getActivity(), R.layout
                 .view_booking_select_option_booking, bookingOption, null);
         mOptionsView.hideTitle();
         optionsLayout.removeAllViews(); //TODO: use a stub or replaceview instead
         optionsLayout.addView(mOptionsView);
-
-        mSaveButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(final View v)
-            {
-                Booking selectedBooking = mBookingCancelRecurringViewModel.getBookingForIndex
-                        (mOptionsView.getCurrentIndex());
-                sendCancelRecurringBookingEmail(selectedBooking);
-
-            }
-        });
     }
 
     private void showEmailSentConfirmationDialog()
@@ -128,9 +122,9 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    //TODO: resource id instead
-    private void showToastAndExit(String toastString)
+    private void showToastAndExit(int toastStringResourceId)
     {
+        String toastString = getString(toastStringResourceId);
         showToast(toastString);
         getActivity().finish();
     }
@@ -147,7 +141,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     protected void removeUiBlockers()
     {
         super.removeUiBlockers();
-        setFragentVisible(true);
+        setContentViewVisible(true);
     }
 
     @Subscribe
@@ -175,11 +169,8 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             //this can happen if the user's analytics.recurring_bookings_count > 0
             //but user doesn't actually have any recurring bookings
             //if this logic is reached, then we are using recurring_bookings_count wrong
-            //TODO: put in strings.xml
-            showToastAndExit("No recurring bookings to cancel");
+            showToastAndExit(R.string.cancel_recurring_booking_none_to_cancel_error_msg);
         }
-
-
     }
 
     @Subscribe
@@ -193,10 +184,8 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     @Subscribe
     public void onReceiveRecurringBookingsError(HandyEvent.ReceiveRecurringBookingsError event)
     {
-        //TODO: strings.xml
         //TODO: change other option-based screens to exit if the options data is missing?
         //exit and show toast if we cannot render the options
-        showToastAndExit("Sorry, there was an error fetching your recurring bookings. Please try again " +
-                "later.");
+        showToastAndExit(R.string.default_error_string);
     }
 }

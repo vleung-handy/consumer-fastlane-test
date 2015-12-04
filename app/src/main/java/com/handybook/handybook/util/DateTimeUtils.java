@@ -9,6 +9,7 @@ public class DateTimeUtils
             ("c, MMM d " +
             "'@' h:mm a");
 
+    //TODO: we don't really need this.
     public final static String getFormattedDate(Date date, SimpleDateFormat dateFormat)
     {
         return dateFormat.format(date);

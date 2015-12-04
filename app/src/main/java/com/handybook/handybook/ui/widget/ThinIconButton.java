@@ -14,6 +14,7 @@ import com.handybook.handybook.R;
 
 public class ThinIconButton extends LinearLayout //TODO: give better name
 {
+    //putting this into a widget because we will soon use these everywhere
     public ThinIconButton(final Context context)
     {
         super(context);
@@ -49,6 +50,8 @@ public class ThinIconButton extends LinearLayout //TODO: give better name
                 attrs,
                 R.styleable.ThinIconButton,
                 0, 0);
+        TypedArray androidAttributes = context.obtainStyledAttributes(attrs, new
+                int[]{android.R.attr.text});
         try
         {
             Drawable iconDrawable = a.getDrawable(R.styleable.ThinIconButton_iconResourceId);
@@ -58,17 +61,18 @@ public class ThinIconButton extends LinearLayout //TODO: give better name
                         .thin_icon_button_left_icon_image);
                 iconImageView.setImageDrawable(iconDrawable);
             }
-            //TODO: how can i simply access the android:text attribute?
-            String text = a.getString(R.styleable.ThinIconButton_text);
-            if (text != null)
+
+            String s = androidAttributes.getString(0);
+            if (s != null)
             {
                 TextView textView = (TextView) findViewById(R.id.thin_icon_button_text);
-                textView.setText(text);
+                textView.setText(s);
             }
         }
         finally
         {
             a.recycle();
+            androidAttributes.recycle();
         }
     }
 

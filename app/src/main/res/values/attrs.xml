@@ -8,7 +8,5 @@
 
     <declare-styleable name="ThinIconButton">
         <attr name="iconResourceId" format="reference" />
-        <attr name="text" format="string"/>
-        <!--TODO: see if we can simply use android:text-->
     </declare-styleable>
 </resources>

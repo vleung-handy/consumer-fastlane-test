@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--TODO: this needs a better name-->
-<!--TODO: this is a temporary hack to create a custom style for the cancel recurring options-->
+<!--TODO: this is to create a custom style for the cancel recurring options-->
 <!--this is a custom style for the select recurring booking to cancel options view,
 which has different styling than the other option views-->
 <!--mostly duplicated from view_booking_select_option-->
@@ -60,6 +60,8 @@ which has different styling than the other option views-->
 
     </RelativeLayout>
 
+    <!--TODO: the widget associated with this layout will try to inflate the views below.
+    if we pass in a BookingOption that has data for the views below, NPE-->
     <!--<LinearLayout-->
         <!--android:gravity="center|right"-->
         <!--android:layout_gravity="center"-->

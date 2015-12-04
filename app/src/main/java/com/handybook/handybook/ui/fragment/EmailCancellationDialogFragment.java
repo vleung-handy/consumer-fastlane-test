@@ -12,23 +12,26 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EmailCancellationDialogFragment extends BaseDialogFragment //TODO: give better name
+/**
+ * Displayed as confirmation when the user selects a recurring series to cancel
+ */
+public class EmailCancellationDialogFragment extends BaseDialogFragment
 {
-    private static final String EXTRA_USER_EMAIL_ADDRESS = "EXTRA_USER_EMAIL_ADDRESS";
+    private static final String BUNDLE_KEY_USER_EMAIL_ADDRESS = "USER_EMAIL_ADDRESS";
 
     @Bind(R.id.email_cancellation_info_text)
     TextView mInfoText;
 
     public static EmailCancellationDialogFragment newInstance(String userEmailAddress)
     {
-        EmailCancellationDialogFragment tipDialogFragment = new EmailCancellationDialogFragment();
-        tipDialogFragment.canDismiss = true;
+        EmailCancellationDialogFragment emailCancellationFragment = new EmailCancellationDialogFragment();
+        emailCancellationFragment.canDismiss = true;
 
         Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_USER_EMAIL_ADDRESS, userEmailAddress);
-        tipDialogFragment.setArguments(bundle);
+        bundle.putString(BUNDLE_KEY_USER_EMAIL_ADDRESS, userEmailAddress);
+        emailCancellationFragment.setArguments(bundle);
 
-        return tipDialogFragment;
+        return emailCancellationFragment;
     }
 
     @Override
@@ -41,26 +44,15 @@ public class EmailCancellationDialogFragment extends BaseDialogFragment //TODO: 
         final View view = inflater.inflate(R.layout.dialog_email_cancellation, container, true);
         ButterKnife.bind(this, view);
 
-        String userEmailAddress = getArguments().getString(EXTRA_USER_EMAIL_ADDRESS);
+        String userEmailAddress = getArguments().getString(BUNDLE_KEY_USER_EMAIL_ADDRESS);
         mInfoText.setText(getString(R.string.email_cancellation_info_formatted, userEmailAddress));
         return view;
     }
 
-    private void finish()
+    @OnClick(R.id.next_button)
+    public void onSubmitButtonClicked(View view)
     {
         getActivity().finish();
         dismiss();
-    }
-
-    @OnClick(R.id.tip_dialog_container)
-    public void onTipDialogContainerClicked()
-    {
-        finish();
-    }
-
-    @OnClick(R.id.submit_button)
-    public void onSubmitButtonClicked(View view)
-    {
-        finish();
     }
 }

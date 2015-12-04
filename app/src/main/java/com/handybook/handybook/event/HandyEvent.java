@@ -700,11 +700,11 @@ public abstract class HandyEvent
 
     public static class RequestSendCancelRecurringBookingEmail extends RequestEvent
     {
-        public final int bookingId;
+        public final int bookingRecurringId;
 
-        public RequestSendCancelRecurringBookingEmail(final int bookingId)
+        public RequestSendCancelRecurringBookingEmail(final int bookingRecurringId)
         {
-            this.bookingId = bookingId;
+            this.bookingRecurringId = bookingRecurringId;
         }
     }
 
@@ -722,9 +722,9 @@ public abstract class HandyEvent
 
     public static class RequestRecurringBookingsForUser extends RequestEvent
     {
-        public User user;
+        public final User user;
 
-        public RequestRecurringBookingsForUser(User user)
+        public RequestRecurringBookingsForUser(final User user)
         {
             this.user = user;
         }
@@ -732,9 +732,9 @@ public abstract class HandyEvent
 
     public static class ReceiveRecurringBookingsSuccess extends ReceiveSuccessEvent
     {
-        public List<Booking> bookings;
+        public final List<Booking> bookings;
 
-        public ReceiveRecurringBookingsSuccess(List<Booking> bookings)
+        public ReceiveRecurringBookingsSuccess(final List<Booking> bookings)
         {
             this.bookings = bookings;
         }
