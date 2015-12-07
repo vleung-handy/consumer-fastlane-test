@@ -120,19 +120,19 @@ public class BookingManager implements Observer
     {
         dataManager.updateBookingNoteToPro(event.bookingId, event.descriptionTransaction,
                 new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(final Void response)
-                    {
-                        bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProSuccess());
-                    }
+        {
+            @Override
+            public void onSuccess(final Void response)
+            {
+                bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProSuccess());
+            }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProError(error));
-                    }
-                });
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProError(error));
+            }
+        });
     }
 
     @Subscribe
@@ -141,19 +141,19 @@ public class BookingManager implements Observer
     {
         dataManager.updateBookingEntryInformation(event.bookingId, event.entryInformationTransaction,
                 new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(final Void response)
-                    {
-                        bus.post(new HandyEvent.ReceiveUpdateBookingEntryInformationSuccess());
-                    }
+        {
+            @Override
+            public void onSuccess(final Void response)
+            {
+                bus.post(new HandyEvent.ReceiveUpdateBookingEntryInformationSuccess());
+            }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveUpdateBookingEntryInformationError(error));
-                    }
-                });
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveUpdateBookingEntryInformationError(error));
+            }
+        });
     }
 
     @Subscribe
@@ -161,20 +161,20 @@ public class BookingManager implements Observer
     {
         dataManager.updateBookingFrequency(event.bookingId, event.bookingEditFrequencyRequest,
                 new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(Void response)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditBookingFrequencySuccess());
+        {
+            @Override
+            public void onSuccess(Void response)
+            {
+                bus.post(new HandyEvent.ReceiveEditBookingFrequencySuccess());
 
-                    }
+            }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditBookingFrequencyError(error));
-                    }
-                });
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveEditBookingFrequencyError(error));
+            }
+        });
     }
 
     @Subscribe
@@ -182,23 +182,23 @@ public class BookingManager implements Observer
     {
         dataManager.getBookingPricesForFrequencies(event.bookingId,
                 new DataManager.Callback<BookingEditFrequencyInfoResponse>()
-                {
-                    @Override
-                    public void onSuccess(BookingEditFrequencyInfoResponse response)
-                    {
-                        BookingEditFrequencyViewModel bookingEditFrequencyViewModel =
-                                BookingEditFrequencyViewModel.from(response);
-                        bus.post(new HandyEvent.ReceiveGetEditFrequencyViewModelSuccess(
-                                bookingEditFrequencyViewModel));
+        {
+            @Override
+            public void onSuccess(BookingEditFrequencyInfoResponse response)
+            {
+                BookingEditFrequencyViewModel bookingEditFrequencyViewModel =
+                        BookingEditFrequencyViewModel.from(response);
+                bus.post(new HandyEvent.ReceiveGetEditFrequencyViewModelSuccess(
+                        bookingEditFrequencyViewModel));
 
-                    }
+            }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveGetEditFrequencyViewModelError(error));
-                    }
-                });
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveGetEditFrequencyViewModelError(error));
+            }
+        });
     }
 
     @Subscribe
@@ -635,11 +635,8 @@ public class BookingManager implements Observer
     }
 
     /**
-     * TODO: no endpoint to only return the recurring bookings, must return filtered bookings for
-     * now.
-     * not using user_recurring_bookings of the bookings payload because
-     * the start_date is wrong, it doesn't include the date of the next recurrence, and iOS is not
-     * using it either
+     * TODO: no endpoint to only return the recurring bookings, must fetch part of the user
+     * bookings payload for now
      * TODO: would be nice to have caching
      * @param event
      */
