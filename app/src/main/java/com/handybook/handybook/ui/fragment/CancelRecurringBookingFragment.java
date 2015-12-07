@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BookingOption;
@@ -21,9 +20,6 @@ import butterknife.OnClick;
 
 public class CancelRecurringBookingFragment extends InjectedFragment
 {
-    @Bind(R.id.subtitle_text)
-    TextView mSubtitleText;
-
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
 
@@ -67,7 +63,6 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     public void onViewCreated(final View view, final Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        mSubtitleText.setText(R.string.cancel_regular_cleanings_subtitle);
         setContentViewVisible(false); //want the fragment to be invisible until options can be rendered
     }
 

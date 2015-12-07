@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:background="@color/handy_bg"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent">
+                android:layout_width="match_parent"
+    >
 
     <!--TODO: these are almost identical to the other edit screens, will make a template later-->
     <Button
@@ -18,6 +20,7 @@
 
     <ScrollView
         android:id="@+id/booking_edit_hours_container"
+        tools:visibility="visible"
         android:visibility="gone"
         android:layout_above="@id/next_button"
         android:layout_below="@id/nav_text"
@@ -31,14 +34,13 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 
-            <include
-                android:id="@+id/subtitle_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <TextView
+                style="@style/TextView.CenteredHeader"
+                android:text="@string/booking_edit_pro_assignment_warning"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_margin_double"
-                layout="@layout/view_centered_header_text"/>
+                />
 
             <LinearLayout
                 android:orientation="vertical"

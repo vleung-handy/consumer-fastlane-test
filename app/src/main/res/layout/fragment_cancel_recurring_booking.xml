@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:visibility="gone"
+              tools:visibility="visible"
               android:background="@color/handy_bg"
               android:layout_height="match_parent"
               android:layout_width="match_parent"
-              android:orientation="vertical">
+              android:orientation="vertical"
+    >
 
     <!--TODO: use a toolbar-->
     <!--TODO: create templates for this and similar screens-->
@@ -24,13 +27,11 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/default_padding">
 
-            <!--TODO: put into a style-->
-            <include
-                layout="@layout/view_centered_header_text"
-                android:id="@+id/subtitle_text"
-                android:layout_height="wrap_content"
+            <TextView
+                style="@style/TextView.CenteredHeader"
+                android:text="@string/cancel_regular_cleanings_subtitle"
                 android:layout_margin="@dimen/default_margin"
-                android:layout_width="match_parent"/>
+                />
 
             <LinearLayout
                 android:background="@color/white"
