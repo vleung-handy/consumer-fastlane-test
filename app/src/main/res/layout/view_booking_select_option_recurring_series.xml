@@ -60,37 +60,37 @@ which has different styling than the other option views-->
 
     </RelativeLayout>
 
-    <!--TODO: the widget associated with this layout will try to inflate the views below.
-    if we pass in a BookingOption that has data for the views below, NPE-->
-    <!--<LinearLayout-->
-        <!--android:gravity="center|right"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="0"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:orientation="vertical">-->
+    <!--while we don't need to display the following,
+    if we pass in a BookingOption that has data for the views below, will get a NPE-->
+    <LinearLayout
+        android:gravity="center|right"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_width="wrap_content"
+        android:orientation="vertical">
 
-        <!--<TextView-->
-            <!--style="@style/TextView.XLarge.Bold"-->
-            <!--android:freezesText="false"-->
-            <!--android:id="@+id/right_title_text"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:singleLine="true"-->
-            <!--android:textColor="@drawable/darkgrey_text_black_selected_color_selector"-->
-            <!--android:visibility="gone"/>-->
+        <TextView
+            style="@style/TextView.XLarge.Bold"
+            android:freezesText="false"
+            android:id="@+id/right_title_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:singleLine="true"
+            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+            android:visibility="gone"/>
 
-        <!--<TextView-->
-            <!--style="@style/TextView.Headline.XSmall.Bold"-->
-            <!--android:freezesText="false"-->
-            <!--android:id="@+id/right_subtitle_text"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:singleLine="true"-->
-            <!--android:textAllCaps="false"-->
-            <!--android:textColor="@drawable/darkgrey_text_black_selected_color_selector"-->
-            <!--android:visibility="gone"/>-->
-    <!--</LinearLayout>-->
+        <TextView
+            style="@style/TextView.Headline.XSmall.Bold"
+            android:freezesText="false"
+            android:id="@+id/right_subtitle_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:singleLine="true"
+            android:textAllCaps="false"
+            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+            android:visibility="gone"/>
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -21,7 +21,6 @@ import butterknife.OnClick;
 
 public class CancelRecurringBookingFragment extends InjectedFragment
 {
-    //TODO: clean up
     @Bind(R.id.subtitle_text)
     TextView mSubtitleText;
 
@@ -74,7 +73,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
 
     private void sendCancelRecurringBookingEmail(RecurringBooking recurringBooking)
     {
-        //get selected recurring series
+        //send the cancel recurring booking email for the series that the user selected
         showUiBlockers();
         int recurringId = recurringBooking.getRecurringId();
         bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail(recurringId));
@@ -94,7 +93,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         BookingOption bookingOption = mBookingCancelRecurringViewModel.getBookingOption(getActivity());
         mOptionsView
                 = new BookingOptionsSelectView(getActivity(), R.layout
-                .view_booking_select_option_booking, bookingOption, null);
+                .view_booking_select_option_recurring_series, bookingOption, null);
         mOptionsView.hideTitle();
         optionsLayout.removeAllViews(); //TODO: use a stub or replaceview instead
         optionsLayout.addView(mOptionsView);
