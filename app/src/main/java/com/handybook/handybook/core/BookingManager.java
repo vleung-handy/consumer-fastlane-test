@@ -635,12 +635,20 @@ public class BookingManager implements Observer
                 });
     }
 
+    /**
+     * TODO: no endpoint to only return the recurring bookings, must return filtered bookings for
+     * now.
+     * not using user_recurring_bookings of the bookings payload because
+     * the start_date is wrong, it doesn't include the date of the next recurrence, and iOS is not
+     * using it either
+     * TODO: would be nice to have caching
+     * @param event
+     */
     @Subscribe
     public final void onRequestRecurringBookings(
             final HandyEvent.RequestRecurringBookingsForUser event)
     {
-        //TODO: no endpoint to only return the recurring bookings, have to use this one for now
-        //TODO: would be nice to have caching
+
         dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
         {
             @Override

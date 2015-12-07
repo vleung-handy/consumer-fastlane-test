@@ -24,7 +24,8 @@ public class EmailCancellationDialogFragment extends BaseDialogFragment
 
     public static EmailCancellationDialogFragment newInstance(String userEmailAddress)
     {
-        EmailCancellationDialogFragment emailCancellationFragment = new EmailCancellationDialogFragment();
+        EmailCancellationDialogFragment emailCancellationFragment =
+                new EmailCancellationDialogFragment();
         emailCancellationFragment.canDismiss = true;
 
         Bundle bundle = new Bundle();

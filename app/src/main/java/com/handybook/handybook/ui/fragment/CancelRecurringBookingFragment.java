@@ -112,7 +112,8 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     private void showEmailSentConfirmationDialog()
     {
         String userEmailAddress = userManager.getCurrentUser().getEmail();
-        EmailCancellationDialogFragment emailCancellationDialogFragment = EmailCancellationDialogFragment.newInstance(userEmailAddress);
+        EmailCancellationDialogFragment emailCancellationDialogFragment =
+                EmailCancellationDialogFragment.newInstance(userEmailAddress);
         emailCancellationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
     }
 

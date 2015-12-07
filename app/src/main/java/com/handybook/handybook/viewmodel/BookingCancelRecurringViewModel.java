@@ -30,9 +30,10 @@ public class BookingCancelRecurringViewModel
     /**
      *
      * @param context needed to resolve string resource ids
-     * @return
+     * @return the BookingOption model that the cancel recurring fragment will use to render an
+     * options view
      */
-    public BookingOption getBookingOption(Context context)
+    public BookingOption getBookingOption(final Context context)
     {
         //TODO: put stuff in strings.xml
         final BookingOption option = new BookingOption();
@@ -56,7 +57,7 @@ public class BookingCancelRecurringViewModel
         return option;
     }
 
-    public Booking getBookingForIndex(int index)
+    public Booking getBookingForIndex(final int index)
     {
         return mBookingList.get(index);
     }

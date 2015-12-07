@@ -184,10 +184,10 @@ public final class ProfileFragment extends InjectedFragment {
         newPasswordtext.unHighlight();
         newPasswordtext.setText("");
 
-        showCancelCleaningPlanButtonIfNecessary();
+        showCancelCleaningPlanButtonIfApplicable();
     }
 
-    private void showCancelCleaningPlanButtonIfNecessary()
+    private void showCancelCleaningPlanButtonIfApplicable()
     {
         //only show cancel cleaning plan button if user has recurring bookings + config params on
         if(

@@ -119,8 +119,12 @@ public class Booking implements Parcelable
     }
 
     /**
-     * unfortunately this is the only way to tell if a booking is the first one in a recurring
-     * series
+     * unfortunately this is the only way to tell if a booking
+     * is the first one in a recurring series.
+     *
+     * not using user_recurring_bookings of the bookings payload to get recurring bookings because
+     * the start_date is wrong, it doesn't include the date of the next recurrence, and iOS is not
+     * using it either
      * @return
      */
     public final boolean isFirstInRecurringSeries()
