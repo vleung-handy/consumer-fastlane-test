@@ -119,7 +119,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
 
     private void handleErrorEvent(HandyEvent.ReceiveErrorEvent event)
     {
-        removeUiBlockers();
+        removeUiBlockersAndShowContent();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
@@ -130,19 +130,18 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         getActivity().finish();
     }
 
+    protected void removeUiBlockersAndShowContent()
+    {
+        super.removeUiBlockers();
+        setContentViewVisible(true);
+    }
+
     @Subscribe
     public void onReceiveSendCancelRecurringBookingEmailSuccess(
             HandyEvent.ReceiveSendCancelRecurringBookingEmailSuccess event)
     {
         removeUiBlockers();
         showEmailSentConfirmationDialog();
-    }
-
-    @Override
-    protected void removeUiBlockers()
-    {
-        super.removeUiBlockers();
-        setContentViewVisible(true);
     }
 
     @Subscribe
@@ -157,7 +156,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             {
                 //allow user to select which recurrence they want to cancel
                 createOptionsView();
-                removeUiBlockers();
+                removeUiBlockersAndShowContent();
             }
             else
             {
@@ -179,7 +178,6 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             HandyEvent.ReceiveSendCancelRecurringBookingEmailError event)
     {
         handleErrorEvent(event);
-        removeUiBlockers();
     }
 
     @Subscribe
