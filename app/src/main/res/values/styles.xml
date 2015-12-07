@@ -524,6 +524,15 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="RelativeLayout.NavBarBlue">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/nav_bar_blue</item>
+        <item name="android:textColor">@color/handy_white</item>
+        <item name="fontPath">fonts/CircularStd-Book.otf</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="BookingDetailSectionView">
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">4dp</item>

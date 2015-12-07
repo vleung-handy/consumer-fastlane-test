@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:id="@+id/nav_bar"
-        style="@style/RelativeLayout.NavBar">
+        style="@style/RelativeLayout.NavBarBlue">
 
         <ImageButton
             android:id="@+id/back_button"
@@ -33,6 +33,7 @@
             android:layout_marginStart="48dp"
             android:layout_marginTop="10dp"
             android:singleLine="true"
+            android:textColor="@color/handy_white"
             android:text="Service Name"
             android:textSize="18sp"/>
 
@@ -47,16 +48,28 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="#1000"
-            android:textColor="@color/black_pressed"
+            android:textColor="@color/handy_white"
             android:textSize="12sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nav_help"
+            style="@style/TextView.XSmall.Bold"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/default_margin_half"
+            android:padding="@dimen/default_padding_half"
+            android:textAllCaps="true"
+            android:textColor="@color/handy_white"
+            android:clickable="true"
+            android:text="@string/nav_help"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
 
     </RelativeLayout>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"

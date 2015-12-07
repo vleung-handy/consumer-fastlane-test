@@ -282,5 +282,6 @@
     <string name="menu_panic_title_pro_late">Pro Is Late</string>
     <string name="menu_panic_title_adjust_hours">Adjust Hours</string>
     <string name="menu_panic_title_help">Help</string>
+    <string name="nav_help">help</string>
 
 </resources>
