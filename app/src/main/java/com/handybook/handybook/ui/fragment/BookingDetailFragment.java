@@ -5,7 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,6 +22,7 @@ import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
+import com.handybook.handybook.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
@@ -45,6 +51,8 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Bind(R.id.booking_detail_view)
     BookingDetailView bookingDetailView;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     public static BookingDetailFragment newInstance(final Booking booking)
     {
@@ -59,6 +67,7 @@ public final class BookingDetailFragment extends InjectedFragment
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         mixpanel.trackEventAppTrackDetails();
         booking = getArguments().getParcelable(BundleKeys.BOOKING);
 
@@ -78,15 +87,39 @@ public final class BookingDetailFragment extends InjectedFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_detail, container, false);
-
+        final View view = inflater.inflate(R.layout.fragment_booking_detail, container, false);
         ButterKnife.bind(this, view);
-
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupForBooking(this.booking);
-
         return view;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.panic_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        switch (id)
+        {
+            case R.id.menu_panic_adjust_hours:
+            case R.id.menu_panic_cancel:
+            case R.id.menu_panic_pro_late:
+            case R.id.menu_panic_help:
+                toast.setText("Menu item " + item.getTitle() + " pressed");
+                toast.show();
+                startActivity(HelpActivity.getIntentToOpenNodeId(getActivity(), 161555));
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     @Override
     public final void onActivityResult(final int requestCode,

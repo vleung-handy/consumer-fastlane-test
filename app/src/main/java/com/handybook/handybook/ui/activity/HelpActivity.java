@@ -1,5 +1,7 @@
 package com.handybook.handybook.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
@@ -19,6 +21,13 @@ public final class HelpActivity extends MenuDrawerActivity
         final String path = getIntent().getStringExtra(BundleKeys.PATH);
         final boolean nodeIsBooking = getIntent().getBooleanExtra(BundleKeys.HELP_NODE_IS_BOOKING, false);
         return HelpFragment.newInstance(bookingId, loginToken, path, associatedNode, nodeId, nodeIsBooking);
+    }
+
+    public static Intent getIntentToOpenNodeId(final Context context, final int helpNodeId)
+    {
+        final Intent intent = new Intent(context, HelpActivity.class);
+        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNodeId));
+        return intent;
     }
 
     @Override
