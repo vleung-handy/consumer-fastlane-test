@@ -28,7 +28,6 @@ public class BookingCancelRecurringViewModel
     }
 
     /**
-     *
      * @param context needed to resolve string resource ids
      * @return the BookingOption model that the cancel recurring fragment will use to render an
      * options view
@@ -37,9 +36,9 @@ public class BookingCancelRecurringViewModel
     {
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
-        String optionStrings[] =  new String[mBookingList.size()];
+        String optionStrings[] = new String[mBookingList.size()];
         String optionSubtitleStrings[] = new String[optionStrings.length];
-        for(int i = 0; i<optionStrings.length; i++)
+        for (int i = 0; i < optionStrings.length; i++)
         {
             Booking booking = mBookingList.get(i);
 
@@ -47,9 +46,8 @@ public class BookingCancelRecurringViewModel
             optionStrings[i] = StringUtils.capitalizeFirstCharacter(
                     booking.getRecurringInfoShort());
             optionSubtitleStrings[i] = context.getString(R.string
-                    .cancel_recurring_booking_option_entry_subtitle_formatted, DateTimeUtils
-                .getFormattedDate
-                    (booking.getStartDate(), DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER));
+                            .cancel_recurring_booking_option_entry_subtitle_formatted,
+                    DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(booking.getStartDate()));
         }
         option.setOptions(optionStrings);
         option.setOptionsSubText(optionSubtitleStrings);
