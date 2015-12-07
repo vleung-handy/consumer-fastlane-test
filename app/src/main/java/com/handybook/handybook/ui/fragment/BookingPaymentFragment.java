@@ -29,6 +29,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
+import com.handybook.handybook.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.FreezableInputTextView;
 import com.stripe.android.Stripe;
@@ -67,7 +68,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @Bind(R.id.lock_icon)
     ImageView lockIcon;
     @Bind(R.id.card_icon)
-    ImageView creditCardIcon;
+    CreditCardIconImageView creditCardIcon;
     @Bind(R.id.card_extras_layout)
     LinearLayout cardExtrasLayout;
     @Bind(R.id.promo_progress)
@@ -112,7 +113,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                 && (savedInstanceState == null || useExistingCard)) {
             useExistingCard = true;
             creditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + card.getLast4());
-            setCardIcon(card.getBrand());
+            creditCardIcon.setCardIcon(card.getBrand());
         }
         else allowCardInput();
 
@@ -158,62 +159,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         outState.putBoolean(STATE_USE_EXISTING_CARD, useExistingCard);
     }
 
-    private void setCardIcon(final String type) {
-        if (type == null) {
-            creditCardIcon.setImageResource(R.drawable.ic_card_blank);
-            return;
-        }
-
-        switch (type) {
-            case Card.AMERICAN_EXPRESS:
-                creditCardIcon.setImageResource(R.drawable.ic_card_amex);
-                break;
-
-            case Card.DISCOVER:
-                creditCardIcon.setImageResource(R.drawable.ic_card_discover);
-                break;
-
-            case Card.MASTERCARD:
-                creditCardIcon.setImageResource(R.drawable.ic_card_mc);
-                break;
-
-            case Card.VISA:
-                creditCardIcon.setImageResource(R.drawable.ic_card_visa);
-                break;
-
-            default:
-                creditCardIcon.setImageResource(R.drawable.ic_card_blank);
-        }
-    }
-
-    private void setCardIcon(final CreditCard.Type type) {
-        if (type == null) {
-            creditCardIcon.setImageResource(R.drawable.ic_card_blank);
-            return;
-        }
-
-        switch (type) {
-            case AMEX:
-                creditCardIcon.setImageResource(R.drawable.ic_card_amex);
-                break;
-
-            case DISCOVER:
-                creditCardIcon.setImageResource(R.drawable.ic_card_discover);
-                break;
-
-            case MASTERCARD:
-                creditCardIcon.setImageResource(R.drawable.ic_card_mc);
-                break;
-
-            case VISA:
-                creditCardIcon.setImageResource(R.drawable.ic_card_visa);
-                break;
-
-            default:
-                creditCardIcon.setImageResource(R.drawable.ic_card_blank);
-        }
-    }
-
     @Override
     protected final void disableInputs() {
         super.disableInputs();
@@ -243,7 +188,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     }
 
     private void allowCardInput() {
-        setCardIcon(CreditCard.Type.OTHER);
+        creditCardIcon.setCardIcon(CreditCard.Type.OTHER);
         creditCardText.setText(null);
         creditCardText.setDisabled(false, getString(R.string.credit_card_num));
         changeButton.setVisibility(View.GONE);
@@ -414,7 +359,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
 
         @Override
         public void afterTextChanged(final Editable editable) {
-            if (!useExistingCard) setCardIcon(creditCardText.getCardType());
+            if (!useExistingCard) creditCardIcon.setCardIcon(creditCardText.getCardType());
         }
     };
 

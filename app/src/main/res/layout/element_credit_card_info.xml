@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <com.handybook.handybook.ui.widget.CreditCardIconImageView
+            android:id="@+id/card_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_edit_text"
+            android:contentDescription="@string/credit_card"
+            android:paddingBottom="@dimen/default_padding"
+            android:paddingEnd="0dp"
+            android:paddingLeft="@dimen/default_padding"
+            android:paddingRight="0dp"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingTop="@dimen/default_padding"
+            android:src="@drawable/ic_card_blank"
+            />
+
+        <com.handybook.handybook.ui.widget.CreditCardNumberInputTextView
+            android:id="@+id/credit_card_text"
+            style="@style/EditText.CreditCard"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_edit_text"
+            android:paddingEnd="@dimen/default_padding"
+            android:paddingLeft="0dp"
+            android:paddingRight="@dimen/default_padding"
+            android:paddingStart="0dp"
+            >
+
+            <Button
+                android:id="@+id/change_button"
+                style="@style/RoundedButton"
+                android:layout_gravity="center"
+                android:text="@string/change"
+                />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card_extras_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView
+            android:id="@+id/exp_text"
+            style="@style/EditText.CreditCardExp"
+            android:layout_weight="1"
+            />
+
+        <com.handybook.handybook.ui.widget.CreditCardCVCInputTextView
+            android:id="@+id/cvc_text"
+            style="@style/EditText.CreditCardCVC"
+            android:layout_weight="1"
+            />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_edit_text"
+            >
+
+            <ImageView
+                android:id="@+id/lock_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="lock"
+                android:paddingEnd="@dimen/default_padding"
+                android:paddingLeft="0dp"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingStart="0dp"
+                android:src="@drawable/ic_lock"
+                />
+
+        </FrameLayout>
+
+    </LinearLayout>
+</merge>
