@@ -588,6 +588,28 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
+    public void onRequestSendCancelRecurringBookingEmail(
+            final HandyEvent.RequestSendCancelRecurringBookingEmail event)
+    {
+        dataManager.sendCancelRecurringBookingEmail(event.bookingRecurringId, new DataManager
+                .Callback<SuccessWrapper>()
+        {
+            @Override
+            public void onSuccess(SuccessWrapper response)
+            {
+                bus.post(new HandyEvent.ReceiveSendCancelRecurringBookingEmailSuccess());
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveSendCancelRecurringBookingEmailError(error));
+
+            }
+        });
+    }
+    
+    @Subscribe
     public void onRequestEditBookingExtrasViewModel(
             final HandyEvent.RequestEditBookingExtrasViewModel event)
     {
@@ -610,5 +632,33 @@ public class BookingManager implements Observer
 
                     }
                 });
+    }
+
+    /**
+     * TODO: no endpoint to only return the recurring bookings, must fetch part of the user
+     * bookings payload for now
+     * TODO: would be nice to have caching
+     * @param event
+     */
+    @Subscribe
+    public final void onRequestRecurringBookings(
+            final HandyEvent.RequestRecurringBookingsForUser event)
+    {
+
+        dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
+        {
+            @Override
+            public void onSuccess(final UserBookingsWrapper result)
+            {
+                //TODO: need to sort the recurring bookings?
+                bus.post(new HandyEvent.ReceiveRecurringBookingsSuccess(result.getRecurringBookings()));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceiveRecurringBookingsError(error));
+            }
+        });
     }
 }

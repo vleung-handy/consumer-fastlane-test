@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--TODO: this needs a better name-->
+<!--TODO: this is to create a custom style for the cancel recurring options-->
+<!--this is a custom style for the select recurring booking to cancel options view,
+which has different styling than the other option views-->
+<!--mostly duplicated from view_booking_select_option-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@drawable/cell_options_list_entry"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:orientation="horizontal"
+              android:paddingBottom="@dimen/default_padding"
+              android:paddingLeft="@dimen/default_padding"
+              android:paddingRight="@dimen/default_padding"
+              android:paddingTop="@dimen/default_padding">
+
+    <CheckBox
+        android:background="@drawable/option_checkbox"
+        android:button="@null"
+        android:gravity="center"
+        android:id="@+id/check_box"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/icon_padding"
+        android:saveEnabled="false"/>
+
+    <RelativeLayout
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:layout_width="0dp">
+
+        <TextView
+            style="@style/TextView.Large.Bold"
+            android:ellipsize="end"
+            android:freezesText="false"
+            android:id="@+id/title_text"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:maxLines="2"
+            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+            tools:text="Title"/>
+
+        <TextView
+            style="@style/TextView.Large"
+            android:freezesText="false"
+            android:id="@+id/sub_text"
+            android:layout_below="@id/title_text"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+            android:visibility="gone"
+            tools:text="Subtitle\nSubtitle Line 2 blah blah blah"
+            tools:visibility="visible"/>
+
+    </RelativeLayout>
+
+    <!--while we don't need to display the following,
+    if we pass in a BookingOption that has data for the views below, will get a NPE-->
+    <LinearLayout
+        android:gravity="center|right"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_width="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextView.XLarge.Bold"
+            android:freezesText="false"
+            android:id="@+id/right_title_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:singleLine="true"
+            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+            android:visibility="gone"/>
+
+        <TextView
+            style="@style/TextView.Headline.XSmall.Bold"
+            android:freezesText="false"
+            android:id="@+id/right_subtitle_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:singleLine="true"
+            android:textAllCaps="false"
+            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spannable;
@@ -18,11 +19,13 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
+import com.handybook.handybook.ui.widget.ThinIconButton;
 import com.handybook.handybook.util.TextUtils;
 
 import butterknife.Bind;
@@ -59,6 +62,8 @@ public final class ProfileFragment extends InjectedFragment {
     PasswordInputTextView newPasswordtext;
     @Bind(R.id.menu_button_layout)
     ViewGroup menuButtonLayout;
+    @Bind(R.id.cancel_cleaning_plan_button)
+    ThinIconButton mCancelCleaningPlanButton;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -68,6 +73,12 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = userManager.getCurrentUser();
+    }
+
+    private void showRecurringBookingsToCancel()
+    {
+        final Intent intent = new Intent(getActivity(), CancelRecurringBookingActivity.class);
+        getActivity().startActivity(intent);
     }
 
     @Override
@@ -172,6 +183,33 @@ public final class ProfileFragment extends InjectedFragment {
 
         newPasswordtext.unHighlight();
         newPasswordtext.setText("");
+
+        showCancelCleaningPlanButtonIfApplicable();
+    }
+
+    private void showCancelCleaningPlanButtonIfApplicable()
+    {
+        //only show cancel cleaning plan button if user has recurring bookings + config params on
+        if(
+                user.isRecurringCancellationsEnabled()
+                && user.isRecurringCancellationsEmailFlowEnabled()
+                && user.getAnalytics() != null
+                && user.getAnalytics().getRecurringBookings() > 0)
+        {
+            mCancelCleaningPlanButton.setVisibility(View.VISIBLE);
+            mCancelCleaningPlanButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(final View v)
+                {
+                    showRecurringBookingsToCancel();
+                }
+            });
+        }
+        else
+        {
+            mCancelCleaningPlanButton.setVisibility(View.GONE);
+        }
     }
 
     private boolean validateFields() {
