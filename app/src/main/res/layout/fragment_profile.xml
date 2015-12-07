@@ -108,10 +108,9 @@
                 android:hint="@string/new_password"
                 style="@style/EditText.Last.Password" />
 
-            <!--TODO: put into strings.xml and see if we can use android:text-->
             <com.handybook.handybook.ui.widget.ThinIconButton
                 custom:iconResourceId="@drawable/ic_calendar_dark"
-                android:text="Cancel cleaning plan"
+                android:text="@string/cancel_recurring_booking_title"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

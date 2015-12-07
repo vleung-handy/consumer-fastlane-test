@@ -35,7 +35,6 @@ public class BookingCancelRecurringViewModel
      */
     public BookingOption getBookingOption(final Context context)
     {
-        //TODO: put stuff in strings.xml
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
         String optionStrings[] =  new String[mBookingList.size()];
