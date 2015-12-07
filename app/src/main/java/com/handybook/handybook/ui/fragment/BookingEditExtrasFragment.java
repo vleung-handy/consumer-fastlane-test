@@ -93,16 +93,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         return view;
     }
 
-    private void finishActivity()
-    {
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
-        getActivity().finish();
-    }
-
     @OnClick(R.id.x_button)
     public void onNavBarXButtonClick()
     {
-        finishActivity();
+        getActivity().finish();
     }
 
     @OnClick(R.id.next_button)
@@ -295,7 +289,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     public final void onReceiveEditBookingExtrasSuccess(HandyEvent.ReceiveEditExtrasSuccess event)
     {
         showToast(getString(R.string.booking_edit_extras_update_success));
-        finishActivity();
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().finish();
     }
 
     @Subscribe

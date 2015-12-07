@@ -114,16 +114,10 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         }
     }
 
-    private void finishActivity()
-    {
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
-        getActivity().finish();
-    }
-
     @OnClick(R.id.x_button)
     public void onNavBarXButtonClick()
     {
-        finishActivity();
+        getActivity().finish();
     }
 
     @OnClick(R.id.next_button)
@@ -290,7 +284,8 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     public final void onReceiveEditHoursSuccess(HandyEvent.ReceiveEditHoursSuccess event)
     {
         showToast(getString(R.string.booking_edit_hours_update_success));
-        finishActivity();
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().finish();
     }
 
     @Subscribe

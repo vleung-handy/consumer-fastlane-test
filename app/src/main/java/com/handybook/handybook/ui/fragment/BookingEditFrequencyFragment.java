@@ -72,16 +72,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         return view;
     }
 
-    private void finishActivity()
-    {
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
-        getActivity().finish();
-    }
-
     @OnClick(R.id.x_button)
     public void onNavBarXButtonClick()
     {
-        finishActivity();
+        getActivity().finish();
     }
 
     @OnClick(R.id.next_button)
@@ -146,7 +140,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         removeUiBlockers();
         showToast(R.string.updated_booking_frequency);
 
-        finishActivity();
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().finish();
     }
 
     @Subscribe
