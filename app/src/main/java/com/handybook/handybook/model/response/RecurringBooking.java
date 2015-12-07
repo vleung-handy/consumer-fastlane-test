@@ -15,7 +15,7 @@ public class RecurringBooking
     @SerializedName("recurring_string_short")
     private String mRecurringStringShort;
     @SerializedName("date_start")
-    private Date mDateStart;
+    private Date mNextRecurrenceDate;
 
     public int getRecurringId()
     {
@@ -37,8 +37,8 @@ public class RecurringBooking
         return mRecurringStringShort;
     }
 
-    public Date getDateStart()
+    public Date getNextRecurrenceDate()
     {
-        return mDateStart;
+        return mNextRecurrenceDate;
     }
 }

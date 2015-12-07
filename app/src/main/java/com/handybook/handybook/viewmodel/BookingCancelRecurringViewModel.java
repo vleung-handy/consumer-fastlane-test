@@ -47,7 +47,7 @@ public class BookingCancelRecurringViewModel
                     recurringBooking.getRecurringStringShort());
             optionSubtitleStrings[i] = context.getString(R.string
                             .cancel_recurring_booking_option_entry_subtitle_formatted,
-                    DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(recurringBooking.getDateStart()));
+                    DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(recurringBooking.getNextRecurrenceDate()));
         }
         option.setOptions(optionStrings);
         option.setOptionsSubText(optionSubtitleStrings);
