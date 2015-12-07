@@ -31,8 +31,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
     @Bind(R.id.next_button)
     TextView mSaveButton;
-    @Bind(R.id.subtitle_text)
-    TextView mSubtitleText;
 
     private BookingEditFrequencyViewModel mBookingEditFrequencyViewModel;
     private BookingOptionsSelectView mOptionsView;
@@ -70,7 +68,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_frequency, container, false);
         ButterKnife.bind(this, view);
 
-        mSubtitleText.setText(R.string.how_often_should_come);
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             //TODO: investigate: onClick annotation (as used by edit hours) does not work
             @Override
