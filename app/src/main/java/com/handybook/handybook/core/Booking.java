@@ -48,8 +48,6 @@ public class Booking implements Parcelable
     private int mRecurring; //WARNING DECEPTIVE VARIABLE NAME! THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
     @SerializedName("recurring_id")
     private String mRecurringId;  //This actually indicates if a booking is isRecurring, non-null/empty id
-    @SerializedName("recurring_string_short")
-    private String mRecurringInfoShort; //Display string of frequency, i.e. "every 2 weeks"
     @SerializedName("recurring_string")
     private String mRecurringInfo; //User facing display string of frequency, i.e. once, every 2 weeks, every 4 weeks
     @SerializedName("getin")
@@ -118,28 +116,9 @@ public class Booking implements Parcelable
         return mProvider != null && mProvider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED;
     }
 
-    /**
-     * unfortunately this is the only way to tell if a booking
-     * is the first one in a recurring series.
-     *
-     * not using user_recurring_bookings of the bookings payload to get recurring bookings because
-     * the start_date is wrong, it doesn't include the date of the next recurrence, and iOS is not
-     * using it either
-     * @return
-     */
-    public final boolean isFirstInRecurringSeries()
-    {
-        return isRecurring() && mRecurring > 0;
-    }
-
     public final boolean isRecurring()
     {
         return mRecurringId != null && !mRecurringId.isEmpty() && !"0".equals(mRecurringId);
-    }
-
-    public final String getRecurringInfoShort()
-    {
-        return mRecurringInfoShort;
     }
 
     public final String getRecurringInfo()

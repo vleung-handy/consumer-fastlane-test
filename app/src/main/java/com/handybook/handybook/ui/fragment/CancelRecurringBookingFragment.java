@@ -7,11 +7,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOption;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.model.response.RecurringBooking;
 import com.handybook.handybook.ui.widget.BookingOptionsSelectView;
 import com.handybook.handybook.viewmodel.BookingCancelRecurringViewModel;
 import com.squareup.otto.Subscribe;
@@ -73,26 +72,18 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         setContentViewVisible(false); //want the fragment to be invisible until options can be rendered
     }
 
-    private void sendCancelRecurringBookingEmail(Booking booking)
+    private void sendCancelRecurringBookingEmail(RecurringBooking recurringBooking)
     {
         //get selected recurring series
-        //TODO: why is booking's recurringId type Long?
-        if(booking.getRecurringId() == null)
-        {
-            Crashlytics.logException(new Exception("Recurring id for booking #" + booking.getId() +
-                    " is null!"));
-            showToastAndExit(R.string.default_error_string);
-            return;
-        }
         showUiBlockers();
-        int recurringId = (int)(booking.getRecurringId().longValue());
+        int recurringId = recurringBooking.getRecurringId();
         bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail(recurringId));
     }
 
     @OnClick(R.id.next_button)
     public void onNextButtonClicked()
     {
-        Booking selectedBooking = mBookingCancelRecurringViewModel.getBookingForIndex
+        RecurringBooking selectedBooking = mBookingCancelRecurringViewModel.getBookingForIndex
                 (mOptionsView.getCurrentIndex());
         sendCancelRecurringBookingEmail(selectedBooking);
     }
@@ -147,12 +138,12 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     @Subscribe
     public void onReceiveRecurringBookingsSuccess(HandyEvent.ReceiveRecurringBookingsSuccess event)
     {
-        mBookingCancelRecurringViewModel = BookingCancelRecurringViewModel.from(event.bookings);
-        int numBookings = event.bookings.size();
+        mBookingCancelRecurringViewModel = BookingCancelRecurringViewModel.from(event.recurringBookings);
+        int numBookings = event.recurringBookings.size();
 
         if(numBookings > 0)
         {
-            if(event.bookings.size() > 1)
+            if(event.recurringBookings.size() > 1)
             {
                 //allow user to select which recurrence they want to cancel
                 createOptionsView();
@@ -161,7 +152,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             else
             {
                 //send cancellation email for the only recurring booking that user has
-                sendCancelRecurringBookingEmail(event.bookings.get(0));
+                sendCancelRecurringBookingEmail(event.recurringBookings.get(0));
             }
         }
         else

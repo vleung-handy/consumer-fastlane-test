@@ -14,6 +14,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.response.RecurringBooking;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
@@ -732,11 +733,11 @@ public abstract class HandyEvent
 
     public static class ReceiveRecurringBookingsSuccess extends ReceiveSuccessEvent
     {
-        public final List<Booking> bookings;
+        public final List<RecurringBooking> recurringBookings;
 
-        public ReceiveRecurringBookingsSuccess(final List<Booking> bookings)
+        public ReceiveRecurringBookingsSuccess(final List<RecurringBooking> recurringBookings)
         {
-            this.bookings = bookings;
+            this.recurringBookings = recurringBookings;
         }
     }
 
