@@ -74,6 +74,12 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail(recurringId));
     }
 
+    @OnClick(R.id.x_button)
+    public void onNavBarXButtonClick()
+    {
+        getActivity().finish();
+    }
+
     @OnClick(R.id.next_button)
     public void onNextButtonClicked()
     {

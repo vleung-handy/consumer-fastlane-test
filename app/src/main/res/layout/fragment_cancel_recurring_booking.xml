@@ -11,10 +11,12 @@
 
     <!--TODO: use a toolbar-->
     <!--TODO: create templates for this and similar screens-->
-    <TextView
-        style="@style/TextView.Navbar"
-        android:id="@+id/nav_text"
-        android:text="@string/cancel_recurring_booking_title"/>
+    <com.handybook.handybook.ui.widget.NavbarXButton
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_recurring_booking_title"
+        />
 
     <ScrollView
         android:layout_weight="1"

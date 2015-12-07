@@ -114,6 +114,18 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         }
     }
 
+    private void finishActivity()
+    {
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().finish();
+    }
+
+    @OnClick(R.id.x_button)
+    public void onNavBarXButtonClick()
+    {
+        finishActivity();
+    }
+
     @OnClick(R.id.next_button)
     public void onSaveButtonPressed()
     {
@@ -278,10 +290,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     public final void onReceiveEditHoursSuccess(HandyEvent.ReceiveEditHoursSuccess event)
     {
         showToast(getString(R.string.booking_edit_hours_update_success));
-
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
-        getActivity().finish();
-        //TODO: booking details screen not calling onActivityResult() and updating the booking
+        finishActivity();
     }
 
     @Subscribe

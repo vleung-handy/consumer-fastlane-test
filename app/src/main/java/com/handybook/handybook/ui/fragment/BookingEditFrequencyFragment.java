@@ -21,6 +21,7 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
@@ -68,15 +69,25 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_frequency, container, false);
         ButterKnife.bind(this, view);
 
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            //TODO: investigate: onClick annotation (as used by edit hours) does not work
-            @Override
-            public void onClick(final View v)
-            {
-                sendEditFrequencyRequest();
-            }
-        });
         return view;
+    }
+
+    private void finishActivity()
+    {
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().finish();
+    }
+
+    @OnClick(R.id.x_button)
+    public void onNavBarXButtonClick()
+    {
+        finishActivity();
+    }
+
+    @OnClick(R.id.next_button)
+    public void onNextButtonClick()
+    {
+        sendEditFrequencyRequest();
     }
 
     public void sendEditFrequencyRequest()
@@ -135,8 +146,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         removeUiBlockers();
         showToast(R.string.updated_booking_frequency);
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
-        getActivity().finish();
+        finishActivity();
     }
 
     @Subscribe
