@@ -46,11 +46,11 @@ public final class BookingDetailFragment extends InjectedFragment
 {
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
 
-    private Booking booking;
-    private boolean updatedBooking;
+    private Booking mBooking;
+    private boolean mBookingUpdated;
 
     @Bind(R.id.booking_detail_view)
-    BookingDetailView bookingDetailView;
+    BookingDetailView mBookingDetailView;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -69,7 +69,7 @@ public final class BookingDetailFragment extends InjectedFragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mixpanel.trackEventAppTrackDetails();
-        booking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
 
         if (savedInstanceState != null)
         {
@@ -92,7 +92,7 @@ public final class BookingDetailFragment extends InjectedFragment
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setupForBooking(this.booking);
+        setupForBooking(this.mBooking);
         return view;
     }
 
@@ -108,16 +108,30 @@ public final class BookingDetailFragment extends InjectedFragment
         int id = item.getItemId();
         switch (id)
         {
-            case R.id.menu_panic_adjust_hours:
             case R.id.menu_panic_cancel:
+                startActivity(HelpActivity.getIntentToOpenNodeId(getActivity(), 296));
+                break;
             case R.id.menu_panic_pro_late:
+                startActivity(
+                        HelpActivity.getIntentToOpenNodeId(
+                                getActivity(),
+                                4020,
+                                mBooking.getId(),
+                                userManager.getCurrentUser().getAuthToken()
+                        )
+                );
+                break;
+            case R.id.menu_panic_adjust_hours:
+                startActivity(HelpActivity.getIntentToOpenNodeId(getActivity(), 498));
+                break;
             case R.id.menu_panic_help:
-                toast.setText("Menu item " + item.getTitle() + " pressed");
-                toast.show();
-                startActivity(HelpActivity.getIntentToOpenNodeId(getActivity(), 161555));
+//                toast.setText("Menu item " + item.getTitle() + " pressed");
+//                toast.show();
+                startActivity(new Intent(getActivity(), HelpActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
 
@@ -136,7 +150,7 @@ public final class BookingDetailFragment extends InjectedFragment
             {
                 Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
                 //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model. API v4 should return the updated booking model
-                bookingDetailView.updateDateTimeInfoText(booking, newDate);
+                mBookingDetailView.updateDateTimeInfoText(mBooking, newDate);
                 setUpdatedBookingResult();
             }
         }
@@ -148,7 +162,7 @@ public final class BookingDetailFragment extends InjectedFragment
         else if (resultCode == ActivityResult.RESULT_BOOKING_UPDATED)
         {
             //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
-            postBlockingEvent(new HandyEvent.RequestBookingDetails(booking.getId()));
+            postBlockingEvent(new HandyEvent.RequestBookingDetails(mBooking.getId()));
             //setting the updated result with the new booking when we receive the new booking data
         }
     }
@@ -157,14 +171,14 @@ public final class BookingDetailFragment extends InjectedFragment
     public final void onSaveInstanceState(final Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_UPDATED_BOOKING, updatedBooking);
+        outState.putBoolean(STATE_UPDATED_BOOKING, mBookingUpdated);
     }
 
     @Override
     protected void disableInputs()
     {
         super.disableInputs();
-        bookingDetailView.backButton.setClickable(false);
+        mBookingDetailView.backButton.setClickable(false);
         setSectionFragmentInputsEnabled(false);
     }
 
@@ -172,7 +186,7 @@ public final class BookingDetailFragment extends InjectedFragment
     protected final void enableInputs()
     {
         super.enableInputs();
-        bookingDetailView.backButton.setClickable(true);
+        mBookingDetailView.backButton.setClickable(true);
         setSectionFragmentInputsEnabled(true);
     }
 
@@ -183,14 +197,14 @@ public final class BookingDetailFragment extends InjectedFragment
 
     private void setupForBooking(Booking booking)
     {
-        bookingDetailView.updateDisplay(booking, userManager.getCurrentUser());
+        mBookingDetailView.updateDisplay(booking, userManager.getCurrentUser());
         setupClickListeners();
         addSectionFragments();
     }
 
     private void setupClickListeners()
     {
-        bookingDetailView.backButton.setOnClickListener(backButtonClicked);
+        mBookingDetailView.backButton.setOnClickListener(backButtonClicked);
     }
 
     //Section fragments to display, In display order
@@ -221,7 +235,7 @@ public final class BookingDetailFragment extends InjectedFragment
             //  with the fragment manager which displays them in reverse order if fragments were just cleared
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             Bundle args = new Bundle();
-            args.putParcelable(BundleKeys.BOOKING, this.booking);
+            args.putParcelable(BundleKeys.BOOKING, this.mBooking);
             sectionFragment.setArguments(args);
             transaction.add(R.id.section_fragment_container, sectionFragment);
             transaction.commit();
@@ -263,7 +277,7 @@ public final class BookingDetailFragment extends InjectedFragment
         removeUiBlockers();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
-        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, this.booking);
+        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, this.mBooking);
         intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, event.notice);
         startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
     }
@@ -286,7 +300,7 @@ public final class BookingDetailFragment extends InjectedFragment
         final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
         intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
         intent.putExtra(BundleKeys.NOTICE, result.first);
-        intent.putExtra(BundleKeys.BOOKING, booking);
+        intent.putExtra(BundleKeys.BOOKING, mBooking);
         startActivityForResult(intent, ActivityResult.RESULT_BOOKING_CANCELED);
     }
 
@@ -302,7 +316,7 @@ public final class BookingDetailFragment extends InjectedFragment
     {
         removeUiBlockers();
 
-        this.booking = event.booking;
+        this.mBooking = event.booking;
         getArguments().putParcelable(BundleKeys.BOOKING, event.booking);
         setUpdatedBookingResult();
         setupForBooking(event.booking);
@@ -318,16 +332,16 @@ public final class BookingDetailFragment extends InjectedFragment
 
     private void setUpdatedBookingResult()
     {
-        updatedBooking = true;
+        mBookingUpdated = true;
         final Intent intent = new Intent();
-        intent.putExtra(BundleKeys.UPDATED_BOOKING, booking);
+        intent.putExtra(BundleKeys.UPDATED_BOOKING, mBooking);
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, intent);
     }
 
     private void setCanceledBookingResult()
     {
         final Intent intent = new Intent();
-        intent.putExtra(BundleKeys.CANCELLED_BOOKING, booking);
+        intent.putExtra(BundleKeys.CANCELLED_BOOKING, mBooking);
         getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, intent);
     }
 }
