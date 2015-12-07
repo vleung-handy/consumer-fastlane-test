@@ -51,6 +51,7 @@ import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.AddLaundryDialogFragment;
 import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
@@ -101,6 +102,7 @@ import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -203,7 +205,9 @@ import retrofit.converter.GsonConverter;
         TipDialogFragment.class,
         CancelRecurringBookingActivity.class,
         CancelRecurringBookingFragment.class,
-        EmailCancellationDialogFragment.class
+        EmailCancellationDialogFragment.class,
+        UpdatePaymentActivity.class,
+        UpdatePaymentFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule

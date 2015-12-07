@@ -88,6 +88,10 @@
             android:name=".ui.activity.BookingsActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".ui.activity.UpdatePaymentActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".ui.activity.BookingOptionsActivity"/>
         <activity android:name=".ui.activity.BookingDateActivity"/>
         <activity android:name=".ui.activity.BookingAddressActivity"/>
