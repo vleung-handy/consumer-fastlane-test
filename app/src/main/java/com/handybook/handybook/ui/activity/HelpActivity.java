@@ -30,6 +30,20 @@ public final class HelpActivity extends MenuDrawerActivity
         return intent;
     }
 
+    public static Intent getIntentToOpenNodeId(
+            final Context context,
+            final int helpNodeId,
+            final String bookingId,
+            final String authToken
+    )
+    {
+        final Intent intent = new Intent(context, HelpActivity.class);
+        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNodeId));
+        intent.putExtra(BundleKeys.BOOKING_ID, bookingId);
+        intent.putExtra(BundleKeys.LOGIN_TOKEN, authToken);
+        return intent;
+    }
+
     @Override
     protected final String getNavItemTitle()
     {
