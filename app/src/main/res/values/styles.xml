@@ -311,6 +311,15 @@
         <item name="android:textSize">@dimen/default_text_size</item>
         <item name="android:freezesText">true</item>
     </style>
+    
+    <style name="TextView.CenteredHeader">
+        <item name="android:layout_margin">@dimen/default_margin</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
 
     <style name="RelativeLayout">
         <item name="android:textColor">@color/handy_text_black</item>
