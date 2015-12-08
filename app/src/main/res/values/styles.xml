@@ -9,6 +9,7 @@
         <item name="colorPrimaryDark">@color/handy_darkened_blue</item>
         <item name="colorAccent">@color/handy_service_painter</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:colorBackground">@color/handy_white</item>
     </style>
 
     <style name="ContentLayout">
@@ -36,8 +37,8 @@
     <style name="MenuButtonLayout">
         <item name="android:layout_width">64dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
         <item name="android:paddingTop">18dp</item>
         <item name="android:paddingBottom">18dp</item>
     </style>
@@ -49,8 +50,8 @@
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
     </style>
 
     <style name="Button.BookingAction">
@@ -165,7 +166,7 @@
         <item name="android:textColor">@color/handy_text_black</item>
         <item name="android:textColorHint">@color/black_pressed</item>
         <item name="android:background">@drawable/bg_edit_text</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">@dimen/default_padding</item>
     </style>
 
     <style name="EditText.Last">
@@ -431,11 +432,11 @@
         <item name="android:background">@drawable/nav_bar</item>
         <item name="android:textColor">@color/handy_text_black</item>
         <item name="fontPath">fonts/CircularStd-Book.otf</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
     </style>
 
     <style name="TextView.HelpHeader">
@@ -445,11 +446,11 @@
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@color/handy_text_black</item>
         <item name="fontPath">fonts/CircularStd-Book.otf</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
     </style>
 
     <style name="TextView.BookingsHeader">
@@ -462,8 +463,8 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
     </style>
 
     <style name="TextView.BookingOptionInfo">
@@ -489,7 +490,7 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/cell_booking</item>
         <item name="android:textSize">@dimen/default_text_size</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">@dimen/default_padding</item>
     </style>
 
     <style name="BookingsCell.End">
@@ -501,7 +502,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/cell_service</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">@dimen/default_padding</item>
     </style>
 
     <style name="TextView.ServiceCategory">
@@ -511,7 +512,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/handy_blue</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:background">@drawable/cell_service_category</item>
         <item name="fontPath">fonts/CircularStd-Medium.otf</item>
     </style>
@@ -533,7 +534,12 @@
         <item name="android:background">@drawable/nav_bar</item>
         <item name="android:textColor">@color/handy_text_black</item>
         <item name="fontPath">fonts/CircularStd-Book.otf</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="RelativeLayout.NavBar.Blue">
+        <item name="android:textColor">@color/handy_white</item>
+        <item name="android:background">@drawable/nav_bar_blue</item>
     </style>
 
     <style name="BookingDetailSectionView">
@@ -557,7 +563,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:divider">?android:attr/dividerVertical</item>
         <item name="android:showDividers">middle</item>
     </style>
@@ -577,6 +583,17 @@
         <item name="android:divider">@drawable/toggle_divider</item>
         <item name="android:showDividers">middle</item>
         <item name="android:background">@drawable/custom_toggle_group</item>
+    </style>
+
+    <style name="NavBarButton">
+    </style>
+
+    <style name="NavBarButton.Back">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">@dimen/default_padding</item>
     </style>
 
     <string name="name">Name</string>
