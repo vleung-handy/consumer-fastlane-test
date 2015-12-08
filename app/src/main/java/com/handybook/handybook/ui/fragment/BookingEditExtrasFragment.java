@@ -93,6 +93,12 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         return view;
     }
 
+    @OnClick(R.id.back_button)
+    public void onNavBarBackButtonClick()
+    {
+        getActivity().onBackPressed();
+    }
+
     @OnClick(R.id.next_button)
     public void onSaveButtonPressed()
     {
@@ -283,7 +289,6 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     public final void onReceiveEditBookingExtrasSuccess(HandyEvent.ReceiveEditExtrasSuccess event)
     {
         showToast(getString(R.string.booking_edit_extras_update_success));
-
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }

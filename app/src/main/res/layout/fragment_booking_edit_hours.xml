@@ -7,23 +7,26 @@
     >
 
     <!--TODO: these are almost identical to the other edit screens, will make a template later-->
+    <com.handybook.handybook.ui.widget.BackButtonNavBar
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/booking_edit_hours_title"
+        />
+
     <Button
         style="@style/Button.Green"
+        android:textAllCaps="false"
         android:id="@+id/next_button"
         android:onClick="onSaveButtonPressed"
         android:text="@string/save"/>
-
-    <TextView
-        style="@style/TextView.Navbar"
-        android:id="@+id/nav_text"
-        android:text="@string/booking_edit_hours_title"/>
 
     <ScrollView
         android:id="@+id/booking_edit_hours_container"
         tools:visibility="visible"
         android:visibility="gone"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text"
+        android:layout_below="@id/nav_bar"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
