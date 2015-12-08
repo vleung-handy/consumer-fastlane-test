@@ -9,10 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
+import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
@@ -27,6 +30,10 @@ public class UpdatePaymentFragment extends InjectedFragment
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.credit_card_text)
     CreditCardNumberInputTextView mCreditCardText;
+    @Bind(R.id.exp_text)
+    CreditCardExpDateInputTextView mExpText;
+    @Bind(R.id.cvc_text)
+    CreditCardCVCInputTextView mCvcText;
     @Bind(R.id.card_icon)
     CreditCardIconImageView mCreditCardIcon;
     @Bind(R.id.update_button)
@@ -49,6 +56,15 @@ public class UpdatePaymentFragment extends InjectedFragment
         mUpdateButton.setVisibility(View.VISIBLE);
         mChangeButton.setVisibility(View.GONE);
         mCreditCardIcon.setCardIcon(CreditCard.Type.OTHER);
+    }
+
+    @OnClick(R.id.update_button)
+    public void updatePayment()
+    {
+        if (!validateFields())
+        {
+            showToast(R.string.error_payment_info_invalid, Toast.LENGTH_LONG);
+        }
     }
 
     @Nullable
@@ -99,4 +115,9 @@ public class UpdatePaymentFragment extends InjectedFragment
             mCreditCardIcon.setCardIcon(mCreditCardText.getCardType());
         }
     };
+
+    private boolean validateFields()
+    {
+        return mCreditCardText.validate() && mExpText.validate() && mCvcText.validate();
+    }
 }
