@@ -12,6 +12,7 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
@@ -212,6 +213,14 @@ public final class BaseDataManager extends DataManager
                 });
             }
         });
+    }
+
+    @Override
+    public void editBookingAddress(final int bookingId,
+                                   final BookingEditAddressRequest bookingEditAddressRequest,
+                                   final Callback<SuccessWrapper> cb)
+    {
+        mService.editBookingAddress(bookingId, bookingEditAddressRequest, new SuccessHandyRetroFitCallback(cb));
     }
 
     @Override

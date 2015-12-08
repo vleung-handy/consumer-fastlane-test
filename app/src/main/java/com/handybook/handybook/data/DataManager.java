@@ -9,6 +9,7 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
@@ -42,6 +43,10 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
+    public abstract void editBookingAddress(int bookingId,
+                                            BookingEditAddressRequest bookingEditAddressRequest,
+                                                         Callback<SuccessWrapper> cb);
+
     public abstract void sendCancelRecurringBookingEmail(int bookingRecurringId,
                                      Callback<SuccessWrapper> cb);
 

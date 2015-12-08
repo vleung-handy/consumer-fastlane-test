@@ -289,4 +289,5 @@
     <string name="select">Select</string>
     <string name="email_cancellation_dialog_title">Check your email</string>
     <string name="email_cancellation_dialog_next_button">Got It</string>
+    <string name="updated_booking_address">Updated booking address</string>
 </resources>

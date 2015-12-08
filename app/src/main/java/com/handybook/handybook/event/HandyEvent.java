@@ -752,9 +752,12 @@ public abstract class HandyEvent
 
     public static class RequestEditBookingAddress extends RequestEvent
     {
+        public final int bookingId;
         public final BookingEditAddressRequest bookingEditAddressRequest;
-        public RequestEditBookingAddress(final BookingEditAddressRequest bookingEditAddressRequest)
+        public RequestEditBookingAddress(final int bookingId,
+                                         final BookingEditAddressRequest bookingEditAddressRequest)
         {
+            this.bookingId = bookingId;
             this.bookingEditAddressRequest = bookingEditAddressRequest;
         }
     }

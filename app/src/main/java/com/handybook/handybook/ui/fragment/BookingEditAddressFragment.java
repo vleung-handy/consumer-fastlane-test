@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
@@ -22,14 +23,15 @@ import butterknife.OnClick;
 
 public final class BookingEditAddressFragment extends BookingFlowFragment
 {
-    private Booking mBooking;
-
     @Bind(R.id.street_addr_text)
     StreetAddressInputTextView mStreetAddressInputTextView1;
     @Bind(R.id.other_addr_text)
-    StreetAddressInputTextView mStreetAddressInputTextView2;
+    EditText mStreetAddressInputTextView2;
     @Bind(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
+
+    private Booking mBooking;
+
     public static BookingEditAddressFragment newInstance(Booking booking)
     {
         final BookingEditAddressFragment fragment = new BookingEditAddressFragment();
@@ -48,20 +50,20 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onResume()
-    {
-        super.onResume();
-        showUiBlockers();
-        bus.post(new HandyEvent.RequestGetEditFrequencyViewModel(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
-    }
-
-    @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState)
     {
         final View view = inflater
                 .inflate(R.layout.fragment_edit_booking_address, container, false);
         ButterKnife.bind(this, view);
+
+        if (mBooking.getAddress() != null)
+        {
+            //initialize with the booking's current address
+            mStreetAddressInputTextView1.setText(mBooking.getAddress().getAddress1());
+            mStreetAddressInputTextView2.setText(mBooking.getAddress().getAddress2());
+            mZipCodeInputTextView.setText(mBooking.getAddress().getZip());
+        }
 
         return view;
     }
@@ -70,22 +72,33 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     {
         BookingEditAddressRequest bookingEditAddressRequest = new BookingEditAddressRequest();
         bookingEditAddressRequest.setAddress1(mStreetAddressInputTextView1.getAddress());
-        bookingEditAddressRequest.setAddress2(mStreetAddressInputTextView2.getAddress());
+        bookingEditAddressRequest.setAddress2(mStreetAddressInputTextView2.getText().toString());
         bookingEditAddressRequest.setZipcode(mZipCodeInputTextView.getZipCode());
-        bus.post(new HandyEvent.RequestEditBookingAddress(bookingEditAddressRequest));
+        showUiBlockers();
+        bus.post(new HandyEvent.RequestEditBookingAddress(Integer.parseInt(mBooking.getId()),
+                bookingEditAddressRequest));
+    }
+
+    private boolean validateFields()
+    {
+        return (mStreetAddressInputTextView1.validate()
+                && mZipCodeInputTextView.validate());
     }
 
     @OnClick(R.id.next_button)
     public void onNextButtonClick()
     {
-        sendEditAddressRequest();
+        if(validateFields())
+        {
+            sendEditAddressRequest();
+        }
     }
 
     @Subscribe
     public final void onReceiveEditBookingAddressSuccess(HandyEvent.ReceiveEditBookingAddressSuccess event)
     {
         removeUiBlockers();
-        showToast(R.string.updated_booking_frequency);
+        showToast(getString(R.string.updated_booking_address));
 
         getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
         getActivity().finish();
