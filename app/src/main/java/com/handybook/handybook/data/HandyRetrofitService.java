@@ -219,6 +219,10 @@ public interface HandyRetrofitService
     void updateUserInfo(@Path("user") String userId, @Body UpdateUserRequest req,
                         HandyRetrofitCallback cb);
 
+    @PUT("/users/{user_id}/update_credit_card")
+    void updatePaymentInfo(@Path("user_id") String userId, @Query("stripe_token") String token,
+                           HandyRetrofitCallback cb);
+
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
 

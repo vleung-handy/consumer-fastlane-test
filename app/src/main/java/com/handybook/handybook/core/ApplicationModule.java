@@ -22,6 +22,7 @@ import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
@@ -363,6 +364,15 @@ public final class ApplicationModule
                                          final PrefsManager prefsManager)
     {
         return new UserManager(bus, prefsManager);
+    }
+
+    @Provides
+    @Singleton
+    final UserDataManager provideUserDataManager(final UserManager userManager,
+                                                 final DataManager dataManager,
+                                                 final Bus bus)
+    {
+        return new UserDataManager(userManager, dataManager, bus);
     }
 
     @Provides

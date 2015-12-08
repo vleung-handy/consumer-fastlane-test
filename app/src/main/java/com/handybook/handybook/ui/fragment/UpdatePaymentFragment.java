@@ -9,16 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
+import com.squareup.otto.Subscribe;
+import com.stripe.android.model.Card;
+import com.stripe.exception.CardException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +49,10 @@ public class UpdatePaymentFragment extends InjectedFragment
     Button mChangeButton;
     @Bind(R.id.card_extras_layout)
     ViewGroup mCardExtrasLayout;
+    @Bind(R.id.cancel_button)
+    View mCancelButton;
+    @Bind(R.id.nav_text)
+    TextView mNavText;
 
     public static Fragment newInstance()
     {
@@ -49,13 +60,42 @@ public class UpdatePaymentFragment extends InjectedFragment
     }
 
     @OnClick(R.id.change_button)
-    public void allowCardInput()
+    public void unfreezeCardInput()
     {
+        mNavText.setText(R.string.edit_payment);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
         mUpdateButton.setVisibility(View.VISIBLE);
         mChangeButton.setVisibility(View.GONE);
         mCreditCardIcon.setCardIcon(CreditCard.Type.OTHER);
+        mCancelButton.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.cancel_button)
+    public void freezeCardInput()
+    {
+        final User currentUser = userManager.getCurrentUser();
+        final User.CreditCard creditCard = currentUser.getCreditCard();
+        freezeCardInput(creditCard);
+    }
+
+    private void freezeCardInput(User.CreditCard creditCard)
+    {
+        freezeCardInput(creditCard.getBrand(), creditCard.getLast4());
+    }
+
+    private void freezeCardInput(String brand, String last4)
+    {
+        mNavText.setText(R.string.payment);
+        mCreditCardText.setText(R.string.blank_string);
+        mExpText.setText(R.string.blank_string);
+        mCvcText.setText(R.string.blank_string);
+        mCreditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + last4);
+        mCardExtrasLayout.setVisibility(View.GONE);
+        mUpdateButton.setVisibility(View.GONE);
+        mChangeButton.setVisibility(View.VISIBLE);
+        mCreditCardIcon.setCardIcon(brand);
+        mCancelButton.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.update_button)
@@ -65,6 +105,53 @@ public class UpdatePaymentFragment extends InjectedFragment
         {
             showToast(R.string.error_payment_info_invalid, Toast.LENGTH_LONG);
         }
+        else
+        {
+            disableInputs();
+            progressDialog.show();
+            final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
+                    mExpText.getExpYear(), mCvcText.getCVC());
+            bus.post(new StripeEvent.RequestCreateToken(card));
+        }
+    }
+
+    @Subscribe
+    public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
+    {
+        bus.post(new HandyEvent.RequestUpdatePayment(event.token));
+    }
+
+    @Subscribe
+    public void onReceiveCreateTokenError(StripeEvent.ReceiveCreateTokenError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+        if (event.error instanceof CardException)
+        {
+            showToast(event.error.getMessage());
+        }
+        else
+        {
+            showToast(R.string.default_error_string);
+        }
+    }
+
+    @Subscribe
+    public void onReceiveUpdatePaymentSuccess(HandyEvent.ReceiveUpdatePaymentSuccess event)
+    {
+        progressDialog.dismiss();
+        ((BaseApplication) getActivity().getApplication()).updateUser();
+        final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
+                mExpText.getExpYear(), mCvcText.getCVC());
+        freezeCardInput(card.getType(), card.getLast4());
+        showToast(R.string.update_successful);
+    }
+
+    @Subscribe
+    public void onReceiveUpdatePaymentError(HandyEvent.ReceiveUpdatePaymentError event)
+    {
+        progressDialog.dismiss();
+        showToast(R.string.default_error_string);
     }
 
     @Nullable
@@ -76,18 +163,18 @@ public class UpdatePaymentFragment extends InjectedFragment
         ButterKnife.bind(this, view);
 
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
+        menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
 
         final User currentUser = userManager.getCurrentUser();
         final User.CreditCard creditCard = currentUser.getCreditCard();
         if (creditCard != null && creditCard.getLast4() != null && !creditCard.getLast4().isEmpty())
         {
-            mCreditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + creditCard.getLast4());
-            mCreditCardIcon.setCardIcon(creditCard.getBrand());
+            freezeCardInput(creditCard);
         }
         else
         {
-            allowCardInput();
+            unfreezeCardInput();
         }
 
         mCreditCardText.addTextChangedListener(cardTextWatcher);

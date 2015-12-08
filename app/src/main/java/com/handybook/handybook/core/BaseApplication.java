@@ -16,6 +16,7 @@ import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.manager.UserDataManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
@@ -58,6 +59,8 @@ public class BaseApplication extends MultiDexApplication
     AppBlockManager appBlockManager;
     @Inject
     StripeManager stripeManager;
+    @Inject
+    UserDataManager userDataManager;
 
     @Override
     public void onCreate()
@@ -167,7 +170,7 @@ public class BaseApplication extends MultiDexApplication
         graph.inject(object);
     }
 
-    protected void updateUser()
+    public void updateUser()
     {
         final User user = userManager.getCurrentUser();
         if (user != null)

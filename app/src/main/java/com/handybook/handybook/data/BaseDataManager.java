@@ -723,6 +723,18 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
+    public void updatePayment(final String userId, final String token, final Callback<Void> cb)
+    {
+        mService.updatePaymentInfo(userId, token, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+            }
+        });
+    }
+
+    @Override
     public final void requestPasswordReset(final String email, final Callback<String> cb)
     {
         mService.requestPasswordReset(email, new HandyRetrofitCallback(cb)
