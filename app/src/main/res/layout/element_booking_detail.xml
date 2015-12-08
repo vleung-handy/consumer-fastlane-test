@@ -9,7 +9,7 @@
     tools:showIn="@layout/fragment_booking_detail">
 
     <RelativeLayout
-        style="@style/RelativeLayout.NavBarBlue"
+        style="@style/RelativeLayout.NavBar.Blue"
         android:id="@+id/nav_bar">
 
         <ImageButton
