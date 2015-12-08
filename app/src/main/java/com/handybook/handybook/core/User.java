@@ -17,27 +17,62 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class User extends Observable {
-    @SerializedName("auth_token") private String authToken;
-    @SerializedName("id") private String id;
-    @SerializedName("credits") private float credits;
-    @SerializedName("first_name") private String firstName;
-    @SerializedName("last_name") private String lastName;
-    @SerializedName("email") private String email;
-    @SerializedName("phone_country_prefix") private String phonePrefix;
-    @SerializedName("phone") private String phone;
-    @SerializedName("currency_char") private String currencyChar;
-    @SerializedName("currency_suffix") private String currencySuffix;
-    @SerializedName("password") private String password;
-    @SerializedName("current_password") private String currentPassword;
-    @SerializedName("password_confirmation") private String passwordConfirmation;
-    @SerializedName("first_address") private Address address;
-    @SerializedName("card_info") private CreditCard creditCard;
-    @SerializedName("analytics") private Analytics analytics;
-    @SerializedName("booking_to_rate_id") private int bookingRateId;
-    @SerializedName("booking_to_rate_pro_name") private String bookingRatePro;
-    @SerializedName("schedule_laundry_booking_id") private int laundryBookingId;
-    @SerializedName("add_laundry_booking_id") private int addLaundryBookingId;
-    @SerializedName("default_tip_amounts") private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
+    @SerializedName("auth_token")
+    private String authToken;
+    @SerializedName("id")
+    private String id;
+    @SerializedName("credits")
+    private float credits;
+    @SerializedName("first_name")
+    private String firstName;
+    @SerializedName("last_name")
+    private String lastName;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("phone_country_prefix")
+    private String phonePrefix;
+    @SerializedName("phone")
+    private String phone;
+    @SerializedName("currency_char")
+    private String currencyChar;
+    @SerializedName("currency_suffix")
+    private String currencySuffix;
+    @SerializedName("password")
+    private String password;
+    @SerializedName("current_password")
+    private String currentPassword;
+    @SerializedName("password_confirmation")
+    private String passwordConfirmation;
+    @SerializedName("first_address")
+    private Address address;
+    @SerializedName("card_info")
+    private CreditCard creditCard;
+    @SerializedName("analytics")
+    private Analytics analytics;
+    @SerializedName("booking_to_rate_id")
+    private int bookingRateId;
+    @SerializedName("booking_to_rate_pro_name")
+    private String bookingRatePro;
+    @SerializedName("schedule_laundry_booking_id")
+    private int laundryBookingId;
+    @SerializedName("add_laundry_booking_id")
+    private int addLaundryBookingId;
+    @SerializedName("default_tip_amounts")
+    private ArrayList<LocalizedMonetaryAmount> defaultTipAmounts;
+    @SerializedName("enable_recurring_cancellations")
+    private boolean mRecurringCancellationsEnabled;
+    @SerializedName("enable_recurring_cancellations_email_flow")
+    private boolean mRecurringCancellationsEmailFlowEnabled;
+
+    public boolean isRecurringCancellationsEnabled()
+    {
+        return mRecurringCancellationsEnabled;
+    }
+
+    public boolean isRecurringCancellationsEmailFlowEnabled()
+    {
+        return mRecurringCancellationsEmailFlowEnabled;
+    }
 
     public String getAuthToken() {
         return authToken;

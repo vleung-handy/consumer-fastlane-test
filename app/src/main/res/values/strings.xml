@@ -278,10 +278,20 @@
     <string name="other_plumbing">Something else</string>
     <string name="other_plumbing_service_description">Have something more specific in mind? Tell us!</string>
     <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
+    <string name="email_cancellation_info_formatted">Cancellation instructions were sent to %1$s.</string>
+    <string name="cancel_recurring_booking_title">Cancel Cleaning Plan</string>
+    <string name="cancel_regular_cleanings_subtitle">Which series do you want to cancel?</string>
+    <string name="cancel_recurring_booking_none_to_cancel_error_msg">No cleaning plans to
+        cancel</string>
+    <string name="cancel_recurring_booking_option_entry_subtitle_formatted">Next recurrence
+        :\n%1$s</string>
     <string name="menu_panic_title_cancel">Emergency cancel</string>
     <string name="menu_panic_title_pro_late">My pro is late</string>
     <string name="menu_panic_title_adjust_hours">Adjust hours</string>
     <string name="menu_panic_title_help">Other issues</string>
     <string name="nav_help">help</string>
 
+    <string name="select">Select</string>
+    <string name="email_cancellation_dialog_title">Check your email</string>
+    <string name="email_cancellation_dialog_next_button">Got It</string>
 </resources>

@@ -16,4 +16,9 @@ public class ValidationUtils
     {
         return key != null && map != null && map.get(key) != null;
     }
+
+    public static boolean isNullOrEmpty(String s)
+    {
+        return s == null || s.isEmpty();
+    }
 }

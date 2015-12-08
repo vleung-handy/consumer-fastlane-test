@@ -108,6 +108,7 @@
         <activity android:name=".ui.activity.BookingEditFrequencyActivity"/>
         <activity android:name=".ui.activity.BookingEditExtrasActivity"/>
         <activity android:name=".ui.activity.BookingEditHoursActivity"/>
+        <activity android:name=".ui.activity.CancelRecurringBookingActivity"/>
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"/>

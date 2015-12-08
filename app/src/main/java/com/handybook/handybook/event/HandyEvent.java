@@ -14,6 +14,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.response.RecurringBooking;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
@@ -696,5 +697,55 @@ public abstract class HandyEvent
 
     public static class ReceiveTipProError extends ReceiveErrorEvent
     {
+    }
+
+    public static class RequestSendCancelRecurringBookingEmail extends RequestEvent
+    {
+        public final int bookingRecurringId;
+
+        public RequestSendCancelRecurringBookingEmail(final int bookingRecurringId)
+        {
+            this.bookingRecurringId = bookingRecurringId;
+        }
+    }
+
+    public static class ReceiveSendCancelRecurringBookingEmailSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveSendCancelRecurringBookingEmailError extends ReceiveErrorEvent
+    {
+        public ReceiveSendCancelRecurringBookingEmailError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class RequestRecurringBookingsForUser extends RequestEvent
+    {
+        public final User user;
+
+        public RequestRecurringBookingsForUser(final User user)
+        {
+            this.user = user;
+        }
+    }
+
+    public static class ReceiveRecurringBookingsSuccess extends ReceiveSuccessEvent
+    {
+        public final List<RecurringBooking> recurringBookings;
+
+        public ReceiveRecurringBookingsSuccess(final List<RecurringBooking> recurringBookings)
+        {
+            this.recurringBookings = recurringBookings;
+        }
+    }
+
+    public static class ReceiveRecurringBookingsError extends ReceiveErrorEvent
+    {
+        public ReceiveRecurringBookingsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
     }
 }
