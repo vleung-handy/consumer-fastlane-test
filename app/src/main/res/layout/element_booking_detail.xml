@@ -25,7 +25,7 @@
             android:layout_toRightOf="@id/back_button"
             android:layout_width="wrap_content"
             android:textColor="@color/handy_white"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_large"
             tools:text="Service Name"
             />
 
@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textColor="@color/handy_white"
-            android:textSize="12sp"
-            tools:text="#1000"/>
+            android:textSize="@dimen/text_size_xsmall"
+            tools:text="#123456798"/>
 
         <TextView
             style="@style/TextView.XSmall.Bold"
@@ -73,9 +73,9 @@
 
             <RelativeLayout
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:layout_marginRight="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
                 android:layout_width="match_parent"
                 >
 
@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
                         android:layout_width="wrap_content"
-                        android:textSize="24sp"
+                        android:textSize="@dimen/text_size_hero"
                         tools:text="Long Date Goes Here"
                         />
 
@@ -168,8 +168,8 @@
                 android:contentDescription="@string/image_content_description_handy_logo"
                 android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_half"
                 android:layout_width="wrap_content"
                 android:src="@drawable/ic_booking_detail_logo"/>
         </LinearLayout>
