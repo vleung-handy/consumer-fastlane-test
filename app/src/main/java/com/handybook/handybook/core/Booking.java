@@ -811,7 +811,7 @@ public class Booking implements Parcelable
             }
             else
             {
-                Crashlytics.log("ExtraInfo::getImageResource unsupported image name : " + extraInfoImageName.toString());
+                Crashlytics.log("ExtraInfo::getImageResource unsupported image name : " + String.valueOf(extraInfoImageName));
                 return 0;
             }
         }
