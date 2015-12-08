@@ -9,6 +9,7 @@
         <item name="colorPrimaryDark">@color/handy_darkened_blue</item>
         <item name="colorAccent">@color/handy_service_painter</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:colorBackground">@color/handy_white</item>
     </style>
 
     <style name="ContentLayout">
@@ -574,6 +575,17 @@
         <item name="android:divider">@drawable/toggle_divider</item>
         <item name="android:showDividers">middle</item>
         <item name="android:background">@drawable/custom_toggle_group</item>
+    </style>
+
+    <style name="NavBarButton">
+    </style>
+
+    <style name="NavBarButton.Back">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">16dp</item>
     </style>
 
     <string name="name">Name</string>
