@@ -11,6 +11,7 @@ import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
@@ -744,6 +745,30 @@ public abstract class HandyEvent
     public static class ReceiveRecurringBookingsError extends ReceiveErrorEvent
     {
         public ReceiveRecurringBookingsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class RequestEditBookingAddress extends RequestEvent
+    {
+        public final int bookingId;
+        public final BookingEditAddressRequest bookingEditAddressRequest;
+        public RequestEditBookingAddress(final int bookingId,
+                                         final BookingEditAddressRequest bookingEditAddressRequest)
+        {
+            this.bookingId = bookingId;
+            this.bookingEditAddressRequest = bookingEditAddressRequest;
+        }
+    }
+
+    public static class ReceiveEditBookingAddressSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveEditBookingAddressError extends ReceiveErrorEvent
+    {
+        public ReceiveEditBookingAddressError(DataManager.DataManagerError error)
         {
             this.error = error;
         }

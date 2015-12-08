@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@color/handy_bg"
+              android:layout_height="match_parent"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+    >
+
+    <!--TODO: create templates for the booking flow screens-->
+    <TextView
+        style="@style/TextView.Navbar"
+        android:id="@+id/nav_text"
+        android:text="@string/booking_edit_address_title"/>
+
+    <ScrollView
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="match_parent">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/default_padding">
+
+            <TextView
+                android:layout_margin="@dimen/default_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/booking_edit_update_will_apply_subsequent_bookings"
+                style="@style/TextView.CenteredHeader"
+                />
+
+            <LinearLayout
+                android:id="@+id/addr_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+                    android:id="@+id/street_addr_text"
+                    android:width="0dp"
+                    android:layout_weight="2"
+                    style="@style/EditText.StreetAddress" />
+
+                <EditText
+                    android:id="@+id/other_addr_text"
+                    android:width="0dp"
+                    android:layout_weight="3"
+                    style="@style/EditText.OtherAddress" />
+
+            </LinearLayout>
+
+            <com.handybook.handybook.ui.widget.ZipCodeInputTextView
+                android:id="@+id/zip_text"
+                android:layout_width="match_parent"
+                style="@style/EditText.Last.ZipCode" />
+        </LinearLayout>
+
+    </ScrollView>
+    <Button
+        style="@style/Button.Green"
+        android:textAllCaps="false"
+        android:id="@+id/next_button"
+        android:text="@string/update"/>
+</LinearLayout>

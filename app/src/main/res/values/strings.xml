@@ -175,7 +175,7 @@
     <string name="updated_note_to_pro">Note to pro updated</string>
     <string name="updated_entry_information">Entry information updated</string>
     <string name="pro_entry_information">How will your professional get in?</string>
-    <string name="pro_assignment_pending">Professional assignment pending</string>
+    <string name="pro_assignment_pending">Assignment pending</string>
     <string name="blank_string"></string>
     <string name="call">Call</string>
     <string name="text">Text</string>
@@ -285,8 +285,16 @@
         cancel</string>
     <string name="cancel_recurring_booking_option_entry_subtitle_formatted">Next recurrence
         :\n%1$s</string>
+    <string name="menu_panic_title_cancel">Emergency cancel</string>
+    <string name="menu_panic_title_pro_late">My pro is late</string>
+    <string name="menu_panic_title_adjust_hours">Adjust hours</string>
+    <string name="menu_panic_title_help">Other issues</string>
+    <string name="nav_help">help</string>
 
     <string name="select">Select</string>
     <string name="email_cancellation_dialog_title">Check your email</string>
     <string name="email_cancellation_dialog_next_button">Got It</string>
+    <string name="updated_booking_address">Updated booking address</string>
+    <string name="booking_edit_update_will_apply_subsequent_bookings">Your update will apply to all subsequent bookings.</string>
+    <string name="booking_edit_address_title">Edit Address</string>
 </resources>

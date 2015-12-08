@@ -26,6 +26,7 @@ import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
 import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
@@ -66,6 +67,7 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
+import com.handybook.handybook.ui.fragment.BookingEditAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
@@ -194,12 +196,15 @@ import retrofit.converter.GsonConverter;
         BookingEditExtrasFragment.class,
         BookingEditHoursActivity.class,
         BookingEditHoursFragment.class,
+        BookingEditAddressActivity.class,
+        BookingEditAddressFragment.class,
         BlockingActivity.class,
         BlockingUpdateFragment.class,
         TipDialogFragment.class,
         CancelRecurringBookingActivity.class,
         CancelRecurringBookingFragment.class,
         EmailCancellationDialogFragment.class
+        //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
 {

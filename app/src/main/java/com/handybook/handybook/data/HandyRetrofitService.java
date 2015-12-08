@@ -8,6 +8,7 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
@@ -27,6 +28,10 @@ import retrofit.mime.TypedInput;
 
 public interface HandyRetrofitService
 {
+    @POST("/bookings/{id}/address_update")
+    void editBookingAddress(@Path("id") int bookingId,
+                            @Body BookingEditAddressRequest bookingEditAddressRequest,
+                            HandyRetrofitCallback cb);
     /**
      *
      * @param bookingRecurringId Booking.recurringId, which is the id
