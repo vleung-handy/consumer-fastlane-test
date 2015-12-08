@@ -1,0 +1,101 @@
+package com.handybook.handybook.ui.fragment;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
+import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
+import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
+import com.squareup.otto.Subscribe;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public final class BookingEditAddressFragment extends BookingFlowFragment
+{
+    private Booking mBooking;
+
+    @Bind(R.id.street_addr_text)
+    StreetAddressInputTextView mStreetAddressInputTextView1;
+    @Bind(R.id.other_addr_text)
+    StreetAddressInputTextView mStreetAddressInputTextView2;
+    @Bind(R.id.zip_text)
+    ZipCodeInputTextView mZipCodeInputTextView;
+    public static BookingEditAddressFragment newInstance(Booking booking)
+    {
+        final BookingEditAddressFragment fragment = new BookingEditAddressFragment();
+        final Bundle args = new Bundle();
+        args.putParcelable(BundleKeys.BOOKING, booking);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        mixpanel.trackEventAppTrackFrequency();
+        mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        showUiBlockers();
+        bus.post(new HandyEvent.RequestGetEditFrequencyViewModel(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
+    }
+
+    @Override
+    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                                   final Bundle savedInstanceState)
+    {
+        final View view = inflater
+                .inflate(R.layout.fragment_edit_booking_address, container, false);
+        ButterKnife.bind(this, view);
+
+        return view;
+    }
+
+    private void sendEditAddressRequest()
+    {
+        BookingEditAddressRequest bookingEditAddressRequest = new BookingEditAddressRequest();
+        bookingEditAddressRequest.setAddress1(mStreetAddressInputTextView1.getAddress());
+        bookingEditAddressRequest.setAddress2(mStreetAddressInputTextView2.getAddress());
+        bookingEditAddressRequest.setZipcode(mZipCodeInputTextView.getZipCode());
+        bus.post(new HandyEvent.RequestEditBookingAddress(bookingEditAddressRequest));
+    }
+
+    @OnClick(R.id.next_button)
+    public void onNextButtonClick()
+    {
+        sendEditAddressRequest();
+    }
+
+    @Subscribe
+    public final void onReceiveEditBookingAddressSuccess(HandyEvent.ReceiveEditBookingAddressSuccess event)
+    {
+        removeUiBlockers();
+        showToast(R.string.updated_booking_frequency);
+
+        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().finish();
+    }
+
+    @Subscribe
+    public final void onReceiveEditBookingAddressError(HandyEvent.ReceiveEditBookingAddressError event)
+    {
+        onReceiveErrorEvent(event);
+        removeUiBlockers(); //allow user to try again
+    }
+
+}
