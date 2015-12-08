@@ -11,18 +11,12 @@ public class BookingEditAddressRequest
     @SerializedName("zipcode")
     private String mZipcode;
 
-    public void setAddress1(final String address1)
+    public BookingEditAddressRequest(final String address1,
+                                     final String address2,
+                                     final String zipcode)
     {
         mAddress1 = address1;
-    }
-
-    public void setAddress2(final String address2)
-    {
         mAddress2 = address2;
-    }
-
-    public void setZipcode(final String zipcode)
-    {
         mZipcode = zipcode;
     }
 }

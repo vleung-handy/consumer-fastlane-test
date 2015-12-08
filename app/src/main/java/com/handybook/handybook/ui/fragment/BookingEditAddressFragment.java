@@ -69,10 +69,11 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
 
     private void sendEditAddressRequest()
     {
-        BookingEditAddressRequest bookingEditAddressRequest = new BookingEditAddressRequest();
-        bookingEditAddressRequest.setAddress1(mStreetAddressInputTextView1.getAddress());
-        bookingEditAddressRequest.setAddress2(mStreetAddressInputTextView2.getText().toString());
-        bookingEditAddressRequest.setZipcode(mZipCodeInputTextView.getZipCode());
+        BookingEditAddressRequest bookingEditAddressRequest = new BookingEditAddressRequest(
+                mStreetAddressInputTextView1.getAddress(),
+                mStreetAddressInputTextView2.getText().toString(),
+                mZipCodeInputTextView.getZipCode()
+        );
         showUiBlockers();
         bus.post(new HandyEvent.RequestEditBookingAddress(Integer.parseInt(mBooking.getId()),
                 bookingEditAddressRequest));
