@@ -31,7 +31,7 @@ public interface HandyRetrofitService
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(@Path("id") int bookingId,
                             @Body BookingEditAddressRequest bookingEditAddressRequest,
-                                         HandyRetrofitCallback cb);
+                            HandyRetrofitCallback cb);
     /**
      *
      * @param bookingRecurringId Booking.recurringId, which is the id

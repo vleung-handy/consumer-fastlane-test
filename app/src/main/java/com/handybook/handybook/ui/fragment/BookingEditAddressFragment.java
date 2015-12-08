@@ -88,7 +88,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     @OnClick(R.id.next_button)
     public void onNextButtonClick()
     {
-        if(validateFields())
+        if (validateFields())
         {
             sendEditAddressRequest();
         }
