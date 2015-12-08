@@ -73,7 +73,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     @OnClick(R.id.back_button)
-    public void onNavBarXButtonClick()
+    public void onNavBarBackButtonClick()
     {
         getActivity().onBackPressed();
     }

@@ -75,7 +75,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     }
 
     @OnClick(R.id.back_button)
-    public void onNavBarXButtonClick()
+    public void onNavBarBackButtonClick()
     {
         getActivity().onBackPressed();
     }
