@@ -26,19 +26,16 @@ import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.FreezableInputTextView;
-import com.stripe.android.Stripe;
-import com.stripe.android.TokenCallback;
+import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
-import com.stripe.android.model.Token;
 import com.stripe.exception.CardException;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,9 +72,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     ProgressBar promoProgress;
     @Bind(R.id.promo_layout)
     LinearLayout promoLayout;
-
-    @Inject
-    Stripe mStripe;
 
     public static BookingPaymentFragment newInstance() {
         return new BookingPaymentFragment();
@@ -206,31 +200,30 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
                 if (!useExistingCard) {
                     final Card card = new Card(creditCardText.getCardNumber(), expText.getExpMonth(),
                             expText.getExpYear(), cvcText.getCVC());
-
-                    mStripe.createToken(card, bookingManager.getCurrentQuote().getStripeKey(),
-                            new TokenCallback() {
-                        @Override
-                        public void onError(final Exception e) {
-                            if (!allowCallbacks) return;
-
-                            enableInputs();
-                            progressDialog.dismiss();
-
-                            if (e instanceof CardException) toast.setText(e.getMessage());
-                            else toast.setText(getString(R.string.default_error_string));
-                            toast.show();
-                        }
-                        @Override
-                        public void onSuccess(final Token token) {
-                            if (!allowCallbacks) return;
-                            bookingManager.getCurrentTransaction().setStripeToken(token.getId());
-                            completeBooking();
-                        }
-                    });
+                    bus.post(new StripeEvent.RequestCreateToken(card));
                 } else completeBooking();
             }
         }
     };
+
+    @Subscribe
+    public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
+    {
+        bookingManager.getCurrentTransaction().setStripeToken(event.token.getId());
+        completeBooking();
+    }
+
+    @Subscribe
+    public void onReceiveCreateTokenError(StripeEvent.ReceiveCreateTokenError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+
+        if (event.error instanceof CardException) toast.setText(event.error.getMessage());
+        else toast.setText(getString(R.string.default_error_string));
+        toast.show();
+    }
+
 
     private final View.OnClickListener promoClicked = new View.OnClickListener() {
         @Override

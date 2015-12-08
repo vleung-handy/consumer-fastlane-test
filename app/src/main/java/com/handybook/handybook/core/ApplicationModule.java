@@ -5,6 +5,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Base64;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.data.BaseDataManager;
@@ -20,6 +21,7 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
@@ -107,6 +109,7 @@ import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.stripe.android.Stripe;
+import com.stripe.exception.AuthenticationException;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -315,7 +318,7 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final DataManager provideDataManager(final HandyRetrofitService service,
-            final HandyRetrofitEndpoint endpoint,
+                                         final HandyRetrofitEndpoint endpoint,
                                          final PrefsManager prefsManager)
     {
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
@@ -415,9 +418,29 @@ public final class ApplicationModule
     }
 
     @Provides
+    @Singleton
+    final StripeManager provideStripeManager(final Stripe stripe, final Bus bus)
+    {
+        return new StripeManager(stripe, bus);
+    }
+
+    @Provides
     final Stripe provideStripe()
     {
-        return new Stripe();
+        String stripeKey = mConfigs.getProperty("stripe_publishable_key");
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
+        {
+            stripeKey = mConfigs.getProperty("stripe_publishable_key_internal");
+        }
+        try
+        {
+            return new Stripe(stripeKey);
+        }
+        catch (AuthenticationException e)
+        {
+            Crashlytics.logException(e);
+            return new Stripe();
+        }
     }
 
     private String getDeviceId()
