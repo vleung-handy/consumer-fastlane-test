@@ -11,6 +11,10 @@ import com.handybook.handybook.ui.fragment.HelpFragment;
 
 public final class HelpActivity extends MenuDrawerActivity
 {
+    public static final int HELP_NODE_ID_CANCEL = 296;
+    public static final int HELP_NODE_ID_PRO_LATE = 450;
+    public static final int HELP_NODE_ID_ADJUST_HOURS = 498;
+
     @Override
     protected final Fragment createFragment()
     {

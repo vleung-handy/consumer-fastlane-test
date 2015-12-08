@@ -346,13 +346,22 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         switch (id)
         {
             case R.id.menu_panic_cancel:
-                startActivity(HelpActivity.getIntentToOpenNodeId(getActivity(), 296));
+                startActivity(HelpActivity.getIntentToOpenNodeId(
+                        getActivity(),
+                        HelpActivity.HELP_NODE_ID_CANCEL
+                ));
                 break;
             case R.id.menu_panic_pro_late:
-                startActivity(HelpActivity.getIntentToOpenNodeId(getActivity(), 450));
+                startActivity(HelpActivity.getIntentToOpenNodeId(
+                        getActivity(),
+                        HelpActivity.HELP_NODE_ID_PRO_LATE
+                ));
                 break;
             case R.id.menu_panic_adjust_hours:
-                startActivity(HelpActivity.getIntentToOpenNodeId(getActivity(), 498));
+                startActivity(HelpActivity.getIntentToOpenNodeId(
+                        getActivity(),
+                        HelpActivity.HELP_NODE_ID_ADJUST_HOURS
+                ));
                 break;
             case R.id.menu_panic_help:
                 startActivity(new Intent(getActivity(), HelpActivity.class));
