@@ -45,7 +45,7 @@ public abstract class DataManager
 {
     public abstract void editBookingAddress(int bookingId,
                                             BookingEditAddressRequest bookingEditAddressRequest,
-                                                         Callback<SuccessWrapper> cb);
+                                            Callback<SuccessWrapper> cb);
 
     public abstract void sendCancelRecurringBookingEmail(int bookingRecurringId,
                                      Callback<SuccessWrapper> cb);
