@@ -1,5 +1,7 @@
 package com.handybook.handybook.manager;
 
+import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.event.StripeEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -7,25 +9,27 @@ import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Token;
 
+import java.util.Properties;
+
 import javax.inject.Inject;
 
 public class StripeManager
 {
-    private Stripe mStripe;
     private Bus mBus;
+    private Properties mConfig;
 
     @Inject
-    public StripeManager(final Stripe stripe, final Bus bus)
+    public StripeManager(final Bus bus, final Properties config)
     {
-        mStripe = stripe;
         mBus = bus;
+        mConfig = config;
         mBus.register(this);
     }
 
     @Subscribe
     public void onRequestCreateToken(StripeEvent.RequestCreateToken event)
     {
-        mStripe.createToken(event.card, new TokenCallback()
+        new Stripe().createToken(event.card, getStripeKey(), new TokenCallback()
         {
             @Override
             public void onSuccess(final Token token)
@@ -41,5 +45,14 @@ public class StripeManager
         });
     }
 
+    private String getStripeKey()
+    {
+        String stripeKey = mConfig.getProperty("stripe_publishable_key");
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
+        {
+            stripeKey = mConfig.getProperty("stripe_publishable_key_internal");
+        }
+        return stripeKey;
+    }
 
 }

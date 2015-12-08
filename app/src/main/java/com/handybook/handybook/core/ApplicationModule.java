@@ -5,7 +5,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Base64;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.data.BaseDataManager;
@@ -109,8 +108,6 @@ import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
-import com.stripe.android.Stripe;
-import com.stripe.exception.AuthenticationException;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -429,28 +426,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final StripeManager provideStripeManager(final Stripe stripe, final Bus bus)
+    final StripeManager provideStripeManager(final Bus bus)
     {
-        return new StripeManager(stripe, bus);
-    }
-
-    @Provides
-    final Stripe provideStripe()
-    {
-        String stripeKey = mConfigs.getProperty("stripe_publishable_key");
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
-        {
-            stripeKey = mConfigs.getProperty("stripe_publishable_key_internal");
-        }
-        try
-        {
-            return new Stripe(stripeKey);
-        }
-        catch (AuthenticationException e)
-        {
-            Crashlytics.logException(e);
-            return new Stripe();
-        }
+        return new StripeManager(bus, mConfigs);
     }
 
     private String getDeviceId()
