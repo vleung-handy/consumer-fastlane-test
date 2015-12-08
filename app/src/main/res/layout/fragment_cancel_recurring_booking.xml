@@ -11,7 +11,7 @@
 
     <!--TODO: use a toolbar-->
     <!--TODO: create templates for this and similar screens-->
-    <com.handybook.handybook.ui.widget.NavbarXButton
+    <com.handybook.handybook.ui.widget.BackButtonNavBar
         android:id="@+id/nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

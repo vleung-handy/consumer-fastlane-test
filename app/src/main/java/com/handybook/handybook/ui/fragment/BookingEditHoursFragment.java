@@ -114,10 +114,10 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         }
     }
 
-    @OnClick(R.id.x_button)
+    @OnClick(R.id.back_button)
     public void onNavBarXButtonClick()
     {
-        getActivity().finish();
+        getActivity().onBackPressed();
     }
 
     @OnClick(R.id.next_button)
