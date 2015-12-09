@@ -109,9 +109,8 @@ android {
             variant.outputs.each { output ->
                 def buildInfo = "${flavorName}-${variant.buildType.name}"
                 def versionInfo = "${variant.versionName}-${variant.versionCode}"
-                def formattedDate = new Date().format("yyyyMMddHHmm")
                 output.outputFile = new File(output.outputFile.parentFile,
-                        "handy-${buildInfo}-${versionInfo}-${formattedDate}.apk");
+                        "handy-${buildInfo}-${versionInfo}.apk");
             }
         }
     }
