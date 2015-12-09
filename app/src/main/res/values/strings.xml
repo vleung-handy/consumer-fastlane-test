@@ -284,7 +284,7 @@
     <string name="other_plumbing_service_description">Have something more specific in mind? Tell us!</string>
     <string name="email_cancellation_info_formatted">Cancellation instructions were sent to %1$s.</string>
     <string name="cancel_recurring_booking_title">Cancel Cleaning Plan</string>
-    <string name="cancel_regular_cleanings_subtitle">Which series do you want to cancel?</string>
+    <string name="cancel_regular_cleanings_subtitle">Which plan would you like to cancel?</string>
     <string name="cancel_recurring_booking_none_to_cancel_error_msg">No cleaning plans to
         cancel</string>
     <string name="cancel_recurring_booking_option_entry_subtitle_formatted">Next recurrence
@@ -301,6 +301,7 @@
     <string name="updated_booking_address">Updated booking address</string>
     <string name="booking_edit_update_will_apply_subsequent_bookings">Your update will apply to all subsequent bookings.</string>
     <string name="booking_edit_address_title">Edit Address</string>
+    <string name="booking_edit_note_to_pro_title">Edit Note to Pro</string>
     <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
     <string name="android_pay_unavailable">Android Pay is unavailable</string>
     <string name="enter_credit_card">Enter a Credit Card</string>
