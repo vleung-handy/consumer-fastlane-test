@@ -301,4 +301,5 @@
     <string name="updated_booking_address">Updated booking address</string>
     <string name="booking_edit_update_will_apply_subsequent_bookings">Your update will apply to all subsequent bookings.</string>
     <string name="booking_edit_address_title">Edit Address</string>
+    <string name="booking_edit_note_to_pro_title">Edit Note to Pro</string>
 </resources>
