@@ -32,6 +32,17 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     private HashSet<Integer> checkedIndexes;
     private boolean isMulti;
 
+    private int mOptionEntryLayoutResourceId = R.layout.view_booking_select_option;
+
+    public BookingOptionsSelectView(final Context context, int optionEntryLayoutResourceId, final
+                                    BookingOption option,
+                                    final OnUpdatedListener updateListener)
+    {
+        super(context, R.layout.view_booking_options_select, option, updateListener);
+        mOptionEntryLayoutResourceId = optionEntryLayoutResourceId;
+        init(context);
+    }
+
     public BookingOptionsSelectView(final Context context, final BookingOption option,
                                     final OnUpdatedListener updateListener)
     {
@@ -116,7 +127,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         {
             final String optionText = optionsList[i];
             final LinearLayout optionView = (LinearLayout) LayoutInflater.from(context)
-                    .inflate(R.layout.view_booking_select_option, this, false);
+                    .inflate(mOptionEntryLayoutResourceId, this, false);
 
             final TextView title = (TextView) optionView.findViewById(R.id.title_text);
             title.setText(optionText);
@@ -296,27 +307,9 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     private void selectOption(final CheckBox box, final boolean isChecked)
     {
         final ViewGroup layout = (ViewGroup) box.getParent();
-        final TextView title = (TextView) layout.findViewById(R.id.title_text);
-        final TextView subTitle = (TextView) layout.findViewById(R.id.sub_text);
-        final TextView rightSubtitleText = (TextView) layout.findViewById(R.id.right_subtitle_text);
-        final TextView rightTitleText = (TextView) layout.findViewById(R.id.right_title_text);
+        layout.dispatchSetSelected(isChecked);
 
-        //update the text fields
-        if (isChecked)
-        {
-            title.setTextColor(getResources().getColor(R.color.handy_text_black));
-            subTitle.setTextColor(getResources().getColor(R.color.handy_blue));
-            rightSubtitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
-            rightTitleText.setTextColor(getResources().getColor(R.color.handy_text_black));
-        }
-        else
-        {
-            title.setTextColor(getResources().getColor(R.color.black_pressed));
-            subTitle.setTextColor(getResources().getColor(R.color.black_pressed));
-            rightSubtitleText.setTextColor(getResources().getColor(R.color.black_pressed));
-            rightTitleText.setTextColor(getResources().getColor(R.color.black_pressed));
-        }
-        //update the check box
+        //update the check box (uses custom drawable)
         updateCheckbox(box, isChecked);
     }
 

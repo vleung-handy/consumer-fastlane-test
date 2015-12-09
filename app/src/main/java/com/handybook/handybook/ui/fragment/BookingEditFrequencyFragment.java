@@ -21,6 +21,7 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
@@ -31,8 +32,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
     @Bind(R.id.next_button)
     TextView mSaveButton;
-    @Bind(R.id.subtitle_text)
-    TextView mSubtitleText;
 
     private BookingEditFrequencyViewModel mBookingEditFrequencyViewModel;
     private BookingOptionsSelectView mOptionsView;
@@ -70,16 +69,13 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_frequency, container, false);
         ButterKnife.bind(this, view);
 
-        mSubtitleText.setText(R.string.how_often_should_come);
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            //TODO: investigate: onClick annotation (as used by edit hours) does not work
-            @Override
-            public void onClick(final View v)
-            {
-                sendEditFrequencyRequest();
-            }
-        });
         return view;
+    }
+
+    @OnClick(R.id.next_button)
+    public void onNextButtonClick()
+    {
+        sendEditFrequencyRequest();
     }
 
     public void sendEditFrequencyRequest()

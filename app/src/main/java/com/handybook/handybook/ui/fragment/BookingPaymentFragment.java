@@ -48,21 +48,19 @@ import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.MixpanelEvent;
+import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
+import com.handybook.handybook.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.FreezableInputTextView;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.ValidationUtils;
 import com.handybook.handybook.util.WalletUtils;
-import com.stripe.android.Stripe;
-import com.stripe.android.TokenCallback;
+import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
-import com.stripe.android.model.Token;
 import com.stripe.exception.CardException;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -96,7 +94,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     @Bind(R.id.lock_icon)
     ImageView mLockIcon;
     @Bind(R.id.card_icon)
-    ImageView mCreditCardIcon;
+    CreditCardIconImageView mCreditCardIcon;
     @Bind(R.id.card_extras_layout)
     LinearLayout mCardExtrasLayout;
     @Bind(R.id.promo_progress)
@@ -115,9 +113,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     TextView mSelectPaymentPromoText;
     @Bind(R.id.booking_payment_terms_of_use_text)
     TextView mTermsOfUseText;
-
-    @Inject
-    Stripe mStripe;
 
     @OnClick(R.id.enter_credit_card_button)
     public void onEnterCreditCardButtonClicked()
@@ -227,9 +222,9 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                 && !user.isUsingAndroidPay())
         {
             mUseExistingCard = true;
-            mCreditCardText.setDisabled(true, getString(R.string.last4, card.getLast4()));
+            mCreditCardText.setDisabled(true, getString(R.string.formatted_last4, card.getLast4()));
             mInfoPaymentLayout.setVisibility(View.VISIBLE);
-            setCardIcon(card.getBrand());
+            mCreditCardIcon.setCardIcon(card.getBrand());
         }
 
         mCreditCardText.addTextChangedListener(cardTextWatcher);
@@ -451,72 +446,6 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         handleError();
     }
 
-    private void setCardIcon(final String type)
-    {
-        if (type == null)
-        {
-            mCreditCardIcon.setImageResource(R.drawable.ic_card_blank);
-            return;
-        }
-
-        switch (type)
-        {
-            case Card.AMERICAN_EXPRESS:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_amex);
-                break;
-
-            case Card.DISCOVER:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_discover);
-                break;
-
-            case Card.MASTERCARD:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_mc);
-                break;
-
-            case Card.VISA:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_visa);
-                break;
-
-            default:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_blank);
-        }
-    }
-
-    private void setCardIcon(final CreditCard.Type type)
-    {
-        if (type == null)
-        {
-            mCreditCardIcon.setImageResource(R.drawable.ic_card_blank);
-            return;
-        }
-
-        switch (type)
-        {
-            case AMEX:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_amex);
-                break;
-
-            case DISCOVER:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_discover);
-                break;
-
-            case MASTERCARD:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_mc);
-                break;
-
-            case VISA:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_visa);
-                break;
-
-            case ANDROID_PAY:
-                mCreditCardIcon.setImageResource(R.drawable.ic_android_pay);
-                break;
-
-            default:
-                mCreditCardIcon.setImageResource(R.drawable.ic_card_blank);
-        }
-    }
-
     @Override
     protected final void disableInputs()
     {
@@ -556,7 +485,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     {
         showInfoPaymentLayout();
         showAndUpdatePromoCodeInput(); //show the promo code input field
-        setCardIcon(CreditCard.Type.OTHER);
+        mCreditCardIcon.setCardIcon(CreditCard.Type.OTHER);
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
@@ -714,7 +643,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         mUseExistingCard = false;
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;
-        setCardIcon(CreditCard.Type.ANDROID_PAY);
+        mCreditCardIcon.setCardIcon(CreditCard.Type.ANDROID_PAY);
 
         applyAndroidPayCoupon();
 
@@ -764,40 +693,30 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
                 {
                     final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                             mExpText.getExpYear(), mCvcText.getCVC());
-
-                    mStripe.createToken(card, bookingManager.getCurrentQuote().getStripeKey(),
-                            new TokenCallback() {
-                        @Override
-                        public void onError(final Exception e) {
-                            if (!allowCallbacks) return;
-
-                                    enableInputs();
-                                    progressDialog.dismiss();
-
-                                    if (e instanceof CardException)
-                                    {
-                                        toast.setText(e.getMessage());
-                                    }
-                                    else
-                                    {
-                                        toast.setText(getString(R.string.default_error_string));
-                                    }
-                                    toast.show();
-                                }
-
-                                @Override
-                                public void onSuccess(final Token token)
-                                {
-                                    if (!allowCallbacks) { return; }
-                                    bookingManager.getCurrentTransaction().setStripeToken(token.getId());
-                                    completeBooking();
-                                }
-                            });
+                    bus.post(new StripeEvent.RequestCreateToken(card));
                 }
                 else { completeBooking(); }
             }
         }
     };
+
+    @Subscribe
+    public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
+    {
+        bookingManager.getCurrentTransaction().setStripeToken(event.getToken().getId());
+        completeBooking();
+    }
+
+    @Subscribe
+    public void onReceiveCreateTokenError(StripeEvent.ReceiveCreateTokenError event)
+    {
+        enableInputs();
+        progressDialog.dismiss();
+
+        if (event.getError() instanceof CardException) toast.setText(event.getError().getMessage());
+        else toast.setText(getString(R.string.default_error_string));
+        toast.show();
+    }
 
     private final View.OnClickListener promoClicked = new View.OnClickListener()
     {
@@ -972,7 +891,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         @Override
         public void afterTextChanged(final Editable editable)
         {
-            if (!mUseExistingCard) { setCardIcon(mCreditCardText.getCardType()); }
+            if (!mUseExistingCard) { mCreditCardIcon.setCardIcon(mCreditCardText.getCardType()); }
         }
     };
 

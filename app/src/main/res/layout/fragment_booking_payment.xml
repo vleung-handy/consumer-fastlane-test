@@ -1,257 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:background="@color/handy_bg"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent">
+                android:background="@color/handy_bg"
+    >
 
     <Button
-        style="@style/Button.Green"
         android:id="@+id/next_button"
-        android:text="@string/complete_booking"/>
+        style="@style/Button.Green"
+        android:text="@string/complete_booking"
+        />
 
     <TextView
-        style="@style/TextView.Navbar"
         android:id="@+id/nav_text"
-        android:text="@string/payment"/>
+        style="@style/TextView.Navbar"
+        android:text="@string/payment"
+        />
 
     <ScrollView
         android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/next_button"
         android:layout_below="@id/nav_text"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:fillViewport="true"
+        >
 
         <LinearLayout
-            android:animateLayoutChanges="true"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            >
 
             <FrameLayout
                 android:id="@+id/info_header_layout"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:padding="@dimen/default_padding"/>
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_padding"
+                />
 
             <LinearLayout
-                android:background="@color/handy_white"
                 android:id="@+id/select_payment_layout"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/handy_white"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/select_payment_vertical_padding"
                 android:paddingLeft="@dimen/select_payment_horizontal_padding"
                 android:paddingRight="@dimen/select_payment_horizontal_padding"
                 android:paddingTop="@dimen/select_payment_vertical_padding"
+                android:visibility="gone"
                 tools:visibility="visible"
-                android:visibility="gone">
+                >
 
                 <TextView
-                    style="@style/TextView.Large"
                     android:id="@+id/booking_select_payment_promo_text"
-                    android:gravity="center"
-                    android:layout_height="wrap_content"
+                    style="@style/TextView.Large"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
                     tools:visibility="visible"
-                    android:visibility="gone"/>
+                    />
 
                 <LinearLayout
                     android:id="@+id/android_pay_button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/select_payment_button_height"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/select_payment_button_gap"
-                    android:padding="@dimen/default_padding_eighth"
-                    android:background="@drawable/android_pay_button_rounded"
                     android:layout_marginBottom="@dimen/select_payment_button_gap"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/select_payment_button_gap"
+                    android:background="@drawable/android_pay_button_rounded"
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_padding_eighth"
+                    >
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerInside"
-                        android:src="@drawable/android_pay_button"/>
+                        android:src="@drawable/android_pay_button"
+                        />
                 </LinearLayout>
 
                 <Button
-                    android:background="@drawable/grey_button_rounded"
                     android:id="@+id/enter_credit_card_button"
-                    android:layout_height="@dimen/select_payment_button_height"
-                    android:layout_marginBottom="@dimen/select_payment_button_gap"
-                    android:foreground="?attr/selectableItemBackground"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/select_payment_button_height"
+                    android:layout_marginBottom="@dimen/select_payment_button_gap"
+                    android:background="@drawable/grey_button_rounded"
+                    android:foreground="?attr/selectableItemBackground"
                     android:text="@string/enter_credit_card"
                     android:textAllCaps="false"
                     android:textColor="@color/handy_white"
-                    android:textSize="@dimen/text_size_large"/>
+                    android:textSize="@dimen/text_size_large"
+                    />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/info_payment_layout"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
 
-                <LinearLayout
-                    android:background="@drawable/bg_edit_text"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:background="@drawable/bg_edit_text"
-                        android:contentDescription="@string/credit_card"
-                        android:id="@+id/card_icon"
-                        android:layout_gravity="center"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/default_margin"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_width="50dp"
-                        android:paddingBottom="@dimen/default_padding"
-                        android:paddingTop="@dimen/default_padding"
-                        android:scaleType="fitStart"
-                        android:src="@drawable/ic_android_pay"/>
-
-                    <com.handybook.handybook.ui.widget.CreditCardNumberInputTextView
-                        style="@style/EditText.CreditCard"
-                        android:id="@+id/credit_card_text"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"/>
-
-                    <FrameLayout
-                        android:background="@drawable/bg_edit_text"
-                        android:layout_height="match_parent"
-                        android:layout_width="wrap_content"
-                        android:paddingEnd="@dimen/default_padding"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="@dimen/default_padding"
-                        android:paddingStart="0dp">
-
-                        <Button
-                            style="@style/RoundedButton"
-                            android:id="@+id/change_button"
-                            android:layout_gravity="center"
-                            android:text="@string/change"/>
-
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/card_extras_layout"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView
-                        style="@style/EditText.CreditCardExp"
-                        android:id="@+id/exp_text"
-                        android:layout_weight="1"/>
-
-                    <com.handybook.handybook.ui.widget.CreditCardCVCInputTextView
-                        style="@style/EditText.CreditCardCVC"
-                        android:id="@+id/cvc_text"
-                        android:layout_weight="1"/>
-
-                    <FrameLayout
-                        android:background="@drawable/bg_edit_text"
-                        android:layout_height="match_parent"
-                        android:layout_width="wrap_content">
-
-                        <ImageView
-                            android:contentDescription="lock"
-                            android:id="@+id/lock_icon"
-                            android:layout_gravity="center"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:paddingEnd="@dimen/default_padding"
-                            android:paddingLeft="0dp"
-                            android:paddingRight="@dimen/default_padding"
-                            android:paddingStart="0dp"
-                            android:src="@drawable/ic_lock"/>
-
-                    </FrameLayout>
-
-                </LinearLayout>
+                <include layout="@layout/element_credit_card_info"/>
 
             </LinearLayout>
 
             <TextView
-                android:gravity="center"
                 android:id="@+id/apply_promo_button"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
+                android:gravity="center"
                 android:text="@string/apply_promo_code"
                 android:textColor="@color/handy_blue"
                 android:textSize="@dimen/text_size_large"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                />
 
             <LinearLayout
                 android:id="@+id/promo_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
 
                 <com.handybook.handybook.ui.widget.FreezableInputTextView
-                    style="@style/EditText.Last.PromoCodeOpt"
                     android:id="@+id/promo_text"
+                    style="@style/EditText.Last.PromoCodeOpt"
+                    android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_width="0dp"/>
+                    />
 
                 <FrameLayout
-                    android:background="@drawable/bg_edit_text_last"
-                    android:layout_height="match_parent"
                     android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edit_text_last"
                     android:paddingEnd="@dimen/default_padding"
                     android:paddingLeft="0dp"
                     android:paddingRight="@dimen/default_padding"
-                    android:paddingStart="0dp">
+                    android:paddingStart="0dp"
+                    >
 
                     <Button
-                        style="@style/RoundedButton"
                         android:id="@+id/promo_button"
+                        style="@style/RoundedButton"
                         android:layout_gravity="center"
-                        android:text="@string/apply"/>
+                        android:text="@string/apply"
+                        />
 
                     <ProgressBar
                         android:id="@+id/promo_progress"
-                        android:layout_gravity="center"
-                        android:layout_height="16dp"
                         android:layout_width="16dp"
-                        android:visibility="visible"/>
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:visibility="visible"
+                        />
 
                 </FrameLayout>
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/booking_payment_terms_of_use_text"
+                style="@style/TextView.Small"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|bottom"
+                android:linksClickable="true"
+                android:paddingBottom="@dimen/default_padding_double"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:textColor="@color/handy_tertiary_gray"
+                android:textColorLink="@color/handy_darkened_blue"
+                tools:text="Terms of use text"
+                />
+
         </LinearLayout>
 
     </ScrollView>
-
-    <TextView
-        style="@style/TextView.Small"
-        android:gravity="center"
-        android:id="@+id/booking_payment_terms_of_use_text"
-        android:layout_alignBottom="@+id/scroll_view"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:linksClickable="true"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding"
-        android:paddingBottom="@dimen/default_padding_double"
-        android:textColor="@color/handy_tertiary_gray"
-        android:textColorLink="@color/handy_darkened_blue"
-        tools:text="Terms of use text"/>
 
 </RelativeLayout>

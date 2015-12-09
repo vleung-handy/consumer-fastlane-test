@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    >
+
+    <Button
+        android:id="@+id/update_button"
+        style="@style/Button.Green"
+        android:text="@string/update"
+        android:visibility="gone"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/nav_layout"
+        style="@style/RelativeLayout.NavBar.Blue"
+        >
+
+        <RelativeLayout
+            android:id="@+id/menu_button_layout"
+            style="@style/MenuButtonLayout"
+            />
+
+        <TextView
+            android:id="@+id/nav_text"
+            style="@style/TextView.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/menu_button_layout"
+            android:text="@string/payment"
+            android:textColor="@color/handy_white"
+            android:textSize="@dimen/text_size_large"
+            />
+
+        <TextView
+            android:id="@+id/cancel_button"
+            style="@style/TextView.XSmall.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/default_margin_half"
+            android:clickable="true"
+            android:padding="@dimen/default_padding_half"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/handy_white"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nav_layout"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_double"
+            android:orientation="vertical"
+            >
+
+            <include layout="@layout/element_credit_card_info"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:orientation="horizontal"
+              android:background="@drawable/button_white"
+              android:padding="@dimen/default_padding">
+
+
+    <ImageView
+        android:id="@+id/thin_icon_button_left_icon_image"
+        android:layout_gravity="left"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:paddingRight="@dimen/default_padding"
+        tools:src="@drawable/ic_calendar_dark"/>
+
+
+    <TextView
+        android:gravity="left"
+        android:id="@+id/thin_icon_button_text"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:paddingRight="@dimen/default_padding"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="Blah blah blah"/>
+
+</LinearLayout>

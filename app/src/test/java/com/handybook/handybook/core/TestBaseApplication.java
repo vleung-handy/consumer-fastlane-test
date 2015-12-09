@@ -28,6 +28,6 @@ public class TestBaseApplication extends BaseApplication {
     }
 
     @Override
-    protected void updateUser() {
+    public void updateUser() {
     }
 }

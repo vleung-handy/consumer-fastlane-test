@@ -8,20 +8,23 @@
     <Button
         android:id="@+id/next_button"
         style="@style/Button.Green"
+        android:textAllCaps="false"
         android:onClick="onSaveButtonPressed"
         android:text="@string/update"/>
 
-    <TextView
-        android:id="@+id/nav_text"
-        style="@style/TextView.Navbar"
-        android:text="@string/booking_edit_extras_title"/>
+    <com.handybook.handybook.ui.widget.BackButtonNavBar
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/booking_edit_extras_title"
+        />
 
     <ScrollView
         android:id="@+id/booking_edit_extras_content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text"
+        android:layout_below="@id/nav_bar"
         android:visibility="gone">
 
         <RelativeLayout

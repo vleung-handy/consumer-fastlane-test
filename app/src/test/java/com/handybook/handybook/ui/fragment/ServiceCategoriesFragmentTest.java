@@ -25,6 +25,7 @@ import java.util.Collections;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -57,8 +58,8 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     {
         when(mMockService.getServices()).thenReturn(Collections.<Service>emptyList());
 
-        verify(mFragment.dataManager).getServices(any(DataManager.CacheResponse.class),
-                mCallbackCaptor.capture());
+        verify(mFragment.dataManager, atLeastOnce())
+                .getServices(any(DataManager.CacheResponse.class), mCallbackCaptor.capture());
         mCallbackCaptor.getValue().onSuccess(Lists.newArrayList(mMockService));
         mFragment.mCategoryLayout.getChildAt(0).performClick();
 
@@ -72,8 +73,8 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     {
         when(mMockService.getServices()).thenReturn(Lists.newArrayList(mMockService));
 
-        verify(mFragment.dataManager).getServices(any(DataManager.CacheResponse.class),
-                mCallbackCaptor.capture());
+        verify(mFragment.dataManager, atLeastOnce())
+                .getServices(any(DataManager.CacheResponse.class), mCallbackCaptor.capture());
         mCallbackCaptor.getValue().onSuccess(Lists.newArrayList(mMockService));
         mFragment.mCategoryLayout.getChildAt(0).performClick();
 

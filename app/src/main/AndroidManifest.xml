@@ -90,6 +90,10 @@
             android:name=".ui.activity.BookingsActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".ui.activity.UpdatePaymentActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".ui.activity.BookingOptionsActivity"/>
         <activity android:name=".ui.activity.BookingDateActivity"/>
         <activity android:name=".ui.activity.BookingAddressActivity"/>
@@ -111,6 +115,8 @@
         <activity android:name=".ui.activity.BookingEditFrequencyActivity"/>
         <activity android:name=".ui.activity.BookingEditExtrasActivity"/>
         <activity android:name=".ui.activity.BookingEditHoursActivity"/>
+        <activity android:name=".ui.activity.BookingEditAddressActivity"/>
+        <activity android:name=".ui.activity.CancelRecurringBookingActivity"/>
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"/>

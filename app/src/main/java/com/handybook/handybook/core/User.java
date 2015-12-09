@@ -64,6 +64,20 @@ public class User extends Observable
     private int mAddLaundryBookingId;
     @SerializedName("default_tip_amounts")
     private ArrayList<LocalizedMonetaryAmount> mDefaultTipAmounts;
+    @SerializedName("enable_recurring_cancellations")
+    private boolean mRecurringCancellationsEnabled;
+    @SerializedName("enable_recurring_cancellations_email_flow")
+    private boolean mRecurringCancellationsEmailFlowEnabled;
+
+    public boolean isRecurringCancellationsEnabled()
+    {
+        return mRecurringCancellationsEnabled;
+    }
+
+    public boolean isRecurringCancellationsEmailFlowEnabled()
+    {
+        return mRecurringCancellationsEmailFlowEnabled;
+    }
 
     public final String getAuthToken()
     {

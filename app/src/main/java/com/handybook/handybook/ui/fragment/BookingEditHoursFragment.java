@@ -44,8 +44,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     TextView mBookingDurationText;
     @Bind(R.id.booking_edit_hours_options_view_container)
     LinearLayout mOptionsViewContainer; //TODO: can we use a stub, or replaceView instead?
-    @Bind(R.id.subtitle_text)
-    TextView mSubtitleText;
     @Bind(R.id.booking_edit_hours_billed_on_text)
     TextView mBilledOnText;
     @Bind(R.id.booking_edit_hours_container)
@@ -101,9 +99,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     public void onViewCreated(final View view, final Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        mSubtitleText.setText(R.string.booking_edit_pro_assignment_warning);
-        //have to set text here because view was added using the <include> tag, which does not accept params
-
         if (mBooking.isRecurring())
         {
             //show the "apply to recurring bookings" option
@@ -286,7 +281,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
 
         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
-        //TODO: booking details screen not calling onActivityResult() and updating the booking
     }
 
     @Subscribe

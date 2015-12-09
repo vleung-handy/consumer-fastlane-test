@@ -1,8 +1,13 @@
 package com.handybook.handybook.ui.fragment.BookingDetailSectionFragment;
 
+import android.content.Intent;
+
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.util.TextUtils;
 
 public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFragment
@@ -22,7 +27,7 @@ public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFra
     @Override
     protected boolean hasEnabledAction(Booking booking)
     {
-        return false;
+        return true;
     }
 
     @Override
@@ -38,6 +43,8 @@ public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFra
     @Override
     protected void onActionClick()
     {
-        //TODO: Be able to edit the address
+        final Intent intent = new Intent(getActivity(), BookingEditAddressActivity.class);
+        intent.putExtra(BundleKeys.BOOKING, this.booking);
+        getParentFragment().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
     }
 }
