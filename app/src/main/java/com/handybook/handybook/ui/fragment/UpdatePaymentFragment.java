@@ -85,6 +85,7 @@ public class UpdatePaymentFragment extends InjectedFragment
 
     private void freezeCardInput(String brand, String last4)
     {
+        mCreditCardText.setDisabled(true, getString(R.string.formatted_last4, last4));
         mNavText.setText(R.string.payment);
         mCreditCardText.setText(R.string.blank_string);
         mExpText.setText(R.string.blank_string);
@@ -92,7 +93,6 @@ public class UpdatePaymentFragment extends InjectedFragment
         mCreditCardText.unHighlight();
         mExpText.unHighlight();
         mCvcText.unHighlight();
-        mCreditCardText.setDisabled(true, getString(R.string.formatted_last4, last4));
         mCardExtrasLayout.setVisibility(View.GONE);
         mUpdateButton.setVisibility(View.GONE);
         mChangeButton.setVisibility(View.VISIBLE);

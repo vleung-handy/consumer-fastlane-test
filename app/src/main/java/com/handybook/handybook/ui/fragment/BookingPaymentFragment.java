@@ -106,7 +106,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         if ((card != null && card.getLast4() != null)
                 && (savedInstanceState == null || useExistingCard)) {
             useExistingCard = true;
-            creditCardText.setDisabled(true, "\u2022\u2022\u2022\u2022 " + card.getLast4());
+            creditCardText.setDisabled(true, getString(R.string.formatted_last4, card.getLast4()));
             creditCardIcon.setCardIcon(card.getBrand());
         }
         else allowCardInput();

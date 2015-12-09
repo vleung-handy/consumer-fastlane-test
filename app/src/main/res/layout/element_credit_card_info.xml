@@ -29,6 +29,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:background="@drawable/bg_edit_text_no_border"
+            android:enabled="false"
             />
 
         <FrameLayout
