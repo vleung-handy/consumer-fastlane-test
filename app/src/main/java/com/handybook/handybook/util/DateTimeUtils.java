@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 public class DateTimeUtils
 {
     public final static SimpleDateFormat DAY_MONTH_DATE_AT_TIME_FORMATTER = new SimpleDateFormat
-            ("c, MMM d " +
+            ("EEE, MMM d " +
             "'@' h:mm a");
 
 }
