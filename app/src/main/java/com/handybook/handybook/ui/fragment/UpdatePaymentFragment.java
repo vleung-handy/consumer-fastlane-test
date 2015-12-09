@@ -80,11 +80,6 @@ public class UpdatePaymentFragment extends InjectedFragment
     {
         final User currentUser = userManager.getCurrentUser();
         final User.CreditCard creditCard = currentUser.getCreditCard();
-        freezeCardInput(creditCard);
-    }
-
-    private void freezeCardInput(User.CreditCard creditCard)
-    {
         freezeCardInput(creditCard.getBrand(), creditCard.getLast4());
     }
 
@@ -177,7 +172,7 @@ public class UpdatePaymentFragment extends InjectedFragment
         final User.CreditCard creditCard = currentUser.getCreditCard();
         if (creditCard != null && creditCard.getLast4() != null && !creditCard.getLast4().isEmpty())
         {
-            freezeCardInput(creditCard);
+            freezeCardInput(creditCard.getBrand(), creditCard.getLast4());
         }
         else
         {
