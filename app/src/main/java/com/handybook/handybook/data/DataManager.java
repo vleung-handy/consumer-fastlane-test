@@ -209,6 +209,8 @@ public abstract class DataManager
                                     String authToken,
                                     Callback<User> cb);
 
+    public abstract void updatePayment(String userId, String token, Callback<Void> cb);
+
     public abstract void authFBUser(String fbid,
                                     String accessToken,
                                     String email,

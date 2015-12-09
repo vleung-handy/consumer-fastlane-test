@@ -20,6 +20,7 @@ import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
+import com.stripe.android.model.Token;
 
 import java.util.List;
 
@@ -769,6 +770,28 @@ public abstract class HandyEvent
     public static class ReceiveEditBookingAddressError extends ReceiveErrorEvent
     {
         public ReceiveEditBookingAddressError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class RequestUpdatePayment extends RequestEvent
+    {
+        public final Token token;
+
+        public RequestUpdatePayment(final Token token)
+        {
+            this.token = token;
+        }
+    }
+
+    public static class ReceiveUpdatePaymentSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveUpdatePaymentError extends ReceiveErrorEvent
+    {
+        public ReceiveUpdatePaymentError(final DataManager.DataManagerError error)
         {
             this.error = error;
         }

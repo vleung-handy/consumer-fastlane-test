@@ -20,6 +20,8 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
@@ -51,6 +53,7 @@ import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.AddLaundryDialogFragment;
 import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
@@ -101,10 +104,10 @@ import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
-import com.stripe.android.Stripe;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -203,7 +206,9 @@ import retrofit.converter.GsonConverter;
         TipDialogFragment.class,
         CancelRecurringBookingActivity.class,
         CancelRecurringBookingFragment.class,
-        EmailCancellationDialogFragment.class
+        EmailCancellationDialogFragment.class,
+        UpdatePaymentActivity.class,
+        UpdatePaymentFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
@@ -311,7 +316,7 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final DataManager provideDataManager(final HandyRetrofitService service,
-            final HandyRetrofitEndpoint endpoint,
+                                         final HandyRetrofitEndpoint endpoint,
                                          final PrefsManager prefsManager)
     {
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
@@ -356,6 +361,15 @@ public final class ApplicationModule
                                          final PrefsManager prefsManager)
     {
         return new UserManager(bus, prefsManager);
+    }
+
+    @Provides
+    @Singleton
+    final UserDataManager provideUserDataManager(final UserManager userManager,
+                                                 final DataManager dataManager,
+                                                 final Bus bus)
+    {
+        return new UserDataManager(userManager, dataManager, bus);
     }
 
     @Provides
@@ -411,9 +425,10 @@ public final class ApplicationModule
     }
 
     @Provides
-    final Stripe provideStripe()
+    @Singleton
+    final StripeManager provideStripeManager(final Bus bus)
     {
-        return new Stripe();
+        return new StripeManager(bus, mConfigs);
     }
 
     private String getDeviceId()

@@ -55,7 +55,11 @@
     <string name="apt_num">Apt #</string>
     <string name="complete_booking">Complete Booking</string>
     <string name="payment">Payment</string>
+    <string name="edit_payment">Edit Payment</string>
     <string name="credit_card_num">Credit Card Number</string>
+    <string name="formatted_last4">•••• %1$s</string>
+    <string name="error_payment_info_invalid">The credit card information you provided is invalid. Please make sure all the fields are correct.</string>
+    <string name="update_successful">Update successful</string>
     <string name="change">Change</string>
     <string name="mm_yy">MM/YY</string>
     <string name="credit_card">Credit Card</string>
