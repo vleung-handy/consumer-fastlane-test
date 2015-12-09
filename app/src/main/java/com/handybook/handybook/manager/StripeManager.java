@@ -1,6 +1,7 @@
 package com.handybook.handybook.manager;
 
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.constant.ConfigKeys;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.event.StripeEvent;
 import com.squareup.otto.Bus;
@@ -47,10 +48,10 @@ public class StripeManager
 
     private String getStripeKey()
     {
-        String stripeKey = mConfig.getProperty("stripe_publishable_key");
+        String stripeKey = mConfig.getProperty(ConfigKeys.STRIPE_PUBLISHABLE_KEY);
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
         {
-            stripeKey = mConfig.getProperty("stripe_publishable_key_internal");
+            stripeKey = mConfig.getProperty(ConfigKeys.STRIPE_PUBLISHABLE_KEY_INTERNAL);
         }
         return stripeKey;
     }
