@@ -8,10 +8,12 @@
     >
 
     <!--TODO: create templates for the booking flow screens-->
-    <TextView
-        style="@style/TextView.Navbar"
-        android:id="@+id/nav_text"
-        android:text="@string/booking_edit_address_title"/>
+    <com.handybook.handybook.ui.widget.BackButtonNavBar
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/booking_edit_address_title"
+        />
 
     <ScrollView
         android:layout_weight="1"
@@ -25,11 +27,8 @@
             android:paddingBottom="@dimen/default_padding">
 
             <TextView
-                android:layout_margin="@dimen/default_margin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/booking_edit_update_will_apply_subsequent_bookings"
                 style="@style/TextView.CenteredHeader"
+                android:text="@string/booking_edit_update_will_apply_subsequent_bookings"
                 />
 
             <LinearLayout

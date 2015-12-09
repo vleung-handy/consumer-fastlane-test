@@ -284,7 +284,7 @@
     <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
     <string name="email_cancellation_info_formatted">Cancellation instructions were sent to %1$s.</string>
     <string name="cancel_recurring_booking_title">Cancel Cleaning Plan</string>
-    <string name="cancel_regular_cleanings_subtitle">Which series do you want to cancel?</string>
+    <string name="cancel_regular_cleanings_subtitle">Which plan would you like to cancel?</string>
     <string name="cancel_recurring_booking_none_to_cancel_error_msg">No cleaning plans to
         cancel</string>
     <string name="cancel_recurring_booking_option_entry_subtitle_formatted">Next recurrence

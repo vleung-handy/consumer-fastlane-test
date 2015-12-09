@@ -19,7 +19,7 @@
         android:textAllCaps="false"
         android:id="@+id/next_button"
         android:onClick="onSaveButtonPressed"
-        android:text="@string/save"/>
+        android:text="@string/update"/>
 
     <ScrollView
         android:id="@+id/booking_edit_hours_container"
@@ -32,7 +32,6 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:paddingTop="@dimen/default_padding_double"
             android:paddingBottom="@dimen/default_padding_double"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
@@ -40,9 +39,6 @@
             <TextView
                 style="@style/TextView.CenteredHeader"
                 android:text="@string/booking_edit_pro_assignment_warning"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                android:layout_marginBottom="@dimen/default_margin_double"
                 />
 
             <LinearLayout
