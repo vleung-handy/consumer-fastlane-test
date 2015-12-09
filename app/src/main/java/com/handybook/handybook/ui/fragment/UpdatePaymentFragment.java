@@ -101,17 +101,17 @@ public class UpdatePaymentFragment extends InjectedFragment
     @OnClick(R.id.update_button)
     public void updatePayment()
     {
-        if (!validateFields())
-        {
-            showToast(R.string.error_payment_info_invalid, Toast.LENGTH_LONG);
-        }
-        else
+        if (validateFields())
         {
             disableInputs();
             progressDialog.show();
             final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                     mExpText.getExpYear(), mCvcText.getCVC());
             bus.post(new StripeEvent.RequestCreateToken(card));
+        }
+        else
+        {
+            showToast(R.string.error_payment_info_invalid, Toast.LENGTH_LONG);
         }
     }
 
