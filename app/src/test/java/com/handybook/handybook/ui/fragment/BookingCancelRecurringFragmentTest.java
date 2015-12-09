@@ -30,9 +30,9 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     private CancelRecurringBookingFragment mFragment;
 
     @Mock
-    private RecurringBooking mMockRecurringBooking1;
+    private RecurringBooking mRecurringBooking1;
     @Mock
-    private RecurringBooking mMockRecurringBooking2;
+    private RecurringBooking mRecurringBooking2;
     @Captor
     private ArgumentCaptor<Object> mCaptor;
 
@@ -44,10 +44,10 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
         mFragment = CancelRecurringBookingFragment.newInstance();
 
         Date mockDate = new Date();
-        when(mMockRecurringBooking1.getRecurringId()).thenReturn(1);
-        when(mMockRecurringBooking1.getNextRecurrenceDate()).thenReturn(mockDate);
-        when(mMockRecurringBooking2.getRecurringId()).thenReturn(2);
-        when(mMockRecurringBooking2.getNextRecurrenceDate()).thenReturn(mockDate);
+        when(mRecurringBooking1.getRecurringId()).thenReturn(1);
+        when(mRecurringBooking1.getNextRecurrenceDate()).thenReturn(mockDate);
+        when(mRecurringBooking2.getRecurringId()).thenReturn(2);
+        when(mRecurringBooking2.getNextRecurrenceDate()).thenReturn(mockDate);
         SupportFragmentTestUtil.startFragment(mFragment);
     }
 
@@ -61,8 +61,8 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     public void shouldRequestSendCancelEmailWhenSubmitButtonPressed() throws Exception
     {
         List<RecurringBooking> recurringBookingList = new ArrayList<>();
-        recurringBookingList.add(mMockRecurringBooking1);
-        recurringBookingList.add(mMockRecurringBooking2);
+        recurringBookingList.add(mRecurringBooking1);
+        recurringBookingList.add(mRecurringBooking2);
 
         mFragment.onReceiveRecurringBookingsSuccess(new HandyEvent
                 .ReceiveRecurringBookingsSuccess(recurringBookingList));
@@ -75,7 +75,7 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     public void shouldRequestSendCancelEmailWhenOnlyOneRecurringBooking() throws Exception
     {
         List<RecurringBooking> recurringBookingList = new ArrayList<>();
-        recurringBookingList.add(mMockRecurringBooking1);
+        recurringBookingList.add(mRecurringBooking1);
         mFragment.onReceiveRecurringBookingsSuccess(new HandyEvent
                 .ReceiveRecurringBookingsSuccess(recurringBookingList));
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent

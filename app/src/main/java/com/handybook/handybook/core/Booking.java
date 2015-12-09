@@ -300,7 +300,7 @@ public class Booking implements Parcelable
         mPrice = price;
     }
 
-    public final Address getAddress()
+    public Address getAddress()
     {
         return mAddress;
     }
@@ -488,7 +488,7 @@ public class Booking implements Parcelable
         return longValue;
     }
 
-    public static final class Address implements Parcelable
+    public static class Address implements Parcelable
     {
         @SerializedName("address1")
         private String address1;
@@ -501,7 +501,7 @@ public class Booking implements Parcelable
         @SerializedName("zipcode")
         private String zip;
 
-        public final String getAddress1()
+        public String getAddress1()
         {
             return address1;
         }
@@ -541,7 +541,7 @@ public class Booking implements Parcelable
             this.state = state;
         }
 
-        public final String getZip()
+        public String getZip()
         {
             return zip;
         }

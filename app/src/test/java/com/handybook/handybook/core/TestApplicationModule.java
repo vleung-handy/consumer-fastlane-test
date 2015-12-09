@@ -29,6 +29,7 @@ import com.handybook.handybook.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.ui.fragment.BookingDateFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingEditAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
@@ -93,6 +94,7 @@ import static org.mockito.Mockito.when;
         BookingPaymentFragment.class,
         BookingPaymentFragmentTest.class,
         CancelRecurringBookingFragment.class,
+        BookingEditAddressFragment.class,
 }, library = true)
 public class TestApplicationModule
 {
