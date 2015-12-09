@@ -93,12 +93,6 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         return view;
     }
 
-    @OnClick(R.id.back_button)
-    public void onNavBarBackButtonClick()
-    {
-        getActivity().onBackPressed();
-    }
-
     @OnClick(R.id.next_button)
     public void onSaveButtonPressed()
     {

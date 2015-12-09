@@ -1,23 +1,29 @@
 package com.handybook.handybook.ui.widget;
 
-import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.ui.view.InjectedLinearLayout;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * a navigation bar with a back button
  *
  * temporary until we use Toolbar
  */
-public class BackButtonNavBar extends LinearLayout
+public class BackButtonNavBar extends InjectedLinearLayout
 {
+    @Bind(R.id.back_button)
+    ImageButton mBackButton;
+
     //putting this into a widget because we will soon use these everywhere
     public BackButtonNavBar(final Context context)
     {
@@ -37,17 +43,18 @@ public class BackButtonNavBar extends LinearLayout
         initView(context, attrs);
     }
 
-    @TargetApi(21)
-    public BackButtonNavBar(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes)
-    {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initView(context, attrs);
-    }
-
     public void setBackButtonVisible(final boolean visible)
     {
-        ImageButton backButton = (ImageButton) findViewById(R.id.back_button);
-        backButton.setVisibility(visible ? VISIBLE : INVISIBLE);
+        mBackButton.setVisibility(visible ? VISIBLE : GONE);
+    }
+
+    @OnClick(R.id.back_button)
+    public void onBackButtonClick()
+    {
+        if(getContext() instanceof Activity)
+        {
+            ((Activity) getContext()).onBackPressed();
+        }
     }
 
     private void initView(final Context context, final AttributeSet attrs)
