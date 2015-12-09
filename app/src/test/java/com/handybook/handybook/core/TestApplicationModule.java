@@ -13,6 +13,7 @@ import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
@@ -48,7 +49,6 @@ import com.handybook.handybook.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.squareup.otto.Bus;
-import com.stripe.android.Stripe;
 
 import javax.inject.Singleton;
 
@@ -230,8 +230,8 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
-    final Stripe provideStripe()
+    final StripeManager provideStripeManager()
     {
-        return mock(Stripe.class);
+        return mock(StripeManager.class);
     }
 }

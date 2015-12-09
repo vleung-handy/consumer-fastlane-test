@@ -12,10 +12,9 @@ import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.StripeEvent;
+import com.handybook.handybook.testutil.AppAssertionUtils;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
-import com.stripe.android.TokenCallback;
-import com.stripe.android.model.Card;
-import com.stripe.android.model.Token;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,11 +28,10 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 import javax.inject.Inject;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,20 +48,20 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     private BookingQuote mMockQuote;
     @Mock
     private BookingRequest mMockRequest;
-    @Mock
-    private Token mMockToken;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private BookingCompleteTransaction mCompleteTransaction;
     @Mock
-    private User mUser;
+    private User mMockUser;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private StripeEvent.ReceiveCreateTokenSuccess mMockReceiveCreateTokenSuccessEvent;
     @Inject
     BookingManager mBookingManager;
     @Inject
     UserManager mUserManager;
     @Captor
-    private ArgumentCaptor<TokenCallback> mTokenCallbackCaptor;
-    @Captor
     private ArgumentCaptor<DataManager.Callback> mDataManagerCallbackCaptor;
+    @Captor
+    private ArgumentCaptor<Object> mCaptor;
 
     @Before
     public void setUp() throws Exception
@@ -71,7 +69,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
-        when(mUserManager.getCurrentUser()).thenReturn(mUser);
+        when(mUserManager.getCurrentUser()).thenReturn(mMockUser);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
         when(mMockQuote.getPricing(anyFloat(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
@@ -81,7 +79,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldGetStripeTokenAndCompleteBooking() throws Exception
+    public void shouldGetStripeToken() throws Exception
     {
         mFragment.creditCardText.setText("4242424242424242");
         mFragment.expText.setText("01/30");
@@ -89,11 +87,15 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
 
         mFragment.nextButton.performClick();
 
-        verify(mFragment.mStripe).createToken(any(Card.class), anyString(),
-                mTokenCallbackCaptor.capture());
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
+                instanceOf(StripeEvent.RequestCreateToken.class));
+    }
 
-        when(mMockToken.getId()).thenReturn("some_id");
-        mTokenCallbackCaptor.getValue().onSuccess(mMockToken);
+    @Test
+    public void shouldCompleteBookingAfterGettingStripeToken() throws Exception
+    {
+        when(mMockReceiveCreateTokenSuccessEvent.getToken().getId()).thenReturn("some_id");
+        mFragment.onReceiveCreateTokenSuccess(mMockReceiveCreateTokenSuccessEvent);
 
         verify(mMockTransaction).setStripeToken(eq("some_id"));
 
