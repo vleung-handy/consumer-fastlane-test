@@ -775,7 +775,7 @@ public abstract class HandyEvent
         }
     }
 
-    public static class RequestUpdatePayment
+    public static class RequestUpdatePayment extends RequestEvent
     {
         public final Token token;
 
