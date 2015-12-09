@@ -94,6 +94,9 @@ public class UpdatePaymentFragment extends InjectedFragment
         mCreditCardText.setText(R.string.blank_string);
         mExpText.setText(R.string.blank_string);
         mCvcText.setText(R.string.blank_string);
+        mCreditCardText.unHighlight();
+        mExpText.unHighlight();
+        mCvcText.unHighlight();
         mCreditCardText.setDisabled(true, getString(R.string.formatted_last4, last4));
         mCardExtrasLayout.setVisibility(View.GONE);
         mUpdateButton.setVisibility(View.GONE);
