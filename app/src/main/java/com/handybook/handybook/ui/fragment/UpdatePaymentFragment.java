@@ -1,5 +1,6 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,8 @@ public class UpdatePaymentFragment extends InjectedFragment
     View mCancelButton;
     @Bind(R.id.nav_text)
     TextView mNavText;
+    @Bind(R.id.lock_icon)
+    ImageView mLockIcon;
 
     public static Fragment newInstance()
     {
@@ -176,6 +180,9 @@ public class UpdatePaymentFragment extends InjectedFragment
         {
             unfreezeCardInput();
         }
+
+        mLockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
+                PorterDuff.Mode.SRC_ATOP);
 
         mCreditCardText.addTextChangedListener(new TextWatcher()
         {
