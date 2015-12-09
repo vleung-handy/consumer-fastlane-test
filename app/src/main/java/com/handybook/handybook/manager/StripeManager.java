@@ -30,7 +30,7 @@ public class StripeManager
     @Subscribe
     public void onRequestCreateToken(StripeEvent.RequestCreateToken event)
     {
-        new Stripe().createToken(event.card, getStripeKey(), new TokenCallback()
+        new Stripe().createToken(event.getCard(), getStripeKey(), new TokenCallback()
         {
             @Override
             public void onSuccess(final Token token)

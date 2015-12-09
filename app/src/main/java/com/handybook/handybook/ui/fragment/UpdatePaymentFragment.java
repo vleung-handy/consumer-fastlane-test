@@ -118,7 +118,7 @@ public class UpdatePaymentFragment extends InjectedFragment
     @Subscribe
     public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
     {
-        bus.post(new HandyEvent.RequestUpdatePayment(event.token));
+        bus.post(new HandyEvent.RequestUpdatePayment(event.getToken()));
     }
 
     @Subscribe
@@ -126,9 +126,9 @@ public class UpdatePaymentFragment extends InjectedFragment
     {
         enableInputs();
         progressDialog.dismiss();
-        if (event.error instanceof CardException)
+        if (event.getError() instanceof CardException)
         {
-            showToast(event.error.getMessage());
+            showToast(event.getError().getMessage());
         }
         else
         {

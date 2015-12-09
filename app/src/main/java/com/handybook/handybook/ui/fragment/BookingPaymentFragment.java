@@ -209,7 +209,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
     @Subscribe
     public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
     {
-        bookingManager.getCurrentTransaction().setStripeToken(event.token.getId());
+        bookingManager.getCurrentTransaction().setStripeToken(event.getToken().getId());
         completeBooking();
     }
 
@@ -219,7 +219,7 @@ public final class BookingPaymentFragment extends BookingFlowFragment {
         enableInputs();
         progressDialog.dismiss();
 
-        if (event.error instanceof CardException) toast.setText(event.error.getMessage());
+        if (event.getError() instanceof CardException) toast.setText(event.getError().getMessage());
         else toast.setText(getString(R.string.default_error_string));
         toast.show();
     }

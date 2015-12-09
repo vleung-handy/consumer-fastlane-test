@@ -8,33 +8,48 @@ public class StripeEvent
 {
     public static class RequestCreateToken
     {
-        public final Card card;
+        private final Card mCard;
 
         public RequestCreateToken(final Card card)
         {
-            this.card = card;
+            mCard = card;
+        }
+
+        public Card getCard()
+        {
+            return mCard;
         }
     }
 
 
     public static class ReceiveCreateTokenSuccess
     {
-        public final Token token;
+        private final Token mToken;
 
         public ReceiveCreateTokenSuccess(final Token token)
         {
-            this.token = token;
+            mToken = token;
+        }
+
+        public Token getToken()
+        {
+            return mToken;
         }
     }
 
 
     public static class ReceiveCreateTokenError
     {
-        public final Exception error;
+        private final Exception mError;
 
         public ReceiveCreateTokenError(final Exception error)
         {
-            this.error = error;
+            mError = error;
+        }
+
+        public Exception getError()
+        {
+            return mError;
         }
     }
 }
