@@ -17,20 +17,20 @@ public final class CreditCardNumberInputTextView extends FreezableInputTextView
     public CreditCardNumberInputTextView(final Context context)
     {
         super(context);
-        this.addTextChangedListener(new CreditCardInputTextWatcher());
+        addTextChangedListener(new CreditCardInputTextWatcher());
     }
 
     public CreditCardNumberInputTextView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
-        this.addTextChangedListener(new CreditCardInputTextWatcher());
+        addTextChangedListener(new CreditCardInputTextWatcher());
     }
 
     public CreditCardNumberInputTextView(final Context context, final AttributeSet attrs,
                                          final int defStyle)
     {
         super(context, attrs, defStyle);
-        this.addTextChangedListener(new CreditCardInputTextWatcher());
+        addTextChangedListener(new CreditCardInputTextWatcher());
     }
 
     private class CreditCardInputTextWatcher implements TextWatcher
@@ -127,7 +127,7 @@ public final class CreditCardNumberInputTextView extends FreezableInputTextView
 
     public final String getCardNumber()
     {
-        return this.getText().toString().replaceAll("\\D+", "");
+        return getText().toString().replaceAll("\\D+", "");
     }
 
     public final CreditCard.Type getCardType()
