@@ -177,31 +177,29 @@ public class UpdatePaymentFragment extends InjectedFragment
             unfreezeCardInput();
         }
 
-        mCreditCardText.addTextChangedListener(cardTextWatcher);
+        mCreditCardText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(final CharSequence charSequence, final int start,
+                                          final int count, final int after)
+            {
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence charSequence, final int start,
+                                      final int before, final int count)
+            {
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable)
+            {
+                mCreditCardIcon.setCardIcon(mCreditCardText.getCardType());
+            }
+        });
 
         return view;
     }
-
-    private final TextWatcher cardTextWatcher = new TextWatcher()
-    {
-        @Override
-        public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                      final int count, final int after)
-        {
-        }
-
-        @Override
-        public void onTextChanged(final CharSequence charSequence, final int start,
-                                  final int before, final int count)
-        {
-        }
-
-        @Override
-        public void afterTextChanged(final Editable editable)
-        {
-            mCreditCardIcon.setCardIcon(mCreditCardText.getCardType());
-        }
-    };
 
     private boolean validateFields()
     {
