@@ -101,7 +101,7 @@ public class UpdatePaymentFragment extends InjectedFragment
     @OnClick(R.id.update_button)
     public void updatePayment()
     {
-        if (validateFields())
+        if (areFieldsValid())
         {
             disableInputs();
             progressDialog.show();
@@ -201,7 +201,7 @@ public class UpdatePaymentFragment extends InjectedFragment
         return view;
     }
 
-    private boolean validateFields()
+    private boolean areFieldsValid()
     {
         return mCreditCardText.validate() && mExpText.validate() && mCvcText.validate();
     }
