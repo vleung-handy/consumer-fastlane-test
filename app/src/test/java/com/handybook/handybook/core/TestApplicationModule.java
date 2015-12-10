@@ -26,6 +26,7 @@ import com.handybook.handybook.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
@@ -48,6 +49,8 @@ import com.handybook.handybook.ui.fragment.BookingRecurrenceFragmentTest;
 import com.handybook.handybook.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
@@ -95,6 +98,9 @@ import static org.mockito.Mockito.when;
         BookingPaymentFragmentTest.class,
         CancelRecurringBookingFragment.class,
         BookingEditAddressFragment.class,
+        UpdatePaymentActivity.class,
+        UpdatePaymentFragment.class,
+        UpdatePaymentFragmentTest.class,
 }, library = true)
 public class TestApplicationModule
 {

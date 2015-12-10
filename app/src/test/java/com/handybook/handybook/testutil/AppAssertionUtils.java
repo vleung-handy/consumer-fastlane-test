@@ -20,4 +20,18 @@ public class AppAssertionUtils
         verify(bus, atLeastOnce()).post(captor.capture());
         assertThat(captor.getAllValues(), hasItem(matcher));
     }
+
+    public static <T> T getFirstMatchingBusEvent(Bus bus, Class klass)
+    {
+        ArgumentCaptor<T> captor = ArgumentCaptor.forClass(klass);
+        verify(bus, atLeastOnce()).post(captor.capture());
+        for (Object event : captor.getAllValues())
+        {
+            if (klass.isInstance(event))
+            {
+                return (T) event;
+            }
+        }
+        return null;
+    }
 }

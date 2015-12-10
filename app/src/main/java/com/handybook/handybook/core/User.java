@@ -387,19 +387,19 @@ public class User extends Observable
     }
 
 
-    public static final class CreditCard
+    public static class CreditCard
     {
         @SerializedName("last4")
         private String mLast4;
         @SerializedName("brand")
         private String mBrand;
 
-        public final String getLast4()
+        public String getLast4()
         {
             return mLast4;
         }
 
-        public final String getBrand()
+        public String getBrand()
         {
             return mBrand;
         }
