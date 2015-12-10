@@ -3,7 +3,6 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Intent;
 
 import com.google.android.gms.common.api.BooleanResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
@@ -54,8 +53,6 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     @Mock
     private BookingQuote mMockQuote;
     @Mock
-    private GoogleApiClient mGoogleApiClient;
-    @Mock
     private BookingRequest mMockRequest;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private BookingCompleteTransaction mCompleteTransaction;
@@ -105,12 +102,16 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
                 instanceOf(StripeEvent.RequestCreateToken.class));
     }
 
+
+    /**
+     *  cannot mock out any Google classes since they are final
+     *  and many of our methods depend on them
+     *  so the AP tests are limited until we refactor the fragment code to be more modular
+     */
     @Test
     public void shouldShowAndroidPayOptionWhenShouldShowAndroidPay()
     {
-        //cannot mock out any Google classes since they are final
-        //and many of our methods depend on them
-        //so this test is limited until we refactor the fragment code
+
         BookingPaymentFragment fragmentSpy = spy(mFragment);
         when(mUserManager.getCurrentUser()).thenReturn(null);
         BooleanResult booleanResult = new BooleanResult(Status.zzagz, true);
