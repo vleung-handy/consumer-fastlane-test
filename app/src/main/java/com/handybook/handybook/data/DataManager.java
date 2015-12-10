@@ -22,7 +22,7 @@ import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.core.HelpNodeWrapper;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;

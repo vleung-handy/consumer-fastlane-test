@@ -105,8 +105,8 @@
         <activity android:name=".ui.activity.PeakPricingActivity"/>
         <activity android:name=".ui.activity.PromosActivity"/>
         <activity android:name=".ui.activity.OnboardActivity"/>
-        <activity android:name=".ui.activity.HelpActivity"/>
-        <activity android:name=".ui.activity.HelpContactActivity"/>
+        <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
+        <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
         <activity android:name=".ui.activity.BookingEditNoteToProActivity"/>
         <activity android:name=".ui.activity.BookingEditEntryInformationActivity"/>
         <activity android:name=".ui.activity.BookingEditFrequencyActivity"/>

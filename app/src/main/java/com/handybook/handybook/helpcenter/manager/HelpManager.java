@@ -1,13 +1,13 @@
-package com.handybook.handybook.manager;
+package com.handybook.handybook.helpcenter.manager;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.handybook.handybook.core.HelpNode;
-import com.handybook.handybook.core.HelpNodeWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.helpcenter.model.HelpNode;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

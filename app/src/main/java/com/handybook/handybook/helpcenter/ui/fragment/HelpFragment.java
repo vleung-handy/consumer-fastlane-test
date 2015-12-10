@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.helpcenter.ui.fragment;
 
 import android.content.Intent;
 import android.os.Build;
@@ -12,15 +12,16 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.manager.HelpManager;
-import com.handybook.handybook.ui.activity.HelpActivity;
-import com.handybook.handybook.ui.activity.HelpContactActivity;
+import com.handybook.handybook.helpcenter.manager.HelpManager;
+import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
+import com.handybook.handybook.helpcenter.model.HelpNode;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.view.HelpBannerView;
+import com.handybook.handybook.helpcenter.ui.view.HelpNodeView;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.ui.view.HelpBannerView;
-import com.handybook.handybook.ui.view.HelpNodeView;
+import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.CTAButton;
 import com.squareup.otto.Subscribe;
 

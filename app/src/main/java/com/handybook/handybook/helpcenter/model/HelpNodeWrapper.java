@@ -1,4 +1,4 @@
-package com.handybook.handybook.core;
+package com.handybook.handybook.helpcenter.model;
 
 import com.google.gson.annotations.SerializedName;
 
