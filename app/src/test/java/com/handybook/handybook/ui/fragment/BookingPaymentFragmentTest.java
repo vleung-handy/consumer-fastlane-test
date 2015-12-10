@@ -111,7 +111,6 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldShowAndroidPayOptionWhenShouldShowAndroidPay()
     {
-
         BookingPaymentFragment fragmentSpy = spy(mFragment);
         when(mUserManager.getCurrentUser()).thenReturn(null);
         BooleanResult booleanResult = new BooleanResult(Status.zzagz, true);
