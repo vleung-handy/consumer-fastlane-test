@@ -100,7 +100,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
         removeUiBlockers();
         showToast(getString(R.string.updated_booking_address));
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 

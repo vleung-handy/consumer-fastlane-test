@@ -142,7 +142,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         enableInputs();
         progressDialog.dismiss();
         showToast(R.string.updated_entry_information);
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 

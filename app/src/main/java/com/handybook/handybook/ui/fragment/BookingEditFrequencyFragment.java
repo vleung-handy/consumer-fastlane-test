@@ -134,7 +134,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         removeUiBlockers();
         showToast(R.string.updated_booking_frequency);
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 

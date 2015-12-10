@@ -90,6 +90,10 @@ public class CreditCardIconImageView extends ImageView
                 this.setImageResource(R.drawable.ic_card_visa);
                 break;
 
+            case ANDROID_PAY:
+                this.setImageResource(R.drawable.ic_android_pay);
+                break;
+
             default:
                 this.setImageResource(R.drawable.ic_card_blank);
         }

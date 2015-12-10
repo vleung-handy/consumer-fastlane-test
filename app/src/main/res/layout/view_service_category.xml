@@ -8,7 +8,6 @@
     android:layout_height="144dp"
     android:layout_marginLeft="@dimen/default_margin_half"
     android:layout_marginRight="@dimen/default_margin_half"
-    android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/handy_white"
     app:cardCornerRadius="@dimen/default_corner_radius"
     app:cardElevation="1dp"

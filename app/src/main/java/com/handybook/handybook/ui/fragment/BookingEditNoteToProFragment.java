@@ -101,7 +101,7 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
         progressDialog.dismiss();
         showToast(R.string.updated_note_to_pro);
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 

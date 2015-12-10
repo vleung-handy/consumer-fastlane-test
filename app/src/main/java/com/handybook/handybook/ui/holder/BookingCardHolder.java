@@ -73,7 +73,7 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
                     Activity activity = (Activity) mContext;
                     final Intent intent = new Intent(mContext, BookingDetailActivity.class);
                     intent.putExtra(BundleKeys.BOOKING, model.getBooking());
-                    activity.startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
+                    activity.startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
 
                 }
             });

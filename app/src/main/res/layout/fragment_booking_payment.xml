@@ -1,87 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg"
+    >
 
     <Button
         android:id="@+id/next_button"
+        style="@style/Button.Green"
         android:text="@string/complete_booking"
-        style="@style/Button.Green" />
+        />
 
     <TextView
         android:id="@+id/nav_text"
+        style="@style/TextView.Navbar"
         android:text="@string/payment"
-        style="@style/TextView.Navbar" />
+        />
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text">
+        android:layout_below="@id/nav_text"
+        android:fillViewport="true"
+        >
 
-        <RelativeLayout
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            >
 
             <FrameLayout
                 android:id="@+id/info_header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/default_padding" />
+                android:padding="@dimen/default_padding"
+                />
 
             <LinearLayout
+                android:id="@+id/select_payment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/info_header_layout"
-                android:animateLayoutChanges="true"
-                android:orientation="vertical">
+                android:background="@color/handy_white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/select_payment_vertical_padding"
+                android:paddingLeft="@dimen/select_payment_horizontal_padding"
+                android:paddingRight="@dimen/select_payment_horizontal_padding"
+                android:paddingTop="@dimen/select_payment_vertical_padding"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
 
-                <include layout="@layout/element_credit_card_info"/>
-
-                <LinearLayout
-                    android:id="@+id/promo_layout"
+                <TextView
+                    android:id="@+id/booking_select_payment_promo_text"
+                    style="@style/TextView.Large"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    android:orientation="horizontal">
+                    android:gravity="center"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
 
-                    <com.handybook.handybook.ui.widget.FreezableInputTextView
-                        android:id="@+id/promo_text"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        style="@style/EditText.Last.PromoCodeOpt" />
+                <LinearLayout
+                    android:id="@+id/android_pay_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/select_payment_button_height"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/select_payment_button_gap"
+                    android:layout_marginTop="@dimen/select_payment_button_gap"
+                    android:background="@drawable/android_pay_button_rounded"
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_padding_eighth"
+                    >
 
-                    <FrameLayout
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:paddingRight="@dimen/default_padding"
-                        android:paddingEnd="@dimen/default_padding"
-                        android:paddingLeft="0dp"
-                        android:paddingStart="0dp"
-                        android:background="@drawable/bg_edit_text_last">
-
-                        <Button
-                            android:id="@+id/promo_button"
-                            android:text="@string/apply"
-                            android:layout_gravity="center"
-                            style="@style/RoundedButton" />
-
-                        <ProgressBar
-                            android:id="@+id/promo_progress"
-                            android:layout_gravity="center"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:visibility="visible" />
-
-                    </FrameLayout>
-
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/android_pay_button"
+                        />
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/enter_credit_card_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/select_payment_button_height"
+                    android:layout_marginBottom="@dimen/select_payment_button_gap"
+                    android:background="@drawable/grey_button_rounded"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@string/enter_credit_card"
+                    android:textAllCaps="false"
+                    android:textColor="@color/handy_white"
+                    android:textSize="@dimen/text_size_large"
+                    />
 
             </LinearLayout>
 
-        </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/info_payment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <include layout="@layout/element_credit_card_info"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/apply_promo_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/apply_promo_code"
+                android:textColor="@color/handy_blue"
+                android:textSize="@dimen/text_size_large"
+                android:visibility="gone"
+                />
+
+            <LinearLayout
+                android:id="@+id/promo_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+
+                <com.handybook.handybook.ui.widget.FreezableInputTextView
+                    android:id="@+id/promo_text"
+                    style="@style/EditText.Last.PromoCodeOpt"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edit_text_last"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="@dimen/default_padding"
+                    android:paddingStart="0dp"
+                    >
+
+                    <Button
+                        android:id="@+id/promo_button"
+                        style="@style/RoundedButton"
+                        android:layout_gravity="center"
+                        android:text="@string/apply"
+                        />
+
+                    <ProgressBar
+                        android:id="@+id/promo_progress"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:visibility="visible"
+                        />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/booking_payment_terms_of_use_text"
+                style="@style/TextView.Small"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|bottom"
+                android:linksClickable="true"
+                android:paddingBottom="@dimen/default_padding_double"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:textColor="@color/handy_tertiary_gray"
+                android:textColorLink="@color/handy_darkened_blue"
+                tools:text="Terms of use text"
+                />
+
+        </LinearLayout>
 
     </ScrollView>
 
