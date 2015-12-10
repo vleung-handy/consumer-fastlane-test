@@ -12,7 +12,7 @@ import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.core.HelpNodeWrapper;
+import com.handybook.handybook.helpcenter.HelpNodeWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;

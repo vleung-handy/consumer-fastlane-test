@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.view;
+package com.handybook.handybook.helpcenter;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -15,7 +15,8 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.ui.view.HandyWebView;
+import com.handybook.handybook.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.ui.widget.CTAButton;
 import com.handybook.handybook.util.TextUtils;
 
