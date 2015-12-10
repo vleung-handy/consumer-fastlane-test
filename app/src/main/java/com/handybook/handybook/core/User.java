@@ -237,7 +237,7 @@ public class User extends Observable
         triggerObservers();
     }
 
-    public final CreditCard getCreditCard()
+    public CreditCard getCreditCard()
     {
         return mCreditCard;
     }
