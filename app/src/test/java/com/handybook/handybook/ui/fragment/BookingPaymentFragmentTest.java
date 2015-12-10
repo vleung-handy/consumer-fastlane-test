@@ -128,7 +128,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
         mFragment.showMaskedWalletInfo(maskedWallet);
 
         //there is currently no bus event for this
-        verify(mDataManager).applyPromo(anyString(), anyInt(), anyString(),
+        verify(mDataManager).applyPromo(eq(mMockQuote.getAndroidPayCouponCode()), anyInt(), anyString(),
                 anyString(), anyString(), any(DataManager.Callback.class));
     }
 
