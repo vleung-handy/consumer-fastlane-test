@@ -1,4 +1,4 @@
-package com.handybook.handybook.helpcenter.helpcontact;
+package com.handybook.handybook.helpcenter.helpcontact.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,8 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.helpcenter.HelpBannerView;
-import com.handybook.handybook.helpcenter.HelpNode;
+import com.handybook.handybook.helpcenter.helpcontact.ui.view.HelpContactView;
+import com.handybook.handybook.helpcenter.ui.view.HelpBannerView;
+import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;

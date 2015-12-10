@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.handybook.handybook.helpcenter.HelpNodeView
+<com.handybook.handybook.helpcenter.ui.view.HelpNodeView
     android:id="@+id/help_node_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -89,4 +89,4 @@
         android:orientation="vertical"
         android:visibility="gone"/>
 
-</com.handybook.handybook.helpcenter.HelpNodeView>
+</com.handybook.handybook.helpcenter.ui.view.HelpNodeView>

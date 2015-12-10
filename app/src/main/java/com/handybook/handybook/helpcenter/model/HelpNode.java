@@ -1,4 +1,4 @@
-package com.handybook.handybook.helpcenter;
+package com.handybook.handybook.helpcenter.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

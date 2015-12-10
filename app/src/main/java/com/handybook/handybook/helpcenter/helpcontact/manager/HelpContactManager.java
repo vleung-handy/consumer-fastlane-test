@@ -1,4 +1,4 @@
-package com.handybook.handybook.helpcenter.helpcontact;
+package com.handybook.handybook.helpcenter.helpcontact.manager;
 
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;

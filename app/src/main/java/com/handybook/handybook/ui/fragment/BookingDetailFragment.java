@@ -22,7 +22,7 @@ import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
-import com.handybook.handybook.helpcenter.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;

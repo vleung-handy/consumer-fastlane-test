@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 
-import com.handybook.handybook.helpcenter.HelpNode;
+import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.core.NavigationManager;
 
 import javax.inject.Inject;

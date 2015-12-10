@@ -1,4 +1,4 @@
-package com.handybook.handybook.helpcenter;
+package com.handybook.handybook.helpcenter.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.ui.widget.MenuButton;

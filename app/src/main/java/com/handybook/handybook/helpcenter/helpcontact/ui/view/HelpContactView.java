@@ -1,4 +1,4 @@
-package com.handybook.handybook.helpcenter.helpcontact;
+package com.handybook.handybook.helpcenter.helpcontact.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.helpcenter.HelpNode;
+import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.ui.widget.EmailInputTextView;

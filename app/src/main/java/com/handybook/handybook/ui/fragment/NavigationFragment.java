@@ -26,7 +26,7 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.ui.activity.BookingsActivity;
-import com.handybook.handybook.helpcenter.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;

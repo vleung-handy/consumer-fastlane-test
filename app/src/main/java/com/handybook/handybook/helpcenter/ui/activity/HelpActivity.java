@@ -1,4 +1,4 @@
-package com.handybook.handybook.helpcenter;
+package com.handybook.handybook.helpcenter.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.helpcenter.model.HelpNode;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public final class HelpActivity extends MenuDrawerActivity

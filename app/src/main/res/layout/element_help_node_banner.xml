@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.handybook.handybook.helpcenter.HelpBannerView
+<com.handybook.handybook.helpcenter.ui.view.HelpBannerView
     android:id="@+id/help_node_banner"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -46,4 +46,4 @@
         android:layout_marginLeft="16dp"
         />
 
-</com.handybook.handybook.helpcenter.HelpBannerView>
+</com.handybook.handybook.helpcenter.ui.view.HelpBannerView>
