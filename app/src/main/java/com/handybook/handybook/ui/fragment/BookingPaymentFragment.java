@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -66,7 +67,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+public class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
     //TODO: would be nice to have a ViewModel
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
@@ -510,7 +511,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
     /**
      * shows the layout that allows the user to select between Android Pay and credit card
      */
-    private void showSelectPaymentLayout()
+    @VisibleForTesting
+    protected void showSelectPaymentLayout()
     {
         updateSelectPaymentPromoText();
 
@@ -591,7 +593,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
         }
     }
 
-    private void showPaymentMethodSelection(final @Nullable BooleanResult result)
+    @VisibleForTesting
+    protected void showPaymentMethodSelection(final @Nullable BooleanResult result)
     {
         if (!mUseExistingCard)
         {
@@ -633,7 +636,8 @@ public final class BookingPaymentFragment extends BookingFlowFragment implements
      * User is using Android Pay. Show the relevant info
      * @param maskedWallet
      */
-    private void showMaskedWalletInfo(MaskedWallet maskedWallet)
+    @VisibleForTesting
+    protected void showMaskedWalletInfo(MaskedWallet maskedWallet)
     {
         showInfoPaymentLayout();
         showAndUpdatePromoCodeInput(); //show the promo code input field

@@ -2,6 +2,9 @@ package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;
 
+import com.google.android.gms.common.api.BooleanResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.wallet.MaskedWallet;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingManager;
@@ -30,9 +33,12 @@ import javax.inject.Inject;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -58,6 +64,8 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     BookingManager mBookingManager;
     @Inject
     UserManager mUserManager;
+    @Inject
+    DataManager mDataManager; //there is currently no bus event for applyPromo()
     @Captor
     private ArgumentCaptor<DataManager.Callback> mDataManagerCallbackCaptor;
     @Captor
@@ -72,6 +80,9 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
         when(mUserManager.getCurrentUser()).thenReturn(mMockUser);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
         when(mMockQuote.getPricing(anyFloat(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.isAndroidPayEnabled()).thenReturn(true);
+        when(mMockQuote.getAndroidPayCouponCode()).thenReturn("ANDROIDPAY");
+        when(mMockQuote.getAndroidPayCouponValueFormatted()).thenReturn("$10");
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
         mFragment = BookingPaymentFragment.newInstance();
@@ -89,6 +100,36 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
 
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
                 instanceOf(StripeEvent.RequestCreateToken.class));
+    }
+
+
+    /**
+     *  cannot mock out any Google classes since they are final
+     *  and many of our methods depend on them
+     *  so the AP tests are limited until we refactor the fragment code to be more modular
+     */
+    @Test
+    public void shouldShowAndroidPayOptionWhenShouldShowAndroidPay()
+    {
+        BookingPaymentFragment fragmentSpy = spy(mFragment);
+        when(mUserManager.getCurrentUser()).thenReturn(null);
+        BooleanResult booleanResult = new BooleanResult(Status.zzagz, true);
+        fragmentSpy.showPaymentMethodSelection(booleanResult);
+        verify(fragmentSpy).showSelectPaymentLayout();
+    }
+
+    @Test
+    public void shouldAutoApplyAndroidPayCouponWhenAndroidPayShown()
+    {
+        MaskedWallet maskedWallet = MaskedWallet.zzIn().
+                setPaymentDescriptions(new String[]{"blah"}).
+                build();
+
+        mFragment.showMaskedWalletInfo(maskedWallet);
+
+        //there is currently no bus event for this
+        verify(mDataManager).applyPromo(eq(mMockQuote.getAndroidPayCouponCode()), anyInt(), anyString(),
+                anyString(), anyString(), any(DataManager.Callback.class));
     }
 
     @Test
