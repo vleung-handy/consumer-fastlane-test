@@ -3,7 +3,6 @@ package com.handybook.handybook.ui.fragment;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -58,7 +57,7 @@ public class UpdatePaymentFragment extends InjectedFragment
     @Bind(R.id.lock_icon)
     ImageView mLockIcon;
 
-    public static Fragment newInstance()
+    public static UpdatePaymentFragment newInstance()
     {
         return new UpdatePaymentFragment();
     }
@@ -177,6 +176,7 @@ public class UpdatePaymentFragment extends InjectedFragment
         else
         {
             unfreezeCardInput();
+            mCancelButton.setVisibility(View.GONE);
         }
 
         mLockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
