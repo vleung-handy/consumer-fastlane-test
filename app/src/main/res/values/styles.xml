@@ -540,7 +540,7 @@
 
     <style name="RelativeLayout.NavBar.Blue">
         <item name="android:textColor">@color/handy_white</item>
-        <item name="android:background">@drawable/nav_bar_blue</item>
+        <item name="android:background">@color/handy_blue</item>
     </style>
 
     <style name="BookingDetailSectionView">
