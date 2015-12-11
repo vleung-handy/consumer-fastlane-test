@@ -697,7 +697,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                 {
                     final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                             mExpText.getExpYear(), mCvcText.getCVC());
-                    bus.post(new StripeEvent.RequestCreateToken(card));
+                    final String stripeKey = bookingManager.getCurrentQuote().getStripeKey();
+                    bus.post(new StripeEvent.RequestCreateToken(card, stripeKey));
                 }
                 else { completeBooking(); }
             }

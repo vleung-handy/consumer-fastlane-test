@@ -50,6 +50,8 @@ public class User extends Observable
     private Address mAddress;
     @SerializedName("card_info")
     private CreditCard mCreditCard;
+    @SerializedName("stripe_key")
+    private String mStripeKey;
     @SerializedName("payment_method")
     private String mPaymentMethod;
     @SerializedName("analytics")
@@ -328,6 +330,11 @@ public class User extends Observable
         };
     }
 
+    public String getStripeKey()
+    {
+        return mStripeKey;
+    }
+
     static final class UserSerializer implements JsonSerializer<User>
     {
         @Override
@@ -347,6 +354,7 @@ public class User extends Observable
             jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
             jsonObj.add("first_address", context.serialize(value.getAddress()));
             jsonObj.add("card_info", context.serialize(value.getCreditCard()));
+            jsonObj.add("stripe_key", context.serialize(value.getStripeKey()));
             jsonObj.add("analytics", context.serialize(value.getAnalytics()));
             jsonObj.add("password", context.serialize(value.getPassword()));
             jsonObj.add("current_password", context.serialize(value.getCurrentPassword()));
