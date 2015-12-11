@@ -22,6 +22,7 @@ import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
@@ -320,7 +321,8 @@ public final class NavigationFragment extends InjectedFragment
 
     private void loadNavItems()
     {
-        final boolean userLoggedIn = mUserManager.getCurrentUser() != null;
+        final User currentUser = mUserManager.getCurrentUser();
+        final boolean userLoggedIn = currentUser != null;
 
         items.clear();
         items.add(getString(R.string.home));
@@ -329,14 +331,17 @@ public final class NavigationFragment extends InjectedFragment
         {
             items.add(getString(R.string.profile));
             items.add(getString(R.string.my_bookings));
-            items.add(getString(R.string.payment));
+            if (currentUser.getStripeKey() != null)
+            {
+                items.add(getString(R.string.payment));
+            }
         }
 
         items.add(getString(R.string.help));
 
         items.add(getString(R.string.promotions));
 
-        if (mUserManager.getCurrentUser() != null)
+        if (userLoggedIn)
         {
             items.add(getString(R.string.log_out));
         }
