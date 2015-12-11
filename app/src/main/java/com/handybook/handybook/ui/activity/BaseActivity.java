@@ -29,7 +29,6 @@ import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
-import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
 import java.util.ArrayList;
@@ -241,10 +240,6 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        if (PlayServicesUtils.isGooglePlayStoreAvailable())
-        {
-            PlayServicesUtils.handleAnyPlayServicesError(this);
-        }
         allowCallbacks = true;
     }
 
