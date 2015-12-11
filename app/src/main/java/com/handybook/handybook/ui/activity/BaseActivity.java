@@ -29,6 +29,7 @@ import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
+import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
 import java.util.ArrayList;
@@ -140,13 +141,15 @@ public abstract class BaseActivity extends AppCompatActivity
                 if (addLaundryBookingId > 0 && !prefs.getBoolean("APP_LAUNDRY_INFO_SHOWN", false))
                 {
                     showLaundryInfoModal(addLaundryBookingId, user.getAuthToken());
-                } else if (laundryBookingId > 0)
+                }
+                else if (laundryBookingId > 0)
                 {
                     showLaundryDropOffModal(
                             laundryBookingId,
                             user.getAuthToken()
                     );
-                } else if (proName != null)
+                }
+                else if (proName != null)
                 {
                     final int bookingId = user.getBookingRateId();
                     final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts = user.getDefaultTipAmounts();
@@ -229,7 +232,8 @@ public abstract class BaseActivity extends AppCompatActivity
         if (mOnBackPressedListener != null)
         {
             mOnBackPressedListener.onBack();
-        } else
+        }
+        else
         {
             super.onBackPressed();
         }
@@ -240,6 +244,10 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
+        if (PlayServicesUtils.isGooglePlayStoreAvailable())
+        {
+            PlayServicesUtils.handleAnyPlayServicesError(this);
+        }
         allowCallbacks = true;
     }
 

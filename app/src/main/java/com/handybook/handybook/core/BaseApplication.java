@@ -10,11 +10,13 @@ import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
@@ -57,6 +59,8 @@ public class BaseApplication extends MultiDexApplication
     StripeManager stripeManager;
     @Inject
     UserDataManager userDataManager;
+    @Inject
+    UrbanAirshipManager urbanAirshipManager;
 
     @Override
     public void onCreate()
@@ -74,7 +78,8 @@ public class BaseApplication extends MultiDexApplication
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
             NewRelic.withApplicationToken("AA7a37dccf925fd1e474142399691d1b6b3f84648b").start(this);
-        } else
+        }
+        else
         {
             NewRelic.withApplicationToken("AAbaf8c55fb9788d1664e82661d94bc18ea7c39aa6").start(this);
         }
@@ -88,7 +93,7 @@ public class BaseApplication extends MultiDexApplication
         {
             @Override
             public void onActivityCreated(final Activity activity,
-                    final Bundle savedInstanceState)
+                                          final Bundle savedInstanceState)
             {
                 bus.post(new ActivityEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
@@ -104,7 +109,8 @@ public class BaseApplication extends MultiDexApplication
                     if (!savedInstance)
                     {
                         mixpanel.trackEventAppOpened(true);
-                    } else
+                    }
+                    else
                     {
                         mixpanel.trackEventAppOpened(false);
                     }
@@ -144,6 +150,8 @@ public class BaseApplication extends MultiDexApplication
                 bus.post(new ActivityEvent.Destroyed(activity));
             }
         });
+
+        bus.post(new HandyEvent.ApplicationCreated(this));
     }
 
     public final void inject(final Object object)

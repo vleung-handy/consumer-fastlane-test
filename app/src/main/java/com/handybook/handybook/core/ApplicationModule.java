@@ -21,6 +21,7 @@ import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
@@ -106,7 +107,6 @@ import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
-import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -432,6 +432,15 @@ public final class ApplicationModule
     final StripeManager provideStripeManager(final Bus bus)
     {
         return new StripeManager(bus, mConfigs);
+    }
+
+    @Provides
+    @Singleton
+    final UrbanAirshipManager provideUrbanAirshipManager(final Bus bus,
+                                                         final UserManager userManager
+    )
+    {
+        return new UrbanAirshipManager(bus, userManager);
     }
 
     private String getDeviceId()
