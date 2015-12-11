@@ -12,7 +12,7 @@ import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.core.HelpNodeWrapper;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
@@ -125,9 +125,9 @@ class BookingPricesForFrequenciesHandyRetroFitCallback extends TypedHandyRetrofi
 }
 
 
-class ServiceExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingEditExtrasInfoResponse>
+class EditExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingEditExtrasInfoResponse>
 {
-    ServiceExtrasInfoHandyRetroFitCallback(DataManager.Callback callback)
+    EditExtrasInfoHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }

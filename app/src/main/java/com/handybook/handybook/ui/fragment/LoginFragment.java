@@ -358,7 +358,7 @@ public final class LoginFragment extends BookingFlowFragment
                                         LoginActivity.EXTRA_BOOKING_USER_NAME,
                                         userExistsResponse.getFirstName()
                                 );
-                                startActivityForResult(intent, ActivityResult.RESULT_LOGIN_FINISH);
+                                startActivityForResult(intent, ActivityResult.LOGIN_FINISH);
 
                                 progressDialog.dismiss();
                                 enableInputs();

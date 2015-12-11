@@ -31,6 +31,8 @@ import butterknife.ButterKnife;
 
 public final class ServicesFragment extends BookingFlowFragment
 {
+    private static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
+
     private Service mService;
 
     @Bind(R.id.content)
@@ -53,7 +55,9 @@ public final class ServicesFragment extends BookingFlowFragment
     public static ServicesFragment newInstance(final Service service)
     {
         final ServicesFragment fragment = new ServicesFragment();
-        fragment.mService = service;
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(EXTRA_SERVICE, service);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -65,6 +69,7 @@ public final class ServicesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_services, container, false);
 
         ButterKnife.bind(this, view);
+        mService = getArguments().getParcelable(EXTRA_SERVICE);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);

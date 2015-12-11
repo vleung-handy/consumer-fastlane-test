@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+
+
+        <LinearLayout
+            android:background="@drawable/bg_rounded_white"
+            android:clickable="true"
+            android:gravity="center"
+            android:layout_width="300dp"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="@dimen/default_margin_double"
+                android:gravity="center"
+                android:layout_height="@dimen/default_icon_size_double"
+                android:layout_width="@dimen/default_icon_size_double"
+                android:src="@drawable/ic_envelope"
+                android:layout_gravity="center"/>
+
+            <TextView
+                style="@style/TextView.XLarge.Bold"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:text="@string/email_cancellation_dialog_title"/>
+
+            <TextView
+                style="@style/TextView.Medium"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_double"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:layout_width="match_parent"
+                android:id="@+id/email_cancellation_info_text"
+                android:text="@string/email_cancellation_info_formatted"/>
+
+            <Button
+                android:background="@drawable/button_green_round_bottom"
+                style="@style/Button.Green"
+                android:id="@+id/next_button"
+                android:text="@string/email_cancellation_dialog_next_button"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+
+
+</RelativeLayout>

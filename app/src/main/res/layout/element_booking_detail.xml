@@ -2,133 +2,141 @@
 <com.handybook.handybook.ui.view.BookingDetailView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@color/handy_bg"
-    tools:showIn="@layout/fragment_booking_detail"
-    tools:context=".BookingDetailActivity">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".BookingDetailActivity"
+    tools:showIn="@layout/fragment_booking_detail">
 
     <RelativeLayout
-        android:id="@+id/nav_bar"
-        style="@style/RelativeLayout.NavBar">
+        style="@style/RelativeLayout.NavBar.Blue"
+        android:id="@+id/nav_bar">
 
         <ImageButton
             android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="@color/transparent"
-            android:scaleX="-1"
-            android:src="@drawable/ic_chevron"
-            android:padding="16dp"/>
+            android:src="@drawable/ic_back"
+            style="@style/NavBarButton.Back"/>
 
         <TextView
+            style="@style/TextView"
             android:id="@+id/nav_text"
-            style="@style/TextView"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentStart="false"
-            android:layout_marginLeft="48dp"
-            android:layout_marginStart="48dp"
             android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="Service Name"
-            android:textSize="18sp"/>
+            android:layout_toRightOf="@id/back_button"
+            android:layout_width="wrap_content"
+            android:textColor="@color/handy_white"
+            android:textSize="@dimen/text_size_large"
+            tools:text="Service Name"
+            />
 
         <TextView
-            android:id="@+id/booking_text"
             style="@style/TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/booking_text"
             android:layout_alignLeft="@+id/nav_text"
-            android:layout_alignParentLeft="false"
             android:layout_below="@+id/nav_text"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="#1000"
-            android:textColor="@color/black_pressed"
-            android:textSize="12sp"/>
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/handy_white"
+            android:textSize="@dimen/text_size_xsmall"
+            tools:text="#123456798"/>
+
+        <TextView
+            style="@style/TextView.XSmall.Bold"
+            android:clickable="true"
+            android:id="@+id/nav_help"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin_half"
+            android:layout_width="wrap_content"
+            android:padding="@dimen/default_padding_half"
+            android:text="@string/nav_help"
+            android:textAllCaps="true"
+            android:textColor="@color/handy_white"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
 
     </RelativeLayout>
 
+
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_below="@id/nav_bar"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
         >
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:layout_marginRight="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_width="match_parent"
                 >
 
                 <RelativeLayout
+                    android:background="@color/white"
                     android:id="@+id/date_section"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:background="@color/white"
+                    android:layout_width="match_parent"
                     android:paddingBottom="35dp"
                     android:paddingTop="50dp"
                     >
 
                     <TextView
-                        android:id="@+id/date_text"
                         style="@style/TextView.XLarge.Bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/date_text"
                         android:layout_centerHorizontal="true"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
-                        android:textSize="24sp"
+                        android:layout_width="wrap_content"
+                        android:textSize="@dimen/text_size_hero"
                         tools:text="Long Date Goes Here"
                         />
 
                     <TextView
-                        android:id="@+id/time_text"
                         style="@style/TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/time_text"
                         android:layout_below="@id/date_text"
                         android:layout_centerHorizontal="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
                         tools:text="Long Time"
                         />
 
                     <LinearLayout
+                        android:gravity="center_vertical"
                         android:id="@+id/freq_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_below="@id/time_text"
                         android:layout_centerHorizontal="true"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/icon_recur"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
                             android:contentDescription="@string/image_content_description_icon_recurring"
+                            android:id="@+id/icon_recur"
+                            android:layout_height="20dp"
+                            android:layout_width="20dp"
                             android:scaleX="-1"
                             android:src="@drawable/ic_recurring"/>
 
                         <TextView
-                            android:id="@+id/freq_text"
                             style="@style/TextView"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/freq_text"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="4dp"
                             android:layout_marginStart="4dp"
+                            android:layout_width="wrap_content"
                             android:textColor="@color/steel"
                             tools:text="Freq"/>
 
@@ -138,31 +146,31 @@
 
                 <com.handybook.handybook.ui.widget.ServiceIconImageView
                     android:id="@+id/service_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_cleaner_fill"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentTop="true"/>
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_cleaner_fill"/>
 
                 <LinearLayout
                     android:id="@+id/section_fragment_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_below="@id/date_section"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
                     android:orientation="vertical"
                     />
 
             </RelativeLayout>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="8dp"
                 android:contentDescription="@string/image_content_description_handy_logo"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:layout_width="wrap_content"
                 android:src="@drawable/ic_booking_detail_logo"/>
         </LinearLayout>
 

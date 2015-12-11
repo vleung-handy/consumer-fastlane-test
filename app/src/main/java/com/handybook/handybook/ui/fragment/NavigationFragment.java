@@ -22,16 +22,18 @@ import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.ui.activity.BookingsActivity;
-import com.handybook.handybook.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
 import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.simplealertdialog.SimpleAlertDialog;
 import com.simplealertdialog.SimpleAlertDialogSupportFragment;
 import com.squareup.otto.Subscribe;
@@ -155,6 +157,7 @@ public final class NavigationFragment extends InjectedFragment
         nameToResourceId.put(getString(R.string.home), R.id.nav_menu_home);
         nameToResourceId.put(getString(R.string.profile), R.id.nav_menu_profile);
         nameToResourceId.put(getString(R.string.my_bookings), R.id.nav_menu_my_bookings);
+        nameToResourceId.put(getString(R.string.payment), R.id.nav_menu_payment);
         nameToResourceId.put(getString(R.string.help), R.id.nav_menu_help);
         nameToResourceId.put(getString(R.string.promotions), R.id.nav_menu_promotions);
         nameToResourceId.put(getString(R.string.log_out), R.id.nav_menu_log_out);
@@ -240,6 +243,11 @@ public final class NavigationFragment extends InjectedFragment
                 {
                     activity.navigateToActivity(BookingsActivity.class);
                 }
+                else if (item.equalsIgnoreCase(getString(R.string.payment))
+                        && !getString(R.string.payment).equalsIgnoreCase(mSelectedItem))
+                {
+                    activity.navigateToActivity(UpdatePaymentActivity.class);
+                }
                 else if (item.equalsIgnoreCase(getString(R.string.help))
                         && !getString(R.string.help).equalsIgnoreCase(mSelectedItem))
                 {
@@ -313,7 +321,8 @@ public final class NavigationFragment extends InjectedFragment
 
     private void loadNavItems()
     {
-        final boolean userLoggedIn = mUserManager.getCurrentUser() != null;
+        final User currentUser = mUserManager.getCurrentUser();
+        final boolean userLoggedIn = currentUser != null;
 
         items.clear();
         items.add(getString(R.string.home));
@@ -322,13 +331,17 @@ public final class NavigationFragment extends InjectedFragment
         {
             items.add(getString(R.string.profile));
             items.add(getString(R.string.my_bookings));
+            if (currentUser.getStripeKey() != null)
+            {
+                items.add(getString(R.string.payment));
+            }
         }
 
         items.add(getString(R.string.help));
 
         items.add(getString(R.string.promotions));
 
-        if (mUserManager.getCurrentUser() != null)
+        if (userLoggedIn)
         {
             items.add(getString(R.string.log_out));
         }

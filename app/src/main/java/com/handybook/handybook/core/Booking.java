@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Booking implements Parcelable
+public class Booking implements Parcelable
 {
     public static final Comparator<? super Booking> COMPARATOR_DATE = new Comparator<Booking>()
     {
@@ -84,7 +84,7 @@ public final class Booking implements Parcelable
         return mCanEditExtras;
     }
 
-    public final String getId()
+    public String getId()
     {
         return mId;
     }
@@ -146,7 +146,7 @@ public final class Booking implements Parcelable
         return mServiceName;
     }
 
-    public final String getServiceMachineName()
+    public String getServiceMachineName()
     {
         return mServiceMachineName;
     }
@@ -300,7 +300,7 @@ public final class Booking implements Parcelable
         mPrice = price;
     }
 
-    public final Address getAddress()
+    public Address getAddress()
     {
         return mAddress;
     }
@@ -335,7 +335,7 @@ public final class Booking implements Parcelable
         return mPaymentInfo;
     }
 
-    public final ArrayList<ExtraInfo> getExtrasInfo()
+    public ArrayList<ExtraInfo> getExtrasInfo()
     {
         return mExtrasInfo;
     }
@@ -488,7 +488,7 @@ public final class Booking implements Parcelable
         return longValue;
     }
 
-    public static final class Address implements Parcelable
+    public static class Address implements Parcelable
     {
         @SerializedName("address1")
         private String address1;
@@ -501,7 +501,7 @@ public final class Booking implements Parcelable
         @SerializedName("zipcode")
         private String zip;
 
-        public final String getAddress1()
+        public String getAddress1()
         {
             return address1;
         }
@@ -541,7 +541,7 @@ public final class Booking implements Parcelable
             this.state = state;
         }
 
-        public final String getZip()
+        public String getZip()
         {
             return zip;
         }
@@ -753,7 +753,7 @@ public final class Booking implements Parcelable
     }
 
 
-    public static final class ExtraInfo implements Parcelable
+    public static class ExtraInfo implements Parcelable
     {
         @SerializedName("label")
         private String label;
@@ -811,7 +811,7 @@ public final class Booking implements Parcelable
             }
             else
             {
-                Crashlytics.log("ExtraInfo::getImageResource unsupported image name : " + extraInfoImageName.toString());
+                Crashlytics.log("ExtraInfo::getImageResource unsupported image name : " + String.valueOf(extraInfoImageName));
                 return 0;
             }
         }

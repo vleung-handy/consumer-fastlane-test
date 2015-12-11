@@ -12,6 +12,7 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
@@ -24,7 +25,7 @@ import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.core.HelpNodeWrapper;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
@@ -215,13 +216,28 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void getServiceExtras(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
+    public void editBookingAddress(final int bookingId,
+                                   final BookingEditAddressRequest bookingEditAddressRequest,
+                                   final Callback<SuccessWrapper> cb)
     {
-        mService.getServiceExtras(bookingId, new ServiceExtrasInfoHandyRetroFitCallback(cb));
+        mService.editBookingAddress(bookingId, bookingEditAddressRequest, new SuccessHandyRetroFitCallback(cb));
     }
 
     @Override
-    public void editServiceExtras(final int bookingId,
+    public void sendCancelRecurringBookingEmail(final int bookingRecurringId, final
+                                                Callback<SuccessWrapper> cb)
+    {
+        mService.sendCancelRecurringBookingEmail(bookingRecurringId, new SuccessHandyRetroFitCallback(cb));
+    }
+
+    @Override
+    public void getEditBookingExtrasInfo(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
+    {
+        mService.getEditExtrasInfo(bookingId, new EditExtrasInfoHandyRetroFitCallback(cb));
+    }
+
+    @Override
+    public void editBookingExtras(final int bookingId,
                                   final BookingEditExtrasRequest bookingEditExtrasRequest,
                                   final Callback<SuccessWrapper> cb)
     {
@@ -702,6 +718,18 @@ public final class BaseDataManager extends DataManager
             {
                 //TODO: auth token should not be set this way!
                 handleUserResponse(updateUserRequest.getUserId(), authToken, response, cb);
+            }
+        });
+    }
+
+    @Override
+    public void updatePayment(final String userId, final String token, final Callback<Void> cb)
+    {
+        mService.updatePaymentInfo(userId, token, new HandyRetrofitCallback(cb) {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
             }
         });
     }

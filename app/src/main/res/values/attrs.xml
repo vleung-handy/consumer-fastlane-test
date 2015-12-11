@@ -6,4 +6,7 @@
         <attr name="minLength" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="ThinIconButton">
+        <attr name="iconResourceId" format="reference" />
+    </declare-styleable>
 </resources>

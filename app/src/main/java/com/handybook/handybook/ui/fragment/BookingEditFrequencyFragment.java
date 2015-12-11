@@ -21,6 +21,7 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
@@ -31,8 +32,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
     @Bind(R.id.next_button)
     TextView mSaveButton;
-    @Bind(R.id.subtitle_text)
-    TextView mSubtitleText;
 
     private BookingEditFrequencyViewModel mBookingEditFrequencyViewModel;
     private BookingOptionsSelectView mOptionsView;
@@ -70,16 +69,13 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_frequency, container, false);
         ButterKnife.bind(this, view);
 
-        mSubtitleText.setText(R.string.how_often_should_come);
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            //TODO: investigate: onClick annotation (as used by edit hours) does not work
-            @Override
-            public void onClick(final View v)
-            {
-                sendEditFrequencyRequest();
-            }
-        });
         return view;
+    }
+
+    @OnClick(R.id.next_button)
+    public void onNextButtonClick()
+    {
+        sendEditFrequencyRequest();
     }
 
     public void sendEditFrequencyRequest()
@@ -113,13 +109,32 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         optionsLayout.addView(mOptionsView);
     }
 
+    private void setSaveButtonEnabled(boolean enabled)
+    {
+        mSaveButton.setEnabled(enabled);
+    }
+
+    @Override
+    protected void showUiBlockers()
+    {
+        super.showUiBlockers();
+        setSaveButtonEnabled(false);
+    }
+
+    @Override
+    protected void removeUiBlockers()
+    {
+        super.removeUiBlockers();
+        setSaveButtonEnabled(true);
+    }
+
     @Subscribe
     public final void onReceiveUpdateBookingFrequencySuccess(HandyEvent.ReceiveEditBookingFrequencySuccess event)
     {
         removeUiBlockers();
         showToast(R.string.updated_booking_frequency);
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 
@@ -127,10 +142,12 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     public final void onReceiveUpdateBookingFrequencyError(HandyEvent.ReceiveEditBookingFrequencyError event)
     {
         onReceiveErrorEvent(event);
+        removeUiBlockers(); //allow user to try again
     }
 
     @Subscribe
-    public final void onReceiveBookingPricesForFrequenciesSuccess(HandyEvent.ReceiveGetEditFrequencyViewModelSuccess event)
+    public final void onReceiveEditFrequencyViewModelSuccess(
+            HandyEvent.ReceiveGetEditFrequencyViewModelSuccess event)
     {
         mBookingEditFrequencyViewModel = event.bookingEditFrequencyViewModel;
         createOptionsView();
@@ -138,8 +155,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveBookingPricesForFrequenciesError(HandyEvent.ReceiveGetEditFrequencyViewModelError event)
+    public final void onReceiveEditFrequencyViewModelError(
+            HandyEvent.ReceiveGetEditFrequencyViewModelError event)
     {
         onReceiveErrorEvent(event);
+        setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 }

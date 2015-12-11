@@ -72,7 +72,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                     );
                     intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
                     intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTimeInMillis());
-                    startActivityForResult(intent, ActivityResult.RESULT_RESCHEDULE_NEW_DATE);
+                    startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
                 } else
                 {
                     rescheduleBooking(mRescheduleBooking, date.getTime(), false);
@@ -174,12 +174,12 @@ public final class BookingDateFragment extends BookingFlowFragment
             final Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ActivityResult.RESULT_RESCHEDULE_NEW_DATE)
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
         {
             final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
-            getActivity().setResult(ActivityResult.RESULT_RESCHEDULE_NEW_DATE, intent);
+            getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();
         }
     }
@@ -299,6 +299,11 @@ public final class BookingDateFragment extends BookingFlowFragment
 
     private void updateRequestDate(final DatePicker datePicker)
     {
+        //this function can be called after butterknife unbinds the views
+        //TODO: need to prevent listener from being called when view is unbound
+        //below line is needed to prevent NPE caused by above issue
+        if (datePicker == null || mGroovedTimePicker == null) return;
+
         final Calendar date = Calendar.getInstance();
         date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
         date.set(Calendar.MONTH, datePicker.getMonth());
@@ -311,7 +316,8 @@ public final class BookingDateFragment extends BookingFlowFragment
         if (mRescheduleBooking != null)
         {
             mRescheduleDate = newDate;
-        } else
+        }
+        else
         {
             final BookingRequest request = bookingManager.getCurrentRequest();
             request.setStartDate(newDate);

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
@@ -22,6 +21,7 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingEditNoteToProFragment extends BookingFlowFragment
 {
@@ -31,8 +31,6 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
 
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout;
-    @Bind(R.id.header_text)
-    TextView headerText;
     @Bind(R.id.next_button)
     Button nextButton;
 
@@ -64,17 +62,10 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
                                    final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_confirmation, container, false);   //TODO: Make this its own fragment?
+                .inflate(R.layout.fragment_booking_edit_note_to_pro, container, false);   //TODO: Make this its own fragment?
 
         ButterKnife.bind(this, view);
-
-        headerText.setText(getString(R.string.pro_to_know));
-
         initOptionsView();
-
-        nextButton.setText(R.string.update);
-        nextButton.setOnClickListener(nextClicked);
-
         return view;
     }
 
@@ -110,7 +101,7 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
         progressDialog.dismiss();
         showToast(R.string.updated_note_to_pro);
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 
@@ -122,17 +113,19 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
+    @OnClick(R.id.next_button)
+    public void onNextButtonClick()
     {
-        @Override
-        public void onClick(final View view)
-        {
-            disableInputs();
-            progressDialog.show();
-            int bookingId = Integer.parseInt(booking.getId());
-            bus.post(new HandyEvent.RequestUpdateBookingNoteToPro(bookingId, descriptionTransaction));
-        }
-    };
+        requestUpdateBookingNoteToPro();
+    }
+
+    private void requestUpdateBookingNoteToPro()
+    {
+        disableInputs();
+        progressDialog.show();
+        int bookingId = Integer.parseInt(booking.getId());
+        bus.post(new HandyEvent.RequestUpdateBookingNoteToPro(bookingId, descriptionTransaction));
+    }
 
     private final BookingOptionsView.OnUpdatedListener textUpdated
             = new BookingOptionsView.OnUpdatedListener()

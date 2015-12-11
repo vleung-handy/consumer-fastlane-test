@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -43,17 +44,16 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     TextView mBookingDurationText;
     @Bind(R.id.booking_edit_hours_options_view_container)
     LinearLayout mOptionsViewContainer; //TODO: can we use a stub, or replaceView instead?
-    @Bind(R.id.subtitle_text)
-    TextView mSubtitleText;
     @Bind(R.id.booking_edit_hours_billed_on_text)
     TextView mBilledOnText;
     @Bind(R.id.booking_edit_hours_container)
     ScrollView mContainer;
     @Bind(R.id.booking_edit_hours_apply_to_recurring_option_placeholder)
     ViewStub mApplyToRecurringOptionPlaceholder;
+    @Bind(R.id.next_button)
+    Button mSaveButton;
 
     private Booking mBooking;
-    private BookingEditHoursRequest mBookingEditHoursRequest;
 
     private BookingEditHoursViewModel mBookingEditHoursViewModel;
     private BookingOptionsSelectView mApplyToRecurringBookingsSelectView;
@@ -74,12 +74,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mixpanel.trackEventAppTrackExtras();
-        initRequestWrapper();
-    }
-
-    private void initRequestWrapper()
-    {
-        mBookingEditHoursRequest = new BookingEditHoursRequest();
     }
 
     @Override
@@ -88,13 +82,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         super.onResume();
         showUiBlockers();
         bus.post(new HandyEvent.RequestEditHoursInfoViewModel(Integer.parseInt(mBooking.getId())));
-    }
-
-    @Override
-    protected void removeUiBlockers()
-    {
-        super.removeUiBlockers();
-        mContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -112,9 +99,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     public void onViewCreated(final View view, final Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        mSubtitleText.setText(R.string.booking_edit_pro_assignment_warning);
-        //have to set text here because view was added using the <include> tag, which does not accept params
-
         if (mBooking.isRecurring())
         {
             //show the "apply to recurring bookings" option
@@ -135,11 +119,13 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     {
         showUiBlockers();
         float selectedHours = Float.parseFloat(mOptionsView.getCurrentValue());
-        mBookingEditHoursRequest.setNewBaseHrs(selectedHours);
-        mBookingEditHoursRequest.setApplyToRecurring(
+        BookingEditHoursRequest bookingEditHoursRequest = new BookingEditHoursRequest();
+        bookingEditHoursRequest.setNewBaseHrs(selectedHours);
+        bookingEditHoursRequest.setApplyToRecurring(
                 mApplyToRecurringBookingsSelectView != null
                         && mApplyToRecurringBookingsSelectView.getCheckedIndexes().length > 0);
-        bus.post(new HandyEvent.RequestEditHours(Integer.parseInt(mBooking.getId()), mBookingEditHoursRequest));
+        bus.post(new HandyEvent.RequestEditHours(
+                Integer.parseInt(mBooking.getId()), bookingEditHoursRequest));
     }
 
     private void initializeUiForEditHoursInfo()
@@ -252,6 +238,26 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         mOptionsViewContainer.addView(mOptionsView);
     }
 
+    private void setSaveButtonEnabled(boolean enabled)
+    {
+        mSaveButton.setEnabled(enabled);
+    }
+
+    @Override
+    protected void showUiBlockers()
+    {
+        super.showUiBlockers();
+        setSaveButtonEnabled(false);
+    }
+
+    @Override
+    protected void removeUiBlockers()
+    {
+        super.removeUiBlockers();
+        mContainer.setVisibility(View.VISIBLE);
+        setSaveButtonEnabled(true);
+    }
+
     @Subscribe
     public final void onReceiveEditHoursInfoSuccess(HandyEvent.ReceiveEditHoursInfoViewModelSuccess event)
     {
@@ -265,6 +271,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     public final void onReceiveEditHoursInfoError(HandyEvent.ReceiveEditHoursInfoViewModelError event)
     {
         onReceiveErrorEvent(event);
+        setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
     @Subscribe
@@ -272,15 +279,15 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     {
         showToast(getString(R.string.booking_edit_hours_update_success));
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
-        //TODO: booking details screen not calling onActivityResult() and updating the booking
     }
 
     @Subscribe
     public final void onReceiveEditHoursError(HandyEvent.ReceiveEditHoursError event)
     {
         onReceiveErrorEvent(event);
+        removeUiBlockers(); //allow user to try again
     }
 
 }

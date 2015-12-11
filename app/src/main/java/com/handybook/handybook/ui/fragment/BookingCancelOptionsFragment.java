@@ -137,7 +137,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
                         toast.show();
                     }
 
-                    getActivity().setResult(ActivityResult.RESULT_BOOKING_CANCELED, new Intent());
+                    getActivity().setResult(ActivityResult.BOOKING_CANCELED, new Intent());
                     getActivity().finish();
                 }
 

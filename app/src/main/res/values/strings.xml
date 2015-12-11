@@ -55,7 +55,11 @@
     <string name="apt_num">Apt #</string>
     <string name="complete_booking">Complete Booking</string>
     <string name="payment">Payment</string>
+    <string name="edit_payment">Edit Payment</string>
     <string name="credit_card_num">Credit Card Number</string>
+    <string name="formatted_last4">•••• %1$s</string>
+    <string name="error_payment_info_invalid">The credit card information you provided is invalid. Please make sure all the fields are correct.</string>
+    <string name="update_successful">Update successful</string>
     <string name="change">Change</string>
     <string name="mm_yy">MM/YY</string>
     <string name="credit_card">Credit Card</string>
@@ -169,13 +173,14 @@
     <string name="other_tip_amount">Other</string>
     <string name="no_tip_amount">None</string>
     <string name="tip_amount">Amount:</string>
+    <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
     <string name="thanks_for_leaving_a_tip">Thanks for leaving a tip!</string>
     <string name="set_dropoff">Set Drop-Off</string>
     <string name="email_receipt">Email Receipt</string>
     <string name="updated_note_to_pro">Note to pro updated</string>
     <string name="updated_entry_information">Entry information updated</string>
     <string name="pro_entry_information">How will your professional get in?</string>
-    <string name="pro_assignment_pending">Professional assignment pending</string>
+    <string name="pro_assignment_pending">Assignment pending</string>
     <string name="blank_string"></string>
     <string name="call">Call</string>
     <string name="text">Text</string>
@@ -277,6 +282,34 @@
     <string name="garbage_disposals_service_description">Dispose of that mesh strainer and start with a clean sink.</string>
     <string name="other_plumbing">Something else</string>
     <string name="other_plumbing_service_description">Have something more specific in mind? Tell us!</string>
-    <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
+    <string name="email_cancellation_info_formatted">Cancellation instructions were sent to %1$s.</string>
+    <string name="cancel_recurring_booking_title">Cancel Cleaning Plan</string>
+    <string name="cancel_regular_cleanings_subtitle">Which plan would you like to cancel?</string>
+    <string name="cancel_recurring_booking_none_to_cancel_error_msg">No cleaning plans to
+        cancel</string>
+    <string name="cancel_recurring_booking_option_entry_subtitle_formatted">Next recurrence
+        :\n%1$s</string>
+    <string name="menu_panic_title_cancel">Emergency cancel</string>
+    <string name="menu_panic_title_pro_late">My pro is late</string>
+    <string name="menu_panic_title_adjust_hours">Adjust hours</string>
+    <string name="menu_panic_title_help">Other issues</string>
+    <string name="nav_help">help</string>
 
+    <string name="select">Select</string>
+    <string name="email_cancellation_dialog_title">Check your email</string>
+    <string name="email_cancellation_dialog_next_button">Got It</string>
+    <string name="updated_booking_address">Updated booking address</string>
+    <string name="booking_edit_update_will_apply_subsequent_bookings">Your update will apply to all subsequent bookings.</string>
+    <string name="booking_edit_address_title">Edit Address</string>
+    <string name="booking_edit_note_to_pro_title">Edit Note to Pro</string>
+    <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
+    <string name="android_pay_unavailable">Android Pay is unavailable</string>
+    <string name="enter_credit_card">Enter a Credit Card</string>
+    <string name="apply_promo_code">Apply promo code</string>
+    <string name="booking_payment_android_pay_promo_savings_formatted">Use Android Pay to save %1$s now!</string>
+    <string name="android_pay_obfuscated_promo_code">ANDROIDPAY\u2022\u2022\u2022\u2022</string>
+    <string name="booking_payment_terms_of_use_agreement">By tapping the button below, I accept &lt;br>Handy\'s
+        &lt;a href="">Terms of Use&lt;/a></string>
+    <string name="handy_terms_of_use_title">Terms Of Use</string>
+    <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
 </resources>

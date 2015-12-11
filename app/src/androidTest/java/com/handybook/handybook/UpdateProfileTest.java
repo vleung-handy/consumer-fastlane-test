@@ -10,6 +10,7 @@ import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -58,10 +59,10 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         onView(withId(R.id.nav_menu_log_in)).perform(click());
 
         //input credentials
-        onView(withId(R.id.email_text)).perform(click()).
-                perform(typeText(mTestUser.getEmail()));
-        onView(withId(R.id.password_text)).perform(click()).
-                perform(typeText(mTestUser.getPassword()));
+        onView(withId(R.id.email_text)).
+                perform(click(), typeText(mTestUser.getEmail()), closeSoftKeyboard());
+        onView(withId(R.id.password_text)).
+                perform(click(), typeText(mTestUser.getPassword()), closeSoftKeyboard());
 
         //click the login button
         onView(withId(R.id.login_button)).perform(click());
@@ -82,10 +83,13 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         AppInteractionUtils.waitForProgressDialog();
 
         //replace the phone number text
-        onView(withId(R.id.phone_text)).perform(replaceText("9876543210"));
+        onView(withId(R.id.phone_text)).
+                perform(replaceText("9876543210"), closeSoftKeyboard());
 
-        onView(withId(R.id.old_password_text)).perform(click()).perform(typeText(mTestUser.getPassword()));
-        onView(withId(R.id.new_password_text)).perform(click()).perform(typeText("newpassword"));
+        onView(withId(R.id.old_password_text)).
+                perform(click(), typeText(mTestUser.getPassword()), closeSoftKeyboard());
+        onView(withId(R.id.new_password_text)).
+                perform(click(), typeText("newpassword"), closeSoftKeyboard());
 
         //press the update button
         onView(withId(R.id.update_button)).perform(click());

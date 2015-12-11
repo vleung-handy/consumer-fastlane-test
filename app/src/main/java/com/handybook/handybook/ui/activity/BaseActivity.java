@@ -84,7 +84,7 @@ public abstract class BaseActivity extends AppCompatActivity
         {
             mMixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
         }
-        mToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+        mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER, 0, 0);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setDelay(400);

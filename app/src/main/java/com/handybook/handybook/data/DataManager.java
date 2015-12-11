@@ -9,6 +9,7 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
@@ -21,7 +22,7 @@ import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.core.HelpNodeWrapper;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
@@ -42,15 +43,22 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
+    public abstract void editBookingAddress(int bookingId,
+                                            BookingEditAddressRequest bookingEditAddressRequest,
+                                            Callback<SuccessWrapper> cb);
+
+    public abstract void sendCancelRecurringBookingEmail(int bookingRecurringId,
+                                     Callback<SuccessWrapper> cb);
+
     public abstract void getServices(CacheResponse<List<Service>> cache,
                                      Callback<List<Service>> cb);
 
-    public abstract void getServiceExtras(int bookingId,
-                                     Callback<BookingEditExtrasInfoResponse> cb);
+    public abstract void getEditBookingExtrasInfo(int bookingId,
+                                                  Callback<BookingEditExtrasInfoResponse> cb);
 
-    public abstract void editServiceExtras(int bookingId,
+    public abstract void editBookingExtras(int bookingId,
                                            BookingEditExtrasRequest bookingEditExtrasRequest,
-                                          Callback<SuccessWrapper> cb);
+                                           Callback<SuccessWrapper> cb);
 
     public abstract void getEditHoursInfo(int bookingId,
                                            Callback<BookingEditHoursInfoResponse> cb);
@@ -201,6 +209,8 @@ public abstract class DataManager
                                     String authToken,
                                     Callback<User> cb);
 
+    public abstract void updatePayment(String userId, String token, Callback<Void> cb);
+
     public abstract void authFBUser(String fbid,
                                     String accessToken,
                                     String email,
@@ -257,13 +267,13 @@ public abstract class DataManager
         private final String message;
         private String[] invalidInputs;
 
-        DataManagerError(final Type type)
+        public DataManagerError(final Type type)
         {
             this.type = type;
             this.message = null;
         }
 
-        DataManagerError(final Type type, final String message)
+        public DataManagerError(final Type type, final String message)
         {
             this.type = type;
             this.message = message;

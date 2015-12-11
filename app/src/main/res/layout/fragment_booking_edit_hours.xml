@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:background="@color/handy_bg"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent">
+                android:layout_width="match_parent"
+    >
 
     <!--TODO: these are almost identical to the other edit screens, will make a template later-->
+    <com.handybook.handybook.ui.widget.BackButtonNavBar
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/booking_edit_hours_title"
+        />
+
     <Button
         style="@style/Button.Green"
+        android:textAllCaps="false"
         android:id="@+id/next_button"
         android:onClick="onSaveButtonPressed"
-        android:text="@string/save"/>
-
-    <TextView
-        style="@style/TextView.Navbar"
-        android:id="@+id/nav_text"
-        android:text="@string/booking_edit_hours_title"/>
+        android:text="@string/update"/>
 
     <ScrollView
         android:id="@+id/booking_edit_hours_container"
+        tools:visibility="visible"
         android:visibility="gone"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text"
+        android:layout_below="@id/nav_bar"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
         <LinearLayout
             android:orientation="vertical"
-            android:paddingTop="@dimen/default_padding_double"
             android:paddingBottom="@dimen/default_padding_double"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 
-            <include
-                android:id="@+id/subtitle_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                android:layout_marginBottom="@dimen/default_margin_double"
-                layout="@layout/view_centered_header_text"/>
+            <TextView
+                style="@style/TextView.CenteredHeader"
+                android:text="@string/booking_edit_pro_assignment_warning"
+                />
 
             <LinearLayout
                 android:orientation="vertical"

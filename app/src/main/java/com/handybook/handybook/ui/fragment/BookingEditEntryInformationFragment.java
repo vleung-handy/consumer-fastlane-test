@@ -142,7 +142,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         enableInputs();
         progressDialog.dismiss();
         showToast(R.string.updated_entry_information);
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 
@@ -180,6 +180,11 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
             @Override
             public void onUpdate(final BookingOptionsView view)
             {
+                //this function can be called after butterknife unbinds the views
+                //TODO: need to prevent listener from being called when view is unbound
+                //below line is needed to prevent NPE caused by above issue
+                if (keysText == null) return;
+
                 final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
 
                 entryInformationTransaction.setGetInId(index);
@@ -187,11 +192,13 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                 if (index == ENTRY_INFORMATION_HIDE_KEY)
                 {
                     keysText.setVisibility(View.VISIBLE);
-                } else
+                }
+                else
                 {
                     keysText.unHighlight();
                     keysText.setVisibility(View.GONE);
                 }
+
             }
 
             @Override

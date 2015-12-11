@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_panic_cancel"
+        android:title="@string/menu_panic_title_cancel"
+        />
+    <item
+        android:id="@+id/menu_panic_pro_late"
+        android:title="@string/menu_panic_title_pro_late"
+        />
+    <item
+        android:id="@+id/menu_panic_adjust_hours"
+        android:title="@string/menu_panic_title_adjust_hours"
+        />
+    <item
+        android:id="@+id/menu_panic_help"
+        android:title="@string/menu_panic_title_help"
+        />
+</menu>
