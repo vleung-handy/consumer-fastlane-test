@@ -114,7 +114,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     {
         BookingPaymentFragment fragmentSpy = spy(mFragment);
         when(mUserManager.getCurrentUser()).thenReturn(null);
-        BooleanResult booleanResult = new BooleanResult(Status.zzagz, true);
+        BooleanResult booleanResult = new BooleanResult(new Status(0), true);
         fragmentSpy.showPaymentMethodSelection(booleanResult);
         verify(fragmentSpy).showSelectPaymentLayout();
     }
@@ -122,7 +122,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldAutoApplyAndroidPayCouponWhenAndroidPayShown()
     {
-        MaskedWallet maskedWallet = MaskedWallet.zzIn().
+        MaskedWallet maskedWallet = MaskedWallet.zzIl().
                 setPaymentDescriptions(new String[]{"blah"}).
                 build();
 
