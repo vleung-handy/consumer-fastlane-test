@@ -9,15 +9,22 @@ public class StripeEvent
     public static class RequestCreateToken
     {
         private final Card mCard;
+        private final String mStripeKey;
 
-        public RequestCreateToken(final Card card)
+        public RequestCreateToken(final Card card, final String stripeKey)
         {
             mCard = card;
+            mStripeKey = stripeKey;
         }
 
         public Card getCard()
         {
             return mCard;
+        }
+
+        public String getStripeKey()
+        {
+            return mStripeKey;
         }
     }
 

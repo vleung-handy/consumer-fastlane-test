@@ -1,8 +1,5 @@
 package com.handybook.handybook.manager;
 
-import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.constant.ConfigKeys;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.event.StripeEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -30,7 +27,7 @@ public class StripeManager
     @Subscribe
     public void onRequestCreateToken(StripeEvent.RequestCreateToken event)
     {
-        new Stripe().createToken(event.getCard(), getStripeKey(), new TokenCallback()
+        new Stripe().createToken(event.getCard(), event.getStripeKey(), new TokenCallback()
         {
             @Override
             public void onSuccess(final Token token)
@@ -44,16 +41,6 @@ public class StripeManager
                 mBus.post(new StripeEvent.ReceiveCreateTokenError(error));
             }
         });
-    }
-
-    private String getStripeKey()
-    {
-        String stripeKey = mConfig.getProperty(ConfigKeys.STRIPE_PUBLISHABLE_KEY);
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
-        {
-            stripeKey = mConfig.getProperty(ConfigKeys.STRIPE_PUBLISHABLE_KEY_INTERNAL);
-        }
-        return stripeKey;
     }
 
 }

@@ -1,3 +1,4 @@
+
 package com.handybook.handybook.ui.fragment;
 
 import android.content.Intent;

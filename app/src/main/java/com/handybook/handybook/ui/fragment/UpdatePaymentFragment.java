@@ -108,7 +108,8 @@ public class UpdatePaymentFragment extends InjectedFragment
             progressDialog.show();
             final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                     mExpText.getExpYear(), mCvcText.getCVC());
-            bus.post(new StripeEvent.RequestCreateToken(card));
+            final String stripeKey = userManager.getCurrentUser().getStripeKey();
+            bus.post(new StripeEvent.RequestCreateToken(card, stripeKey));
         }
         else
         {
