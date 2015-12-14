@@ -1,30 +1,47 @@
 package com.handybook.handybook.module.notifications.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.common.eventbus.Subscribe;
 import com.handybook.handybook.R;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
-import com.handybook.handybook.module.notifications.model.HandyNotificationViewModel;
+import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.fragment.NotificationRecyclerViewAdapter;
+import com.handybook.handybook.ui.view.EmptiableRecyclerView;
 
-public class NotificationFeedFragment extends Fragment
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class NotificationFeedFragment extends InjectedFragment
+        implements SwipeRefreshLayout.OnRefreshListener
 {
 
     private static final String ARG_NOTIFICATIONS = "NOTIFICATIONS";
     private HandyNotification.List mNotifications;
 
+    @Bind(R.id.notification_feed_srl)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.notifications_feed_rv)
+    EmptiableRecyclerView mEmptiableRecyclerView;
+    @Bind(R.id.card_empty)
+    CardView mEmptyView;
+    @Bind(R.id.card_empty_text)
+    TextView mNoBookingsText;
+    private NotificationRecyclerViewAdapter mNotificationRecyclerViewAdapter;
+
     public NotificationFeedFragment()
     {
     }
 
-    public static NotificationFeedFragment newInstance(){
+    public static NotificationFeedFragment newInstance()
+    {
         NotificationFeedFragment fragment = new NotificationFeedFragment();
         return fragment;
 
@@ -40,35 +57,48 @@ public class NotificationFeedFragment extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null)
-        {
-            mNotifications = (HandyNotification.List) getArguments().getSerializable(ARG_NOTIFICATIONS);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_notification_feed, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView)
+        View root = inflater.inflate(R.layout.fragment_notification_feed, container, false);
+        ButterKnife.bind(this, root);
+        mNotificationRecyclerViewAdapter = new NotificationRecyclerViewAdapter(mNotifications);
+        mEmptiableRecyclerView.setAdapter(mNotificationRecyclerViewAdapter);
+        mEmptiableRecyclerView.setEmptyView(mEmptyView);
+        if (getArguments() != null)
         {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(
-                    new NotificationRecyclerViewAdapter(
-                            HandyNotificationViewModel.List.from(mNotifications)
-                    )
+            mNotificationRecyclerViewAdapter.mergeNotifications(
+                    (HandyNotification.List)getArguments().getSerializable(ARG_NOTIFICATIONS)
             );
         }
-        return view;
+
+        return root;
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        requestNotifications();
+    }
+
+    @Subscribe()
+    void onNotificationReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
+    {
+        mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
+    }
+
+
+    private void requestNotifications()
+    {
+        mSwipeRefreshLayout.setRefreshing(true);
+        bus.post(
+                new HandyEvent.RequestEvent.HandyNotificationsEvent(
+                        Long.parseLong(userManager.getCurrentUser().getId()),
+                        null,
+                        null,
+                        null
+                )
+        );
     }
 
 }
