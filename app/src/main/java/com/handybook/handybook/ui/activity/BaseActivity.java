@@ -18,17 +18,20 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.LocalizedMonetaryAmount;
-import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.ui.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
@@ -100,6 +103,21 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mBus.register(this);
+        getAvailableSplashPromo(); //TODO: test only, remove later
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        mBus.unregister(this);
+    }
+
+    @Override
     protected void onPostResume()
     {
         super.onPostResume();
@@ -141,13 +159,15 @@ public abstract class BaseActivity extends AppCompatActivity
                 if (addLaundryBookingId > 0 && !prefs.getBoolean("APP_LAUNDRY_INFO_SHOWN", false))
                 {
                     showLaundryInfoModal(addLaundryBookingId, user.getAuthToken());
-                } else if (laundryBookingId > 0)
+                }
+                else if (laundryBookingId > 0)
                 {
                     showLaundryDropOffModal(
                             laundryBookingId,
                             user.getAuthToken()
                     );
-                } else if (proName != null)
+                }
+                else if (proName != null)
                 {
                     final int bookingId = user.getBookingRateId();
                     final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts = user.getDefaultTipAmounts();
@@ -167,6 +187,34 @@ public abstract class BaseActivity extends AppCompatActivity
             {
             }
         });
+
+
+    }
+
+    //TODO: move somewhere else
+    private void getAvailableSplashPromo()
+    {
+        if(mUserManager.getCurrentUser() != null)
+        {
+            String userId =  mUserManager.getCurrentUser().getId();
+            mBus.post(new HandyEvent.RequestAvailableSplashPromo(userId));
+        }
+    }
+
+    //TODO: test only, move out of here
+    @Subscribe
+    public void onReceiveAvailableSplashPromoSuccess(final HandyEvent.ReceiveAvailableSplashPromoSuccess event)
+    {
+        //show the dialog
+        SplashPromoDialogFragment splashPromoDialogFragment =
+                SplashPromoDialogFragment.newInstance(event.splashPromo);
+        splashPromoDialogFragment.show(this.getSupportFragmentManager(), null);
+    }
+
+    @Subscribe
+    public void onReceiveAvailableSplashPromoError(final HandyEvent.ReceiveAvailableSplashPromoError event)
+    {
+        Toast.makeText(this, "error in fetching splash promo", Toast.LENGTH_SHORT).show();
     }
 
     private void showLaundryInfoModal(final int bookingId, final String authToken)

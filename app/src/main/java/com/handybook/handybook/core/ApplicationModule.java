@@ -16,12 +16,17 @@ import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
-import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
+import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
+import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
+import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
@@ -42,8 +47,6 @@ import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.CancelRecurringBookingActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
@@ -87,8 +90,6 @@ import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
 import com.handybook.handybook.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.ui.fragment.EmailCancellationDialogFragment;
-import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
-import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
@@ -106,7 +107,6 @@ import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
-import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -125,6 +125,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
+        BaseActivity.class,
         ServiceCategoriesFragment.class,
         LoginFragment.class,
         NavigationFragment.class,

@@ -12,29 +12,30 @@ import com.handybook.handybook.core.BookingCompleteTransaction;
 import com.handybook.handybook.core.BookingCoupon;
 import com.handybook.handybook.core.BookingOptionsWrapper;
 import com.handybook.handybook.core.BookingPostInfo;
-import com.handybook.handybook.model.request.BookingEditAddressRequest;
-import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
 import com.handybook.handybook.core.BookingQuote;
 import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingRequestablePros;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.model.request.BookingEditExtrasRequest;
-import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.core.LaundryDropInfo;
 import com.handybook.handybook.core.PromoCode;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
+import com.handybook.handybook.model.request.BookingEditExtrasRequest;
+import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.model.response.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
 
 import org.json.JSONArray;
@@ -213,6 +214,12 @@ public final class BaseDataManager extends DataManager
                 });
             }
         });
+    }
+
+    @Override
+    public void getAvailableSplashPromo(final String userId, final Callback<SplashPromo> cb)
+    {
+        mService.getAvailableSplashPromo(userId, new AvailableSplashPromoRetrofitCallback(cb));
     }
 
     @Override

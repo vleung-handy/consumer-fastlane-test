@@ -28,6 +28,9 @@ import retrofit.mime.TypedInput;
 
 public interface HandyRetrofitService
 {
+    @GET("/promos")
+    void getAvailableSplashPromo(@Query("user_id") String userId, HandyRetrofitCallback cb);
+
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(@Path("id") int bookingId,
                             @Body BookingEditAddressRequest bookingEditAddressRequest,

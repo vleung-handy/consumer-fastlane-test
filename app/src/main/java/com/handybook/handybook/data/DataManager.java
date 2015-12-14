@@ -31,6 +31,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.model.response.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
 
 import java.util.Date;
@@ -43,6 +44,8 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
+    public abstract void getAvailableSplashPromo(String userId, Callback<SplashPromo> cb);
+
     public abstract void editBookingAddress(int bookingId,
                                             BookingEditAddressRequest bookingEditAddressRequest,
                                             Callback<SuccessWrapper> cb);

@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingOptionsWrapper;
+import com.handybook.handybook.model.response.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.core.BookingProRequestResponse;
@@ -161,6 +162,14 @@ class UserExistsHandyRetrofitCallback extends TypedHandyRetrofitCallback<UserExi
     }
 }
 
+class AvailableSplashPromoRetrofitCallback extends TypedHandyRetrofitCallback<SplashPromo>
+{
+
+    AvailableSplashPromoRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
 
 class EmptyHandyRetroFitCallback extends TypedHandyRetrofitCallback<Void>
 {
