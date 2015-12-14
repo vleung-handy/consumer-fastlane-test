@@ -7,7 +7,6 @@ import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
@@ -23,8 +22,6 @@ import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
 import com.stripe.android.model.Token;
 
 import java.util.List;
-
-import retrofit.mime.TypedInput;
 
 public abstract class HandyEvent
 {
@@ -453,104 +450,6 @@ public abstract class HandyEvent
         public SetBookingDetailSectionFragmentActionControlsEnabled(boolean enabled)
         {
             this.enabled = enabled;
-        }
-    }
-
-
-    //Help Self Service Center
-    public static class RequestHelpNode extends HandyEvent
-    {
-        public String nodeId;
-        public String bookingId;
-
-        public RequestHelpNode(String nodeId, String bookingId)
-        {
-            this.nodeId = nodeId;
-            this.bookingId = bookingId;
-        }
-    }
-
-
-    public static class ReceiveHelpNodeSuccess extends ReceiveSuccessEvent
-    {
-        public HelpNode helpNode;
-
-        public ReceiveHelpNodeSuccess(HelpNode helpNode)
-        {
-            this.helpNode = helpNode;
-        }
-    }
-
-
-    public static class ReceiveHelpNodeError extends ReceiveErrorEvent
-    {
-        public ReceiveHelpNodeError(DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-
-    //Help Booking Node - help node associated with a particular booking
-    public static class RequestHelpBookingNode extends HandyEvent
-    {
-        public String nodeId;
-        public String bookingId;
-
-        public RequestHelpBookingNode(String nodeId, String bookingId)
-        {
-            this.nodeId = nodeId;
-            this.bookingId = bookingId;
-        }
-    }
-
-
-    public static class ReceiveHelpBookingNodeSuccess extends ReceiveSuccessEvent
-    {
-        public HelpNode helpNode;
-
-        public ReceiveHelpBookingNodeSuccess(HelpNode helpNode)
-        {
-            this.helpNode = helpNode;
-        }
-    }
-
-
-    public static class ReceiveHelpBookingNodeError extends ReceiveErrorEvent
-    {
-        public ReceiveHelpBookingNodeError(DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-
-    //Help Contact Message
-    @Track("pro help contact form submitted")
-    public static class RequestNotifyHelpContact extends HandyEvent
-    {
-        public TypedInput body;
-
-        public RequestNotifyHelpContact(TypedInput body)
-        {
-            this.body = body;
-        }
-    }
-
-
-    public static class ReceiveNotifyHelpContactSuccess extends ReceiveSuccessEvent
-    {
-        public ReceiveNotifyHelpContactSuccess()
-        {
-        }
-    }
-
-
-    public static class ReceiveNotifyHelpContactError extends ReceiveErrorEvent
-    {
-        public ReceiveNotifyHelpContactError(DataManager.DataManagerError error)
-        {
-            this.error = error;
         }
     }
 

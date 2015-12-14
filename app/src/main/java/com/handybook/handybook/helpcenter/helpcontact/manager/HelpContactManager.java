@@ -1,7 +1,7 @@
 package com.handybook.handybook.helpcenter.helpcontact.manager;
 
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -23,7 +23,7 @@ public class HelpContactManager
     }
 
     @Subscribe
-    public void onRequestNotifyHelpContact(HandyEvent.RequestNotifyHelpContact event)
+    public void onRequestNotifyHelpContact(HelpEvent.RequestNotifyHelpContact event)
     {
         TypedInput body = event.body;
 
@@ -32,13 +32,13 @@ public class HelpContactManager
             @Override
             public void onSuccess(Void response)
             {
-                bus.post(new HandyEvent.ReceiveNotifyHelpContactSuccess());
+                bus.post(new HelpEvent.ReceiveNotifyHelpContactSuccess());
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveNotifyHelpContactError(error));
+                bus.post(new HelpEvent.ReceiveNotifyHelpContactError(error));
             }
         });
     }
