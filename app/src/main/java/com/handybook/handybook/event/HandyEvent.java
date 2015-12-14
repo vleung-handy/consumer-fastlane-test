@@ -1,6 +1,5 @@
 package com.handybook.handybook.event;
 
-import android.app.Application;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
@@ -795,22 +794,6 @@ public abstract class HandyEvent
         public ReceiveUpdatePaymentError(final DataManager.DataManagerError error)
         {
             this.error = error;
-        }
-    }
-
-
-    public static class ApplicationCreated
-    {
-        private Application mApplication;
-
-        public ApplicationCreated(final Application application)
-        {
-            mApplication = application;
-        }
-
-        public Application getApplication()
-        {
-            return mApplication;
         }
     }
 }

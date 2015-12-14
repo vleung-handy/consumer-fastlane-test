@@ -440,7 +440,7 @@ public final class ApplicationModule
                                                          final UserManager userManager
     )
     {
-        return new UrbanAirshipManager(bus, userManager);
+        return new UrbanAirshipManager(mContext, bus, userManager);
     }
 
     private String getDeviceId()

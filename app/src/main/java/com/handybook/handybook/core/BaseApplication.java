@@ -10,7 +10,6 @@ import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.ActivityEvent;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.AppBlockManager;
@@ -150,8 +149,6 @@ public class BaseApplication extends MultiDexApplication
                 bus.post(new ActivityEvent.Destroyed(activity));
             }
         });
-
-        bus.post(new HandyEvent.ApplicationCreated(this));
     }
 
     public final void inject(final Object object)

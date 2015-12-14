@@ -1,13 +1,13 @@
 package com.handybook.handybook.manager;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -23,9 +23,13 @@ public class UrbanAirshipManager
     private UserManager mUserManager;
 
     @Inject
-    public UrbanAirshipManager(Bus bus, UserManager userManager)
+    public UrbanAirshipManager(Context context, Bus bus, UserManager userManager)
     {
         mUserManager = userManager;
+        if (!UAirship.isTakingOff() && !UAirship.isFlying())
+        {
+            startUrbanAirship((Application) context.getApplicationContext());
+        }
         bus.register(this);
     }
 
@@ -38,16 +42,7 @@ public class UrbanAirshipManager
         }
     }
 
-    @Subscribe
-    public void onApplicationCreated(HandyEvent.ApplicationCreated event)
-    {
-        if (!UAirship.isTakingOff() && !UAirship.isFlying())
-        {
-            startUrbanAirship(event.getApplication());
-        }
-    }
-
-    protected void startUrbanAirship(final Application application)
+    private void startUrbanAirship(final Application application)
     {
         final AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(application);
         options.inProduction = BuildConfig.FLAVOR.equalsIgnoreCase(BaseApplication.FLAVOR_PROD);
