@@ -141,13 +141,15 @@ public abstract class BaseActivity extends AppCompatActivity
                 if (addLaundryBookingId > 0 && !prefs.getBoolean("APP_LAUNDRY_INFO_SHOWN", false))
                 {
                     showLaundryInfoModal(addLaundryBookingId, user.getAuthToken());
-                } else if (laundryBookingId > 0)
+                }
+                else if (laundryBookingId > 0)
                 {
                     showLaundryDropOffModal(
                             laundryBookingId,
                             user.getAuthToken()
                     );
-                } else if (proName != null)
+                }
+                else if (proName != null)
                 {
                     final int bookingId = user.getBookingRateId();
                     final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts = user.getDefaultTipAmounts();
@@ -230,7 +232,8 @@ public abstract class BaseActivity extends AppCompatActivity
         if (mOnBackPressedListener != null)
         {
             mOnBackPressedListener.onBack();
-        } else
+        }
+        else
         {
             super.onBackPressed();
         }
