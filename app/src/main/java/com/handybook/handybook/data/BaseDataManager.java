@@ -1,6 +1,7 @@
 package com.handybook.handybook.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import com.google.gson.Gson;
@@ -35,6 +36,7 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
 import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -255,6 +257,24 @@ public final class BaseDataManager extends DataManager
                         blockedWrapperCallback.onSuccess(blockedWrapper);
                     }
                 });
+    }
+
+    @Override
+    public void getNotifications(
+            long userId,
+            @Nullable final Long count,
+            @Nullable final Long sinceId,
+            @Nullable final Long untilId,
+            @NonNull final Callback<HandyNotification.ResultSet> cb
+    )
+    {
+        mService.getNotificationResultSet(
+                userId,
+                count,
+                sinceId,
+                untilId,
+                new HandyNotificationResultSetHandyRetrofitCallback(cb)
+        );
     }
 
     @Override

@@ -205,6 +205,16 @@ public interface HandyRetrofitService
     void updateUserInfo(@Path("user") String userId, @Body UpdateUserRequest req,
                         HandyRetrofitCallback cb);
 
+    // Notification Feed
+    @POST("/users/{user_id}/notifications")
+    void getNotificationResultSet(
+            @Path("user_id") long userId,
+            @Query("count") Long count,
+            @Query("since_id") Long sinceId,
+            @Query("until_id") Long untilId,
+            HandyRetrofitCallback cb
+            );
+
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
 
