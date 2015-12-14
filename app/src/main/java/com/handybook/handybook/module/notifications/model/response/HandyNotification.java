@@ -13,26 +13,55 @@ public class HandyNotification implements Serializable, Parcelable
 {
     @SerializedName("id")
     private long mId;
-    @SerializedName("type")
-    private HandyNotificationType mType;
     @SerializedName("title")
     private String mTitle;
     @SerializedName("body")
     private String mBody;
+    @SerializedName("html_body")
+    private String mHtmlBody;
+    @SerializedName("type")
+    private HandyNotificationType mType;
     @SerializedName("created_at")
     private Calendar mCreatedAt;
     @SerializedName("expires_at")
     private Calendar mExpiresAt;
-    @SerializedName("priority")
-    private long mPriority;
+    @SerializedName("available")
+    private boolean mAvailable;
     @SerializedName("read_status")
-    private long mReadStatus;
+    private boolean mReadStatus;
     @SerializedName("images")
     private Image[] mImages;
     @SerializedName("actions")
     private Action[] mActions;
 
-    private HandyNotification() {}//Only server can create notifications
+    private HandyNotification() {} //Only server can create notifications
+
+    protected HandyNotification(Parcel in)
+    {
+        mId = in.readLong();
+        mTitle = in.readString();
+        mBody = in.readString();
+        mHtmlBody = in.readString();
+        mAvailable = in.readByte() != 0;
+        mReadStatus = in.readByte() != 0;
+        mImages = in.createTypedArray(Image.CREATOR);
+        mActions = in.createTypedArray(Action.CREATOR);
+    }
+
+    public static final Creator<HandyNotification> CREATOR = new Creator<HandyNotification>()
+    {
+        @Override
+        public HandyNotification createFromParcel(Parcel in)
+        {
+            return new HandyNotification(in);
+        }
+
+        @Override
+        public HandyNotification[] newArray(int size)
+        {
+            return new HandyNotification[size];
+        }
+    };
 
     public long getId()
     {
@@ -54,6 +83,11 @@ public class HandyNotification implements Serializable, Parcelable
         return mBody;
     }
 
+    public String getHtmlBody()
+    {
+        return mHtmlBody;
+    }
+
     public Calendar getCreatedAt()
     {
         return mCreatedAt;
@@ -64,12 +98,7 @@ public class HandyNotification implements Serializable, Parcelable
         return mExpiresAt;
     }
 
-    public long getPriority()
-    {
-        return mPriority;
-    }
-
-    public long getReadStatus()
+    public boolean getReadStatus()
     {
         return mReadStatus;
     }
@@ -84,51 +113,29 @@ public class HandyNotification implements Serializable, Parcelable
         return mActions;
     }
 
-
     @Override
-    public int describeContents() { return 0; }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags)
+    public int describeContents()
     {
-        dest.writeLong(this.mId);
-        dest.writeInt(this.mType == null ? -1 : this.mType.ordinal());
-        dest.writeString(this.mTitle);
-        dest.writeString(this.mBody);
-        dest.writeSerializable(this.mCreatedAt);
-        dest.writeSerializable(this.mExpiresAt);
-        dest.writeLong(this.mPriority);
-        dest.writeLong(this.mReadStatus);
-        dest.writeParcelableArray(this.mImages, 0);
-        dest.writeParcelableArray(this.mActions, 0);
+        return 0;
     }
 
-    protected HandyNotification(Parcel in)
+    @Override
+    public void writeToParcel(final Parcel dest, final int flags)
     {
-        this.mId = in.readLong();
-        int tmpMType = in.readInt();
-        this.mType = tmpMType == -1 ? null : HandyNotificationType.values()[tmpMType];
-        this.mTitle = in.readString();
-        this.mBody = in.readString();
-        this.mCreatedAt = (Calendar) in.readSerializable();
-        this.mExpiresAt = (Calendar) in.readSerializable();
-        this.mPriority = in.readLong();
-        this.mReadStatus = in.readLong();
-        this.mImages = (Image[]) in.readParcelableArray(Image.class.getClassLoader());
-        this.mActions = (Action[]) in.readParcelableArray(Action.class.getClassLoader());
+        dest.writeLong(mId);
+        dest.writeString(mTitle);
+        dest.writeString(mBody);
+        dest.writeString(mHtmlBody);
+        dest.writeByte((byte) (mAvailable ? 1 : 0));
+        dest.writeByte((byte) (mReadStatus ? 1 : 0));
+        dest.writeTypedArray(mImages, flags);
+        dest.writeTypedArray(mActions, flags);
     }
-
-    public static final Creator<HandyNotification> CREATOR = new Creator<HandyNotification>()
-    {
-        public HandyNotification createFromParcel(Parcel source) {return new HandyNotification(source);}
-
-        public HandyNotification[] newArray(int size) {return new HandyNotification[size];}
-    };
 
 
     /**
      * List of HandyNotifications
-     * <p>
+     * <p/>
      * Currently implemented as ArrayList
      */
     public static class List extends ArrayList<HandyNotification> implements Serializable {}
@@ -136,19 +143,63 @@ public class HandyNotification implements Serializable, Parcelable
 
     public enum HandyNotificationType implements Serializable
     {
-        @SerializedName("notification")
+        @SerializedName(Constants.TYPE_STRING_NOTIFICATION)
         NOTIFICATION,
-        @SerializedName("promo")
-        PROMO
+        @SerializedName(Constants.TYPE_STRING_PROMO)
+        PROMO,
+        @SerializedName(Constants.TYPE_STRING_INVALID)
+        INVALID;
+
+        public static HandyNotificationType from(final String string)
+        {
+            switch (string)
+            {
+                case Constants.TYPE_STRING_NOTIFICATION:
+                    return NOTIFICATION;
+                case Constants.TYPE_STRING_PROMO:
+                    return PROMO;
+                default:
+                    return INVALID;
+            }
+        }
+
+        public static class Constants
+        {
+            public static final String TYPE_STRING_NOTIFICATION = "notification";
+            public static final String TYPE_STRING_PROMO = "promo";
+            public static final String TYPE_STRING_INVALID = "invalid";
+        }
     }
 
 
     public enum HandyNotificationActionType implements Serializable
     {
-        @SerializedName("notification")
+        @SerializedName(Constants.TYPE_STRING_NOTIFICATION)
         NOTIFICATION,
-        @SerializedName("call_to_action")
-        CALL_TO_ACTION
+        @SerializedName(Constants.TYPE_STRING_CALL_TO_ACTION)
+        CALL_TO_ACTION,
+        @SerializedName(Constants.TYPE_STRING_INVALID)
+        INVALID;
+
+        public static HandyNotificationActionType from(final String string)
+        {
+            switch (string)
+            {
+                case Constants.TYPE_STRING_NOTIFICATION:
+                    return NOTIFICATION;
+                case Constants.TYPE_STRING_CALL_TO_ACTION:
+                    return CALL_TO_ACTION;
+                default:
+                    return INVALID;
+            }
+        }
+
+        public static class Constants
+        {
+            public static final String TYPE_STRING_NOTIFICATION = "notification";
+            public static final String TYPE_STRING_CALL_TO_ACTION = "call_to_action";
+            public static final String TYPE_STRING_INVALID = "invalid";
+        }
     }
 
 
@@ -204,10 +255,30 @@ public class HandyNotification implements Serializable, Parcelable
         private HandyNotificationActionType mType;
         @SerializedName("text")
         private String mText;
-        @SerializedName("booking_id")
-        private Long mBookingId;
 
         private Action() {} //No-one is allowed! Only GSON
+
+        protected Action(Parcel in)
+        {
+            mDeeplink = in.readString();
+            mText = in.readString();
+            mType = HandyNotificationActionType.from(in.readString());
+        }
+
+        public static final Creator<Action> CREATOR = new Creator<Action>()
+        {
+            @Override
+            public Action createFromParcel(Parcel in)
+            {
+                return new Action(in);
+            }
+
+            @Override
+            public Action[] newArray(int size)
+            {
+                return new Action[size];
+            }
+        };
 
         public String getDeeplink()
         {
@@ -224,38 +295,18 @@ public class HandyNotification implements Serializable, Parcelable
             return mText;
         }
 
-        public Long getBookingId()
+        @Override
+        public int describeContents()
         {
-            return mBookingId;
+            return 0;
         }
 
         @Override
-        public int describeContents() { return 0; }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags)
+        public void writeToParcel(final Parcel dest, final int flags)
         {
-            dest.writeString(this.mDeeplink);
-            dest.writeInt(this.mType == null ? -1 : this.mType.ordinal());
-            dest.writeString(this.mText);
-            dest.writeValue(this.mBookingId);
+            dest.writeString(mDeeplink);
+            dest.writeString(mText);
         }
-
-        protected Action(Parcel in)
-        {
-            this.mDeeplink = in.readString();
-            int tmpMType = in.readInt();
-            this.mType = tmpMType == -1 ? null : HandyNotificationActionType.values()[tmpMType];
-            this.mText = in.readString();
-            this.mBookingId = (Long) in.readValue(Long.class.getClassLoader());
-        }
-
-        public static final Parcelable.Creator<Action> CREATOR = new Parcelable.Creator<Action>()
-        {
-            public Action createFromParcel(Parcel source) {return new Action(source);}
-
-            public Action[] newArray(int size) {return new Action[size];}
-        };
     }
 
 
