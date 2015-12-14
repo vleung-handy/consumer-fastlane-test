@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/notification_container"
-        style="@style/HandyNotification.Container">
+        style="@style/HandyNotification.Container.LinearLayout">
 
 
         <LinearLayout
@@ -18,14 +18,20 @@
             >
 
             <ImageView
-                android:id="@+id/notification_icon"
+                android:id="@+id/notification_card_icon"
                 tools:src="@drawable/ic_star"
-                style="@style/HandyNotification.Icon"/>
+                style="@style/HandyNotification.Image.Icon"/>
 
             <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    style="@style/HandyNotification.TextView.Title"
+                    android:id="@+id/notification_card_title"
+                    tools:text="Please rate your pro"
+                    />
 
                 <TextView
                     style="@style/HandyNotification.TextView.Body"

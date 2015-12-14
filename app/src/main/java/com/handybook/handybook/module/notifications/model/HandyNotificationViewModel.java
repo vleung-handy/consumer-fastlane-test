@@ -58,6 +58,11 @@ public class HandyNotificationViewModel
         return DATE_FORMAT.format(mHandyNotification.getCreatedAt().getTime());
     }
 
+    public HandyNotification.HandyNotificationType getType()
+    {
+        return mHandyNotification.getType();
+    }
+
 
     public static class List extends ArrayList<HandyNotificationViewModel>
     {
@@ -71,4 +76,5 @@ public class HandyNotificationViewModel
             return notificationViewModelList;
         }
     }
+
 }
