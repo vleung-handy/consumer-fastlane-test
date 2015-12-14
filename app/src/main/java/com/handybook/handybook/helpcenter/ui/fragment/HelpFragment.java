@@ -13,9 +13,9 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.NavigationManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
+import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.view.HelpBannerView;
@@ -157,10 +157,10 @@ public final class HelpFragment extends InjectedFragment
             progressDialog.show();
             if (nodeIsBooking)
             {
-                bus.post(new HandyEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
+                bus.post(new HelpEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
             } else
             {
-                bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
+                bus.post(new HelpEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
             }
         } else
         {
@@ -170,25 +170,25 @@ public final class HelpFragment extends InjectedFragment
 
     //Event Listeners
     @Subscribe
-    public void onReceiveHelpNodeSuccess(HandyEvent.ReceiveHelpNodeSuccess event)
+    public void onReceiveHelpNodeSuccess(HelpEvent.ReceiveHelpNodeSuccess event)
     {
         onHelpNodeSuccess(event.helpNode);
     }
 
     @Subscribe
-    public void onReceiveHelpNodeError(HandyEvent.ReceiveHelpNodeError event)
+    public void onReceiveHelpNodeError(HelpEvent.ReceiveHelpNodeError event)
     {
         onHelpNodeError();
     }
 
     @Subscribe
-    public void onReceiveHelpBookingNodeSuccess(HandyEvent.ReceiveHelpBookingNodeSuccess event)
+    public void onReceiveHelpBookingNodeSuccess(HelpEvent.ReceiveHelpBookingNodeSuccess event)
     {
         onHelpNodeSuccess(event.helpNode);
     }
 
     @Subscribe
-    public void onReceiveHelpBookingNodeError(HandyEvent.ReceiveHelpBookingNodeError event)
+    public void onReceiveHelpBookingNodeError(HelpEvent.ReceiveHelpBookingNodeError event)
     {
         onHelpNodeError();
     }
@@ -257,10 +257,10 @@ public final class HelpFragment extends InjectedFragment
         progressDialog.show();
         if (nodeIsBooking)
         {
-            bus.post(new HandyEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
+            bus.post(new HelpEvent.RequestHelpBookingNode(nodeIdToRequest, currentBookingId));
         } else
         {
-            bus.post(new HandyEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
+            bus.post(new HelpEvent.RequestHelpNode(nodeIdToRequest, currentBookingId));
         }
     }
 
@@ -269,10 +269,10 @@ public final class HelpFragment extends InjectedFragment
         progressDialog.show();
         if (childNode.getType().equals(HelpNode.HelpNodeType.BOOKING))
         {
-            bus.post(new HandyEvent.RequestHelpBookingNode(Integer.toString(childNode.getId()), currentBookingId));
+            bus.post(new HelpEvent.RequestHelpBookingNode(Integer.toString(childNode.getId()), currentBookingId));
         } else
         {
-            bus.post(new HandyEvent.RequestHelpNode(Integer.toString(childNode.getId()), currentBookingId));
+            bus.post(new HelpEvent.RequestHelpNode(Integer.toString(childNode.getId()), currentBookingId));
         }
     }
 

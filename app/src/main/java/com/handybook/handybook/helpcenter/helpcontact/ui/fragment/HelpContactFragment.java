@@ -11,8 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.ui.view.HelpContactView;
+import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.helpcenter.ui.view.HelpBannerView;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
@@ -177,7 +177,7 @@ public final class HelpContactFragment extends InjectedFragment
 
         progressDialog.show();
 
-        bus.post(new HandyEvent.RequestNotifyHelpContact(body));
+        bus.post(new HelpEvent.RequestNotifyHelpContact(body));
     }
 
     private HashMap<String, String> extractDispositions(HelpNode node)
@@ -207,7 +207,7 @@ public final class HelpContactFragment extends InjectedFragment
 
     //Event Listeners
     @Subscribe
-    public void onReceiveNotifyHelpContactSuccess(HandyEvent.ReceiveNotifyHelpContactSuccess event)
+    public void onReceiveNotifyHelpContactSuccess(HelpEvent.ReceiveNotifyHelpContactSuccess event)
     {
         progressDialog.dismiss();
 //        if (bookingId == null || bookingId.isEmpty())
@@ -223,7 +223,7 @@ public final class HelpContactFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onReceiveNotifyHelpContactError(HandyEvent.ReceiveNotifyHelpContactError event)
+    public void onReceiveNotifyHelpContactError(HelpEvent.ReceiveNotifyHelpContactError event)
     {
         progressDialog.dismiss();
         showToast(getString(R.string.an_error_has_occurred));
