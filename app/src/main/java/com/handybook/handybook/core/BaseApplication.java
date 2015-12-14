@@ -16,6 +16,7 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.module.notifications.manager.NotificationManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
@@ -56,6 +57,8 @@ public class BaseApplication extends MultiDexApplication
     PrefsManager prefsManager;
     @Inject
     AppBlockManager appBlockManager;
+    @Inject
+    NotificationManager mNotificationManager;
 
 
     @Override

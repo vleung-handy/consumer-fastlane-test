@@ -20,6 +20,8 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.HelpContactManager;
 import com.handybook.handybook.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.module.notifications.manager.NotificationManager;
+import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
@@ -196,6 +198,7 @@ import retrofit.converter.GsonConverter;
         NotificationsActivity.class,
         BlockingUpdateFragment.class,
         TipDialogFragment.class,
+        NotificationFeedFragment.class,
 })
 public final class ApplicationModule
 {
@@ -306,7 +309,7 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final DataManager provideDataManager(final HandyRetrofitService service,
-            final HandyRetrofitEndpoint endpoint,
+                                         final HandyRetrofitEndpoint endpoint,
                                          final PrefsManager prefsManager)
     {
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
@@ -337,9 +340,10 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final BookingManager provideBookingManager(final Bus bus,
-                                               final PrefsManager prefsManager,
-                                               final DataManager dataManager
+    final BookingManager provideBookingManager(
+            final Bus bus,
+            final PrefsManager prefsManager,
+            final DataManager dataManager
     )
     {
         return new BookingManager(bus, prefsManager, dataManager);
@@ -347,8 +351,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final UserManager provideUserManager(final Bus bus,
-                                         final PrefsManager prefsManager)
+    final UserManager provideUserManager(
+            final Bus bus,
+            final PrefsManager prefsManager)
     {
         return new UserManager(bus, prefsManager);
     }
@@ -368,18 +373,20 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final NavigationManager provideNavigationManager(final UserManager userManager,
-                                                     final DataManager dataManager,
-                                                     final DataManagerErrorHandler dataManagerErrorHandler)
+    final NavigationManager provideNavigationManager(
+            final UserManager userManager,
+            final DataManager dataManager,
+            final DataManagerErrorHandler dataManagerErrorHandler)
     {
         return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
     }
 
     @Provides
     @Singleton
-    final HelpManager provideHelpManager(final Bus bus,
-                                         final DataManager dataManager,
-                                         final UserManager userManager
+    final HelpManager provideHelpManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final UserManager userManager
     )
     {
         return new HelpManager(bus, dataManager, userManager);
@@ -387,8 +394,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HelpContactManager provideHelpContactManager(final Bus bus,
-                                                       final DataManager dataManager
+    final HelpContactManager provideHelpContactManager(
+            final Bus bus,
+            final DataManager dataManager
     )
     {
         return new HelpContactManager(bus, dataManager);
@@ -430,4 +438,15 @@ public final class ApplicationModule
             return manufacturer + " " + model;
         }
     }
+
+    @Provides
+    @Singleton
+    final NotificationManager provideNotificationManager(
+            final Bus bus,
+            final DataManager dataManager
+    )
+    {
+        return new NotificationManager(bus, dataManager);
+    }
+
 }
