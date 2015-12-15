@@ -268,7 +268,7 @@
             />
 
         <receiver
-            android:name=".receiver.PushReceiver"
+            android:name=".module.push.receiver.PushReceiver"
             android:exported="false"
             >
 

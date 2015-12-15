@@ -1,16 +1,16 @@
-package com.handybook.handybook.manager;
+package com.handybook.handybook.module.push.manager;
 
 import android.app.Application;
 import android.content.Context;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.NotificationActions;
+import com.handybook.handybook.module.push.action.PushActionConstants;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.UserLoggedInEvent;
-import com.handybook.handybook.util.NotificationActionUtils;
+import com.handybook.handybook.module.push.action.PushActionWidgets;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.urbanairship.AirshipConfigOptions;
@@ -81,8 +81,8 @@ public class UrbanAirshipManager
     private void setNotificationActionButtons(final UAirship airship)
     {
         airship.getPushManager()
-                .addNotificationActionButtonGroup(NotificationActions.ACTION_GROUP_CONTACT,
-                        NotificationActionUtils.getContactActionButtonGroup());
+                .addNotificationActionButtonGroup(PushActionConstants.ACTION_GROUP_CONTACT,
+                        PushActionWidgets.createContactActionButtonGroup());
     }
 
     private NotificationFactory getNotificationFactory(final Application application)

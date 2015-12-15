@@ -15,7 +15,7 @@ import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
-import com.handybook.handybook.manager.UrbanAirshipManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;

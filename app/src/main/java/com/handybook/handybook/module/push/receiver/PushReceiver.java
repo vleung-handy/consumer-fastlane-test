@@ -1,8 +1,8 @@
-package com.handybook.handybook.receiver;
+package com.handybook.handybook.module.push.receiver;
 
 import android.content.Context;
 
-import com.handybook.handybook.util.NotificationActionUtils;
+import com.handybook.handybook.module.push.action.PushActionHandler;
 import com.urbanairship.push.BaseIntentReceiver;
 import com.urbanairship.push.PushMessage;
 
@@ -46,7 +46,7 @@ public class PushReceiver extends BaseIntentReceiver
                                                  final String action,
                                                  final boolean b)
     {
-        return NotificationActionUtils.handleAction(context, action, pushMessage.getPushBundle());
+        return PushActionHandler.handleAction(context, action, pushMessage.getPushBundle());
     }
 
 }

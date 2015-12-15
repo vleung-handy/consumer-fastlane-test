@@ -1,38 +1,15 @@
-package com.handybook.handybook.util;
+package com.handybook.handybook.module.push.action;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.constant.NotificationActions;
-import com.urbanairship.push.notifications.NotificationActionButton;
-import com.urbanairship.push.notifications.NotificationActionButtonGroup;
+import com.handybook.handybook.util.Utils;
 
-public class NotificationActionUtils
+public class PushActionHandler
 {
-    public static NotificationActionButtonGroup getContactActionButtonGroup()
-    {
-        NotificationActionButton contactCallButton =
-                new NotificationActionButton.Builder(NotificationActions.ACTION_CONTACT_CALL)
-                .setLabel(R.string.call)
-                .setIcon(R.drawable.ic_phone)
-                .build();
-
-        NotificationActionButton contactTextButton =
-                new NotificationActionButton.Builder(NotificationActions.ACTION_CONTACT_TEXT)
-                .setLabel(R.string.text)
-                .setIcon(R.drawable.ic_sms)
-                .build();
-
-        return new NotificationActionButtonGroup.Builder()
-                .addNotificationActionButton(contactCallButton)
-                .addNotificationActionButton(contactTextButton)
-                .build();
-    }
-
     public static boolean handleAction(final Context context,
                                        final String action,
                                        final Bundle arguments)
@@ -40,9 +17,9 @@ public class NotificationActionUtils
         final String bookingPhone = arguments.getString(BundleKeys.BOOKING_PHONE);
         switch (action)
         {
-            case NotificationActions.ACTION_CONTACT_CALL:
+            case PushActionConstants.ACTION_CONTACT_CALL:
                 return handleContactCallAction(context, bookingPhone);
-            case NotificationActions.ACTION_CONTACT_TEXT:
+            case PushActionConstants.ACTION_CONTACT_TEXT:
                 return handleContactTextAction(context, bookingPhone);
         }
         return false;

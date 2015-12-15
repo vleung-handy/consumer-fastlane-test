@@ -21,7 +21,7 @@ import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
-import com.handybook.handybook.manager.UrbanAirshipManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;

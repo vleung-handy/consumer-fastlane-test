@@ -1,6 +1,6 @@
-package com.handybook.handybook.constant;
+package com.handybook.handybook.module.push.action;
 
-public class NotificationActions
+public class PushActionConstants
 {
     public static final String ACTION_CONTACT_CALL = "call";
     public static final String ACTION_CONTACT_TEXT = "text";
