@@ -25,6 +25,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.model.response.SplashPromo;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
@@ -189,6 +190,10 @@ public abstract class BaseActivity extends AppCompatActivity
         });
 
 
+        //TODO: remove, for test only
+        SplashPromo splashPromo = new SplashPromo();
+        showSplashPromo(splashPromo);
+
     }
 
     //TODO: move somewhere else
@@ -199,6 +204,15 @@ public abstract class BaseActivity extends AppCompatActivity
             String userId =  mUserManager.getCurrentUser().getId();
             mBus.post(new HandyEvent.RequestAvailableSplashPromo(userId));
         }
+    }
+
+
+    private void showSplashPromo(SplashPromo splashPromo)
+    {
+        //show the dialog
+        SplashPromoDialogFragment splashPromoDialogFragment =
+                SplashPromoDialogFragment.newInstance(splashPromo);
+        splashPromoDialogFragment.show(this.getSupportFragmentManager(), null);
     }
 
     //TODO: test only, move out of here

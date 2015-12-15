@@ -14,12 +14,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Displayed as confirmation when the user selects a recurring series to cancel
- */
 public class SplashPromoDialogFragment extends BaseDialogFragment
 {
-    private static final String BUNDLE_KEY_SPLASH_PROMO = "USER_EMAIL_ADDRESS";
+    private static final String BUNDLE_KEY_SPLASH_PROMO = "SPLASH_PROMO";
 
     @Bind(R.id.splash_promo_subtitle)
     TextView mSubtitle;
@@ -69,7 +66,6 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     @OnClick(R.id.splash_promo_action_button)
     public void onActionButtonClicked(View view)
     {
-        getActivity().finish();
         dismiss();
     }
 }

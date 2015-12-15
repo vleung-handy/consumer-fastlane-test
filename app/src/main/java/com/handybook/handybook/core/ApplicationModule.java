@@ -105,6 +105,7 @@ import com.handybook.handybook.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
+import com.handybook.handybook.ui.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
@@ -213,6 +214,7 @@ import retrofit.converter.GsonConverter;
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,
         NavbarWebViewDialogFragment.class,
+        SplashPromoDialogFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
