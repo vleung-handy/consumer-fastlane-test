@@ -85,7 +85,10 @@
             android:name=".ui.activity.ServicesActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.BookingLocationActivity"/>
-        <activity android:name=".ui.activity.ProfileActivity"/>
+        <activity
+            android:name=".ui.activity.ProfileActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
         <activity
             android:name=".ui.activity.BookingsActivity"
             android:screenOrientation="portrait"
