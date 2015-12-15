@@ -19,8 +19,8 @@ public class NotificationManager
     public NotificationManager(final Bus bus, final DataManager dataManager)
     {
         this.bus = bus;
-        this.dataManager = dataManager;
         this.bus.register(this);
+        this.dataManager = dataManager;
     }
 
     @Subscribe
@@ -44,7 +44,7 @@ public class NotificationManager
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        bus.post(new HandyEvent.ResponseError.HandyNotificationsError(error));
+                        bus.post(new HandyEvent.ResponseEvent.HandyNotificationsError(error));
                     }
                 });
     }

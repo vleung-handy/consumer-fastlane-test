@@ -2,7 +2,9 @@ package com.handybook.handybook.module.notifications.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,8 @@ public class NotificationFeedFragment extends InjectedFragment
     private static final String ARG_NOTIFICATIONS = "NOTIFICATIONS";
     private HandyNotification.List mNotifications;
 
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.notification_feed_srl)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.notifications_feed_rv)
@@ -62,7 +66,7 @@ public class NotificationFeedFragment extends InjectedFragment
     {
         View root = inflater.inflate(R.layout.fragment_notification_feed, container, false);
         ButterKnife.bind(this, root);
-        mNotificationRecyclerViewAdapter = new NotificationRecyclerViewAdapter(mNotifications);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mEmptiableRecyclerView.setAdapter(mNotificationRecyclerViewAdapter);
         mEmptiableRecyclerView.setEmptyView(mEmptyView);
         if (getArguments() != null)
@@ -70,6 +74,8 @@ public class NotificationFeedFragment extends InjectedFragment
             mNotificationRecyclerViewAdapter.mergeNotifications(
                     (HandyNotification.List)getArguments().getSerializable(ARG_NOTIFICATIONS)
             );
+        } else {
+            requestNotifications();
         }
 
         return root;
@@ -82,9 +88,14 @@ public class NotificationFeedFragment extends InjectedFragment
     }
 
     @Subscribe()
-    void onNotificationReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
+    void onNotificationResponseReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
     {
         mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
+    }
+
+    @Subscribe()
+    void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e){
+        showToast(e.getPayload().getMessage());
     }
 
 

@@ -154,22 +154,17 @@ public abstract class HandyEvent
             }
         }
 
-    }
 
-    public abstract static class ResponseError extends ResponseEvent<DataManager.DataManagerError> {
-        public ResponseError(final DataManager.DataManagerError payload)
+        public static class HandyNotificationsError extends ResponseEvent<DataManager.DataManagerError>
         {
-            super(payload);
-        }
-
-        public static class HandyNotificationsError extends ResponseError{
             public HandyNotificationsError(final DataManager.DataManagerError payload)
             {
                 super(payload);
             }
         }
-    }
 
+
+    }
 
     public abstract static class RequestBookingActionEvent extends RequestEvent
     {
