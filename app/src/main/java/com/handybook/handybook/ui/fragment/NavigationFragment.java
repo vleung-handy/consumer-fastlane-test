@@ -155,7 +155,7 @@ public final class NavigationFragment extends InjectedFragment
         //since it is currently keyed by a string we can't do it statically, yet another reason to move over to static ids
         Map<String, Integer> nameToResourceId = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         nameToResourceId.put(getString(R.string.home), R.id.nav_menu_home);
-        nameToResourceId.put(getString(R.string.profile), R.id.nav_menu_profile);
+        nameToResourceId.put(getString(R.string.account), R.id.nav_menu_profile);
         nameToResourceId.put(getString(R.string.my_bookings), R.id.nav_menu_my_bookings);
         nameToResourceId.put(getString(R.string.payment), R.id.nav_menu_payment);
         nameToResourceId.put(getString(R.string.help), R.id.nav_menu_help);
@@ -233,8 +233,8 @@ public final class NavigationFragment extends InjectedFragment
                 {
                     activity.navigateToActivity(ServiceCategoriesActivity.class);
                 }
-                else if (item.equalsIgnoreCase(getString(R.string.profile))
-                        && !getString(R.string.profile).equalsIgnoreCase(mSelectedItem))
+                else if (item.equalsIgnoreCase(getString(R.string.account))
+                        && !getString(R.string.account).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(ProfileActivity.class);
                 }
@@ -329,7 +329,7 @@ public final class NavigationFragment extends InjectedFragment
 
         if (userLoggedIn)
         {
-            items.add(getString(R.string.profile));
+            items.add(getString(R.string.account));
             items.add(getString(R.string.my_bookings));
             if (currentUser.getStripeKey() != null)
             {

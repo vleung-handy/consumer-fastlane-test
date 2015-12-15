@@ -14,6 +14,6 @@ public final class ProfileActivity extends MenuDrawerActivity {
 
     @Override
     protected final String getNavItemTitle() {
-        return getString(R.string.profile);
+        return getString(R.string.account);
     }
 }
