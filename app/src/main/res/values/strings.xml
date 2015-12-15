@@ -294,7 +294,6 @@
     <string name="menu_panic_title_adjust_hours">Adjust hours</string>
     <string name="menu_panic_title_help">Other issues</string>
     <string name="nav_help">help</string>
-    <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
     <string name="title_activity_notification_feed">NotificationFeedActivity</string>
     <string name="cd_notification_feed_button">Open notificaton center</string>
     <string name="empty_card_default_text">It seems we have nothing to show… Sorry</string>
