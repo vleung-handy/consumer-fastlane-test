@@ -12,15 +12,15 @@ import javax.inject.Inject;
 
 public class NotificationManager
 {
-    private final DataManager dataManager;
-    private final Bus bus;
+    private final DataManager mDataManager;
+    private final Bus mBus;
 
     @Inject
     public NotificationManager(final Bus bus, final DataManager dataManager)
     {
-        this.bus = bus;
-        this.bus.register(this);
-        this.dataManager = dataManager;
+        this.mBus = bus;
+        this.mBus.register(this);
+        this.mDataManager = dataManager;
     }
 
     @Subscribe
@@ -28,7 +28,7 @@ public class NotificationManager
             @NonNull final HandyEvent.RequestEvent.HandyNotificationsEvent event
     )
     {
-        dataManager.getNotifications(
+        mDataManager.getNotifications(
                 event.getUserId(),
                 event.getCount(),
                 event.getSinceId(),
@@ -38,13 +38,13 @@ public class NotificationManager
                     @Override
                     public void onSuccess(final HandyNotification.ResultSet response)
                     {
-                        bus.post(new HandyEvent.ResponseEvent.HandyNotificationsSuccess(response));
+                        mBus.post(new HandyEvent.ResponseEvent.HandyNotificationsSuccess(response));
                     }
 
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        bus.post(new HandyEvent.ResponseEvent.HandyNotificationsError(error));
+                        mBus.post(new HandyEvent.ResponseEvent.HandyNotificationsError(error));
                     }
                 });
     }
