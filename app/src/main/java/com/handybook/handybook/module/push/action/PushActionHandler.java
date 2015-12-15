@@ -14,37 +14,37 @@ public class PushActionHandler
                                        final String action,
                                        final Bundle arguments)
     {
-        final String bookingPhone = arguments.getString(BundleKeys.BOOKING_PHONE);
         switch (action)
         {
             case PushActionConstants.ACTION_CONTACT_CALL:
-                return handleContactCallAction(context, bookingPhone);
+                return handleContactCallAction(context, arguments);
             case PushActionConstants.ACTION_CONTACT_TEXT:
-                return handleContactTextAction(context, bookingPhone);
+                return handleContactTextAction(context, arguments);
         }
         return false;
     }
 
-    private static boolean handleContactCallAction(final Context context, final String bookingPhone)
+    private static boolean handleContactCallAction(final Context context, final Bundle arguments)
     {
-        if (bookingPhone != null)
-        {
-            final Intent callIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.fromParts("tel", bookingPhone, null));
-            callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            return Utils.safeLaunchIntent(callIntent, context);
-        }
-        return false;
+
+        return handleContactAction(context, arguments, "tel");
     }
 
-    private static boolean handleContactTextAction(final Context context, final String bookingPhone)
+    private static boolean handleContactTextAction(final Context context, final Bundle arguments)
     {
+        return handleContactAction(context, arguments, "sms");
+    }
+
+    private static boolean handleContactAction(final Context context, final Bundle arguments,
+                                               final String scheme)
+    {
+        final String bookingPhone = arguments.getString(BundleKeys.BOOKING_PHONE);
         if (bookingPhone != null)
         {
-            final Intent textIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.fromParts("sms", bookingPhone, null));
-            textIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            return Utils.safeLaunchIntent(textIntent, context);
+            final Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.fromParts(scheme, bookingPhone, null));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            return Utils.safeLaunchIntent(intent, context);
         }
         return false;
     }
