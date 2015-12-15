@@ -212,6 +212,27 @@ public class HandyNotification implements Serializable, Parcelable
 
         private Image() {} //No-one is allowed! Only GSON
 
+        protected Image(Parcel in)
+        {
+            mScale = in.readFloat();
+            mUrl = in.readString();
+        }
+
+        public static final Creator<Image> CREATOR = new Creator<Image>()
+        {
+            @Override
+            public Image createFromParcel(Parcel in)
+            {
+                return new Image(in);
+            }
+
+            @Override
+            public Image[] newArray(int size)
+            {
+                return new Image[size];
+            }
+        };
+
         public float getScale()
         {
             return mScale;
@@ -223,27 +244,17 @@ public class HandyNotification implements Serializable, Parcelable
         }
 
         @Override
-        public int describeContents() { return 0; }
+        public int describeContents()
+        {
+            return 0;
+        }
 
         @Override
-        public void writeToParcel(Parcel dest, int flags)
+        public void writeToParcel(final Parcel dest, final int flags)
         {
-            dest.writeFloat(this.mScale);
-            dest.writeString(this.mUrl);
+            dest.writeFloat(mScale);
+            dest.writeString(mUrl);
         }
-
-        protected Image(Parcel in)
-        {
-            this.mScale = in.readFloat();
-            this.mUrl = in.readString();
-        }
-
-        public static final Parcelable.Creator<Image> CREATOR = new Parcelable.Creator<Image>()
-        {
-            public Image createFromParcel(Parcel source) {return new Image(source);}
-
-            public Image[] newArray(int size) {return new Image[size];}
-        };
     }
 
 
