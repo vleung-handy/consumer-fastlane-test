@@ -133,6 +133,15 @@
             android:name="com.urbanairship.google.PlayServicesErrorActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
+        <activity
+            android:label="@string/title_activity_notification_feed"
+            android:name=".module.notifications.view.activity.NotificationsActivity"
+            android:parentActivityName=".ui.activity.ServicesActivity"
+            android:theme="@style/Theme.Base">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.handybook.handybook.ui.activity.ServicesActivity"/>
+        </activity>
 
         <service
             android:name="com.urbanairship.push.PushService"

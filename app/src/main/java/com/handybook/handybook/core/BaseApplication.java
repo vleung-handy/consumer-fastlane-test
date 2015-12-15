@@ -2,6 +2,7 @@ package com.handybook.handybook.core;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
@@ -17,6 +18,7 @@ import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.notifications.manager.NotificationManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
@@ -61,13 +63,15 @@ public class BaseApplication extends MultiDexApplication
     StripeManager stripeManager;
     @Inject
     UserDataManager userDataManager;
+    @Inject
+    NotificationManager mNotificationManager;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
         createObjectGraph();
-        Fabric.with(this, new Crashlytics());
+        initFabric();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
         {
@@ -163,6 +167,18 @@ public class BaseApplication extends MultiDexApplication
                 bus.post(new ActivityEvent.Destroyed(activity));
             }
         });
+    }
+
+    private void initFabric()
+    {
+        Fabric.with(this, new Crashlytics());
+        Crashlytics.setUserIdentifier(
+                Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID)
+        );
+        User currentUser = userManager.getCurrentUser();
+        if (currentUser != null){
+            Crashlytics.setUserEmail(currentUser.getEmail());
+        }
     }
 
     public final void inject(final Object object)

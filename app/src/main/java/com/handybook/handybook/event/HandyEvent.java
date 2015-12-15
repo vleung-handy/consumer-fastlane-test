@@ -14,6 +14,7 @@ import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 import com.handybook.handybook.model.response.RecurringBooking;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.viewmodel.BookingEditExtrasViewModel;
@@ -57,6 +58,58 @@ public abstract class HandyEvent
                 return mOnlyBookingValue;
             }
         }
+
+
+        public static class HandyNotificationsEvent extends RequestEvent
+        {
+            private static final long USER_ID_FOR_LOGGED_OUT_USERS = 0;
+
+            final long mUserId;
+            final Long mSinceId;
+            final Long  mUntilId;
+            final Long  mCount;
+
+            public HandyNotificationsEvent(
+                    final long userId,
+                    final Long sinceId,
+                    final Long untilId,
+                    final Long count
+            )
+            {
+                mUserId = userId;
+                mSinceId = sinceId;
+                mUntilId = untilId;
+                mCount = count;
+            }
+
+            public HandyNotificationsEvent(final Long count, final Long untilId, final Long sinceId)
+            {
+                mUserId = USER_ID_FOR_LOGGED_OUT_USERS;
+                mCount = count;
+                mUntilId = untilId;
+                mSinceId = sinceId;
+            }
+
+            public long getUserId()
+            {
+                return mUserId;
+            }
+
+            public Long getSinceId()
+            {
+                return mSinceId;
+            }
+
+            public Long getUntilId()
+            {
+                return mUntilId;
+            }
+
+            public Long getCount()
+            {
+                return mCount;
+            }
+        }
     }
 
 
@@ -92,8 +145,26 @@ public abstract class HandyEvent
             }
         }
 
-    }
 
+        public static class HandyNotificationsSuccess extends ResponseEvent<HandyNotification.ResultSet>
+        {
+            public HandyNotificationsSuccess(final HandyNotification.ResultSet payload)
+            {
+                super(payload);
+            }
+        }
+
+
+        public static class HandyNotificationsError extends ResponseEvent<DataManager.DataManagerError>
+        {
+            public HandyNotificationsError(final DataManager.DataManagerError payload)
+            {
+                super(payload);
+            }
+        }
+
+
+    }
 
     public abstract static class RequestBookingActionEvent extends RequestEvent
     {

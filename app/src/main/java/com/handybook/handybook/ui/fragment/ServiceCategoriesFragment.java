@@ -23,6 +23,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.Service;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.widget.ServiceCategoryView;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
@@ -224,5 +226,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
         });
+    }
+
+    @OnClick(R.id.ib_notification_feed)
+    void onNotificationFeedButtonClicked()
+    {
+        Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
+        startActivity(launchIntent);
     }
 }
