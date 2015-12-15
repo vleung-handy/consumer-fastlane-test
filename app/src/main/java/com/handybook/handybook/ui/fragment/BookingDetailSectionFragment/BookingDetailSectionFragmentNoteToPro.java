@@ -51,6 +51,6 @@ public class BookingDetailSectionFragmentNoteToPro extends BookingDetailSectionF
     {
         final Intent intent = new Intent(getActivity(), BookingEditNoteToProActivity.class);
         intent.putExtra(BundleKeys.BOOKING, this.booking);
-        getParentFragment().startActivityForResult(intent, ActivityResult.RESULT_BOOKING_UPDATED);
+        getParentFragment().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
     }
 }

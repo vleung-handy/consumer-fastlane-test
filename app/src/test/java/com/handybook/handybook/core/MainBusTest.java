@@ -2,7 +2,7 @@ package com.handybook.handybook.core;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.data.Mixpanel;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.squareup.otto.Subscribe;
 
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class MainBusTest extends RobolectricGradleTestWrapper
         final Object object = new Object()
         {
             @Subscribe
-            public void triggerEvent(HandyEvent.RequestHelpNode event)
+            public void triggerEvent(HelpEvent.RequestHelpNode event)
             {
                 eventTriggered[0] = true;
             }
@@ -46,7 +46,7 @@ public class MainBusTest extends RobolectricGradleTestWrapper
 
         ShadowLooper.idleMainLooper();
 
-        bus.post(mock(HandyEvent.RequestHelpNode.class));
+        bus.post(mock(HelpEvent.RequestHelpNode.class));
 
         assertTrue(eventTriggered[0]);
     }

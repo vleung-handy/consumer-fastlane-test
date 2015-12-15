@@ -47,6 +47,7 @@
     <color name="handy_blue">#00cded</color>
     <color name="handy_darkened_blue">#0bb8e3</color>
     <color name="handy_tertiary_gray">#9cabb5</color>
+    <color name="handy_tertiary_gray_trans">#e69cabb5</color>
     <color name="handy_background_blue">#edf5f8</color>
     <color name="handy_background_gray">#f4f4f4</color>
     <color name="handy_white">#ffffff</color>
@@ -57,4 +58,6 @@
     <color name="handy_dark_divider_line">#cccccc</color>
     <color name="handy_input_field_stroke">#d1d1d1</color>
     <color name="handy_hot_pink">#eb00cb</color>
+    <color name="android_pay_black">#333333</color>
+    <color name="android_pay_black_trans">#e6333333</color>
 </resources>

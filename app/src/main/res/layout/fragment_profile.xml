@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:background="@color/handy_bg">
 
     <Button
         android:id="@+id/update_button"
@@ -16,7 +18,7 @@
 
         <TextView
             android:id="@+id/nav_text"
-            android:text="@string/profile"
+            android:text="@string/account"
             style="@style/TextView.Navbar" />
 
         <RelativeLayout
@@ -106,6 +108,15 @@
                 android:hint="@string/new_password"
                 style="@style/EditText.Last.Password" />
 
+            <com.handybook.handybook.ui.widget.ThinIconButton
+                custom:iconResourceId="@drawable/ic_calendar_dark"
+                android:text="@string/cancel_recurring_booking_title"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cancel_cleaning_plan_button"
+                android:layout_below="@id/new_password_text"
+                />
         </RelativeLayout>
 
     </ScrollView>

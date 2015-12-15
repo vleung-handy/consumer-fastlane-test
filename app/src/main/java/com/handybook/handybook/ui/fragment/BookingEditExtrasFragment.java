@@ -284,7 +284,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         showToast(getString(R.string.booking_edit_extras_update_success));
 
-        getActivity().setResult(ActivityResult.RESULT_BOOKING_UPDATED, new Intent());
+        getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 

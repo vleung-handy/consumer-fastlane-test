@@ -17,9 +17,11 @@ import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
-import com.handybook.handybook.manager.HelpContactManager;
-import com.handybook.handybook.manager.HelpManager;
+import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
+import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.notifications.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
 import com.handybook.handybook.ui.activity.BlockingActivity;
@@ -28,6 +30,7 @@ import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
 import com.handybook.handybook.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.ui.activity.BookingEditEntryInformationActivity;
 import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
@@ -40,8 +43,9 @@ import com.handybook.handybook.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
-import com.handybook.handybook.ui.activity.HelpActivity;
-import com.handybook.handybook.ui.activity.HelpContactActivity;
+import com.handybook.handybook.ui.activity.CancelRecurringBookingActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
@@ -52,6 +56,7 @@ import com.handybook.handybook.ui.activity.PromosActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.ServicesActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.AddLaundryDialogFragment;
 import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
@@ -68,6 +73,7 @@ import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingD
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
+import com.handybook.handybook.ui.fragment.BookingEditAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
@@ -82,11 +88,14 @@ import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
-import com.handybook.handybook.ui.fragment.HelpContactFragment;
-import com.handybook.handybook.ui.fragment.HelpFragment;
+import com.handybook.handybook.ui.fragment.CancelRecurringBookingFragment;
+import com.handybook.handybook.ui.fragment.EmailCancellationDialogFragment;
+import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
+import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
@@ -99,10 +108,11 @@ import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
+import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
-import com.stripe.android.Stripe;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -194,11 +204,20 @@ import retrofit.converter.GsonConverter;
         BookingEditExtrasFragment.class,
         BookingEditHoursActivity.class,
         BookingEditHoursFragment.class,
+        BookingEditAddressActivity.class,
+        BookingEditAddressFragment.class,
         BlockingActivity.class,
         NotificationsActivity.class,
         BlockingUpdateFragment.class,
         TipDialogFragment.class,
         NotificationFeedFragment.class,
+        CancelRecurringBookingActivity.class,
+        CancelRecurringBookingFragment.class,
+        EmailCancellationDialogFragment.class,
+        UpdatePaymentActivity.class,
+        UpdatePaymentFragment.class,
+        NavbarWebViewDialogFragment.class,
+        //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
 {
@@ -359,6 +378,15 @@ public final class ApplicationModule
     }
 
     @Provides
+    @Singleton
+    final UserDataManager provideUserDataManager(final UserManager userManager,
+                                                 final DataManager dataManager,
+                                                 final Bus bus)
+    {
+        return new UserDataManager(userManager, dataManager, bus);
+    }
+
+    @Provides
     final ReactiveLocationProvider provideReactiveLocationProvider()
     {
         return new ReactiveLocationProvider(mContext);
@@ -414,9 +442,10 @@ public final class ApplicationModule
     }
 
     @Provides
-    final Stripe provideStripe()
+    @Singleton
+    final StripeManager provideStripeManager(final Bus bus)
     {
-        return new Stripe();
+        return new StripeManager(bus, mConfigs);
     }
 
     private String getDeviceId()

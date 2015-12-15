@@ -3,44 +3,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/handy_bg">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:background="@color/handy_bg"
+    >
 
     <Button
         android:id="@+id/next_button"
         style="@style/Button.Green"
+        android:textAllCaps="false"
         android:onClick="onSaveButtonPressed"
         android:text="@string/update"/>
 
-    <TextView
-        android:id="@+id/nav_text"
-        style="@style/TextView.Navbar"
-        android:text="@string/booking_edit_extras_title"/>
+    <com.handybook.handybook.ui.widget.BackButtonNavBar
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/booking_edit_extras_title"
+        />
 
     <ScrollView
         android:id="@+id/booking_edit_extras_content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text"
-        android:visibility="gone">
+        android:layout_below="@id/nav_bar"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.CenteredHeader"
+                android:text="@string/booking_edit_pro_assignment_warning"
+                />
 
             <LinearLayout
                 android:id="@+id/options_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin"
                 android:background="@color/white"
                 android:orientation="vertical"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/options_layout"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:orientation="vertical"
                 android:padding="@dimen/default_padding">
@@ -112,10 +123,9 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_pressed"/>
 
-                <include layout="@layout/element_booking_edit_extras_warning_text"/>
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 

@@ -8,6 +8,7 @@ import com.handybook.handybook.core.BookingRequest;
 import com.handybook.handybook.core.BookingTransaction;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
@@ -27,6 +28,19 @@ import retrofit.mime.TypedInput;
 
 public interface HandyRetrofitService
 {
+    @POST("/bookings/{id}/address_update")
+    void editBookingAddress(@Path("id") int bookingId,
+                            @Body BookingEditAddressRequest bookingEditAddressRequest,
+                            HandyRetrofitCallback cb);
+    /**
+     *
+     * @param bookingRecurringId Booking.recurringId, which is the id
+     *                           associated with a recurring series
+     * @param cb
+     */
+    @POST("/bookings/{id}/recurring_cancel_send_cancel_email")
+    void sendCancelRecurringBookingEmail(@Path("id") int bookingRecurringId,
+                                         HandyRetrofitCallback cb);
 
     @GET("/app_updates")
     void getBlockedWrapper(@Query("version_code") int versionCode, HandyRetrofitCallback cb);
@@ -204,6 +218,10 @@ public interface HandyRetrofitService
     @PUT("/users/{user}")
     void updateUserInfo(@Path("user") String userId, @Body UpdateUserRequest req,
                         HandyRetrofitCallback cb);
+
+    @PUT("/users/{user_id}/update_credit_card")
+    void updatePaymentInfo(@Path("user_id") String userId, @Query("stripe_token") String token,
+                           HandyRetrofitCallback cb);
 
     // Notification Feed
     @POST("/users/{user_id}/notifications")

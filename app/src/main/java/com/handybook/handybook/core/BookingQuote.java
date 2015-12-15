@@ -21,39 +21,42 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BookingQuote extends Observable
-{
-    @SerializedName("id")
-    private int bookingId;
-    @SerializedName("service_id")
-    private int serviceId;
-    @SerializedName("user_id")
-    private String userId;
-    @SerializedName("hrs")
-    private float hours;
-    @SerializedName("date_start")
-    private Date startDate;
-    @SerializedName("address")
-    private Address address;
-    @SerializedName("currency_char")
-    private String currencyChar;
-    @SerializedName("currency_suffix")
-    private String currencySuffix;
-    @SerializedName("hourly_amount")
-    private float hourlyAmount;
-    @SerializedName("price_table")
-    private ArrayList<BookingPriceInfo> priceTable;
-    @SerializedName("dynamic_options")
-    private ArrayList<PeakPriceInfo> surgePriceTable;
-    @SerializedName("stripe_key")
-    private String stripeKey;
-    @SerializedName("phone_country_prefix")
-    private String phonePrefix;
-    @SerializedName("special_extras_options")
-    private BookingOption extrasOptions;
+public class BookingQuote extends Observable {
+    @SerializedName("id") private int bookingId;
+    @SerializedName("service_id") private int serviceId;
+    @SerializedName("user_id") private String userId;
+    @SerializedName("hrs") private float hours;
+    @SerializedName("date_start") private Date startDate;
+    @SerializedName("address") private Address address;
+    @SerializedName("currency_char") private String currencyChar;
+    @SerializedName("currency_suffix") private String currencySuffix;
+    @SerializedName("hourly_amount") private float hourlyAmount;
+    @SerializedName("price_table") private ArrayList<BookingPriceInfo> priceTable;
+    @SerializedName("dynamic_options") private ArrayList<PeakPriceInfo> surgePriceTable;
+    @SerializedName("stripe_key") private String stripeKey;
+    @SerializedName("phone_country_prefix") private String phonePrefix;
+    @SerializedName("special_extras_options") private BookingOption extrasOptions;
+    @SerializedName("is_android_pay_enabled") private boolean mIsAndroidPayEnabled;
+    @SerializedName("android_pay_coupon") private String mAndroidPayCouponCode;
+    @SerializedName("android_pay_coupon_value_formatted") private String mAndroidPayCouponValueFormatted;
 
     private HashMap<Float, BookingPriceInfo> priceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable;
+
+    public String getAndroidPayCouponValueFormatted()
+    {
+        return mAndroidPayCouponValueFormatted;
+    }
+
+    public boolean isAndroidPayEnabled()
+    {
+        return mIsAndroidPayEnabled;
+    }
+
+    public String getAndroidPayCouponCode()
+    {
+        return mAndroidPayCouponCode;
+    }
 
     public int getBookingId()
     {

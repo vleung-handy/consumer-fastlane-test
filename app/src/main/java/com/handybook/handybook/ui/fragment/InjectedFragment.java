@@ -32,10 +32,10 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     //UPGRADE: Move away from direct calls to these and go through the bus
     @Inject BookingManager bookingManager;
     @Inject protected UserManager userManager;
-    @Inject Mixpanel mixpanel;
+    @Inject protected Mixpanel mixpanel;
     @Inject DataManager dataManager;
     @Inject DataManagerErrorHandler dataManagerErrorHandler;
-    @Inject NavigationManager navigationManager;
+    @Inject protected NavigationManager navigationManager;
 
     @Inject
     protected
@@ -57,7 +57,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     }
 
     @Override
-    public final void onDestroyView() {
+    public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }

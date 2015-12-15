@@ -7,22 +7,22 @@ import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.core.Booking;
 import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.core.HelpNode;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.model.request.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.BookingEditExtrasRequest;
 import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
 import com.handybook.handybook.model.request.BookingEditHoursRequest;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
+import com.handybook.handybook.model.response.RecurringBooking;
 import com.handybook.handybook.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.viewmodel.BookingEditHoursViewModel;
+import com.stripe.android.model.Token;
 
 import java.util.List;
-
-import retrofit.mime.TypedInput;
 
 public abstract class HandyEvent
 {
@@ -525,104 +525,6 @@ public abstract class HandyEvent
     }
 
 
-    //Help Self Service Center
-    public static class RequestHelpNode extends HandyEvent
-    {
-        public String nodeId;
-        public String bookingId;
-
-        public RequestHelpNode(String nodeId, String bookingId)
-        {
-            this.nodeId = nodeId;
-            this.bookingId = bookingId;
-        }
-    }
-
-
-    public static class ReceiveHelpNodeSuccess extends ReceiveSuccessEvent
-    {
-        public HelpNode helpNode;
-
-        public ReceiveHelpNodeSuccess(HelpNode helpNode)
-        {
-            this.helpNode = helpNode;
-        }
-    }
-
-
-    public static class ReceiveHelpNodeError extends ReceiveErrorEvent
-    {
-        public ReceiveHelpNodeError(DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-
-    //Help Booking Node - help node associated with a particular booking
-    public static class RequestHelpBookingNode extends HandyEvent
-    {
-        public String nodeId;
-        public String bookingId;
-
-        public RequestHelpBookingNode(String nodeId, String bookingId)
-        {
-            this.nodeId = nodeId;
-            this.bookingId = bookingId;
-        }
-    }
-
-
-    public static class ReceiveHelpBookingNodeSuccess extends ReceiveSuccessEvent
-    {
-        public HelpNode helpNode;
-
-        public ReceiveHelpBookingNodeSuccess(HelpNode helpNode)
-        {
-            this.helpNode = helpNode;
-        }
-    }
-
-
-    public static class ReceiveHelpBookingNodeError extends ReceiveErrorEvent
-    {
-        public ReceiveHelpBookingNodeError(DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-
-    //Help Contact Message
-    @Track("pro help contact form submitted")
-    public static class RequestNotifyHelpContact extends HandyEvent
-    {
-        public TypedInput body;
-
-        public RequestNotifyHelpContact(TypedInput body)
-        {
-            this.body = body;
-        }
-    }
-
-
-    public static class ReceiveNotifyHelpContactSuccess extends ReceiveSuccessEvent
-    {
-        public ReceiveNotifyHelpContactSuccess()
-        {
-        }
-    }
-
-
-    public static class ReceiveNotifyHelpContactError extends ReceiveErrorEvent
-    {
-        public ReceiveNotifyHelpContactError(DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-
     @Track("consumer app blocking screen displayed")
     public static class BlockingScreenDisplayed extends HandyEvent
     {
@@ -767,5 +669,101 @@ public abstract class HandyEvent
 
     public static class ReceiveTipProError extends ReceiveErrorEvent
     {
+    }
+
+    public static class RequestSendCancelRecurringBookingEmail extends RequestEvent
+    {
+        public final int bookingRecurringId;
+
+        public RequestSendCancelRecurringBookingEmail(final int bookingRecurringId)
+        {
+            this.bookingRecurringId = bookingRecurringId;
+        }
+    }
+
+    public static class ReceiveSendCancelRecurringBookingEmailSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveSendCancelRecurringBookingEmailError extends ReceiveErrorEvent
+    {
+        public ReceiveSendCancelRecurringBookingEmailError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class RequestRecurringBookingsForUser extends RequestEvent
+    {
+        public final User user;
+
+        public RequestRecurringBookingsForUser(final User user)
+        {
+            this.user = user;
+        }
+    }
+
+    public static class ReceiveRecurringBookingsSuccess extends ReceiveSuccessEvent
+    {
+        public final List<RecurringBooking> recurringBookings;
+
+        public ReceiveRecurringBookingsSuccess(final List<RecurringBooking> recurringBookings)
+        {
+            this.recurringBookings = recurringBookings;
+        }
+    }
+
+    public static class ReceiveRecurringBookingsError extends ReceiveErrorEvent
+    {
+        public ReceiveRecurringBookingsError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class RequestEditBookingAddress extends RequestEvent
+    {
+        public final int bookingId;
+        public final BookingEditAddressRequest bookingEditAddressRequest;
+        public RequestEditBookingAddress(final int bookingId,
+                                         final BookingEditAddressRequest bookingEditAddressRequest)
+        {
+            this.bookingId = bookingId;
+            this.bookingEditAddressRequest = bookingEditAddressRequest;
+        }
+    }
+
+    public static class ReceiveEditBookingAddressSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveEditBookingAddressError extends ReceiveErrorEvent
+    {
+        public ReceiveEditBookingAddressError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class RequestUpdatePayment extends RequestEvent
+    {
+        public final Token token;
+
+        public RequestUpdatePayment(final Token token)
+        {
+            this.token = token;
+        }
+    }
+
+    public static class ReceiveUpdatePaymentSuccess extends ReceiveSuccessEvent
+    {
+    }
+
+    public static class ReceiveUpdatePaymentError extends ReceiveErrorEvent
+    {
+        public ReceiveUpdatePaymentError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
     }
 }

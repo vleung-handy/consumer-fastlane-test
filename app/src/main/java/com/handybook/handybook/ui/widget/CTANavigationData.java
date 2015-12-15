@@ -1,7 +1,7 @@
 package com.handybook.handybook.ui.widget;
 
 import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.core.HelpNode;
+import com.handybook.handybook.helpcenter.model.HelpNode;
 
 import org.json.JSONObject;
 

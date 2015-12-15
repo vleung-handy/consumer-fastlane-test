@@ -3,6 +3,10 @@ import static org.gradle.logging.StyledTextOutput.Style
 
 buildscript {
     repositories {
+        flatDir {
+            dirs 'libs'
+            dirs 'aars'
+        }
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
     }
@@ -76,9 +80,8 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 22
-        versionName '1.10.3notificationfeed'
-        //versionCode computeVersionCode(versionName)
-        versionCode 11003
+        versionName '1.11.2notificationfeed'
+        versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -108,7 +111,6 @@ android {
             variant.outputs.each { output ->
                 def buildInfo = "${flavorName}-${variant.buildType.name}"
                 def versionInfo = "${variant.versionName}-${variant.versionCode}"
-                def formattedDate = new Date().format("yyyyMMddHHmm")
                 output.outputFile = new File(output.outputFile.parentFile,
                         "handy-${buildInfo}-${versionInfo}.apk");
             }
@@ -134,9 +136,6 @@ dependencies {
     //fix missing nullable annotations warnings
     compile 'com.google.code.findbugs:jsr305:2.0.2'
 
-    //Google Play Services
-    compile 'com.google.android.gms:play-services:6.1.71'
-
     //Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
@@ -156,7 +155,7 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     //Stripe payment processing
-    compile 'com.stripe:stripe-android:1.0.0'
+    compile 'com.stripe:stripe-android:1.0.0.1'
 
     //Menu drawer for navigation
     compile 'net.simonvt.menudrawer:menudrawer:3.0.6'
@@ -165,7 +164,7 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
     // Urban Airship for cloud messaging
-    compile 'com.urbanairship:urbanairship-lib:1.5.1@aar'
+    compile 'com.urbanairship.android:urbanairship-sdk:6.3.1'
 
     //Guava
     compile 'com.google.guava:guava:18.0'
@@ -205,7 +204,16 @@ dependencies {
     }
     //need to exclude certain modules because they cause dependency conflicts
 
-    //Testing with juint and robolectric
+    //Android Pay
+    compile 'com.google.android.gms:play-services-basement:8.4.8.7@aar'
+    compile 'com.google.android.gms:play-services-base:8.4.8.7@aar'
+    compile 'com.google.android.gms:play-services-identity:8.4.8.7@aar'
+    compile 'com.google.android.gms:play-services-wallet:8.4.8.7@aar'
+
+    //Location
+    compile 'com.google.android.gms:play-services-location:8.4.8.7@aar'
+
+    //Testing with junit and robolectric
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.robolectric:shadows-support-v4:3.0'
     testCompile 'junit:junit:4.12'

@@ -13,6 +13,7 @@ import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingDateActivity;
@@ -25,10 +26,12 @@ import com.handybook.handybook.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.ui.fragment.BookingDateFragmentTest;
+import com.handybook.handybook.ui.fragment.BookingEditAddressFragment;
 import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
@@ -43,10 +46,12 @@ import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.ui.fragment.BookingPaymentFragmentTest;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.ui.fragment.BookingRecurrenceFragmentTest;
+import com.handybook.handybook.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.squareup.otto.Bus;
-import com.stripe.android.Stripe;
 
 import javax.inject.Singleton;
 
@@ -91,6 +96,11 @@ import static org.mockito.Mockito.when;
         BookingPaymentActivity.class,
         BookingPaymentFragment.class,
         BookingPaymentFragmentTest.class,
+        CancelRecurringBookingFragment.class,
+        BookingEditAddressFragment.class,
+        UpdatePaymentActivity.class,
+        UpdatePaymentFragment.class,
+        UpdatePaymentFragmentTest.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -226,8 +236,8 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
-    final Stripe provideStripe()
+    final StripeManager provideStripeManager()
     {
-        return mock(Stripe.class);
+        return mock(StripeManager.class);
     }
 }

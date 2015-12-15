@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.util.Pair;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
@@ -251,6 +252,8 @@ public final class NavigationManager
 
     private void navigateToDeepLink(String deepLinkId, Map<String, String> params)
     {
+        //this log may be useful for debugging
+        Crashlytics.log("NavigationManager::navigateToDeepLink with deepLinkId=" + deepLinkId);
         switch (deepLinkId)
         {
             case DEEP_LINK_ID_PROFILE:
@@ -309,7 +312,10 @@ public final class NavigationManager
         {
             openServiceCategoriesActivity();
         }
-        startActivity(new Intent(this.context, targetClass));
+        else
+        {
+            startActivity(new Intent(this.context, targetClass));
+        }
     }
 
     private void openActivity(final Class<? extends Activity> targetClass, final HashMap<String, String> params)
