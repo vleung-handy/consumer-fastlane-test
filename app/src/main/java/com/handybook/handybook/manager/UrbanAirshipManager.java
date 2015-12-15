@@ -5,10 +5,12 @@ import android.content.Context;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.NotificationActions;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.UserLoggedInEvent;
+import com.handybook.handybook.util.NotificationActionUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.urbanairship.AirshipConfigOptions;
@@ -38,7 +40,7 @@ public class UrbanAirshipManager
     {
         if (event.isLoggedIn())
         {
-            setUniqueIdentifiers();
+            setUniqueIdentifiers(UAirship.shared());
         }
     }
 
@@ -57,10 +59,30 @@ public class UrbanAirshipManager
                 airship.getPushManager().setPushEnabled(true);
                 // Notifications the user can see as opposed to silent pushes
                 airship.getPushManager().setUserNotificationsEnabled(true);
-
-                setUniqueIdentifiers();
+                setNotificationActionButtons(airship);
+                setUniqueIdentifiers(airship);
             }
         });
+    }
+
+    private void setUniqueIdentifiers(final UAirship airship)
+    {
+        final User currentUser = mUserManager.getCurrentUser();
+        if (UAirship.isFlying() && currentUser != null)
+        {
+            final String userId = currentUser.getId();
+
+            // Keep alias around for backwards compatibility until named user is backfilled by UrbanAirship
+            airship.getPushManager().setAlias(userId);
+            airship.getPushManager().getNamedUser().setId(userId);
+        }
+    }
+
+    private void setNotificationActionButtons(final UAirship airship)
+    {
+        airship.getPushManager()
+                .addNotificationActionButtonGroup(NotificationActions.ACTION_GROUP_CONTACT,
+                        NotificationActionUtils.getContactActionButtonGroup());
     }
 
     private NotificationFactory getNotificationFactory(final Application application)
@@ -72,18 +94,5 @@ public class UrbanAirshipManager
                 .getColor(R.color.handy_blue));
         defaultNotificationFactory.setSmallIconId(R.drawable.ic_notification);
         return defaultNotificationFactory;
-    }
-
-    private void setUniqueIdentifiers()
-    {
-        final User currentUser = mUserManager.getCurrentUser();
-        if (UAirship.isFlying() && currentUser != null)
-        {
-            final String userId = currentUser.getId();
-
-            // Keep alias around for backwards compatibility until named user is backfilled by UrbanAirship
-            UAirship.shared().getPushManager().setAlias(userId);
-            UAirship.shared().getPushManager().getNamedUser().setId(userId);
-        }
     }
 }

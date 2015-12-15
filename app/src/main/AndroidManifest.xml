@@ -267,6 +267,21 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
 
+        <receiver
+            android:name=".receiver.PushReceiver"
+            android:exported="false"
+            >
+
+            <intent-filter>
+                <action android:name="com.urbanairship.push.CHANNEL_UPDATED"/>
+                <action android:name="com.urbanairship.push.OPENED"/>
+                <action android:name="com.urbanairship.push.RECEIVED"/>
+                <action android:name="com.urbanairship.push.DISMISSED"/>
+
+                <category android:name="${applicationId}"/>
+            </intent-filter>
+        </receiver>
+
         <!-- REQUIRED for GCM -->
         <receiver
             android:name="com.urbanairship.push.GCMPushReceiver"
