@@ -3,6 +3,7 @@ package com.handybook.handybook.module.push.receiver;
 import android.content.Context;
 
 import com.handybook.handybook.module.push.action.PushActionHandler;
+import com.handybook.handybook.module.push.deeplink.DeeplinkHandler;
 import com.urbanairship.push.BaseIntentReceiver;
 import com.urbanairship.push.PushMessage;
 
@@ -36,7 +37,7 @@ public class PushReceiver extends BaseIntentReceiver
     protected boolean onNotificationOpened(final Context context, final PushMessage pushMessage,
                                            final int i)
     {
-        return false;
+        return DeeplinkHandler.handleDeeplink(context, pushMessage.getPushBundle());
     }
 
     @Override

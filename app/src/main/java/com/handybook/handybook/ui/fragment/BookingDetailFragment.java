@@ -50,6 +50,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
 
     private Booking mBooking;
+    private String mBookingId;
     private boolean mBookingUpdated;
 
     @Bind(R.id.booking_detail_view)
@@ -66,12 +67,22 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         return fragment;
     }
 
+    public static BookingDetailFragment newInstance(final String bookingId)
+    {
+        final BookingDetailFragment fragment = new BookingDetailFragment();
+        final Bundle args = new Bundle();
+        args.putString(BundleKeys.BOOKING_ID, bookingId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackDetails();
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mBookingId = getArguments().getString(BundleKeys.BOOKING_ID);
 
         if (savedInstanceState != null)
         {
@@ -91,8 +102,15 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     {
         final View view = inflater.inflate(R.layout.fragment_booking_detail, container, false);
         ButterKnife.bind(this, view);
-        mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE: View.INVISIBLE);
-        setupForBooking(mBooking);
+        if (mBooking != null)
+        {
+            setupForBooking(mBooking);
+        }
+        else
+        {
+            showUiBlockers();
+            bus.post(new HandyEvent.RequestBookingDetails(mBookingId));
+        }
         return view;
     }
 
@@ -175,6 +193,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private void setupForBooking(Booking booking)
     {
+        mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.INVISIBLE);
         mBookingDetailView.updateDisplay(booking, userManager.getCurrentUser());
         setupClickListeners();
         addSectionFragments();
