@@ -33,6 +33,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener
 {
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
+    private static final String KEY_ZIPCODE = "zipcode";
 
     private boolean isPromoFlow;
 
@@ -176,7 +177,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                                 enableInputs();
                                 progressDialog.dismiss();
                                 final HashMap<String, InputTextField> inputMap = new HashMap<>();
-                                inputMap.put("zipcode", mZipCodeInputTextView);
+                                inputMap.put(KEY_ZIPCODE, mZipCodeInputTextView);
                                 dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
                             }
                         }
