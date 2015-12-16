@@ -57,7 +57,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -225,13 +224,6 @@ public class TestApplicationModule
     final Context provideContext()
     {
         return context;
-    }
-
-    @Provides
-    @Singleton
-    final ReactiveLocationProvider provideReactiveLocationProvider()
-    {
-        return mock(ReactiveLocationProvider.class);
     }
 
     @Provides
