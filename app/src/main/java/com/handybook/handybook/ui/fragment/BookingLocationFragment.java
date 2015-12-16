@@ -37,9 +37,9 @@ public final class BookingLocationFragment extends BookingFlowFragment
     private boolean isPromoFlow;
 
     @Bind(R.id.zip_text)
-    ZipCodeInputTextView zipText;
+    ZipCodeInputTextView mZipCodeInputTextView;
     @Bind(R.id.next_button)
-    Button nextButton;
+    Button mNextButton;
 
     public static BookingLocationFragment newInstance()
     {
@@ -51,9 +51,8 @@ public final class BookingLocationFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackLocation();
-
         final BookingRequest request = bookingManager.getCurrentRequest();
-        if ((isPromoFlow = request.getPromoCode() != null))
+        if (isPromoFlow = request.getPromoCode() != null)
         {
             ((BaseActivity) getActivity()).setOnBackPressedListener(this);
         }
@@ -65,18 +64,14 @@ public final class BookingLocationFragment extends BookingFlowFragment
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_location, container, false);
-
         ButterKnife.bind(this, view);
-
-        final User.Address address;
         final User user = userManager.getCurrentUser();
+        final User.Address address;
         if (user != null && (address = user.getAddress()) != null)
         {
-            zipText.setText(address.getZip());
+            mZipCodeInputTextView.setText(address.getZip());
         }
-
-        nextButton.setOnClickListener(nextClicked);
-
+        mNextButton.setOnClickListener(mOnNextClickListener);
         return view;
     }
 
@@ -86,7 +81,10 @@ public final class BookingLocationFragment extends BookingFlowFragment
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null)
         {
-            if (savedInstanceState.getBoolean(STATE_ZIP_HIGHLIGHT)) { zipText.highlight(); }
+            if (savedInstanceState.getBoolean(STATE_ZIP_HIGHLIGHT))
+            {
+                mZipCodeInputTextView.highlight();
+            }
         }
     }
 
@@ -94,31 +92,29 @@ public final class BookingLocationFragment extends BookingFlowFragment
     public final void onSaveInstanceState(final Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_ZIP_HIGHLIGHT, zipText.isHighlighted());
+        outState.putBoolean(STATE_ZIP_HIGHLIGHT, mZipCodeInputTextView.isHighlighted());
     }
 
     private boolean validateFields()
     {
-        boolean validate = true;
-        if (!zipText.validate()) { validate = false; }
-        return validate;
+        return mZipCodeInputTextView.validate();
     }
 
     @Override
     protected void disableInputs()
     {
         super.disableInputs();
-        nextButton.setClickable(false);
+        mNextButton.setClickable(false);
         final InputMethodManager imm = (InputMethodManager) getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(zipText.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(mZipCodeInputTextView.getWindowToken(), 0);
     }
 
     @Override
     protected final void enableInputs()
     {
         super.enableInputs();
-        nextButton.setClickable(true);
+        mNextButton.setClickable(true);
     }
 
     @Override
@@ -130,7 +126,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
         startActivity(intent);
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
+    private final View.OnClickListener mOnNextClickListener = new View.OnClickListener()
     {
         @Override
         public void onClick(final View view)
@@ -145,24 +141,30 @@ public final class BookingLocationFragment extends BookingFlowFragment
                 final String userId = user != null ? user.getId() : null;
                 final String authToken = user != null ? user.getAuthToken() : null;
 
-                dataManager.validateBookingZip(request.getServiceId(), zipText.getZipCode(), userId,
-                        authToken, request.getPromoCode(), new DataManager.Callback<Void>()
+                dataManager.validateBookingZip(
+                        request.getServiceId(),
+                        mZipCodeInputTextView.getZipCode(),
+                        userId,
+                        authToken,
+                        request.getPromoCode(),
+                        new DataManager.Callback<Void>()
                         {
                             @Override
                             public void onSuccess(Void v)
                             {
                                 final BookingRequest request = bookingManager.getCurrentRequest();
-                                request.setZipCode(zipText.getZipCode());
+                                request.setZipCode(mZipCodeInputTextView.getZipCode());
                                 mixpanel.trackEventWhenPage(request);
-
                                 if (!allowCallbacks) { return; }
                                 enableInputs();
                                 progressDialog.dismiss();
-
                                 if (!isPromoFlow) { displayBookingOptions(); }
                                 else
                                 {
-                                    final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+                                    final Intent intent = new Intent(
+                                            getActivity(),
+                                            BookingDateActivity.class
+                                    );
                                     startActivity(intent);
                                 }
                             }
@@ -171,15 +173,14 @@ public final class BookingLocationFragment extends BookingFlowFragment
                             public void onError(final DataManager.DataManagerError error)
                             {
                                 if (!allowCallbacks) { return; }
-
                                 enableInputs();
                                 progressDialog.dismiss();
-
                                 final HashMap<String, InputTextField> inputMap = new HashMap<>();
-                                inputMap.put("zipcode", zipText);
+                                inputMap.put("zipcode", mZipCodeInputTextView);
                                 dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
                             }
-                        });
+                        }
+                );
             }
         }
     };
@@ -187,11 +188,12 @@ public final class BookingLocationFragment extends BookingFlowFragment
     private void displayBookingOptions()
     {
         final BookingRequest request = bookingManager.getCurrentRequest();
-
         String userId = null;
         final User user = userManager.getCurrentUser();
-        if (user != null) { userId = user.getId(); }
-
+        if (user != null)
+        {
+            userId = user.getId();
+        }
         dataManager.getQuoteOptions(request.getServiceId(), userId,
                 new DataManager.Callback<BookingOptionsWrapper>()
                 {
@@ -199,14 +201,17 @@ public final class BookingLocationFragment extends BookingFlowFragment
                     public void onSuccess(final BookingOptionsWrapper options)
                     {
                         if (!allowCallbacks) { return; }
-
                         List<BookingOption> bookingOptions = options.getBookingOptions();
-
-                        final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
-                        intent.putParcelableArrayListExtra(BookingOptionsActivity.EXTRA_OPTIONS, new ArrayList<>(bookingOptions));
+                        final Intent intent = new Intent(
+                                getActivity(),
+                                BookingOptionsActivity.class
+                        );
+                        intent.putParcelableArrayListExtra(
+                                BookingOptionsActivity.EXTRA_OPTIONS,
+                                new ArrayList<>(bookingOptions)
+                        );
                         intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, 0);
                         startActivity(intent);
-
                         enableInputs();
                         progressDialog.dismiss();
                     }
