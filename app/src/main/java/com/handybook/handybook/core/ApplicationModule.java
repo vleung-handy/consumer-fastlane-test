@@ -106,7 +106,6 @@ import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.ServicesFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
-import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -118,7 +117,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -373,12 +371,6 @@ public final class ApplicationModule
                                                  final Bus bus)
     {
         return new UserDataManager(userManager, dataManager, bus);
-    }
-
-    @Provides
-    final ReactiveLocationProvider provideReactiveLocationProvider()
-    {
-        return new ReactiveLocationProvider(mContext);
     }
 
     @Provides
