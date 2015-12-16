@@ -10,7 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.ui.holder.BookingCardHolder;
 
 public class BookingCardAdapter extends RecyclerView.Adapter<BookingCardHolder>

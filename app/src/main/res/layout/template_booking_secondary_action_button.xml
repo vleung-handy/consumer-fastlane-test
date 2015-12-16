@@ -4,7 +4,7 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent">
 
-    <com.handybook.handybook.ui.widget.BookingActionButton
+    <com.handybook.handybook.booking.ui.view.BookingActionButton
         android:id="@+id/booking_secondary_action_button"
         style="@style/Button.BookingAction"
         android:layout_alignParentBottom="false"

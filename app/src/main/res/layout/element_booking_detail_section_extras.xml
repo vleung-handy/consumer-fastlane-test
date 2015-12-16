@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView
+<com.handybook.handybook.booking.ui.view.BookingDetailSectionExtrasView
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/BookingDetailSectionView"
     >
@@ -16,4 +16,4 @@
 
     <include layout="@layout/layout_section_action_buttons"/>
 
-</com.handybook.handybook.ui.widget.BookingDetailSectionExtrasView>
+</com.handybook.handybook.booking.ui.view.BookingDetailSectionExtrasView>

@@ -15,13 +15,13 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.viewmodel.BookingCardRowViewModel;
-import com.handybook.handybook.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
-import com.handybook.handybook.ui.view.BookingCardRowView;
-import com.handybook.handybook.ui.widget.ServiceOutlineIcon;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.viewmodel.BookingCardRowViewModel;
+import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.booking.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.booking.ui.view.BookingCardRowView;
+import com.handybook.handybook.booking.ui.view.ServiceOutlineIcon;
 
 import java.util.ArrayList;
 

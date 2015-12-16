@@ -15,13 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class OnboardFragment extends BookingFlowFragment {
+public final class OnboardFragment extends BookingFlowFragment
+{
     private static final String STATE_ANIMATE_PAGES = "ANIMATED_PAGES";
 
     private int currentIndex;

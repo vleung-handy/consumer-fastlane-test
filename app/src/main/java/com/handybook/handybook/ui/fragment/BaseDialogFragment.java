@@ -18,10 +18,11 @@ import javax.inject.Inject;
 
 public class BaseDialogFragment extends InjectedDialogFragment
 {
-    boolean canDismiss;
+    //TODO: use getters and setters
+    public boolean canDismiss;
 
     @Inject
-    DataManager dataManager;
+    public DataManager dataManager;
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState)
