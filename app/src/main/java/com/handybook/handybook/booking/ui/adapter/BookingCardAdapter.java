@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.adapter;
+package com.handybook.handybook.booking.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import android.view.animation.AnimationUtils;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.ui.holder.BookingCardHolder;
+import com.handybook.handybook.booking.ui.holder.BookingCardHolder;
 
 public class BookingCardAdapter extends RecyclerView.Adapter<BookingCardHolder>
 {

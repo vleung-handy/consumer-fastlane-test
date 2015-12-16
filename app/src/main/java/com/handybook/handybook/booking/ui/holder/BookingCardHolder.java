@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.holder;
+package com.handybook.handybook.booking.ui.holder;
 
 import android.app.Activity;
 import android.content.Context;

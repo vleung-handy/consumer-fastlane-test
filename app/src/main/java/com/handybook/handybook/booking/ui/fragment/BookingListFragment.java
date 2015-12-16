@@ -21,7 +21,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.ui.adapter.BookingCardAdapter;
+import com.handybook.handybook.booking.ui.adapter.BookingCardAdapter;
 import com.handybook.handybook.ui.view.EmptyRecyclerView;
 import com.squareup.otto.Subscribe;
 
