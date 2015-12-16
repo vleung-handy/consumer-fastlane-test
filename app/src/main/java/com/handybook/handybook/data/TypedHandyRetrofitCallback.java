@@ -1,5 +1,7 @@
 package com.handybook.handybook.data;
 
+import android.app.Notification;
+
 import com.crashlytics.android.Crashlytics;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -17,6 +19,7 @@ import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.UserBookingsWrapper;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 
 import org.json.JSONObject;
 
@@ -170,6 +173,13 @@ class AvailableSplashPromoRetrofitCallback extends TypedHandyRetrofitCallback<Sp
         super(callback);
     }
 }
+
+class HandyNotificationResultSetHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<HandyNotification.ResultSet>
+{
+    HandyNotificationResultSetHandyRetrofitCallback(final DataManager.Callback cb) {super(cb);}
+}
+
 
 class EmptyHandyRetroFitCallback extends TypedHandyRetrofitCallback<Void>
 {

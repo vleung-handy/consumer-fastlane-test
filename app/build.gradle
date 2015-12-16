@@ -53,7 +53,6 @@ def computeVersionCode(versionName) {
 
         def out = services.get(StyledTextOutputFactory).create("debug")
         out.withStyle(Style.Info).println("\nBuilding version ${versionName} (${versionCode})\n")
-
         return versionCode
     } else {
         throw new InvalidUserDataException("Illegal version name ${versionName}")
@@ -81,7 +80,7 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 22
-        versionName '1.11.2'
+        versionName '1.11.3'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -213,7 +212,7 @@ dependencies {
 
     //Location
     compile 'com.google.android.gms:play-services-location:8.4.8.7@aar'
-    
+
     //Testing with junit and robolectric
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.robolectric:shadows-support-v4:3.0'

@@ -16,6 +16,7 @@ import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
 import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
@@ -27,6 +28,8 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.module.notifications.manager.NotificationManager;
+import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
@@ -47,8 +50,11 @@ import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.CancelRecurringBookingActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
@@ -90,6 +96,8 @@ import com.handybook.handybook.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.ui.fragment.BookingsFragment;
 import com.handybook.handybook.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.ui.fragment.EmailCancellationDialogFragment;
+import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
@@ -108,6 +116,7 @@ import com.handybook.handybook.ui.fragment.ServicesFragment;
 import com.handybook.handybook.ui.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
+import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -126,7 +135,6 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
-        BaseActivity.class,
         ServiceCategoriesFragment.class,
         LoginFragment.class,
         NavigationFragment.class,
@@ -206,8 +214,10 @@ import retrofit.converter.GsonConverter;
         BookingEditAddressActivity.class,
         BookingEditAddressFragment.class,
         BlockingActivity.class,
+        NotificationsActivity.class,
         BlockingUpdateFragment.class,
         TipDialogFragment.class,
+        NotificationFeedFragment.class,
         CancelRecurringBookingActivity.class,
         CancelRecurringBookingFragment.class,
         EmailCancellationDialogFragment.class,
@@ -280,6 +290,10 @@ public final class ApplicationModule
                         request.addHeader("Accept", "application/json");
                         request.addQueryParam("client", "android");
                         request.addQueryParam("app_version", BuildConfig.VERSION_NAME);
+                        request.addQueryParam(
+                                "app_version_code",
+                                String.valueOf(BuildConfig.VERSION_CODE)
+                        );
                         request.addQueryParam("api_sub_version", "6.0");
                         request.addQueryParam("app_device_id", getDeviceId());
                         request.addQueryParam("app_device_model", getDeviceName());
@@ -353,9 +367,10 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final BookingManager provideBookingManager(final Bus bus,
-                                               final PrefsManager prefsManager,
-                                               final DataManager dataManager
+    final BookingManager provideBookingManager(
+            final Bus bus,
+            final PrefsManager prefsManager,
+            final DataManager dataManager
     )
     {
         return new BookingManager(bus, prefsManager, dataManager);
@@ -363,8 +378,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final UserManager provideUserManager(final Bus bus,
-                                         final PrefsManager prefsManager)
+    final UserManager provideUserManager(
+            final Bus bus,
+            final PrefsManager prefsManager)
     {
         return new UserManager(bus, prefsManager);
     }
@@ -393,18 +409,20 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final NavigationManager provideNavigationManager(final UserManager userManager,
-                                                     final DataManager dataManager,
-                                                     final DataManagerErrorHandler dataManagerErrorHandler)
+    final NavigationManager provideNavigationManager(
+            final UserManager userManager,
+            final DataManager dataManager,
+            final DataManagerErrorHandler dataManagerErrorHandler)
     {
         return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
     }
 
     @Provides
     @Singleton
-    final HelpManager provideHelpManager(final Bus bus,
-                                         final DataManager dataManager,
-                                         final UserManager userManager
+    final HelpManager provideHelpManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final UserManager userManager
     )
     {
         return new HelpManager(bus, dataManager, userManager);
@@ -412,8 +430,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HelpContactManager provideHelpContactManager(final Bus bus,
-                                                       final DataManager dataManager
+    final HelpContactManager provideHelpContactManager(
+            final Bus bus,
+            final DataManager dataManager
     )
     {
         return new HelpContactManager(bus, dataManager);
@@ -456,4 +475,15 @@ public final class ApplicationModule
             return manufacturer + " " + model;
         }
     }
+
+    @Provides
+    @Singleton
+    final NotificationManager provideNotificationManager(
+            final Bus bus,
+            final DataManager dataManager
+    )
+    {
+        return new NotificationManager(bus, dataManager);
+    }
+
 }
