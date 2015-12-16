@@ -62,8 +62,8 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldUpdateBookingRequestWithZipAndLaunchBookingOptionsActivity() throws Exception
     {
-        mFragment.zipText.setText("10001");
-        mFragment.nextButton.performClick();
+        mFragment.mZipCodeInputTextView.setText("10001");
+        mFragment.mNextButton.performClick();
         verify(mFragment.dataManager).validateBookingZip(
                 anyInt(),
                 eq("10001"),

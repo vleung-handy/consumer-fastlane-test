@@ -1,75 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg"
+    >
 
     <Button
         android:id="@+id/next_button"
+        style="@style/Button.Green"
         android:text="@string/next"
-        style="@style/Button.Green" />
+        />
 
     <TextView
         android:id="@+id/nav_text"
+        style="@style/TextView.Navbar"
         android:text="@string/location"
-        style="@style/TextView.Navbar" />
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text">
+        android:layout_below="@id/nav_text"
+        >
 
         <TextView
             android:id="@+id/location_text"
+            style="@style/TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/default_padding"
             android:text="@string/where_located"
-            style="@style/TextView" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/location_text"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <com.handybook.handybook.ui.widget.ZipCodeInputTextView
                 android:id="@+id/zip_text"
+                style="@style/EditText.Last.ZipCode"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                style="@style/EditText.Last.ZipCode" />
+                />
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/white">
-
-                <ImageButton
-                    android:id="@+id/location_button"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/location"
-                    android:src="@drawable/button_location"
-                    android:background="@color/white"/>
-
-                <ProgressBar
-                    android:id="@+id/zip_progress"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_gravity="center"
-                    android:visibility="invisible" />
-
-            </FrameLayout>
 
         </LinearLayout>
 
