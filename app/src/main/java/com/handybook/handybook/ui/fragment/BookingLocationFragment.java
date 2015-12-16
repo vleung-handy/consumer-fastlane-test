@@ -30,7 +30,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class BookingLocationFragment extends BookingFlowFragment
-        implements BaseActivity.OnBackPressedListener {
+        implements BaseActivity.OnBackPressedListener
+{
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
 
     private boolean isPromoFlow;
@@ -40,12 +41,14 @@ public final class BookingLocationFragment extends BookingFlowFragment
     @Bind(R.id.next_button)
     Button nextButton;
 
-    public static BookingLocationFragment newInstance() {
+    public static BookingLocationFragment newInstance()
+    {
         return new BookingLocationFragment();
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackLocation();
 
@@ -83,7 +86,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null)
         {
-            if (savedInstanceState.getBoolean(STATE_ZIP_HIGHLIGHT)) zipText.highlight();
+            if (savedInstanceState.getBoolean(STATE_ZIP_HIGHLIGHT)) { zipText.highlight(); }
         }
     }
 
@@ -97,7 +100,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
     private boolean validateFields()
     {
         boolean validate = true;
-        if (!zipText.validate()) validate = false;
+        if (!zipText.validate()) { validate = false; }
         return validate;
     }
 
@@ -142,7 +145,6 @@ public final class BookingLocationFragment extends BookingFlowFragment
                 final String userId = user != null ? user.getId() : null;
                 final String authToken = user != null ? user.getAuthToken() : null;
 
-
                 dataManager.validateBookingZip(request.getServiceId(), zipText.getZipCode(), userId,
                         authToken, request.getPromoCode(), new DataManager.Callback<Void>()
                         {
@@ -153,11 +155,11 @@ public final class BookingLocationFragment extends BookingFlowFragment
                                 request.setZipCode(zipText.getZipCode());
                                 mixpanel.trackEventWhenPage(request);
 
-                                if (!allowCallbacks) return;
+                                if (!allowCallbacks) { return; }
                                 enableInputs();
                                 progressDialog.dismiss();
 
-                                if (!isPromoFlow) displayBookingOptions();
+                                if (!isPromoFlow) { displayBookingOptions(); }
                                 else
                                 {
                                     final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
@@ -168,7 +170,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                             @Override
                             public void onError(final DataManager.DataManagerError error)
                             {
-                                if (!allowCallbacks) return;
+                                if (!allowCallbacks) { return; }
 
                                 enableInputs();
                                 progressDialog.dismiss();
@@ -182,12 +184,13 @@ public final class BookingLocationFragment extends BookingFlowFragment
         }
     };
 
-    private void displayBookingOptions() {
+    private void displayBookingOptions()
+    {
         final BookingRequest request = bookingManager.getCurrentRequest();
 
         String userId = null;
         final User user = userManager.getCurrentUser();
-        if (user != null) userId = user.getId();
+        if (user != null) { userId = user.getId(); }
 
         dataManager.getQuoteOptions(request.getServiceId(), userId,
                 new DataManager.Callback<BookingOptionsWrapper>()
@@ -195,7 +198,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                     @Override
                     public void onSuccess(final BookingOptionsWrapper options)
                     {
-                        if (!allowCallbacks) return;
+                        if (!allowCallbacks) { return; }
 
                         List<BookingOption> bookingOptions = options.getBookingOptions();
 
@@ -211,7 +214,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
-                        if (!allowCallbacks) return;
+                        if (!allowCallbacks) { return; }
                         enableInputs();
                         progressDialog.dismiss();
                         dataManagerErrorHandler.handleError(getActivity(), error);
