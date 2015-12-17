@@ -13,7 +13,15 @@ public final class BookingDetailActivity extends MenuDrawerActivity {
     @Override
     protected final Fragment createFragment() {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
-        return BookingDetailFragment.newInstance(booking);
+        if (booking != null)
+        {
+            return BookingDetailFragment.newInstance(booking);
+        }
+        else
+        {
+            final String bookingId = getIntent().getStringExtra(BundleKeys.BOOKING_ID);
+            return BookingDetailFragment.newInstance(bookingId);
+        }
     }
 
     @Override

@@ -31,5 +31,6 @@ public class BundleKeys
     public static final String RESCHEDULE_ALL = "reschedule_all";
     public static final String FOR_VOUCHER = "for_voucher";
 
+    public static final String DEEPLINK = "deep_link";
 
 }
