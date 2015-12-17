@@ -190,9 +190,11 @@ public abstract class BaseActivity extends AppCompatActivity
         });
 
 
+        getAvailableSplashPromo();
+
         //TODO: remove, for test only
-        SplashPromo splashPromo = new SplashPromo();
-        showSplashPromo(splashPromo);
+//        SplashPromo splashPromo = new SplashPromo();
+//        showSplashPromo(splashPromo);
 
     }
 
@@ -220,9 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity
     public void onReceiveAvailableSplashPromoSuccess(final HandyEvent.ReceiveAvailableSplashPromoSuccess event)
     {
         //show the dialog
-        SplashPromoDialogFragment splashPromoDialogFragment =
-                SplashPromoDialogFragment.newInstance(event.splashPromo);
-        splashPromoDialogFragment.show(this.getSupportFragmentManager(), null);
+        showSplashPromo(event.splashPromo);
     }
 
     @Subscribe

@@ -121,7 +121,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -388,12 +387,6 @@ public final class ApplicationModule
     }
 
     @Provides
-    final ReactiveLocationProvider provideReactiveLocationProvider()
-    {
-        return new ReactiveLocationProvider(mContext);
-    }
-
-    @Provides
     @Singleton
     final Mixpanel provideMixpanel(final PrefsManager prefsManager)
     {
@@ -473,10 +466,11 @@ public final class ApplicationModule
     @Singleton
     final NotificationManager provideNotificationManager(
             final Bus bus,
-            final DataManager dataManager
+            final DataManager dataManager,
+            final PrefsManager prefsManager
     )
     {
-        return new NotificationManager(bus, dataManager);
+        return new NotificationManager(bus, dataManager, prefsManager);
     }
 
 }

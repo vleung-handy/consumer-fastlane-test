@@ -36,6 +36,7 @@ import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.model.response.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 
@@ -217,11 +218,11 @@ public final class BaseDataManager extends DataManager
         });
     }
 
-//    @Override
-//    public void getAvailableSplashPromo(final String userId, final Callback<SplashPromo> cb)
-//    {
-//        mService.getAvailableSplashPromo(userId, new AvailableSplashPromoRetrofitCallback(cb));
-//    }
+    @Override
+    public void getAvailableSplashPromo(final String userId, final Callback<SplashPromo> cb)
+    {
+        mService.getAvailableSplashPromo(userId, new AvailableSplashPromoRetrofitCallback(cb));
+    }
 
     @Override
     public void editBookingAddress(final int bookingId,
@@ -233,7 +234,8 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public void sendCancelRecurringBookingEmail(final int bookingRecurringId, final
-                                                Callback<SuccessWrapper> cb)
+    Callback<SuccessWrapper> cb
+    )
     {
         mService.sendCancelRecurringBookingEmail(bookingRecurringId, new SuccessHandyRetroFitCallback(cb));
     }
@@ -253,9 +255,11 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void editBookingHours(final int bookingId,
-                                  final BookingEditHoursRequest bookingEditHoursRequest,
-                                  final Callback<SuccessWrapper> cb)
+    public void editBookingHours(
+            final int bookingId,
+            final BookingEditHoursRequest bookingEditHoursRequest,
+            final Callback<SuccessWrapper> cb
+    )
     {
         mService.editBookingHours(bookingId, bookingEditHoursRequest, new SuccessHandyRetroFitCallback(cb));
     }
