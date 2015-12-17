@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -37,8 +38,10 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject protected NavigationManager navigationManager;
 
+    //TODO: acknowledged this is not ideal
+    @VisibleForTesting
     @Inject
-    protected Bus bus;
+    public Bus bus;
 
 
     @Override

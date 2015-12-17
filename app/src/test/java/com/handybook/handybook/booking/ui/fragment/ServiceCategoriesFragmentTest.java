@@ -6,11 +6,11 @@ import android.content.SharedPreferences;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
+import com.handybook.handybook.core.TestBaseApplication;
+import com.handybook.handybook.data.DataManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +22,8 @@ import org.robolectric.shadows.ShadowPreferenceManager;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import java.util.Collections;
+
+import javax.inject.Inject;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,11 +41,15 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     private Service mMockService;
     @Captor
     private ArgumentCaptor<DataManager.Callback> mCallbackCaptor;
-
+    @Inject
+    DataManager mDataManager;
+    
     @Before
     public void setUp() throws Exception
     {
         initMocks(this);
+        ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
+                .inject(this);
         mFragment = ServiceCategoriesFragment.newInstance();
 
         when(mMockService.getUniq()).thenReturn("service");
@@ -59,7 +65,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     {
         when(mMockService.getServices()).thenReturn(Collections.<Service>emptyList());
 
-        verify(mFragment.dataManager, atLeastOnce())
+        verify(mDataManager, atLeastOnce())
                 .getServices(any(DataManager.CacheResponse.class), mCallbackCaptor.capture());
         mCallbackCaptor.getValue().onSuccess(Lists.newArrayList(mMockService));
         mFragment.mCategoryLayout.getChildAt(0).performClick();
@@ -74,7 +80,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     {
         when(mMockService.getServices()).thenReturn(Lists.newArrayList(mMockService));
 
-        verify(mFragment.dataManager, atLeastOnce())
+        verify(mDataManager, atLeastOnce())
                 .getServices(any(DataManager.CacheResponse.class), mCallbackCaptor.capture());
         mCallbackCaptor.getValue().onSuccess(Lists.newArrayList(mMockService));
         mFragment.mCategoryLayout.getChildAt(0).performClick();

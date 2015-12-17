@@ -7,11 +7,11 @@ import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
+import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 
 import org.junit.Before;
@@ -46,6 +46,10 @@ public class BookingDateFragmentTest extends RobolectricGradleTestWrapper
     private BookingQuote mMockBookingQuote;
     @Inject
     BookingManager mBookingManager;
+    @Inject
+    UserManager mUserManager;
+    @Inject
+    DataManager mDataManager;
     @Captor
     private ArgumentCaptor<DataManager.Callback> mCallbackCaptor;
 
@@ -75,7 +79,7 @@ public class BookingDateFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldLaunchLoginActivityIfUserIsNotLoggedIn() throws Exception
     {
-        when(mFragment.userManager.getCurrentUser()).thenReturn(null);
+        when(mUserManager.getCurrentUser()).thenReturn(null);
         mFragment.mNextButton.performClick();
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName(),
@@ -85,10 +89,10 @@ public class BookingDateFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldLaunchBookingRecurrenceActivityIfUserIsLoggedIn() throws Exception
     {
-        when(mFragment.userManager.getCurrentUser()).thenReturn(mock(User.class));
+        when(mUserManager.getCurrentUser()).thenReturn(mock(User.class));
         mFragment.mNextButton.performClick();
 
-        verify(mFragment.dataManager).createQuote(any(BookingRequest.class),
+        verify(mDataManager).createQuote(any(BookingRequest.class),
                 mCallbackCaptor.capture());
 
         mCallbackCaptor.getValue().onSuccess(mMockBookingQuote);

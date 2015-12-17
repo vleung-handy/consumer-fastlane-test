@@ -7,11 +7,10 @@ import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.booking.ui.fragment.BookingLocationFragment;
-import com.handybook.handybook.core.TestBaseApplication;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
+import com.handybook.handybook.core.TestBaseApplication;
+import com.handybook.handybook.data.DataManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +43,8 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
     private BookingOptionsWrapper mBookingOptionsWrapper;
     @Inject
     BookingManager mBookingManager;
+    @Inject
+    DataManager mDataManager;
     @Captor
     private ArgumentCaptor<DataManager.Callback> mCallbackCaptor;
 
@@ -65,7 +66,7 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
     {
         mFragment.mZipCodeInputTextView.setText("10001");
         mFragment.mNextButton.performClick();
-        verify(mFragment.dataManager).validateBookingZip(
+        verify(mDataManager).validateBookingZip(
                 anyInt(),
                 eq("10001"),
                 anyString(),
@@ -76,7 +77,7 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
         mCallbackCaptor.getValue().onSuccess(null);
         verify(mMockRequest).setZipCode("10001");
 
-        verify(mFragment.dataManager).getQuoteOptions(
+        verify(mDataManager).getQuoteOptions(
                 anyInt(),
                 anyString(),
                 mCallbackCaptor.capture()

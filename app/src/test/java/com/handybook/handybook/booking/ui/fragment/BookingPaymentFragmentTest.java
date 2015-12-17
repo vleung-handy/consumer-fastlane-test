@@ -7,19 +7,18 @@ import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.manager.BookingManager;
+import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
+import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.testutil.AppAssertionUtils;
-import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -142,7 +141,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
 
         verify(mMockTransaction).setStripeToken(eq("some_id"));
 
-        verify(mFragment.dataManager).createBooking(eq(mMockTransaction),
+        verify(mDataManager).createBooking(eq(mMockTransaction),
                 mDataManagerCallbackCaptor.capture());
 
         mDataManagerCallbackCaptor.getValue().onSuccess(mCompleteTransaction);

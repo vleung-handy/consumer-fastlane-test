@@ -5,17 +5,6 @@ import android.content.Context;
 
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.booking.manager.BookingManager;
-import com.handybook.handybook.data.BaseDataManagerErrorHandler;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.HandyRetrofitEndpoint;
-import com.handybook.handybook.data.HandyRetrofitService;
-import com.handybook.handybook.data.Mixpanel;
-import com.handybook.handybook.data.SecurePreferences;
-import com.handybook.handybook.manager.AppBlockManager;
-import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.manager.StripeManager;
-import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingEditExtrasActivity;
@@ -27,7 +16,6 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
@@ -48,8 +36,21 @@ import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
-import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
+import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
+import com.handybook.handybook.data.BaseDataManagerErrorHandler;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.DataManagerErrorHandler;
+import com.handybook.handybook.data.HandyRetrofitEndpoint;
+import com.handybook.handybook.data.HandyRetrofitService;
+import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
+import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.squareup.otto.Bus;
@@ -101,6 +102,7 @@ import static org.mockito.Mockito.when;
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,
         UpdatePaymentFragmentTest.class,
+        ServiceCategoriesFragmentTest.class,
 }, library = true)
 public class TestApplicationModule
 {
