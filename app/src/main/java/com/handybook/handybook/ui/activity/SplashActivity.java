@@ -5,9 +5,11 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.Booking;
+import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 

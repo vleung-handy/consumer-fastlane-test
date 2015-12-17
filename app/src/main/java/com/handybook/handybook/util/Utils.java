@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BookingActionButtonType;
+import com.handybook.handybook.booking.constant.BookingActionButtonType;
 
 import java.util.Calendar;
 import java.util.Date;
