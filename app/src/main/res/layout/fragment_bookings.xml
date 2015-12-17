@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@color/handy_blue"
               android:orientation="vertical"
-              tools:context="com.handybook.handybook.ui.fragment.BookingsFragment"
+              tools:context=".booking.ui.fragment.BookingsFragment"
     >
 
     <FrameLayout

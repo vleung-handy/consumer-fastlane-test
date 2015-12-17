@@ -3,15 +3,15 @@ package com.handybook.handybook.data;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.core.BookingPostInfo;
-import com.handybook.handybook.core.BookingRequest;
-import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.model.request.BookingEditAddressRequest;
-import com.handybook.handybook.model.request.BookingEditExtrasRequest;
-import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
-import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.model.BookingEditHoursRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;

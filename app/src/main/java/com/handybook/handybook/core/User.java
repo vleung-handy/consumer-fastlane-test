@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

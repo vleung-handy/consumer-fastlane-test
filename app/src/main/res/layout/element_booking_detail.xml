@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.handybook.handybook.ui.view.BookingDetailView
+<com.handybook.handybook.booking.ui.view.BookingDetailView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/handy_bg"
@@ -144,7 +144,7 @@
 
                 </RelativeLayout>
 
-                <com.handybook.handybook.ui.widget.ServiceIconImageView
+                <com.handybook.handybook.booking.ui.view.ServiceIconImageView
                     android:id="@+id/service_icon"
                     android:layout_alignParentLeft="false"
                     android:layout_alignParentTop="true"
@@ -176,4 +176,4 @@
 
     </ScrollView>
 
-</com.handybook.handybook.ui.view.BookingDetailView>
+</com.handybook.handybook.booking.ui.view.BookingDetailView>
