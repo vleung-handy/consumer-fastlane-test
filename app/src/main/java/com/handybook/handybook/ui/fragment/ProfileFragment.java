@@ -19,7 +19,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.ui.activity.CancelRecurringBookingActivity;
+import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;

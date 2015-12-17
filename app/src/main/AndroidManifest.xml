@@ -44,7 +44,7 @@
         android:theme="@style/Theme.Base"
         >
         <activity
-            android:name=".ui.activity.ServiceCategoriesActivity"
+            android:name=".booking.ui.activity.ServiceCategoriesActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             >
@@ -96,44 +96,44 @@
         </activity>
         <activity android:name=".ui.activity.LoginActivity"/>
         <activity
-            android:name=".ui.activity.ServicesActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".ui.activity.BookingLocationActivity"/>
-        <activity android:name=".ui.activity.ProfileActivity"/>
+            android:name=".booking.ui.activity.ServicesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".booking.ui.activity.BookingLocationActivity"/>
         <activity
-            android:name=".ui.activity.BookingsActivity"
+            android:name=".ui.activity.ProfileActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
+        <activity
+            android:name=".booking.ui.activity.BookingsActivity"
             android:screenOrientation="portrait"
             />
         <activity
             android:name=".ui.activity.UpdatePaymentActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".ui.activity.BookingOptionsActivity"/>
-        <activity android:name=".ui.activity.BookingDateActivity"/>
-        <activity android:name=".ui.activity.BookingAddressActivity"/>
-        <activity
-            android:name=".ui.activity.BookingPaymentActivity"
-            android:windowSoftInputMode="stateHidden"
-            />
-        <activity android:name=".ui.activity.BookingDetailActivity"/>
-        <activity android:name=".ui.activity.BookingConfirmationActivity"/>
-        <activity android:name=".ui.activity.BookingRecurrenceActivity"/>
-        <activity android:name=".ui.activity.BookingExtrasActivity"/>
-        <activity android:name=".ui.activity.BookingRescheduleOptionsActivity"/>
-        <activity android:name=".ui.activity.BookingCancelOptionsActivity"/>
-        <activity android:name=".ui.activity.PeakPricingActivity"/>
-        <activity android:name=".ui.activity.PromosActivity"/>
+        <activity android:name=".booking.ui.activity.BookingOptionsActivity"/>
+        <activity android:name=".booking.ui.activity.BookingDateActivity"/>
+        <activity android:name=".booking.ui.activity.BookingAddressActivity"/>
+        <activity android:name=".booking.ui.activity.BookingPaymentActivity"
+                  android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".booking.ui.activity.BookingDetailActivity"/>
+        <activity android:name=".booking.ui.activity.BookingConfirmationActivity"/>
+        <activity android:name=".booking.ui.activity.BookingRecurrenceActivity"/>
+        <activity android:name=".booking.ui.activity.BookingExtrasActivity"/>
+        <activity android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"/>
+        <activity android:name=".booking.ui.activity.BookingCancelOptionsActivity"/>
+        <activity android:name=".booking.ui.activity.PeakPricingActivity"/>
+        <activity android:name=".booking.ui.fragment.PromosActivity"/>
         <activity android:name=".ui.activity.OnboardActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
         <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
-        <activity android:name=".ui.activity.BookingEditNoteToProActivity"/>
-        <activity android:name=".ui.activity.BookingEditEntryInformationActivity"/>
-        <activity android:name=".ui.activity.BookingEditFrequencyActivity"/>
-        <activity android:name=".ui.activity.BookingEditExtrasActivity"/>
-        <activity android:name=".ui.activity.BookingEditHoursActivity"/>
-        <activity android:name=".ui.activity.BookingEditAddressActivity"/>
-        <activity android:name=".ui.activity.CancelRecurringBookingActivity"/>
+        <activity android:name=".booking.ui.activity.BookingEditNoteToProActivity"/>
+        <activity android:name=".booking.ui.activity.BookingEditEntryInformationActivity"/>
+        <activity android:name=".booking.ui.activity.BookingEditFrequencyActivity"/>
+        <activity android:name=".booking.ui.activity.BookingEditExtrasActivity"/>
+        <activity android:name=".booking.ui.activity.BookingEditHoursActivity"/>
+        <activity android:name=".booking.ui.activity.BookingEditAddressActivity"/>
+        <activity android:name=".booking.ui.activity.CancelRecurringBookingActivity"/>
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.activity.BookingDetailActivity;
 
 public class DeeplinkHandler
 {

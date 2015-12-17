@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <com.handybook.handybook.ui.widget.BookingActionButton
+    <com.handybook.handybook.booking.ui.view.BookingActionButton
         android:id="@+id/booking_action_button"
         style="@style/Button.BookingAction"
         android:layout_alignParentBottom="false"

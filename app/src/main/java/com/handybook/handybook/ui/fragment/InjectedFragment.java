@@ -1,13 +1,14 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.view.Gravity;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.BookingManager;
+import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
@@ -30,16 +31,17 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     protected Toast toast;
 
     //UPGRADE: Move away from direct calls to these and go through the bus
-    @Inject BookingManager bookingManager;
+    @Inject protected BookingManager bookingManager;
     @Inject protected UserManager userManager;
     @Inject protected Mixpanel mixpanel;
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject protected DataManager dataManager;
+    @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject protected NavigationManager navigationManager;
 
+    //TODO: acknowledged this is not ideal
+    @VisibleForTesting
     @Inject
-    protected
-    Bus bus;
+    public Bus bus;
 
 
     @Override

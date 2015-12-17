@@ -20,7 +20,7 @@ import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.view.HelpBannerView;
 import com.handybook.handybook.helpcenter.ui.view.HelpNodeView;
-import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.CTAButton;
 import com.squareup.otto.Subscribe;

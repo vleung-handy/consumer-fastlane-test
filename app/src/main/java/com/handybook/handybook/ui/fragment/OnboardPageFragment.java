@@ -10,11 +10,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class OnboardPageFragment extends BookingFlowFragment {
+public final class OnboardPageFragment extends BookingFlowFragment
+{
     static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
     static final String EXTRA_ANIMATE = "com.handy.handy.EXTRA_ANIMATE";
 
