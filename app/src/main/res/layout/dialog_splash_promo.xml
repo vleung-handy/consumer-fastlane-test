@@ -7,7 +7,7 @@
 
 
     <LinearLayout
-        android:background="@drawable/bg_rounded_white"
+        android:background="@drawable/rounded_frame"
         android:clickable="true"
         android:gravity="center"
         android:layout_width="300dp"
@@ -16,10 +16,11 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_marginTop="@dimen/default_margin_double"
+            android:id="@+id/splash_promo_header_image"
             android:gravity="center"
-            android:layout_height="@dimen/default_icon_size_double"
-            android:layout_width="@dimen/default_icon_size_double"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:src="@drawable/ic_envelope"
             android:layout_gravity="center"/>
 

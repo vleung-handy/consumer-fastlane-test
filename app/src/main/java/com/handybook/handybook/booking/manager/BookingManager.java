@@ -26,7 +26,7 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.model.response.SplashPromo;
+import com.handybook.handybook.module.notifications.model.response.SplashPromo;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

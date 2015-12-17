@@ -28,9 +28,11 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.model.response.SplashPromo;
-import com.handybook.handybook.ui.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.module.notifications.manager.NotificationManager;
+import com.handybook.handybook.module.notifications.model.response.SplashPromo;
+import com.handybook.handybook.module.notifications.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -45,8 +47,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends AppCompatActivity
 {
-
-
     protected boolean allowCallbacks;
     protected ProgressDialog mProgressDialog;
     protected Toast mToast;
@@ -62,6 +62,8 @@ public abstract class BaseActivity extends AppCompatActivity
     NavigationManager mNavigationManager;
     @Inject
     Bus mBus;
+    @Inject
+    NotificationManager mNotificationManager;
     private OnBackPressedListener mOnBackPressedListener;
     private RateServiceDialogFragment mRateServiceDialogFragment;
 
@@ -109,6 +111,12 @@ public abstract class BaseActivity extends AppCompatActivity
     {
         super.onResume();
         mBus.register(this);
+    }
+
+    @Override
+    protected void onResumeFragments()
+    {
+        super.onResumeFragments();
         getAvailableSplashPromo(); //TODO: test only, remove later
     }
 
@@ -191,7 +199,6 @@ public abstract class BaseActivity extends AppCompatActivity
         });
 
 
-        getAvailableSplashPromo();
 
         //TODO: remove, for test only
 //        SplashPromo splashPromo = new SplashPromo();
@@ -205,7 +212,22 @@ public abstract class BaseActivity extends AppCompatActivity
         if(mUserManager.getCurrentUser() != null)
         {
             String userId =  mUserManager.getCurrentUser().getId();
-            mBus.post(new HandyEvent.RequestAvailableSplashPromo(userId));
+//            mBus.post(new HandyEvent.RequestAvailableSplashPromo(userId));
+
+            //TODO: remove below, for testing only!
+            mDataManager.getAvailableSplashPromo(userId, new DataManager.Callback<SplashPromo>() {
+                @Override
+                public void onSuccess(final SplashPromo response)
+                {
+                    showSplashPromo(response);
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error)
+                {
+
+                }
+            });
         }
     }
 
@@ -216,6 +238,12 @@ public abstract class BaseActivity extends AppCompatActivity
         SplashPromoDialogFragment splashPromoDialogFragment =
                 SplashPromoDialogFragment.newInstance(splashPromo);
         splashPromoDialogFragment.show(this.getSupportFragmentManager(), null);
+    }
+
+    @Subscribe
+    public void onEachActivityResume(final ActivityEvent.Resumed e)
+    {
+        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
     }
 
     //TODO: test only, move out of here

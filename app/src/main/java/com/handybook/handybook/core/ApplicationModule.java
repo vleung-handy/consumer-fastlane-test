@@ -99,6 +99,7 @@ import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.notifications.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
 import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
+import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -113,7 +114,7 @@ import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.ui.fragment.ProfileFragment;
-import com.handybook.handybook.ui.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.module.notifications.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
@@ -132,6 +133,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
+        BaseActivity.class,
         ServiceCategoriesFragment.class,
         LoginFragment.class,
         NavigationFragment.class,
@@ -471,11 +473,10 @@ public final class ApplicationModule
     @Singleton
     final NotificationManager provideNotificationManager(
             final Bus bus,
-            final DataManager dataManager,
-            final PrefsManager prefsManager
+            final DataManager dataManager
     )
     {
-        return new NotificationManager(bus, dataManager, prefsManager);
+        return new NotificationManager(bus, dataManager);
     }
 
 }

@@ -15,7 +15,7 @@ import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
-import com.handybook.handybook.model.response.SplashPromo;
+import com.handybook.handybook.module.notifications.model.response.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 

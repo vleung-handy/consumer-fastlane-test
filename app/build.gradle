@@ -178,6 +178,9 @@ dependencies {
     //Mixpanel
     compile 'com.mixpanel.android:mixpanel-android:4.6.3'
 
+    //Picasso for image downloading and caching
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     //This is for a view page indicator : http://viewpagerindicator.com/
     //Currently used in the OnBoardFragment
     compile 'com.viewpagerindicator:library:2.4.1'

@@ -1,14 +1,17 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.module.notifications.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.model.response.SplashPromo;
+import com.handybook.handybook.module.notifications.model.response.SplashPromo;
+import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,6 +21,8 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
 {
     private static final String BUNDLE_KEY_SPLASH_PROMO = "SPLASH_PROMO";
 
+    @Bind(R.id.splash_promo_header_image)
+    ImageView mUrlImageView;
     @Bind(R.id.splash_promo_subtitle)
     TextView mSubtitle;
     @Bind(R.id.splash_promo_title)
@@ -58,6 +63,11 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     public void onViewCreated(final View view, final Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        Picasso.with(getContext()).
+                load(mSplashPromo.getImageUrl()).
+//                placeholder(R.drawable.).
+//                error(R.drawable).
+                into(mUrlImageView);
         mTitle.setText(mSplashPromo.getTitle());
         mSubtitle.setText(mSplashPromo.getSubtitle());
         mActionButton.setText(mSplashPromo.getActionText());

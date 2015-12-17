@@ -19,7 +19,7 @@ import com.handybook.handybook.booking.viewmodel.BookingEditHoursViewModel;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.model.response.SplashPromo;
+import com.handybook.handybook.module.notifications.model.response.SplashPromo;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 import com.stripe.android.model.Token;
 

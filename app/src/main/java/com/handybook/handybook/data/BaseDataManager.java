@@ -36,7 +36,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.model.response.SplashPromo;
+import com.handybook.handybook.module.notifications.model.response.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 
