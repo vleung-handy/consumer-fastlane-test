@@ -11,8 +11,8 @@ import com.google.android.gms.wallet.WalletConstants;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.BookingQuote;
-import com.handybook.handybook.core.BookingTransaction;
+import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.BookingTransaction;
 import com.stripe.Stripe;
 
 import java.util.List;

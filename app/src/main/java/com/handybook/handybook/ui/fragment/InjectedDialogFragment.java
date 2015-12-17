@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.BookingManager;
+import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
@@ -24,11 +24,11 @@ public class InjectedDialogFragment extends DialogFragment {
     protected ProgressDialog progressDialog;
     protected Toast toast;
 
-    @Inject BookingManager bookingManager;
-    @Inject UserManager userManager;
-    @Inject Mixpanel mixpanel;
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject protected BookingManager bookingManager;
+    @Inject protected UserManager userManager;
+    @Inject protected Mixpanel mixpanel;
+    @Inject protected DataManager dataManager;
+    @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject
     protected Bus mBus;
 
