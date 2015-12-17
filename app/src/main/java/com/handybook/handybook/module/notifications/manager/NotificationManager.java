@@ -56,7 +56,9 @@ public class NotificationManager
                 });
     }
 
-    private static final long REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS = DateTimeUtils.MILLISECONDS_IN_SECOND * 30;
+    private static final long REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS =
+            DateTimeUtils.MILLISECONDS_IN_SECOND * DateTimeUtils.SECONDS_IN_MINUTE * 5;
+    //every 5 minutes at most
 
     private boolean shouldRequestAvailablePromo()
     {
