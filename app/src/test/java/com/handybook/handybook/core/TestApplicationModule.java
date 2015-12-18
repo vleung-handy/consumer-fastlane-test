@@ -48,6 +48,7 @@ import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
@@ -234,5 +235,12 @@ public class TestApplicationModule
     final StripeManager provideStripeManager()
     {
         return mock(StripeManager.class);
+    }
+
+    @Provides
+    @Singleton
+    final UrbanAirshipManager provideUrbanAirshipManager()
+    {
+        return mock(UrbanAirshipManager.class);
     }
 }

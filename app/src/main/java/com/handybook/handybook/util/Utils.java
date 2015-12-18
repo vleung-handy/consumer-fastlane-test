@@ -102,7 +102,7 @@ public final class Utils
         if (context == null)
         {
             Crashlytics.logException(new Exception("Trying to launch an intent with a null context!"));
-        } else if (intent.resolveActivity(context.getPackageManager()) != null)
+        } else if (context.getPackageManager().resolveActivity(intent, 0) != null)
         {
             context.startActivity(intent);
             return true;
