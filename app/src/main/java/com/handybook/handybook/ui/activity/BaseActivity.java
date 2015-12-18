@@ -14,24 +14,23 @@ import android.widget.Toast;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
-import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
-import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
-import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
-import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
 import java.util.ArrayList;
@@ -260,10 +259,6 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        if (PlayServicesUtils.isGooglePlayStoreAvailable())
-        {
-            PlayServicesUtils.handleAnyPlayServicesError(this);
-        }
         allowCallbacks = true;
     }
 
