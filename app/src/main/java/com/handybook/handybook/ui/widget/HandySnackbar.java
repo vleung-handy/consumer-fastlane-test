@@ -24,6 +24,10 @@ public class HandySnackbar
 
     private static int getColorForType(final String type)
     {
+        if (type == null)
+        {
+            return R.color.nav_bg;
+        }
         switch (type)
         {
             case TYPE_SUCCESS:
@@ -40,6 +44,4 @@ public class HandySnackbar
 
         }
     }
-
-
 }
