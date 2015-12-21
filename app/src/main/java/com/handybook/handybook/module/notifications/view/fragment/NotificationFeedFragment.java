@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.common.eventbus.Subscribe;
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.fragment.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -87,14 +87,14 @@ public class NotificationFeedFragment extends InjectedFragment
         requestNotifications();
     }
 
-    @Subscribe()
-    void onNotificationResponseReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
+    @Subscribe
+    public void onNotificationResponseReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
     {
         mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
     }
 
-    @Subscribe()
-    void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e){
+    @Subscribe
+    public void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e){
         showToast(e.getPayload().getMessage());
     }
 

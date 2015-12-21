@@ -3,7 +3,6 @@ package com.handybook.handybook.core;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
 import com.squareup.otto.Bus;
@@ -27,6 +26,11 @@ public class UserManager implements Observer
         this.prefsManager = prefsManager;
         this.bus = bus;
         this.bus.register(this);
+    }
+
+    public boolean isUserLoggedIn()
+    {
+        return getCurrentUser() != null;
     }
 
     public User getCurrentUser()
@@ -87,12 +91,5 @@ public class UserManager implements Observer
         {
             setCurrentUser(null);
         }
-    }
-
-    @Subscribe
-    public void onReceiveAvailableSplashPromoSuccess(final HandyEvent.ReceiveAvailableSplashPromoSuccess event)
-    {
-        //show the dialog
-        System.out.println("test");
     }
 }

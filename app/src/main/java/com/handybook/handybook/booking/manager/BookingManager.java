@@ -26,7 +26,6 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.module.notifications.model.response.SplashPromo;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -59,23 +58,6 @@ public class BookingManager implements Observer
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers
     // and provide a layer for data access
-    @Subscribe
-    public void onRequestAvailableSplashPromo(HandyEvent.RequestAvailableSplashPromo event)
-    {
-        dataManager.getAvailableSplashPromo(event.userId, new DataManager.Callback<SplashPromo>() {
-            @Override
-            public void onSuccess(final SplashPromo response)
-            {
-                bus.post(new HandyEvent.ReceiveAvailableSplashPromoSuccess(response));
-            }
-
-            @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
-                bus.post(new HandyEvent.ReceiveAvailableSplashPromoError(error));
-            }
-        });
-    }
 
     @Subscribe
     public void onRequestEditBookingAddress(HandyEvent.RequestEditBookingAddress event)

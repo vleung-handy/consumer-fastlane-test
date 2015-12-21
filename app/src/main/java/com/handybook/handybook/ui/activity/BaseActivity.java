@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -30,15 +29,8 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
-import com.handybook.handybook.event.ActivityEvent;
-import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.notifications.manager.NotificationManager;
-import com.handybook.handybook.module.notifications.model.response.SplashPromo;
-import com.handybook.handybook.module.notifications.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
-import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
 import java.util.ArrayList;
@@ -66,8 +58,6 @@ public abstract class BaseActivity extends AppCompatActivity
     NavigationManager mNavigationManager;
     @Inject
     Bus mBus;
-    @Inject
-    NotificationManager mNotificationManager;
     private OnBackPressedListener mOnBackPressedListener;
     private RateServiceDialogFragment mRateServiceDialogFragment;
 
@@ -108,27 +98,6 @@ public abstract class BaseActivity extends AppCompatActivity
     {
         super.onStop();
         allowCallbacks = false;
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        mBus.register(this);
-    }
-
-    @Override
-    protected void onResumeFragments()
-    {
-        super.onResumeFragments();
-        getAvailableSplashPromo(); //TODO: test only, remove later
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        mBus.unregister(this);
     }
 
     @Override
@@ -200,74 +169,6 @@ public abstract class BaseActivity extends AppCompatActivity
             {
             }
         });
-
-
-
-        //TODO: remove, for test only
-//        SplashPromo splashPromo = new SplashPromo();
-//        showSplashPromo(splashPromo);
-
-    }
-
-    //TODO: move somewhere else
-    private void getAvailableSplashPromo()
-    {
-        if(mUserManager.getCurrentUser() != null)
-        {
-            String userId =  mUserManager.getCurrentUser().getId();
-//            mBus.post(new HandyEvent.RequestAvailableSplashPromo(userId));
-
-            //TODO: remove below, for testing only!
-            mDataManager.getAvailableSplashPromo(userId, new DataManager.Callback<SplashPromo>() {
-                @Override
-                public void onSuccess(final SplashPromo response)
-                {
-                    showSplashPromo(response);
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-
-                }
-            });
-        }
-    }
-
-
-    private void showSplashPromo(SplashPromo splashPromo)
-    {
-        //show the dialog
-        if(!isFinishing())
-        {
-            SplashPromoDialogFragment splashPromoDialogFragment =
-                    SplashPromoDialogFragment.newInstance(splashPromo);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(splashPromoDialogFragment, SplashPromoDialogFragment.class.getSimpleName());
-            transaction.commitAllowingStateLoss();
-//        splashPromoDialogFragment.show(this.getSupportFragmentManager(), null);
-        }
-
-    }
-
-    @Subscribe
-    public void onEachActivityResume(final ActivityEvent.Resumed e)
-    {
-        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
-    }
-
-    //TODO: test only, move out of here
-    @Subscribe
-    public void onReceiveAvailableSplashPromoSuccess(final HandyEvent.ReceiveAvailableSplashPromoSuccess event)
-    {
-        //show the dialog
-        showSplashPromo(event.splashPromo);
-    }
-
-    @Subscribe
-    public void onReceiveAvailableSplashPromoError(final HandyEvent.ReceiveAvailableSplashPromoError event)
-    {
-        Toast.makeText(this, "error in fetching splash promo", Toast.LENGTH_SHORT).show();
     }
 
     private void showProRateDialog(final User user, final String proName, final int bookingId)
@@ -358,10 +259,6 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        if (PlayServicesUtils.isGooglePlayStoreAvailable())
-        {
-            PlayServicesUtils.handleAnyPlayServicesError(this);
-        }
         allowCallbacks = true;
     }
 

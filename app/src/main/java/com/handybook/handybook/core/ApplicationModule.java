@@ -93,15 +93,16 @@ import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.manager.DeepLinkNavigationManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.notifications.manager.SplashNotificationManager;
 import com.handybook.handybook.module.notifications.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
 import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
 import com.handybook.handybook.module.notifications.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
-import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -134,7 +135,6 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
-        BaseActivity.class,
         ServiceCategoriesFragment.class,
         LoginFragment.class,
         NavigationFragment.class,
@@ -399,6 +399,22 @@ public final class ApplicationModule
                                                  final Bus bus)
     {
         return new UserDataManager(userManager, dataManager, bus);
+    }
+
+    @Provides
+    @Singleton
+    final SplashNotificationManager provideSplashNotificationManager(final UserManager userManager,
+                                                                     final DataManager dataManager,
+                                                                     final Bus bus)
+    {
+        return new SplashNotificationManager(userManager, dataManager, bus);
+    }
+
+    @Provides
+    @Singleton
+    final DeepLinkNavigationManager provideDeepLinkNavigationManager(final UserManager userManager)
+    {
+        return new DeepLinkNavigationManager(userManager);
     }
 
     @Provides

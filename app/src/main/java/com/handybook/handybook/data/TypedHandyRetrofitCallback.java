@@ -165,7 +165,6 @@ class UserExistsHandyRetrofitCallback extends TypedHandyRetrofitCallback<UserExi
 
 class AvailableSplashPromoRetrofitCallback extends TypedHandyRetrofitCallback<SplashPromo>
 {
-
     AvailableSplashPromoRetrofitCallback(final DataManager.Callback callback)
     {
         super(callback);

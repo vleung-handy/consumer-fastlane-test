@@ -234,8 +234,7 @@ public final class BaseDataManager extends DataManager
 
     @Override
     public void sendCancelRecurringBookingEmail(final int bookingRecurringId, final
-    Callback<SuccessWrapper> cb
-    )
+                                                Callback<SuccessWrapper> cb)
     {
         mService.sendCancelRecurringBookingEmail(bookingRecurringId, new SuccessHandyRetroFitCallback(cb));
     }
@@ -255,11 +254,9 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void editBookingHours(
-            final int bookingId,
-            final BookingEditHoursRequest bookingEditHoursRequest,
-            final Callback<SuccessWrapper> cb
-    )
+    public void editBookingHours(final int bookingId,
+                                  final BookingEditHoursRequest bookingEditHoursRequest,
+                                  final Callback<SuccessWrapper> cb)
     {
         mService.editBookingHours(bookingId, bookingEditHoursRequest, new SuccessHandyRetroFitCallback(cb));
     }

@@ -5,6 +5,11 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * this is the model that is returned from the /promos endpoint
+ *
+ * splash promos are displayed in the notification feed so are actually a type of notification
+ */
 public class SplashPromo implements Parcelable
 {
     @SerializedName("id")
@@ -16,7 +21,7 @@ public class SplashPromo implements Parcelable
     @SerializedName("subtitle")
     private String mSubtitle;
     @SerializedName("action")
-    private String mAction;
+    private String mDeepLinkUrl;
     @SerializedName("action_text")
     private String mActionText;
     @SerializedName("template")
@@ -42,9 +47,9 @@ public class SplashPromo implements Parcelable
         return mSubtitle;
     }
 
-    public String getAction()
+    public String getDeepLinkUrl()
     {
-        return mAction;
+        return mDeepLinkUrl;
     }
 
     public String getActionText()
@@ -63,18 +68,6 @@ public class SplashPromo implements Parcelable
         return 0;
     }
 
-    //TODO: for test only, remove
-//    public SplashPromo()
-//    {
-//        mId = "0";
-//        mImageUrl = "https://p-handy.hbfiles.com/assets/miscellaneous/mobile-splash-small-d2e97e6f854c0db707c1f6b62880de86.png";
-//        mTitle = "Test Title";
-//        mSubtitle = "Test Subtitle";
-//        mActionText = "Action";
-//        mAction = "handybook://deep_link/modal_splash_promo?promo_uniq=__enter_mobile_splash_promo_uniq_code_id_here__\\u0026user_id=2709";
-//        mTemplate = "mobile_splash_promo_1";
-//    }
-
     private SplashPromo(final Parcel in)
     {
         final String[] stringData = new String[7];
@@ -83,7 +76,7 @@ public class SplashPromo implements Parcelable
         mImageUrl = stringData[1];
         mTitle = stringData[2];
         mSubtitle = stringData[3];
-        mAction = stringData[4];
+        mDeepLinkUrl = stringData[4];
         mActionText = stringData[5];
         mTemplate = stringData[6];
     }
@@ -107,7 +100,7 @@ public class SplashPromo implements Parcelable
                 mImageUrl,
                 mTitle,
                 mSubtitle,
-                mAction,
+                mDeepLinkUrl,
                 mActionText,
                 mTemplate
         });

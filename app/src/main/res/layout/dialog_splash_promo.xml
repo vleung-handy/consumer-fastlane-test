@@ -7,7 +7,7 @@
 
 
     <LinearLayout
-        android:background="@drawable/rounded_frame"
+        android:background="@color/white"
         android:clickable="true"
         android:gravity="center"
         android:layout_width="300dp"
@@ -21,7 +21,8 @@
             android:adjustViewBounds="true"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:src="@drawable/ic_envelope"
+            android:maxHeight="180dp"
+            tools:src="@drawable/ic_noimage"
             android:layout_gravity="center"/>
 
         <TextView
@@ -46,13 +47,13 @@
             android:layout_marginTop="@dimen/default_margin_half"
             android:layout_width="match_parent"
             android:id="@+id/splash_promo_subtitle"
-            tools:text="Get ready for a care-free summmer. Get 20% off handymen services. Limited time only."/>
+            tools:text="Get ready for a care-free summer. Get 20% off handymen services. Limited time only."/>
 
         <Button
-            android:background="@drawable/button_green_round_bottom"
+            android:background="@drawable/button_green"
             style="@style/Button.Green"
             android:id="@+id/splash_promo_action_button"
-            android:text="Action text"
+            tools:text="Action text"
             android:textAllCaps="false"/>
 
     </LinearLayout>

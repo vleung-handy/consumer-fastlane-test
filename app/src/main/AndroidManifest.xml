@@ -138,6 +138,18 @@
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
             />
+        <!--Required by the DeepLinkDispatch library-->
+        <activity
+            android:name="com.airbnb.deeplinkdispatch.DeepLinkActivity"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="handybook" />
+                <!--TODO: parameterize the scheme?-->
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

@@ -15,7 +15,6 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.notifications.manager.NotificationManager;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
 
@@ -38,7 +37,6 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     @Inject protected DataManager dataManager;
     @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject protected NavigationManager navigationManager;
-    @Inject protected NotificationManager notificationManager;
 
     //TODO: acknowledged this is not ideal
     @VisibleForTesting

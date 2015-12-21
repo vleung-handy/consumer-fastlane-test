@@ -1,6 +1,9 @@
 package com.handybook.handybook.module.notifications.view.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.notifications.model.response.SplashPromo;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -32,7 +36,7 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
 
     private SplashPromo mSplashPromo;
 
-    public static SplashPromoDialogFragment newInstance(SplashPromo splashPromo)
+    public static SplashPromoDialogFragment newInstance(@NonNull SplashPromo splashPromo)
     {
         SplashPromoDialogFragment splashPromoDialogFragment =
                 new SplashPromoDialogFragment();
@@ -62,11 +66,12 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState)
     {
+        //TODO: placeholder image?
         super.onViewCreated(view, savedInstanceState);
         Picasso.with(getContext()).
                 load(mSplashPromo.getImageUrl()).
-//                placeholder(R.drawable.).
-//                error(R.drawable).
+                placeholder(R.drawable.ic_noimage).
+                error(R.drawable.ic_noimage).
                 into(mUrlImageView);
         mTitle.setText(mSplashPromo.getTitle());
         mSubtitle.setText(mSplashPromo.getSubtitle());
@@ -76,6 +81,9 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     @OnClick(R.id.splash_promo_action_button)
     public void onActionButtonClicked(View view)
     {
+        String deepLink = mSplashPromo.getDeepLinkUrl();
+        Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink));
+        Utils.safeLaunchIntent(deepLinkIntent, getContext());
         dismiss();
     }
 }

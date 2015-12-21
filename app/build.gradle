@@ -12,6 +12,7 @@ buildscript {
     }
 
     dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
         classpath 'com.newrelic.agent.android:agent-gradle-plugin:5.3.2'
         classpath 'io.fabric.tools:gradle:1.19.2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
@@ -29,6 +30,8 @@ repositories {
     mavenCentral()
 }
 
+apply plugin: 'android'
+apply plugin: 'android-apt'
 apply plugin: 'com.android.application'
 // This does not break the build when Android Studio is missing the JRebel for Android plugin.
 apply plugin: 'com.zeroturnaround.jrebel.android'
@@ -175,8 +178,12 @@ dependencies {
     //Mixpanel
     compile 'com.mixpanel.android:mixpanel-android:4.6.3'
 
-    //Picasso for image downloading and caching
+    //Picasso library for image downloading and caching
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    //Deeplink library
+    compile 'com.airbnb:deeplinkdispatch:1.5.0'
+    apt 'com.airbnb:deeplinkdispatch-processor:1.5.0'
 
     //This is for a view page indicator : http://viewpagerindicator.com/
     //Currently used in the OnBoardFragment
