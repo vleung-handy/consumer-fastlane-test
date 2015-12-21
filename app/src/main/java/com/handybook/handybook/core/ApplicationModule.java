@@ -26,6 +26,7 @@ import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.notifications.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
@@ -232,6 +233,13 @@ public final class ApplicationModule
         mContext = context.getApplicationContext();
         mConfigs = PropertiesReader
                 .getProperties(context, "config.properties");
+    }
+
+    @Provides
+    @Singleton
+    public Properties provideProperties()
+    {
+        return mConfigs;
     }
 
     @Provides
@@ -443,6 +451,15 @@ public final class ApplicationModule
     final StripeManager provideStripeManager(final Bus bus)
     {
         return new StripeManager(bus, mConfigs);
+    }
+
+    @Provides
+    @Singleton
+    final UrbanAirshipManager provideUrbanAirshipManager(final Bus bus,
+                                                         final UserManager userManager
+    )
+    {
+        return new UrbanAirshipManager(mContext, bus, userManager);
     }
 
     private String getDeviceId()

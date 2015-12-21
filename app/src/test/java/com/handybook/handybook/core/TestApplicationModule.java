@@ -48,12 +48,15 @@ import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.squareup.otto.Bus;
+
+import java.util.Properties;
 
 import javax.inject.Singleton;
 
@@ -111,6 +114,13 @@ public class TestApplicationModule
     public TestApplicationModule(Context context)
     {
         this.context = context;
+    }
+
+    @Provides
+    @Singleton
+    final Properties providerProperties()
+    {
+        return mock(Properties.class);
     }
 
     @Provides
@@ -234,5 +244,12 @@ public class TestApplicationModule
     final StripeManager provideStripeManager()
     {
         return mock(StripeManager.class);
+    }
+
+    @Provides
+    @Singleton
+    final UrbanAirshipManager provideUrbanAirshipManager()
+    {
+        return mock(UrbanAirshipManager.class);
     }
 }
