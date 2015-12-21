@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -106,8 +106,8 @@ public class TipDialogFragment extends BaseDialogFragment
     @Subscribe
     public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
     {
-        Snackbar.make(getActivity().findViewById(android.R.id.content),
-                getString(R.string.tip_success_message_formatted, mProName), Snackbar.LENGTH_LONG).show();
+        final String message = getString(R.string.tip_success_message_formatted, mProName);
+        HandySnackbar.show(getActivity(), message, HandySnackbar.TYPE_SUCCESS);
         dismiss();
     }
 
