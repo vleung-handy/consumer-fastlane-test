@@ -7,6 +7,7 @@ import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.urbanairship.UAirship;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -63,7 +64,8 @@ public class UserManager implements Observer
         user.addObserver(this);
 
         prefsManager.setString(PrefsKey.USER, user.toJson());
-        
+
+        UAirship.shared().getPushManager().setAlias(user.getId());
         Crashlytics.setUserEmail(user.getEmail());
         bus.post(new UserLoggedInEvent(true));
     }
