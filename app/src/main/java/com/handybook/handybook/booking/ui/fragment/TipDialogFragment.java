@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ public class TipDialogFragment extends BaseDialogFragment
     @Bind(R.id.tip_notice)
     View mTipNotice;
 
+    private String mProName;
+
     public static TipDialogFragment newInstance(int bookingId, String proName)
     {
         TipDialogFragment tipDialogFragment = new TipDialogFragment();
@@ -60,8 +63,8 @@ public class TipDialogFragment extends BaseDialogFragment
         final View view = inflater.inflate(R.layout.dialog_tip, container, true);
         ButterKnife.bind(this, view);
 
-        String proName = getArguments().getString(EXTRA_PRO_NAME);
-        mTitleText.setText(getString(R.string.leave_tip_prompt_formatted, proName));
+        mProName = getArguments().getString(EXTRA_PRO_NAME);
+        mTitleText.setText(getString(R.string.leave_tip_prompt_formatted, mProName));
 
         final User currentUser = mUserManager.getCurrentUser();
         final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = currentUser.getDefaultTipAmounts();
@@ -103,7 +106,8 @@ public class TipDialogFragment extends BaseDialogFragment
     @Subscribe
     public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
     {
-        showToast(R.string.thanks_for_leaving_a_tip);
+        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                getString(R.string.tip_success_message_formatted, mProName), Snackbar.LENGTH_LONG).show();
         dismiss();
     }
 

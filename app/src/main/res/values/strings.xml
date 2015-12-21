@@ -174,7 +174,7 @@
     <string name="no_tip_amount">None</string>
     <string name="tip_amount">Amount:</string>
     <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
-    <string name="thanks_for_leaving_a_tip">Thanks for leaving a tip!</string>
+    <string name="tip_success_message_formatted">Thanks for tipping %1$s!</string>
     <string name="set_dropoff">Set Drop-Off</string>
     <string name="email_receipt">Email Receipt</string>
     <string name="updated_note_to_pro">Note to pro updated</string>
