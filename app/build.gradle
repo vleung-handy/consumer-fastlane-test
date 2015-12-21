@@ -164,9 +164,6 @@ dependencies {
     //Calligraphy for fonts
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
-    // Urban Airship for cloud messaging
-    compile 'com.urbanairship.android:urbanairship-sdk:6.3.1'
-
     //Guava
     compile 'com.google.guava:guava:18.0'
 
@@ -186,6 +183,9 @@ dependencies {
     compile files('../libs/yozio-android-sdk.jar')
     compile project(':simplealertdialog')
     compile project(':androidspinner')
+
+    //Urban Airship SDK
+    compile 'com.urbanairship.android:urbanairship-sdk:6.4.1'
 
     //Espresso libraries for automation testing
     androidTestCompile ('com.android.support.test:runner:0.4.1') {

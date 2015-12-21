@@ -26,6 +26,7 @@ import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
@@ -231,6 +232,13 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
+    public Properties provideProperties()
+    {
+        return mConfigs;
+    }
+
+    @Provides
+    @Singleton
     final EnvironmentModifier provideEnvironmentModifier(Bus bus, PrefsManager prefsManager)
     {
         EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus, prefsManager);
@@ -429,6 +437,15 @@ public final class ApplicationModule
     final StripeManager provideStripeManager(final Bus bus)
     {
         return new StripeManager(bus, mConfigs);
+    }
+
+    @Provides
+    @Singleton
+    final UrbanAirshipManager provideUrbanAirshipManager(final Bus bus,
+                                                         final UserManager userManager
+    )
+    {
+        return new UrbanAirshipManager(mContext, bus, userManager);
     }
 
     private String getDeviceId()
