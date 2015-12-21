@@ -107,12 +107,18 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         {
             setupForBooking(mBooking);
         }
-        else
+        return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (mBooking == null)
         {
             showUiBlockers();
             bus.post(new HandyEvent.RequestBookingDetails(mBookingId));
         }
-        return view;
     }
 
     @Override
