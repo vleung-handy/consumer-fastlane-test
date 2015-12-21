@@ -56,6 +56,8 @@ import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.squareup.otto.Bus;
 
+import java.util.Properties;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -112,6 +114,13 @@ public class TestApplicationModule
     public TestApplicationModule(Context context)
     {
         this.context = context;
+    }
+
+    @Provides
+    @Singleton
+    final Properties providerProperties()
+    {
+        return mock(Properties.class);
     }
 
     @Provides

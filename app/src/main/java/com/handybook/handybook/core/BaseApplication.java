@@ -20,6 +20,8 @@ import com.handybook.handybook.manager.UserDataManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 
+import java.util.Properties;
+
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
@@ -60,6 +62,8 @@ public class BaseApplication extends MultiDexApplication
     UserDataManager userDataManager;
     @Inject
     UrbanAirshipManager urbanAirshipManager;
+    @Inject
+    Properties properties;
 
     @Override
     public void onCreate()
@@ -76,11 +80,11 @@ public class BaseApplication extends MultiDexApplication
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
-            NewRelic.withApplicationToken("AA7a37dccf925fd1e474142399691d1b6b3f84648b").start(this);
+            NewRelic.withApplicationToken(properties.getProperty("new_relic_key")).start(this);
         }
         else
         {
-            NewRelic.withApplicationToken("AAbaf8c55fb9788d1664e82661d94bc18ea7c39aa6").start(this);
+            NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal")).start(this);
         }
         // If this is the first ever run of the application, emit Mixpanel event
         if (prefsManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)

@@ -232,6 +232,13 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
+    public Properties provideProperties()
+    {
+        return mConfigs;
+    }
+
+    @Provides
+    @Singleton
     final EnvironmentModifier provideEnvironmentModifier(Bus bus, PrefsManager prefsManager)
     {
         EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus, prefsManager);
