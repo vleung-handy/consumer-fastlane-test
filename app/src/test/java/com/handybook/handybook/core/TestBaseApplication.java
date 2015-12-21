@@ -1,7 +1,5 @@
 package com.handybook.handybook.core;
 
-import com.urbanairship.AirshipConfigOptions;
-
 import dagger.ObjectGraph;
 
 /**
@@ -18,13 +16,6 @@ public class TestBaseApplication extends BaseApplication {
     protected void createObjectGraph() {
         graph = ObjectGraph.create(new TestApplicationModule(this.getApplicationContext()));
         graph.inject(this);
-    }
-
-    @Override
-    protected AirshipConfigOptions setupUrbanAirshipConfig() {
-        AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
-        options.inProduction = true;
-        return options;
     }
 
     @Override

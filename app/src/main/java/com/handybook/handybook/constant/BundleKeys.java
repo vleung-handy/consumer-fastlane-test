@@ -6,6 +6,7 @@ public class BundleKeys
     public static final String BOOKING_ID = "booking_id";
     public static final String BOOKING_DATE = "booking_date";
     public static final String BOOKING_SOURCE = "booking_source";
+    public static final String BOOKING_PHONE = "booking_phone";
     public static final String TARGET_URL = "target_url";
     public static final String BOOKING_STATUS = "booking_status";
     public static final String DATE_EPOCH_TIME = "date_epoch_time";
@@ -17,6 +18,7 @@ public class BundleKeys
     public static final String LOGIN_TOKEN = "login_token";
     public static final String CANCELLED_BOOKING = "cancelled_booking";
     public static final String UPDATED_BOOKING = "updated_booking";
+    public static final String BOOKING_RATE_PRO_NAME = "prof";
 
     public static final String RESCHEDULE_BOOKING = "reschedule_booking";
     public static final String RESCHEDULE_NOTICE = "reschedule_notice";
@@ -30,5 +32,6 @@ public class BundleKeys
     public static final String RESCHEDULE_ALL = "reschedule_all";
     public static final String FOR_VOUCHER = "for_voucher";
 
+    public static final String DEEPLINK = "deep_link";
 
 }
