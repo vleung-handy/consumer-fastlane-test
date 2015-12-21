@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -235,9 +236,16 @@ public abstract class BaseActivity extends AppCompatActivity
     private void showSplashPromo(SplashPromo splashPromo)
     {
         //show the dialog
-        SplashPromoDialogFragment splashPromoDialogFragment =
-                SplashPromoDialogFragment.newInstance(splashPromo);
-        splashPromoDialogFragment.show(this.getSupportFragmentManager(), null);
+        if(!isFinishing())
+        {
+            SplashPromoDialogFragment splashPromoDialogFragment =
+                    SplashPromoDialogFragment.newInstance(splashPromo);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(splashPromoDialogFragment, SplashPromoDialogFragment.class.getSimpleName());
+            transaction.commitAllowingStateLoss();
+//        splashPromoDialogFragment.show(this.getSupportFragmentManager(), null);
+        }
+
     }
 
     @Subscribe
