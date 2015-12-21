@@ -15,8 +15,6 @@ import android.widget.Toast;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
@@ -24,6 +22,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.User;
