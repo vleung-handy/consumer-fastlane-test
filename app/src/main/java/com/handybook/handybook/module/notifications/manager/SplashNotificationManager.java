@@ -86,6 +86,11 @@ public class SplashNotificationManager
 
     private void showSplashPromo(@NonNull SplashPromo splashPromo, @NonNull FragmentActivity fragmentActivity)
     {
+        //TODO: move this dialog-launching logic out of the manager!
+        /*
+        BaseActivity cannot subscribe to events, so will have to make a BusEventListener
+        to handle the success event + trigger this dialog launch
+         */
         if(!fragmentActivity.isFinishing())
         {
             SplashPromoDialogFragment splashPromoDialogFragment =
