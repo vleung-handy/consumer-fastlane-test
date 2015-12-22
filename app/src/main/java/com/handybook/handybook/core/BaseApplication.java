@@ -15,7 +15,6 @@ import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.AppBlockManager;
-import com.handybook.handybook.manager.DeepLinkNavigationManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.notifications.manager.SplashNotificationManager;
@@ -75,7 +74,7 @@ public class BaseApplication extends MultiDexApplication
     @Inject
     Properties properties;
     @Inject
-    DeepLinkNavigationManager mDeepLinkNavigationManager;
+    DeepLinkIntentProvider mDeepLinkIntentProvider;
     @Inject
     SplashNotificationManager mSplashNotificationManager;
 

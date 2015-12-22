@@ -1,4 +1,4 @@
-package com.handybook.handybook.manager;
+package com.handybook.handybook.core;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,13 +8,13 @@ import com.airbnb.deeplinkdispatch.DeepLink;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.PromosActivity;
-import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
 
 import javax.inject.Inject;
 
-public class DeepLinkNavigationManager
+//TODO: put in a more appropriate package
+public class DeepLinkIntentProvider
 {
     //TODO: can split this out so that each module has a routes file
     //TODO: investigate possible params for each link
@@ -26,7 +26,7 @@ public class DeepLinkNavigationManager
     //the deep link library requires that the annotated methods below be static
 
     @Inject
-    public DeepLinkNavigationManager(@NonNull UserManager userManager)
+    public DeepLinkIntentProvider(@NonNull UserManager userManager)
     {
         mUserManager = userManager;
     }

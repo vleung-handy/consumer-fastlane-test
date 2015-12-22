@@ -93,7 +93,6 @@ import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.manager.AppBlockManager;
-import com.handybook.handybook.manager.DeepLinkNavigationManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
@@ -412,9 +411,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final DeepLinkNavigationManager provideDeepLinkNavigationManager(final UserManager userManager)
+    final DeepLinkIntentProvider provideDeepLinkNavigationManager(final UserManager userManager)
     {
-        return new DeepLinkNavigationManager(userManager);
+        return new DeepLinkIntentProvider(userManager);
     }
 
     @Provides
