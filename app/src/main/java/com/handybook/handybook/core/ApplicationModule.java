@@ -12,25 +12,6 @@ import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.data.BaseDataManager;
-import com.handybook.handybook.data.BaseDataManagerErrorHandler;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.HandyRetrofitEndpoint;
-import com.handybook.handybook.data.HandyRetrofitService;
-import com.handybook.handybook.data.Mixpanel;
-import com.handybook.handybook.data.PropertiesReader;
-import com.handybook.handybook.data.SecurePreferences;
-import com.handybook.handybook.manager.AppBlockManager;
-import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
-import com.handybook.handybook.helpcenter.manager.HelpManager;
-import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.manager.StripeManager;
-import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
-import com.handybook.handybook.manager.UserDataManager;
-import com.handybook.handybook.module.notifications.manager.NotificationManager;
-import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
-import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
@@ -50,21 +31,10 @@ import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
-import com.handybook.handybook.ui.activity.LoginActivity;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
-import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
-import com.handybook.handybook.ui.activity.ProfileActivity;
-import com.handybook.handybook.booking.ui.fragment.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
-import com.handybook.handybook.ui.activity.SplashActivity;
-import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
-import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingCancelOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingConfirmationFragment;
@@ -96,24 +66,56 @@ import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragm
 import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.EmailCancellationDialogFragment;
-import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
-import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
-import com.handybook.handybook.ui.fragment.LoginFragment;
-import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
-import com.handybook.handybook.ui.fragment.NavigationFragment;
-import com.handybook.handybook.ui.fragment.OnboardFragment;
-import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingTableFragment;
-import com.handybook.handybook.ui.fragment.ProfileFragment;
+import com.handybook.handybook.booking.ui.fragment.PromosActivity;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
+import com.handybook.handybook.data.BaseDataManager;
+import com.handybook.handybook.data.BaseDataManagerErrorHandler;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.DataManagerErrorHandler;
+import com.handybook.handybook.data.HandyRetrofitEndpoint;
+import com.handybook.handybook.data.HandyRetrofitService;
+import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.data.PropertiesReader;
+import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
+import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
+import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
+import com.handybook.handybook.helpcenter.manager.HelpManager;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
+import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.notifications.manager.SplashNotificationManager;
+import com.handybook.handybook.module.notifications.manager.NotificationManager;
+import com.handybook.handybook.module.notifications.view.activity.NotificationsActivity;
+import com.handybook.handybook.module.notifications.view.fragment.NotificationFeedFragment;
+import com.handybook.handybook.module.notifications.view.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
+import com.handybook.handybook.ui.activity.BlockingActivity;
+import com.handybook.handybook.ui.activity.LoginActivity;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.activity.OnboardActivity;
+import com.handybook.handybook.ui.activity.ProfileActivity;
+import com.handybook.handybook.ui.activity.SplashActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
+import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
+import com.handybook.handybook.ui.fragment.LoginFragment;
+import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
+import com.handybook.handybook.ui.fragment.NavigationFragment;
+import com.handybook.handybook.ui.fragment.OnboardFragment;
+import com.handybook.handybook.ui.fragment.OnboardPageFragment;
+import com.handybook.handybook.ui.fragment.ProfileFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
@@ -221,6 +223,7 @@ import retrofit.converter.GsonConverter;
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,
         NavbarWebViewDialogFragment.class,
+        SplashPromoDialogFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
@@ -395,6 +398,22 @@ public final class ApplicationModule
                                                  final Bus bus)
     {
         return new UserDataManager(userManager, dataManager, bus);
+    }
+
+    @Provides
+    @Singleton
+    final SplashNotificationManager provideSplashNotificationManager(final UserManager userManager,
+                                                                     final DataManager dataManager,
+                                                                     final Bus bus)
+    {
+        return new SplashNotificationManager(userManager, dataManager, bus);
+    }
+
+    @Provides
+    @Singleton
+    final DeepLinkIntentProvider provideDeepLinkNavigationManager(final UserManager userManager)
+    {
+        return new DeepLinkIntentProvider(userManager);
     }
 
     @Provides

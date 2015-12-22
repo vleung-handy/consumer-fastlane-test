@@ -17,6 +17,7 @@ import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.notifications.manager.SplashNotificationManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.notifications.manager.NotificationManager;
@@ -72,6 +73,10 @@ public class BaseApplication extends MultiDexApplication
     UrbanAirshipManager urbanAirshipManager;
     @Inject
     Properties properties;
+    @Inject
+    DeepLinkIntentProvider mDeepLinkIntentProvider;
+    @Inject
+    SplashNotificationManager mSplashNotificationManager;
 
     @Override
     public void onCreate()

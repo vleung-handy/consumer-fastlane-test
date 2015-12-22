@@ -28,6 +28,11 @@ public class UserManager implements Observer
         this.bus.register(this);
     }
 
+    public boolean isUserLoggedIn()
+    {
+        return getCurrentUser() != null;
+    }
+
     public User getCurrentUser()
     {
         if (user != null)

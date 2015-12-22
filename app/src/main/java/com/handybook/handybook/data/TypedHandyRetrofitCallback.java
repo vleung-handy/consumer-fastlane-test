@@ -1,23 +1,22 @@
 package com.handybook.handybook.data;
 
-import android.app.Notification;
-
 import com.crashlytics.android.Crashlytics;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingOptionsWrapper;
-import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.booking.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.model.BookingEditFrequencyInfoResponse;
+import com.handybook.handybook.booking.model.BookingEditHoursInfoResponse;
+import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
-import com.handybook.handybook.booking.model.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
-import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
-import com.handybook.handybook.booking.model.BookingEditHoursInfoResponse;
+import com.handybook.handybook.core.SuccessWrapper;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.module.notifications.model.response.SplashPromo;
+import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 
 import org.json.JSONObject;
@@ -164,6 +163,13 @@ class UserExistsHandyRetrofitCallback extends TypedHandyRetrofitCallback<UserExi
     }
 }
 
+class AvailableSplashPromoRetrofitCallback extends TypedHandyRetrofitCallback<SplashPromo>
+{
+    AvailableSplashPromoRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
 
 class HandyNotificationResultSetHandyRetrofitCallback
         extends TypedHandyRetrofitCallback<HandyNotification.ResultSet>

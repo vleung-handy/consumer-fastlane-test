@@ -55,6 +55,7 @@ public class AppBlockManager
 
     private void showBlockingScreen()
     {
+        //TODO: move this out of the manager!
         Intent launchBlockingActivity = new Intent(appContext, BlockingActivity.class);
         launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

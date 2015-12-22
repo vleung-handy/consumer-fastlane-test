@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+
+
+    <LinearLayout
+        android:background="@color/white"
+        android:clickable="true"
+        android:gravity="center"
+        android:layout_width="300dp"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/splash_promo_header_image"
+            android:gravity="center"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:maxHeight="180dp"
+            tools:src="@drawable/ic_noimage"
+            android:layout_gravity="center"/>
+
+        <TextView
+            style="@style/TextView.XLarge.Bold"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:id="@+id/splash_promo_title"
+            tools:text="Get 20% off furniture assembly today!"/>
+
+        <TextView
+            style="@style/TextView.Medium"
+            android:paddingLeft="@dimen/default_padding"
+            android:paddingRight="@dimen/default_padding"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_double"
+            android:layout_marginTop="@dimen/default_margin_half"
+            android:layout_width="match_parent"
+            android:id="@+id/splash_promo_subtitle"
+            tools:text="Get ready for a care-free summer. Get 20% off handymen services. Limited time only."/>
+
+        <Button
+            android:background="@drawable/button_green"
+            style="@style/Button.Green"
+            android:id="@+id/splash_promo_action_button"
+            tools:text="Action text"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -28,6 +28,9 @@ import retrofit.mime.TypedInput;
 
 public interface HandyRetrofitService
 {
+    @GET("/promos")
+    void getAvailableSplashPromo(@Query("user_id") String userId, HandyRetrofitCallback cb);
+
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(@Path("id") int bookingId,
                             @Body BookingEditAddressRequest bookingEditAddressRequest,
@@ -224,7 +227,7 @@ public interface HandyRetrofitService
                            HandyRetrofitCallback cb);
 
     // Notification Feed
-    @POST("/users/{user_id}/notifications")
+    @GET("/users/{user_id}/notifications")
     void getNotificationResultSet(
             @Path("user_id") long userId,
             @Query("count") Long count,
