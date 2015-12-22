@@ -91,3 +91,6 @@
    public *;
 }
 -keep public class * extends com.urbanairship.Autopilot
+
+#Yozio
+-keep public class com.handybook.handybook.yozio.YozioMetaDataCallback
