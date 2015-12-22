@@ -59,7 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity
     @Inject
     Bus mBus;
     private OnBackPressedListener mOnBackPressedListener;
-    private RateServiceDialogFragment mRateServiceDialogFragment;
 
     //Public Properties
     public boolean getAllowCallbacks()
@@ -131,6 +130,8 @@ public abstract class BaseActivity extends AppCompatActivity
         if (proName != null && bookingId != null)
         {
             showProRateDialog(user, proName, Integer.parseInt(bookingId));
+            getIntent().removeExtra(BundleKeys.BOOKING_RATE_PRO_NAME);
+            getIntent().removeExtra(BundleKeys.BOOKING_ID);
             return;
         }
         mDataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
@@ -176,10 +177,10 @@ public abstract class BaseActivity extends AppCompatActivity
         final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
                 user.getDefaultTipAmounts();
 
-        mRateServiceDialogFragment = RateServiceDialogFragment
+        RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
                 .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
 
-        mRateServiceDialogFragment.show(BaseActivity.this.getSupportFragmentManager(),
+        rateServiceDialogFragment.show(BaseActivity.this.getSupportFragmentManager(),
                 RateServiceDialogFragment.class.getSimpleName());
         mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
                 proName, 0);
