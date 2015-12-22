@@ -29,7 +29,7 @@ public class SplashNotificationManager
     //every 30 minutes
     private static final long REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS =
             DateTimeUtils.MILLISECONDS_IN_SECOND * DateTimeUtils.SECONDS_IN_MINUTE * 30;
-    private long availablePromoLastCheckMs = 0;
+    private long mAvailablePromoLastCheckMs = 0;
 
     @Inject
     public SplashNotificationManager(
@@ -57,14 +57,14 @@ public class SplashNotificationManager
 
     private boolean shouldRequestAvailablePromo()
     {
-        return System.currentTimeMillis() - availablePromoLastCheckMs > REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS;
+        return System.currentTimeMillis() - mAvailablePromoLastCheckMs > REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS;
     }
 
     private void requestAvailableSplashPromo(@NonNull String userId, @NonNull final FragmentActivity fragmentActivity)
     {
         if(shouldRequestAvailablePromo())
         {
-            availablePromoLastCheckMs = System.currentTimeMillis();
+            mAvailablePromoLastCheckMs = System.currentTimeMillis();
             mDataManager.getAvailableSplashPromo(userId, new DataManager.Callback<SplashPromo>()
             {
                 @Override
