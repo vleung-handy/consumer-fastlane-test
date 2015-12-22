@@ -34,7 +34,9 @@ public class DeeplinkHandler
     private static void startBookingDetailActivity(final Context context, final Bundle arguments)
     {
         Bundle intentArguments = filterArgumentsByKey(arguments, BundleKeys.BOOKING_ID);
-        startActivityNewTask(context, BookingDetailActivity.class, intentArguments);
+        final Intent intent = getLaunchIntent(context, BookingDetailActivity.class,
+                intentArguments);
+        context.startActivity(intent);
     }
 
     private static void startServiceCategoriesActivityWithProRate(final Context context,
@@ -42,7 +44,11 @@ public class DeeplinkHandler
     {
         Bundle intentArguments = filterArgumentsByKey(arguments, BundleKeys.BOOKING_ID,
                 BundleKeys.BOOKING_RATE_PRO_NAME);
-        startActivityNewTask(context, ServiceCategoriesActivity.class, intentArguments);
+        final Intent intent = getLaunchIntent(context, ServiceCategoriesActivity.class,
+                intentArguments);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        context.startActivity(intent);
     }
 
     private static Bundle filterArgumentsByKey(Bundle arguments, String... keys)
@@ -55,13 +61,14 @@ public class DeeplinkHandler
         return filteredArguments;
     }
 
-    private static void startActivityNewTask(final Context context,
-                                             final Class<? extends Activity> activityClass,
-                                             final Bundle arguments)
+    private static Intent getLaunchIntent(final Context context,
+                                          final Class<? extends Activity> activityClass,
+                                          final Bundle arguments)
     {
         final Intent intent = new Intent(context, activityClass);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtras(arguments);
-        context.startActivity(intent);
+        return intent;
     }
 }
