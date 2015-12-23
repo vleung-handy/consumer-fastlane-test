@@ -5,8 +5,8 @@ import android.support.v4.util.Pair;
 
 import com.handybook.handybook.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.booking.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
