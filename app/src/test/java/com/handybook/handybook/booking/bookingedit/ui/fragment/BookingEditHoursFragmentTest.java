@@ -1,14 +1,14 @@
-package com.handybook.handybook.booking.ui.fragment;
+package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.ui.fragment.BookingEditHoursFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditHoursFragment;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.booking.model.BookingEditHoursInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.testutil.AppAssertionUtils;
-import com.handybook.handybook.booking.viewmodel.BookingEditHoursViewModel;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
 
 import org.junit.Before;
 import org.junit.Test;

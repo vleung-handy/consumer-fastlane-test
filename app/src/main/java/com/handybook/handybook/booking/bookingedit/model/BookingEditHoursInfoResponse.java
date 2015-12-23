@@ -1,6 +1,9 @@
-package com.handybook.handybook.booking.model;
+package com.handybook.handybook.booking.bookingedit.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.OptionPrice;
+import com.handybook.handybook.booking.model.PaidStatus;
+import com.handybook.handybook.booking.model.PriceInfo;
 
 import java.util.Map;
 

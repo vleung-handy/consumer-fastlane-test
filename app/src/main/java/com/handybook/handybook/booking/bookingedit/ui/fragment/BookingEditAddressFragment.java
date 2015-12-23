@@ -1,4 +1,4 @@
-package com.handybook.handybook.booking.ui.fragment;
+package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.booking.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
 import com.squareup.otto.Subscribe;

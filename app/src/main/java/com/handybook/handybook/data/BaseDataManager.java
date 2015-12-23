@@ -12,19 +12,19 @@ import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
-import com.handybook.handybook.booking.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.booking.model.BookingEditFrequencyInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.booking.model.BookingEditExtrasRequest;
-import com.handybook.handybook.booking.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.model.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.booking.model.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
@@ -33,8 +33,8 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.booking.model.BookingEditHoursRequest;
-import com.handybook.handybook.booking.model.BookingEditHoursInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.model.response.UserExistsResponse;
 
 import org.json.JSONArray;
@@ -725,7 +725,8 @@ public final class BaseDataManager extends DataManager
     @Override
     public void updatePayment(final String userId, final String token, final Callback<Void> cb)
     {
-        mService.updatePaymentInfo(userId, token, new HandyRetrofitCallback(cb) {
+        mService.updatePaymentInfo(userId, token, new HandyRetrofitCallback(cb)
+        {
             @Override
             void success(final JSONObject response)
             {

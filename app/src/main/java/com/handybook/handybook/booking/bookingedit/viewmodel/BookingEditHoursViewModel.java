@@ -1,8 +1,8 @@
-package com.handybook.handybook.booking.viewmodel;
+package com.handybook.handybook.booking.bookingedit.viewmodel;
 
 import android.support.annotation.NonNull;
 
-import com.handybook.handybook.booking.model.BookingEditHoursInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.booking.model.PriceInfo;
 import com.handybook.handybook.util.MathUtils;
 import com.handybook.handybook.util.TextUtils;

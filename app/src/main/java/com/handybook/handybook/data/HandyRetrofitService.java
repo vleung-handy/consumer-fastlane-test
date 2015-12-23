@@ -8,10 +8,10 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.model.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.booking.model.BookingEditAddressRequest;
-import com.handybook.handybook.booking.model.BookingEditExtrasRequest;
-import com.handybook.handybook.booking.model.BookingEditFrequencyRequest;
-import com.handybook.handybook.booking.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;
