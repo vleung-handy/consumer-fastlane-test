@@ -141,6 +141,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     @Override
+    public void showBlockingScreen()
+    {
+        Intent launchBlockingActivity = new Intent(this, BlockingActivity.class);
+        launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(launchBlockingActivity);
+        finish();
+    }
+
+    @Override
     public void showSplashPromo(@NonNull SplashPromo splashPromo)
     {
         if(!isFinishing())

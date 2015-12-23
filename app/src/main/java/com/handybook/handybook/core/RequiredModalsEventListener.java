@@ -17,5 +17,10 @@ public class RequiredModalsEventListener //TODO: rename + move to better package
         mRequiredModalsLauncher.showSplashPromo(event.splashPromo);
     }
 
-    //TODO: add more
+    @Subscribe
+    public void onStartBlockingApp(HandyEvent.StartBlockingAppEvent event)
+    {
+        mRequiredModalsLauncher.showBlockingScreen();
+    }
+
 }
