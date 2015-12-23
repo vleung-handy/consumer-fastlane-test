@@ -140,6 +140,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         super.onDestroy();
     }
 
+    @Override
     public void showSplashPromo(@NonNull SplashPromo splashPromo)
     {
         if(!isFinishing())
