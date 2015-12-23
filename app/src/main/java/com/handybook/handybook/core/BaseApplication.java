@@ -120,6 +120,7 @@ public class BaseApplication extends MultiDexApplication
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
             mixpanel.trackEventAppTrackInstall();
         }
+        //TODO: is there a way to register onResumeFragments?
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             @Override

@@ -19,6 +19,7 @@ import com.handybook.handybook.booking.viewmodel.BookingEditHoursViewModel;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.module.notifications.model.response.SplashPromo;
 import com.handybook.handybook.module.notifications.model.response.HandyNotification;
 import com.stripe.android.model.Token;
 
@@ -762,6 +763,23 @@ public abstract class HandyEvent
     public static class ReceiveUpdatePaymentError extends ReceiveErrorEvent
     {
         public ReceiveUpdatePaymentError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class ReceiveAvailableSplashPromoSuccess extends ReceiveSuccessEvent
+    {
+        public final SplashPromo splashPromo;
+        public ReceiveAvailableSplashPromoSuccess(final SplashPromo splashPromo)
+        {
+            this.splashPromo = splashPromo;
+        }
+    }
+
+    public static class ReceiveAvailableSplashPromoError extends ReceiveErrorEvent
+    {
+        public ReceiveAvailableSplashPromoError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
