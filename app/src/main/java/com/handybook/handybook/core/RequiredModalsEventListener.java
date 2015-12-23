@@ -23,5 +23,4 @@ public class RequiredModalsEventListener //TODO: rename + move to better package
         mRequiredModalsLauncher.showBlockingScreen();
     }
 
-    //TODO: add more
 }
