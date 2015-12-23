@@ -23,10 +23,10 @@ import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.BaseActivityInterface;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.BusEventListener;
 import com.handybook.handybook.core.NavigationManager;
+import com.handybook.handybook.core.RequiredModalsEventListener;
+import com.handybook.handybook.core.RequiredModalsLauncher;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
@@ -44,7 +44,7 @@ import javax.inject.Inject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public abstract class BaseActivity extends AppCompatActivity implements BaseActivityInterface
+public abstract class BaseActivity extends AppCompatActivity implements RequiredModalsLauncher
 {
     private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
     private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
@@ -63,7 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
     NavigationManager mNavigationManager;
     @Inject
     Bus mBus;
-    private BusEventListener mBusEventListener;
+    private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
     private RateServiceDialogFragment mRateServiceDialogFragment;
 
@@ -79,7 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
         super.onCreate(savedInstanceState);
         Yozio.initialize(this);
         ((BaseApplication) this.getApplication()).inject(this);
-        mBusEventListener = new BusEventListener(this);
+        mRequiredModalsEventListener = new RequiredModalsEventListener(this);
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)
                 && !BuildConfig.DEBUG)
         {
@@ -111,13 +111,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
     protected void onResumeFragments()
     {
         super.onResumeFragments();
-        mBus.register(mBusEventListener);
+        mBus.register(mRequiredModalsEventListener);
     }
 
     @Override
     protected void onPause()
     {
-        mBus.unregister(mBusEventListener);
+        mBus.unregister(mRequiredModalsEventListener);
         super.onPause();
     }
 
