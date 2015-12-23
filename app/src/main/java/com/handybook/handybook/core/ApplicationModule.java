@@ -7,6 +7,7 @@ import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -367,6 +368,15 @@ public final class ApplicationModule
     )
     {
         return new BookingManager(bus, prefsManager, dataManager);
+    }
+
+    @Provides
+    @Singleton
+    final BookingEditManager provideBookingEditManager(final Bus bus,
+                                                       final DataManager dataManager
+    )
+    {
+        return new BookingEditManager(bus, dataManager);
     }
 
     @Provides
