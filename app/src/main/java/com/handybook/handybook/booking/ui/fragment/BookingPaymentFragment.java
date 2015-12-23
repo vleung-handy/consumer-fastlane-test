@@ -48,7 +48,7 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.MixpanelEvent;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;

@@ -13,7 +13,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.event.MixpanelEvent;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.util.Utils;

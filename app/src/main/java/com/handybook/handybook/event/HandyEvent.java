@@ -3,7 +3,7 @@ package com.handybook.handybook.event;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
-import com.handybook.handybook.annotation.Track;
+import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
