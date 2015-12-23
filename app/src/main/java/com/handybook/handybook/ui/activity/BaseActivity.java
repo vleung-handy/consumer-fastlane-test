@@ -33,6 +33,7 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.module.notifications.model.response.SplashPromo;
 import com.handybook.handybook.module.notifications.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
@@ -113,6 +114,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     {
         super.onResumeFragments();
         mBus.register(mRequiredModalsEventListener);
+        mBus.post(new ActivityEvent.FragmentsResumed(this));
+        //can't put this in BaseApplication where activity lifecycle callbacks are registered
+        //because this is only for FragmentActivity
     }
 
     @Override

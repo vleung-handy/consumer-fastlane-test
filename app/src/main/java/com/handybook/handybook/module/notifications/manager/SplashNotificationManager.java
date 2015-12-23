@@ -42,7 +42,7 @@ public class SplashNotificationManager
     }
 
     @Subscribe
-    public void onEachActivityResume(final ActivityEvent.Resumed e)
+    public void onEachActivityFragmentsResumed(final ActivityEvent.FragmentsResumed e)
     {
         if(mUserManager.getCurrentUser() != null)
         {

@@ -2,6 +2,7 @@ package com.handybook.handybook.event;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 /**
  * Collection of events launched for each of all activities lifecycle methods
@@ -94,6 +95,14 @@ public interface ActivityEvent
         }
     }
 
+    // Fragments Resumed
+    class FragmentsResumed extends DefaultActivityHolder
+    {
+        public FragmentsResumed(final FragmentActivity activity)
+        {
+            super(activity);
+        }
+    }
 
     // Paused
     class Paused extends DefaultActivityHolder
