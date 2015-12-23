@@ -768,16 +768,6 @@ public abstract class HandyEvent
         }
     }
 
-    public static class RequestAvailableSplashPromo extends RequestEvent
-    {
-        public final String userId;
-        public RequestAvailableSplashPromo(final String userId)
-        {
-            this.userId = userId;
-        }
-
-    }
-
     public static class ReceiveAvailableSplashPromoSuccess extends ReceiveSuccessEvent
     {
         public final SplashPromo splashPromo;
