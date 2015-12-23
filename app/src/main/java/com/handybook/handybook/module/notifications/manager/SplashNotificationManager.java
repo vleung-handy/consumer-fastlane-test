@@ -1,14 +1,12 @@
 package com.handybook.handybook.module.notifications.manager;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.model.response.SplashPromo;
-import com.handybook.handybook.module.notifications.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -46,12 +44,9 @@ public class SplashNotificationManager
     @Subscribe
     public void onEachActivityResume(final ActivityEvent.Resumed e)
     {
-        if (e.getActivity() != null && e.getActivity() instanceof FragmentActivity)
+        if(mUserManager.getCurrentUser() != null)
         {
-            if(mUserManager.getCurrentUser() != null)
-            {
-                requestAvailableSplashPromo(mUserManager.getCurrentUser().getId(), (FragmentActivity) e.getActivity());
-            }
+            requestAvailableSplashPromo(mUserManager.getCurrentUser().getId());
         }
     }
 
@@ -60,7 +55,7 @@ public class SplashNotificationManager
         return System.currentTimeMillis() - mAvailablePromoLastCheckMs > REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS;
     }
 
-    private void requestAvailableSplashPromo(@NonNull String userId, @NonNull final FragmentActivity fragmentActivity)
+    private void requestAvailableSplashPromo(@NonNull final String userId)
     {
         if(shouldRequestAvailablePromo())
         {
@@ -70,36 +65,16 @@ public class SplashNotificationManager
                 @Override
                 public void onSuccess(final SplashPromo response)
                 {
-                    showSplashPromo(response, fragmentActivity);
+                    mBus.post(new HandyEvent.ReceiveAvailableSplashPromoSuccess(response));
                 }
 
                 @Override
                 public void onError(final DataManager.DataManagerError error)
                 {
-                    //do nothing
+                    mBus.post(new HandyEvent.ReceiveAvailableSplashPromoError(error));
                 }
             });
         }
-        //otherwise do nothing
-
-    }
-
-    private void showSplashPromo(@NonNull SplashPromo splashPromo, @NonNull FragmentActivity fragmentActivity)
-    {
-        //TODO: move this dialog-launching logic out of the manager!
-        /*
-        BaseActivity cannot subscribe to events, so will have to make a BusEventListener
-        to handle the success event + trigger this dialog launch
-         */
-        if(!fragmentActivity.isFinishing())
-        {
-            SplashPromoDialogFragment splashPromoDialogFragment =
-                    SplashPromoDialogFragment.newInstance(splashPromo);
-            FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
-            transaction.add(splashPromoDialogFragment, SplashPromoDialogFragment.class.getSimpleName());
-            transaction.commitAllowingStateLoss();
-        }
-
     }
 
 }
