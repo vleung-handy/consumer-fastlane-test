@@ -19,7 +19,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.viewmodel.BookingCardRowViewModel;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.booking.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.ui.view.BookingCardRowView;
 import com.handybook.handybook.booking.ui.view.ServiceOutlineIcon;
 

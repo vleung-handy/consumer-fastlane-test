@@ -10,7 +10,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.booking.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView;
 
 import java.util.ArrayList;

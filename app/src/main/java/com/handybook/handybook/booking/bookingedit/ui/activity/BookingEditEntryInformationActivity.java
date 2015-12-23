@@ -1,20 +1,20 @@
-package com.handybook.handybook.booking.ui.activity;
+package com.handybook.handybook.booking.bookingedit.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.ui.fragment.BookingEditNoteToProFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
-public final class BookingEditNoteToProActivity extends MenuDrawerActivity
+public final class BookingEditEntryInformationActivity extends MenuDrawerActivity
 {
 
     @Override
     protected final Fragment createFragment() {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
-        return BookingEditNoteToProFragment.newInstance(booking);
+        return BookingEditEntryInformationFragment.newInstance(booking);
     }
 
     @Override

@@ -1,21 +1,22 @@
-package com.handybook.handybook.booking.ui.activity;
+package com.handybook.handybook.booking.bookingedit.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.ui.fragment.BookingEditAddressFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
-public final class BookingEditAddressActivity extends MenuDrawerActivity
+public final class BookingEditExtrasActivity extends MenuDrawerActivity
 {
 
+    //TODO: can we consolidate this with other edit activities?
     @Override
     protected final Fragment createFragment()
     {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
-        return BookingEditAddressFragment.newInstance(booking);
+        return BookingEditExtrasFragment.newInstance(booking);
     }
 
     @Override

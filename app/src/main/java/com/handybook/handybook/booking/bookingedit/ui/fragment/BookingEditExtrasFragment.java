@@ -1,4 +1,4 @@
-package com.handybook.handybook.booking.ui.fragment;
+package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,15 +11,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.booking.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.ui.widget.LabelValueView;
-import com.handybook.handybook.booking.viewmodel.BookingEditExtrasViewModel;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashSet;

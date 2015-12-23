@@ -1,4 +1,4 @@
-package com.handybook.handybook.booking.ui.fragment;
+package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;

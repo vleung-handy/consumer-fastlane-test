@@ -130,12 +130,12 @@
         <activity android:name=".ui.activity.OnboardActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
         <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditNoteToProActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditEntryInformationActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditFrequencyActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditExtrasActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditHoursActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditAddressActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditNoteToProActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditEntryInformationActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditFrequencyActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditExtrasActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditHoursActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditAddressActivity"/>
         <activity android:name=".booking.ui.activity.CancelRecurringBookingActivity"/>
         <activity
             android:name=".ui.activity.BlockingActivity"
