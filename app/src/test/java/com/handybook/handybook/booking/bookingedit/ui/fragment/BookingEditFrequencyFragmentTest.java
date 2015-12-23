@@ -1,4 +1,4 @@
-package com.handybook.handybook.booking.ui.fragment;
+package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
