@@ -53,8 +53,7 @@ public class AppBlockManager
 
     private boolean isAppBlocked()
     {
-        return true; //TODO: REVERT THIS, TEST ONLY
-//        return prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
+        return prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
     }
 
     private boolean shouldUpdateBlockingStateFromApi()
