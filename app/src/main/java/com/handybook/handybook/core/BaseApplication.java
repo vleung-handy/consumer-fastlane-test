@@ -6,6 +6,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.Mixpanel;
@@ -64,6 +65,8 @@ public class BaseApplication extends MultiDexApplication
     UrbanAirshipManager urbanAirshipManager;
     @Inject
     Properties properties;
+    @Inject
+    BookingEditManager mBookingEditManager;
 
     @Override
     public void onCreate()
