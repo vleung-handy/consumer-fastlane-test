@@ -2,12 +2,12 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.data.DataManager;
@@ -57,7 +57,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
                 ShadowApplication.getInstance().getApplicationContext());
         sharedPreferences.edit().putBoolean("APP_ONBOARD_SHOWN", true).commit();
 
-        SupportFragmentTestUtil.startFragment(mFragment, ServiceCategoriesActivity.class);
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test
