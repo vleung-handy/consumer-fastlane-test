@@ -1,15 +1,15 @@
-package com.handybook.handybook.data;
+package com.handybook.handybook.analytics;
 
 import android.content.Context;
 
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.annotation.Track;
-import com.handybook.handybook.annotation.TrackField;
-import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.analytics.annotation.Track;
+import com.handybook.handybook.analytics.annotation.TrackField;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;

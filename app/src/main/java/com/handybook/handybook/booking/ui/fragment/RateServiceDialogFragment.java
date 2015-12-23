@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
-import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.event.MixpanelEvent;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.squareup.otto.Subscribe;

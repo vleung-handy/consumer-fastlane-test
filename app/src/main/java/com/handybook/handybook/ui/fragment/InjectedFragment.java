@@ -13,7 +13,7 @@ import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;

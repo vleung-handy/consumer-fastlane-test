@@ -9,7 +9,7 @@ import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;

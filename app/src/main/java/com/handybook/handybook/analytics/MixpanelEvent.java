@@ -1,9 +1,9 @@
-package com.handybook.handybook.event;
+package com.handybook.handybook.analytics;
 
 import android.support.annotation.NonNull;
 
-import com.handybook.handybook.annotation.Track;
-import com.handybook.handybook.annotation.TrackField;
+import com.handybook.handybook.analytics.annotation.Track;
+import com.handybook.handybook.analytics.annotation.TrackField;
 
 public abstract class MixpanelEvent
 {
