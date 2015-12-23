@@ -1,7 +1,6 @@
 package com.handybook.handybook.manager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import com.crashlytics.android.Crashlytics;
@@ -36,7 +35,7 @@ public class AppBlockManager
     }
 
     @Subscribe
-    public void onEachActivityResume(final ActivityEvent.Resumed e)
+    public void onEachActivityFragmentsResumed(final ActivityEvent.FragmentsResumed e)
     {
         if (appContext == null)
         {
@@ -48,23 +47,14 @@ public class AppBlockManager
         }
         if (isAppBlocked() && !e.getActivity().getClass().equals(BlockingActivity.class))
         {
-            showBlockingScreen();
-            e.getActivity().finish();
+            bus.post(new HandyEvent.StartBlockingAppEvent());
         }
-    }
-
-    private void showBlockingScreen()
-    {
-        //TODO: move this out of the manager!
-        Intent launchBlockingActivity = new Intent(appContext, BlockingActivity.class);
-        launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        appContext.startActivity(launchBlockingActivity);
     }
 
     private boolean isAppBlocked()
     {
-        return prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
+        return true; //TODO: REVERT THIS, TEST ONLY
+//        return prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
     }
 
     private boolean shouldUpdateBlockingStateFromApi()
@@ -128,7 +118,6 @@ public class AppBlockManager
         if (!wasBlocked && isBlocked)
         {// We're starting to block
             bus.post(new HandyEvent.StartBlockingAppEvent());
-            showBlockingScreen();
         } else if (wasBlocked && !isBlocked)
         {// We're stopping blocking
             bus.post(new HandyEvent.StopBlockingAppEvent());
