@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,11 +30,11 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class BookingListFragment extends InjectedFragment
         implements SwipeRefreshLayout.OnRefreshListener
 {
-    public static final String TAG = "BookingListFragment";
     public static final String STATE_BOOKINGS = "state:bookings";
     public static final String STATE_BOOKINGS_RECEIVED = "state:bookings_received";
     private static final String KEY_LIST_TYPE = "key:booking_list_type";
@@ -47,6 +48,8 @@ public class BookingListFragment extends InjectedFragment
     CardView mNoBookingsView;
     @Bind(R.id.card_no_bookings_text)
     TextView mNoBookingsText;
+    @Bind(R.id.services_button)
+    FloatingActionButton servicesButton;
     private Context mContext;
     private int mListType;
     private BookingCardAdapter mBookingCardAdapter;
@@ -70,6 +73,19 @@ public class BookingListFragment extends InjectedFragment
         args.putInt(KEY_LIST_TYPE, bookingListType);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @OnClick(R.id.services_button)
+    public void onServicesButtonClicked()
+    {
+        bus.post(new HandyEvent.ServicesButtonClicked());
+        servicesButton.hide();
+    }
+
+    @Subscribe
+    public void onCloseServicesButtonClicked(HandyEvent.CloseServicesButtonClicked event)
+    {
+        servicesButton.show();
     }
 
     @Override

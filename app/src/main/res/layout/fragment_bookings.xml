@@ -1,53 +1,71 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/handy_blue"
-              android:orientation="vertical"
-              tools:context=".booking.ui.fragment.BookingsFragment"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".booking.ui.fragment.BookingsFragment"
     >
 
-    <FrameLayout
-        android:id="@+id/nav_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/nav_text"
-            style="@style/TextView.Large"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginLeft="72dp"
-            android:layout_marginStart="72dp"
-            android:gravity="center_vertical"
-            android:text="@string/my_bookings"
-            android:textColor="@color/white"/>
-
-        <RelativeLayout
-            android:id="@+id/menu_button_layout"
-            style="@style/MenuButtonLayout"/>
-    </FrameLayout>
-
-    <com.handybook.handybook.ui.view.HandyTabLayout
-        android:id="@+id/tab_layout"
-        style="@style/TextView.Large"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorHeight="2dp"
-        app:tabIndicatorColor="@color/white"
-        app:tabTextAppearance="@style/TextAppearance.TabText"
-        app:tabTextColor="@color/handy_white_semitransparent"
-        app:tabSelectedTextColor="@color/white"
-
-        >
-    </com.handybook.handybook.ui.view.HandyTabLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"/>
+        android:background="@color/handy_blue"
+        android:orientation="vertical"
+        >
 
-</LinearLayout>
+        <FrameLayout
+            android:id="@+id/nav_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/nav_text"
+                style="@style/TextView.Large"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginLeft="72dp"
+                android:layout_marginStart="72dp"
+                android:gravity="center_vertical"
+                android:text="@string/my_bookings"
+                android:textColor="@color/white"
+                />
+
+            <RelativeLayout
+                android:id="@+id/menu_button_layout"
+                style="@style/MenuButtonLayout"
+                />
+        </FrameLayout>
+
+        <com.handybook.handybook.ui.view.HandyTabLayout
+            android:id="@+id/tab_layout"
+            style="@style/TextView.Large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorHeight="2dp"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/TextAppearance.TabText"
+            app:tabTextColor="@color/handy_white_semitransparent"
+
+            >
+        </com.handybook.handybook.ui.view.HandyTabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            />
+
+    </LinearLayout>
+
+    <com.handybook.handybook.booking.ui.view.ServiceOptionsView
+        android:id="@+id/service_options"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</FrameLayout>

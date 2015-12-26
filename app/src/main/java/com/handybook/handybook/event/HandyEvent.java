@@ -695,4 +695,8 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
+    public static class ServicesButtonClicked {}
+
+    public static class CloseServicesButtonClicked {}
 }
