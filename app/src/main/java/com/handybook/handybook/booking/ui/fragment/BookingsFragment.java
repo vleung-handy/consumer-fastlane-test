@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
@@ -123,6 +124,7 @@ public class BookingsFragment extends BookingFlowFragment
         if (mServiceOptionsView.isReady())
         {
             mServiceOptionsView.show();
+            bus.post(new MixpanelEvent.TrackAddBookingFabMenuShown());
         }
         else
         {
@@ -139,6 +141,7 @@ public class BookingsFragment extends BookingFlowFragment
     @Override
     public void onServiceOptionClicked(final ServiceOptionView view, final Service service)
     {
+        bus.post(new MixpanelEvent.TrackAddBookingFabServiceSelected(service.getId(), service.getUniq()));
         if (service.getServices().size() > 0)
         {
             final Intent intent = new Intent(getActivity(), ServicesActivity.class);
