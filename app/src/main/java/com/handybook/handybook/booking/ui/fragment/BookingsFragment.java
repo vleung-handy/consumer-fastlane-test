@@ -21,7 +21,6 @@ import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceOptionView;
 import com.handybook.handybook.booking.ui.view.ServiceOptionsView;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
@@ -29,7 +28,6 @@ import com.handybook.handybook.ui.widget.MenuButton;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -90,32 +88,15 @@ public class BookingsFragment extends BookingFlowFragment
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
-        loadServices();
+        bus.post(new HandyEvent.RequestServices());
 
         return view;
     }
 
-    private void loadServices()
+    @Subscribe
+    public void onReceiveServicesSuccess(final HandyEvent.ReceiveServicesSuccess event)
     {
-        dataManager.getServices(new DataManager.CacheResponse<List<Service>>()
-        {
-            @Override
-            public void onResponse(final List<Service> services)
-            {
-            }
-        }, new DataManager.Callback<List<Service>>()
-        {
-            @Override
-            public void onSuccess(final List<Service> services)
-            {
-                mServiceOptionsView.init(services, BookingsFragment.this);
-            }
-
-            @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
-            }
-        });
+        mServiceOptionsView.init(event.getServices(), BookingsFragment.this);
     }
 
     @Subscribe

@@ -26,6 +26,7 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
@@ -395,6 +396,14 @@ public final class ApplicationModule
     {
         return new UserDataManager(userManager, dataManager, bus);
     }
+
+    @Provides
+    @Singleton
+    final ServicesManager provideServicesManager(final DataManager dataManager, final Bus bus)
+    {
+        return new ServicesManager(dataManager, bus);
+    }
+
 
     @Provides
     @Singleton

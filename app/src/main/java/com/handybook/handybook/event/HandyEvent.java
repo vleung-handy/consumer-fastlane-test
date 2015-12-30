@@ -7,6 +7,7 @@ import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
@@ -691,6 +692,39 @@ public abstract class HandyEvent
     public static class ReceiveUpdatePaymentError extends ReceiveErrorEvent
     {
         public ReceiveUpdatePaymentError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    public static class RequestServices {}
+
+    public static class ReceiveServicesSuccess extends ReceiveSuccessEvent
+    {
+        private List<Service> mServices;
+
+        public ReceiveServicesSuccess(final List<Service> services)
+        {
+            mServices = services;
+        }
+
+        public List<Service> getServices()
+        {
+            return mServices;
+        }
+    }
+
+    public static class ReceiveCachedServicesSuccess extends ReceiveServicesSuccess
+    {
+        public ReceiveCachedServicesSuccess(final List<Service> services)
+        {
+            super(services);
+        }
+    }
+
+    public static class ReceiveServicesError extends ReceiveErrorEvent
+    {
+        public ReceiveServicesError(final DataManager.DataManagerError error)
         {
             this.error = error;
         }

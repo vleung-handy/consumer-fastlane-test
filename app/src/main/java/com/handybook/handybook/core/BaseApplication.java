@@ -15,6 +15,7 @@ import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
@@ -66,7 +67,9 @@ public class BaseApplication extends MultiDexApplication
     @Inject
     Properties properties;
     @Inject
-    BookingEditManager mBookingEditManager;
+    BookingEditManager bookingEditManager;
+    @Inject
+    ServicesManager servicesManager;
 
     @Override
     public void onCreate()

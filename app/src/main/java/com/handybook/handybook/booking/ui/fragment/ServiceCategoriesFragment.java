@@ -21,11 +21,12 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.activity.OnboardActivity;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,56 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onActivityCreated(savedInstanceState);
         allowCallbacks = true;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
         loadServices();
+    }
+
+    private void loadServices()
+    {
+        progressDialog.show();
+        mUsedCache = false;
+        bus.post(new HandyEvent.RequestServices());
+    }
+
+    @Subscribe
+    public void onReceiveServicesSuccess(final HandyEvent.ReceiveServicesSuccess event)
+    {
+        if (!allowCallbacks)
+        {
+            return;
+        }
+        mServices = event.getServices();
+        displayServices();
+        progressDialog.dismiss();
+    }
+
+    @Subscribe
+    public void onReceiveCachedServicesSuccess(final HandyEvent.ReceiveCachedServicesSuccess event)
+    {
+        if (!allowCallbacks)
+        {
+            return;
+        }
+        mUsedCache = true;
+        mServices = event.getServices();
+        displayServices();
+        progressDialog.dismiss();
+    }
+
+    @Subscribe
+    public void onReceiveServicesError(final HandyEvent.ReceiveServicesError event)
+    {
+        if (!allowCallbacks || mUsedCache)
+        {
+            return;
+        }
+        progressDialog.dismiss();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @Override
@@ -179,50 +229,5 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             });
             mCategoryLayout.addView(categoryView);
         }
-    }
-
-    private void loadServices()
-    {
-        progressDialog.show();
-        mUsedCache = false;
-        dataManager.getServices(new DataManager.CacheResponse<List<Service>>()
-        {
-            @Override
-            public void onResponse(final List<Service> response)
-            {
-                if (!allowCallbacks)
-                {
-                    return;
-                }
-                mUsedCache = true;
-                mServices = response;
-                displayServices();
-                progressDialog.dismiss();
-            }
-        }, new DataManager.Callback<List<Service>>()
-        {
-            @Override
-            public void onSuccess(final List<Service> response)
-            {
-                if (!allowCallbacks)
-                {
-                    return;
-                }
-                mServices = response;
-                displayServices();
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
-                if (!allowCallbacks || mUsedCache)
-                {
-                    return;
-                }
-                progressDialog.dismiss();
-                dataManagerErrorHandler.handleError(getActivity(), error);
-            }
-        });
     }
 }

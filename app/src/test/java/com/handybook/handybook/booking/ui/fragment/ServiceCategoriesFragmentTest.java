@@ -11,6 +11,7 @@ import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.HandyEvent;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,9 +28,6 @@ import javax.inject.Inject;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
@@ -65,9 +63,8 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     {
         when(mMockService.getServices()).thenReturn(Collections.<Service>emptyList());
 
-        verify(mDataManager, atLeastOnce())
-                .getServices(any(DataManager.CacheResponse.class), mCallbackCaptor.capture());
-        mCallbackCaptor.getValue().onSuccess(Lists.newArrayList(mMockService));
+        mFragment.onReceiveServicesSuccess(
+                new HandyEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
         mFragment.mCategoryLayout.getChildAt(0).performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
@@ -80,9 +77,8 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     {
         when(mMockService.getServices()).thenReturn(Lists.newArrayList(mMockService));
 
-        verify(mDataManager, atLeastOnce())
-                .getServices(any(DataManager.CacheResponse.class), mCallbackCaptor.capture());
-        mCallbackCaptor.getValue().onSuccess(Lists.newArrayList(mMockService));
+        mFragment.onReceiveServicesSuccess(
+                new HandyEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
         mFragment.mCategoryLayout.getChildAt(0).performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
