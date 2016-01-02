@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,8 +49,8 @@ public class BookingListFragment extends InjectedFragment
     CardView mNoBookingsView;
     @Bind(R.id.card_no_bookings_text)
     TextView mNoBookingsText;
-    @Bind(R.id.services_button)
-    FloatingActionButton servicesButton;
+    @Bind(R.id.add_booking_button)
+    FloatingActionButton addBookingButton;
     private Context mContext;
     private int mListType;
     private BookingCardAdapter mBookingCardAdapter;
@@ -75,17 +76,10 @@ public class BookingListFragment extends InjectedFragment
         return fragment;
     }
 
-    @OnClick(R.id.services_button)
+    @OnClick(R.id.add_booking_button)
     public void onServicesButtonClicked()
     {
-        bus.post(new HandyEvent.ServicesButtonClicked());
-        servicesButton.hide();
-    }
-
-    @Subscribe
-    public void onCloseServicesButtonClicked(HandyEvent.CloseServicesButtonClicked event)
-    {
-        servicesButton.show();
+        bus.post(new HandyEvent.AddBookingButtonClicked());
     }
 
     @Override
@@ -175,7 +169,8 @@ public class BookingListFragment extends InjectedFragment
                 if (!recyclerView.canScrollVertically(-1))
                 {
                     mSwipeRefreshLayout.setEnabled(true);
-                } else
+                }
+                else
                 {
                     mSwipeRefreshLayout.setEnabled(false);
                 }
@@ -190,6 +185,24 @@ public class BookingListFragment extends InjectedFragment
                 mNoBookingsText.setText(R.string.no_booking_card_past_text);
                 break;
         }
+        getActivity().getSupportFragmentManager()
+                .addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
+                {
+                    @Override
+                    public void onBackStackChanged()
+                    {
+                        int backStackEntryCount = getActivity().getSupportFragmentManager()
+                                .getBackStackEntryCount();
+                        if (backStackEntryCount == 0)
+                        {
+                            addBookingButton.show();
+                        }
+                        else
+                        {
+                            addBookingButton.hide();
+                        }
+                    }
+                });
         return root;
     }
 
@@ -258,7 +271,8 @@ public class BookingListFragment extends InjectedFragment
             bus.post(new HandyEvent.RequestEvent.BookingCardViewModelsEvent(
                     userManager.getCurrentUser()
             ));
-        } else
+        }
+        else
         {
             bus.post(new HandyEvent.RequestEvent.BookingCardViewModelsEvent(
                     userManager.getCurrentUser(),

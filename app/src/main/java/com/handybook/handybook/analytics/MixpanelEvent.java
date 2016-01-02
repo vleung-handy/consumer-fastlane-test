@@ -32,6 +32,7 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_SUBMIT_TIP = "submit tips";
         public static final String APP_TRACK_ADD_BOOKING_FAB_SERVICE = "add booking fab service selected";
         public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_SHOWN = "add booking fab menu shown";
+        public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED = "add booking fab menu dismissed";
     }
 
 
@@ -184,4 +185,8 @@ public abstract class MixpanelEvent
 
     @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_MENU_SHOWN)
     public static class TrackAddBookingFabMenuShown {}
+
+
+    @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED)
+    public static class TrackAddBookingFabMenuDismissed {}
 }

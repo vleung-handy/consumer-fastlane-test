@@ -2,10 +2,8 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,12 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.booking.ui.activity.ServicesActivity;
-import com.handybook.handybook.booking.ui.view.ServiceOptionView;
-import com.handybook.handybook.booking.ui.view.ServiceOptionsView;
+import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
@@ -28,6 +23,7 @@ import com.handybook.handybook.ui.widget.MenuButton;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,20 +33,16 @@ import butterknife.ButterKnife;
  * Use the {@link BookingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookingsFragment extends BookingFlowFragment
-        implements ServiceOptionsView.OnClickListeners
+public class BookingsFragment extends InjectedFragment
 {
-
-    private static final String SHARED_ICON_ELEMENT_NAME = "icon";
     @Bind(R.id.menu_button_layout)
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.pager)
     ViewPager mViewPager;
     @Bind(R.id.tab_layout)
     HandyTabLayout mTabLayout;
-    @Bind(R.id.service_options)
-    ServiceOptionsView mServiceOptionsView;
     private TabAdapter mTabAdapter;
+    private List<Service> mServices;
 
     public BookingsFragment()
     {
@@ -96,52 +88,30 @@ public class BookingsFragment extends BookingFlowFragment
     @Subscribe
     public void onReceiveServicesSuccess(final HandyEvent.ReceiveServicesSuccess event)
     {
-        mServiceOptionsView.init(event.getServices(), BookingsFragment.this);
+        mServices = event.getServices();
     }
 
     @Subscribe
-    public void onServicesButtonClicked(HandyEvent.ServicesButtonClicked event)
+    public void onReceiveCachedServicesSuccess(final HandyEvent.ReceiveCachedServicesSuccess event)
     {
-        if (mServiceOptionsView.isReady())
+        mServices = event.getServices();
+    }
+
+    @Subscribe
+    public void onAddBookingButtonClicked(HandyEvent.AddBookingButtonClicked event)
+    {
+        if (mServices != null)
         {
-            mServiceOptionsView.show();
-            bus.post(new MixpanelEvent.TrackAddBookingFabMenuShown());
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
+                    .add(R.id.fragment_container,
+                            ServiceCategoriesOverlayFragment.newInstance(mServices))
+                    .addToBackStack(null)
+                    .commit();
         }
         else
         {
             startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
-        }
-    }
-
-    @Override
-    public void onHideServiceOptions()
-    {
-        bus.post(new HandyEvent.CloseServicesButtonClicked());
-    }
-
-    @Override
-    public void onServiceOptionClicked(final ServiceOptionView view, final Service service)
-    {
-        bus.post(new MixpanelEvent.TrackAddBookingFabServiceSelected(service.getId(), service.getUniq()));
-        if (service.getServices().size() > 0)
-        {
-            final Intent intent = new Intent(getActivity(), ServicesActivity.class);
-            intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        getActivity(), view.getIcon(), SHARED_ICON_ELEMENT_NAME
-                );
-                getActivity().startActivity(intent, options.toBundle());
-            }
-            else
-            {
-                startActivity(intent);
-            }
-        }
-        else
-        {
-            startBookingFlow(service.getId(), service.getUniq());
         }
     }
 

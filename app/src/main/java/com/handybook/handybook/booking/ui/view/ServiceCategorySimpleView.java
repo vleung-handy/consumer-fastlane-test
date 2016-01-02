@@ -19,19 +19,19 @@ import butterknife.ButterKnife;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 
-public class ServiceOptionView extends TableRow
+public class ServiceCategorySimpleView extends TableRow
 {
     @Bind(R.id.title)
     TextView mTitle;
     @Bind(R.id.icon)
     ImageView mIcon;
 
-    public ServiceOptionView(final Context context)
+    public ServiceCategorySimpleView(final Context context)
     {
         super(context);
     }
 
-    public ServiceOptionView(final Context context, final AttributeSet attrs)
+    public ServiceCategorySimpleView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
     }
@@ -46,7 +46,7 @@ public class ServiceOptionView extends TableRow
         setGravity(Gravity.CENTER);
         setVisibility(INVISIBLE);
 
-        LayoutInflater.from(getContext()).inflate(R.layout.view_service_option, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_service_category_simple, this);
         ButterKnife.bind(this);
 
         ServiceCategoryListDescriptor serviceDescriptor =

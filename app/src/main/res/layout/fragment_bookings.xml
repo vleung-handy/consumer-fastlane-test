@@ -62,10 +62,4 @@
 
     </LinearLayout>
 
-    <com.handybook.handybook.booking.ui.view.ServiceOptionsView
-        android:id="@+id/service_options"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
 </FrameLayout>

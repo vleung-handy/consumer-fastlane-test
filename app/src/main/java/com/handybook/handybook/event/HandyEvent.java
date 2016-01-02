@@ -731,8 +731,5 @@ public abstract class HandyEvent
     }
 
     @Track("add booking fab clicked")
-    public static class ServicesButtonClicked {}
-
-    @Track("add booking fab menu dismissed")
-    public static class CloseServicesButtonClicked {}
+    public static class AddBookingButtonClicked {}
 }

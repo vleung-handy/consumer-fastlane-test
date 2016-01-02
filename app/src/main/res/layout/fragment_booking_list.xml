@@ -34,7 +34,7 @@
             </com.handybook.handybook.ui.view.EmptyRecyclerView>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/services_button"
+                android:id="@+id/add_booking_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

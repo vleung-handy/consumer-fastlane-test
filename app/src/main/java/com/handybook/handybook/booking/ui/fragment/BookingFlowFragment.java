@@ -30,7 +30,7 @@ import java.util.Date;
 public class BookingFlowFragment extends InjectedFragment
 {
 
-    final void startBookingFlow(final int serviceId, final String uniq)
+    protected final void startBookingFlow(final int serviceId, final String uniq)
     {
         startBookingFlow(serviceId, uniq, null);
     }
