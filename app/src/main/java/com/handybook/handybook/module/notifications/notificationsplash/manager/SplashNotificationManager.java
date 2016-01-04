@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.notifications.manager;
+package com.handybook.handybook.module.notifications.notificationsplash.manager;
 
 import android.support.annotation.NonNull;
 
@@ -6,7 +6,7 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.notifications.model.response.SplashPromo;
+import com.handybook.handybook.module.notifications.notificationsplash.model.SplashPromo;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;

@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.notifications.model.response;
+package com.handybook.handybook.module.notifications.notificationsplash.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

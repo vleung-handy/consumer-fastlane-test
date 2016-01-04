@@ -32,9 +32,9 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.module.notifications.model.response.SplashPromo;
+import com.handybook.handybook.module.notifications.notificationsplash.model.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
-import com.handybook.handybook.module.notifications.model.response.HandyNotification;
+import com.handybook.handybook.module.notifications.notificationfeed.model.HandyNotification;
 
 import java.util.Date;
 import java.util.List;
