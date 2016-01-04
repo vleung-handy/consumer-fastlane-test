@@ -18,6 +18,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.ui.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
     View mCloseButtonWrapper;
     @Bind(R.id.services_wrapper)
     ViewGroup mServicesWrapper;
+    List<ServiceCategorySimpleView> mServiceCategorySimpleViews;
 
     public static ServiceCategoriesOverlayFragment newInstance(@NonNull List<Service> services)
     {
@@ -61,6 +63,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                 container, false);
         ButterKnife.bind(this, view);
         initServices();
+        initBackPressedListener();
         bus.post(new MixpanelEvent.TrackAddBookingFabMenuShown());
         return view;
     }
@@ -68,9 +71,11 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
     private void initServices()
     {
         ArrayList<Service> services = getArguments().getParcelableArrayList(BundleKeys.SERVICES);
+        mServiceCategorySimpleViews = new ArrayList<>();
         for (final Service service : services)
         {
-            final ServiceCategorySimpleView serviceCategorySimpleView = new ServiceCategorySimpleView(getContext());
+            final ServiceCategorySimpleView serviceCategorySimpleView =
+                    new ServiceCategorySimpleView(getContext());
             serviceCategorySimpleView.init(service);
             serviceCategorySimpleView.setOnClickListener(new View.OnClickListener()
             {
@@ -94,7 +99,39 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                     serviceCategorySimpleView.setVisibility(View.VISIBLE);
                 }
             }, 200);
+            mServiceCategorySimpleViews.add(serviceCategorySimpleView);
         }
+    }
+
+    private void initBackPressedListener()
+    {
+        final BaseActivity activity = (BaseActivity) getActivity();
+        activity.setOnBackPressedListener(
+                new BaseActivity.OnBackPressedListener()
+                {
+                    @Override
+                    public void onBack()
+                    {
+                        for (ServiceCategorySimpleView view : mServiceCategorySimpleViews)
+                        {
+                            float toYDelta = mCloseButtonWrapper.getY() - view.getY();
+                            TranslateAnimation animation =
+                                    new TranslateAnimation(0, 0, 0, toYDelta);
+                            animation.setDuration(200);
+                            view.startAnimation(animation);
+                            view.setVisibility(View.INVISIBLE);
+                        }
+                        activity.setOnBackPressedListener(null);
+                        mServicesWrapper.postDelayed(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                activity.onBackPressed();
+                            }
+                        }, 200);
+                    }
+                });
     }
 
     private void handleServiceCategoryClicked(final ServiceCategorySimpleView serviceCategorySimpleView,
