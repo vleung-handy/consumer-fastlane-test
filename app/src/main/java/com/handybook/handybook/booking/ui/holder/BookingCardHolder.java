@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,15 +12,16 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.viewmodel.BookingCardRowViewModel;
-import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.view.BookingCardRowView;
 import com.handybook.handybook.booking.ui.view.ServiceOutlineIcon;
+import com.handybook.handybook.booking.viewmodel.BookingCardRowViewModel;
+import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.ui.widget.HandySnackbar;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,6 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
 {
     private Context mContext;
     private BookingCardViewModel mBookingCardViewModel;
-    private View mRoot;
     @Bind(R.id.iv_booking_card_service_icon)
     ServiceOutlineIcon vServiceIcon;
     @Bind(R.id.tv_booking_card_service_title)
@@ -53,7 +52,6 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     {
         super(itemView);
         mContext = itemView.getContext();
-        mRoot = itemView;
         ButterKnife.bind(this, itemView);
     }
 
@@ -82,7 +80,7 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
         }
 
         Booking masterBooking = getMasterBookingFromCardViewModel();
-        if(masterBooking == null)
+        if (masterBooking == null)
         {
             Crashlytics.logException(new Exception(this.getClass().getCanonicalName()
                             + ": model does not contain any bookings")
@@ -143,9 +141,11 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     @OnClick(R.id.rl_booking_card_footer)
     void onInfoRowClicked()
     {
-        Snackbar
-                .make(mRoot, R.string.snackbar_recurring_will_be_generated, Snackbar.LENGTH_LONG)
-                .show();
+        HandySnackbar.show(
+                (Activity) mContext,
+                mContext.getString(R.string.snackbar_recurring_will_be_generated),
+                HandySnackbar.TYPE_DEFAULT
+        );
     }
 
 }

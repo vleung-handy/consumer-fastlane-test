@@ -2,6 +2,7 @@ package com.handybook.handybook.ui.widget;
 
 import android.app.Activity;
 import android.support.design.widget.Snackbar;
+import android.view.View;
 
 import com.handybook.handybook.R;
 
@@ -13,10 +14,12 @@ public class HandySnackbar
     public static final String TYPE_INFO = "info";
     public static final String TYPE_DEFAULT = "default";
 
+    private static final String FAB_VIEW_TAG = "fab";
+
     public static void show(Activity activity, String message, String type)
     {
-        final Snackbar snackbar = Snackbar.make(activity.findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_LONG);
+        final View view = getView(activity);
+        final Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
         int color = activity.getResources().getColor(getColorForType(type));
         snackbar.getView().setBackgroundColor(color);
         snackbar.show();
@@ -42,6 +45,20 @@ public class HandySnackbar
             default:
                 return R.color.nav_bg;
 
+        }
+    }
+
+    private static View getView(Activity activity)
+    {
+        final View contentView = activity.findViewById(android.R.id.content);
+        final View fabView = contentView.findViewWithTag(FAB_VIEW_TAG);
+        if (fabView != null)
+        {
+            return fabView;
+        }
+        else
+        {
+            return contentView;
         }
     }
 }
