@@ -85,6 +85,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
         //get the current selected index of the options view
         final int selectedIndex = mOptionsView.getCurrentIndex();
+        if(selectedIndex < 0) return;
 
         //create and set the booking request object
         BookingEditFrequencyRequest bookingEditFrequencyRequest = new BookingEditFrequencyRequest();

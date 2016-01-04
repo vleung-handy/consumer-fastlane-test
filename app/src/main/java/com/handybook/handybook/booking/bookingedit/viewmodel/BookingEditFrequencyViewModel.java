@@ -3,11 +3,12 @@ package com.handybook.handybook.booking.bookingedit.viewmodel;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.constant.BookingFrequency;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 
 public class BookingEditFrequencyViewModel
 {
@@ -41,9 +42,13 @@ public class BookingEditFrequencyViewModel
         option.setOptions(getDisplayStringsArray(context));
 
         //update the options right-hand text views
-        int indexForFreq = getOptionIndexForFrequencyValue();
         String optionsSubText[] = new String[mFrequencyOptionsArray.length];
-        optionsSubText[indexForFreq] = context.getResources().getString(R.string.current);//highlight the current selected option
+
+        int indexForFreq = getOptionIndexForFrequencyValue();
+        if(indexForFreq >= 0)
+        {
+            optionsSubText[indexForFreq] = context.getResources().getString(R.string.current);//highlight the current selected option
+        }
         option.setOptionsSubText(optionsSubText);
         option.setOptionsRightTitleText(getFormattedPricesForFrequencyArray());
 
@@ -127,6 +132,10 @@ public class BookingEditFrequencyViewModel
         {
             if (freq == mFrequencyOptionsArray[i]) { return i; }
         }
+        Crashlytics.logException(new Exception(
+                "BookingEditFrequencyViewModel::getOptionIdexForFrequencyValue():" +
+                        "current frequency of booking does not " +
+                        "match any frequency in the options array: " + freq));
         return -1;
     }
 
