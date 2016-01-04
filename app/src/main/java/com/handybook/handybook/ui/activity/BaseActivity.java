@@ -153,7 +153,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Override
     public void showSplashPromo(@NonNull SplashPromo splashPromo)
     {
-        if(!isFinishing())
+        if(splashPromo.shouldDisplay() && !isFinishing())
         {
             SplashPromoDialogFragment splashPromoDialogFragment =
                     SplashPromoDialogFragment.newInstance(splashPromo);

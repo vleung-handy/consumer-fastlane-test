@@ -65,11 +65,9 @@ public class SplashNotificationManager
                 @Override
                 public void onSuccess(final SplashPromo splashPromo)
                 {
-                    if(splashPromo.shouldDisplay())
-                    {
-                        mBus.post(new HandyEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
-                    }
-                    //else do nothing
+
+                    mBus.post(new HandyEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
+
                 }
 
                 @Override
