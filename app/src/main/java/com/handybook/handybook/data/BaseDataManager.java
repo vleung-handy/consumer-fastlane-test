@@ -36,9 +36,9 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.module.notifications.notificationsplash.model.SplashPromo;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
-import com.handybook.handybook.module.notifications.notificationfeed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

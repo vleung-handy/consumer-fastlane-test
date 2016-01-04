@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.notifications.notificationsplash.view.fragment;
+package com.handybook.handybook.module.notifications.splash.view.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.notifications.notificationsplash.model.SplashPromo;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.Utils;
 import com.squareup.picasso.Picasso;

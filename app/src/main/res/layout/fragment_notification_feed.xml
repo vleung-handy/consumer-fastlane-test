@@ -7,7 +7,7 @@
     android:id="@+id/coordinator_layout"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".module.notifications.notificationfeed.ui.activity.NotificationsActivity">
+    tools:context=".module.notifications.feed.ui.activity.NotificationsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:fitsSystemWindows="true"

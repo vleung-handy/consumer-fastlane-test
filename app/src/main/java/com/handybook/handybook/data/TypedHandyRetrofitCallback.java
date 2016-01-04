@@ -15,9 +15,9 @@ import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
-import com.handybook.handybook.module.notifications.notificationsplash.model.SplashPromo;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
-import com.handybook.handybook.module.notifications.notificationfeed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 
 import org.json.JSONObject;
 
