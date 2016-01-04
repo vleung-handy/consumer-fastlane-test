@@ -9,8 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.notifications.model.HandyNotificationViewModel;
-import com.handybook.handybook.module.notifications.model.response.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;

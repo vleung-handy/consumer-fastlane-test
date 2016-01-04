@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.notifications.view.fragment;
+package com.handybook.handybook.module.notifications.feed.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.notifications.model.response.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.fragment.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
