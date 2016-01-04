@@ -86,7 +86,6 @@ public class TipFragment extends Fragment
         catch (NumberFormatException e)
         {
             //the user entered invalid characters or empty string
-            //log what they were trying to input
             Crashlytics.logException(e);
             //TODO: display an error message to user
         }
