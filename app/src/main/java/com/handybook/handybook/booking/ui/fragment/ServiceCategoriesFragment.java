@@ -132,24 +132,23 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @Subscribe
     public void onReceiveServicesSuccess(final HandyEvent.ReceiveServicesSuccess event)
     {
-        if (!allowCallbacks)
-        {
-            return;
-        }
-        mServices = event.getServices();
-        displayServices();
-        progressDialog.dismiss();
+        handleLoadServicesResponse(event.getServices(), false);
     }
 
     @Subscribe
     public void onReceiveCachedServicesSuccess(final HandyEvent.ReceiveCachedServicesSuccess event)
     {
+        handleLoadServicesResponse(event.getServices(), true);
+    }
+
+    private void handleLoadServicesResponse(List<Service> services, boolean usedCache)
+    {
         if (!allowCallbacks)
         {
             return;
         }
-        mUsedCache = true;
-        mServices = event.getServices();
+        mUsedCache = usedCache;
+        mServices = services;
         displayServices();
         progressDialog.dismiss();
     }
