@@ -102,12 +102,18 @@ public class BookingsFragment extends InjectedFragment
     {
         if (mServices != null)
         {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
-                    .add(R.id.fragment_container,
-                            ServiceCategoriesOverlayFragment.newInstance(mServices))
-                    .addToBackStack(null)
-                    .commit();
+            final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            final String tag = ServiceCategoriesOverlayFragment.class.getSimpleName();
+            if (fragmentManager.findFragmentByTag(tag) == null)
+            {
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
+                        .add(R.id.fragment_container,
+                                ServiceCategoriesOverlayFragment.newInstance(mServices),
+                                tag)
+                        .addToBackStack(null)
+                        .commit();
+            }
         }
         else
         {
