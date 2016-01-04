@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.util.Utils;
@@ -76,7 +77,19 @@ public class TipFragment extends Fragment
 
     private Integer getCustomTipAmount()
     {
-        return Utils.convertToCents(Float.parseFloat(mCustomTipAmountText.getText().toString()));
+        float customTipAmount = 0;
+        String customTipAmountText = mCustomTipAmountText.getText().toString();
+        try
+        {
+            customTipAmount = Float.parseFloat(customTipAmountText);
+        }
+        catch (NumberFormatException e)
+        {
+            //the user entered invalid characters or empty string
+            Crashlytics.logException(e);
+            //TODO: display an error message to user
+        }
+        return Utils.convertToCents(customTipAmount);
     }
 
     private void setTipAmount(final int tipAmount)
