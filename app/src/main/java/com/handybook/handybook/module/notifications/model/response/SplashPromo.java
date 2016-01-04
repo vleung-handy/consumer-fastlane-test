@@ -26,6 +26,18 @@ public class SplashPromo implements Parcelable
     private String mActionText;
     @SerializedName("template")
     private String mTemplate;
+    @SerializedName("none") //returns 1 if there is no splash promo to display
+    private int mShouldNotDisplay;
+
+    /**
+     * mShouldNotDisplay == 1 if there is no splash promo to display, 0 otherwise
+     *
+     * @return
+     */
+    public boolean shouldDisplay()
+    {
+        return mShouldNotDisplay == 0;
+    }
 
     public String getId()
     {

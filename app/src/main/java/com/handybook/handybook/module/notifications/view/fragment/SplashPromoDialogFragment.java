@@ -82,8 +82,11 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     public void onActionButtonClicked(View view)
     {
         String deepLink = mSplashPromo.getDeepLinkUrl();
-        Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink));
-        Utils.safeLaunchIntent(deepLinkIntent, getContext());
+        if(deepLink != null)
+        {
+            Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink));
+            Utils.safeLaunchIntent(deepLinkIntent, getContext());
+        }
         dismiss();
     }
 }
