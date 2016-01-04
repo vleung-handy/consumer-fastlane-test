@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    >
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fragment_booking_list_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/handy_background_gray">
+            android:background="@color/handy_background_gray"
+            >
 
             <include layout="@layout/layout_card_no_bookings"/>
 
@@ -26,10 +29,24 @@
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:paddingTop="4dp"
-                tools:listitem="@layout/layout_card_booking">
+                tools:listitem="@layout/layout_card_booking"
+                >
             </com.handybook.handybook.ui.view.EmptyRecyclerView>
-        </FrameLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/add_booking_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/default_margin"
+                android:src="@drawable/ic_plus_white"
+                app:backgroundTint="@color/handy_blue"
+                app:fabSize="normal"
+                />
+
+        </RelativeLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>
-

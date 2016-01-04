@@ -34,4 +34,6 @@ public class BundleKeys
 
     public static final String DEEPLINK = "deep_link";
 
+    public static final String SERVICES = "services";
+
 }

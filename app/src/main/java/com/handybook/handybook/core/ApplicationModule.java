@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
@@ -26,6 +27,7 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
@@ -217,6 +219,7 @@ import retrofit.converter.GsonConverter;
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,
         NavbarWebViewDialogFragment.class,
+        ServiceCategoriesOverlayFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
@@ -395,6 +398,14 @@ public final class ApplicationModule
     {
         return new UserDataManager(userManager, dataManager, bus);
     }
+
+    @Provides
+    @Singleton
+    final ServicesManager provideServicesManager(final DataManager dataManager, final Bus bus)
+    {
+        return new ServicesManager(dataManager, bus);
+    }
+
 
     @Provides
     @Singleton

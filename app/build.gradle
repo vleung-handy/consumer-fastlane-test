@@ -43,7 +43,6 @@ dexcount {
     orderByMethodCount = false
     verbose = false
 }
-
 def computeVersionCode(versionName) {
     def versionNameMatcher = (versionName =~ /^([1-9]\d*)\.(\d{1,2})\.(\d{1,2})$/)
     if (versionNameMatcher.matches()) {
@@ -120,6 +119,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+    dexOptions {
+        javaMaxHeapSize "2g"
     }
     useLibrary 'org.apache.http.legacy'
 }

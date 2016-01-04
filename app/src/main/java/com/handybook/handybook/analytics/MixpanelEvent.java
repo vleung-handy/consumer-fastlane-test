@@ -30,6 +30,9 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_SHOW_RATING_PROMPT = "app rate prompt";
         public static final String APP_TRACK_SHOW_TIP_PROMPT = "present tips";
         public static final String APP_TRACK_SUBMIT_TIP = "submit tips";
+        public static final String APP_TRACK_ADD_BOOKING_FAB_SERVICE = "add booking fab service selected";
+        public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_SHOWN = "add booking fab menu shown";
+        public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED = "add booking fab menu dismissed";
     }
 
 
@@ -163,4 +166,27 @@ public abstract class MixpanelEvent
         }
     }
 
+
+    @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_SERVICE)
+    public static class TrackAddBookingFabServiceSelected
+    {
+        @TrackField("service id")
+        private final int mId;
+        @TrackField("service uniq")
+        private final String mUniq;
+
+        public TrackAddBookingFabServiceSelected(final int id, final String uniq)
+        {
+            mId = id;
+            mUniq = uniq;
+        }
+    }
+
+
+    @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_MENU_SHOWN)
+    public static class TrackAddBookingFabMenuShown {}
+
+
+    @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED)
+    public static class TrackAddBookingFabMenuDismissed {}
 }

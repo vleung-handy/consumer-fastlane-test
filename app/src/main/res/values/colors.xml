@@ -60,4 +60,5 @@
     <color name="handy_hot_pink">#eb00cb</color>
     <color name="android_pay_black">#333333</color>
     <color name="android_pay_black_trans">#e6333333</color>
+    <color name="handy_black_trans">#bf000000</color>
 </resources>
