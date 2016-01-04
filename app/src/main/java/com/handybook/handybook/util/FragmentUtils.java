@@ -20,7 +20,8 @@ public class FragmentUtils
      * @param tag
      * @return true if the DialogFragment was successfully launched
      */
-    public static boolean safeLaunchDialogFragment(DialogFragment dialogFragment, BaseActivity activity, String tag)
+    public static boolean safeLaunchDialogFragment(
+            DialogFragment dialogFragment, BaseActivity activity, String tag)
     {
         try
         {

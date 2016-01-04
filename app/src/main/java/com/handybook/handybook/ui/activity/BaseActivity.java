@@ -203,8 +203,10 @@ public abstract class BaseActivity extends AppCompatActivity
                     return;
                 }
 
-                FragmentUtils.safeLaunchDialogFragment(LaundryInfoDialogFragment.newInstance(booking),
-                        BaseActivity.this, LaundryInfoDialogFragment.class.getSimpleName());
+                FragmentUtils.safeLaunchDialogFragment(
+                        LaundryInfoDialogFragment.newInstance(booking),
+                        BaseActivity.this,
+                        LaundryInfoDialogFragment.class.getSimpleName());
 
             }
 
