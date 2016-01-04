@@ -31,6 +31,9 @@ import butterknife.OnClick;
 public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
 {
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
+    private static final int SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS = 200;
+    private static final int SERVICE_CATEGORIES_ANIMATION_DELAY_MILLIS = 200;
+    private static final int FRAGMENT_DISMISSAL_DELAY_MILLIS = 200;
 
     @Bind(R.id.close_services_button_wrapper)
     View mCloseButtonWrapper;
@@ -93,12 +96,12 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                 {
                     float fromYDelta = mCloseButtonWrapper.getY() - serviceCategorySimpleView.getY();
                     TranslateAnimation animation = new TranslateAnimation(0, 0, fromYDelta, 0);
-                    animation.setDuration(200);
+                    animation.setDuration(SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS);
                     animation.setInterpolator(new OvershootInterpolator());
                     serviceCategorySimpleView.startAnimation(animation);
                     serviceCategorySimpleView.setVisibility(View.VISIBLE);
                 }
-            }, 200);
+            }, SERVICE_CATEGORIES_ANIMATION_DELAY_MILLIS);
             mServiceCategorySimpleViews.add(serviceCategorySimpleView);
         }
     }
@@ -117,7 +120,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                             float toYDelta = mCloseButtonWrapper.getY() - view.getY();
                             TranslateAnimation animation =
                                     new TranslateAnimation(0, 0, 0, toYDelta);
-                            animation.setDuration(200);
+                            animation.setDuration(SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS);
                             view.startAnimation(animation);
                             view.setVisibility(View.INVISIBLE);
                         }
@@ -129,7 +132,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                             {
                                 activity.onBackPressed();
                             }
-                        }, 200);
+                        }, FRAGMENT_DISMISSAL_DELAY_MILLIS);
                     }
                 });
     }
