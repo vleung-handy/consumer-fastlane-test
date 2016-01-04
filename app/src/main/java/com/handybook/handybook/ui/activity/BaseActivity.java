@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
@@ -28,8 +29,8 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Bus;
 import com.yozio.android.Yozio;
 
@@ -180,10 +181,14 @@ public abstract class BaseActivity extends AppCompatActivity
         RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
                 .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
 
-        rateServiceDialogFragment.show(BaseActivity.this.getSupportFragmentManager(),
+        boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(rateServiceDialogFragment,
+                BaseActivity.this,
                 RateServiceDialogFragment.class.getSimpleName());
-        mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
-                proName, 0);
+        if (successfullyLaunched)
+        {
+            mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
+                    proName, 0);
+        }
     }
 
     private void showLaundryInfoModal(final int bookingId, final String authToken)
@@ -198,10 +203,9 @@ public abstract class BaseActivity extends AppCompatActivity
                     return;
                 }
 
-                LaundryInfoDialogFragment.newInstance(booking).show(
-                        BaseActivity.this.getSupportFragmentManager(),
-                        LaundryInfoDialogFragment.class.getSimpleName()
-                );
+                FragmentUtils.safeLaunchDialogFragment(LaundryInfoDialogFragment.newInstance(booking),
+                        BaseActivity.this, LaundryInfoDialogFragment.class.getSimpleName());
+
             }
 
             @Override
@@ -224,9 +228,10 @@ public abstract class BaseActivity extends AppCompatActivity
                             return;
                         }
 
-                        LaundryDropOffDialogFragment.newInstance(bookingId, info)
-                                .show(BaseActivity.this.getSupportFragmentManager(),
-                                        LaundryDropOffDialogFragment.class.getSimpleName());
+                        FragmentUtils.safeLaunchDialogFragment(
+                                LaundryDropOffDialogFragment.newInstance(bookingId, info),
+                                BaseActivity.this,
+                                LaundryDropOffDialogFragment.class.getSimpleName());
                     }
 
                     @Override
