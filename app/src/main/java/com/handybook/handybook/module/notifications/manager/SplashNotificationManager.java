@@ -63,9 +63,9 @@ public class SplashNotificationManager
             mDataManager.getAvailableSplashPromo(userId, new DataManager.Callback<SplashPromo>()
             {
                 @Override
-                public void onSuccess(final SplashPromo response)
+                public void onSuccess(final SplashPromo splashPromo)
                 {
-                    mBus.post(new HandyEvent.ReceiveAvailableSplashPromoSuccess(response));
+                    mBus.post(new HandyEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
                 }
 
                 @Override
