@@ -210,7 +210,6 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     protected final void disableInputs()
     {
         super.disableInputs();
-        nextButton.setEnabled(false);
         nextButton.setClickable(false);
     }
 
@@ -218,7 +217,6 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     protected final void enableInputs()
     {
         super.enableInputs();
-        nextButton.setEnabled(true);
         nextButton.setClickable(true);
     }
 
@@ -274,6 +272,8 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                 return;
             }
 
+            //discourage user from pressing button twice
+            //note that this doesn't prevent super fast clicks
             disableInputs();
             progressDialog.show();
 
