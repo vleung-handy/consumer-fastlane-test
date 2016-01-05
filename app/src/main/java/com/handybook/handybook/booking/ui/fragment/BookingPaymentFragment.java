@@ -39,19 +39,18 @@ import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.CreditCard;
-import com.handybook.handybook.core.OnOneClickListener;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.event.StripeEvent;
-import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
@@ -675,10 +674,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         completeBooking();
     }
 
-    private final View.OnClickListener nextClicked = new OnOneClickListener()
+    private final View.OnClickListener nextClicked = new View.OnClickListener()
     {
         @Override
-        public void onOneClick(final View view)
+        public void onClick(final View view)
         {
             if (validateFields())
             {
@@ -725,10 +724,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         toast.show();
     }
 
-    private final View.OnClickListener promoClicked = new OnOneClickListener()
+    private final View.OnClickListener promoClicked = new View.OnClickListener()
     {
         @Override
-        public void onOneClick(final View v)
+        public void onClick(final View v)
         {
             final String promoCode = mPromoText.getText().toString();
             final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();

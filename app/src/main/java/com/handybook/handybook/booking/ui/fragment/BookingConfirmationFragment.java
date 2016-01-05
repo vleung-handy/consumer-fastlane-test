@@ -14,22 +14,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
-import com.handybook.handybook.core.OnOneClickListener;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.util.TextUtils;
 
@@ -257,10 +256,10 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         }
     }
 
-    private final View.OnClickListener nextClicked = new OnOneClickListener()
+    private final View.OnClickListener nextClicked = new View.OnClickListener()
     {
         @Override
-        public void onOneClick(final View view)
+        public void onClick(final View view)
         {
             if (!validateFields() ||
                     bookingManager.getCurrentTransaction() == null)
