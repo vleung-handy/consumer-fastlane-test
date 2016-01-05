@@ -18,6 +18,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.core.OnOneClickListener;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
@@ -209,6 +210,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     protected final void disableInputs()
     {
         super.disableInputs();
+        nextButton.setEnabled(false);
         nextButton.setClickable(false);
     }
 
@@ -216,6 +218,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     protected final void enableInputs()
     {
         super.enableInputs();
+        nextButton.setEnabled(true);
         nextButton.setClickable(true);
     }
 
@@ -256,16 +259,23 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         }
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
+    private final View.OnClickListener nextClicked = new OnOneClickListener()
     {
         @Override
-        public void onClick(final View view)
+        public void onOneClick(final View view)
         {
-            if (!validateFields())
+            if (!validateFields() ||
+                    bookingManager.getCurrentTransaction() == null)
+                    /*
+                    hot fix to prevent NPE caused by rapid multi-click
+                    of the next button
+                     */
             {
                 return;
             }
 
+            disableInputs();
+            progressDialog.show();
 
             //TODO: Finish breaking up booking confirmation fragment/activity and then call the specific fragment instead of passing along an EXTRA_PAGE
 
@@ -299,7 +309,12 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                             @Override
                             public void onSuccess(final Void response)
                             {
-                                if (!allowCallbacks)
+                                if (!allowCallbacks ||
+                                        bookingManager.getCurrentTransaction() == null)
+                                    /*
+                                    hot fix to prevent NPE caused by rapid multi-click
+                                    of the next button
+                                     */
                                 {
                                     return;
                                 }

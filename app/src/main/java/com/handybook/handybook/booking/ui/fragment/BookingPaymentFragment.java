@@ -46,6 +46,7 @@ import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.core.CreditCard;
+import com.handybook.handybook.core.OnOneClickListener;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.analytics.MixpanelEvent;
@@ -674,10 +675,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         completeBooking();
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
+    private final View.OnClickListener nextClicked = new OnOneClickListener()
     {
         @Override
-        public void onClick(final View view)
+        public void onOneClick(final View view)
         {
             if (validateFields())
             {
@@ -724,10 +725,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         toast.show();
     }
 
-    private final View.OnClickListener promoClicked = new View.OnClickListener()
+    private final View.OnClickListener promoClicked = new OnOneClickListener()
     {
         @Override
-        public void onClick(final View v)
+        public void onOneClick(final View v)
         {
             final String promoCode = mPromoText.getText().toString();
             final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
