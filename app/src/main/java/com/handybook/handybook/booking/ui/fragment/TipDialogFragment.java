@@ -14,6 +14,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class TipDialogFragment extends BaseDialogFragment
     TextView mTitleText;
     @Bind(R.id.tip_notice)
     View mTipNotice;
+
+    private String mProName;
 
     public static TipDialogFragment newInstance(int bookingId, String proName)
     {
@@ -60,8 +63,8 @@ public class TipDialogFragment extends BaseDialogFragment
         final View view = inflater.inflate(R.layout.dialog_tip, container, true);
         ButterKnife.bind(this, view);
 
-        String proName = getArguments().getString(EXTRA_PRO_NAME);
-        mTitleText.setText(getString(R.string.leave_tip_prompt_formatted, proName));
+        mProName = getArguments().getString(EXTRA_PRO_NAME);
+        mTitleText.setText(getString(R.string.leave_tip_prompt_formatted, mProName));
 
         final User currentUser = mUserManager.getCurrentUser();
         final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = currentUser.getDefaultTipAmounts();
@@ -103,7 +106,8 @@ public class TipDialogFragment extends BaseDialogFragment
     @Subscribe
     public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
     {
-        showToast(R.string.thanks_for_leaving_a_tip);
+        final String message = getString(R.string.tip_success_message_formatted, mProName);
+        HandySnackbar.show(getActivity(), message, HandySnackbar.TYPE_SUCCESS);
         dismiss();
     }
 

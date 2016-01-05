@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -11,12 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
 import com.handybook.handybook.ui.widget.MenuButton;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +35,6 @@ import butterknife.ButterKnife;
  */
 public class BookingsFragment extends InjectedFragment
 {
-
     @Bind(R.id.menu_button_layout)
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.pager)
@@ -36,7 +42,7 @@ public class BookingsFragment extends InjectedFragment
     @Bind(R.id.tab_layout)
     HandyTabLayout mTabLayout;
     private TabAdapter mTabAdapter;
-
+    private List<Service> mServices;
 
     public BookingsFragment()
     {
@@ -51,8 +57,7 @@ public class BookingsFragment extends InjectedFragment
      */
     public static BookingsFragment newInstance()
     {
-        BookingsFragment fragment = new BookingsFragment();
-        return fragment;
+        return new BookingsFragment();
     }
 
     @Override
@@ -64,7 +69,7 @@ public class BookingsFragment extends InjectedFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState)
+                             Bundle savedInstanceState)
     {
         final View view = inflater.inflate(R.layout.fragment_bookings, container, false);
         ButterKnife.bind(this, view);
@@ -75,8 +80,45 @@ public class BookingsFragment extends InjectedFragment
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
+        bus.post(new HandyEvent.RequestServices());
 
         return view;
+    }
+
+    @Subscribe
+    public void onReceiveServicesSuccess(final HandyEvent.ReceiveServicesSuccess event)
+    {
+        mServices = event.getServices();
+    }
+
+    @Subscribe
+    public void onReceiveCachedServicesSuccess(final HandyEvent.ReceiveCachedServicesSuccess event)
+    {
+        mServices = event.getServices();
+    }
+
+    @Subscribe
+    public void onAddBookingButtonClicked(HandyEvent.AddBookingButtonClicked event)
+    {
+        if (mServices != null)
+        {
+            final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            final String tag = ServiceCategoriesOverlayFragment.class.getSimpleName();
+            if (fragmentManager.findFragmentByTag(tag) == null)
+            {
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
+                        .add(R.id.fragment_container,
+                                ServiceCategoriesOverlayFragment.newInstance(mServices),
+                                tag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }
+        else
+        {
+            startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
+        }
     }
 
     private static class TabAdapter extends FragmentPagerAdapter

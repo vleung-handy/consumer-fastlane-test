@@ -4,25 +4,26 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
-import com.handybook.handybook.booking.model.BookingEditAddressRequest;
-import com.handybook.handybook.booking.model.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.booking.model.BookingEditExtrasRequest;
-import com.handybook.handybook.booking.model.BookingEditFrequencyInfoResponse;
-import com.handybook.handybook.booking.model.BookingEditFrequencyRequest;
-import com.handybook.handybook.booking.model.BookingEditHoursInfoResponse;
-import com.handybook.handybook.booking.model.BookingEditHoursRequest;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.model.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.booking.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
@@ -30,6 +31,9 @@ import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
@@ -43,7 +47,6 @@ import retrofit.mime.TypedInput;
 
 //TODO: Don't need to manually pass auth tokens for any endpoint, auth token is now auto added as
 // part of the intercept
-
 
 public abstract class DataManager
 {
@@ -60,32 +63,22 @@ public abstract class DataManager
     public abstract void sendCancelRecurringBookingEmail(int bookingRecurringId,
                                      Callback<SuccessWrapper> cb);
 
-    public abstract void getEditBookingExtrasInfo(
-            int bookingId,
-            Callback<BookingEditExtrasInfoResponse> cb
-    );
+    public abstract void getEditBookingExtrasInfo(int bookingId,
+                                                  Callback<BookingEditExtrasInfoResponse> cb);
 
-    public abstract void editBookingExtras(
-            int bookingId,
-            BookingEditExtrasRequest bookingEditExtrasRequest,
-            Callback<SuccessWrapper> cb
-    );
+    public abstract void editBookingExtras(int bookingId,
+                                           BookingEditExtrasRequest bookingEditExtrasRequest,
+                                           Callback<SuccessWrapper> cb);
 
-    public abstract void getEditHoursInfo(
-            int bookingId,
-            Callback<BookingEditHoursInfoResponse> cb
-    );
+    public abstract void getEditHoursInfo(int bookingId,
+                                           Callback<BookingEditHoursInfoResponse> cb);
 
-    public abstract void editBookingHours(
-            int bookingId,
-            BookingEditHoursRequest bookingEditHoursRequest,
-            Callback<SuccessWrapper> cb
-    );
-
+    public abstract void editBookingHours(int bookingId,
+                                           BookingEditHoursRequest bookingEditHoursRequest,
+                                           Callback<SuccessWrapper> cb);
     /**
      * Requests a ShouldBlockObject defining if the app is recent enough to be used
-     *
-     * @param versionCode                    Android version code (Not version name!)
+     * @param versionCode Android version code (Not version name!)
      * @param shouldBlockObjectCacheResponse ..
      * @param shouldBlockObjectCallback      ..
      */
@@ -114,51 +107,39 @@ public abstract class DataManager
             @Nullable final Long untilId,
             @NonNull final Callback<HandyNotification.ResultSet> cb
     );
+    
+    public abstract void getQuoteOptions(int serviceId,
+                                         String userId,
+                                         Callback<BookingOptionsWrapper> cb);
 
-    public abstract void getQuoteOptions(
-            int serviceId,
-            String userId,
-            Callback<BookingOptionsWrapper> cb
-    );
+    public abstract void createQuote(BookingRequest bookingRequest,
+                                     Callback<BookingQuote> cb);
 
-    public abstract void createQuote(
-            BookingRequest bookingRequest,
-            Callback<BookingQuote> cb
-    );
+    public abstract void updateQuoteDate(int quoteId,
+                                         Date date,
+                                         Callback<BookingQuote> cb);
 
-    public abstract void updateQuoteDate(
-            int quoteId,
-            Date date,
-            Callback<BookingQuote> cb
-    );
+    public abstract void applyPromo(String promoCode,
+                                    int quoteId,
+                                    String userId,
+                                    String email,
+                                    String authToken,
+                                    Callback<BookingCoupon> cb);
 
-    public abstract void applyPromo(
-            String promoCode,
-            int quoteId,
-            String userId,
-            String email,
-            String authToken,
-            Callback<BookingCoupon> cb
-    );
-
-    public abstract void removePromo(
-            int quoteId,
-            Callback<BookingCoupon> cb
-    );
+    public abstract void removePromo(int quoteId,
+                                     Callback<BookingCoupon> cb);
 
     public abstract void createBooking(
             BookingTransaction bookingTransaction,
             Callback<BookingCompleteTransaction> cb
     );
-
-    public abstract void validateBookingZip(
-            int serviceId,
-            String zipCode,
-            String userId,
-            String authToken,
-            String promoCode,
-            Callback<Void> cb
-    );
+    
+    public abstract void validateBookingZip(int serviceId,
+                                            String zipCode,
+                                            String userId,
+                                            String authToken,
+                                            String promoCode,
+                                            Callback<Void> cb);
 
     public abstract void getBookings(
             User user,
@@ -372,7 +353,6 @@ public abstract class DataManager
     {
         OTHER, SERVER, CLIENT, NETWORK
     }
-
 
     public static final class DataManagerError
     {

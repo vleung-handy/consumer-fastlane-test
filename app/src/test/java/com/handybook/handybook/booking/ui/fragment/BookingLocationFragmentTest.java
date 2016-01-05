@@ -7,7 +7,6 @@ import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.data.DataManager;
@@ -58,7 +57,7 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
         mFragment = BookingLocationFragment.newInstance();
 
-        SupportFragmentTestUtil.startFragment(mFragment, BookingLocationActivity.class);
+        SupportFragmentTestUtil.startFragment(mFragment);
     }
 
     @Test

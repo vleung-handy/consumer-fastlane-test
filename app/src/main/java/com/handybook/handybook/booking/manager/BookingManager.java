@@ -6,19 +6,14 @@ import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.booking.model.BookingEditFrequencyInfoResponse;
-import com.handybook.handybook.booking.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.booking.viewmodel.BookingEditExtrasViewModel;
-import com.handybook.handybook.booking.viewmodel.BookingEditFrequencyViewModel;
-import com.handybook.handybook.booking.viewmodel.BookingEditHoursViewModel;
 import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
@@ -58,53 +53,6 @@ public class BookingManager implements Observer
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers
     // and provide a layer for data access
-
-    @Subscribe
-    public void onRequestEditBookingAddress(HandyEvent.RequestEditBookingAddress event)
-    {
-        dataManager.editBookingAddress(event.bookingId,
-                event.bookingEditAddressRequest,
-                new DataManager.Callback<SuccessWrapper>()
-                {
-                    @Override
-                    public void onSuccess(SuccessWrapper response)
-                    {
-                        //the response is useless because server only returns success:true
-                        //or error:true. in the latter case, retrofit callback will invoke onError()
-                        //even if the http code is 200
-                        bus.post(new HandyEvent.ReceiveEditBookingAddressSuccess());
-                    }
-
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditBookingAddressError(error));
-                    }
-                });
-    }
-
-    @Subscribe
-    public void onRequestEditHoursInfoViewModel(HandyEvent.RequestEditHoursInfoViewModel event)
-    {
-        dataManager.getEditHoursInfo(event.bookingId,
-                new DataManager.Callback<BookingEditHoursInfoResponse>()
-        {
-            @Override
-            public void onSuccess(BookingEditHoursInfoResponse response)
-            {
-                BookingEditHoursViewModel bookingEditHoursViewModel =
-                        BookingEditHoursViewModel.from(response);
-                bus.post(new HandyEvent.ReceiveEditHoursInfoViewModelSuccess(
-                        bookingEditHoursViewModel));
-            }
-
-            @Override
-            public void onError(DataManager.DataManagerError error)
-            {
-                bus.post(new HandyEvent.ReceiveEditHoursInfoViewModelError(error));
-            }
-        });
-    }
 
     @Subscribe
     public void onRequestPreRescheduleInfo(HandyEvent.RequestPreRescheduleInfo event)
@@ -162,72 +110,6 @@ public class BookingManager implements Observer
                     public void onError(DataManager.DataManagerError error)
                     {
                         bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProError(error));
-                    }
-                });
-    }
-
-    @Subscribe
-    public void onRequestUpdateBookingEntryInformation(
-            HandyEvent.RequestUpdateBookingEntryInformation event)
-    {
-        dataManager.updateBookingEntryInformation(event.bookingId, event.entryInformationTransaction,
-                new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(final Void response)
-                    {
-                        bus.post(new HandyEvent.ReceiveUpdateBookingEntryInformationSuccess());
-                    }
-
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveUpdateBookingEntryInformationError(error));
-                    }
-                });
-    }
-
-    @Subscribe
-    public void onRequestUpdateBookingFrequency(HandyEvent.RequestEditBookingFrequency event)
-    {
-        dataManager.updateBookingFrequency(event.bookingId, event.bookingEditFrequencyRequest,
-                new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(Void response)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditBookingFrequencySuccess());
-
-                    }
-
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditBookingFrequencyError(error));
-                    }
-                });
-    }
-
-    @Subscribe
-    public void onRequestEditFrequencyViewModel(HandyEvent.RequestGetEditFrequencyViewModel event)
-    {
-        dataManager.getBookingPricesForFrequencies(event.bookingId,
-                new DataManager.Callback<BookingEditFrequencyInfoResponse>()
-                {
-                    @Override
-                    public void onSuccess(BookingEditFrequencyInfoResponse response)
-                    {
-                        BookingEditFrequencyViewModel bookingEditFrequencyViewModel =
-                                BookingEditFrequencyViewModel.from(response);
-                        bus.post(new HandyEvent.ReceiveGetEditFrequencyViewModelSuccess(
-                                bookingEditFrequencyViewModel));
-
-                    }
-
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveGetEditFrequencyViewModelError(error));
                     }
                 });
     }
@@ -573,52 +455,6 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public void onRequestEditBookingHours(final HandyEvent.RequestEditHours event)
-    {
-        dataManager.editBookingHours(
-                event.bookingId,
-                event.bookingEditHoursRequest,
-                new DataManager.Callback<SuccessWrapper>()
-                {
-                    @Override
-                    public void onSuccess(SuccessWrapper response)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditHoursSuccess(response));
-                    }
-
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditHoursError(error));
-
-                    }
-                });
-    }
-
-    @Subscribe
-    public void onRequestEditBookingExtras(final HandyEvent.RequestEditBookingExtras event)
-    {
-        dataManager.editBookingExtras(
-                event.bookingId,
-                event.bookingEditExtrasRequest,
-                new DataManager.Callback<SuccessWrapper>()
-                {
-                    @Override
-                    public void onSuccess(SuccessWrapper response)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditExtrasSuccess(response));
-                    }
-
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditExtrasError(error));
-
-                    }
-                });
-    }
-
-    @Subscribe
     public void onRequestSendCancelRecurringBookingEmail(
             final HandyEvent.RequestSendCancelRecurringBookingEmail event)
     {
@@ -638,31 +474,6 @@ public class BookingManager implements Observer
 
             }
         });
-    }
-    
-    @Subscribe
-    public void onRequestEditBookingExtrasViewModel(
-            final HandyEvent.RequestEditBookingExtrasViewModel event)
-    {
-        dataManager.getEditBookingExtrasInfo(event.bookingId,
-                new DataManager.Callback<BookingEditExtrasInfoResponse>()
-                {
-                    @Override
-                    public void onSuccess(BookingEditExtrasInfoResponse response)
-                    {
-                        BookingEditExtrasViewModel editBookingExtrasViewModel =
-                                BookingEditExtrasViewModel.from(response);
-                        bus.post(new HandyEvent.ReceiveEditBookingExtrasViewModelSuccess(
-                                editBookingExtrasViewModel));
-                    }
-
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        bus.post(new HandyEvent.ReceiveEditBookingExtrasViewModelError(error));
-
-                    }
-                });
     }
 
     /**

@@ -27,7 +27,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;

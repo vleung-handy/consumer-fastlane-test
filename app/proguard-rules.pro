@@ -97,3 +97,11 @@
    public *;
 }
 -keep public class * extends com.urbanairship.Autopilot
+
+#Yozio
+-keep public class com.handybook.handybook.yozio.YozioMetaDataCallback
+
+#Android 23 workaround
+-dontwarn com.viewpagerindicator.LinePageIndicator
+-dontwarn com.mixpanel.android.mpmetrics.GCMReceiver
+-dontwarn net.simonvt.menudrawer.Scroller

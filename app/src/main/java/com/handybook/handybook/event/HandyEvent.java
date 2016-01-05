@@ -3,24 +3,23 @@ package com.handybook.handybook.event;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
-import com.handybook.handybook.annotation.Track;
+import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingEditAddressRequest;
-import com.handybook.handybook.booking.model.BookingEditExtrasRequest;
-import com.handybook.handybook.booking.model.BookingEditFrequencyRequest;
-import com.handybook.handybook.booking.model.BookingEditHoursRequest;
-import com.handybook.handybook.booking.model.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.booking.model.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.booking.viewmodel.BookingEditExtrasViewModel;
-import com.handybook.handybook.booking.viewmodel.BookingEditFrequencyViewModel;
-import com.handybook.handybook.booking.viewmodel.BookingEditHoursViewModel;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
-import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
 import com.stripe.android.model.Token;
 
 import java.util.List;
@@ -784,4 +783,40 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
+    public static class RequestServices {}
+
+    public static class ReceiveServicesSuccess extends ReceiveSuccessEvent
+    {
+        private List<Service> mServices;
+
+        public ReceiveServicesSuccess(final List<Service> services)
+        {
+            mServices = services;
+        }
+
+        public List<Service> getServices()
+        {
+            return mServices;
+        }
+    }
+
+    public static class ReceiveCachedServicesSuccess extends ReceiveServicesSuccess
+    {
+        public ReceiveCachedServicesSuccess(final List<Service> services)
+        {
+            super(services);
+        }
+    }
+
+    public static class ReceiveServicesError extends ReceiveErrorEvent
+    {
+        public ReceiveServicesError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+    @Track("add booking fab clicked")
+    public static class AddBookingButtonClicked {}
 }

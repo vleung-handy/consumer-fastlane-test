@@ -64,9 +64,9 @@
                     android:scheme="handy"
                     />
                 <data
-                    android:host="deeplink.yoz.io"
+                    android:host="deeplink.yozio.com"
                     android:pathPrefix="/ea269dcf-ff3c-435a-bdc6-55b4c7904493"
-                    android:scheme="http"
+                    android:scheme="https"
                     />
             </intent-filter>
         </activity>
@@ -97,7 +97,8 @@
         <activity android:name=".ui.activity.LoginActivity"/>
         <activity
             android:name=".booking.ui.activity.ServicesActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".booking.ui.activity.BookingLocationActivity"/>
         <activity
             android:name=".ui.activity.ProfileActivity"
@@ -114,8 +115,10 @@
         <activity android:name=".booking.ui.activity.BookingOptionsActivity"/>
         <activity android:name=".booking.ui.activity.BookingDateActivity"/>
         <activity android:name=".booking.ui.activity.BookingAddressActivity"/>
-        <activity android:name=".booking.ui.activity.BookingPaymentActivity"
-                  android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".booking.ui.activity.BookingPaymentActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
         <activity android:name=".booking.ui.activity.BookingDetailActivity"/>
         <activity android:name=".booking.ui.activity.BookingConfirmationActivity"/>
         <activity android:name=".booking.ui.activity.BookingRecurrenceActivity"/>
@@ -127,12 +130,12 @@
         <activity android:name=".ui.activity.OnboardActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
         <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditNoteToProActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditEntryInformationActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditFrequencyActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditExtrasActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditHoursActivity"/>
-        <activity android:name=".booking.ui.activity.BookingEditAddressActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditNoteToProActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditEntryInformationActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditFrequencyActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditExtrasActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditHoursActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditAddressActivity"/>
         <activity android:name=".booking.ui.activity.CancelRecurringBookingActivity"/>
         <activity
             android:name=".ui.activity.BlockingActivity"

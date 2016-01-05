@@ -46,7 +46,6 @@ dexcount {
     orderByMethodCount = false
     verbose = false
 }
-
 def computeVersionCode(versionName) {
     def versionNameMatcher = (versionName =~ /^([1-9]\d*)\.(\d{1,2})\.(\d{1,2})$/)
     if (versionNameMatcher.matches()) {
@@ -77,13 +76,13 @@ android {
             storePassword 'S0H@ndy!'
         }
     }
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId 'com.handy.handy'
         minSdkVersion 15
-        targetSdkVersion 22
-        versionName '1.11.3'
+        targetSdkVersion 23
+        versionName '1.11.2'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -123,18 +122,22 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
+    useLibrary 'org.apache.http.legacy'
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     //Android Support Libraries
     compile 'com.android.support:multidex:1.0.0'
-    compile 'com.android.support:support-v4:22.2.0'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:cardview-v7:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:support-annotations:22.2.0'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-annotations:23.1.1'
 
     //fix missing nullable annotations warnings
     compile 'com.google.code.findbugs:jsr305:2.0.2'

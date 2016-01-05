@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
@@ -32,11 +33,11 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Bus;
 import com.yozio.android.Yozio;
 
@@ -67,7 +68,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     Bus mBus;
     private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
-    private RateServiceDialogFragment mRateServiceDialogFragment;
 
     //Public Properties
     public boolean getAllowCallbacks()
@@ -180,6 +180,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         if (proName != null && bookingId != null)
         {
             showProRateDialog(user, proName, Integer.parseInt(bookingId));
+            getIntent().removeExtra(BundleKeys.BOOKING_RATE_PRO_NAME);
+            getIntent().removeExtra(BundleKeys.BOOKING_ID);
             return;
         }
         mDataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
@@ -225,13 +227,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
                 user.getDefaultTipAmounts();
 
-        mRateServiceDialogFragment = RateServiceDialogFragment
+        RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
                 .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
 
-        mRateServiceDialogFragment.show(BaseActivity.this.getSupportFragmentManager(),
+        boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
+                rateServiceDialogFragment,
+                BaseActivity.this,
                 RateServiceDialogFragment.class.getSimpleName());
-        mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
-                proName, 0);
+        if (successfullyLaunched)
+        {
+            mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
+                    proName, 0);
+        }
     }
 
     private void showLaundryInfoModal(final int bookingId, final String authToken)
@@ -246,10 +253,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                     return;
                 }
 
-                LaundryInfoDialogFragment.newInstance(booking).show(
-                        BaseActivity.this.getSupportFragmentManager(),
-                        LaundryInfoDialogFragment.class.getSimpleName()
-                );
+                FragmentUtils.safeLaunchDialogFragment(
+                        LaundryInfoDialogFragment.newInstance(booking),
+                        BaseActivity.this,
+                        LaundryInfoDialogFragment.class.getSimpleName());
+
             }
 
             @Override
@@ -272,9 +280,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                             return;
                         }
 
-                        LaundryDropOffDialogFragment.newInstance(bookingId, info)
-                                .show(BaseActivity.this.getSupportFragmentManager(),
-                                        LaundryDropOffDialogFragment.class.getSimpleName());
+                        FragmentUtils.safeLaunchDialogFragment(
+                                LaundryDropOffDialogFragment.newInstance(bookingId, info),
+                                BaseActivity.this,
+                                LaundryDropOffDialogFragment.class.getSimpleName());
                     }
 
                     @Override

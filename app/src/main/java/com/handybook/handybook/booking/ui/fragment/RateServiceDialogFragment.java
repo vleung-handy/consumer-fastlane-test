@@ -16,10 +16,11 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
-import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.event.MixpanelEvent;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -234,6 +235,11 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     @Subscribe
     public void onReceiveRateBookingSuccess(HandyEvent.ReceiveRateBookingSuccess event)
     {
+        if (getTipAmount() != null)
+        {
+            final String message = getString(R.string.tip_success_message_formatted, mProName);
+            HandySnackbar.show(getActivity(), message, HandySnackbar.TYPE_SUCCESS);
+        }
         dismiss();
 
         final int finalRating = mRating + 1;

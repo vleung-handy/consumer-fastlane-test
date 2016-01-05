@@ -7,15 +7,17 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
@@ -77,6 +79,10 @@ public class BaseApplication extends MultiDexApplication
     DeepLinkIntentProvider mDeepLinkIntentProvider;
     @Inject
     SplashNotificationManager mSplashNotificationManager;
+    @Inject
+    BookingEditManager bookingEditManager;
+    @Inject
+    ServicesManager servicesManager;
 
     @Override
     public void onCreate()

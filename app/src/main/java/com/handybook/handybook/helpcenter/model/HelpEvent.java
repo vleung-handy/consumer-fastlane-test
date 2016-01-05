@@ -1,6 +1,6 @@
 package com.handybook.handybook.helpcenter.model;
 
-import com.handybook.handybook.annotation.Track;
+import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 

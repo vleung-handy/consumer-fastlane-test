@@ -14,21 +14,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.util.TextUtils;
 
@@ -261,11 +261,20 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         @Override
         public void onClick(final View view)
         {
-            if (!validateFields())
+            if (!validateFields() ||
+                    bookingManager.getCurrentTransaction() == null)
+                    /*
+                    hot fix to prevent NPE caused by rapid multi-click
+                    of the next button
+                     */
             {
                 return;
             }
 
+            //discourage user from pressing button twice
+            //note that this doesn't prevent super fast clicks
+            disableInputs();
+            progressDialog.show();
 
             //TODO: Finish breaking up booking confirmation fragment/activity and then call the specific fragment instead of passing along an EXTRA_PAGE
 
@@ -299,7 +308,12 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                             @Override
                             public void onSuccess(final Void response)
                             {
-                                if (!allowCallbacks)
+                                if (!allowCallbacks ||
+                                        bookingManager.getCurrentTransaction() == null)
+                                    /*
+                                    hot fix to prevent NPE caused by rapid multi-click
+                                    of the next button
+                                     */
                                 {
                                     return;
                                 }

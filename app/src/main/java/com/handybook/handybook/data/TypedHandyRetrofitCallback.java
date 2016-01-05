@@ -6,18 +6,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.booking.model.BookingEditFrequencyInfoResponse;
-import com.handybook.handybook.booking.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
+import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
-import com.handybook.handybook.booking.model.UserBookingsWrapper;
-import com.handybook.handybook.core.SuccessWrapper;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
-import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
-import com.handybook.handybook.model.response.UserExistsResponse;
-import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.core.SuccessWrapper;
+import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 
 import org.json.JSONObject;
 

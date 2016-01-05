@@ -122,8 +122,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
     public final void onBack()
     {
         final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
