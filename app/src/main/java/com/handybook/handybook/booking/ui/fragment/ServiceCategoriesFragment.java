@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
@@ -38,6 +41,8 @@ import butterknife.OnClick;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
+    private static final String EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID";
+    private static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
     private List<Service> mServices = new ArrayList<>();
     private boolean mUsedCache;
@@ -52,6 +57,18 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     ImageView mPromoImage;
     @Bind(R.id.promo_text)
     TextView mPromoText;
+
+    private ServiceCategoryView mServiceCategoryView;
+
+    public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
+    {
+        ServiceCategoriesFragment fragment = new ServiceCategoriesFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_SERVICE_ID, serviceId);
+        bundle.putString(EXTRA_PROMO_CODE, promoCode);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     public static ServiceCategoriesFragment newInstance()
     {
@@ -107,6 +124,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         mPromoImage.setColorFilter(
                 getResources().getColor(R.color.handy_blue),
                 PorterDuff.Mode.SRC_ATOP);
+
         return view;
     }
 
@@ -122,6 +140,52 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onResume();
         loadServices();
+        handleBundleArguments();
+    }
+
+    /**
+     * handles bundle arguments. currently only from deeplinks
+     *
+     * should be called after onResume() so that we have the list of services
+     */
+    private void handleBundleArguments()
+    {
+        final Bundle args = getArguments();
+        if (args != null)
+        {
+            String promoCode = args.getString(EXTRA_PROMO_CODE);
+            if (promoCode != null)
+            {
+                args.remove(EXTRA_PROMO_CODE); //only handle once
+                bus.post(new HandyEvent.RequestPreBookingPromo(promoCode));
+            }
+
+            String extraServiceIdString = args.getString(EXTRA_SERVICE_ID);
+            if (extraServiceIdString != null)
+            {
+                args.remove(EXTRA_SERVICE_ID); //only handle once
+                try
+                {
+                    int extraServiceId = Integer.parseInt(extraServiceIdString);
+                    if (mServices != null && extraServiceId >= 0)
+                    {
+                        for (Service service : mServices)
+                        {
+                            if (service.getId() == extraServiceId)
+                            {
+                                launchServiceActivity(service);
+                                break;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    //probably an integer parsing error
+                    Crashlytics.logException(e);
+                }
+            }
+        }
     }
 
     private void loadServices()
@@ -129,6 +193,20 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         progressDialog.show();
         mUsedCache = false;
         bus.post(new HandyEvent.RequestServices());
+    }
+
+    @Subscribe
+    public void onReceivePreBookingPromoSuccess(HandyEvent.ReceivePreBookingPromoSuccess event)
+    {
+        PromoCode promoCode = event.getPromoCode();
+        if (promoCode != null)
+        {
+            showCouponAppliedNotificationIfNecessary();
+            if (promoCode.getType() == PromoCode.Type.VOUCHER)
+            {
+                startBookingFlow(promoCode.getServiceId(), promoCode.getUniq(), promoCode);
+            }
+        }
     }
 
     @Subscribe
@@ -166,10 +244,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    @Override
-    public void onStart()
+    private void showCouponAppliedNotificationIfNecessary()
     {
-        super.onStart();
         final String coupon = bookingManager.getPromoTabCoupon();
         if (coupon != null)
         {
@@ -194,41 +270,63 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
     }
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        showCouponAppliedNotificationIfNecessary();
+    }
+
+    /**
+     * launches the activity to start a booking for the given service
+     *
+     * @param service
+     */
+    private void launchServiceActivity(@NonNull Service service)
+    {
+        if (service.getServices().size() > 0)
+        {
+            final Intent intent = new Intent(getActivity(), ServicesActivity.class);
+            intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            {
+                Bundle bundle = null;
+                if (mServiceCategoryView != null)
+                {
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            getActivity(), mServiceCategoryView.getIcon(), SHARED_ICON_ELEMENT_NAME
+                    );
+                    bundle = options.toBundle();
+                }
+                getActivity().startActivity(intent, bundle);
+            }
+            else
+            {
+                startActivity(intent);
+            }
+        }
+        else
+        {
+            startBookingFlow(service.getId(), service.getUniq());
+        }
+    }
+
     private void displayServices()
     {
         mCategoryLayout.removeAllViews();
         for (final Service service : mServices)
         {
-            final ServiceCategoryView categoryView = new ServiceCategoryView(getActivity());
-            categoryView.init(service);
-            categoryView.setOnClickListener(new View.OnClickListener()
+            mServiceCategoryView = new ServiceCategoryView(getActivity());
+            mServiceCategoryView.init(service);
+            mServiceCategoryView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
                 {
-                    if (service.getServices().size() > 0)
-                    {
-                        final Intent intent = new Intent(getActivity(), ServicesActivity.class);
-                        intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        {
-                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                    getActivity(), categoryView.getIcon(), SHARED_ICON_ELEMENT_NAME
-                            );
-                            getActivity().startActivity(intent, options.toBundle());
-                        }
-                        else
-                        {
-                            startActivity(intent);
-                        }
-                    }
-                    else
-                    {
-                        startBookingFlow(service.getId(), service.getUniq());
-                    }
+                    launchServiceActivity(service);
                 }
             });
-            mCategoryLayout.addView(categoryView);
+            mCategoryLayout.addView(mServiceCategoryView);
         }
     }
 

@@ -24,12 +24,22 @@ import butterknife.ButterKnife;
 public final class PromosFragment extends BookingFlowFragment
         implements MenuDrawerActivity.OnDrawerStateChangeListener {
 
+    public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
+
     @Bind(R.id.menu_button_layout)
     ViewGroup menuButtonLayout;
     @Bind(R.id.apply_button)
     Button applyButton;
     @Bind(R.id.promo_text)
     EditText promoText;
+
+    public static PromosFragment newInstance(String extraPromoCode) {
+        PromosFragment fragment = new PromosFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_PROMO_CODE, extraPromoCode);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     public static PromosFragment newInstance() {
         return new PromosFragment();
@@ -46,27 +56,34 @@ public final class PromosFragment extends BookingFlowFragment
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
         menuButtonLayout.addView(menuButton);
 
-        applyButton.setOnClickListener(new View.OnClickListener() {
+        applyButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(final View v) {
+            public void onClick(final View v)
+            {
                 final String promoCode = promoText.getText().toString();
 
-                if (promoCode.trim().length() > 0) {
+                if (promoCode.trim().length() > 0)
+                {
                     disableInputs();
                     progressDialog.show();
 
-                    dataManager.getPreBookingPromo(promoCode, new DataManager.Callback<PromoCode>() {
+                    dataManager.getPreBookingPromo(promoCode, new DataManager.Callback<PromoCode>()
+                    {
                         @Override
-                        public void onSuccess(final PromoCode code) {
+                        public void onSuccess(final PromoCode code)
+                        {
                             if (!allowCallbacks) return;
 
                             progressDialog.dismiss();
                             enableInputs();
 
-                            if (code.getType() == PromoCode.Type.VOUCHER) {
+                            if (code.getType() == PromoCode.Type.VOUCHER)
+                            {
                                 startBookingFlow(code.getServiceId(), code.getUniq(), code);
                             }
-                            else if (code.getType() == PromoCode.Type.COUPON){
+                            else if (code.getType() == PromoCode.Type.COUPON)
+                            {
                                 bookingManager.setPromoTabCoupon(code.getCode());
 
                                 final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
@@ -78,7 +95,8 @@ public final class PromosFragment extends BookingFlowFragment
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error) {
+                        public void onError(final DataManager.DataManagerError error)
+                        {
                             if (!allowCallbacks) return;
                             progressDialog.dismiss();
                             enableInputs();
@@ -92,10 +110,29 @@ public final class PromosFragment extends BookingFlowFragment
         return view;
     }
 
+    /**
+     * handles the bundle arguments. currently arguments are only passed from deep links
+     *
+     * must be called after onCreateView() due to butterknife dependency
+     */
+    private void handleBundleArguments()
+    {
+        final Bundle args = getArguments();
+        if (args != null)
+        {
+            String promoCode = args.getString(EXTRA_PROMO_CODE);
+            if (promoCode != null)
+            {
+                args.remove(EXTRA_PROMO_CODE);
+                promoText.setText(promoCode);
+            }
+        }
+    }
+
     @Override
     public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        handleBundleArguments();
         promoText.requestFocus();
         InputMethodManager imm
                 = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
