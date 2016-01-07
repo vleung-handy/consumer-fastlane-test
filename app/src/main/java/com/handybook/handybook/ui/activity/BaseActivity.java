@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -153,13 +152,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Override
     public void showSplashPromo(@NonNull SplashPromo splashPromo)
     {
-        if(splashPromo.shouldDisplay() && !isFinishing())
+        if(splashPromo.shouldDisplay())
         {
             SplashPromoDialogFragment splashPromoDialogFragment =
                     SplashPromoDialogFragment.newInstance(splashPromo);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(splashPromoDialogFragment, SplashPromoDialogFragment.class.getSimpleName());
-            transaction.commitAllowingStateLoss();
+            FragmentUtils.safeLaunchDialogFragment(splashPromoDialogFragment, this, SplashPromoDialogFragment.class.getSimpleName());
         }
     }
 
