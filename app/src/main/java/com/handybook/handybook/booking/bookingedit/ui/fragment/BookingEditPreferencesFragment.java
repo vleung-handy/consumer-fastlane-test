@@ -24,20 +24,20 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditNoteToProFragment extends BookingFlowFragment
+public final class BookingEditPreferencesFragment extends BookingFlowFragment
 {
     private BookingUpdateNoteToProTransaction descriptionTransaction;
 
     private Booking booking;
 
     @Bind(R.id.options_layout)
-    LinearLayout optionsLayout;
+    LinearLayout mOptionsLayout;
     @Bind(R.id.next_button)
-    Button nextButton;
+    Button mNextButton;
 
-    public static BookingEditNoteToProFragment newInstance(final Booking booking)
+    public static BookingEditPreferencesFragment newInstance(final Booking booking)
     {
-        final BookingEditNoteToProFragment fragment = new BookingEditNoteToProFragment();
+        final BookingEditPreferencesFragment fragment = new BookingEditPreferencesFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
         fragment.setArguments(args);
@@ -63,7 +63,7 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
                                    final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_edit_note_to_pro, container, false);   //TODO: Make this its own fragment?
+                .inflate(R.layout.fragment_booking_edit_preferences, container, false);   //TODO: Make this its own fragment?
 
         ButterKnife.bind(this, view);
         initOptionsView();
@@ -74,24 +74,24 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
     {
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_TEXT);
-        option.setDefaultValue(getString(R.string.additional_pro_info));
+        option.setDefaultValue(getString(R.string.additional_pro_info_hint));
         BookingOptionsView optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
         ((BookingOptionsTextView) optionsView).setValue(descriptionTransaction.getMessageToPro());
-        optionsLayout.addView(optionsView, 0);
+        mOptionsLayout.addView(optionsView, 0);
     }
 
     @Override
     protected final void disableInputs()
     {
         super.disableInputs();
-        nextButton.setClickable(false);
+        mNextButton.setClickable(false);
     }
 
     @Override
     protected final void enableInputs()
     {
         super.enableInputs();
-        nextButton.setClickable(true);
+        mNextButton.setClickable(true);
     }
 
 
@@ -100,7 +100,7 @@ public final class BookingEditNoteToProFragment extends BookingFlowFragment
     {
         enableInputs();
         progressDialog.dismiss();
-        showToast(R.string.updated_note_to_pro);
+        showToast(R.string.updated_preferences);
 
         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();

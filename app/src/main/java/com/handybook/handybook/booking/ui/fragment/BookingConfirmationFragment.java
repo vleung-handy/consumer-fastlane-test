@@ -130,7 +130,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         }
         else if (page == PAGE_NOTE_TO_PRO)
         {
-            headerText.setText(getString(R.string.pro_to_know));
+            headerText.setText(getString(R.string.booking_edit_preferences_subtitle));
             if (!isNewUser)
             {
                 nextButton.setText(getString(R.string.finish));
@@ -138,7 +138,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
             final BookingOption option = new BookingOption();
             option.setType(BookingOption.TYPE_TEXT);
-            option.setDefaultValue(getString(R.string.additional_pro_info));
+            option.setDefaultValue(getString(R.string.additional_pro_info_hint));
 
             optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
             ((BookingOptionsTextView) optionsView).setValue(postInfo.getExtraMessage());
