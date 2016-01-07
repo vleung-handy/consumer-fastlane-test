@@ -1,9 +1,9 @@
 package com.handybook.handybook.util;
 
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 
 import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.ui.activity.BaseActivity;
 
 /**
  * utility class for fragments
@@ -21,7 +21,7 @@ public class FragmentUtils
      * @return true if the DialogFragment was successfully launched
      */
     public static boolean safeLaunchDialogFragment(
-            DialogFragment dialogFragment, BaseActivity activity, String tag)
+            DialogFragment dialogFragment, FragmentActivity activity, String tag)
     {
         try
         {
