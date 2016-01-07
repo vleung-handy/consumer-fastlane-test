@@ -30,6 +30,7 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
+import com.handybook.handybook.ui.descriptor.ServiceCategoryListDescriptor;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -57,8 +58,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     ImageView mPromoImage;
     @Bind(R.id.promo_text)
     TextView mPromoText;
-
-    private ServiceCategoryView mServiceCategoryView;
 
     public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
     {
@@ -140,13 +139,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onResume();
         loadServices();
-        handleBundleArguments();
     }
 
     /**
      * handles bundle arguments. currently only from deeplinks
      *
-     * should be called after onResume() so that we have the list of services
+     * should be called after handleLoadServicesResponse() so that we have the list of services
      */
     private void handleBundleArguments()
     {
@@ -199,9 +197,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     public void onReceivePreBookingPromoSuccess(HandyEvent.ReceivePreBookingPromoSuccess event)
     {
         PromoCode promoCode = event.getPromoCode();
+        showCouponAppliedNotificationIfNecessary(); //could have removed the promo code
         if (promoCode != null)
         {
-            showCouponAppliedNotificationIfNecessary();
             if (promoCode.getType() == PromoCode.Type.VOUCHER)
             {
                 startBookingFlow(promoCode.getServiceId(), promoCode.getUniq(), promoCode);
@@ -229,6 +227,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
         mUsedCache = usedCache;
         mServices = services;
+        handleBundleArguments();
         displayServices();
         progressDialog.dismiss();
     }
@@ -291,10 +290,11 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             {
                 Bundle bundle = null;
-                if (mServiceCategoryView != null)
+                ImageView transitionImageView = getServiceTransitionImageView(service);
+                if (transitionImageView != null)
                 {
                     ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            getActivity(), mServiceCategoryView.getIcon(), SHARED_ICON_ELEMENT_NAME
+                            getActivity(), transitionImageView, SHARED_ICON_ELEMENT_NAME
                     );
                     bundle = options.toBundle();
                 }
@@ -311,14 +311,35 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
     }
 
+    /**
+     * @param service
+     * @return the ImageView for the given service,
+     * which is needed for making a transition
+     * in ActivityOptionsCompat.makeSceneTransitionAnimation() in launchServiceActivity()
+     */
+    private ImageView getServiceTransitionImageView(Service service)
+    {
+        if(service != null && service.getUniq() != null)
+        {
+            String serviceMachineName = service.getUniq().toUpperCase();
+            ServiceCategoryListDescriptor descriptor = ServiceCategoryListDescriptor.valueOf(serviceMachineName);
+            if(descriptor != null)
+            {
+                ImageView imageView = new ImageView(this.getContext());
+                imageView.setImageResource(descriptor.getIconDrawable());
+            }
+        }
+        return null;
+    }
+
     private void displayServices()
     {
         mCategoryLayout.removeAllViews();
         for (final Service service : mServices)
         {
-            mServiceCategoryView = new ServiceCategoryView(getActivity());
-            mServiceCategoryView.init(service);
-            mServiceCategoryView.setOnClickListener(new View.OnClickListener()
+            ServiceCategoryView serviceCategoryView = new ServiceCategoryView(getActivity());
+            serviceCategoryView.init(service);
+            serviceCategoryView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
@@ -326,7 +347,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                     launchServiceActivity(service);
                 }
             });
-            mCategoryLayout.addView(mServiceCategoryView);
+            mCategoryLayout.addView(serviceCategoryView);
         }
     }
 
