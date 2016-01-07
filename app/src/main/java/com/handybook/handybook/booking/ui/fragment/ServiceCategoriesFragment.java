@@ -30,11 +30,12 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
-import com.handybook.handybook.ui.descriptor.ServiceCategoryListDescriptor;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,6 +48,19 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
     private List<Service> mServices = new ArrayList<>();
     private boolean mUsedCache;
+    /**
+     * maps the service id to its icon image view as rendered.
+     * using service id rather than service object as key in case the object references differ
+     *
+     * used for the cool icon transition to ServicesActivity
+     *
+     * we need this because the transition requires a
+     * reference to the EXACT image view of the service icon
+     * rendered in the service category views
+     *
+     */
+    private Map<Integer, ImageView> mServiceIconMap = new HashMap<>();
+
 
     @Bind(R.id.category_layout)
     LinearLayout mCategoryLayout;
@@ -290,7 +304,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             {
                 Bundle bundle = null;
-                ImageView transitionImageView = getServiceTransitionImageView(service);
+                ImageView transitionImageView = mServiceIconMap.get(service.getId());
                 if (transitionImageView != null)
                 {
                     ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -311,27 +325,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
     }
 
-    /**
-     * @param service
-     * @return the ImageView for the given service,
-     * which is needed for making a transition
-     * in ActivityOptionsCompat.makeSceneTransitionAnimation() in launchServiceActivity()
-     */
-    private ImageView getServiceTransitionImageView(Service service)
-    {
-        if(service != null && service.getUniq() != null)
-        {
-            String serviceMachineName = service.getUniq().toUpperCase();
-            ServiceCategoryListDescriptor descriptor = ServiceCategoryListDescriptor.valueOf(serviceMachineName);
-            if(descriptor != null)
-            {
-                ImageView imageView = new ImageView(this.getContext());
-                imageView.setImageResource(descriptor.getIconDrawable());
-            }
-        }
-        return null;
-    }
-
     private void displayServices()
     {
         mCategoryLayout.removeAllViews();
@@ -347,6 +340,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                     launchServiceActivity(service);
                 }
             });
+
+            /*
+            for transition to ServiceActivity, which needs a reference to the
+            exact image view of the service icon that is rendered
+             */
+            mServiceIconMap.put(service.getId(), serviceCategoryView.getIcon());
             mCategoryLayout.addView(serviceCategoryView);
         }
     }
