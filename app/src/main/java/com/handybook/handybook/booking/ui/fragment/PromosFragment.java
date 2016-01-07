@@ -33,7 +33,8 @@ public final class PromosFragment extends BookingFlowFragment
     @Bind(R.id.promo_text)
     EditText promoText;
 
-    public static PromosFragment newInstance(String extraPromoCode) {
+    public static PromosFragment newInstance(String extraPromoCode)
+    {
         PromosFragment fragment = new PromosFragment();
         final Bundle bundle = new Bundle();
         bundle.putString(EXTRA_PROMO_CODE, extraPromoCode);
