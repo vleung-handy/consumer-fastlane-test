@@ -31,6 +31,7 @@ import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
@@ -220,6 +221,7 @@ import retrofit.converter.GsonConverter;
         UpdatePaymentFragment.class,
         NavbarWebViewDialogFragment.class,
         ServiceCategoriesOverlayFragment.class,
+        PushReceiver.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
