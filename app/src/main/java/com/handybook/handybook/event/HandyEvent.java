@@ -14,6 +14,7 @@ import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasVi
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
@@ -818,6 +819,45 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
+    public static class RequestPreBookingPromo extends RequestEvent
+    {
+        private String mPromoCode;
+
+        public RequestPreBookingPromo(String promoCode)
+        {
+            mPromoCode = promoCode;
+        }
+
+        public String getPromoCode()
+        {
+            return mPromoCode;
+        }
+    }
+
+    public static class ReceivePreBookingPromoSuccess extends ReceiveSuccessEvent
+    {
+        private PromoCode mPromoCode;
+
+        public ReceivePreBookingPromoSuccess(final PromoCode promoCode)
+        {
+            mPromoCode = promoCode;
+        }
+
+        public PromoCode getPromoCode()
+        {
+            return mPromoCode;
+        }
+    }
+
+    public static class ReceivePreBookingPromoError extends ReceiveErrorEvent
+    {
+        public ReceivePreBookingPromoError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
 
     @Track("add booking fab clicked")
     public static class AddBookingButtonClicked {}

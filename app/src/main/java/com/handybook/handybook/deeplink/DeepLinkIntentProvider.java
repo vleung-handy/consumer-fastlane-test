@@ -1,4 +1,4 @@
-package com.handybook.handybook.core;
+package com.handybook.handybook.deeplink;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,17 +7,18 @@ import android.support.annotation.NonNull;
 import com.airbnb.deeplinkdispatch.DeepLink;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.booking.ui.fragment.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
 
 import javax.inject.Inject;
 
-//TODO: put in a more appropriate package
+//TODO: package this better
 public class DeepLinkIntentProvider
 {
+    //TODO: clean this up
     //TODO: can split this out so that each module has a routes file
-    //TODO: investigate possible params for each link
     //TODO: put in properties?
     private static final String DEEP_LINK_BASE_URL = "handybook://deep_link/";
     private static final String DEEP_LINK_SIDE_MENU_URL = DEEP_LINK_BASE_URL + "side_menu/";
@@ -32,23 +33,28 @@ public class DeepLinkIntentProvider
     }
 
     //TODO: move somewhere else
-    //would rather not make user manager static, but annotated methods below are required to be
+    //TODO: would rather not make user manager static, but annotated methods below are required to be by library
     public static boolean isUserLoggedIn()
     {
-        //TODO: can these methods be invoked before the constructor?
         return mUserManager != null && mUserManager.isUserLoggedIn();
     }
 
-    @DeepLink(DEEP_LINK_BASE_URL + "home")
+    @DeepLink({
+            DEEP_LINK_BASE_URL + "home",
+            DEEP_LINK_BASE_URL + "normal_flow",
+            DEEP_LINK_BASE_URL + "promo_applied"})
     public static Intent getHomeIntent(Context context)
     {
-        return new Intent(context, ServiceCategoriesActivity.class);
+        Intent intent = new Intent(context, ServiceCategoriesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
     }
 
-    @DeepLink(DEEP_LINK_SIDE_MENU_URL + "help")
-    public static Intent getHelpIntent(Context context)
+    @DeepLink(DEEP_LINK_SIDE_MENU_URL + "promo")
+    public static Intent getPromoIntent(Context context)
     {
-        return new Intent(context, HelpActivity.class);
+        return new Intent(context, PromosActivity.class);
     }
 
     @DeepLink(DEEP_LINK_SIDE_MENU_URL + "mybookings")
@@ -61,12 +67,6 @@ public class DeepLinkIntentProvider
         return getHomeIntent(context);
     }
 
-    @DeepLink(DEEP_LINK_SIDE_MENU_URL + "promo")
-    public static Intent getPromoIntent(Context context)
-    {
-        return new Intent(context, PromosActivity.class);
-    }
-
     @DeepLink(DEEP_LINK_SIDE_MENU_URL + "account")
     public static Intent getAccountIntent(Context context)
     {
@@ -75,5 +75,11 @@ public class DeepLinkIntentProvider
             return new Intent(context, ProfileActivity.class);
         }
         return getHomeIntent(context);
+    }
+
+    @DeepLink(DEEP_LINK_SIDE_MENU_URL + "help")
+    public static Intent getHelpIntent(Context context)
+    {
+        return new Intent(context, HelpActivity.class);
     }
 }

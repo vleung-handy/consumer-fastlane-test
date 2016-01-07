@@ -31,7 +31,7 @@ import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
-import com.handybook.handybook.booking.ui.fragment.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.simplealertdialog.SimpleAlertDialog;

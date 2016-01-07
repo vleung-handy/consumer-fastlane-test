@@ -126,7 +126,7 @@
         <activity android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"/>
         <activity android:name=".booking.ui.activity.BookingCancelOptionsActivity"/>
         <activity android:name=".booking.ui.activity.PeakPricingActivity"/>
-        <activity android:name=".booking.ui.fragment.PromosActivity"/>
+        <activity android:name=".booking.ui.activity.PromosActivity"/>
         <activity android:name=".ui.activity.OnboardActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
         <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>

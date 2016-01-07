@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
+import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.deeplink.DeepLinkParams;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
-public final class ServiceCategoriesActivity extends MenuDrawerActivity
+public final class PromosActivity extends MenuDrawerActivity
 {
     @Override
     protected final Fragment createFragment() {
@@ -17,15 +17,17 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity
         Bundle parameters = getIntent().getExtras();
         if(parameters != null)
         {
-            String serviceId = parameters.getString(DeepLinkParams.SERVICE_ID);
             String promoCode = parameters.getString(DeepLinkParams.PROMO_CODE);
-            return ServiceCategoriesFragment.newInstance(serviceId, promoCode);
+            if(promoCode != null)
+            {
+                return PromosFragment.newInstance(promoCode);
+            }
         }
-        return ServiceCategoriesFragment.newInstance();
+        return PromosFragment.newInstance();
     }
 
     @Override
     protected final String getNavItemTitle() {
-        return getString(R.string.home);
+        return getString(R.string.promotions);
     }
 }
