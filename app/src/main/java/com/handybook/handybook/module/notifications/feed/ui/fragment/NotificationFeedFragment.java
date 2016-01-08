@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,7 @@ public class NotificationFeedFragment extends InjectedFragment
         activity.setSupportActionBar(mToolbar);
         mActionBar = activity.getSupportActionBar();
         // SwipeRefresh
+        mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.handy_service_handyman,
@@ -122,6 +124,19 @@ public class NotificationFeedFragment extends InjectedFragment
     }
 
     @Override
+    public final void onStart()
+    {
+        super.onStart();
+        // Workaround to be able to display the SwipeRefreshLayout onStart
+        // as in: http://stackoverflow.com/a/26860930/486332
+        TypedValue typed_value = new TypedValue();
+        getActivity().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
+        mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
+        mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
     public void onRefresh()
     {
         requestNotifications();
@@ -131,12 +146,14 @@ public class NotificationFeedFragment extends InjectedFragment
     public void onNotificationResponseReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
     {
         mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Subscribe
     public void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e)
     {
         showToast(e.getPayload().getMessage());
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
 

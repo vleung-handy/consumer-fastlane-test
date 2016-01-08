@@ -107,9 +107,9 @@ public class BookingListFragment extends InjectedFragment
     public final void onStart()
     {
         super.onStart();
-        TypedValue typed_value = new TypedValue();
         // Workaround to be able to display the SwipeRefreshLayout onStart
         // as in: http://stackoverflow.com/a/26860930/486332
+        TypedValue typed_value = new TypedValue();
         getActivity().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
         mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
         mSwipeRefreshLayout.setRefreshing(true);
