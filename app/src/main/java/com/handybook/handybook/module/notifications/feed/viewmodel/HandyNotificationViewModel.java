@@ -92,6 +92,11 @@ public class HandyNotificationViewModel
         );
     }
 
+    public String getHtmlBody()
+    {
+        return mHandyNotification.getHtmlBody();
+    }
+
 
     public static class List extends ArrayList<HandyNotificationViewModel>
     {

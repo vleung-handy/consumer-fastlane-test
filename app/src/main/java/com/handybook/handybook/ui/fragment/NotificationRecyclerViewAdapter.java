@@ -1,10 +1,12 @@
 package com.handybook.handybook.ui.fragment;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,7 +45,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         // Title
         holder.title.setText(notificationViewModel.getTitle());
         // Body
-        holder.body.setText(notificationViewModel.getBody());
+        holder.body.setText(Html.fromHtml(notificationViewModel.getHtmlBody()));
         // Timestamp
         holder.timestamp.setText(notificationViewModel.getTimestamp());
         // Icon
@@ -57,7 +59,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         holder.buttonContainer.removeAllViews();
         for(HandyNotification.Action each_action : notificationViewModel.getButtonActions()){
             Button button = new Button(holder.mView.getContext());
-            button.setLayoutParams(holder.template_cta_button.getLayoutParams());
+            button.setLayoutParams(holder.templateCtaButton.getLayoutParams());
             button.setText(each_action.getText());
             // TODO: Implement onClick behaviour
             holder.buttonContainer.addView(button);
@@ -70,11 +72,13 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         for (HandyNotification.Action each_action : notificationViewModel.getLinkActions())
         {
             TextView textview = new TextView(holder.mView.getContext());
-            textview.setLayoutParams(holder.template_cta.getLayoutParams());
+            textview.setLayoutParams(holder.templateCta.getLayoutParams());
             textview.setText(each_action.getText());
             // TODO: Implement onClick behaviour
             holder.linkContainer.addView(textview);
         }
+        // Divider
+        holder.divider.setVisibility(position == 0? View.GONE : View.VISIBLE);
 
     }
 
@@ -131,9 +135,11 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         @Bind(R.id.notification_card_timestamp)
         public TextView timestamp;
         @Bind(R.id.notification_card_cta_button_template)
-        public Button template_cta_button;
+        public Button templateCtaButton;
         @Bind(R.id.notification_card_cta_template)
-        public TextView template_cta;
+        public TextView templateCta;
+        @Bind(R.id.notification_card_divider)
+        public FrameLayout divider;
 
         public ViewHolder(View view)
         {
