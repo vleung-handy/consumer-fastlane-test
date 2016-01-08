@@ -38,12 +38,15 @@ public class HandyNotification implements Serializable, Parcelable
 
     private HandyNotification() {} //Only server can create notifications
 
+
     protected HandyNotification(Parcel in)
     {
         mId = in.readLong();
         mTitle = in.readString();
         mBody = in.readString();
         mHtmlBody = in.readString();
+        mCreatedAt = new Date(in.readLong());
+        mExpiresAt = new Date(in.readLong());
         mAvailable = in.readByte() != 0;
         mReadStatus = in.readByte() != 0;
         mImages = in.createTypedArray(Image.CREATOR);
@@ -131,7 +134,9 @@ public class HandyNotification implements Serializable, Parcelable
         if(actionsOfType.isEmpty()){
             return NO_ACTIONS;
         } else{
-            return (Action[]) actionsOfType.toArray();
+            Action[] actionsOut = new Action[actionsOfType.size()];
+            actionsOut =  actionsOfType.toArray(actionsOut);
+            return actionsOut;
         }
     }
 
@@ -148,6 +153,8 @@ public class HandyNotification implements Serializable, Parcelable
         dest.writeString(mTitle);
         dest.writeString(mBody);
         dest.writeString(mHtmlBody);
+        dest.writeLong(mCreatedAt.getTime());
+        dest.writeLong(mExpiresAt.getTime());
         dest.writeByte((byte) (mAvailable ? 1 : 0));
         dest.writeByte((byte) (mReadStatus ? 1 : 0));
         dest.writeTypedArray(mImages, flags);
