@@ -31,6 +31,7 @@
                     style="@style/HandyNotification.TextView.Title"
                     android:id="@+id/notification_card_title"
                     tools:text="Please rate your pro"
+                    android:visibility="gone"
                     />
 
                 <TextView
@@ -93,6 +94,6 @@
 <FrameLayout
     android:id="@+id/notification_card_divider"
     android:layout_width="match_parent"
-    android:layout_height="2dp"
+    android:layout_height="1dp"
     android:background="@color/handy_tertiary_gray"/>
 </FrameLayout>
