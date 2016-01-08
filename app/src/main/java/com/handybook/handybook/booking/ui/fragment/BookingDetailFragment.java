@@ -29,7 +29,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
-import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
@@ -218,7 +218,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                 new BookingDetailSectionFragmentProInformation(),
                 new BookingDetailSectionFragmentLaundry(),
                 new BookingDetailSectionFragmentEntryInformation(),
-                new BookingDetailSectionFragmentNoteToPro(),
+                new BookingDetailSectionFragmentPreferences(),
                 new BookingDetailSectionFragmentExtras(),
                 new BookingDetailSectionFragmentAddress(),
                 new BookingDetailSectionFragmentPayment(),
