@@ -18,9 +18,9 @@ public class NotificationManager
     @Inject
     public NotificationManager(final Bus bus, final DataManager dataManager)
     {
-        this.mBus = bus;
-        this.mBus.register(this);
-        this.mDataManager = dataManager;
+        mBus = bus;
+        mDataManager = dataManager;
+        mBus.register(this);
     }
 
     @Subscribe
@@ -30,6 +30,7 @@ public class NotificationManager
     {
         mDataManager.getNotifications(
                 event.getUserId(),
+                event.getAuthToken(),
                 event.getCount(),
                 event.getSinceId(),
                 event.getUntilId(),

@@ -92,4 +92,9 @@ public class UserManager implements Observer
             setCurrentUser(null);
         }
     }
+
+    public boolean isLoggedIn()
+    {
+        return !(getCurrentUser() == null);
+    }
 }

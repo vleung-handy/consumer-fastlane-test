@@ -4,13 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -39,12 +40,42 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
     {
         final HandyNotificationViewModel notificationViewModel = getItem(position);
         holder.mItem = notificationViewModel;
+        // Title
         holder.title.setText(notificationViewModel.getTitle());
+        // Body
         holder.body.setText(notificationViewModel.getBody());
+        // Timestamp
         holder.timestamp.setText(notificationViewModel.getTimestamp());
+        // Icon
         Picasso.with(holder.mView.getContext())
                 .load(notificationViewModel.getIconUrl(holder.mView.getContext()))
                 .into(holder.image);
+        // Actions : Buttons
+        holder.buttonContainer.setVisibility(
+                notificationViewModel.hasButtons() ? View.VISIBLE : View.GONE
+        );
+        holder.buttonContainer.removeAllViews();
+        for(HandyNotification.Action each_action : notificationViewModel.getButtonActions()){
+            Button button = new Button(holder.mView.getContext());
+            button.setLayoutParams(holder.template_cta_button.getLayoutParams());
+            button.setText(each_action.getText());
+            // TODO: Implement onClick behaviour
+            holder.buttonContainer.addView(button);
+        }
+        // Actions : Links
+        holder.linkContainer.setVisibility(
+                notificationViewModel.hasLinks()? View.VISIBLE:View.GONE
+        );
+        holder.linkContainer.removeAllViews();
+        for (HandyNotification.Action each_action : notificationViewModel.getLinkActions())
+        {
+            TextView textview = new TextView(holder.mView.getContext());
+            textview.setLayoutParams(holder.template_cta.getLayoutParams());
+            textview.setText(each_action.getText());
+            // TODO: Implement onClick behaviour
+            holder.linkContainer.addView(textview);
+        }
+
     }
 
     private HandyNotificationViewModel getItem(final int position)
@@ -55,6 +86,9 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
     @Override
     public int getItemCount()
     {
+        if(mHandyNotificationViewModels == null){
+            return 0;
+        }
         return mHandyNotificationViewModels.size();
     }
 
@@ -76,6 +110,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
     {
         //TODO: Actually merge them, not just swap
         mHandyNotificationViewModels = HandyNotificationViewModel.List.from(notifications);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -95,6 +130,10 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         public LinearLayout buttonContainer;
         @Bind(R.id.notification_card_timestamp)
         public TextView timestamp;
+        @Bind(R.id.notification_card_cta_button_template)
+        public Button template_cta_button;
+        @Bind(R.id.notification_card_cta_template)
+        public TextView template_cta;
 
         public ViewHolder(View view)
         {

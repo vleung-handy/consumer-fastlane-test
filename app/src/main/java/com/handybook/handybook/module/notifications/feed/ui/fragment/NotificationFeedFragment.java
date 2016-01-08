@@ -2,8 +2,11 @@ package com.handybook.handybook.module.notifications.feed.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
@@ -26,8 +30,11 @@ public class NotificationFeedFragment extends InjectedFragment
 {
 
     private static final String ARG_NOTIFICATIONS = "NOTIFICATIONS";
+
+    private NotificationRecyclerViewAdapter mNotificationRecyclerViewAdapter;
     private HandyNotification.List mNotifications;
 
+    private ActionBar mActionBar;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.notification_feed_srl)
@@ -38,11 +45,8 @@ public class NotificationFeedFragment extends InjectedFragment
     CardView mEmptyView;
     @Bind(R.id.card_empty_text)
     TextView mNoBookingsText;
-    private NotificationRecyclerViewAdapter mNotificationRecyclerViewAdapter;
 
-    public NotificationFeedFragment()
-    {
-    }
+    public NotificationFeedFragment() {}
 
     public static NotificationFeedFragment newInstance()
     {
@@ -61,23 +65,59 @@ public class NotificationFeedFragment extends InjectedFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    )
     {
         View root = inflater.inflate(R.layout.fragment_notification_feed, container, false);
         ButterKnife.bind(this, root);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        // Toolbar
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        activity.setSupportActionBar(mToolbar);
+        mActionBar = activity.getSupportActionBar();
+        // SwipeRefresh
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.handy_service_handyman,
+                R.color.handy_service_electrician,
+                R.color.handy_service_cleaner,
+                R.color.handy_service_painter,
+                R.color.handy_service_plumber
+        );
+        // RecyclerView
+        mNotificationRecyclerViewAdapter = new NotificationRecyclerViewAdapter(mNotifications);
         mEmptiableRecyclerView.setAdapter(mNotificationRecyclerViewAdapter);
+        mEmptiableRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mEmptiableRecyclerView.setEmptyView(mEmptyView);
+        // Only allow SwipeRefresh when Recycler scrolled all the way up
+        mEmptiableRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
+            {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(-1))
+                {
+                    mSwipeRefreshLayout.setEnabled(true);
+                }
+                else
+                {
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+            }
+        });
         if (getArguments() != null)
         {
             mNotificationRecyclerViewAdapter.mergeNotifications(
-                    (HandyNotification.List)getArguments().getSerializable(ARG_NOTIFICATIONS)
+                    (HandyNotification.List) getArguments().getSerializable(ARG_NOTIFICATIONS)
             );
-        } else {
+        }
+        else
+        {
             requestNotifications();
         }
-
         return root;
     }
 
@@ -94,7 +134,8 @@ public class NotificationFeedFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e){
+    public void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e)
+    {
         showToast(e.getPayload().getMessage());
     }
 
@@ -102,14 +143,28 @@ public class NotificationFeedFragment extends InjectedFragment
     private void requestNotifications()
     {
         mSwipeRefreshLayout.setRefreshing(true);
-        bus.post(
-                new HandyEvent.RequestEvent.HandyNotificationsEvent(
-                        Long.parseLong(userManager.getCurrentUser().getId()),
-                        null,
-                        null,
-                        null
-                )
-        );
+        if (userManager.isLoggedIn()){
+
+            final User currentUser = userManager.getCurrentUser();
+            bus.post(
+                    new HandyEvent.RequestEvent.HandyNotificationsEvent(
+                            Long.parseLong(currentUser.getId()),
+                            currentUser.getAuthToken(),
+                            null,
+                            null,
+                            null
+                    )
+            );
+
+        } else {
+            bus.post(
+                    new HandyEvent.RequestEvent.HandyNotificationsEvent(
+                            null,
+                            null,
+                            null
+                    )
+            );
+        }
     }
 
 }

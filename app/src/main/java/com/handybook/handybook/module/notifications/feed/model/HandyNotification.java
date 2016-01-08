@@ -7,10 +7,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 
 public class HandyNotification implements Serializable, Parcelable
 {
+    private static Action[] NO_ACTIONS = {}; // For those cases when we need an empty typed array
+
     @SerializedName("id")
     private long mId;
     @SerializedName("title")
@@ -22,9 +24,9 @@ public class HandyNotification implements Serializable, Parcelable
     @SerializedName("type")
     private HandyNotificationType mType;
     @SerializedName("created_at")
-    private Calendar mCreatedAt;
+    private Date mCreatedAt;
     @SerializedName("expires_at")
-    private Calendar mExpiresAt;
+    private Date mExpiresAt;
     @SerializedName("available")
     private boolean mAvailable;
     @SerializedName("read_status")
@@ -88,12 +90,12 @@ public class HandyNotification implements Serializable, Parcelable
         return mHtmlBody;
     }
 
-    public Calendar getCreatedAt()
+    public Date getCreatedAt()
     {
         return mCreatedAt;
     }
 
-    public Calendar getExpiresAt()
+    public Date getExpiresAt()
     {
         return mExpiresAt;
     }
@@ -110,7 +112,27 @@ public class HandyNotification implements Serializable, Parcelable
 
     public Action[] getActions()
     {
+        if (mActions == null)
+        {
+            mActions = NO_ACTIONS;
+        }
         return mActions;
+    }
+
+    public Action[] getActions(HandyNotificationActionType actionType)
+    {
+        ArrayList<Action> actionsOfType = new ArrayList<>();
+        for (Action eAction : getActions())
+        {
+            if(eAction.getType() == actionType){
+                actionsOfType.add(eAction);
+            }
+        }
+        if(actionsOfType.isEmpty()){
+            return NO_ACTIONS;
+        } else{
+            return (Action[]) actionsOfType.toArray();
+        }
     }
 
     @Override
@@ -174,10 +196,12 @@ public class HandyNotification implements Serializable, Parcelable
 
     public enum HandyNotificationActionType implements Serializable
     {
-        @SerializedName(Constants.TYPE_STRING_NOTIFICATION)
-        NOTIFICATION,
+        @SerializedName(Constants.TYPE_STRING_CALL_TO_ACTION_BUTTON)
+        CALL_TO_ACTION_BUTTON,
         @SerializedName(Constants.TYPE_STRING_CALL_TO_ACTION)
         CALL_TO_ACTION,
+        @SerializedName(Constants.TYPE_STRING_DEFAULT)
+        DEFAULT,
         @SerializedName(Constants.TYPE_STRING_INVALID)
         INVALID;
 
@@ -185,9 +209,11 @@ public class HandyNotification implements Serializable, Parcelable
         {
             switch (string)
             {
-                case Constants.TYPE_STRING_NOTIFICATION:
-                    return NOTIFICATION;
+                case Constants.TYPE_STRING_CALL_TO_ACTION_BUTTON:
+                    return CALL_TO_ACTION_BUTTON;
                 case Constants.TYPE_STRING_CALL_TO_ACTION:
+                    return CALL_TO_ACTION;
+                case Constants.TYPE_STRING_DEFAULT:
                     return CALL_TO_ACTION;
                 default:
                     return INVALID;
@@ -196,7 +222,8 @@ public class HandyNotification implements Serializable, Parcelable
 
         public static class Constants
         {
-            public static final String TYPE_STRING_NOTIFICATION = "notification";
+            public static final String TYPE_STRING_DEFAULT = "default";
+            public static final String TYPE_STRING_CALL_TO_ACTION_BUTTON = "call_to_action_button";
             public static final String TYPE_STRING_CALL_TO_ACTION = "call_to_action";
             public static final String TYPE_STRING_INVALID = "invalid";
         }

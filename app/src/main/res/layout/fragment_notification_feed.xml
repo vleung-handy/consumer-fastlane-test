@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinator_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
-    android:id="@+id/coordinator_layout"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:context=".module.notifications.feed.ui.activity.NotificationsActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:fitsSystemWindows="true"
         android:id="@+id/app_bar_layout"
-        android:layout_height="@dimen/app_bar_height"
         android:layout_width="match_parent"
-        android:theme="@style/Theme.Base.AppBarOverlay">
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Theme.Base.AppBarOverlay"
+        >
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:fitsSystemWindows="true"
             android:id="@+id/toolbar_layout"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            >
 
             <ImageView
-                android:fitsSystemWindows="true"
                 android:id="@+id/backdrop"
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_pros"
                 app:layout_collapseMode="parallax"
@@ -36,46 +40,45 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:layout_height="?attr/actionBarSize"
                 android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/Theme.Base.PopupOverlay">
+                app:popupTheme="@style/Theme.Base.PopupOverlay"
+                >
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        android:fillViewport="true"
-        android:layout_gravity="fill_vertical"
-        android:layout_height="match_parent"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/notification_feed_srl"
         android:layout_width="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/notification_feed_srl"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_width="match_parent">
+            android:background="@color/handy_background_gray"
+            >
 
-            <FrameLayout
-                android:background="@color/handy_background_gray"
-                android:layout_height="match_parent"
+            <include layout="@layout/layout_card_empty"/>
+
+            <com.handybook.handybook.ui.view.EmptiableRecyclerView
+                android:id="@+id/notifications_feed_rv"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="4dp"
+                tools:listitem="@layout/layout_handy_notification_reminder"
                 >
+            </com.handybook.handybook.ui.view.EmptiableRecyclerView>
+        </FrameLayout>
 
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-                <com.handybook.handybook.ui.view.EmptiableRecyclerView
-                    android:id="@+id/notifications_feed_rv"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    app:layoutManager="LinearLayoutManager"
-                    tools:listitem="@layout/layout_handy_notification_reminder"
-                    />
-
-                <include layout="@layout/layout_card_empty"/>
-            </FrameLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

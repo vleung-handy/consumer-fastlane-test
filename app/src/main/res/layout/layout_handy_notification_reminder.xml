@@ -48,7 +48,18 @@
                         android:id="@+id/notification_card_link_container"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:id="@+id/notification_card_cta_template"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_half"
+                            style="@style/TextView.Headline.Blue"
+                            android:clickable="true"
+                            tools:text="Click me right nao"
+                            />
                     </LinearLayout>
 
                     <LinearLayout
@@ -61,6 +72,7 @@
                         android:divider="@drawable/divider_clear_8dp"
                         >
                         <Button
+                            android:id="@+id/notification_card_cta_button_template"
                             style="@style/HandyNotification.Button"
                             tools:text="Call"
                             />

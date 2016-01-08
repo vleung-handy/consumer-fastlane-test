@@ -66,20 +66,24 @@ public abstract class HandyEvent
         public static class HandyNotificationsEvent extends RequestEvent
         {
             private static final long USER_ID_FOR_LOGGED_OUT_USERS = 0;
+            private static final String AUTH_TOKEN_FOR_LOGGED_OUT_USERS = null;
 
             final long mUserId;
+            final String mAuthToken;
             final Long mSinceId;
             final Long  mUntilId;
             final Long  mCount;
 
             public HandyNotificationsEvent(
                     final long userId,
+                    final String authToken,
                     final Long sinceId,
                     final Long untilId,
                     final Long count
             )
             {
                 mUserId = userId;
+                mAuthToken = authToken;
                 mSinceId = sinceId;
                 mUntilId = untilId;
                 mCount = count;
@@ -88,6 +92,7 @@ public abstract class HandyEvent
             public HandyNotificationsEvent(final Long count, final Long untilId, final Long sinceId)
             {
                 mUserId = USER_ID_FOR_LOGGED_OUT_USERS;
+                mAuthToken = AUTH_TOKEN_FOR_LOGGED_OUT_USERS;
                 mCount = count;
                 mUntilId = untilId;
                 mSinceId = sinceId;
@@ -96,6 +101,11 @@ public abstract class HandyEvent
             public long getUserId()
             {
                 return mUserId;
+            }
+
+            public String getAuthToken()
+            {
+                return mAuthToken;
             }
 
             public Long getSinceId()

@@ -3,6 +3,7 @@ package com.handybook.handybook.module.notifications.feed.viewmodel;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 
 import java.text.SimpleDateFormat;
@@ -63,11 +64,43 @@ public class HandyNotificationViewModel
         return mHandyNotification.getType();
     }
 
+    public boolean hasButtons()
+    {
+        return mHandyNotification.getActions(
+                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION
+        ).length > 0;
+    }
+
+    public boolean hasLinks()
+    {
+        return mHandyNotification.getActions(
+                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION_BUTTON
+        ).length > 0;
+    }
+
+    public HandyNotification.Action[] getButtonActions()
+    {
+        return mHandyNotification.getActions(
+                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION
+        );
+    }
+
+    public HandyNotification.Action[] getLinkActions()
+    {
+        return mHandyNotification.getActions(
+                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION_BUTTON
+        );
+    }
+
 
     public static class List extends ArrayList<HandyNotificationViewModel>
     {
         public static List from(final Collection<HandyNotification> notifications)
         {
+            if(notifications == null){
+                Crashlytics.log("HandyNotificationViewModel.List.from() attempting to convert null");
+                return null;
+            }
             final List notificationViewModelList = new List();
             for (HandyNotification eachNotification : notifications)
             {

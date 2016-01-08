@@ -4,26 +4,25 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
-import com.handybook.handybook.core.BlockedWrapper;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
-import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
@@ -31,14 +30,11 @@ import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.booking.model.UserBookingsWrapper;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 import java.util.Date;
 import java.util.List;
@@ -91,55 +87,69 @@ public abstract class DataManager
     /**
      * Requests a HandyNotification.ResultSet from the server
      *
-     * @param userId  id of the user to request notifications for
-     * @param count   max size of the notification list (can be smaller)
-     * @param sinceId <i>optional</i> Bottom delimiter, exclusive. Only notification after this id.
-     * @param untilId <i>optional</i> Top delimiter, exclusive. Only get notification before this
-     *                id
-     * @param cb      the callback used for returning data
+     * @param userId    id of the user to request notifications for
+     * @param authToken authToken of the user to request notifications for
+     * @param count     max size of the notification list (can be smaller)
+     * @param sinceId   <i>optional</i> Bottom delimiter, exclusive. Only notification after this id.
+     * @param untilId   <i>optional</i> Top delimiter, exclusive. Only get notification before this
+     *                  id
+     * @param cb        the callback used for returning data
      * @see <a href="https://dev.twitter.com/rest/public/timelines">Twitter's implementation</a>
      * <p/>
      */
     public abstract void getNotifications(
             long userId,
+            String authToken,
             @Nullable final Long count,
             @Nullable final Long sinceId,
             @Nullable final Long untilId,
             @NonNull final Callback<HandyNotification.ResultSet> cb
     );
-    
-    public abstract void getQuoteOptions(int serviceId,
-                                         String userId,
-                                         Callback<BookingOptionsWrapper> cb);
 
-    public abstract void createQuote(BookingRequest bookingRequest,
-                                     Callback<BookingQuote> cb);
+    public abstract void getQuoteOptions(
+            int serviceId,
+            String userId,
+            Callback<BookingOptionsWrapper> cb
+    );
 
-    public abstract void updateQuoteDate(int quoteId,
-                                         Date date,
-                                         Callback<BookingQuote> cb);
+    public abstract void createQuote(
+            BookingRequest bookingRequest,
+            Callback<BookingQuote> cb
+    );
 
-    public abstract void applyPromo(String promoCode,
-                                    int quoteId,
-                                    String userId,
-                                    String email,
-                                    String authToken,
-                                    Callback<BookingCoupon> cb);
+    public abstract void updateQuoteDate(
+            int quoteId,
+            Date date,
+            Callback<BookingQuote> cb
+    );
 
-    public abstract void removePromo(int quoteId,
-                                     Callback<BookingCoupon> cb);
+    public abstract void applyPromo(
+            String promoCode,
+            int quoteId,
+            String userId,
+            String email,
+            String authToken,
+            Callback<BookingCoupon> cb
+    );
+
+    public abstract void removePromo(
+            int quoteId,
+            Callback<BookingCoupon> cb
+    );
 
     public abstract void createBooking(
             BookingTransaction bookingTransaction,
             Callback<BookingCompleteTransaction> cb
     );
-    
-    public abstract void validateBookingZip(int serviceId,
-                                            String zipCode,
-                                            String userId,
-                                            String authToken,
-                                            String promoCode,
-                                            Callback<Void> cb);
+
+    public abstract void validateBookingZip(
+            int serviceId,
+            String zipCode,
+            String userId,
+            String authToken,
+            String promoCode,
+            Callback<Void> cb
+    );
 
     public abstract void getBookings(
             User user,

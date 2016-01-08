@@ -230,6 +230,7 @@ public interface HandyRetrofitService
     @GET("/users/{user_id}/notifications")
     void getNotificationResultSet(
             @Path("user_id") long userId,
+            @Query("auth_token") String authToken,
             @Query("count") Long count,
             @Query("since_id") Long sinceId,
             @Query("until_id") Long untilId,
