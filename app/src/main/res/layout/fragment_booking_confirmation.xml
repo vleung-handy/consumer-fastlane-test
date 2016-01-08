@@ -45,7 +45,7 @@
                 />
 
             <com.handybook.handybook.ui.widget.PasswordInputTextView
-                android:id="@+id/pwd_text"
+                android:id="@+id/password_text"
                 style="@style/EditText.Last.Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,6 +75,13 @@
                 android:singleLine="true"
                 android:visibility="gone"
                 tools:visibility="visible"
+                />
+
+            <com.handybook.handybook.ui.widget.InstructionsLayout
+                android:id="@+id/instructions_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/options_layout"
                 />
 
         </RelativeLayout>

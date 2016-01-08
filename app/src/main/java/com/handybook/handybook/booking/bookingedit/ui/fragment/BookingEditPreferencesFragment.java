@@ -9,15 +9,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.ui.widget.InstructionsLayout;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -34,6 +35,8 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     LinearLayout mOptionsLayout;
     @Bind(R.id.next_button)
     Button mNextButton;
+    @Bind(R.id.instructions_layout)
+    InstructionsLayout mInstructionsLayout;
 
     public static BookingEditPreferencesFragment newInstance(final Booking booking)
     {
@@ -67,6 +70,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
         initOptionsView();
+        mInstructionsLayout.init(booking.getInstructions());
         return view;
     }
 

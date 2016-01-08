@@ -520,7 +520,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mSelectPaymentLayout.setVisibility(View.VISIBLE);
         mInfoPaymentLayout.setVisibility(View.GONE);
 
-        if(isAndroidPayPromoApplied())
+        if (isAndroidPayPromoApplied())
         {
             //Remove the applied promo if it is an Android pay one
             //because we don't want credit card users to be able to use it
@@ -635,6 +635,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     /**
      * User is using Android Pay. Show the relevant info
+     *
      * @param maskedWallet
      */
     @VisibleForTesting
@@ -719,8 +720,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         enableInputs();
         progressDialog.dismiss();
 
-        if (event.getError() instanceof CardException) toast.setText(event.getError().getMessage());
-        else toast.setText(getString(R.string.default_error_string));
+        if (event.getError() instanceof CardException)
+        {
+            toast.setText(event.getError().getMessage());
+        }
+        else { toast.setText(getString(R.string.default_error_string)); }
         toast.show();
     }
 
@@ -776,7 +780,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     //TODO: this was stripped out of promoClicked and may need to be refactored
     private void applyPromo(final String promoCode)
     {
-        if(ValidationUtils.isNullOrEmpty(promoCode)) return;
+        if (ValidationUtils.isNullOrEmpty(promoCode)) { return; }
 
         final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
         final int bookingId = bookingTransaction.getBookingId();
@@ -862,6 +866,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                                 BookingConfirmationActivity.class);
 
                         intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, isNewUser);
+                        intent.putExtra(BookingConfirmationActivity.EXTRA_INSTRUCTIONS,
+                                trans.getInstructions());
                         startActivity(intent);
 
                         enableInputs();
@@ -929,9 +935,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mPromoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
 
         String promoCodeDisplayString;
-        if(applied)
+        if (applied)
         {
-            if(isAndroidPayPromoApplied()) //show the obfuscated Android pay promo code
+            if (isAndroidPayPromoApplied()) //show the obfuscated Android pay promo code
             {
                 promoCodeDisplayString = getString(R.string.android_pay_obfuscated_promo_code);
             }

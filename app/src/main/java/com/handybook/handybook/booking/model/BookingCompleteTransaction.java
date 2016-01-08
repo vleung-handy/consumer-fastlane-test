@@ -10,27 +10,42 @@ import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
 
-public class BookingCompleteTransaction {
-    @SerializedName("id") private int id;
-    @SerializedName("user_info") private User user;
+public class BookingCompleteTransaction
+{
+    @SerializedName("id")
+    private int mId;
+    @SerializedName("user_info")
+    private User mUser;
+    @SerializedName("instructions")
+    private Instructions mInstructions;
 
-    public int getId() {
-        return id;
+    public int getId()
+    {
+        return mId;
     }
 
-    public void setId(final int id) {
-        this.id = id;
+    public void setId(final int id)
+    {
+        mId = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getUser()
+    {
+        return mUser;
     }
 
-    void setUser(final User user) {
-        this.user = user;
+    void setUser(final User user)
+    {
+        mUser = user;
     }
 
-    String toJson() {
+    public Instructions getInstructions()
+    {
+        return mInstructions;
+    }
+
+    String toJson()
+    {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .registerTypeAdapter(BookingCompleteTransaction.class,
                         new BookingCompleteTransaction()).create();
@@ -38,16 +53,19 @@ public class BookingCompleteTransaction {
         return gson.toJson(this);
     }
 
-    public static BookingCompleteTransaction fromJson(final String json) {
+    public static BookingCompleteTransaction fromJson(final String json)
+    {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
                 .fromJson(json, BookingCompleteTransaction.class);
     }
 
     static class BookingCompleteTransactionSerializer
-            implements JsonSerializer<BookingCompleteTransaction> {
+            implements JsonSerializer<BookingCompleteTransaction>
+    {
         @Override
         public JsonElement serialize(final BookingCompleteTransaction value, final Type type,
-                                           final JsonSerializationContext context) {
+                                     final JsonSerializationContext context)
+        {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("id", context.serialize(value.getId()));
             jsonObj.add("user_info", context.serialize(value.getUser()));
@@ -55,16 +73,22 @@ public class BookingCompleteTransaction {
         }
     }
 
-    public static class User {
-        @SerializedName("auth_token") private String authToken;
-        @SerializedName("id") private String id;
 
-        public String getAuthToken() {
-            return authToken;
+    public static class User
+    {
+        @SerializedName("auth_token")
+        private String mAuthToken;
+        @SerializedName("id")
+        private String mId;
+
+        public String getAuthToken()
+        {
+            return mAuthToken;
         }
 
-        public String getId() {
-            return id;
+        public String getId()
+        {
+            return mId;
         }
     }
 }
