@@ -29,14 +29,16 @@ public class ServiceCategorySimpleView extends TableRow
     public ServiceCategorySimpleView(final Context context)
     {
         super(context);
+        setProperties();
     }
 
     public ServiceCategorySimpleView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
+        setProperties();
     }
 
-    public void init(Service service)
+    private void setProperties()
     {
         TableLayout.LayoutParams layoutParams =
                 new TableLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
@@ -45,7 +47,10 @@ public class ServiceCategorySimpleView extends TableRow
         setLayoutParams(layoutParams);
         setGravity(Gravity.CENTER);
         setVisibility(INVISIBLE);
+    }
 
+    public void init(Service service)
+    {
         LayoutInflater.from(getContext()).inflate(R.layout.view_service_category_simple, this);
         ButterKnife.bind(this);
 
@@ -58,5 +63,10 @@ public class ServiceCategorySimpleView extends TableRow
     public ImageView getIcon()
     {
         return mIcon;
+    }
+
+    public TextView getTitle()
+    {
+        return mTitle;
     }
 }
