@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.notifications.feed.viewmodel;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 
 import com.crashlytics.android.Crashlytics;
@@ -64,37 +65,52 @@ public class HandyNotificationViewModel
         return mHandyNotification.getType();
     }
 
-    public boolean hasButtons()
+    public boolean hasDefaultAction()
     {
         return mHandyNotification.getActions(
-                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION
+                HandyNotification.HandyNotificationActionType.DEFAULT
         ).length > 0;
     }
 
-    public boolean hasLinks()
+    public boolean hasButtonActions()
     {
         return mHandyNotification.getActions(
                 HandyNotification.HandyNotificationActionType.CALL_TO_ACTION_BUTTON
+        ).length > 0;
+    }
+
+    public boolean hasLinkActions()
+    {
+        return mHandyNotification.getActions(
+                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION
         ).length > 0;
     }
 
     public HandyNotification.Action[] getButtonActions()
     {
         return mHandyNotification.getActions(
-                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION
+                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION_BUTTON
         );
     }
 
     public HandyNotification.Action[] getLinkActions()
     {
         return mHandyNotification.getActions(
-                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION_BUTTON
+                HandyNotification.HandyNotificationActionType.CALL_TO_ACTION
         );
     }
 
     public String getHtmlBody()
     {
         return mHandyNotification.getHtmlBody();
+    }
+
+    @Nullable
+    public HandyNotification.Action getDefaultAction() // Check if you have one before calling this
+    {
+        return mHandyNotification.getActions(
+                HandyNotification.HandyNotificationActionType.DEFAULT
+        )[0];
     }
 
 

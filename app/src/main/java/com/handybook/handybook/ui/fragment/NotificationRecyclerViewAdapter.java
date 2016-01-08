@@ -1,5 +1,7 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
@@ -52,33 +55,75 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         Picasso.with(holder.mView.getContext())
                 .load(notificationViewModel.getIconUrl(holder.mView.getContext()))
                 .into(holder.image);
+        // Action : Default
+        if(notificationViewModel.hasDefaultAction()){
+            holder.mView.setClickable(true);
+            holder.mView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(final View v)
+                {
+                    Intent intent = new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(notificationViewModel.getDefaultAction().getDeeplink())
+                    );
+                    v.getContext().startActivity(intent);
+                }
+            });
+
+        }
         // Actions : Buttons
         holder.buttonContainer.setVisibility(
-                notificationViewModel.hasButtons() ? View.VISIBLE : View.GONE
+                notificationViewModel.hasButtonActions() ? View.VISIBLE : View.GONE
         );
         holder.buttonContainer.removeAllViews();
-        for(HandyNotification.Action each_action : notificationViewModel.getButtonActions()){
+        for (final HandyNotification.Action action : notificationViewModel.getButtonActions())
+        {
             Button button = new Button(holder.mView.getContext());
-            button.setLayoutParams(holder.templateCtaButton.getLayoutParams());
-            button.setText(each_action.getText());
-            // TODO: Implement onClick behaviour
             holder.buttonContainer.addView(button);
+            button.setLayoutParams(holder.templateCtaButton.getLayoutParams());
+            button.setText(action.getText());
+            // TODO: Implement onClick behaviour
+            button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(final View v)
+                {
+                    Intent intent = new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(action.getDeeplink())
+                    );
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
         // Actions : Links
         holder.linkContainer.setVisibility(
-                notificationViewModel.hasLinks()? View.VISIBLE:View.GONE
+                notificationViewModel.hasLinkActions() ? View.VISIBLE : View.GONE
         );
         holder.linkContainer.removeAllViews();
-        for (HandyNotification.Action each_action : notificationViewModel.getLinkActions())
+        for (final HandyNotification.Action action : notificationViewModel.getLinkActions())
         {
             TextView textview = new TextView(holder.mView.getContext());
-            textview.setLayoutParams(holder.templateCta.getLayoutParams());
-            textview.setText(each_action.getText());
-            // TODO: Implement onClick behaviour
             holder.linkContainer.addView(textview);
+            textview.setLayoutParams(holder.templateCta.getLayoutParams());
+            textview.setText(action.getText());
+            // TODO: Implement onClick behaviour
+            textview.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(final View v)
+                {
+                    Intent intent = new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(action.getDeeplink())
+                    );
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
         // Divider
-        holder.divider.setVisibility(position == 0? View.GONE : View.VISIBLE);
+        holder.divider.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
 
     }
 
@@ -90,7 +135,8 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
     @Override
     public int getItemCount()
     {
-        if(mHandyNotificationViewModels == null){
+        if (mHandyNotificationViewModels == null)
+        {
             return 0;
         }
         return mHandyNotificationViewModels.size();
