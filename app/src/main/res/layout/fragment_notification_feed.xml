@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                tools:listitem="@layout/layout_handy_notification_reminder"
+                tools:listitem="@layout/layout_handy_notification_default"
                 >
             </com.handybook.handybook.ui.view.EmptiableRecyclerView>
         </FrameLayout>

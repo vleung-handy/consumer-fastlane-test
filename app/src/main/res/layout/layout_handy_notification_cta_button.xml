@@ -4,7 +4,7 @@
     style="@style/HandyNotification.Button"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/layout_handy_notification_reminder"
+    tools:showIn="@layout/layout_handy_notification_default"
     tools:text="Call"
     />
 

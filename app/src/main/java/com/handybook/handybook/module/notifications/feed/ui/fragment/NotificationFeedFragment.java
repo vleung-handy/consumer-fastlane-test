@@ -19,7 +19,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.fragment.NotificationRecyclerViewAdapter;
+import com.handybook.handybook.module.notifications.feed.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
 import com.squareup.otto.Subscribe;
 

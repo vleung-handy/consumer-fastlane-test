@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/default_margin_half"
     android:clickable="true"
-    tools:showIn="@layout/layout_handy_notification_reminder"
+    tools:showIn="@layout/layout_handy_notification_default"
     tools:text="Click me right nao"
     />
 
