@@ -56,7 +56,8 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
                 .load(notificationViewModel.getIconUrl(holder.mView.getContext()))
                 .into(holder.image);
         // Action : Default
-        if(notificationViewModel.hasDefaultAction()){
+        if (notificationViewModel.hasDefaultAction())
+        {
             holder.mView.setClickable(true);
             holder.mView.setOnClickListener(new View.OnClickListener()
             {
