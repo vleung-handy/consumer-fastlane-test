@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
@@ -22,7 +21,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<NotificationRecyclerViewAdapter.ViewHolder>
+public class NotificationRecyclerViewAdapter
+        extends RecyclerView.Adapter<NotificationRecyclerViewAdapter.NotificationViewHolder>
 {
 
     private HandyNotificationViewModel.List mHandyNotificationViewModels;
@@ -34,14 +34,14 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
-        return new ViewHolder(view);
+        return new NotificationViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public void onBindViewHolder(final NotificationViewHolder holder, int position)
     {
         // TODO: Move this to the ViewHolder? holder.bind() or some such
         final HandyNotificationViewModel notificationViewModel = getItem(position);
@@ -169,7 +169,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    public class NotificationViewHolder extends RecyclerView.ViewHolder
     {
         public HandyNotificationViewModel mItem;
         public final View mView;
@@ -189,7 +189,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         @Bind(R.id.notification_card_divider)
         public FrameLayout divider;
 
-        public ViewHolder(View view)
+        public NotificationViewHolder(View view)
         {
             super(view);
             mView = view;
