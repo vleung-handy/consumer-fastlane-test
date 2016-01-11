@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button
+    android:id="@+id/notification_card_cta_button_template"
+    style="@style/HandyNotification.Button"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/layout_handy_notification_reminder"
+    tools:text="Call"
+    />
+

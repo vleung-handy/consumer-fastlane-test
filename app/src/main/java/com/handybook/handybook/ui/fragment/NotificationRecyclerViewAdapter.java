@@ -43,6 +43,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
+        // TODO: Move this to the ViewHolder? holder.bind() or some such
         final HandyNotificationViewModel notificationViewModel = getItem(position);
         holder.mItem = notificationViewModel;
         // Title
@@ -80,11 +81,13 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         holder.buttonContainer.removeAllViews();
         for (final HandyNotification.Action action : notificationViewModel.getButtonActions())
         {
-            Button button = new Button(holder.mView.getContext());
+            Button button = (Button) View.inflate(
+                    holder.mView.getContext(),
+                    R.layout.layout_handy_notification_cta_button,
+                    null
+            );
             holder.buttonContainer.addView(button);
-            button.setLayoutParams(holder.templateCtaButton.getLayoutParams());
             button.setText(action.getText());
-            // TODO: Implement onClick behaviour
             button.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -105,12 +108,14 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         holder.linkContainer.removeAllViews();
         for (final HandyNotification.Action action : notificationViewModel.getLinkActions())
         {
-            TextView textview = new TextView(holder.mView.getContext());
-            holder.linkContainer.addView(textview);
-            textview.setLayoutParams(holder.templateCta.getLayoutParams());
-            textview.setText(action.getText());
-            // TODO: Implement onClick behaviour
-            textview.setOnClickListener(new View.OnClickListener()
+            TextView textView = (TextView) View.inflate(
+                    holder.mView.getContext(),
+                    R.layout.layout_handy_notification_cta_link,
+                    null
+            );
+            holder.linkContainer.addView(textView);
+            textView.setText(action.getText());
+            textView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(final View v)
@@ -181,10 +186,6 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         public LinearLayout buttonContainer;
         @Bind(R.id.notification_card_timestamp)
         public TextView timestamp;
-        @Bind(R.id.notification_card_cta_button_template)
-        public Button templateCtaButton;
-        @Bind(R.id.notification_card_cta_template)
-        public TextView templateCta;
         @Bind(R.id.notification_card_divider)
         public FrameLayout divider;
 

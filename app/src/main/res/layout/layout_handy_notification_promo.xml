@@ -79,16 +79,8 @@
                     android:showDividers="middle"
                     >
 
-                    <Button
-                        android:id="@+id/notification_card_cta_button_template"
-                        style="@style/HandyNotification.Button"
-                        tools:text="Call"
-                        />
+                    <include layout="@layout/layout_handy_notification_cta_button"/>
 
-                    <Button
-                        style="@style/HandyNotification.Button"
-                        tools:text="Call"
-                        />
                 </LinearLayout>
             </LinearLayout>
 
