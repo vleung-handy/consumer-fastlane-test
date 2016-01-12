@@ -1,7 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +20,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.adapter.BookingCardAdapter;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
@@ -123,21 +121,6 @@ public class BookingListFragment extends InjectedFragment
     {
         super.onStop();
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public final void onActivityResult(
-            final int requestCode,
-            final int resultCode,
-            final Intent data
-    )
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ActivityResult.BOOKING_UPDATED
-                || resultCode == ActivityResult.BOOKING_CANCELED)
-        {
-            loadBookings();
-        }
     }
 
     @Nullable
@@ -246,7 +229,7 @@ public class BookingListFragment extends InjectedFragment
         loadBookings();
     }
 
-    private void loadBookings()
+    protected void loadBookings()
     {
         mSwipeRefreshLayout.setRefreshing(true);
         String onlyBookingValues = null;

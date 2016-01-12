@@ -16,6 +16,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
@@ -58,6 +59,17 @@ public class BookingsFragment extends InjectedFragment
     public static BookingsFragment newInstance()
     {
         return new BookingsFragment();
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == ActivityResult.BOOKING_UPDATED
+                || resultCode == ActivityResult.BOOKING_CANCELED)
+        {
+            mTabAdapter.reloadFragments();
+        }
     }
 
     @Override
@@ -138,6 +150,14 @@ public class BookingsFragment extends InjectedFragment
             fragments.add(
                     BookingListFragment.newInstance(BookingCardViewModel.List.TYPE_PAST)
             );
+        }
+
+        public void reloadFragments()
+        {
+            for (BookingListFragment fragment : fragments)
+            {
+                fragment.loadBookings();
+            }
         }
 
         @Override

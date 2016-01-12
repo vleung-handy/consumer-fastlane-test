@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.viewmodel.BookingCardRowViewModel;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.HandySnackbar;
 
 import java.util.ArrayList;
@@ -68,11 +69,11 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
                 @Override
                 public void onClick(View v)
                 {
-                    Activity activity = (Activity) mContext;
+                    BaseActivity activity = (BaseActivity) mContext;
                     final Intent intent = new Intent(mContext, BookingDetailActivity.class);
                     intent.putExtra(BundleKeys.BOOKING, model.getBooking());
-                    activity.startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
-
+                    activity.startActivityFromFragmentForResult(intent,
+                            ActivityResult.BOOKING_UPDATED);
                 }
             });
             mBookingRowContainer.addView(bookingCardRowView);
@@ -133,8 +134,8 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
         {
             final Intent intent = new Intent(mContext, BookingEditFrequencyActivity.class);
             intent.putExtra(BundleKeys.BOOKING, getMasterBookingFromCardViewModel());
-            Activity activity = (Activity) mContext;
-            activity.startActivity(intent);
+            BaseActivity activity = (BaseActivity) mContext;
+            activity.startActivityFromFragmentForResult(intent, ActivityResult.BOOKING_UPDATED);
         }
     };
 

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -319,7 +320,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
 
     public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener)
     {
-        this.mOnBackPressedListener = onBackPressedListener;
+        mOnBackPressedListener = onBackPressedListener;
+    }
+
+    public void startActivityFromFragmentForResult(final Intent intent, final int requestCode)
+    {
+        final Fragment fragment =
+                getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        fragment.startActivityForResult(intent, requestCode);
     }
 
     public interface OnBackPressedListener
