@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -11,7 +12,8 @@ import com.handybook.handybook.constant.BundleKeys;
 
 public class DeeplinkHandler
 {
-    public static boolean handleDeeplink(final Context context, final Bundle arguments)
+    public static boolean handleDeeplink(@NonNull final Context context,
+                                         @NonNull final Bundle arguments)
     {
         final String deeplink = arguments.getString(BundleKeys.DEEPLINK);
         if (deeplink == null)

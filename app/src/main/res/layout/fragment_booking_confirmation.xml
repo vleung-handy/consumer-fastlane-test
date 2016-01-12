@@ -1,69 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg"
+    >
 
     <Button
         android:id="@+id/next_button"
+        style="@style/Button.Green"
         android:text="@string/next"
-        style="@style/Button.Green" />
+        />
 
     <TextView
         android:id="@+id/nav_text"
+        style="@style/TextView.Navbar"
         android:text="@string/confirmation"
-        style="@style/TextView.Navbar" />
+        />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/next_button"
         android:layout_below="@id/nav_text"
-        android:layout_above="@id/next_button">
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/default_margin">
+            android:paddingTop="@dimen/default_margin"
+            >
 
             <TextView
                 android:id="@+id/header_text"
+                style="@style/TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:freezesText="false"
+                android:gravity="center"
                 android:paddingLeft="@dimen/default_margin"
                 android:paddingRight="@dimen/default_margin"
                 android:text="@string/payment_confirmed"
-                android:gravity="center"
-                android:freezesText="false"
-                style="@style/TextView" />
+                />
 
             <com.handybook.handybook.ui.widget.PasswordInputTextView
-                android:id="@+id/pwd_text"
-                android:layout_below="@id/header_text"
+                android:id="@+id/password_text"
+                style="@style/EditText.Last.Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/header_text"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:visibility="gone"
-                style="@style/EditText.Last.Password" />
+                tools:visibility="visible"
+                />
 
             <LinearLayout
                 android:id="@+id/options_layout"
-                android:layout_below="@id/header_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/header_text"
                 android:layout_marginBottom="@dimen/default_margin"
+                android:background="@color/white"
                 android:orientation="vertical"
-                android:background="@color/white" />
+                />
 
             <com.handybook.handybook.ui.widget.BasicInputTextView
                 android:id="@+id/keys_text"
-                android:layout_below="@id/options_layout"
+                style="@style/EditText.Last"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/options_layout"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:singleLine="true"
                 android:visibility="gone"
-                style="@style/EditText.Last" />
+                tools:visibility="visible"
+                />
+
+            <com.handybook.handybook.ui.widget.InstructionsLayout
+                android:id="@+id/instructions_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/options_layout"
+                />
 
         </RelativeLayout>
 

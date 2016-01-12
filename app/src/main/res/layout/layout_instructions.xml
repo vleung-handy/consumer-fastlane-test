@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_margin"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/border_dark_grey_bottom"
+        android:gravity="center"
+        android:padding="@dimen/default_padding"
+        android:textAppearance="@style/TextView.Medium"
+        android:textColor="@color/handy_tertiary_gray"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:id="@+id/checklists_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:orientation="vertical"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

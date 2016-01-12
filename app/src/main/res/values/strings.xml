@@ -75,9 +75,8 @@
     <string name="will_be_home">I’ll be home</string>
     <string name="doorman">Doorman</string>
     <string name="will_hide_key">I’ll hide the key</string>
-    <string name="pro_to_know">Anything you’d like your \nprofessional to know?</string>
     <string name="finish">Finish</string>
-    <string name="additional_pro_info">e.g, Focus on or skip specific rooms or surfaces, or other special requests.</string>
+    <string name="additional_pro_info_hint">(optional) Any specific preferences or areas to focus on?</string>
     <string name="where_hide_key">Where will you hide the key?</string>
     <string name="use_your_pwd">Use your password to log in and \nmanage your bookings.</string>
     <string name="how_often">How Often?</string>
@@ -136,7 +135,6 @@
     <string name="entry_info">Entry Information</string>
     <string name="preferences">Preferences</string>
     <string name="total">Total</string>
-    <string name="pro_note">Note to Professional</string>
     <string name="what_need_help_with">What do you need \nhelp with?</string>
     <string name="what_can_help_with">What can we help with?</string>
     <string name="related_faq">Related FAQs</string>
@@ -177,7 +175,7 @@
     <string name="tip_success_message_formatted">Thanks for tipping %1$s!</string>
     <string name="set_dropoff">Set Drop-Off</string>
     <string name="email_receipt">Email Receipt</string>
-    <string name="updated_note_to_pro">Note to pro updated</string>
+    <string name="updated_preferences">Preferences updated</string>
     <string name="updated_entry_information">Entry information updated</string>
     <string name="pro_entry_information">How will your professional get in?</string>
     <string name="pro_assignment_pending">Assignment pending</string>
@@ -304,7 +302,8 @@
     <string name="updated_booking_address">Updated booking address</string>
     <string name="booking_edit_update_will_apply_subsequent_bookings">Your update will apply to all subsequent bookings.</string>
     <string name="booking_edit_address_title">Edit Address</string>
-    <string name="booking_edit_note_to_pro_title">Edit Note to Pro</string>
+    <string name="booking_edit_preferences_title">Edit Preferences</string>
+    <string name="booking_edit_preferences_subtitle">Add a note to your professional</string>
     <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
     <string name="android_pay_unavailable">Android Pay is unavailable</string>
     <string name="enter_credit_card">Enter a Credit Card</string>

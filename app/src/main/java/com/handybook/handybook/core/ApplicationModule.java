@@ -9,28 +9,40 @@ import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditNoteToProActivity;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditAddressFragment;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditEntryInformationFragment;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditExtrasFragment;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditFrequencyFragment;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditHoursFragment;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditNoteToProFragment;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
+import com.handybook.handybook.data.BaseDataManager;
+import com.handybook.handybook.data.BaseDataManagerErrorHandler;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.DataManagerErrorHandler;
+import com.handybook.handybook.data.HandyRetrofitEndpoint;
+import com.handybook.handybook.data.HandyRetrofitService;
+import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.data.PropertiesReader;
+import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
+import com.handybook.handybook.helpcenter.manager.HelpManager;
+import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.ServicesManager;
+import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
+import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
@@ -42,7 +54,10 @@ import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivit
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
+import com.handybook.handybook.ui.activity.SplashActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
+import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingCancelOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingConfirmationFragment;
@@ -57,6 +72,12 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditAddressFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditEntryInformationFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditExtrasFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditFrequencyFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditHoursFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditPreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingListFragment;
@@ -68,11 +89,18 @@ import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragm
 import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.EmailCancellationDialogFragment;
+import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
+import com.handybook.handybook.ui.fragment.LoginFragment;
+import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
+import com.handybook.handybook.ui.fragment.NavigationFragment;
+import com.handybook.handybook.ui.fragment.OnboardFragment;
+import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingTableFragment;
-import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.ui.fragment.ProfileFragment;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
@@ -200,12 +228,12 @@ import retrofit.converter.GsonConverter;
         BookingDetailSectionFragmentEntryInformation.class,
         BookingDetailSectionFragmentExtras.class,
         BookingDetailSectionFragmentLaundry.class,
-        BookingDetailSectionFragmentNoteToPro.class,
+        BookingDetailSectionFragmentPreferences.class,
         BookingDetailSectionFragmentPayment.class,
         BookingDetailSectionFragmentProInformation.class,
         BookingDetailSectionFragmentBookingActions.class,
-        BookingEditNoteToProActivity.class,
-        BookingEditNoteToProFragment.class,
+        BookingEditPreferencesActivity.class,
+        BookingEditPreferencesFragment.class,
         BookingEditEntryInformationActivity.class,
         BookingEditEntryInformationFragment.class,
         BookingEditFrequencyActivity.class,
@@ -228,7 +256,8 @@ import retrofit.converter.GsonConverter;
         UpdatePaymentFragment.class,
         NavbarWebViewDialogFragment.class,
         ServiceCategoriesOverlayFragment.class,
-        SplashPromoDialogFragment.class
+        SplashPromoDialogFragment.class,
+        PushReceiver.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
@@ -378,10 +407,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final BookingManager provideBookingManager(
-            final Bus bus,
-            final PrefsManager prefsManager,
-            final DataManager dataManager
+    final BookingManager provideBookingManager(final Bus bus,
+                                               final PrefsManager prefsManager,
+                                               final DataManager dataManager
     )
     {
         return new BookingManager(bus, prefsManager, dataManager);
@@ -446,20 +474,18 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final NavigationManager provideNavigationManager(
-            final UserManager userManager,
-            final DataManager dataManager,
-            final DataManagerErrorHandler dataManagerErrorHandler)
+    final NavigationManager provideNavigationManager(final UserManager userManager,
+                                                     final DataManager dataManager,
+                                                     final DataManagerErrorHandler dataManagerErrorHandler)
     {
         return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
     }
 
     @Provides
     @Singleton
-    final HelpManager provideHelpManager(
-            final Bus bus,
-            final DataManager dataManager,
-            final UserManager userManager
+    final HelpManager provideHelpManager(final Bus bus,
+                                         final DataManager dataManager,
+                                         final UserManager userManager
     )
     {
         return new HelpManager(bus, dataManager, userManager);
@@ -467,9 +493,8 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HelpContactManager provideHelpContactManager(
-            final Bus bus,
-            final DataManager dataManager
+    final HelpContactManager provideHelpContactManager(final Bus bus,
+                                                       final DataManager dataManager
     )
     {
         return new HelpContactManager(bus, dataManager);
