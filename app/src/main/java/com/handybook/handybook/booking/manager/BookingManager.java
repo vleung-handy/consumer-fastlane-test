@@ -57,12 +57,13 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestPreBookingPromo(HandyEvent.RequestPreBookingPromo event)
     {
-        dataManager.getPreBookingPromo(event.getPromoCode(), new DataManager.Callback<PromoCode>() {
+        dataManager.getPreBookingPromo(event.getPromoCode(), new DataManager.Callback<PromoCode>()
+        {
             @Override
             public void onSuccess(final PromoCode response)
             {
                 //this is the logic in the direct callback in PromosFragment
-                if(response.getType() == PromoCode.Type.COUPON)
+                if (response.getType() == PromoCode.Type.COUPON)
                 {
                     /*
                     need to set this in the manager because the fragments of the
@@ -330,10 +331,20 @@ public class BookingManager implements Observer
         }
         else
         {
-            if ((transaction = BookingTransaction
-                    .fromJson(prefsManager.getString(PrefsKey.BOOKING_TRANSACTION))) != null)
+            final String transactionJson = prefsManager.getString(PrefsKey.BOOKING_TRANSACTION);
+            Crashlytics.log("Transaction JSON is " + transactionJson);
+            if (transactionJson == null)
+            {
+                return null;
+            }
+            transaction = BookingTransaction.fromJson(transactionJson);
+            if (transaction != null)
             {
                 transaction.addObserver(this);
+            }
+            else
+            {
+                Crashlytics.log("Transaction object is null");
             }
             return transaction;
         }
