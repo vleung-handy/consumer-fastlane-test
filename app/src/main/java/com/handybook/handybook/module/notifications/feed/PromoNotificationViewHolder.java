@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -46,13 +48,13 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
         ButterKnife.bind(this, mView);
     }
 
-    public static PromoNotificationViewHolder newInstance(@NonNull final View parentView)
+    public static PromoNotificationViewHolder newInstance(@NonNull final ViewGroup parentView)
     {
         return new PromoNotificationViewHolder(
-                View.inflate(
-                        parentView.getContext(),
+                LayoutInflater.from(parentView.getContext()).inflate(
                         R.layout.layout_handy_notification_promo,
-                        null
+                        parentView,
+                        false
                 )
         );
     }
