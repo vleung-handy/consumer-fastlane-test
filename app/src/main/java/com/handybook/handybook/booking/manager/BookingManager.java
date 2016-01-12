@@ -10,6 +10,7 @@ import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.PrefsKey;
@@ -52,6 +53,33 @@ public class BookingManager implements Observer
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers
     // and provide a layer for data access
+
+    @Subscribe
+    public void onRequestPreBookingPromo(HandyEvent.RequestPreBookingPromo event)
+    {
+        dataManager.getPreBookingPromo(event.getPromoCode(), new DataManager.Callback<PromoCode>() {
+            @Override
+            public void onSuccess(final PromoCode response)
+            {
+                //this is the logic in the direct callback in PromosFragment
+                if(response.getType() == PromoCode.Type.COUPON)
+                {
+                    /*
+                    need to set this in the manager because the fragments of the
+                    subscribers might be dead when this response comes back
+                     */
+                    setPromoTabCoupon(response.getCode());
+                }
+                bus.post(new HandyEvent.ReceivePreBookingPromoSuccess(response));
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
+                bus.post(new HandyEvent.ReceivePreBookingPromoError(error));
+            }
+        });
+    }
 
     @Subscribe
     public void onRequestPreRescheduleInfo(HandyEvent.RequestPreRescheduleInfo event)

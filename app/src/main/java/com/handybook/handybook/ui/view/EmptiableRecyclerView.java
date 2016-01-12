@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class EmptyRecyclerView extends RecyclerView
+public class EmptiableRecyclerView extends RecyclerView
 {
     private View mEmptyView;
 
@@ -30,18 +30,18 @@ public class EmptyRecyclerView extends RecyclerView
         }
     };
 
-    public EmptyRecyclerView(final Context context)
+    public EmptiableRecyclerView(final Context context)
     {
         super(context);
     }
 
-    public EmptyRecyclerView(final Context context, final AttributeSet attrs)
+    public EmptiableRecyclerView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
     }
 
 
-    public EmptyRecyclerView(final Context context, final AttributeSet attrs, final int defStyle)
+    public EmptiableRecyclerView(final Context context, final AttributeSet attrs, final int defStyle)
     {
         super(context, attrs, defStyle);
     }

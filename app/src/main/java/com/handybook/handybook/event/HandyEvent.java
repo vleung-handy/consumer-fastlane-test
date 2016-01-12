@@ -4,22 +4,25 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
 import com.handybook.handybook.analytics.annotation.Track;
-import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.core.SuccessWrapper;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
-import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
+import com.handybook.handybook.core.SuccessWrapper;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.stripe.android.model.Token;
 
 import java.util.List;
@@ -58,6 +61,58 @@ public abstract class HandyEvent
                 return mOnlyBookingValue;
             }
         }
+
+
+        public static class HandyNotificationsEvent extends RequestEvent
+        {
+            private static final long USER_ID_FOR_LOGGED_OUT_USERS = 0;
+
+            final long mUserId;
+            final Long mSinceId;
+            final Long  mUntilId;
+            final Long  mCount;
+
+            public HandyNotificationsEvent(
+                    final long userId,
+                    final Long sinceId,
+                    final Long untilId,
+                    final Long count
+            )
+            {
+                mUserId = userId;
+                mSinceId = sinceId;
+                mUntilId = untilId;
+                mCount = count;
+            }
+
+            public HandyNotificationsEvent(final Long count, final Long untilId, final Long sinceId)
+            {
+                mUserId = USER_ID_FOR_LOGGED_OUT_USERS;
+                mCount = count;
+                mUntilId = untilId;
+                mSinceId = sinceId;
+            }
+
+            public long getUserId()
+            {
+                return mUserId;
+            }
+
+            public Long getSinceId()
+            {
+                return mSinceId;
+            }
+
+            public Long getUntilId()
+            {
+                return mUntilId;
+            }
+
+            public Long getCount()
+            {
+                return mCount;
+            }
+        }
     }
 
 
@@ -93,8 +148,26 @@ public abstract class HandyEvent
             }
         }
 
-    }
 
+        public static class HandyNotificationsSuccess extends ResponseEvent<HandyNotification.ResultSet>
+        {
+            public HandyNotificationsSuccess(final HandyNotification.ResultSet payload)
+            {
+                super(payload);
+            }
+        }
+
+
+        public static class HandyNotificationsError extends ResponseEvent<DataManager.DataManagerError>
+        {
+            public HandyNotificationsError(final DataManager.DataManagerError payload)
+            {
+                super(payload);
+            }
+        }
+
+
+    }
 
     public abstract static class RequestBookingActionEvent extends RequestEvent
     {
@@ -697,6 +770,23 @@ public abstract class HandyEvent
         }
     }
 
+    public static class ReceiveAvailableSplashPromoSuccess extends ReceiveSuccessEvent
+    {
+        public final SplashPromo splashPromo;
+        public ReceiveAvailableSplashPromoSuccess(final SplashPromo splashPromo)
+        {
+            this.splashPromo = splashPromo;
+        }
+    }
+
+    public static class ReceiveAvailableSplashPromoError extends ReceiveErrorEvent
+    {
+        public ReceiveAvailableSplashPromoError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
     public static class RequestServices {}
 
     public static class ReceiveServicesSuccess extends ReceiveSuccessEvent
@@ -729,6 +819,45 @@ public abstract class HandyEvent
             this.error = error;
         }
     }
+
+    public static class RequestPreBookingPromo extends RequestEvent
+    {
+        private String mPromoCode;
+
+        public RequestPreBookingPromo(String promoCode)
+        {
+            mPromoCode = promoCode;
+        }
+
+        public String getPromoCode()
+        {
+            return mPromoCode;
+        }
+    }
+
+    public static class ReceivePreBookingPromoSuccess extends ReceiveSuccessEvent
+    {
+        private PromoCode mPromoCode;
+
+        public ReceivePreBookingPromoSuccess(final PromoCode promoCode)
+        {
+            mPromoCode = promoCode;
+        }
+
+        public PromoCode getPromoCode()
+        {
+            return mPromoCode;
+        }
+    }
+
+    public static class ReceivePreBookingPromoError extends ReceiveErrorEvent
+    {
+        public ReceivePreBookingPromoError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
 
     @Track("add booking fab clicked")
     public static class AddBookingButtonClicked {}

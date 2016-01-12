@@ -34,4 +34,5 @@
     <dimen name="select_payment_horizontal_padding">40dp</dimen>
     <dimen name="select_payment_button_gap">10dp</dimen>
     <dimen name="select_payment_button_height">48dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
 </resources>

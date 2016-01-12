@@ -26,6 +26,18 @@
             android:contentDescription="@string/app_name"
             android:padding="@dimen/default_logo_padding"
             android:src="@drawable/ic_home_logo"/>
+
+        <!--not supported for now-->
+        <!--<ImageButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/ib_notification_feed"-->
+            <!--android:background="?android:attr/selectableItemBackground"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_margin="@dimen/default_margin_half"-->
+            <!--android:contentDescription="@string/cd_notification_feed_button"-->
+            <!--android:padding="@dimen/default_logo_padding"-->
+            <!--android:src="@drawable/ic_notification_button_unfollow"/>-->
     </RelativeLayout>
 
     <ScrollView

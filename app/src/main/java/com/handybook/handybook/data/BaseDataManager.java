@@ -1,15 +1,16 @@
 package com.handybook.handybook.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
+import com.handybook.handybook.booking.model.BookingOptionsWrapper;
+import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
@@ -29,13 +30,19 @@ import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -216,6 +223,12 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
+    public void getAvailableSplashPromo(final String userId, final Callback<SplashPromo> cb)
+    {
+        mService.getAvailableSplashPromo(userId, new AvailableSplashPromoRetrofitCallback(cb));
+    }
+
+    @Override
     public void editBookingAddress(final int bookingId,
                                    final BookingEditAddressRequest bookingEditAddressRequest,
                                    final Callback<SuccessWrapper> cb)
@@ -271,6 +284,24 @@ public final class BaseDataManager extends DataManager
                         blockedWrapperCallback.onSuccess(blockedWrapper);
                     }
                 });
+    }
+
+    @Override
+    public void getNotifications(
+            long userId,
+            @Nullable final Long count,
+            @Nullable final Long sinceId,
+            @Nullable final Long untilId,
+            @NonNull final Callback<HandyNotification.ResultSet> cb
+    )
+    {
+        mService.getNotificationResultSet(
+                userId,
+                count,
+                sinceId,
+                untilId,
+                new HandyNotificationResultSetHandyRetrofitCallback(cb)
+        );
     }
 
     @Override

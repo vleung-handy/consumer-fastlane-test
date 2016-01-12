@@ -12,6 +12,15 @@
         <item name="android:colorBackground">@color/handy_white</item>
     </style>
 
+    <style name="Theme.Base.AppBarOverlay">
+
+    </style>
+
+
+    <style name="Theme.Base.PopupOverlay">
+
+    </style>
+
     <style name="ContentLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -596,6 +605,73 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:padding">@dimen/default_padding</item>
+    </style>
+
+    <style name="HandyNotification">
+    </style>
+
+    <style name="HandyNotification.Root">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="HandyNotification.Text">
+
+    </style>
+
+    <style name="HandyNotification.TextView.Body" parent="TextView.Medium">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="HandyNotification.TextView.Title" parent="TextView.Large">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="HandyNotification.Container"></style>
+
+    <style name="HandyNotification.Container.LinearLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+        <item name="android:layout_marginLeft">@dimen/default_margin</item>
+        <item name="android:layout_marginRight">@dimen/default_margin</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="HandyNotification.Container.Card">
+    </style>
+
+    <style name="HandyNotification.Image">
+    </style>
+
+    <style name="HandyNotification.Image.Icon">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_marginRight">@dimen/default_margin_half</item>
+    </style>
+
+    <style name="HandyNotification.Image.Promo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">160dp</item>
+    </style>
+
+    <style name="HandyNotification.Button" parent="Button.BookingAction.Blue.Empty">
+        <item name="android:layout_marginTop">@dimen/default_margin_half</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="HandyNotification.TextView.Timestamp" parent="TextView.Small">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/handy_text_gray</item>
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+        <item name="android:layout_marginBottom">20dp</item>
     </style>
 
     <string name="name">Name</string>

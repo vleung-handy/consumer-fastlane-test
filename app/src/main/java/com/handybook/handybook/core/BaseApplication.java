@@ -2,14 +2,17 @@ package com.handybook.handybook.core;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
+import com.handybook.handybook.R;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
@@ -17,10 +20,15 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
+import com.urbanairship.AirshipConfigOptions;
+import com.urbanairship.UAirship;
+import com.urbanairship.push.notifications.DefaultNotificationFactory;
 
 import java.util.Properties;
 
@@ -63,9 +71,15 @@ public class BaseApplication extends MultiDexApplication
     @Inject
     UserDataManager userDataManager;
     @Inject
+    NotificationManager mNotificationManager;
+    @Inject
     UrbanAirshipManager urbanAirshipManager;
     @Inject
     Properties properties;
+    @Inject
+    DeepLinkIntentProvider mDeepLinkIntentProvider;
+    @Inject
+    SplashNotificationManager mSplashNotificationManager;
     @Inject
     BookingEditManager bookingEditManager;
     @Inject
@@ -76,7 +90,22 @@ public class BaseApplication extends MultiDexApplication
     {
         super.onCreate();
         createObjectGraph();
-        Fabric.with(this, new Crashlytics());
+        initFabric();
+        final AirshipConfigOptions options = setupUrbanAirshipConfig();
+        UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
+        {
+            @Override
+            public void onAirshipReady(final UAirship airship)
+            {
+                final DefaultNotificationFactory defaultNotificationFactory =
+                        new DefaultNotificationFactory(getApplicationContext());
+                defaultNotificationFactory.setColor(getResources().getColor(R.color.handy_blue));
+                defaultNotificationFactory.setSmallIconId(R.drawable.ic_notification);
+                airship.getPushManager().setNotificationFactory(defaultNotificationFactory);
+                airship.getPushManager().setPushEnabled(false);
+                airship.getPushManager().setUserNotificationsEnabled(false);
+            }
+        });
 
         CalligraphyConfig.initDefault(
                 new CalligraphyConfig.Builder()
@@ -98,6 +127,7 @@ public class BaseApplication extends MultiDexApplication
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
             mixpanel.trackEventAppTrackInstall();
         }
+        //TODO: is there a way to register onResumeFragments?
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             @Override
@@ -161,6 +191,18 @@ public class BaseApplication extends MultiDexApplication
         });
     }
 
+    private void initFabric()
+    {
+        Fabric.with(this, new Crashlytics());
+        Crashlytics.setUserIdentifier(
+                Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID)
+        );
+        User currentUser = userManager.getCurrentUser();
+        if (currentUser != null){
+            Crashlytics.setUserEmail(currentUser.getEmail());
+        }
+    }
+
     public final void inject(final Object object)
     {
         graph.inject(object);
@@ -185,6 +227,13 @@ public class BaseApplication extends MultiDexApplication
                 }
             });
         }
+    }
+
+    protected AirshipConfigOptions setupUrbanAirshipConfig()
+    {
+        AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
+        options.inProduction = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD);
+        return options;
     }
 
     protected void createObjectGraph()

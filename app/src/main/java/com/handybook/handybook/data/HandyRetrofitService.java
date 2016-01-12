@@ -28,6 +28,9 @@ import retrofit.mime.TypedInput;
 
 public interface HandyRetrofitService
 {
+    @GET("/promos")
+    void getAvailableSplashPromo(@Query("user_id") String userId, HandyRetrofitCallback cb);
+
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(@Path("id") int bookingId,
                             @Body BookingEditAddressRequest bookingEditAddressRequest,
@@ -222,6 +225,16 @@ public interface HandyRetrofitService
     @PUT("/users/{user_id}/update_credit_card")
     void updatePaymentInfo(@Path("user_id") String userId, @Query("stripe_token") String token,
                            HandyRetrofitCallback cb);
+
+    // Notification Feed
+    @GET("/users/{user_id}/notifications")
+    void getNotificationResultSet(
+            @Path("user_id") long userId,
+            @Query("count") Long count,
+            @Query("since_id") Long sinceId,
+            @Query("until_id") Long untilId,
+            HandyRetrofitCallback cb
+            );
 
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);

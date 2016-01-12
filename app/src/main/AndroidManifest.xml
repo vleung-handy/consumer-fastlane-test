@@ -126,7 +126,7 @@
         <activity android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"/>
         <activity android:name=".booking.ui.activity.BookingCancelOptionsActivity"/>
         <activity android:name=".booking.ui.activity.PeakPricingActivity"/>
-        <activity android:name=".booking.ui.fragment.PromosActivity"/>
+        <activity android:name=".booking.ui.activity.PromosActivity"/>
         <activity android:name=".ui.activity.OnboardActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
         <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
@@ -141,13 +141,24 @@
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
             />
+        <!--Required by the DeepLinkDispatch library-->
+        <activity
+            android:name="com.airbnb.deeplinkdispatch.DeepLinkActivity"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="handybook" />
+                <!--TODO: parameterize the scheme?-->
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
-        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
 
         <!-- Used for install referrer tracking by Yozio-->
         <receiver
@@ -213,8 +224,19 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
+        <activity
+            android:label="@string/title_activity_notification_feed"
+            android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
+            android:parentActivityName=".booking.ui.activity.ServicesActivity"
+            android:theme="@style/Theme.Base">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.handybook.handybook.booking.ui.activity.ServicesActivity"/>
+        </activity>
+
         <!-- REQUIRED for Urban Airship Landing Pages
-            - For more customization details, see com.urbanairship.actions.LandingPageActivity -->
+           - For more customization details, see com.urbanairship.actions.LandingPageActivity -->
         <activity
             android:name="com.urbanairship.actions.LandingPageActivity"
             android:exported="false"

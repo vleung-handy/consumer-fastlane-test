@@ -16,6 +16,12 @@
 #   public *;
 #}
 
+#DeepLinkDispatch library
+-keep class com.airbnb.deeplinkdispatch.** { *; }
+-keepclasseswithmembers class * {
+     @com.airbnb.deeplinkdispatch.DeepLink <methods>;
+}
+
 -keepattributes EnclosingMethod, InnerClasses
 
 -dontshrink  #currently having compile issues

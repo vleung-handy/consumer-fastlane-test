@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -25,10 +26,15 @@ import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
+import com.handybook.handybook.core.RequiredModalsEventListener;
+import com.handybook.handybook.core.RequiredModalsLauncher;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
+import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Bus;
@@ -40,7 +46,7 @@ import javax.inject.Inject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public abstract class BaseActivity extends AppCompatActivity
+public abstract class BaseActivity extends AppCompatActivity implements RequiredModalsLauncher
 {
     private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
     private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
@@ -59,6 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity
     NavigationManager mNavigationManager;
     @Inject
     Bus mBus;
+    private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
 
     //Public Properties
@@ -73,6 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         Yozio.initialize(this);
         ((BaseApplication) this.getApplication()).inject(this);
+        mRequiredModalsEventListener = new RequiredModalsEventListener(this);
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)
                 && !BuildConfig.DEBUG)
         {
@@ -101,6 +109,23 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResumeFragments()
+    {
+        super.onResumeFragments();
+        mBus.register(mRequiredModalsEventListener);
+        mBus.post(new ActivityEvent.FragmentsResumed(this));
+        //can't put this in BaseApplication where activity lifecycle callbacks are registered
+        //because this is only for FragmentActivity
+    }
+
+    @Override
+    protected void onPause()
+    {
+        mBus.unregister(mRequiredModalsEventListener);
+        super.onPause();
+    }
+
+    @Override
     protected void onPostResume()
     {
         super.onPostResume();
@@ -112,6 +137,27 @@ public abstract class BaseActivity extends AppCompatActivity
     {
         mMixpanel.flush();
         super.onDestroy();
+    }
+
+    @Override
+    public void showBlockingScreen()
+    {
+        Intent launchBlockingActivity = new Intent(this, BlockingActivity.class);
+        launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(launchBlockingActivity);
+        finish();
+    }
+
+    @Override
+    public void showSplashPromo(@NonNull SplashPromo splashPromo)
+    {
+        if(splashPromo.shouldDisplay())
+        {
+            SplashPromoDialogFragment splashPromoDialogFragment =
+                    SplashPromoDialogFragment.newInstance(splashPromo);
+            FragmentUtils.safeLaunchDialogFragment(splashPromoDialogFragment, this, SplashPromoDialogFragment.class.getSimpleName());
+        }
     }
 
     private void showRequiredUserModals()
