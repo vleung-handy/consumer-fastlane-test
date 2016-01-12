@@ -1,19 +1,21 @@
 package com.handybook.handybook.booking.ui.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public final class BookingDetailActivity extends MenuDrawerActivity
 {
 
     @Override
-    protected final Fragment createFragment() {
+    protected final Fragment createFragment()
+    {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
         if (booking != null)
         {
@@ -27,15 +29,23 @@ public final class BookingDetailActivity extends MenuDrawerActivity
     }
 
     @Override
-    protected final String getNavItemTitle() {
+    protected final String getNavItemTitle()
+    {
         return null;
     }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         disableDrawer = true;
-        super.setOnBackPressedListener(onBackPressed);
+
+        final ComponentName callingActivity = getCallingActivity();
+        if (callingActivity == null || callingActivity.getClassName() == null ||
+                !callingActivity.getClassName().equals(BookingsActivity.class.getName()))
+        {
+            super.setOnBackPressedListener(onBackPressed);
+        }
     }
 
     //Always return to mybookings page even if you came from somewhere else

@@ -1,7 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +20,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.adapter.BookingCardAdapter;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
-import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
@@ -112,7 +110,6 @@ public class BookingListFragment extends InjectedFragment
         // as in: http://stackoverflow.com/a/26860930/486332
         getActivity().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
         mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
-        mSwipeRefreshLayout.setRefreshing(true);
         if (!mBookingsWereReceived)
         {
             loadBookings();
@@ -124,21 +121,6 @@ public class BookingListFragment extends InjectedFragment
     {
         super.onStop();
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public final void onActivityResult(
-            final int requestCode,
-            final int resultCode,
-            final Intent data
-    )
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ActivityResult.BOOKING_UPDATED
-                || resultCode == ActivityResult.BOOKING_CANCELED)
-        {
-            loadBookings();
-        }
     }
 
     @Nullable
@@ -217,20 +199,13 @@ public class BookingListFragment extends InjectedFragment
         }
     }
 
-/* TODO: Seems like this is not needed anymore
-    @Subscribe
-    public void onReceiveBookingsSuccess(HandyEvent.ReceiveBookingsSuccess event)
-    {
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-*/
-
     @Subscribe
     public void onModelsReceived(@NonNull final HandyEvent.ResponseEvent.BookingCardViewModels e)
     {
         if (e.getPayload().getType() == mListType)
         {
             mSwipeRefreshLayout.setRefreshing(false);
+            mBookingsWereReceived = true;
             mBookingCardViewModels.clear();
             mBookingCardViewModels.addAll(e.getPayload());
             initialize();
@@ -254,7 +229,7 @@ public class BookingListFragment extends InjectedFragment
         loadBookings();
     }
 
-    private void loadBookings()
+    protected void loadBookings()
     {
         mSwipeRefreshLayout.setRefreshing(true);
         String onlyBookingValues = null;

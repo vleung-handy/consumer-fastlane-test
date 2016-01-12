@@ -152,7 +152,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Override
     public void showSplashPromo(@NonNull SplashPromo splashPromo)
     {
-        if(splashPromo.shouldDisplay())
+        if (splashPromo.shouldDisplay())
         {
             SplashPromoDialogFragment splashPromoDialogFragment =
                     SplashPromoDialogFragment.newInstance(splashPromo);
@@ -319,7 +319,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
 
     public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener)
     {
-        this.mOnBackPressedListener = onBackPressedListener;
+        mOnBackPressedListener = onBackPressedListener;
     }
 
     public interface OnBackPressedListener

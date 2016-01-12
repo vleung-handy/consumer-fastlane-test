@@ -68,11 +68,10 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
                 @Override
                 public void onClick(View v)
                 {
-                    Activity activity = (Activity) mContext;
                     final Intent intent = new Intent(mContext, BookingDetailActivity.class);
                     intent.putExtra(BundleKeys.BOOKING, model.getBooking());
+                    Activity activity = (Activity) mContext;
                     activity.startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
-
                 }
             });
             mBookingRowContainer.addView(bookingCardRowView);
@@ -134,7 +133,7 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
             final Intent intent = new Intent(mContext, BookingEditFrequencyActivity.class);
             intent.putExtra(BundleKeys.BOOKING, getMasterBookingFromCardViewModel());
             Activity activity = (Activity) mContext;
-            activity.startActivity(intent);
+            activity.startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
         }
     };
 
