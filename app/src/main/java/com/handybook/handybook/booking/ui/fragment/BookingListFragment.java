@@ -112,7 +112,6 @@ public class BookingListFragment extends InjectedFragment
         // as in: http://stackoverflow.com/a/26860930/486332
         getActivity().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
         mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
-        mSwipeRefreshLayout.setRefreshing(true);
         if (!mBookingsWereReceived)
         {
             loadBookings();
