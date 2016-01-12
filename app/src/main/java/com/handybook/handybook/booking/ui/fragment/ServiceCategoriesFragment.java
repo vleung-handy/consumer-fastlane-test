@@ -27,7 +27,6 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.squareup.otto.Subscribe;
@@ -39,7 +38,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
@@ -350,10 +348,11 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
     }
 
-    @OnClick(R.id.ib_notification_feed)
-    void onNotificationFeedButtonClicked()
-    {
-        Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
-        startActivity(launchIntent);
-    }
+    //not supported for now
+//    @OnClick(R.id.ib_notification_feed)
+//    void onNotificationFeedButtonClicked()
+//    {
+//        Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
+//        startActivity(launchIntent);
+//    }
 }
