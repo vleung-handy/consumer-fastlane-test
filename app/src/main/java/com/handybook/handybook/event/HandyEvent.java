@@ -192,41 +192,6 @@ public abstract class HandyEvent
     }
 
 
-    //Bookings
-
-
-    public static class RequestBookingsForUser extends RequestEvent
-    {
-        public User user;
-
-        public RequestBookingsForUser(User user)
-        {
-            this.user = user;
-        }
-    }
-
-
-    public static class ReceiveBookingsSuccess extends ReceiveSuccessEvent
-    {
-        public List<Booking> bookings;
-
-        public ReceiveBookingsSuccess(List<Booking> bookings)
-        {
-            this.bookings = bookings;
-        }
-
-    }
-
-
-    public static class ReceiveBookingsError extends ReceiveErrorEvent
-    {
-        public ReceiveBookingsError(DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-
 //Booking Details
 
 

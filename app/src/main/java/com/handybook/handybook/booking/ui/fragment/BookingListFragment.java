@@ -217,20 +217,13 @@ public class BookingListFragment extends InjectedFragment
         }
     }
 
-/* TODO: Seems like this is not needed anymore
-    @Subscribe
-    public void onReceiveBookingsSuccess(HandyEvent.ReceiveBookingsSuccess event)
-    {
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-*/
-
     @Subscribe
     public void onModelsReceived(@NonNull final HandyEvent.ResponseEvent.BookingCardViewModels e)
     {
         if (e.getPayload().getType() == mListType)
         {
             mSwipeRefreshLayout.setRefreshing(false);
+            mBookingsWereReceived = true;
             mBookingCardViewModels.clear();
             mBookingCardViewModels.addAll(e.getPayload());
             initialize();
