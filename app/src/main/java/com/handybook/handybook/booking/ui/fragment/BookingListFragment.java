@@ -93,6 +93,10 @@ public class BookingListFragment extends InjectedFragment
             {
                 mBookingCardViewModels.addAll(BookingCardViewModel.List.from(bookings));
             }
+            else
+            {
+                mBookingsWereReceived = false;
+            }
         }
         if (getArguments() != null)
         {
