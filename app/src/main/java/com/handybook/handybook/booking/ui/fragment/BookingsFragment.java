@@ -156,7 +156,10 @@ public class BookingsFragment extends InjectedFragment
         {
             for (BookingListFragment fragment : fragments)
             {
-                fragment.loadBookings();
+                if (fragment.isVisible())
+                {
+                    fragment.loadBookings();
+                }
             }
         }
 
