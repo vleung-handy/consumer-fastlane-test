@@ -85,10 +85,10 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     @OnClick(R.id.splash_promo_action_button)
     public void onActionButtonClicked(View view)
     {
+        mBus.post(new MixpanelEvent.TrackSplashPromoAction(mSplashPromo.getId()));
         String deepLink = mSplashPromo.getDeepLinkUrl();
         if(deepLink != null)
         {
-            mBus.post(new MixpanelEvent.TrackSplashPromoAction(mSplashPromo.getId()));
             Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink));
             Utils.safeLaunchIntent(deepLinkIntent, getContext());
         }
