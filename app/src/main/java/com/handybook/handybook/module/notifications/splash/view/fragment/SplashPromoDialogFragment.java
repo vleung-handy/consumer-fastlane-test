@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.MixpanelEvent;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.Utils;
@@ -81,7 +81,7 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         mActionButton.setText(mSplashPromo.getActionText());
 
         //TODO: will consolidate
-        mBus.post(new HandyEvent.RequestMarkSplashPromoAsDisplayed(mSplashPromo));
+        mBus.post(new SplashNotificationEvent.RequestMarkSplashPromoAsDisplayed(mSplashPromo));
         mBus.post(new MixpanelEvent.TrackSplashPromoShow(mSplashPromo.getId()));
     }
 
@@ -89,7 +89,7 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     public void onActionButtonClicked(View view)
     {
         //TODO: will consolidate
-        mBus.post(new HandyEvent.RequestMarkSplashPromoAsAccepted(mSplashPromo));
+        mBus.post(new SplashNotificationEvent.RequestMarkSplashPromoAsAccepted(mSplashPromo));
         mBus.post(new MixpanelEvent.TrackSplashPromoAction(mSplashPromo.getId()));
         String deepLink = mSplashPromo.getDeepLinkUrl();
         if(deepLink != null)
