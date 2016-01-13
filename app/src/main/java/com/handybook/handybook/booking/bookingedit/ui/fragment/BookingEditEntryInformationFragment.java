@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
@@ -138,7 +138,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingEntryInformationSuccess(BookingEvent.ReceiveUpdateBookingEntryInformationSuccess event)
+    public final void onReceiveUpdateBookingEntryInformationSuccess(BookingEditEvent.ReceiveUpdateBookingEntryInformationSuccess event)
     {
         enableInputs();
         progressDialog.dismiss();
@@ -148,7 +148,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingEntryInformationError(BookingEvent.ReceiveUpdateBookingEntryInformationError event)
+    public final void onReceiveUpdateBookingEntryInformationError(BookingEditEvent.ReceiveUpdateBookingEntryInformationError event)
     {
         enableInputs();
         progressDialog.dismiss();
@@ -169,7 +169,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
             disableInputs();
             progressDialog.show();
             int bookingId = Integer.parseInt(booking.getId());
-            bus.post(new BookingEvent.RequestUpdateBookingEntryInformation(bookingId, entryInformationTransaction));
+            bus.post(new BookingEditEvent.RequestUpdateBookingEntryInformation(bookingId, entryInformationTransaction));
         }
     };
 

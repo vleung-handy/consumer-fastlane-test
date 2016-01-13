@@ -2,7 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.constant.BookingFrequency;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.data.DataManager;
@@ -53,7 +53,7 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
     @Test
     public void shouldRequestEditFrequencyViewModelOnCreateView() throws Exception
     {
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestGetEditFrequencyViewModel.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEditEvent.RequestGetEditFrequencyViewModel.class));
     }
 
     @Test
@@ -65,9 +65,9 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
 
         when(mBooking.getServiceMachineName()).thenReturn(Booking.SERVICE_CLEANING);
 
-        mFragment.onReceiveEditFrequencyViewModelSuccess(new BookingEvent.ReceiveGetEditFrequencyViewModelSuccess(editFrequencyViewModel));
+        mFragment.onReceiveEditFrequencyViewModelSuccess(new BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess(editFrequencyViewModel));
         mFragment.mSaveButton.performClick();
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestEditBookingFrequency.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEditEvent.RequestEditBookingFrequency.class));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
     {
         String errorMessage = mFragment.getString(R.string
                 .default_error_string);
-        mFragment.onReceiveUpdateBookingFrequencyError(new BookingEvent.ReceiveEditBookingFrequencyError(new DataManager.DataManagerError(DataManager
+        mFragment.onReceiveUpdateBookingFrequencyError(new BookingEditEvent.ReceiveEditBookingFrequencyError(new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }
