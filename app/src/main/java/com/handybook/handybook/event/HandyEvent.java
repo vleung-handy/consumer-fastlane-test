@@ -842,7 +842,4 @@ public abstract class HandyEvent
         }
     }
 
-
-    @Track("add booking fab clicked")
-    public static class AddBookingButtonClicked {}
 }
