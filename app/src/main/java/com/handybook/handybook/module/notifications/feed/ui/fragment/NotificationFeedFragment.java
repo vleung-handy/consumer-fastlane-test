@@ -78,6 +78,8 @@ public class NotificationFeedFragment extends InjectedFragment
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         activity.setSupportActionBar(mToolbar);
         mActionBar = activity.getSupportActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setDisplayShowHomeEnabled(true);
         // SwipeRefresh
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.setOnRefreshListener(this);
