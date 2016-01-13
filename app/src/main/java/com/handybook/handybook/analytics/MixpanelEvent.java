@@ -33,6 +33,8 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_ADD_BOOKING_FAB_SERVICE = "add booking fab service selected";
         public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_SHOWN = "add booking fab menu shown";
         public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED = "add booking fab menu dismissed";
+        public static final String APP_TRACK_SPLASH_PROMO_SHOW = "app splash promo show";
+        public static final String APP_TRACK_SPLASH_PROMO_ACTION = "app splash promo action";
     }
 
 
@@ -78,6 +80,21 @@ public abstract class MixpanelEvent
         }
     }
 
+    /**
+     * tracks when the splash promo is shown
+     */
+    @Track(EventKey.APP_TRACK_SPLASH_PROMO_SHOW)
+    public static class TrackSplashPromoShow extends MixpanelEvent
+    {
+    }
+
+    /**
+     * tracks when the splash promo action button is pressed
+     */
+    @Track(EventKey.APP_TRACK_SPLASH_PROMO_ACTION)
+    public static class TrackSplashPromoAction extends MixpanelEvent
+    {
+    }
 
     /**
      * tracks when the rating dialog is shown

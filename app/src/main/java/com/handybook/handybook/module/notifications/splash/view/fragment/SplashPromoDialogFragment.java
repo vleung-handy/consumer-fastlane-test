@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.Utils;
@@ -76,6 +78,7 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         mTitle.setText(mSplashPromo.getTitle());
         mSubtitle.setText(mSplashPromo.getSubtitle());
         mActionButton.setText(mSplashPromo.getActionText());
+        mBus.post(new MixpanelEvent.TrackSplashPromoShow());
     }
 
     @OnClick(R.id.splash_promo_action_button)
@@ -84,8 +87,14 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         String deepLink = mSplashPromo.getDeepLinkUrl();
         if(deepLink != null)
         {
+            mBus.post(new MixpanelEvent.TrackSplashPromoAction());
             Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink));
             Utils.safeLaunchIntent(deepLinkIntent, getContext());
+        }
+        else
+        {
+            //can we have a splash promo whose action button only dismisses?
+            Crashlytics.logException(new Exception("Deeplink url for splash promo " + mSplashPromo.getId() + " is null"));
         }
         dismiss();
     }
