@@ -426,9 +426,10 @@ public final class ApplicationModule
     @Singleton
     final SplashNotificationManager provideSplashNotificationManager(final UserManager userManager,
                                                                      final DataManager dataManager,
+                                                                     final PrefsManager prefsManager,
                                                                      final Bus bus)
     {
-        return new SplashNotificationManager(userManager, dataManager, bus);
+        return new SplashNotificationManager(userManager, dataManager, prefsManager, bus);
     }
 
     @Provides

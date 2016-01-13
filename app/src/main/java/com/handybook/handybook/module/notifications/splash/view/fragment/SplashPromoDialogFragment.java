@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.Utils;
@@ -76,11 +77,14 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         mTitle.setText(mSplashPromo.getTitle());
         mSubtitle.setText(mSplashPromo.getSubtitle());
         mActionButton.setText(mSplashPromo.getActionText());
+
+        mBus.post(new HandyEvent.RequestMarkSplashPromoAsDisplayed(mSplashPromo));
     }
 
     @OnClick(R.id.splash_promo_action_button)
     public void onActionButtonClicked(View view)
     {
+        mBus.post(new HandyEvent.RequestMarkSplashPromoAsAccepted(mSplashPromo));
         String deepLink = mSplashPromo.getDeepLinkUrl();
         if(deepLink != null)
         {
