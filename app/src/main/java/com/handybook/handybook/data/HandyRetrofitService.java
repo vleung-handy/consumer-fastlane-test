@@ -29,7 +29,10 @@ import retrofit.mime.TypedInput;
 public interface HandyRetrofitService
 {
     @GET("/promos")
-    void getAvailableSplashPromo(@Query("user_id") String userId, HandyRetrofitCallback cb);
+    void getAvailableSplashPromo(@Query("user_id") String userId,
+                                 @Query("displayed_promos[]") String[] displayedPromos,
+                                 @Query("accepted_promos[]") String[] acceptedPromos,
+                                 HandyRetrofitCallback cb);
 
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(@Path("id") int bookingId,
