@@ -2,9 +2,8 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
@@ -55,7 +54,7 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     @Test
     public void shouldRequestRecurringBookingsOnCreateView() throws Exception
     {
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent.RequestRecurringBookingsForUser.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestRecurringBookingsForUser.class));
     }
 
     @Test
@@ -65,11 +64,9 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
         recurringBookingList.add(mRecurringBooking1);
         recurringBookingList.add(mRecurringBooking2);
 
-        mFragment.onReceiveRecurringBookingsSuccess(new HandyEvent
-                .ReceiveRecurringBookingsSuccess(recurringBookingList));
+        mFragment.onReceiveRecurringBookingsSuccess(new BookingEvent.ReceiveRecurringBookingsSuccess(recurringBookingList));
         mFragment.onNextButtonClicked();
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent
-                .RequestSendCancelRecurringBookingEmail.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestSendCancelRecurringBookingEmail.class));
     }
 
     @Test
@@ -77,10 +74,8 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     {
         List<RecurringBooking> recurringBookingList = new ArrayList<>();
         recurringBookingList.add(mRecurringBooking1);
-        mFragment.onReceiveRecurringBookingsSuccess(new HandyEvent
-                .ReceiveRecurringBookingsSuccess(recurringBookingList));
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent
-                .RequestSendCancelRecurringBookingEmail.class));
+        mFragment.onReceiveRecurringBookingsSuccess(new BookingEvent.ReceiveRecurringBookingsSuccess(recurringBookingList));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestSendCancelRecurringBookingEmail.class));
     }
 
     @Test
@@ -88,8 +83,7 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     {
         String errorMessage = mFragment.getString(R.string
                 .default_error_string);
-        mFragment.onReceiveSendCancelRecurringBookingEmailError(new HandyEvent
-                .ReceiveSendCancelRecurringBookingEmailError(new DataManager.DataManagerError(DataManager
+        mFragment.onReceiveSendCancelRecurringBookingEmailError(new BookingEvent.ReceiveSendCancelRecurringBookingEmailError(new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }

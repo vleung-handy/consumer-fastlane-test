@@ -12,12 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
 import com.handybook.handybook.ui.widget.MenuButton;
@@ -92,25 +92,25 @@ public class BookingsFragment extends InjectedFragment
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
-        bus.post(new HandyEvent.RequestServices());
+        bus.post(new BookingEvent.RequestServices());
 
         return view;
     }
 
     @Subscribe
-    public void onReceiveServicesSuccess(final HandyEvent.ReceiveServicesSuccess event)
+    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
     {
         mServices = event.getServices();
     }
 
     @Subscribe
-    public void onReceiveCachedServicesSuccess(final HandyEvent.ReceiveCachedServicesSuccess event)
+    public void onReceiveCachedServicesSuccess(final BookingEvent.ReceiveCachedServicesSuccess event)
     {
         mServices = event.getServices();
     }
 
     @Subscribe
-    public void onAddBookingButtonClicked(HandyEvent.AddBookingButtonClicked event)
+    public void onAddBookingButtonClicked(BookingEvent.AddBookingButtonClicked event)
     {
         if (mServices != null)
         {

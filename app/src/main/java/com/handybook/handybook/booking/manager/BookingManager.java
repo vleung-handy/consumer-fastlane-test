@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -55,7 +56,7 @@ public class BookingManager implements Observer
     // and provide a layer for data access
 
     @Subscribe
-    public void onRequestPreBookingPromo(HandyEvent.RequestPreBookingPromo event)
+    public void onRequestPreBookingPromo(BookingEvent.RequestPreBookingPromo event)
     {
         dataManager.getPreBookingPromo(event.getPromoCode(), new DataManager.Callback<PromoCode>()
         {
@@ -71,38 +72,38 @@ public class BookingManager implements Observer
                      */
                     setPromoTabCoupon(response.getCode());
                 }
-                bus.post(new HandyEvent.ReceivePreBookingPromoSuccess(response));
+                bus.post(new BookingEvent.ReceivePreBookingPromoSuccess(response));
             }
 
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceivePreBookingPromoError(error));
+                bus.post(new BookingEvent.ReceivePreBookingPromoError(error));
             }
         });
     }
 
     @Subscribe
-    public void onRequestPreRescheduleInfo(HandyEvent.RequestPreRescheduleInfo event)
+    public void onRequestPreRescheduleInfo(BookingEvent.RequestPreRescheduleInfo event)
     {
         dataManager.getPreRescheduleInfo(event.bookingId, new DataManager.Callback<String>()
         {
             @Override
             public void onSuccess(String notice)
             {
-                bus.post(new HandyEvent.ReceivePreRescheduleInfoSuccess(notice));
+                bus.post(new BookingEvent.ReceivePreRescheduleInfoSuccess(notice));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceivePreRescheduleInfoError(error));
+                bus.post(new BookingEvent.ReceivePreRescheduleInfoError(error));
             }
         });
     }
 
     @Subscribe
-    public void onRequestPreCancelationInfo(HandyEvent.RequestPreCancelationInfo event)
+    public void onRequestPreCancelationInfo(BookingEvent.RequestPreCancelationInfo event)
     {
         dataManager.getPreCancelationInfo(event.bookingId, new DataManager.Callback<Pair<String,
                 List<String>>>()
@@ -110,20 +111,20 @@ public class BookingManager implements Observer
             @Override
             public void onSuccess(final Pair<String, List<String>> result)
             {
-                bus.post(new HandyEvent.ReceivePreCancelationInfoSuccess(result));
+                bus.post(new BookingEvent.ReceivePreCancelationInfoSuccess(result));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceivePreCancelationInfoError(error));
+                bus.post(new BookingEvent.ReceivePreCancelationInfoError(error));
             }
         });
     }
 
 
     @Subscribe
-    public void onRequestUpdateBookingNoteToPro(HandyEvent.RequestUpdateBookingNoteToPro event)
+    public void onRequestUpdateBookingNoteToPro(BookingEvent.RequestUpdateBookingNoteToPro event)
     {
         dataManager.updateBookingNoteToPro(event.bookingId, event.descriptionTransaction,
                 new DataManager.Callback<Void>()
@@ -131,13 +132,13 @@ public class BookingManager implements Observer
                     @Override
                     public void onSuccess(final Void response)
                     {
-                        bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProSuccess());
+                        bus.post(new BookingEvent.ReceiveUpdateBookingNoteToProSuccess());
                     }
 
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        bus.post(new HandyEvent.ReceiveUpdateBookingNoteToProError(error));
+                        bus.post(new BookingEvent.ReceiveUpdateBookingNoteToProError(error));
                     }
                 });
     }
@@ -187,26 +188,26 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public void onRequestBookingDetails(HandyEvent.RequestBookingDetails event)
+    public void onRequestBookingDetails(BookingEvent.RequestBookingDetails event)
     {
         dataManager.getBooking(event.bookingId, new DataManager.Callback<Booking>()
         {
             @Override
             public void onSuccess(final Booking result)
             {
-                bus.post(new HandyEvent.ReceiveBookingDetailsSuccess(result));
+                bus.post(new BookingEvent.ReceiveBookingDetailsSuccess(result));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveBookingDetailsError(error));
+                bus.post(new BookingEvent.ReceiveBookingDetailsError(error));
             }
         });
     }
 
     @Subscribe
-    public void onRequestRateBooking(HandyEvent.RateBookingEvent event)
+    public void onRequestRateBooking(BookingEvent.RateBookingEvent event)
     {
         dataManager.ratePro(
                 event.getBookingId(),
@@ -217,33 +218,33 @@ public class BookingManager implements Observer
                     @Override
                     public void onSuccess(final Void response)
                     {
-                        bus.post(new HandyEvent.ReceiveRateBookingSuccess());
+                        bus.post(new BookingEvent.ReceiveRateBookingSuccess());
                     }
 
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        bus.post(new HandyEvent.ReceiveRateBookingError(error));
+                        bus.post(new BookingEvent.ReceiveRateBookingError(error));
                     }
                 }
         );
     }
 
     @Subscribe
-    public void onRequestTipPro(HandyEvent.RequestTipPro event)
+    public void onRequestTipPro(BookingEvent.RequestTipPro event)
     {
         dataManager.tipPro(event.bookingId, event.tipAmount, new DataManager.Callback<Void>()
         {
             @Override
             public void onSuccess(final Void response)
             {
-                bus.post(new HandyEvent.ReceiveTipProSuccess());
+                bus.post(new BookingEvent.ReceiveTipProSuccess());
             }
 
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveTipProError());
+                bus.post(new BookingEvent.ReceiveTipProError());
             }
         });
     }
@@ -475,7 +476,7 @@ public class BookingManager implements Observer
 
     @Subscribe
     public void onRequestSendCancelRecurringBookingEmail(
-            final HandyEvent.RequestSendCancelRecurringBookingEmail event)
+            final BookingEvent.RequestSendCancelRecurringBookingEmail event)
     {
         dataManager.sendCancelRecurringBookingEmail(event.bookingRecurringId, new DataManager
                 .Callback<SuccessWrapper>()
@@ -483,13 +484,13 @@ public class BookingManager implements Observer
             @Override
             public void onSuccess(SuccessWrapper response)
             {
-                bus.post(new HandyEvent.ReceiveSendCancelRecurringBookingEmailSuccess());
+                bus.post(new BookingEvent.ReceiveSendCancelRecurringBookingEmailSuccess());
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveSendCancelRecurringBookingEmailError(error));
+                bus.post(new BookingEvent.ReceiveSendCancelRecurringBookingEmailError(error));
 
             }
         });
@@ -503,7 +504,7 @@ public class BookingManager implements Observer
      */
     @Subscribe
     public final void onRequestRecurringBookings(
-            final HandyEvent.RequestRecurringBookingsForUser event)
+            final BookingEvent.RequestRecurringBookingsForUser event)
     {
 
         dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
@@ -512,13 +513,13 @@ public class BookingManager implements Observer
             public void onSuccess(final UserBookingsWrapper result)
             {
                 //TODO: need to sort the recurring bookings?
-                bus.post(new HandyEvent.ReceiveRecurringBookingsSuccess(result.getRecurringBookings()));
+                bus.post(new BookingEvent.ReceiveRecurringBookingsSuccess(result.getRecurringBookings()));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveRecurringBookingsError(error));
+                bus.post(new BookingEvent.ReceiveRecurringBookingsError(error));
             }
         });
     }

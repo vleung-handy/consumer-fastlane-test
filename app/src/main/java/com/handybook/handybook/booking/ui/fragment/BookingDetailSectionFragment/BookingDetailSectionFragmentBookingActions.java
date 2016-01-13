@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.view.View;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView;
 
@@ -75,7 +75,7 @@ public class BookingDetailSectionFragmentBookingActions
             //TODO: Need to work out a system for enabling/disabling at proper times, listening to events from parent fragment is flakey b/c of on resume timing
             //disableInputs();
             //TODO: investigate, do not activate the progress dialog here, causes issues when returning from activity
-            bus.post(new HandyEvent.RequestPreCancelationInfo(booking.getId()));
+            bus.post(new BookingEvent.RequestPreCancelationInfo(booking.getId()));
         }
     };
 
@@ -87,7 +87,7 @@ public class BookingDetailSectionFragmentBookingActions
             //TODO: Need to work out a system for enabling/disabling at proper times, listening to events from parent fragment is flakey b/c of on resume timing
             //disableInputs();
             //TODO: investigate, do not activate the progress dialog here, causes issues when returning from activity
-            bus.post(new HandyEvent.RequestPreRescheduleInfo(booking.getId()));
+            bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
         }
     };
 

@@ -12,12 +12,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
@@ -82,7 +82,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditHoursInfoViewModel(Integer.parseInt(mBooking.getId())));
+        bus.post(new BookingEvent.RequestEditHoursInfoViewModel(Integer.parseInt(mBooking.getId())));
     }
 
     @Override
@@ -125,7 +125,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         bookingEditHoursRequest.setApplyToRecurring(
                 mApplyToRecurringBookingsSelectView != null
                         && mApplyToRecurringBookingsSelectView.getCheckedIndexes().length > 0);
-        bus.post(new HandyEvent.RequestEditHours(
+        bus.post(new BookingEvent.RequestEditHours(
                 Integer.parseInt(mBooking.getId()), bookingEditHoursRequest));
     }
 
@@ -260,7 +260,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditHoursInfoSuccess(HandyEvent.ReceiveEditHoursInfoViewModelSuccess event)
+    public final void onReceiveEditHoursInfoSuccess(BookingEvent.ReceiveEditHoursInfoViewModelSuccess event)
     {
         mBookingEditHoursViewModel = event.editHoursInfoViewModel;
         initializeUiForEditHoursInfo();
@@ -269,14 +269,14 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditHoursInfoError(HandyEvent.ReceiveEditHoursInfoViewModelError event)
+    public final void onReceiveEditHoursInfoError(BookingEvent.ReceiveEditHoursInfoViewModelError event)
     {
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
     @Subscribe
-    public final void onReceiveEditHoursSuccess(HandyEvent.ReceiveEditHoursSuccess event)
+    public final void onReceiveEditHoursSuccess(BookingEvent.ReceiveEditHoursSuccess event)
     {
         showToast(getString(R.string.booking_edit_hours_update_success));
 
@@ -285,7 +285,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditHoursError(HandyEvent.ReceiveEditHoursError event)
+    public final void onReceiveEditHoursError(BookingEvent.ReceiveEditHoursError event)
     {
         onReceiveErrorEvent(event);
         removeUiBlockers(); //allow user to try again

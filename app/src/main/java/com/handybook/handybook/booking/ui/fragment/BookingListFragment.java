@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.adapter.BookingCardAdapter;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
@@ -77,7 +78,7 @@ public class BookingListFragment extends InjectedFragment
     @OnClick(R.id.add_booking_button)
     public void onServicesButtonClicked()
     {
-        bus.post(new HandyEvent.AddBookingButtonClicked());
+        bus.post(new BookingEvent.AddBookingButtonClicked());
     }
 
     @Override

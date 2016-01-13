@@ -6,12 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
         when(mMockService.getServices()).thenReturn(Collections.<Service>emptyList());
 
         mFragment.onReceiveServicesSuccess(
-                new HandyEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
+                new BookingEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
         mFragment.mCategoryLayout.getChildAt(0).performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
@@ -78,7 +78,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
         when(mMockService.getServices()).thenReturn(Lists.newArrayList(mMockService));
 
         mFragment.onReceiveServicesSuccess(
-                new HandyEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
+                new BookingEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
         mFragment.mCategoryLayout.getChildAt(0).performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();

@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingActionButtonType;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.booking.ui.view.BookingActionButton;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionView;
@@ -193,7 +193,7 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
 
     @Subscribe
     public void onSetBookingActionControlsEnabled(
-            HandyEvent.SetBookingDetailSectionFragmentActionControlsEnabled event
+            BookingEvent.SetBookingDetailSectionFragmentActionControlsEnabled event
     )
     {
         if (event.enabled)

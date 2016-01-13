@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
@@ -76,7 +76,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
                 mZipCodeInputTextView.getZipCode()
         );
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditBookingAddress(Integer.parseInt(mBooking.getId()),
+        bus.post(new BookingEvent.RequestEditBookingAddress(Integer.parseInt(mBooking.getId()),
                 bookingEditAddressRequest));
     }
 
@@ -96,7 +96,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditBookingAddressSuccess(HandyEvent.ReceiveEditBookingAddressSuccess event)
+    public final void onReceiveEditBookingAddressSuccess(BookingEvent.ReceiveEditBookingAddressSuccess event)
     {
         removeUiBlockers();
         showToast(getString(R.string.updated_booking_address));
@@ -106,7 +106,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditBookingAddressError(HandyEvent.ReceiveEditBookingAddressError event)
+    public final void onReceiveEditBookingAddressError(BookingEvent.ReceiveEditBookingAddressError event)
     {
         onReceiveErrorEvent(event);
         removeUiBlockers(); //allow user to try again
