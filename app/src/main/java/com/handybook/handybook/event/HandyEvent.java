@@ -209,40 +209,4 @@ public abstract class HandyEvent
         }
     }
 
-    //TODO: move to the splash module
-    public static class ReceiveAvailableSplashPromoSuccess extends ReceiveSuccessEvent
-    {
-        public final SplashPromo splashPromo;
-        public ReceiveAvailableSplashPromoSuccess(final SplashPromo splashPromo)
-        {
-            this.splashPromo = splashPromo;
-        }
-    }
-
-    public static class ReceiveAvailableSplashPromoError extends ReceiveErrorEvent
-    {
-        public ReceiveAvailableSplashPromoError(DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-    public static class RequestMarkSplashPromoAsDisplayed extends RequestEvent
-    {
-        public final SplashPromo splashPromo;
-        public RequestMarkSplashPromoAsDisplayed(@NonNull final SplashPromo splashPromo)
-        {
-            this.splashPromo = splashPromo;
-        }
-    }
-
-    public static class RequestMarkSplashPromoAsAccepted extends RequestEvent
-    {
-        public final SplashPromo splashPromo;
-        public RequestMarkSplashPromoAsAccepted(@NonNull final SplashPromo splashPromo)
-        {
-            this.splashPromo = splashPromo;
-        }
-    }
-
 }
