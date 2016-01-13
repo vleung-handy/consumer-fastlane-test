@@ -89,7 +89,8 @@ public class SplashNotificationManager
         }
     }
 
-    //TODO: move somewhere else
+    //TODO: make sure you refactor everything below this line! super crude due to super rushed feature
+    //TODO: use GSON instead. REMOVE this class eventually
     /**
      * a set that has convenience methods for storing and retrieving from shared preferences
      */
@@ -157,18 +158,18 @@ public class SplashNotificationManager
         markSplashPromo(splashPromo, PrefsKey.ACCEPTED_SPLASH_PROMOS);
     }
 
-    private String[] getSplashPromoArray(@NonNull PrefsKey prefsKey)
+    private @NonNull String[] getSplashPromoArray(@NonNull PrefsKey prefsKey)
     {
         PrefsHashSet prefsHashSet = getSplashPromoSet(prefsKey);
-        return prefsHashSet.toArray(new String[]{});
+        return prefsHashSet.toArray(new String[prefsHashSet.size()]);
     }
 
-    private String[] getDisplayedSplashPromosArray()
+    private @NonNull String[] getDisplayedSplashPromosArray()
     {
         return getSplashPromoArray(PrefsKey.DISPLAYED_SPLASH_PROMOS);
     }
 
-    private String[] getAcceptedSplashPromosArray()
+    private @NonNull String[] getAcceptedSplashPromosArray()
     {
         return getSplashPromoArray(PrefsKey.ACCEPTED_SPLASH_PROMOS);
 
