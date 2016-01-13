@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
@@ -17,7 +18,6 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.InstructionsLayout;
 import com.squareup.otto.Subscribe;
 
@@ -100,7 +100,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
 
 
     @Subscribe
-    public final void onReceiveUpdateBookingNoteToProSuccess(HandyEvent.ReceiveUpdateBookingNoteToProSuccess event)
+    public final void onReceiveUpdateBookingNoteToProSuccess(BookingEvent.ReceiveUpdateBookingNoteToProSuccess event)
     {
         enableInputs();
         progressDialog.dismiss();
@@ -111,7 +111,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingNoteToProError(HandyEvent.ReceiveUpdateBookingNoteToProError event)
+    public final void onReceiveUpdateBookingNoteToProError(BookingEvent.ReceiveUpdateBookingNoteToProError event)
     {
         enableInputs();
         progressDialog.dismiss();
@@ -129,7 +129,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         disableInputs();
         progressDialog.show();
         int bookingId = Integer.parseInt(booking.getId());
-        bus.post(new HandyEvent.RequestUpdateBookingNoteToPro(bookingId, descriptionTransaction));
+        bus.post(new BookingEvent.RequestUpdateBookingNoteToPro(bookingId, descriptionTransaction));
     }
 
     private final BookingOptionsView.OnUpdatedListener textUpdated

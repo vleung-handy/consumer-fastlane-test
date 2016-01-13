@@ -2,11 +2,10 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditFrequencyFragment;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingFrequency;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
@@ -54,7 +53,7 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
     @Test
     public void shouldRequestEditFrequencyViewModelOnCreateView() throws Exception
     {
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent.RequestGetEditFrequencyViewModel.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestGetEditFrequencyViewModel.class));
     }
 
     @Test
@@ -66,11 +65,9 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
 
         when(mBooking.getServiceMachineName()).thenReturn(Booking.SERVICE_CLEANING);
 
-        mFragment.onReceiveEditFrequencyViewModelSuccess(new HandyEvent
-                .ReceiveGetEditFrequencyViewModelSuccess(editFrequencyViewModel));
+        mFragment.onReceiveEditFrequencyViewModelSuccess(new BookingEvent.ReceiveGetEditFrequencyViewModelSuccess(editFrequencyViewModel));
         mFragment.mSaveButton.performClick();
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent
-                .RequestEditBookingFrequency.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestEditBookingFrequency.class));
     }
 
     @Test
@@ -78,8 +75,7 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
     {
         String errorMessage = mFragment.getString(R.string
                 .default_error_string);
-        mFragment.onReceiveUpdateBookingFrequencyError(new HandyEvent
-                .ReceiveEditBookingFrequencyError(new DataManager.DataManagerError(DataManager
+        mFragment.onReceiveUpdateBookingFrequencyError(new BookingEvent.ReceiveEditBookingFrequencyError(new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }
