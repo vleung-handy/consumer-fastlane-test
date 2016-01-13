@@ -1,6 +1,5 @@
 package com.handybook.handybook.booking.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,7 +37,6 @@ public class BookingListFragment extends InjectedFragment
     public static final String STATE_BOOKINGS_RECEIVED = "state:bookings_received";
     private static final String KEY_LIST_TYPE = "key:booking_list_type";
 
-    private final BookingCardViewModel.List mBookingCardViewModels = new BookingCardViewModel.List();
     @Bind(R.id.fragment_booking_list_swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.fragment_booking_list_booking_card_recycler_view)
@@ -49,28 +47,20 @@ public class BookingListFragment extends InjectedFragment
     TextView mNoBookingsText;
     @Bind(R.id.add_booking_button)
     FloatingActionButton addBookingButton;
-    private Context mContext;
+    @BookingCardViewModel.List.ListType
     private int mListType;
     private BookingCardAdapter mBookingCardAdapter;
     private boolean mBookingsWereReceived;
     private LinearLayoutManager mLayoutManager;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public BookingListFragment()
-    {
-    }
 
     public static BookingListFragment newInstance(
             @BookingCardViewModel.List.ListType final int bookingListType
     )
     {
         BookingListFragment fragment = new BookingListFragment();
-        Bundle args = new Bundle();
-        args.putInt(KEY_LIST_TYPE, bookingListType);
-        fragment.setArguments(args);
+        Bundle arguments = new Bundle();
+        arguments.putInt(KEY_LIST_TYPE, bookingListType);
+        fragment.setArguments(arguments);
         return fragment;
     }
 
@@ -84,25 +74,22 @@ public class BookingListFragment extends InjectedFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mContext = getActivity();
+        mListType = getArguments().getInt(KEY_LIST_TYPE);
+        BookingCardViewModel.List bookingCardViewModels = BookingCardViewModel.List.empty();
         if (savedInstanceState != null)
         {
             mBookingsWereReceived = savedInstanceState.getBoolean(STATE_BOOKINGS_RECEIVED, false);
             ArrayList<Booking> bookings = savedInstanceState.getParcelableArrayList(STATE_BOOKINGS);
-            if (bookings != null)
+            if (bookings != null && !bookings.isEmpty())
             {
-                mBookingCardViewModels.addAll(BookingCardViewModel.List.from(bookings));
+                bookingCardViewModels = BookingCardViewModel.List.from(bookings, mListType);
             }
             else
             {
                 mBookingsWereReceived = false;
             }
         }
-        if (getArguments() != null)
-        {
-            mListType = getArguments().getInt(KEY_LIST_TYPE);
-        }
-        mBookingCardAdapter = new BookingCardAdapter(mContext, mBookingCardViewModels);
+        mBookingCardAdapter = new BookingCardAdapter(getActivity(), bookingCardViewModels);
     }
 
     @Override
@@ -141,7 +128,7 @@ public class BookingListFragment extends InjectedFragment
                 R.color.handy_service_painter,
                 R.color.handy_service_plumber
         );
-        mLayoutManager = new LinearLayoutManager(mContext);
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mEmptiableRecyclerView.setLayoutManager(mLayoutManager);
         mEmptiableRecyclerView.setAdapter(mBookingCardAdapter);
         mEmptiableRecyclerView.setEmptyView(mNoBookingsView);
@@ -198,7 +185,8 @@ public class BookingListFragment extends InjectedFragment
         super.onSaveInstanceState(outState);
         if (mBookingsWereReceived)
         {
-            outState.putParcelableArrayList(STATE_BOOKINGS, mBookingCardViewModels.getBookings());
+            outState.putParcelableArrayList(STATE_BOOKINGS,
+                    mBookingCardAdapter.getBookingCardViewModels().getBookings());
             outState.putBoolean(STATE_BOOKINGS_RECEIVED, mBookingsWereReceived);
         }
     }
@@ -210,9 +198,8 @@ public class BookingListFragment extends InjectedFragment
         {
             mSwipeRefreshLayout.setRefreshing(false);
             mBookingsWereReceived = true;
-            mBookingCardViewModels.clear();
-            mBookingCardViewModels.addAll(e.getPayload());
-            initialize();
+            mBookingCardAdapter.setBookingCardViewModels(e.getPayload());
+            mBookingCardAdapter.notifyDataSetChanged();
         }
     }
 
@@ -261,11 +248,4 @@ public class BookingListFragment extends InjectedFragment
             ));
         }
     }
-
-    private void initialize()
-    {
-        mBookingCardAdapter.notifyDataSetChanged();
-    }
-
-
 }

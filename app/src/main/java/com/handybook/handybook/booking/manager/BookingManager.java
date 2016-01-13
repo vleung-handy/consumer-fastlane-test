@@ -159,21 +159,8 @@ public class BookingManager implements Observer
                             final List<Booking> bookings = result.getBookings();
                             Collections.sort(bookings, Booking.COMPARATOR_DATE);
                             // Mark bookingCardViewModels accordingly and emit it.
-                            BookingCardViewModel.List models = new BookingCardViewModel.List();
-                            switch (event.getOnlyBookingValue())
-                            {
-                                case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
-                                    models = BookingCardViewModel.List
-                                            .from(bookings, BookingCardViewModel.List.TYPE_PAST);
-                                    break;
-                                case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
-                                    models = BookingCardViewModel.List
-                                            .from(bookings, BookingCardViewModel.List.TYPE_UPCOMING);
-                                    models.setType(BookingCardViewModel.List.TYPE_UPCOMING);
-                                    break;
-                                default:
-                                    Crashlytics.log("event.getOnlyBookingValue() hit default :(");
-                            }
+                            BookingCardViewModel.List models = getBookingCardViewModelListFromResult(
+                                    event.getOnlyBookingValue(), bookings);
                             bus.post(new HandyEvent.ResponseEvent.BookingCardViewModels(models));
                         }
 
@@ -184,6 +171,27 @@ public class BookingManager implements Observer
                         }
                     });
         }
+    }
+
+    private BookingCardViewModel.List getBookingCardViewModelListFromResult(
+            String onlyBookingValue, List<Booking> bookings)
+    {
+        BookingCardViewModel.List models = BookingCardViewModel.List.empty();
+        switch (onlyBookingValue)
+        {
+            case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
+                models = BookingCardViewModel.List
+                        .from(bookings, BookingCardViewModel.List.TYPE_PAST);
+                break;
+            case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
+                models = BookingCardViewModel.List
+                        .from(bookings, BookingCardViewModel.List.TYPE_UPCOMING);
+                break;
+            default:
+                Crashlytics.logException(
+                        new RuntimeException("Unrecognized booking list type: " + onlyBookingValue));
+        }
+        return models;
     }
 
     @Subscribe
