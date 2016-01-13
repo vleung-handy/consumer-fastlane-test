@@ -113,10 +113,10 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
         buttonContainer.removeAllViews();
         for (final HandyNotification.Action action : mItem.getButtonActions())
         {
-            Button button = (Button) View.inflate(
-                    mView.getContext(),
+            Button button = (Button) LayoutInflater.from(mView.getContext()).inflate(
                     R.layout.layout_handy_notification_cta_button,
-                    null
+                    buttonContainer,
+                    false
             );
             buttonContainer.addView(button);
             button.setText(action.getText());
@@ -140,10 +140,10 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
         linkContainer.removeAllViews();
         for (final HandyNotification.Action action : mItem.getLinkActions())
         {
-            TextView textView = (TextView) View.inflate(
-                    mView.getContext(),
+            TextView textView = (TextView) LayoutInflater.from(mView.getContext()).inflate(
                     R.layout.layout_handy_notification_cta_link,
-                    null
+                    linkContainer,
+                    false
             );
             linkContainer.addView(textView);
             textView.setText(action.getText());
