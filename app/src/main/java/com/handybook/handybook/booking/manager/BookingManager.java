@@ -6,6 +6,7 @@ import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -124,7 +125,7 @@ public class BookingManager implements Observer
 
 
     @Subscribe
-    public void onRequestUpdateBookingNoteToPro(BookingEvent.RequestUpdateBookingNoteToPro event)
+    public void onRequestUpdateBookingNoteToPro(BookingEditEvent.RequestUpdateBookingNoteToPro event)
     {
         dataManager.updateBookingNoteToPro(event.bookingId, event.descriptionTransaction,
                 new DataManager.Callback<Void>()
@@ -132,13 +133,13 @@ public class BookingManager implements Observer
                     @Override
                     public void onSuccess(final Void response)
                     {
-                        bus.post(new BookingEvent.ReceiveUpdateBookingNoteToProSuccess());
+                        bus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess());
                     }
 
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        bus.post(new BookingEvent.ReceiveUpdateBookingNoteToProError(error));
+                        bus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProError(error));
                     }
                 });
     }

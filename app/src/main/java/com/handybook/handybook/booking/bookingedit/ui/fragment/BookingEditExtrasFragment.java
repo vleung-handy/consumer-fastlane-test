@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.booking.model.Booking;
@@ -83,7 +83,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new BookingEvent.RequestEditBookingExtrasViewModel(
+        bus.post(new BookingEditEvent.RequestEditBookingExtrasViewModel(
                 Integer.parseInt(mBooking.getId())));
     }
 
@@ -150,7 +150,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         bookingEditExtrasRequest.setAddedExtras(addedExtras.toArray(new String[]{}));
         bookingEditExtrasRequest.setRemovedExtras(removedExtras.toArray(new String[]{}));
         showUiBlockers();
-        bus.post(new BookingEvent.RequestEditBookingExtras(
+        bus.post(new BookingEditEvent.RequestEditBookingExtras(
                 Integer.parseInt(mBooking.getId()), bookingEditExtrasRequest));
     }
 
@@ -266,7 +266,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditExtrasViewModelSuccess(
-            BookingEvent.ReceiveEditBookingExtrasViewModelSuccess event)
+            BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess event)
     {
         mBookingEditExtrasViewModel = event.mBookingEditExtrasViewModel;
 
@@ -278,14 +278,14 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditExtrasViewModelError(
-            BookingEvent.ReceiveEditBookingExtrasViewModelError event)
+            BookingEditEvent.ReceiveEditBookingExtrasViewModelError event)
     {
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
     @Subscribe
-    public final void onReceiveEditBookingExtrasSuccess(BookingEvent.ReceiveEditExtrasSuccess event)
+    public final void onReceiveEditBookingExtrasSuccess(BookingEditEvent.ReceiveEditExtrasSuccess event)
     {
         showToast(getString(R.string.booking_edit_extras_update_success));
 
@@ -294,7 +294,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditBookingExtrasError(BookingEvent.ReceiveEditExtrasError event)
+    public final void onReceiveEditBookingExtrasError(BookingEditEvent.ReceiveEditExtrasError event)
     {
         onReceiveErrorEvent(event);
         removeUiBlockers(); //allow user to try again
