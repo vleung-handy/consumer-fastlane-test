@@ -103,6 +103,7 @@ public class BookingListFragment extends InjectedFragment
         mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
         if (!mBookingsWereReceived)
         {
+            mNoBookingsView.setVisibility(View.GONE);
             loadBookings();
         }
     }
