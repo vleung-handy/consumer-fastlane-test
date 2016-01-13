@@ -86,6 +86,13 @@ public abstract class MixpanelEvent
     @Track(EventKey.APP_TRACK_SPLASH_PROMO_SHOW)
     public static class TrackSplashPromoShow extends MixpanelEvent
     {
+        @TrackField("uniq_code_id")
+        public final String promoId;
+
+        public TrackSplashPromoShow(final String promoId)
+        {
+            this.promoId = promoId;
+        }
     }
 
     /**
@@ -94,6 +101,13 @@ public abstract class MixpanelEvent
     @Track(EventKey.APP_TRACK_SPLASH_PROMO_ACTION)
     public static class TrackSplashPromoAction extends MixpanelEvent
     {
+        @TrackField("uniq_code_id")
+        public final String promoId;
+
+        public TrackSplashPromoAction(final String promoId)
+        {
+            this.promoId = promoId;
+        }
     }
 
     /**

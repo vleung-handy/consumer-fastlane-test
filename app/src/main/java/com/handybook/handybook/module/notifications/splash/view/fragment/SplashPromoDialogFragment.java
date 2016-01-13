@@ -78,7 +78,8 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         mTitle.setText(mSplashPromo.getTitle());
         mSubtitle.setText(mSplashPromo.getSubtitle());
         mActionButton.setText(mSplashPromo.getActionText());
-        mBus.post(new MixpanelEvent.TrackSplashPromoShow());
+
+        mBus.post(new MixpanelEvent.TrackSplashPromoShow(mSplashPromo.getId()));
     }
 
     @OnClick(R.id.splash_promo_action_button)
@@ -87,7 +88,7 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         String deepLink = mSplashPromo.getDeepLinkUrl();
         if(deepLink != null)
         {
-            mBus.post(new MixpanelEvent.TrackSplashPromoAction());
+            mBus.post(new MixpanelEvent.TrackSplashPromoAction(mSplashPromo.getId()));
             Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink));
             Utils.safeLaunchIntent(deepLinkIntent, getContext());
         }
