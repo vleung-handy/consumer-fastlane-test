@@ -38,6 +38,7 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 import org.json.JSONArray;
@@ -304,6 +305,12 @@ public final class BaseDataManager extends DataManager
                 untilId,
                 new HandyNotificationResultSetHandyRetrofitCallback(cb)
         );
+    }
+
+    @Override
+    public void markNotificationsAsRead(@NonNull final long userId, @NonNull final MarkNotificationsAsReadRequest markNotificationsAsReadRequest, @NonNull final Callback<HandyNotification.ResultSet> cb)
+    {
+        mService.markNotificationsAsRead(userId, markNotificationsAsReadRequest, new HandyNotificationResultSetHandyRetrofitCallback(cb));
     }
 
     @Override

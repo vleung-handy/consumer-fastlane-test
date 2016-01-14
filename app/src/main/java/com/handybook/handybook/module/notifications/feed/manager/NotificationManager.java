@@ -3,7 +3,7 @@ package com.handybook.handybook.module.notifications.feed.manager;
 import android.support.annotation.NonNull;
 
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.module.notifications.feed.NotificationFeedEvent;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -25,7 +25,7 @@ public class NotificationManager
 
     @Subscribe
     public void onRequestNotifications(
-            @NonNull final HandyEvent.RequestEvent.HandyNotificationsEvent event
+            @NonNull final NotificationFeedEvent.HandyNotificationsEvent event
     )
     {
         mDataManager.getNotifications(
@@ -39,15 +39,38 @@ public class NotificationManager
                     @Override
                     public void onSuccess(final HandyNotification.ResultSet response)
                     {
-                        mBus.post(new HandyEvent.ResponseEvent.HandyNotificationsSuccess(response));
+                        mBus.post(new NotificationFeedEvent.HandyNotificationsSuccess(response));
                     }
 
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        mBus.post(new HandyEvent.ResponseEvent.HandyNotificationsError(error));
+                        mBus.post(new NotificationFeedEvent.HandyNotificationsError(error));
                     }
                 });
     }
 
+    @Subscribe
+    public void onRequestMarkNotificationsAsRead(
+            @NonNull final NotificationFeedEvent.RequestMarkNotificationAsRead event
+    )
+    {
+        mDataManager.markNotificationsAsRead(
+                event.userId,
+                event.markNotificationsAsReadRequest,
+                new DataManager.Callback<HandyNotification.ResultSet>()
+                {
+                    @Override
+                    public void onSuccess(final HandyNotification.ResultSet response)
+                    {
+                        mBus.post(new NotificationFeedEvent.HandyNotificationsSuccess(response));
+                    }
+
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        mBus.post(new NotificationFeedEvent.HandyNotificationsError(error));
+                    }
+                });
+    }
 }

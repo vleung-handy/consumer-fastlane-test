@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.notifications.feed.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,9 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.module.notifications.feed.NotificationFeedEvent;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.module.notifications.feed.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
@@ -144,15 +146,50 @@ public class NotificationFeedFragment extends InjectedFragment
         requestNotifications();
     }
 
-    @Subscribe
-    public void onNotificationResponseReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
+    /**
+     * currently marking notifications as read once we receive them from the server
+     * @param notifications
+     */
+    private void markNotificationsAsRead(@NonNull HandyNotification.List notifications)
     {
-        mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
+        if(userManager.isUserLoggedIn())
+        {
+            final User currentUser = userManager.getCurrentUser();
+            long userId = Long.parseLong(currentUser.getId());
+
+            long notificationIds[] = new long[notifications.size()];
+            for(int i = 0; i<notificationIds.length; i++)
+            {
+                notificationIds[i] = notifications.get(i).getId();
+            }
+
+            MarkNotificationsAsReadRequest markNotificationsAsReadRequest =
+                    new MarkNotificationsAsReadRequest(notificationIds);
+            bus.post(new NotificationFeedEvent.RequestMarkNotificationAsRead(
+                    userId, markNotificationsAsReadRequest));
+        }
+
+    }
+
+    @Subscribe
+    public void onNotificationResponseReceived(final NotificationFeedEvent.HandyNotificationsSuccess e)
+    {
+        if(e.getPayload() != null)
+        {
+            HandyNotification.List notificationsList = e.getPayload().getHandyNotifications();
+            if(notificationsList != null && !notificationsList.isEmpty())
+            {
+                mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
+
+                //mark these notifications as read
+                markNotificationsAsRead(notificationsList);
+            }
+        }
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Subscribe
-    public void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e)
+    public void onNotificationResponseError(final NotificationFeedEvent.HandyNotificationsError e)
     {
         showToast(e.getPayload().getMessage());
         mSwipeRefreshLayout.setRefreshing(false);
@@ -166,7 +203,7 @@ public class NotificationFeedFragment extends InjectedFragment
 
             final User currentUser = userManager.getCurrentUser();
             bus.post(
-                    new HandyEvent.RequestEvent.HandyNotificationsEvent(
+                    new NotificationFeedEvent.HandyNotificationsEvent(
                             Long.parseLong(currentUser.getId()),
                             currentUser.getAuthToken(),
                             null,
@@ -177,7 +214,7 @@ public class NotificationFeedFragment extends InjectedFragment
 
         } else {
             bus.post(
-                    new HandyEvent.RequestEvent.HandyNotificationsEvent(
+                    new NotificationFeedEvent.HandyNotificationsEvent(
                             null,
                             null,
                             null

@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasReques
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
 
 import java.util.Date;
 
@@ -239,6 +240,11 @@ public interface HandyRetrofitService
             @Query("until_id") Long untilId,
             HandyRetrofitCallback cb
             );
+
+    @POST("/users/{user_id}/notifications/mark_as_read")
+    void markNotificationsAsRead(@Path("user_id") long userId,
+                            @Body MarkNotificationsAsReadRequest markNotificationsAsReadRequest,
+                            HandyRetrofitCallback cb);
 
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
