@@ -2,6 +2,7 @@ package com.handybook.handybook.module.notifications.feed.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -330,9 +331,10 @@ public class HandyNotification implements Serializable, Parcelable
             return mDeeplink;
         }
 
+        @NonNull
         public HandyNotificationActionType getType()
         {
-            return mType;
+            return mType != null ? mType : HandyNotificationActionType.INVALID;
         }
 
         public String getText()
@@ -351,6 +353,18 @@ public class HandyNotification implements Serializable, Parcelable
         {
             dest.writeString(mDeeplink);
             dest.writeString(mText);
+        }
+
+        @NonNull
+        @Override
+        public String toString()
+        {
+            return String.format(
+                    "Action:{ deeplink:\"%s\", type:\"%s\", text:\"%s\"}",
+                    getDeeplink(),
+                    getType().toString(),
+                    getText()
+            );
         }
     }
 
