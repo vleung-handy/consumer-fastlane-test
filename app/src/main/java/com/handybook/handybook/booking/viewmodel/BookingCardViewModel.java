@@ -180,7 +180,7 @@ public class BookingCardViewModel
             }
         }
 
-        private static List from(
+        public static List from(
                 @NonNull final Collection<Booking> bookings,
                 final boolean doNotGroup
         )
@@ -203,7 +203,7 @@ public class BookingCardViewModel
             }
         }
 
-        private static List from(@NonNull final Collection<Booking> bookings)
+        public static List from(@NonNull final Collection<Booking> bookings)
         {
             final HashMap<Long, BookingCardViewModel> recurringIdToBCVM = new HashMap<>();
             final List bookingCardViewModels = new List();
