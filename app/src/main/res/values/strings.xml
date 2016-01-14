@@ -294,6 +294,7 @@
     <string name="nav_help">help</string>
     <string name="title_activity_notification_feed">NotificationFeedActivity</string>
     <string name="cd_notification_feed_button">Open notificaton center</string>
+    <string name="notification_feed_empty_text">You don’t have any notifications yet</string>
     <string name="empty_card_default_text">It seems we have nothing to show… Sorry</string>
 
     <string name="select">Select</string>
