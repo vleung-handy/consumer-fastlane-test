@@ -28,6 +28,7 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
@@ -183,8 +184,10 @@ public final class NavigationFragment extends InjectedFragment
                 R.layout.list_item_nav, items)
         {
             @Override
-            public final View getView(final int position, final View convertView,
-                                      final ViewGroup parent)
+            public final View getView(
+                    final int position, final View convertView,
+                    final ViewGroup parent
+            )
             {
                 View view = convertView;
                 if (view == null)
@@ -221,8 +224,10 @@ public final class NavigationFragment extends InjectedFragment
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(final AdapterView<?> parent, final View view,
-                                    final int position, final long id)
+            public void onItemClick(
+                    final AdapterView<?> parent, final View view,
+                    final int position, final long id
+            )
             {
                 final TextView textView = (TextView) view.findViewById(R.id.nav_item);
                 final String item = textView.getText().toString();
@@ -247,6 +252,11 @@ public final class NavigationFragment extends InjectedFragment
                         && !getString(R.string.payment).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(UpdatePaymentActivity.class);
+                }
+                else if (item.equalsIgnoreCase(getString(R.string.free_cleanings))
+                        && !getString(R.string.free_cleanings).equalsIgnoreCase(mSelectedItem))
+                {
+                    activity.navigateToActivity(ReferralActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.help))
                         && !getString(R.string.help).equalsIgnoreCase(mSelectedItem))
@@ -335,6 +345,7 @@ public final class NavigationFragment extends InjectedFragment
             {
                 items.add(getString(R.string.payment));
             }
+            items.add(getString(R.string.free_cleanings));
         }
 
         items.add(getString(R.string.help));

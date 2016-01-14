@@ -107,6 +107,8 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
+import com.handybook.handybook.module.referral.ui.ReferralActivity;
+import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -231,6 +233,8 @@ import retrofit.converter.GsonConverter;
         ServiceCategoriesOverlayFragment.class,
         SplashPromoDialogFragment.class,
         PushReceiver.class,
+        ReferralActivity.class,
+        ReferralFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
