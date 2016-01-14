@@ -20,30 +20,28 @@ import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotifica
 import com.handybook.handybook.util.Utils;
 import com.squareup.picasso.Picasso;
 
-import java.util.zip.Inflater;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
 {
-    public HandyNotificationViewModel mItem;
-    public final View mView;
+    HandyNotificationViewModel mItem;
+    final View mView;
 
     @Bind(R.id.notification_card_title)
-    public TextView title;
+    TextView mTitle;
     @Bind(R.id.notification_card_body)
-    public TextView body;
+    TextView mBody;
     @Bind(R.id.notification_card_icon)
-    public ImageView image;
+    ImageView mImage;
     @Bind(R.id.notification_card_link_container)
-    public LinearLayout linkContainer;
+    LinearLayout mLinkContainer;
     @Bind(R.id.notification_card_button_container)
-    public LinearLayout buttonContainer;
+    LinearLayout mButtonContainer;
     @Bind(R.id.notification_card_timestamp)
-    public TextView timestamp;
+    TextView mTimestamp;
     @Bind(R.id.notification_card_divider)
-    public FrameLayout divider;
+    FrameLayout mDivider;
 
     private DefaultNotificationViewHolder(View view)
     {
@@ -67,15 +65,15 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
     {
         mItem = model;
         // Title
-        title.setText(mItem.getTitle());
+        mTitle.setText(mItem.getTitle());
         // Body
-        body.setText(Html.fromHtml(mItem.getHtmlBody()));
+        mBody.setText(Html.fromHtml(mItem.getHtmlBody()));
         // Timestamp
-        timestamp.setText(mItem.getTimestamp());
+        mTimestamp.setText(mItem.getTimestamp());
         // Icon
         Picasso.with(mView.getContext())
                 .load(mItem.getIconUrl(mView.getContext()))
-                .into(image);
+                .into(mImage);
         // Action : Default
         if (mItem.hasDefaultAction())
         {
@@ -108,18 +106,18 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
             });
         }
         // Actions : Buttons
-        buttonContainer.setVisibility(
+        mButtonContainer.setVisibility(
                 mItem.hasButtonActions() ? View.VISIBLE : View.GONE
         );
-        buttonContainer.removeAllViews();
+        mButtonContainer.removeAllViews();
         for (final HandyNotification.Action action : mItem.getButtonActions())
         {
             Button button = (Button) LayoutInflater.from(mView.getContext()).inflate(
                     R.layout.layout_handy_notification_cta_button,
-                    buttonContainer,
+                    mButtonContainer,
                     false
             );
-            buttonContainer.addView(button);
+            mButtonContainer.addView(button);
             button.setText(action.getText());
             button.setOnClickListener(new View.OnClickListener()
             {
@@ -141,18 +139,18 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
             });
         }
         // Actions : Links
-        linkContainer.setVisibility(
+        mLinkContainer.setVisibility(
                 mItem.hasLinkActions() ? View.VISIBLE : View.GONE
         );
-        linkContainer.removeAllViews();
+        mLinkContainer.removeAllViews();
         for (final HandyNotification.Action action : mItem.getLinkActions())
         {
             TextView textView = (TextView) LayoutInflater.from(mView.getContext()).inflate(
                     R.layout.layout_handy_notification_cta_link,
-                    buttonContainer,
+                    mButtonContainer,
                     false
             );
-            linkContainer.addView(textView);
+            mLinkContainer.addView(textView);
             textView.setText(action.getText());
             textView.setOnClickListener(new View.OnClickListener()
             {
@@ -174,12 +172,12 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
             });
         }
         // Divider
-        divider.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+        mDivider.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public String toString()
     {
-        return super.toString() + " '" + title.getText() + "'";
+        return super.toString() + " '" + mTitle.getText() + "'";
     }
 }
