@@ -46,7 +46,7 @@ public class BookingsFragment extends InjectedFragment
     @Bind(R.id.tab_layout)
     HandyTabLayout mTabLayout;
     @Bind(R.id.add_booking_button)
-    FloatingActionButton addBookingButton;
+    FloatingActionButton mAddBookingButton;
     private TabAdapter mTabAdapter;
     private List<Service> mServices;
 
@@ -111,11 +111,11 @@ public class BookingsFragment extends InjectedFragment
                                 .getBackStackEntryCount();
                         if (backStackEntryCount == 0)
                         {
-                            addBookingButton.show();
+                            mAddBookingButton.show();
                         }
                         else
                         {
-                            addBookingButton.hide();
+                            mAddBookingButton.hide();
                         }
                     }
                 });
