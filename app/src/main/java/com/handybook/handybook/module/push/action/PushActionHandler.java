@@ -4,15 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.util.Utils;
 
 public class PushActionHandler
 {
-    public static boolean handleAction(final Context context,
-                                       final String action,
-                                       final Bundle arguments)
+    public static boolean handleAction(@NonNull final Context context,
+                                       @NonNull final String action,
+                                       @NonNull final Bundle arguments)
     {
         switch (action)
         {

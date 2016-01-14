@@ -1,6 +1,7 @@
 package com.handybook.handybook.core;
 
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
 import com.squareup.otto.Subscribe;
 
 public class RequiredModalsEventListener //TODO: rename + move to better package
@@ -12,7 +13,7 @@ public class RequiredModalsEventListener //TODO: rename + move to better package
     }
 
     @Subscribe
-    public void onReceiveSplashPromoSuccess(HandyEvent.ReceiveAvailableSplashPromoSuccess event)
+    public void onReceiveSplashPromoSuccess(SplashNotificationEvent.ReceiveAvailableSplashPromoSuccess event)
     {
         mRequiredModalsLauncher.showSplashPromo(event.splashPromo);
     }

@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
@@ -29,7 +29,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
-import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
@@ -117,7 +117,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         if (mBooking == null)
         {
             showUiBlockers();
-            bus.post(new HandyEvent.RequestBookingDetails(mBookingId));
+            bus.post(new BookingEvent.RequestBookingDetails(mBookingId));
         }
     }
 
@@ -154,7 +154,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         else if (resultCode == ActivityResult.BOOKING_UPDATED)
         {
             //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
-            postBlockingEvent(new HandyEvent.RequestBookingDetails(mBooking.getId()));
+            postBlockingEvent(new BookingEvent.RequestBookingDetails(mBooking.getId()));
             //setting the updated result with the new booking when we receive the new booking data
         }
     }
@@ -195,7 +195,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private void setSectionFragmentInputsEnabled(boolean enabled)
     {
-        bus.post(new HandyEvent.SetBookingDetailSectionFragmentActionControlsEnabled(enabled));
+        bus.post(new BookingEvent.SetBookingDetailSectionFragmentActionControlsEnabled(enabled));
     }
 
     private void setupForBooking(Booking booking)
@@ -218,7 +218,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                 new BookingDetailSectionFragmentProInformation(),
                 new BookingDetailSectionFragmentLaundry(),
                 new BookingDetailSectionFragmentEntryInformation(),
-                new BookingDetailSectionFragmentNoteToPro(),
+                new BookingDetailSectionFragmentPreferences(),
                 new BookingDetailSectionFragmentExtras(),
                 new BookingDetailSectionFragmentAddress(),
                 new BookingDetailSectionFragmentPayment(),
@@ -276,7 +276,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     };
 
     @Subscribe
-    public void onReceivePreRescheduleInfoSuccess(HandyEvent.ReceivePreRescheduleInfoSuccess event)
+    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event)
     {
         removeUiBlockers();
 
@@ -287,7 +287,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreRescheduleInfoError(HandyEvent.ReceivePreRescheduleInfoError event)
+    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event)
     {
         removeUiBlockers();
 
@@ -295,7 +295,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreCancelationInfoSuccess(HandyEvent.ReceivePreCancelationInfoSuccess event)
+    public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
     {
         removeUiBlockers();
 
@@ -309,14 +309,14 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreCancelationInfoError(HandyEvent.ReceivePreCancelationInfoError event)
+    public void onReceivePreCancelationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
     {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @Subscribe
-    public void onReceiveBookingDetailsSuccess(HandyEvent.ReceiveBookingDetailsSuccess event)
+    public void onReceiveBookingDetailsSuccess(BookingEvent.ReceiveBookingDetailsSuccess event)
     {
         removeUiBlockers();
 
@@ -327,7 +327,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceiveBookingDetailsError(HandyEvent.ReceiveBookingDetailsError event)
+    public void onReceiveBookingDetailsError(BookingEvent.ReceiveBookingDetailsError event)
     {
         removeUiBlockers();
 

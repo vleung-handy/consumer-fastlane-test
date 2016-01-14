@@ -1,8 +1,10 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.util.Pair;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -29,6 +31,33 @@ import java.util.Date;
 
 public class BookingFlowFragment extends InjectedFragment
 {
+    @Override
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        Crashlytics.log(getClass().getSimpleName() + ".onCreate with transaction " + bookingManager.getCurrentTransaction());
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        Crashlytics.log(getClass().getSimpleName() + ".onResume with transaction " + bookingManager.getCurrentTransaction());
+    }
+
+    @Override
+    public void onPause()
+    {
+        Crashlytics.log(getClass().getSimpleName() + ".onPause with transaction " + bookingManager.getCurrentTransaction());
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        Crashlytics.log(getClass().getSimpleName() + ".onDestroy with transaction " + bookingManager.getCurrentTransaction());
+        super.onDestroy();
+    }
 
     protected final void startBookingFlow(final int serviceId, final String uniq)
     {

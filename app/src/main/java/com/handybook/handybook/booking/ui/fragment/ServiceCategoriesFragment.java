@@ -22,11 +22,11 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
@@ -169,7 +169,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             if (promoCode != null)
             {
                 args.remove(EXTRA_PROMO_CODE); //only handle once
-                bus.post(new HandyEvent.RequestPreBookingPromo(promoCode));
+                bus.post(new BookingEvent.RequestPreBookingPromo(promoCode));
             }
 
             String extraServiceIdString = args.getString(EXTRA_SERVICE_ID);
@@ -204,11 +204,11 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         progressDialog.show();
         mUsedCache = false;
-        bus.post(new HandyEvent.RequestServices());
+        bus.post(new BookingEvent.RequestServices());
     }
 
     @Subscribe
-    public void onReceivePreBookingPromoSuccess(HandyEvent.ReceivePreBookingPromoSuccess event)
+    public void onReceivePreBookingPromoSuccess(BookingEvent.ReceivePreBookingPromoSuccess event)
     {
         PromoCode promoCode = event.getPromoCode();
         showCouponAppliedNotificationIfNecessary(); //could have removed the promo code
@@ -222,13 +222,13 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public void onReceiveServicesSuccess(final HandyEvent.ReceiveServicesSuccess event)
+    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
     {
         handleLoadServicesResponse(event.getServices(), false);
     }
 
     @Subscribe
-    public void onReceiveCachedServicesSuccess(final HandyEvent.ReceiveCachedServicesSuccess event)
+    public void onReceiveCachedServicesSuccess(final BookingEvent.ReceiveCachedServicesSuccess event)
     {
         handleLoadServicesResponse(event.getServices(), true);
     }
@@ -247,7 +247,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public void onReceiveServicesError(final HandyEvent.ReceiveServicesError event)
+    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError event)
     {
         if (!allowCallbacks || mUsedCache)
         {

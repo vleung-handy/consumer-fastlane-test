@@ -219,9 +219,13 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void getAvailableSplashPromo(final String userId, final Callback<SplashPromo> cb)
+    public void getAvailableSplashPromo(final String userId,
+                                        final String[] displayedPromos,
+                                        final String[] acceptedPromos,
+                                        final Callback<SplashPromo> cb)
     {
-        mService.getAvailableSplashPromo(userId, new AvailableSplashPromoRetrofitCallback(cb));
+        mService.getAvailableSplashPromo(userId, displayedPromos, acceptedPromos,
+                new AvailableSplashPromoRetrofitCallback(cb));
     }
 
     @Override

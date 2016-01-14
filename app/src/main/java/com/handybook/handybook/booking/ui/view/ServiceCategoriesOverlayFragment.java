@@ -37,6 +37,8 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
 
     @Bind(R.id.close_services_button_wrapper)
     View mCloseButtonWrapper;
+    @Bind(R.id.close_button)
+    View mCloseButton;
     @Bind(R.id.services_wrapper)
     ViewGroup mServicesWrapper;
     List<ServiceCategorySimpleView> mServiceCategorySimpleViews;
@@ -79,7 +81,6 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
         {
             final ServiceCategorySimpleView serviceCategorySimpleView =
                     new ServiceCategorySimpleView(getContext());
-            serviceCategorySimpleView.init(service);
             serviceCategorySimpleView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -88,13 +89,16 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                     handleServiceCategoryClicked(serviceCategorySimpleView, service);
                 }
             });
-            mServicesWrapper.addView(serviceCategorySimpleView, mServicesWrapper.getChildCount() - 1);
+            mServicesWrapper.addView(serviceCategorySimpleView,
+                    mServicesWrapper.getChildCount() - 1);
             serviceCategorySimpleView.postDelayed(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    float fromYDelta = mCloseButtonWrapper.getY() - serviceCategorySimpleView.getY();
+                    serviceCategorySimpleView.init(service);
+                    float fromYDelta =
+                            mCloseButtonWrapper.getY() - serviceCategorySimpleView.getY();
                     TranslateAnimation animation = new TranslateAnimation(0, 0, fromYDelta, 0);
                     animation.setDuration(SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS);
                     animation.setInterpolator(new OvershootInterpolator());
@@ -115,6 +119,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                     @Override
                     public void onBack()
                     {
+                        mCloseButton.setClickable(false);
                         for (ServiceCategorySimpleView view : mServiceCategorySimpleViews)
                         {
                             float toYDelta = mCloseButtonWrapper.getY() - view.getY();
@@ -122,6 +127,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                                     new TranslateAnimation(0, 0, 0, toYDelta);
                             animation.setDuration(SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS);
                             view.startAnimation(animation);
+                            view.getTitle().setVisibility(View.INVISIBLE);
                             view.setVisibility(View.INVISIBLE);
                         }
                         activity.setOnBackPressedListener(null);

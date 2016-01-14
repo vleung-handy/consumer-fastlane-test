@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,18 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.widget.LabelValueView;
-import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashSet;
@@ -57,7 +59,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     private BookingEditExtrasViewModel mBookingEditExtrasViewModel;
     private BookingOptionsSelectView mOptionsView;
 
-    public static BookingEditExtrasFragment newInstance(Booking booking)
+    public static BookingEditExtrasFragment newInstance(@NonNull Booking booking)
     {
         final BookingEditExtrasFragment fragment = new BookingEditExtrasFragment();
         final Bundle args = new Bundle();
@@ -70,7 +72,9 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        //booking should never be null here
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+        Crashlytics.log("Showing edit extras for booking with id " + mBooking.getId());
         mixpanel.trackEventAppTrackExtras();
     }
 
@@ -79,7 +83,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditBookingExtrasViewModel(
+        bus.post(new BookingEditEvent.RequestEditBookingExtrasViewModel(
                 Integer.parseInt(mBooking.getId())));
     }
 
@@ -146,7 +150,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         bookingEditExtrasRequest.setAddedExtras(addedExtras.toArray(new String[]{}));
         bookingEditExtrasRequest.setRemovedExtras(removedExtras.toArray(new String[]{}));
         showUiBlockers();
-        bus.post(new HandyEvent.RequestEditBookingExtras(
+        bus.post(new BookingEditEvent.RequestEditBookingExtras(
                 Integer.parseInt(mBooking.getId()), bookingEditExtrasRequest));
     }
 
@@ -234,7 +238,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     {
         float bookingBaseHours = mBookingEditExtrasViewModel.getBookingBaseHours();
         String originalBookingBasePrice = mBookingEditExtrasViewModel
-                .getOriginalBookingBasePriceFormatted();
+                .getOriginalBookingBasePriceFormatted(getContext());
         mBookingTableRow.setLabelAndValueText(
                 getResources().getString(R.string.booking_edit_base_hours_formatted, bookingBaseHours),
                 originalBookingBasePrice);
@@ -262,7 +266,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditExtrasViewModelSuccess(
-            HandyEvent.ReceiveEditBookingExtrasViewModelSuccess event)
+            BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess event)
     {
         mBookingEditExtrasViewModel = event.mBookingEditExtrasViewModel;
 
@@ -274,14 +278,14 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditExtrasViewModelError(
-            HandyEvent.ReceiveEditBookingExtrasViewModelError event)
+            BookingEditEvent.ReceiveEditBookingExtrasViewModelError event)
     {
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
     @Subscribe
-    public final void onReceiveEditBookingExtrasSuccess(HandyEvent.ReceiveEditExtrasSuccess event)
+    public final void onReceiveEditBookingExtrasSuccess(BookingEditEvent.ReceiveEditExtrasSuccess event)
     {
         showToast(getString(R.string.booking_edit_extras_update_success));
 
@@ -290,7 +294,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditBookingExtrasError(HandyEvent.ReceiveEditExtrasError event)
+    public final void onReceiveEditBookingExtrasError(BookingEditEvent.ReceiveEditExtrasError event)
     {
         onReceiveErrorEvent(event);
         removeUiBlockers(); //allow user to try again

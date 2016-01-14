@@ -1,8 +1,8 @@
 package com.handybook.handybook.manager;
 
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -24,27 +24,27 @@ public class ServicesManager
     }
 
     @Subscribe
-    public void onRequestServices(final HandyEvent.RequestServices event)
+    public void onRequestServices(final BookingEvent.RequestServices event)
     {
         mDataManager.getServices(new DataManager.CacheResponse<List<Service>>()
         {
             @Override
             public void onResponse(final List<Service> services)
             {
-                mBus.post(new HandyEvent.ReceiveCachedServicesSuccess(services));
+                mBus.post(new BookingEvent.ReceiveCachedServicesSuccess(services));
             }
         }, new DataManager.Callback<List<Service>>()
         {
             @Override
             public void onSuccess(final List<Service> services)
             {
-                mBus.post(new HandyEvent.ReceiveServicesSuccess(services));
+                mBus.post(new BookingEvent.ReceiveServicesSuccess(services));
             }
 
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
-                mBus.post(new HandyEvent.ReceiveServicesError(error));
+                mBus.post(new BookingEvent.ReceiveServicesError(error));
             }
         });
     }

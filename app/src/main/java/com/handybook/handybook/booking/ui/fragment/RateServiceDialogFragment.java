@@ -15,9 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.analytics.Mixpanel;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
@@ -233,7 +233,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     }
 
     @Subscribe
-    public void onReceiveRateBookingSuccess(HandyEvent.ReceiveRateBookingSuccess event)
+    public void onReceiveRateBookingSuccess(BookingEvent.ReceiveRateBookingSuccess event)
     {
         if (getTipAmount() != null)
         {
@@ -251,7 +251,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     }
 
     @Subscribe
-    public void onReceiveRateBookingError(HandyEvent.ReceiveRateBookingError event)
+    public void onReceiveRateBookingError(BookingEvent.ReceiveRateBookingError event)
     {
         mSubmitProgress.setVisibility(View.GONE);
         mSubmitButton.setText(R.string.submit);
@@ -272,7 +272,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             final int finalRating = mRating + 1;
             final Integer tipAmountCents = getTipAmount();
 
-            mBus.post(new HandyEvent.RateBookingEvent(mBookingId, finalRating, tipAmountCents));
+            mBus.post(new BookingEvent.RateBookingEvent(mBookingId, finalRating, tipAmountCents));
             if (tipAmountCents != null)
             {
                 mBus.post(new MixpanelEvent.TrackSubmitTip(tipAmountCents, MixpanelEvent.TipParentFlow.RATING_FLOW));

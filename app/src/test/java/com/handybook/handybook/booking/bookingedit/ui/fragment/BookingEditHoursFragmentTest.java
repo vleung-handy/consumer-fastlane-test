@@ -2,10 +2,9 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditHoursFragment;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
@@ -56,7 +55,7 @@ public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldRequestEditHoursViewModelOnCreateView() throws Exception
     {
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent.RequestEditHoursInfoViewModel.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEditEvent.RequestEditHoursInfoViewModel.class));
     }
 
     @Test
@@ -67,10 +66,9 @@ public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper
         });
         when(mBookingEditHoursViewModel.getBaseHours()).thenReturn(1f);
 
-        mFragment.onReceiveEditHoursInfoSuccess(new HandyEvent
-                .ReceiveEditHoursInfoViewModelSuccess(mBookingEditHoursViewModel));
+        mFragment.onReceiveEditHoursInfoSuccess(new BookingEditEvent.ReceiveEditHoursInfoViewModelSuccess(mBookingEditHoursViewModel));
         mFragment.onSaveButtonPressed();
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent.RequestEditHours.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEditEvent.RequestEditHours.class));
     }
 
     @Test
@@ -78,8 +76,7 @@ public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper
     {
         String errorMessage = mFragment.getString(R.string
                 .default_error_string);
-        mFragment.onReceiveEditHoursInfoError(new HandyEvent
-                .ReceiveEditHoursInfoViewModelError(new DataManager.DataManagerError(DataManager
+        mFragment.onReceiveEditHoursInfoError(new BookingEditEvent.ReceiveEditHoursInfoViewModelError(new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }

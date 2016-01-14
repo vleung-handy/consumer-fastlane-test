@@ -9,12 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
@@ -59,7 +59,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestGetEditFrequencyViewModel(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
+        bus.post(new BookingEditEvent.RequestGetEditFrequencyViewModel(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
     }
 
     @Override
@@ -93,7 +93,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
                 mBookingEditFrequencyViewModel.getFrequencyOptionValue(selectedIndex));
 
         //post the booking request object
-        bus.post(new HandyEvent.RequestEditBookingFrequency(
+        bus.post(new BookingEditEvent.RequestEditBookingFrequency(
                 Integer.parseInt(mBooking.getId()),
                 bookingEditFrequencyRequest));
     }
@@ -131,7 +131,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingFrequencySuccess(HandyEvent.ReceiveEditBookingFrequencySuccess event)
+    public final void onReceiveUpdateBookingFrequencySuccess(BookingEditEvent.ReceiveEditBookingFrequencySuccess event)
     {
         removeUiBlockers();
         showToast(R.string.updated_booking_frequency);
@@ -141,7 +141,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingFrequencyError(HandyEvent.ReceiveEditBookingFrequencyError event)
+    public final void onReceiveUpdateBookingFrequencyError(BookingEditEvent.ReceiveEditBookingFrequencyError event)
     {
         onReceiveErrorEvent(event);
         removeUiBlockers(); //allow user to try again
@@ -149,7 +149,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditFrequencyViewModelSuccess(
-            HandyEvent.ReceiveGetEditFrequencyViewModelSuccess event)
+            BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess event)
     {
         mBookingEditFrequencyViewModel = event.bookingEditFrequencyViewModel;
         createOptionsView();
@@ -158,7 +158,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditFrequencyViewModelError(
-            HandyEvent.ReceiveGetEditFrequencyViewModelError event)
+            BookingEditEvent.ReceiveGetEditFrequencyViewModelError event)
     {
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid

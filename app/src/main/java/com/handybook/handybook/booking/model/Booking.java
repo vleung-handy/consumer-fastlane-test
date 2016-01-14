@@ -78,6 +78,8 @@ public class Booking implements Parcelable
     private boolean mCanEditExtras;
     @SerializedName("can_leave_tip")
     private boolean mCanLeaveTip;
+    @SerializedName("instructions")
+    private Instructions mInstructions;
 
     public boolean canEditExtras()
     {
@@ -164,6 +166,11 @@ public class Booking implements Parcelable
     public boolean canLeaveTip()
     {
         return mCanLeaveTip;
+    }
+
+    public Instructions getInstructions()
+    {
+        return mInstructions;
     }
 
 
@@ -391,6 +398,8 @@ public class Booking implements Parcelable
         mCanEditExtras = booleanData[1];
         mCanEditHours = booleanData[2];
         mCanLeaveTip = booleanData[3];
+
+        mInstructions = in.readParcelable(Instructions.class.getClassLoader());
     }
 
     public static Booking fromJson(final String json)
@@ -431,6 +440,7 @@ public class Booking implements Parcelable
                         mCanEditHours,
                         mCanLeaveTip,
                 });
+        out.writeParcelable(mInstructions, 0);
     }
 
     @Override

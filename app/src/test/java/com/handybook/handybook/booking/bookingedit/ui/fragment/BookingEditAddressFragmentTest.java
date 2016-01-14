@@ -2,9 +2,9 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;
@@ -60,8 +60,7 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     {
         mFragment.mStreetAddressInputTextView1.setText("2 Test Drive");
         mFragment.onNextButtonClick();
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(HandyEvent
-                .RequestEditBookingAddress.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEditEvent.RequestEditBookingAddress.class));
     }
 
     @Test
@@ -69,8 +68,7 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     {
         String errorMessage = mFragment.getString(R.string
                 .default_error_string);
-        mFragment.onReceiveEditBookingAddressError(new HandyEvent
-                .ReceiveEditBookingAddressError(new DataManager.DataManagerError(DataManager
+        mFragment.onReceiveEditBookingAddressError(new BookingEditEvent.ReceiveEditBookingAddressError(new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }

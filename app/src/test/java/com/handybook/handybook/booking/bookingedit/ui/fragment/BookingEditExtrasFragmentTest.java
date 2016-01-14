@@ -2,10 +2,9 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
+import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.model.OptionPrice;
 import com.handybook.handybook.booking.model.PaidStatus;
@@ -70,7 +69,7 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     public void shouldRequestEditHoursViewModelOnCreateView() throws Exception
     {
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
-                instanceOf(HandyEvent.RequestEditBookingExtrasViewModel.class));
+                instanceOf(BookingEditEvent.RequestEditBookingExtrasViewModel.class));
     }
 
     @Test
@@ -105,12 +104,12 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
                 (mBookingEditExtrasInfoResponse);
         //get the edit extras info response
         mFragment.onReceiveEditExtrasViewModelSuccess(
-                new HandyEvent.ReceiveEditBookingExtrasViewModelSuccess(bookingEditExtrasViewModel));
+                new BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess(bookingEditExtrasViewModel));
 
         //press the save button
         mFragment.onSaveButtonPressed();
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
-                instanceOf(HandyEvent.RequestEditBookingExtras.class));
+                instanceOf(BookingEditEvent.RequestEditBookingExtras.class));
     }
 
     @Test
@@ -118,7 +117,7 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     {
         String errorMessage = mFragment.getString(R.string.default_error_string);
         mFragment.onReceiveEditExtrasViewModelError(
-                new HandyEvent.ReceiveEditBookingExtrasViewModelError(
+                new BookingEditEvent.ReceiveEditBookingExtrasViewModelError(
                 new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));

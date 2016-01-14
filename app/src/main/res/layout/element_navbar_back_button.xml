@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    style="@style/RelativeLayout.NavBar.Blue"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     >
 
-<TextView
-    style="@style/RelativeLayout.NavBar.Blue"
-    android:gravity="center"
-    android:id="@+id/nav_text"
-    tools:text="Title"
-    />
+    <ImageButton
+        android:id="@+id/back_button"
+        style="@style/NavBarButton.Back"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_back"
+        />
 
-<ImageButton
-    android:id="@+id/back_button"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:src="@drawable/ic_back"
-    style="@style/NavBarButton.Back"
-    />
+    <TextView
+        android:id="@+id/nav_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/back_button"
+        android:layout_toRightOf="@id/back_button"
+        android:gravity="center"
+        android:textColor="@color/handy_white"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Title"
+        />
 </RelativeLayout>

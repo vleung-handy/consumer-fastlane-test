@@ -130,7 +130,7 @@
         <activity android:name=".ui.activity.OnboardActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
         <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
-        <activity android:name=".booking.bookingedit.ui.activity.BookingEditNoteToProActivity"/>
+        <activity android:name=".booking.bookingedit.ui.activity.BookingEditPreferencesActivity"/>
         <activity android:name=".booking.bookingedit.ui.activity.BookingEditEntryInformationActivity"/>
         <activity android:name=".booking.bookingedit.ui.activity.BookingEditFrequencyActivity"/>
         <activity android:name=".booking.bookingedit.ui.activity.BookingEditExtrasActivity"/>

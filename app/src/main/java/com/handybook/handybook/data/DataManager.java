@@ -46,7 +46,10 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
-    public abstract void getAvailableSplashPromo(String userId, Callback<SplashPromo> cb);
+    public abstract void getAvailableSplashPromo(String userId,
+                                                 String[] displayedPromos,
+                                                 String[] acceptedPromos,
+                                                 Callback<SplashPromo> cb);
 
     public abstract void getServices(
             CacheResponse<List<Service>> cache,

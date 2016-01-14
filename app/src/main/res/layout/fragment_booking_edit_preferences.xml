@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+    android:background="@color/handy_bg"
+    >
 
     <!--TODO: layout needs refactoring. mostly duplicated from fragment_booking_confirmation.xml-->
     <Button
         android:id="@+id/next_button"
-        android:textAllCaps="false"
+        style="@style/Button.Green"
         android:text="@string/update"
-        style="@style/Button.Green" />
+        android:textAllCaps="false"
+        />
 
     <com.handybook.handybook.ui.widget.BackButtonNavBar
         android:id="@+id/nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/booking_edit_note_to_pro_title"
+        android:text="@string/booking_edit_preferences_title"
         />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/next_button"
         android:layout_below="@id/nav_bar"
-        android:layout_above="@id/next_button">
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -32,36 +36,25 @@
             <TextView
                 android:id="@id/header_text"
                 style="@style/TextView.CenteredHeader"
-                android:text="@string/pro_to_know"
+                android:text="@string/booking_edit_preferences_subtitle"
                 />
-
-            <com.handybook.handybook.ui.widget.PasswordInputTextView
-                android:id="@+id/pwd_text"
-                android:layout_below="@id/header_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:visibility="gone"
-                style="@style/EditText.Last.Password" />
 
             <LinearLayout
                 android:id="@+id/options_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/header_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
+                android:background="@color/white"
                 android:orientation="vertical"
-                android:background="@color/white" />
+                />
 
-            <com.handybook.handybook.ui.widget.BasicInputTextView
-                android:id="@+id/keys_text"
-                android:layout_below="@id/options_layout"
+            <com.handybook.handybook.ui.widget.InstructionsLayout
+                android:id="@+id/instructions_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:singleLine="true"
-                android:visibility="gone"
-                style="@style/EditText.Last" />
+                android:layout_below="@+id/options_layout"
+                />
 
         </RelativeLayout>
 

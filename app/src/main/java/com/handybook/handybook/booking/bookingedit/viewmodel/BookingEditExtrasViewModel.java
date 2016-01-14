@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.bookingedit.viewmodel;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
@@ -69,14 +70,39 @@ public class BookingEditExtrasViewModel
         return mBookingEditExtrasInfoResponse.getBaseHours();
     }
 
-    public String getOriginalBookingBasePriceFormatted()
+    /**
+     *
+     * @param context needed for getting string resources
+     * @return
+     */
+    public String getOriginalBookingBasePriceFormatted(Context context)
     {
         float bookingBaseHours = mBookingEditExtrasInfoResponse.getBaseHours();
         //it is weird for api to return this
         String originalBookingBaseHours = getFormattedHoursForPriceTable(bookingBaseHours);
-        String originalBookingBasePrice = mBookingEditExtrasInfoResponse.getPriceTable().
-                get(originalBookingBaseHours).getTotalDueFormatted();
-        return originalBookingBasePrice;
+        Map<String, PriceInfo> priceTable = mBookingEditExtrasInfoResponse.getPriceTable();
+
+        //booking id is already logged before this
+        if(priceTable == null)
+        {
+            Crashlytics.logException(new Exception("Price table for edit extras response is null"));
+        }
+        else
+        {
+            PriceInfo priceInfo = priceTable.get(originalBookingBaseHours);
+            if(priceInfo == null)
+            {
+                Crashlytics.logException(
+                        new Exception("Price info for " +
+                                originalBookingBaseHours + " booking hrs is null"));
+            }
+            else
+            {
+                return priceInfo.getTotalDueFormatted();
+            }
+        }
+
+        return context.getResources().getString(R.string.no_data_indicator);
     }
 
     /**

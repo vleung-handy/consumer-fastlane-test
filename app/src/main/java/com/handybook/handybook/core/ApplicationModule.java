@@ -14,13 +14,13 @@ import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryI
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditNoteToProActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditPreferencesActivity;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditAddressFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditExtrasFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditHoursFragment;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditNoteToProFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditPreferencesFragment;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -40,6 +40,7 @@ import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActiv
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
@@ -54,8 +55,8 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
-import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentNoteToPro;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
@@ -72,7 +73,6 @@ import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingTableFragment;
-import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
@@ -106,6 +106,7 @@ import com.handybook.handybook.module.notifications.feed.ui.fragment.Notificatio
 import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
+import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -200,12 +201,12 @@ import retrofit.converter.GsonConverter;
         BookingDetailSectionFragmentEntryInformation.class,
         BookingDetailSectionFragmentExtras.class,
         BookingDetailSectionFragmentLaundry.class,
-        BookingDetailSectionFragmentNoteToPro.class,
+        BookingDetailSectionFragmentPreferences.class,
         BookingDetailSectionFragmentPayment.class,
         BookingDetailSectionFragmentProInformation.class,
         BookingDetailSectionFragmentBookingActions.class,
-        BookingEditNoteToProActivity.class,
-        BookingEditNoteToProFragment.class,
+        BookingEditPreferencesActivity.class,
+        BookingEditPreferencesFragment.class,
         BookingEditEntryInformationActivity.class,
         BookingEditEntryInformationFragment.class,
         BookingEditFrequencyActivity.class,
@@ -228,7 +229,8 @@ import retrofit.converter.GsonConverter;
         UpdatePaymentFragment.class,
         NavbarWebViewDialogFragment.class,
         ServiceCategoriesOverlayFragment.class,
-        SplashPromoDialogFragment.class
+        SplashPromoDialogFragment.class,
+        PushReceiver.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
@@ -378,10 +380,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final BookingManager provideBookingManager(
-            final Bus bus,
-            final PrefsManager prefsManager,
-            final DataManager dataManager
+    final BookingManager provideBookingManager(final Bus bus,
+                                               final PrefsManager prefsManager,
+                                               final DataManager dataManager
     )
     {
         return new BookingManager(bus, prefsManager, dataManager);
@@ -425,9 +426,10 @@ public final class ApplicationModule
     @Singleton
     final SplashNotificationManager provideSplashNotificationManager(final UserManager userManager,
                                                                      final DataManager dataManager,
+                                                                     final PrefsManager prefsManager,
                                                                      final Bus bus)
     {
-        return new SplashNotificationManager(userManager, dataManager, bus);
+        return new SplashNotificationManager(userManager, dataManager, prefsManager, bus);
     }
 
     @Provides
@@ -446,20 +448,18 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final NavigationManager provideNavigationManager(
-            final UserManager userManager,
-            final DataManager dataManager,
-            final DataManagerErrorHandler dataManagerErrorHandler)
+    final NavigationManager provideNavigationManager(final UserManager userManager,
+                                                     final DataManager dataManager,
+                                                     final DataManagerErrorHandler dataManagerErrorHandler)
     {
         return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
     }
 
     @Provides
     @Singleton
-    final HelpManager provideHelpManager(
-            final Bus bus,
-            final DataManager dataManager,
-            final UserManager userManager
+    final HelpManager provideHelpManager(final Bus bus,
+                                         final DataManager dataManager,
+                                         final UserManager userManager
     )
     {
         return new HelpManager(bus, dataManager, userManager);
@@ -467,9 +467,8 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HelpContactManager provideHelpContactManager(
-            final Bus bus,
-            final DataManager dataManager
+    final HelpContactManager provideHelpContactManager(final Bus bus,
+                                                       final DataManager dataManager
     )
     {
         return new HelpContactManager(bus, dataManager);
