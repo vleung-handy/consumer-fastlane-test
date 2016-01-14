@@ -6,19 +6,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.booking.ui.holder.BookingCardHolder;
+import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 
 public class BookingCardAdapter extends RecyclerView.Adapter<BookingCardHolder>
 {
 
     private Context mContext;
     private BookingCardViewModel.List mBookingCardViewModels;
-    private int lastPosition = -1;
 
     public BookingCardAdapter(
             @NonNull final Context context,
@@ -27,6 +24,16 @@ public class BookingCardAdapter extends RecyclerView.Adapter<BookingCardHolder>
     {
         mContext = context;
         mBookingCardViewModels = bookingCardViewModels;
+    }
+
+    public void setBookingCardViewModels(final BookingCardViewModel.List bookingCardViewModels)
+    {
+        mBookingCardViewModels = bookingCardViewModels;
+    }
+
+    public BookingCardViewModel.List getBookingCardViewModels()
+    {
+        return mBookingCardViewModels;
     }
 
     @Override
@@ -42,12 +49,6 @@ public class BookingCardAdapter extends RecyclerView.Adapter<BookingCardHolder>
     {
         BookingCardViewModel bookingCardViewModel = mBookingCardViewModels.get(position);
         holder.bindBookingCardViewModel(bookingCardViewModel);
-        Animation animation = AnimationUtils.loadAnimation(
-                mContext,
-                position > lastPosition ? R.anim.up_from_bottom : R.anim.down_from_top
-        );
-        //holder.itemView.startAnimation(animation);
-        lastPosition = position;
     }
 
     @Override
