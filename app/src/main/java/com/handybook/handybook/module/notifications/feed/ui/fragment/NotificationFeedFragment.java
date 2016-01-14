@@ -18,12 +18,15 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.module.notifications.feed.NotificationFeedEvent;
+import com.handybook.handybook.module.notifications.feed.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.module.notifications.feed.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
 import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -152,19 +155,31 @@ public class NotificationFeedFragment extends InjectedFragment
      */
     private void markNotificationsAsRead(@NonNull HandyNotification.List notifications)
     {
-        if(userManager.isUserLoggedIn())
+        if (userManager.isUserLoggedIn())
         {
             final User currentUser = userManager.getCurrentUser();
             long userId = Long.parseLong(currentUser.getId());
 
-            long notificationIds[] = new long[notifications.size()];
-            for(int i = 0; i<notificationIds.length; i++)
+            //request to mark only the unread notifications as read
+            List<Long> readNotificationsIdList = new ArrayList<>();
+            for (int i = 0; i < notifications.size(); i++)
             {
-                notificationIds[i] = notifications.get(i).getId();
+                HandyNotification handyNotification = notifications.get(i);
+                if (!handyNotification.isRead())
+                {
+                    readNotificationsIdList.add(handyNotification.getId());
+                }
+            }
+
+            //convert to array, since request payload requires it
+            long[] readNotificationIdsArray = new long[readNotificationsIdList.size()];
+            for (int i = 0; i < readNotificationIdsArray.length; i++)
+            {
+                readNotificationIdsArray[i] = readNotificationsIdList.get(i);
             }
 
             MarkNotificationsAsReadRequest markNotificationsAsReadRequest =
-                    new MarkNotificationsAsReadRequest(notificationIds);
+                    new MarkNotificationsAsReadRequest(readNotificationIdsArray);
             bus.post(new NotificationFeedEvent.RequestMarkNotificationAsRead(
                     userId, markNotificationsAsReadRequest));
         }

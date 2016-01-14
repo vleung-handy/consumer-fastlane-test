@@ -308,9 +308,12 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void markNotificationsAsRead(@NonNull final long userId, @NonNull final MarkNotificationsAsReadRequest markNotificationsAsReadRequest, @NonNull final Callback<HandyNotification.ResultSet> cb)
+    public void markNotificationsAsRead(@NonNull final long userId,
+                                        @NonNull final MarkNotificationsAsReadRequest markNotificationsAsReadRequest,
+                                        @NonNull final Callback<HandyNotification.ResultSet> cb)
     {
-        mService.markNotificationsAsRead(userId, markNotificationsAsReadRequest, new HandyNotificationResultSetHandyRetrofitCallback(cb));
+        mService.markNotificationsAsRead(userId, markNotificationsAsReadRequest,
+                new HandyNotificationResultSetHandyRetrofitCallback(cb));
     }
 
     @Override
