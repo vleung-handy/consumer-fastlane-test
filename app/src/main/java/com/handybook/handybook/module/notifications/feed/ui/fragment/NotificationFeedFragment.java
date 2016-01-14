@@ -134,6 +134,7 @@ public class NotificationFeedFragment extends InjectedFragment
         TypedValue typed_value = new TypedValue();
         getActivity().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
         mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
+        // Workaround to actually get the SwipeRefreshLayout to show it's refreshing
         mSwipeRefreshLayout.setRefreshing(false);
         mSwipeRefreshLayout.setRefreshing(true);
     }
