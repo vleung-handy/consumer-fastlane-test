@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -41,7 +40,7 @@ public class BookingListFragment extends InjectedFragment
     @Bind(R.id.fragment_booking_list_booking_card_recycler_view)
     EmptiableRecyclerView mEmptiableRecyclerView;
     @Bind(R.id.card_empty)
-    CardView mNoBookingsView;
+    View mNoBookingsView;
     @Bind(R.id.card_empty_text)
     TextView mNoBookingsText;
     private Context mContext;
