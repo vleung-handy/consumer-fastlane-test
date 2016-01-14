@@ -289,7 +289,6 @@ public final class BaseDataManager extends DataManager
     @Override
     public void getNotifications(
             long userId,
-            String authToken,
             @Nullable final Long count,
             @Nullable final Long sinceId,
             @Nullable final Long untilId,
@@ -298,7 +297,6 @@ public final class BaseDataManager extends DataManager
     {
         mService.getNotificationResultSet(
                 userId,
-                authToken,
                 count,
                 sinceId,
                 untilId,
