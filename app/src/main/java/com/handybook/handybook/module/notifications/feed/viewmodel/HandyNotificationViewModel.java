@@ -125,6 +125,20 @@ public class HandyNotificationViewModel
 
     public static class List extends ArrayList<HandyNotificationViewModel>
     {
+        private List(final int capacity)
+        {
+            super(capacity);
+        }
+
+        private List()
+        {
+        }
+
+        private List(final Collection<? extends HandyNotificationViewModel> collection)
+        {
+            super(collection);
+        }
+
         public static List from(final Collection<HandyNotification> notifications)
         {
             if (notifications == null)
