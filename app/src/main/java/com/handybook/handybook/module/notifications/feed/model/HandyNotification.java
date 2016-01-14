@@ -114,6 +114,7 @@ public class HandyNotification implements Serializable, Parcelable
         return mImages;
     }
 
+    @NonNull
     public Action[] getActions()
     {
         if (mActions == null)
