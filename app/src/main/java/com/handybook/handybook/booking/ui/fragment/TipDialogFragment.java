@@ -9,10 +9,10 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.squareup.otto.Subscribe;
@@ -95,7 +95,7 @@ public class TipDialogFragment extends BaseDialogFragment
         final Integer tipAmount = getTipAmount();
         if (tipAmount != null && tipAmount > 0)
         {
-            mBus.post(new HandyEvent.RequestTipPro(bookingId, tipAmount));
+            mBus.post(new BookingEvent.RequestTipPro(bookingId, tipAmount));
         }
         else
         {
@@ -104,7 +104,7 @@ public class TipDialogFragment extends BaseDialogFragment
     }
 
     @Subscribe
-    public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
+    public void onReceiveTipProSuccess(BookingEvent.ReceiveTipProSuccess event)
     {
         final String message = getString(R.string.tip_success_message_formatted, mProName);
         HandySnackbar.show(getActivity(), message, HandySnackbar.TYPE_SUCCESS);
@@ -112,7 +112,7 @@ public class TipDialogFragment extends BaseDialogFragment
     }
 
     @Subscribe
-    public void onReceiveTipProError(HandyEvent.ReceiveTipProError event)
+    public void onReceiveTipProError(BookingEvent.ReceiveTipProError event)
     {
         showToast(R.string.an_error_has_occurred);
         dismiss();

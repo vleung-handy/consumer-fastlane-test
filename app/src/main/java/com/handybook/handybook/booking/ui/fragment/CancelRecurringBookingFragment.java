@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.booking.model.RecurringBooking;
@@ -46,7 +47,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new HandyEvent.RequestRecurringBookingsForUser(userManager.getCurrentUser()));
+        bus.post(new BookingEvent.RequestRecurringBookingsForUser(userManager.getCurrentUser()));
     }
 
     @Override
@@ -72,7 +73,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         //send the cancel recurring booking email for the series that the user selected
         showUiBlockers();
         int recurringId = recurringBooking.getRecurringId();
-        bus.post(new HandyEvent.RequestSendCancelRecurringBookingEmail(recurringId));
+        bus.post(new BookingEvent.RequestSendCancelRecurringBookingEmail(recurringId));
     }
 
     @OnClick(R.id.next_button)
@@ -124,14 +125,14 @@ public class CancelRecurringBookingFragment extends InjectedFragment
 
     @Subscribe
     public void onReceiveSendCancelRecurringBookingEmailSuccess(
-            HandyEvent.ReceiveSendCancelRecurringBookingEmailSuccess event)
+            BookingEvent.ReceiveSendCancelRecurringBookingEmailSuccess event)
     {
         removeUiBlockers();
         showEmailSentConfirmationDialog();
     }
 
     @Subscribe
-    public void onReceiveRecurringBookingsSuccess(HandyEvent.ReceiveRecurringBookingsSuccess event)
+    public void onReceiveRecurringBookingsSuccess(BookingEvent.ReceiveRecurringBookingsSuccess event)
     {
         mBookingCancelRecurringViewModel = BookingCancelRecurringViewModel.from(event.recurringBookings);
         int numBookings = event.recurringBookings.size();
@@ -161,13 +162,13 @@ public class CancelRecurringBookingFragment extends InjectedFragment
 
     @Subscribe
     public void onReceiveSendCancelRecurringBookingEmailError(
-            HandyEvent.ReceiveSendCancelRecurringBookingEmailError event)
+            BookingEvent.ReceiveSendCancelRecurringBookingEmailError event)
     {
         handleErrorEvent(event);
     }
 
     @Subscribe
-    public void onReceiveRecurringBookingsError(HandyEvent.ReceiveRecurringBookingsError event)
+    public void onReceiveRecurringBookingsError(BookingEvent.ReceiveRecurringBookingsError event)
     {
         //TODO: change other option-based screens to exit if the options data is missing?
         //exit and show toast if we cannot render the options

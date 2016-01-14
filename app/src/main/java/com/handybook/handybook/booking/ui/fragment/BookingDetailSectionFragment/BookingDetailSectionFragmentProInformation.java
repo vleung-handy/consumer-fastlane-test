@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
@@ -91,7 +91,7 @@ public class BookingDetailSectionFragmentProInformation extends
     }
 
     @Subscribe
-    public void onReceiveTipProSuccess(HandyEvent.ReceiveTipProSuccess event)
+    public void onReceiveTipProSuccess(BookingEvent.ReceiveTipProSuccess event)
     {
         view.getEntryActionText().setVisibility(View.GONE);
     }

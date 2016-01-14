@@ -6,8 +6,8 @@ import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.ActivityEvent;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.squareup.otto.Bus;
@@ -77,13 +77,13 @@ public class SplashNotificationManager
                 @Override
                 public void onSuccess(final SplashPromo splashPromo)
                 {
-                    mBus.post(new HandyEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
+                    mBus.post(new SplashNotificationEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
                 }
 
                 @Override
                 public void onError(final DataManager.DataManagerError error)
                 {
-                    mBus.post(new HandyEvent.ReceiveAvailableSplashPromoError(error));
+                    mBus.post(new SplashNotificationEvent.ReceiveAvailableSplashPromoError(error));
                 }
             });
         }
@@ -145,14 +145,14 @@ public class SplashNotificationManager
 
     //making these handled as events in case we make this a network call
     @Subscribe
-    public void onRequestMarkSplashPromoAsDisplayed(HandyEvent.RequestMarkSplashPromoAsDisplayed event)
+    public void onRequestMarkSplashPromoAsDisplayed(SplashNotificationEvent.RequestMarkSplashPromoAsDisplayed event)
     {
         SplashPromo splashPromo = event.splashPromo;
         markSplashPromo(splashPromo, PrefsKey.DISPLAYED_SPLASH_PROMOS);
     }
 
     @Subscribe
-    public void onRequestMarkSplashPromoAsAccepted(HandyEvent.RequestMarkSplashPromoAsAccepted event)
+    public void onRequestMarkSplashPromoAsAccepted(SplashNotificationEvent.RequestMarkSplashPromoAsAccepted event)
     {
         SplashPromo splashPromo = event.splashPromo;
         markSplashPromo(splashPromo, PrefsKey.ACCEPTED_SPLASH_PROMOS);
