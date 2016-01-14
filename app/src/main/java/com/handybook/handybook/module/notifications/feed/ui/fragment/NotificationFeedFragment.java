@@ -151,6 +151,8 @@ public class NotificationFeedFragment extends InjectedFragment
 
     /**
      * currently marking notifications as read once we receive them from the server
+     *
+     * TODO: mark as read only when user actually views them
      * @param notifications
      */
     private void markNotificationsAsRead(@NonNull HandyNotification.List notifications)
