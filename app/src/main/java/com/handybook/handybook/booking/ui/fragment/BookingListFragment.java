@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.adapter.BookingCardAdapter;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
@@ -30,7 +27,6 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class BookingListFragment extends InjectedFragment
         implements SwipeRefreshLayout.OnRefreshListener
@@ -48,8 +44,6 @@ public class BookingListFragment extends InjectedFragment
     CardView mNoBookingsView;
     @Bind(R.id.card_empty_text)
     TextView mNoBookingsText;
-    @Bind(R.id.add_booking_button)
-    FloatingActionButton addBookingButton;
     private Context mContext;
     private int mListType;
     private BookingCardAdapter mBookingCardAdapter;
@@ -73,12 +67,6 @@ public class BookingListFragment extends InjectedFragment
         args.putInt(KEY_LIST_TYPE, bookingListType);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @OnClick(R.id.add_booking_button)
-    public void onServicesButtonClicked()
-    {
-        bus.post(new BookingEvent.AddBookingButtonClicked());
     }
 
     @Override
@@ -172,24 +160,6 @@ public class BookingListFragment extends InjectedFragment
                 mNoBookingsText.setText(R.string.no_booking_card_past_text);
                 break;
         }
-        getActivity().getSupportFragmentManager()
-                .addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
-                {
-                    @Override
-                    public void onBackStackChanged()
-                    {
-                        int backStackEntryCount = getActivity().getSupportFragmentManager()
-                                .getBackStackEntryCount();
-                        if (backStackEntryCount == 0)
-                        {
-                            addBookingButton.show();
-                        }
-                        else
-                        {
-                            addBookingButton.hide();
-                        }
-                    }
-                });
         return root;
     }
 

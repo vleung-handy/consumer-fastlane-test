@@ -8,7 +8,6 @@ import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
-import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.stripe.android.model.Token;
 
 public abstract class HandyEvent
