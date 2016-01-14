@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     android:id="@+id/notification_root"
-    style="@style/HandyNotification.Root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     >
 
     <LinearLayout
         android:id="@+id/notification_container"
-        style="@style/HandyNotification.Container.LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:orientation="vertical"
         >
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
@@ -22,26 +29,40 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/handy_white"
+                app:cardCornerRadius="@dimen/default_corner_radius"
+                app:cardElevation="1dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="0dp"
+                app:paddingEnd="@dimen/default_margin_half"
+                app:paddingStart="@dimen/default_margin_half"
+                tools:context=".module.notifications.feed.ui.activity.NotificationsActivity"
                 >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical"
                     >
 
                     <ImageView
                         android:id="@+id/notification_card_icon"
-                        style="@style/HandyNotification.Image.Promo"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         tools:src="@drawable/img_plumber"
                         />
 
                     <TextView
                         android:id="@+id/notification_card_body"
-                        style="@style/HandyNotification.TextView.Body"
-                        tools:text="Don't forget to rate your pro, Tiffany S., and leave an optional tip."
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:layout_marginBottom="@dimen/default_margin"
+                        style="@style/TextView.Medium"
+                        tools:text="Don't forget to rate your pro"
                         />
 
                 </LinearLayout>
@@ -59,8 +80,8 @@
                     android:id="@+id/notification_card_link_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:gravity="center_horizontal"
+                    android:orientation="vertical"
                     >
 
                     <include layout="@layout/layout_handy_notification_cta_link"/>
@@ -83,7 +104,13 @@
 
             <TextView
                 android:id="@+id/notification_card_timestamp"
-                style="@style/HandyNotification.TextView.Timestamp"
+                style="@style/TextView.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="@dimen/default_margin"
+                android:gravity="right"
+                android:textColor="@color/handy_text_gray"
                 tools:text="Sept 12, 2015 - 1:18 PM"
                 />
         </LinearLayout>
@@ -92,7 +119,8 @@
     <FrameLayout
         android:id="@+id/notification_card_divider"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/default_margin"
         android:background="@color/handy_tertiary_gray"
         />
 </FrameLayout>
