@@ -190,10 +190,8 @@ public class BookingCardViewModel
                 final List bookingCardViewModels = new List();
                 for (Booking eachBooking : bookings)
                 {
-                    // Add the BookingsCardViewModel
                     bookingCardViewModels.mBookingCardViewModels
                             .add(new BookingCardViewModel(eachBooking));
-                    // Add it to the internal booking list
                 }
                 return bookingCardViewModels;
             }
@@ -209,8 +207,6 @@ public class BookingCardViewModel
             final List bookingCardViewModels = new List();
             for (Booking eachBooking : bookings)
             {
-                // Add it to the internal booking list
-                // If it's part of recurring booking
                 if (eachBooking.isRecurring())
                 {
                     BookingCardViewModel bcvm = recurringIdToBCVM.get(
