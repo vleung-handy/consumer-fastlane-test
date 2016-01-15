@@ -27,6 +27,10 @@
             android:minHeight="180dp"
             android:maxHeight="300dp"
             />
+        <!--TODO: the minHeight is to essentially
+        create a blank space placeholder. the image view
+        resizes itself after it loads the image
+        but never exceeds the maxHeight (why?)-->
 
         <LinearLayout
             android:layout_width="match_parent"
