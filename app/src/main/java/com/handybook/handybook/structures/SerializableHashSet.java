@@ -1,8 +1,5 @@
 package com.handybook.handybook.structures;
 
-//TODO: make sure you refactor everything below this line! super crude due to super rushed feature
-//TODO: REMOVE this class eventually
-
 import android.support.annotation.NonNull;
 
 import com.google.common.reflect.TypeToken;
@@ -13,6 +10,8 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 
 /**
+ * currently used for remembering splash promos in preferences
+ *
  * a set that has convenience methods for converting to and from string using Gson
  */
 public class SerializableHashSet extends HashSet<String> implements Serializable
