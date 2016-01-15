@@ -164,10 +164,9 @@ public class NotificationFeedFragment extends InjectedFragment
 
             //request to mark only the unread notifications as read
             List<Long> readNotificationsIdList = new ArrayList<>();
-            for (int i = 0; i < notifications.size(); i++)
+            for(HandyNotification handyNotification : notifications)
             {
-                HandyNotification handyNotification = notifications.get(i);
-                if (!handyNotification.isRead())
+                if(!handyNotification.isRead())
                 {
                     readNotificationsIdList.add(handyNotification.getId());
                 }
