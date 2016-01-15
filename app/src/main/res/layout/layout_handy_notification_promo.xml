@@ -10,13 +10,7 @@
 
     <LinearLayout
         android:id="@+id/notification_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:orientation="vertical"
+        style="@style/HandyNotification.Container"
         >
 
 
@@ -27,9 +21,8 @@
             >
 
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
+                tools:context=".module.notifications.feed.ui.activity.NotificationsActivity"
+                style="@style/HandyNotification.Promo.Card"
                 app:cardBackgroundColor="@color/handy_white"
                 app:cardCornerRadius="@dimen/default_corner_radius"
                 app:cardElevation="1dp"
@@ -38,7 +31,6 @@
                 app:contentPadding="0dp"
                 app:paddingEnd="@dimen/default_margin_half"
                 app:paddingStart="@dimen/default_margin_half"
-                tools:context=".module.notifications.feed.ui.activity.NotificationsActivity"
                 >
 
                 <LinearLayout
@@ -78,10 +70,7 @@
 
                 <LinearLayout
                     android:id="@+id/notification_card_link_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
+                    style="@style/HandyNotification.CtaLinkContainer"
                     >
 
                     <include layout="@layout/layout_handy_notification_cta_link"/>
@@ -89,12 +78,7 @@
 
                 <LinearLayout
                     android:id="@+id/notification_card_button_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@drawable/divider_clear_8dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:showDividers="middle"
+                    style="@style/HandyNotification.CtaButtonContainer"
                     >
 
                     <include layout="@layout/layout_handy_notification_cta_button"/>
@@ -104,13 +88,7 @@
 
             <TextView
                 android:id="@+id/notification_card_timestamp"
-                style="@style/TextView.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="@dimen/default_margin"
-                android:gravity="right"
-                android:textColor="@color/handy_text_gray"
+                style="@style/HandyNotification.Timestamp"
                 tools:text="Sept 12, 2015 - 1:18 PM"
                 />
         </LinearLayout>
@@ -118,9 +96,6 @@
 
     <FrameLayout
         android:id="@+id/notification_card_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:background="@color/handy_tertiary_gray"
+        style="@style/HandyNotification.Divider"
         />
 </FrameLayout>

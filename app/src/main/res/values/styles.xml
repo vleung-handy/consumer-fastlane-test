@@ -619,5 +619,58 @@
         <item name="android:padding">@dimen/default_padding</item>
     </style>
 
+    <style name="HandyNotification"/>
+
+    <style name="HandyNotification.Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_marginLeft">@dimen/default_margin</item>
+        <item name="android:background">@color/handy_dark_divider_line</item>
+    </style>
+
+    <style name="HandyNotification.Timestamp" parent="TextView.Small">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">@color/handy_text_gray</item>
+    </style>
+
+    <style name="HandyNotification.Promo"/>
+
+    <style name="HandyNotification.Promo.Card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="HandyNotification.Container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginLeft">@dimen/default_margin</item>
+        <item name="android:layout_marginRight">@dimen/default_margin</item>
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="HandyNotification.CtaButtonContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:divider">@drawable/divider_clear_8dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:theme">@style/Theme.SimpleAlertDialogBase.Light</item>
+        <item name="android:showDividers">middle</item>
+    </style>
+
+    <style name="HandyNotification.CtaLinkContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
 
 </resources>

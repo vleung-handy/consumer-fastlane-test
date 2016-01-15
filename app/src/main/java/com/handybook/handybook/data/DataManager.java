@@ -92,7 +92,6 @@ public abstract class DataManager
      * Requests a HandyNotification.ResultSet from the server
      *
      * @param userId    id of the user to request notifications for
-     * @param authToken authToken of the user to request notifications for
      * @param count     max size of the notification list (can be smaller)
      * @param sinceId   <i>optional</i> Bottom delimiter, exclusive. Only notification after this id.
      * @param untilId   <i>optional</i> Top delimiter, exclusive. Only get notification before this
@@ -103,7 +102,6 @@ public abstract class DataManager
      */
     public abstract void getNotifications(
             long userId,
-            String authToken,
             @Nullable final Long count,
             @Nullable final Long sinceId,
             @Nullable final Long untilId,

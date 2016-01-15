@@ -30,7 +30,6 @@ public class NotificationManager
     {
         mDataManager.getNotifications(
                 event.getUserId(),
-                event.getAuthToken(),
                 event.getCount(),
                 event.getSinceId(),
                 event.getUntilId(),

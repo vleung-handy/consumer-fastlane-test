@@ -65,8 +65,6 @@
             android:background="@color/handy_background_gray"
             >
 
-            <include layout="@layout/layout_card_empty"/>
-
             <com.handybook.handybook.ui.view.EmptiableRecyclerView
                 android:id="@+id/notifications_feed_rv"
                 android:layout_width="match_parent"
@@ -75,8 +73,9 @@
                 tools:listitem="@layout/layout_handy_notification_default"
                 >
             </com.handybook.handybook.ui.view.EmptiableRecyclerView>
+
+            <include layout="@layout/layout_notification_feed_empty"/>
         </FrameLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
+        </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>

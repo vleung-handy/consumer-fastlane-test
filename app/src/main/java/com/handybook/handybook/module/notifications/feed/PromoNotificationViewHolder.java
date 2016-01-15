@@ -1,7 +1,5 @@
 package com.handybook.handybook.module.notifications.feed;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -14,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.deeplink.DeepLinkUtils;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
 import com.handybook.handybook.ui.transformation.RoundedTransformation;
@@ -25,21 +25,21 @@ import butterknife.ButterKnife;
 
 public class PromoNotificationViewHolder extends BaseNotificationViewHolder
 {
-    public HandyNotificationViewModel mItem;
-    public final View mView;
+    final View mView;
+    HandyNotificationViewModel mItem;
 
     @Bind(R.id.notification_card_body)
-    public TextView body;
+    TextView mBody;
     @Bind(R.id.notification_card_icon)
-    public ImageView image;
+    ImageView mImage;
     @Bind(R.id.notification_card_link_container)
-    public LinearLayout linkContainer;
+    LinearLayout mLinkContainer;
     @Bind(R.id.notification_card_button_container)
-    public LinearLayout buttonContainer;
+    LinearLayout mButtonContainer;
     @Bind(R.id.notification_card_timestamp)
-    public TextView timestamp;
+    TextView mTimestamp;
     @Bind(R.id.notification_card_divider)
-    public FrameLayout divider;
+    FrameLayout mDivider;
 
     private PromoNotificationViewHolder(View view)
     {
@@ -63,20 +63,20 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
     {
         mItem = model;
         // Body
-        body.setText(Html.fromHtml(mItem.getHtmlBody()));
+        mBody.setText(Html.fromHtml(mItem.getHtmlBody()));
         // Timestamp
-        timestamp.setText(mItem.getTimestamp());
+        mTimestamp.setText(mItem.getTimestamp());
         // Image
-        image.getViewTreeObserver()
+        mImage.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
                 {
                     @Override
                     public void onGlobalLayout()
                     {
-                        image.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        mImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         Picasso.with(mView.getContext())
                                 .load(mItem.getIconUrl(mView.getContext()))
-                                .resize(image.getWidth(), 0)
+                                .resize(mImage.getWidth(), 0)
                                 .transform(
                                         new RoundedTransformation(
                                                 5.0f,
@@ -86,7 +86,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                                                 false,
                                                 true
                                         )
-                                ).into(image);
+                                ).into(mImage);
                     }
                 });
         // Action : Default
@@ -98,69 +98,59 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(mItem.getDefaultAction().getDeeplink())
-                    );
-                    v.getContext().startActivity(intent);
+                    final HandyNotification.Action action = mItem.getDefaultAction();
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
         // Actions : Buttons
-        buttonContainer.setVisibility(
+        mButtonContainer.setVisibility(
                 mItem.hasButtonActions() ? View.VISIBLE : View.GONE
         );
-        buttonContainer.removeAllViews();
+        mButtonContainer.removeAllViews();
         for (final HandyNotification.Action action : mItem.getButtonActions())
         {
             Button button = (Button) LayoutInflater.from(mView.getContext()).inflate(
                     R.layout.layout_handy_notification_cta_button,
-                    buttonContainer,
+                    mButtonContainer,
                     false
             );
-            buttonContainer.addView(button);
+            mButtonContainer.addView(button);
             button.setText(action.getText());
             button.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(final View v)
                 {
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(action.getDeeplink())
-                    );
-                    v.getContext().startActivity(intent);
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
         // Actions : Links
-        linkContainer.setVisibility(
+        mLinkContainer.setVisibility(
                 mItem.hasLinkActions() ? View.VISIBLE : View.GONE
         );
-        linkContainer.removeAllViews();
+        mLinkContainer.removeAllViews();
         for (final HandyNotification.Action action : mItem.getLinkActions())
         {
             TextView textView = (TextView) LayoutInflater.from(mView.getContext()).inflate(
                     R.layout.layout_handy_notification_cta_link,
-                    linkContainer,
+                    mLinkContainer,
                     false
             );
-            linkContainer.addView(textView);
+            mLinkContainer.addView(textView);
             textView.setText(action.getText());
+
             textView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(final View v)
                 {
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(action.getDeeplink())
-                    );
-                    v.getContext().startActivity(intent);
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
         // Divider
-        divider.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+        mDivider.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
     }
 }
