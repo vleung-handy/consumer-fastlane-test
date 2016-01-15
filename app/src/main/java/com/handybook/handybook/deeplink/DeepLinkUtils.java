@@ -16,7 +16,7 @@ public class DeepLinkUtils
      *
      * @param deepLink
      * @param context
-     * @return true if it was successfully recognized and handled, false otherwise
+     * @return true only if it was successfully recognized and handled
      */
     public static boolean safeLaunchDeepLink(@Nullable String deepLink, @NonNull Context context)
     {

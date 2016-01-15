@@ -1,7 +1,5 @@
 package com.handybook.handybook.module.notifications.feed;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ import com.handybook.handybook.deeplink.DeepLinkUtils;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
 import com.handybook.handybook.ui.transformation.RoundedTransformation;
-import com.handybook.handybook.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -102,19 +99,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                 public void onClick(final View v)
                 {
                     final HandyNotification.Action action = mItem.getDefaultAction();
-                    if (action == null)
-                    {
-                        Crashlytics.logException(
-                                new RuntimeException("Action is now null"));
-                        return;
-                    }
-                    final String deeplink = action.getDeeplink();
-                    if (deeplink == null)
-                    {
-                        Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
-                        return;
-                    }
-                    DeepLinkUtils.safeLaunchDeepLink(deeplink, v.getContext());
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
@@ -137,13 +122,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    final String deeplink = action.getDeeplink();
-                    if (deeplink == null)
-                    {
-                        Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
-                        return;
-                    }
-                    DeepLinkUtils.safeLaunchDeepLink(deeplink, v.getContext());
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
@@ -167,12 +146,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    final String deeplink = action.getDeeplink();
-                    if(deeplink == null){
-                        Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
-                        return;
-                    }
-                    DeepLinkUtils.safeLaunchDeepLink(deeplink, v.getContext());
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
