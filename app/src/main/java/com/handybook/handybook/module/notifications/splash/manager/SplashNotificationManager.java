@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.notifications.splash.manager;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -70,7 +71,7 @@ public class SplashNotificationManager
         return System.currentTimeMillis() - mAvailablePromoLastCheckMs > REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS;
     }
 
-    private void requestAvailableSplashPromo(final String userId)
+    private void requestAvailableSplashPromo(@Nullable final String userId)
     {
         if(shouldRequestAvailablePromo())
         {
