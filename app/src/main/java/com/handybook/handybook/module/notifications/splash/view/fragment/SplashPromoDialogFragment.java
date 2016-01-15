@@ -69,13 +69,22 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState)
     {
-        //TODO: placeholder image?
         super.onViewCreated(view, savedInstanceState);
-        Picasso.with(getContext()).
-                load(mSplashPromo.getImageUrl()).
-                placeholder(R.drawable.ic_noimage).
-                error(R.drawable.ic_noimage).
-                into(mUrlImageView);
+        try //picasso doesn't catch all errors like empty URL!
+        {
+            //we are going to use an animated placeholder eventually
+            Picasso.with(getContext()).
+                    load(mSplashPromo.getImageUrl()).
+                    error(R.drawable.banner_image_load_failed).
+                    into(mUrlImageView);
+        }
+        catch (Exception e)
+        {
+            Crashlytics.log("Exception in loading image url: '" + mSplashPromo.getImageUrl() + "' " +
+                    "with Picasso for splash promo id " + mSplashPromo.getId());
+            Crashlytics.logException(e);
+        }
+
         mTitle.setText(mSplashPromo.getTitle());
         mSubtitle.setText(mSplashPromo.getSubtitle());
         mActionButton.setText(mSplashPromo.getActionText());
