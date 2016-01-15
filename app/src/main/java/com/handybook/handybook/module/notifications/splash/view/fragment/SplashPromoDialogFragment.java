@@ -80,8 +80,8 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         }
         catch (Exception e)
         {
-            Crashlytics.log("Malformed image url: '" + mSplashPromo.getImageUrl() + "' " +
-                    "for splash promo id " + mSplashPromo.getId());
+            Crashlytics.log("Exception in loading image url: '" + mSplashPromo.getImageUrl() + "' " +
+                    "with Picasso for splash promo id " + mSplashPromo.getId());
             Crashlytics.logException(e);
         }
 
