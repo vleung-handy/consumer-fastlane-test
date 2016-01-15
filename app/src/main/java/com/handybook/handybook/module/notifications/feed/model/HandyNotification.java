@@ -29,9 +29,7 @@ public class HandyNotification implements Serializable, Parcelable
     @SerializedName("expires_at")
     private Date mExpiresAt;
     @SerializedName("available")
-    private boolean mAvailable;
-    @SerializedName("read_status")
-    private boolean mReadStatus;
+    private boolean mIsAvailable;
     @SerializedName("images")
     private Image[] mImages;
     @SerializedName("actions")
@@ -50,10 +48,10 @@ public class HandyNotification implements Serializable, Parcelable
         mHtmlBody = in.readString();
         mCreatedAt = new Date(in.readLong());
         mExpiresAt = new Date(in.readLong());
-        mAvailable = in.readByte() != 0;
-        mReadStatus = in.readByte() != 0;
+        mIsAvailable = in.readByte() != 0;
         mImages = in.createTypedArray(Image.CREATOR);
         mActions = in.createTypedArray(Action.CREATOR);
+        mIsRead = in.readByte() != 0;
     }
 
     public static final Creator<HandyNotification> CREATOR = new Creator<HandyNotification>()
@@ -106,11 +104,6 @@ public class HandyNotification implements Serializable, Parcelable
         return mExpiresAt;
     }
 
-    public boolean getReadStatus()
-    {
-        return mReadStatus;
-    }
-
     public Image[] getImages()
     {
         return mImages;
@@ -159,10 +152,10 @@ public class HandyNotification implements Serializable, Parcelable
         dest.writeString(mHtmlBody);
         dest.writeLong(mCreatedAt.getTime());
         dest.writeLong(mExpiresAt.getTime());
-        dest.writeByte((byte) (mAvailable ? 1 : 0));
-        dest.writeByte((byte) (mReadStatus ? 1 : 0));
+        dest.writeByte((byte) (mIsAvailable ? 1 : 0));
         dest.writeTypedArray(mImages, flags);
         dest.writeTypedArray(mActions, flags);
+        dest.writeByte((byte) (mIsRead ? 1 : 0));
     }
 
     public boolean isRead()
