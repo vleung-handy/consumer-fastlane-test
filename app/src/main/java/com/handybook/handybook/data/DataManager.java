@@ -34,6 +34,7 @@ import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 import java.util.Date;
@@ -90,12 +91,12 @@ public abstract class DataManager
     /**
      * Requests a HandyNotification.ResultSet from the server
      *
-     * @param userId  id of the user to request notifications for
-     * @param count   max size of the notification list (can be smaller)
-     * @param sinceId <i>optional</i> Bottom delimiter, exclusive. Only notification after this id.
-     * @param untilId <i>optional</i> Top delimiter, exclusive. Only get notification before this
-     *                id
-     * @param cb      the callback used for returning data
+     * @param userId    id of the user to request notifications for
+     * @param count     max size of the notification list (can be smaller)
+     * @param sinceId   <i>optional</i> Bottom delimiter, exclusive. Only notification after this id.
+     * @param untilId   <i>optional</i> Top delimiter, exclusive. Only get notification before this
+     *                  id
+     * @param cb        the callback used for returning data
      * @see <a href="https://dev.twitter.com/rest/public/timelines">Twitter's implementation</a>
      * <p/>
      */
@@ -106,39 +107,57 @@ public abstract class DataManager
             @Nullable final Long untilId,
             @NonNull final Callback<HandyNotification.ResultSet> cb
     );
-    
-    public abstract void getQuoteOptions(int serviceId,
-                                         String userId,
-                                         Callback<BookingOptionsWrapper> cb);
 
-    public abstract void createQuote(BookingRequest bookingRequest,
-                                     Callback<BookingQuote> cb);
+    public abstract void getQuoteOptions(
+            int serviceId,
+            String userId,
+            Callback<BookingOptionsWrapper> cb
+    );
 
-    public abstract void updateQuoteDate(int quoteId,
-                                         Date date,
-                                         Callback<BookingQuote> cb);
+    public abstract void createQuote(
+            BookingRequest bookingRequest,
+            Callback<BookingQuote> cb
+    );
 
-    public abstract void applyPromo(String promoCode,
-                                    int quoteId,
-                                    String userId,
-                                    String email,
-                                    String authToken,
-                                    Callback<BookingCoupon> cb);
+    public abstract void updateQuoteDate(
+            int quoteId,
+            Date date,
+            Callback<BookingQuote> cb
+    );
 
-    public abstract void removePromo(int quoteId,
-                                     Callback<BookingCoupon> cb);
+    public abstract void applyPromo(
+            String promoCode,
+            int quoteId,
+            String userId,
+            String email,
+            String authToken,
+            Callback<BookingCoupon> cb
+    );
+
+    public abstract void markNotificationsAsRead(
+            @NonNull long userId,
+            @NonNull MarkNotificationsAsReadRequest markNotificationsAsReadRequest,
+            @NonNull final Callback<HandyNotification.ResultSet> cb
+    );
+
+    public abstract void removePromo(
+            int quoteId,
+            Callback<BookingCoupon> cb
+    );
 
     public abstract void createBooking(
             BookingTransaction bookingTransaction,
             Callback<BookingCompleteTransaction> cb
     );
-    
-    public abstract void validateBookingZip(int serviceId,
-                                            String zipCode,
-                                            String userId,
-                                            String authToken,
-                                            String promoCode,
-                                            Callback<Void> cb);
+
+    public abstract void validateBookingZip(
+            int serviceId,
+            String zipCode,
+            String userId,
+            String authToken,
+            String promoCode,
+            Callback<Void> cb
+    );
 
     public abstract void getBookings(
             User user,

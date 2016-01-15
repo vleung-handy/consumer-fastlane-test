@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/notification_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:id="@+id/notification_container"
+        style="@style/HandyNotification.Container"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:id="@+id/notification_card_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                tools:src="@drawable/ic_star"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                >
+
+                <TextView
+                    android:id="@+id/notification_card_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:text="Please rate your pro"
+                    />
+
+                <TextView
+                    android:id="@+id/notification_card_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextView.Medium"
+                    tools:text="Don't forget to rate your pro, Tiffany S., and leave an optional tip."
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/notification_card_link_container"
+                        style="@style/HandyNotification.CtaLinkContainer"
+                        >
+
+                        <include layout="@layout/layout_handy_notification_cta_link"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/notification_card_button_container"
+                        style="@style/HandyNotification.CtaButtonContainer"
+                        >
+
+                        <include layout="@layout/layout_handy_notification_cta_button"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/notification_card_timestamp"
+                    style="@style/HandyNotification.Timestamp"
+                    tools:text="Sept 12, 2015 - 1:18 PM"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/notification_card_divider"
+        style="@style/HandyNotification.Divider"
+        />
+</FrameLayout>

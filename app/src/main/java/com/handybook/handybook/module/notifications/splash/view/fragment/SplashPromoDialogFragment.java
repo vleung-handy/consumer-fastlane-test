@@ -1,7 +1,5 @@
 package com.handybook.handybook.module.notifications.splash.view.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -14,10 +12,10 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.MixpanelEvent;
+import com.handybook.handybook.deeplink.DeepLinkUtils;
 import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -94,8 +92,7 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         String deepLink = mSplashPromo.getDeepLinkUrl();
         if(deepLink != null)
         {
-            Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deepLink));
-            Utils.safeLaunchIntent(deepLinkIntent, getContext());
+            DeepLinkUtils.safeLaunchDeepLink(deepLink, getContext());
         }
         else
         {

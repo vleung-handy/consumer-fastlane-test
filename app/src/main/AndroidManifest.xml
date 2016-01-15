@@ -229,7 +229,8 @@
             android:label="@string/title_activity_notification_feed"
             android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
             android:parentActivityName=".booking.ui.activity.ServicesActivity"
-            android:theme="@style/Theme.Base">
+            android:theme="@style/Theme.Base"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.handybook.handybook.booking.ui.activity.ServicesActivity"/>

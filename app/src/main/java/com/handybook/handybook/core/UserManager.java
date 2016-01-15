@@ -1,5 +1,7 @@
 package com.handybook.handybook.core;
 
+import android.support.annotation.NonNull;
+
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
@@ -16,16 +18,16 @@ import javax.inject.Inject;
 
 public class UserManager implements Observer
 {
-    private Bus bus;
-    protected User user;
-    private PrefsManager prefsManager;
+    private Bus mBus;
+    protected User mUser;
+    private PrefsManager mPrefsManager;
 
     @Inject
     UserManager(final Bus bus, final PrefsManager prefsManager)
     {
-        this.prefsManager = prefsManager;
-        this.bus = bus;
-        this.bus.register(this);
+        mPrefsManager = prefsManager;
+        mBus = bus;
+        mBus.register(this);
     }
 
     public boolean isUserLoggedIn()
@@ -35,44 +37,46 @@ public class UserManager implements Observer
 
     public User getCurrentUser()
     {
-        if (user != null)
+        if (mUser != null)
         {
-            return user;
+            return mUser;
         }
         else
         {
-            if ((user = User.fromJson(prefsManager.getString(PrefsKey.USER))) != null)
+            if ((mUser = User.fromJson(mPrefsManager.getString(PrefsKey.USER))) != null)
             {
-                user.addObserver(this);
+                mUser.addObserver(this);
             }
-            return user;
+            return mUser; // Can return null here!
         }
     }
 
-    public void setCurrentUser(final User newUser)
+    public void setCurrentUser(@NonNull final User newUser)
     {
-        if (user != null)
+        if (mUser != null)
         {
-            user.deleteObserver(this);
+            mUser.deleteObserver(this);
         }
 
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
         {
-            user = null;
-            prefsManager.removeValue(PrefsKey.USER);
-            Crashlytics.setUserEmail(null);
-            bus.post(new UserLoggedInEvent(false));
+            removeCurrentUser();
             return;
         }
 
-        user = newUser;
-        user.addObserver(this);
+        mUser = newUser;
+        mUser.addObserver(this);
+        mPrefsManager.setString(PrefsKey.USER, mUser.toJson());
+        UAirship.shared().getPushManager().setAlias(mUser.getId());
+        Crashlytics.setUserEmail(mUser.getEmail());
+        mBus.post(new UserLoggedInEvent(true));
+    }
 
-        prefsManager.setString(PrefsKey.USER, user.toJson());
-
-        UAirship.shared().getPushManager().setAlias(user.getId());
-        Crashlytics.setUserEmail(user.getEmail());
-        bus.post(new UserLoggedInEvent(true));
+    public void removeCurrentUser(){
+        mUser = null;
+        mPrefsManager.removeValue(PrefsKey.USER);
+        Crashlytics.setUserEmail(null);
+        mBus.post(new UserLoggedInEvent(false));
     }
 
     @Override
@@ -87,9 +91,15 @@ public class UserManager implements Observer
     @Subscribe
     public final void environmentUpdated(final EnvironmentUpdatedEvent event)
     {
-        if (event.getEnvironment() != null && !event.getEnvironment().equals(event.getPrevEnvironment()))
+        final String environment = event.getEnvironment();
+        if (environment != null && !environment.equals(event.getPrevEnvironment()))
         {
-            setCurrentUser(null);
+            removeCurrentUser();
         }
+    }
+
+    public boolean isLoggedIn()
+    {
+        return getCurrentUser() != null;
     }
 }

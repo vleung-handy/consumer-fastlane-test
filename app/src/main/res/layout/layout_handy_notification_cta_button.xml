@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button
+    android:id="@+id/notification_card_cta_button_template"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Button.BookingAction.Blue.Empty"
+    tools:showIn="@layout/layout_handy_notification_default"
+    tools:text="Call"
+    />
+

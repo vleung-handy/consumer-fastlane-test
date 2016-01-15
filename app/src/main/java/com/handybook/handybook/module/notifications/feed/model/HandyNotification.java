@@ -2,15 +2,18 @@ package com.handybook.handybook.module.notifications.feed.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 
 public class HandyNotification implements Serializable, Parcelable
 {
+    private static Action[] NO_ACTIONS = {}; // For those cases when we need an empty typed array
+
     @SerializedName("id")
     private long mId;
     @SerializedName("title")
@@ -22,9 +25,9 @@ public class HandyNotification implements Serializable, Parcelable
     @SerializedName("type")
     private HandyNotificationType mType;
     @SerializedName("created_at")
-    private Calendar mCreatedAt;
+    private Date mCreatedAt;
     @SerializedName("expires_at")
-    private Calendar mExpiresAt;
+    private Date mExpiresAt;
     @SerializedName("available")
     private boolean mAvailable;
     @SerializedName("read_status")
@@ -33,8 +36,11 @@ public class HandyNotification implements Serializable, Parcelable
     private Image[] mImages;
     @SerializedName("actions")
     private Action[] mActions;
+    @SerializedName("read_status")
+    private boolean mIsRead;
 
     private HandyNotification() {} //Only server can create notifications
+
 
     protected HandyNotification(Parcel in)
     {
@@ -42,6 +48,8 @@ public class HandyNotification implements Serializable, Parcelable
         mTitle = in.readString();
         mBody = in.readString();
         mHtmlBody = in.readString();
+        mCreatedAt = new Date(in.readLong());
+        mExpiresAt = new Date(in.readLong());
         mAvailable = in.readByte() != 0;
         mReadStatus = in.readByte() != 0;
         mImages = in.createTypedArray(Image.CREATOR);
@@ -88,12 +96,12 @@ public class HandyNotification implements Serializable, Parcelable
         return mHtmlBody;
     }
 
-    public Calendar getCreatedAt()
+    public Date getCreatedAt()
     {
         return mCreatedAt;
     }
 
-    public Calendar getExpiresAt()
+    public Date getExpiresAt()
     {
         return mExpiresAt;
     }
@@ -108,9 +116,32 @@ public class HandyNotification implements Serializable, Parcelable
         return mImages;
     }
 
+    @NonNull
     public Action[] getActions()
     {
+        if (mActions == null)
+        {
+            mActions = NO_ACTIONS;
+        }
         return mActions;
+    }
+
+    public Action[] getActions(HandyNotificationActionType actionType)
+    {
+        ArrayList<Action> actionsOfType = new ArrayList<>();
+        for (Action eAction : getActions())
+        {
+            if(eAction.getType() == actionType){
+                actionsOfType.add(eAction);
+            }
+        }
+        if(actionsOfType.isEmpty()){
+            return NO_ACTIONS;
+        } else{
+            Action[] actionsOut = new Action[actionsOfType.size()];
+            actionsOut =  actionsOfType.toArray(actionsOut);
+            return actionsOut;
+        }
     }
 
     @Override
@@ -126,10 +157,17 @@ public class HandyNotification implements Serializable, Parcelable
         dest.writeString(mTitle);
         dest.writeString(mBody);
         dest.writeString(mHtmlBody);
+        dest.writeLong(mCreatedAt.getTime());
+        dest.writeLong(mExpiresAt.getTime());
         dest.writeByte((byte) (mAvailable ? 1 : 0));
         dest.writeByte((byte) (mReadStatus ? 1 : 0));
         dest.writeTypedArray(mImages, flags);
         dest.writeTypedArray(mActions, flags);
+    }
+
+    public boolean isRead()
+    {
+        return mIsRead;
     }
 
 
@@ -174,10 +212,12 @@ public class HandyNotification implements Serializable, Parcelable
 
     public enum HandyNotificationActionType implements Serializable
     {
-        @SerializedName(Constants.TYPE_STRING_NOTIFICATION)
-        NOTIFICATION,
+        @SerializedName(Constants.TYPE_STRING_CALL_TO_ACTION_BUTTON)
+        CALL_TO_ACTION_BUTTON,
         @SerializedName(Constants.TYPE_STRING_CALL_TO_ACTION)
         CALL_TO_ACTION,
+        @SerializedName(Constants.TYPE_STRING_DEFAULT)
+        DEFAULT,
         @SerializedName(Constants.TYPE_STRING_INVALID)
         INVALID;
 
@@ -185,9 +225,11 @@ public class HandyNotification implements Serializable, Parcelable
         {
             switch (string)
             {
-                case Constants.TYPE_STRING_NOTIFICATION:
-                    return NOTIFICATION;
+                case Constants.TYPE_STRING_CALL_TO_ACTION_BUTTON:
+                    return CALL_TO_ACTION_BUTTON;
                 case Constants.TYPE_STRING_CALL_TO_ACTION:
+                    return CALL_TO_ACTION;
+                case Constants.TYPE_STRING_DEFAULT:
                     return CALL_TO_ACTION;
                 default:
                     return INVALID;
@@ -196,7 +238,8 @@ public class HandyNotification implements Serializable, Parcelable
 
         public static class Constants
         {
-            public static final String TYPE_STRING_NOTIFICATION = "notification";
+            public static final String TYPE_STRING_DEFAULT = "default";
+            public static final String TYPE_STRING_CALL_TO_ACTION_BUTTON = "call_to_action_button";
             public static final String TYPE_STRING_CALL_TO_ACTION = "call_to_action";
             public static final String TYPE_STRING_INVALID = "invalid";
         }
@@ -296,9 +339,10 @@ public class HandyNotification implements Serializable, Parcelable
             return mDeeplink;
         }
 
+        @NonNull
         public HandyNotificationActionType getType()
         {
-            return mType;
+            return mType != null ? mType : HandyNotificationActionType.INVALID;
         }
 
         public String getText()
@@ -317,6 +361,18 @@ public class HandyNotification implements Serializable, Parcelable
         {
             dest.writeString(mDeeplink);
             dest.writeString(mText);
+        }
+
+        @NonNull
+        @Override
+        public String toString()
+        {
+            return String.format(
+                    "Action:{ deeplink:\"%s\", type:\"%s\", text:\"%s\"}",
+                    getDeeplink(),
+                    getType().toString(),
+                    getText()
+            );
         }
     }
 

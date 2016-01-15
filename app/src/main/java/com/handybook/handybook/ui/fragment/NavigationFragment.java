@@ -95,8 +95,10 @@ public final class NavigationFragment extends InjectedFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_navigation, container, false);
@@ -183,8 +185,10 @@ public final class NavigationFragment extends InjectedFragment
                 R.layout.list_item_nav, items)
         {
             @Override
-            public final View getView(final int position, final View convertView,
-                                      final ViewGroup parent)
+            public final View getView(
+                    final int position, final View convertView,
+                    final ViewGroup parent
+            )
             {
                 View view = convertView;
                 if (view == null)
@@ -221,8 +225,10 @@ public final class NavigationFragment extends InjectedFragment
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(final AdapterView<?> parent, final View view,
-                                    final int position, final long id)
+            public void onItemClick(
+                    final AdapterView<?> parent, final View view,
+                    final int position, final long id
+            )
             {
                 final TextView textView = (TextView) view.findViewById(R.id.nav_item);
                 final String item = textView.getText().toString();
@@ -282,22 +288,25 @@ public final class NavigationFragment extends InjectedFragment
     }
 
     @Override
-    public final void onDialogPositiveButtonClicked(final SimpleAlertDialog dialog,
-                                                    final int requestCode, final View view)
+    public final void onDialogPositiveButtonClicked(
+            final SimpleAlertDialog dialog,
+            final int requestCode,
+            final View view
+    )
     {
         if (requestCode == REQUEST_LOGOUT)
         {
-            //TODO: we should invalidate the auth token also!
-            mUserManager.setCurrentUser(null);
-
+            mUserManager.removeCurrentUser();
             //log out of Facebook also
             LoginManager.getInstance().logOut();
         }
     }
 
     @Override
-    public final void onDialogNegativeButtonClicked(final SimpleAlertDialog dialog,
-                                                    final int requestCode, final View view)
+    public final void onDialogNegativeButtonClicked(
+            final SimpleAlertDialog dialog,
+            final int requestCode, final View view
+    )
     {
     }
 
