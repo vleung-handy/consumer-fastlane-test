@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.deeplink.DeepLinkUtils;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
 import com.handybook.handybook.ui.transformation.RoundedTransformation;
@@ -113,11 +114,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                         Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
                         return;
                     }
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(deeplink)
-                    );
-                    Utils.safeLaunchIntent(intent, v.getContext());
+                    DeepLinkUtils.safeLaunchDeepLink(deeplink, v.getContext());
                 }
             });
         }
@@ -146,11 +143,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                         Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
                         return;
                     }
-                    Intent intent =  new Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(deeplink)
-                        );
-                    Utils.safeLaunchIntent(intent, v.getContext());
+                    DeepLinkUtils.safeLaunchDeepLink(deeplink, v.getContext());
                 }
             });
         }
@@ -179,11 +172,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                         Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
                         return;
                     }
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(deeplink)
-                    );
-                    Utils.safeLaunchIntent(intent, v.getContext());
+                    DeepLinkUtils.safeLaunchDeepLink(deeplink, v.getContext());
                 }
             });
         }

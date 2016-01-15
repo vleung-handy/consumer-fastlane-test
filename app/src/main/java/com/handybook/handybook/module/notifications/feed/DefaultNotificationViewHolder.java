@@ -1,7 +1,5 @@
 package com.handybook.handybook.module.notifications.feed;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -15,9 +13,9 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.deeplink.DeepLinkUtils;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
-import com.handybook.handybook.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -96,12 +94,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                         Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
                         return;
                     }
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(mItem.getDefaultAction().getDeeplink())
-                    );
-                    Utils.safeLaunchIntent(intent,mView.getContext());
-                    v.getContext().startActivity(intent);
+                    DeepLinkUtils.safeLaunchDeepLink(deeplink, mView.getContext());
                 }
             });
         }
@@ -130,11 +123,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                         Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
                         return;
                     }
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(deeplink)
-                    );
-                    Utils.safeLaunchIntent(intent, v.getContext());
+                    DeepLinkUtils.safeLaunchDeepLink(deeplink, v.getContext());
                 }
             });
         }
@@ -163,11 +152,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                         Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
                         return;
                     }
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(deeplink)
-                    );
-                    Utils.safeLaunchIntent(intent, v.getContext());
+                    DeepLinkUtils.safeLaunchDeepLink(deeplink, v.getContext());
                 }
             });
         }
