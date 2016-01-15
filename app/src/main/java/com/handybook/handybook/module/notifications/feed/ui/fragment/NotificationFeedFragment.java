@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.notifications.feed.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +17,16 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.module.notifications.feed.NotificationFeedEvent;
 import com.handybook.handybook.module.notifications.feed.NotificationRecyclerViewAdapter;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
+import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
 import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -145,15 +150,63 @@ public class NotificationFeedFragment extends InjectedFragment
         requestNotifications();
     }
 
-    @Subscribe
-    public void onNotificationResponseReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
+    /**
+     * currently marking notifications as read once we receive them from the server
+     *
+     * TODO: mark as read only when user actually views them
+     * @param notifications
+     */
+    private void markNotificationsAsRead(@NonNull HandyNotification.List notifications)
     {
-        mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
+        if (userManager.isUserLoggedIn())
+        {
+            final User currentUser = userManager.getCurrentUser();
+            long userId = Long.parseLong(currentUser.getId());
+
+            //request to mark only the unread notifications as read
+            List<Long> readNotificationsIdList = new ArrayList<>();
+            for(HandyNotification handyNotification : notifications)
+            {
+                if(!handyNotification.isRead())
+                {
+                    readNotificationsIdList.add(handyNotification.getId());
+                }
+            }
+
+            //convert to array, since request payload requires it
+            long[] readNotificationIdsArray = new long[readNotificationsIdList.size()];
+            for (int i = 0; i < readNotificationIdsArray.length; i++)
+            {
+                readNotificationIdsArray[i] = readNotificationsIdList.get(i);
+            }
+
+            MarkNotificationsAsReadRequest markNotificationsAsReadRequest =
+                    new MarkNotificationsAsReadRequest(readNotificationIdsArray);
+            bus.post(new NotificationFeedEvent.RequestMarkNotificationAsRead(
+                    userId, markNotificationsAsReadRequest));
+        }
+
+    }
+
+    @Subscribe
+    public void onNotificationResponseReceived(final NotificationFeedEvent.HandyNotificationsSuccess e)
+    {
+        if(e.getPayload() != null)
+        {
+            HandyNotification.List notificationsList = e.getPayload().getHandyNotifications();
+            if(notificationsList != null && !notificationsList.isEmpty())
+            {
+                mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
+
+                //mark these notifications as read
+                markNotificationsAsRead(notificationsList);
+            }
+        }
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Subscribe
-    public void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e)
+    public void onNotificationResponseError(final NotificationFeedEvent.HandyNotificationsError e)
     {
         showToast(e.getPayload().getMessage());
         mSwipeRefreshLayout.setRefreshing(false);
@@ -167,7 +220,7 @@ public class NotificationFeedFragment extends InjectedFragment
 
             final User currentUser = userManager.getCurrentUser();
             bus.post(
-                    new HandyEvent.RequestEvent.HandyNotificationsEvent(
+                    new NotificationFeedEvent.HandyNotificationsEvent(
                             Long.parseLong(currentUser.getId()),
                             currentUser.getAuthToken(),
                             null,
@@ -178,7 +231,7 @@ public class NotificationFeedFragment extends InjectedFragment
 
         } else {
             bus.post(
-                    new HandyEvent.RequestEvent.HandyNotificationsEvent(
+                    new NotificationFeedEvent.HandyNotificationsEvent(
                             null,
                             null,
                             null

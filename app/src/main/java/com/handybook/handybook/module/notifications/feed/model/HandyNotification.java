@@ -36,6 +36,8 @@ public class HandyNotification implements Serializable, Parcelable
     private Image[] mImages;
     @SerializedName("actions")
     private Action[] mActions;
+    @SerializedName("read_status")
+    private boolean mIsRead;
 
     private HandyNotification() {} //Only server can create notifications
 
@@ -161,6 +163,11 @@ public class HandyNotification implements Serializable, Parcelable
         dest.writeByte((byte) (mReadStatus ? 1 : 0));
         dest.writeTypedArray(mImages, flags);
         dest.writeTypedArray(mActions, flags);
+    }
+
+    public boolean isRead()
+    {
+        return mIsRead;
     }
 
 

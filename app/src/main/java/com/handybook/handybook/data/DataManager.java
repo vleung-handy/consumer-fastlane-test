@@ -34,6 +34,7 @@ import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 import java.util.Date;
@@ -131,6 +132,12 @@ public abstract class DataManager
             String email,
             String authToken,
             Callback<BookingCoupon> cb
+    );
+
+    public abstract void markNotificationsAsRead(
+            @NonNull long userId,
+            @NonNull MarkNotificationsAsReadRequest markNotificationsAsReadRequest,
+            @NonNull final Callback<HandyNotification.ResultSet> cb
     );
 
     public abstract void removePromo(
