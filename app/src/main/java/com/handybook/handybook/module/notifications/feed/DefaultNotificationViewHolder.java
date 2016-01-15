@@ -1,7 +1,5 @@
 package com.handybook.handybook.module.notifications.feed;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -13,11 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
-import com.handybook.handybook.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -84,24 +80,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                 public void onClick(final View v)
                 {
                     final HandyNotification.Action action = mItem.getDefaultAction();
-                    if (action == null)
-                    {
-                        Crashlytics.logException(
-                                new RuntimeException("Action is now null"));
-                        return;
-                    }
-                    final String deeplink = action.getDeeplink();
-                    if (deeplink == null)
-                    {
-                        Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
-                        return;
-                    }
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(mItem.getDefaultAction().getDeeplink())
-                    );
-                    Utils.safeLaunchIntent(intent,mView.getContext());
-                    v.getContext().startActivity(intent);
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
@@ -124,17 +103,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    final String deeplink = action.getDeeplink();
-                    if (deeplink == null)
-                    {
-                        Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
-                        return;
-                    }
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(deeplink)
-                    );
-                    Utils.safeLaunchIntent(intent, v.getContext());
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
@@ -157,17 +126,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    final String deeplink = action.getDeeplink();
-                    if (deeplink == null)
-                    {
-                        Crashlytics.logException(new RuntimeException("Action without a deeplink received: " + action.toString()));
-                        return;
-                    }
-                    Intent intent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(deeplink)
-                    );
-                    Utils.safeLaunchIntent(intent, v.getContext());
+                    handleNotificationAction(action, v.getContext());
                 }
             });
         }
