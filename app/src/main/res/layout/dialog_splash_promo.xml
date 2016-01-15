@@ -61,6 +61,7 @@
         <Button
             android:id="@+id/splash_promo_action_button"
             style="@style/Button.Green"
+            android:layout_marginTop="@dimen/default_margin_half"
             android:background="@drawable/button_green"
             android:textAllCaps="false"
             tools:text="Action text"
