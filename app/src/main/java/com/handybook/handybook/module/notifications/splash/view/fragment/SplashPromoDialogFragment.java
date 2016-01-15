@@ -71,11 +71,21 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     {
         //TODO: placeholder image?
         super.onViewCreated(view, savedInstanceState);
-        Picasso.with(getContext()).
-                load(mSplashPromo.getImageUrl()).
-                placeholder(R.drawable.ic_noimage).
-                error(R.drawable.ic_noimage).
-                into(mUrlImageView);
+        try //picasso doesn't catch all errors like malformed/empty URL
+        {
+            Picasso.with(getContext()).
+                    load(mSplashPromo.getImageUrl()).
+                    placeholder(R.drawable.banner_image_load_failed).
+                    error(R.drawable.banner_image_load_failed).
+                    into(mUrlImageView);
+        }
+        catch (Exception e)
+        {
+            Crashlytics.log("Malformed image url: '" + mSplashPromo.getImageUrl() + "' " +
+                    "for splash promo id " + mSplashPromo.getId());
+            Crashlytics.logException(e);
+        }
+
         mTitle.setText(mSplashPromo.getTitle());
         mSubtitle.setText(mSplashPromo.getSubtitle());
         mActionButton.setText(mSplashPromo.getActionText());

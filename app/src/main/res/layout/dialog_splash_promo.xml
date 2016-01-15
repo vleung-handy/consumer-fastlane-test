@@ -25,7 +25,7 @@
             android:adjustViewBounds="true"
             android:gravity="center"
             android:maxHeight="300dp"
-            tools:src="@drawable/ic_noimage"
+            android:src="@drawable/banner_image_load_failed"
             />
 
         <LinearLayout
