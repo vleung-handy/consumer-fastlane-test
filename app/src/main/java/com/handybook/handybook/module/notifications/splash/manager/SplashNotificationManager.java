@@ -2,6 +2,8 @@ package com.handybook.handybook.module.notifications.splash.manager;
 
 import android.support.annotation.NonNull;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
@@ -13,8 +15,7 @@ import com.handybook.handybook.util.DateTimeUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import org.json.JSONArray;
-
+import java.lang.reflect.Type;
 import java.util.HashSet;
 
 import javax.inject.Inject;
@@ -90,33 +91,35 @@ public class SplashNotificationManager
     }
 
     //TODO: make sure you refactor everything below this line! super crude due to super rushed feature
-    //TODO: use GSON instead. REMOVE this class eventually
+    //TODO: REMOVE this class eventually
     /**
      * a set that has convenience methods for storing and retrieving from shared preferences
      */
     public static class PrefsHashSet extends HashSet<String> {
 
+        private static final Type TYPE =
+                (new TypeToken<PrefsHashSet>() {}).getType();
+        private static final Gson GSON = new Gson();
+
         public @NonNull String toJsonString()
         {
-            JSONArray jsonArray = new JSONArray(this);
-            return jsonArray.toString();
+            return GSON.toJson(this, TYPE);
         }
 
-        public static @NonNull PrefsHashSet fromJson(String jsonString)
+        public static @NonNull PrefsHashSet fromJsonString(String jsonString)
         {
-            PrefsHashSet prefsHashSet = new PrefsHashSet();
+            PrefsHashSet prefsHashSet = null;
             try
             {
-                JSONArray jsonArray = new JSONArray(jsonString);
-                for(int i = 0; i<jsonArray.length(); i++)
-                {
-                    String s = (String) jsonArray.get(i);
-                    prefsHashSet.add(s);
-                }
+                prefsHashSet = GSON.fromJson(jsonString, TYPE);
             }
             catch (Exception e)
             {
 //                e.printStackTrace();
+            }
+            if(prefsHashSet == null)
+            {
+                prefsHashSet = new PrefsHashSet();
             }
             return prefsHashSet;
         }
@@ -124,7 +127,7 @@ public class SplashNotificationManager
 
     private @NonNull PrefsHashSet getSplashPromoSet(@NonNull PrefsKey prefsKey)
     {
-        return PrefsHashSet.fromJson(mPrefsManager.getString(prefsKey));
+        return PrefsHashSet.fromJsonString(mPrefsManager.getString(prefsKey));
     }
 
     //TODO: clean up all of this
