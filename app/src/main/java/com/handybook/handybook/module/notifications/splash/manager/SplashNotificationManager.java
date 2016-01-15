@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.notifications.splash.manager;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -55,10 +56,14 @@ public class SplashNotificationManager
     @Subscribe
     public void onEachActivityFragmentsResumed(final ActivityEvent.FragmentsResumed e)
     {
+        String userId = null;
         if(mUserManager.getCurrentUser() != null)
         {
-            requestAvailableSplashPromo(mUserManager.getCurrentUser().getId());
+            userId = mUserManager.getCurrentUser().getId();
         }
+        //can request for users who are not logged in
+        requestAvailableSplashPromo(userId);
+
     }
 
     private boolean shouldRequestAvailablePromo()
@@ -66,7 +71,7 @@ public class SplashNotificationManager
         return System.currentTimeMillis() - mAvailablePromoLastCheckMs > REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS;
     }
 
-    private void requestAvailableSplashPromo(@NonNull final String userId)
+    private void requestAvailableSplashPromo(@Nullable final String userId)
     {
         if(shouldRequestAvailablePromo())
         {
