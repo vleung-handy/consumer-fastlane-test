@@ -293,7 +293,7 @@
     <string name="menu_panic_title_help">Other issues</string>
     <string name="nav_help">help</string>
     <string name="title_activity_notification_feed">Notifications</string>
-    <string name="cd_notification_feed_button">Open notificaton center</string>
+    <string name="cd_notification_feed_button">Open notification center</string>
     <string name="notification_feed_empty_text">You don’t have any notifications yet</string>
     <string name="empty_card_default_text">It seems we have nothing to show… Sorry</string>
 
@@ -317,4 +317,5 @@
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
     <string name="title_fragment_notification_feed">Notification Feed</string>
     <string name="name">name</string>
+    <string name="notifications">Notifications</string>
 </resources>

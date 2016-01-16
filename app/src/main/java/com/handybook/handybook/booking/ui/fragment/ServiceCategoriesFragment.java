@@ -14,6 +14,9 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -39,7 +42,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
@@ -121,6 +123,18 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
 
+        initToolbar();
+
+        mPromoImage.setColorFilter(
+                getResources().getColor(R.color.handy_blue),
+                PorterDuff.Mode.SRC_ATOP);
+
+        return view;
+    }
+
+    private void initToolbar()
+    {
+        setHasOptionsMenu(true);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -133,12 +147,26 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 activity.getMenuDrawer().toggleMenu();
             }
         });
+    }
 
-        mPromoImage.setColorFilter(
-                getResources().getColor(R.color.handy_blue),
-                PorterDuff.Mode.SRC_ATOP);
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.main_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
-        return view;
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.notifications:
+                Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
+                startActivity(launchIntent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -348,12 +376,5 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             mServiceIconMap.put(service.getId(), serviceCategoryView.getIcon());
             mCategoryLayout.addView(serviceCategoryView);
         }
-    }
-
-    @OnClick(R.id.ib_notification_feed)
-    void onNotificationFeedButtonClicked()
-    {
-        Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
-        startActivity(launchIntent);
     }
 }
