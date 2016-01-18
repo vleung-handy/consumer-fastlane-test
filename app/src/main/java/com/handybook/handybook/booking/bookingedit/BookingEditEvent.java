@@ -14,7 +14,7 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 
-public class BookingEditEvent
+public abstract class BookingEditEvent
 {
     //Update the note to pro for a booking
     public static class RequestUpdateBookingNoteToPro extends HandyEvent.RequestEvent
