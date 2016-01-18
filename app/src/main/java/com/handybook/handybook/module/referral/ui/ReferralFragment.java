@@ -1,12 +1,15 @@
 package com.handybook.handybook.module.referral.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -27,6 +30,12 @@ public class ReferralFragment extends InjectedFragment
     TextView mSubtitle;
     @Bind(R.id.code)
     TextView mCode;
+    @Bind(R.id.envelope)
+    View mEnvelope;
+    @Bind(R.id.envelope_shadow)
+    View mEnvelopeShadow;
+    @Bind(R.id.bling)
+    View mBling;
 
     public static Fragment newInstance()
     {
@@ -51,7 +60,20 @@ public class ReferralFragment extends InjectedFragment
         mSubtitle.setText("Give your friends $35 off their first Handy booking, and you get $35!");
         mCode.setText("JOHN1234");
 
+        mEnvelope.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.levitate));
+        mEnvelopeShadow.startAnimation(
+                AnimationUtils.loadAnimation(getActivity(), R.anim.expand_contract));
+
         return view;
+    }
+
+    @OnClick(R.id.envelope)
+    public void onEnvelopeClicked()
+    {
+        mBling.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.sparkle_fade));
+        final Vibrator vibrator =
+                (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(100);
     }
 
     @OnClick(R.id.share_button)
