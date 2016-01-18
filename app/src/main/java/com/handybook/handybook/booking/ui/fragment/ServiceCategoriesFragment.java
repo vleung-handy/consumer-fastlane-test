@@ -14,8 +14,13 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +32,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.module.notifications.feed.NotificationFeedEvent;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
@@ -39,7 +45,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
@@ -121,7 +126,19 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
 
+        initToolbar();
+
+        mPromoImage.setColorFilter(
+                getResources().getColor(R.color.handy_blue),
+                PorterDuff.Mode.SRC_ATOP);
+
+        return view;
+    }
+
+    private void initToolbar()
+    {
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        setHasOptionsMenu(true);
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener()
@@ -133,12 +150,41 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 activity.getMenuDrawer().toggleMenu();
             }
         });
+    }
 
-        mPromoImage.setColorFilter(
-                getResources().getColor(R.color.handy_blue),
-                PorterDuff.Mode.SRC_ATOP);
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.main_menu, menu);
+        initNotificationsMenuItem(menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
-        return view;
+    private void initNotificationsMenuItem(final Menu menu)
+    {
+        MenuItem item = menu.findItem(R.id.notifications);
+        item.setActionView(R.layout.layout_unread_count);
+        item.getActionView().setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
+                startActivity(launchIntent);
+            }
+        });
+    }
+
+    @Subscribe
+    public void onReceiveNotificationUnreadCountSuccess(
+            NotificationFeedEvent.ReceiveUnreadCountSuccess event
+    )
+    {
+        int unreadCount = event.getUnreadCount();
+        if (unreadCount > 0)
+        {
+            showUnreadNotificationsCount(unreadCount);
+        }
     }
 
     @Override
@@ -153,6 +199,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onResume();
         loadServices();
+        requestUnreadNotificationsCount();
     }
 
     /**
@@ -350,10 +397,24 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
     }
 
-    @OnClick(R.id.ib_notification_feed)
-    void onNotificationFeedButtonClicked()
+    private void requestUnreadNotificationsCount()
     {
-        Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
-        startActivity(launchIntent);
+        getActivity().invalidateOptionsMenu();
+        bus.post(new NotificationFeedEvent.RequestUnreadCount());
+    }
+
+    private void showUnreadNotificationsCount(int count)
+    {
+        MenuItem item = mToolbar.getMenu().findItem(R.id.notifications);
+        if (item != null)
+        {
+            final TextView unreadCount = (TextView) item.getActionView()
+                    .findViewById(R.id.unread_count);
+            final Animation animation =
+                    AnimationUtils.loadAnimation(getActivity(), R.anim.grow_in);
+            unreadCount.startAnimation(animation);
+            unreadCount.setVisibility(View.VISIBLE);
+            unreadCount.setText(String.valueOf(count));
+        }
     }
 }

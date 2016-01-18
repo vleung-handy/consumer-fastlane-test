@@ -17,6 +17,7 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.feed.model.UnreadCountWrapper;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 import org.json.JSONObject;
@@ -177,6 +178,14 @@ class HandyNotificationResultSetHandyRetrofitCallback
     HandyNotificationResultSetHandyRetrofitCallback(final DataManager.Callback cb) {super(cb);}
 }
 
+class UnreadNotificationsCountRetrofitCallback
+        extends TypedHandyRetrofitCallback<UnreadCountWrapper>
+{
+    public UnreadNotificationsCountRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
 
 class EmptyHandyRetroFitCallback extends TypedHandyRetrofitCallback<Void>
 {
