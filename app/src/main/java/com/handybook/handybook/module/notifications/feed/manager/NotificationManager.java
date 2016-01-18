@@ -35,7 +35,7 @@ public class NotificationManager
     )
     {
         mDataManager.getNotifications(
-                event.getUserId(),
+                getUserIdIfPresent(),
                 event.getCount(),
                 event.getSinceId(),
                 event.getUntilId(),
@@ -61,7 +61,7 @@ public class NotificationManager
     )
     {
         mDataManager.markNotificationsAsRead(
-                event.userId,
+                getUserIdIfPresent(),
                 event.markNotificationsAsReadRequest,
                 new DataManager.Callback<HandyNotification.ResultSet>()
                 {

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.module.notifications.feed.NotificationFeedEvent;
 import com.handybook.handybook.module.notifications.feed.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
@@ -160,14 +159,11 @@ public class NotificationFeedFragment extends InjectedFragment
     {
         if (userManager.isUserLoggedIn())
         {
-            final User currentUser = userManager.getCurrentUser();
-            long userId = Long.parseLong(currentUser.getId());
-
             //request to mark only the unread notifications as read
             List<Long> readNotificationsIdList = new ArrayList<>();
-            for(HandyNotification handyNotification : notifications)
+            for (HandyNotification handyNotification : notifications)
             {
-                if(!handyNotification.isRead())
+                if (!handyNotification.isRead())
                 {
                     readNotificationsIdList.add(handyNotification.getId());
                 }
@@ -183,7 +179,7 @@ public class NotificationFeedFragment extends InjectedFragment
             MarkNotificationsAsReadRequest markNotificationsAsReadRequest =
                     new MarkNotificationsAsReadRequest(readNotificationIdsArray);
             bus.post(new NotificationFeedEvent.RequestMarkNotificationAsRead(
-                    userId, markNotificationsAsReadRequest));
+                    markNotificationsAsReadRequest));
         }
 
     }
@@ -191,10 +187,10 @@ public class NotificationFeedFragment extends InjectedFragment
     @Subscribe
     public void onNotificationResponseReceived(final NotificationFeedEvent.HandyNotificationsSuccess e)
     {
-        if(e.getPayload() != null)
+        if (e.getPayload() != null)
         {
             HandyNotification.List notificationsList = e.getPayload().getHandyNotifications();
-            if(notificationsList != null && !notificationsList.isEmpty())
+            if (notificationsList != null && !notificationsList.isEmpty())
             {
                 mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
 
@@ -216,28 +212,7 @@ public class NotificationFeedFragment extends InjectedFragment
     private void requestNotifications()
     {
         mSwipeRefreshLayout.setRefreshing(true);
-        if (userManager.isUserLoggedIn()){
-
-            final User currentUser = userManager.getCurrentUser();
-            bus.post(
-                    new NotificationFeedEvent.HandyNotificationsEvent(
-                            Long.parseLong(currentUser.getId()),
-                            currentUser.getAuthToken(),
-                            null,
-                            null,
-                            null
-                    )
-            );
-
-        } else {
-            bus.post(
-                    new NotificationFeedEvent.HandyNotificationsEvent(
-                            null,
-                            null,
-                            null
-                    )
-            );
-        }
+        bus.post(new NotificationFeedEvent.HandyNotificationsEvent(null, null, null));
     }
 
 }
