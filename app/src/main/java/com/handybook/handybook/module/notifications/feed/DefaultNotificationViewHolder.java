@@ -38,6 +38,8 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
     TextView mTimestamp;
     @Bind(R.id.notification_card_divider)
     FrameLayout mDivider;
+    @Bind(R.id.notification_card_indicator_read)
+    View mReadIndicator;
 
     private DefaultNotificationViewHolder(View view)
     {
@@ -132,6 +134,8 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
         }
         // Divider
         mDivider.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+        // Read Indicator
+        mReadIndicator.setVisibility(mItem.isUnread() ? View.VISIBLE : View.GONE);
     }
 
     @Override

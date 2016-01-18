@@ -122,6 +122,16 @@ public class HandyNotificationViewModel
         )[0];
     }
 
+    private boolean isRead()
+    {
+        return mHandyNotification.isRead();
+    }
+
+    public boolean isUnread()
+    {
+        return ! mHandyNotification.isRead();
+    }
+
 
     public static class List extends ArrayList<HandyNotificationViewModel>
     {

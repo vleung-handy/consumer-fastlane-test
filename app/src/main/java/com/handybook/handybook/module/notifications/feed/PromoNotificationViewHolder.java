@@ -12,9 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.deeplink.DeepLinkUtils;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
 import com.handybook.handybook.ui.transformation.RoundedTransformation;
@@ -40,6 +38,8 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
     TextView mTimestamp;
     @Bind(R.id.notification_card_divider)
     FrameLayout mDivider;
+    @Bind(R.id.notification_card_indicator_read)
+    View mReadIndicator;
 
     private PromoNotificationViewHolder(View view)
     {
@@ -152,5 +152,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
         }
         // Divider
         mDivider.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+        // Read Indicator
+        mReadIndicator.setVisibility(mItem.isUnread() ? View.VISIBLE : View.GONE);
     }
 }

@@ -98,4 +98,14 @@
         android:id="@+id/notification_card_divider"
         style="@style/HandyNotification.Divider"
         />
+
+    <ImageView
+        android:id="@+id/notification_card_indicator_read"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginLeft="@dimen/default_margin_half"
+        android:layout_marginTop="26dp"
+        android:src="@drawable/handy_notification_unread_marker"
+        />
+
 </FrameLayout>
