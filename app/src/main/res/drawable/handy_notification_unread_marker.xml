@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"
+    >
+    <solid android:color="@color/handy_service_plumber"/>
+    <stroke
+        android:width="5dp"
+        android:color="@color/handy_background_gray"
+        />
+    <size
+        android:width="16dp"
+        android:height="16dp"
+        ></size>
+
+</shape>
