@@ -68,7 +68,9 @@ public class NotificationManager
                     @Override
                     public void onSuccess(final HandyNotification.ResultSet response)
                     {
-                        mBus.post(new NotificationFeedEvent.HandyNotificationsSuccess(response));
+                        // Not sending the marked notifications, to stop the visual unread indicators
+                        // from just bliping on the screen. Leaving the code below for posterity.
+                        //mBus.post(new NotificationFeedEvent.HandyNotificationsSuccess(response));
                     }
 
                     @Override

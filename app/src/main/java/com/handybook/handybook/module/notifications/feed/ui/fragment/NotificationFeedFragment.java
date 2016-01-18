@@ -177,7 +177,6 @@ public class NotificationFeedFragment extends InjectedFragment
             {
                 bus.post(
                         new NotificationFeedEvent.RequestMarkNotificationAsRead(
-                                userId,
                                 new MarkNotificationsAsReadRequest(readNotificationsIdList)
                         )
                 );
@@ -217,11 +216,8 @@ public class NotificationFeedFragment extends InjectedFragment
         if (userManager.isLoggedIn())
         {
 
-            final User currentUser = userManager.getCurrentUser();
             bus.post(
                     new NotificationFeedEvent.HandyNotificationsEvent(
-                            Long.parseLong(currentUser.getId()),
-                            currentUser.getAuthToken(),
                             null,
                             null,
                             null
