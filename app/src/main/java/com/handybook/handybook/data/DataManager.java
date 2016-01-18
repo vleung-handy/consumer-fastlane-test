@@ -35,6 +35,7 @@ import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
+import com.handybook.handybook.module.notifications.feed.model.UnreadCountWrapper;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 import java.util.Date;
@@ -106,6 +107,11 @@ public abstract class DataManager
             @Nullable final Long sinceId,
             @Nullable final Long untilId,
             @NonNull final Callback<HandyNotification.ResultSet> cb
+    );
+
+    public abstract void getUnreadNotificationsCount(
+            final long userId,
+            final Callback<UnreadCountWrapper> callback
     );
 
     public abstract void getQuoteOptions(

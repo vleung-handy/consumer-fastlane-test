@@ -245,6 +245,12 @@ public interface HandyRetrofitService
                             @Body MarkNotificationsAsReadRequest markNotificationsAsReadRequest,
                             HandyRetrofitCallback cb);
 
+    @GET("/users/{user_id}/notifications/unread_count")
+    void getUnreadNotificationsCount(
+            @Path("user_id") long userId,
+            HandyRetrofitCallback cb
+    );
+
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
 

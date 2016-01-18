@@ -100,4 +100,32 @@ public class NotificationFeedEvent
             super(payload);
         }
     }
+
+
+    public static class RequestUnreadCount extends HandyEvent.RequestEvent {}
+
+
+    public static class ReceiveUnreadCountSuccess
+            extends HandyEvent.ReceiveSuccessEvent {
+        private final int mUnreadCount;
+
+        public ReceiveUnreadCountSuccess(final int unreadCount)
+        {
+            mUnreadCount = unreadCount;
+        }
+
+        public int getUnreadCount()
+        {
+            return mUnreadCount;
+        }
+    }
+
+
+    public static class ReceiveUnreadCountError
+            extends HandyEvent.ReceiveErrorEvent {
+        public ReceiveUnreadCountError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
 }

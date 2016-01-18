@@ -19,6 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.module.notifications.feed.NotificationFeedEvent;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
@@ -134,8 +137,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     private void initToolbar()
     {
-        setHasOptionsMenu(true);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        setHasOptionsMenu(true);
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener()
@@ -172,6 +175,18 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         });
     }
 
+    @Subscribe
+    public void onReceiveNotificationUnreadCountSuccess(
+            NotificationFeedEvent.ReceiveUnreadCountSuccess event
+    )
+    {
+        int unreadCount = event.getUnreadCount();
+        if (unreadCount > 0)
+        {
+            showUnreadNotificationsCount(unreadCount);
+        }
+    }
+
     @Override
     public final void onActivityCreated(final Bundle savedInstanceState)
     {
@@ -184,6 +199,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onResume();
         loadServices();
+        requestUnreadNotificationsCount();
     }
 
     /**
@@ -378,6 +394,27 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
              */
             mServiceIconMap.put(service.getId(), serviceCategoryView.getIcon());
             mCategoryLayout.addView(serviceCategoryView);
+        }
+    }
+
+    private void requestUnreadNotificationsCount()
+    {
+        getActivity().invalidateOptionsMenu();
+        bus.post(new NotificationFeedEvent.RequestUnreadCount());
+    }
+
+    private void showUnreadNotificationsCount(int count)
+    {
+        MenuItem item = mToolbar.getMenu().findItem(R.id.notifications);
+        if (item != null)
+        {
+            final TextView unreadCount = (TextView) item.getActionView()
+                    .findViewById(R.id.unread_count);
+            final Animation animation =
+                    AnimationUtils.loadAnimation(getActivity(), R.anim.grow_in);
+            unreadCount.startAnimation(animation);
+            unreadCount.setVisibility(View.VISIBLE);
+            unreadCount.setText(String.valueOf(count));
         }
     }
 }

@@ -216,7 +216,7 @@ public class NotificationFeedFragment extends InjectedFragment
     private void requestNotifications()
     {
         mSwipeRefreshLayout.setRefreshing(true);
-        if (userManager.isLoggedIn()){
+        if (userManager.isUserLoggedIn()){
 
             final User currentUser = userManager.getCurrentUser();
             bus.post(

@@ -525,10 +525,11 @@ public final class ApplicationModule
     @Singleton
     final NotificationManager provideNotificationManager(
             final Bus bus,
-            final DataManager dataManager
+            final DataManager dataManager,
+            final UserManager userManager
     )
     {
-        return new NotificationManager(bus, dataManager);
+        return new NotificationManager(bus, dataManager, userManager);
     }
 
 }

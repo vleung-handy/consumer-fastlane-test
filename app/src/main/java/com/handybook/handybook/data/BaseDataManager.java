@@ -39,6 +39,7 @@ import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
+import com.handybook.handybook.module.notifications.feed.model.UnreadCountWrapper;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 import org.json.JSONArray;
@@ -312,6 +313,16 @@ public final class BaseDataManager extends DataManager
     {
         mService.markNotificationsAsRead(userId, markNotificationsAsReadRequest,
                 new HandyNotificationResultSetHandyRetrofitCallback(cb));
+    }
+
+    @Override
+    public void getUnreadNotificationsCount(
+            final long userId,
+            final Callback<UnreadCountWrapper> cb
+    )
+    {
+        mService.getUnreadNotificationsCount(userId,
+                new UnreadNotificationsCountRetrofitCallback(cb));
     }
 
     @Override
