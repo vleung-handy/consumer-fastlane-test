@@ -14,7 +14,7 @@ public class NotificationRecyclerViewAdapter
 
     public NotificationRecyclerViewAdapter(final HandyNotification.List notifications)
     {
-        setHasStableIds(true);
+        setHasStableIds(false);
         mHandyNotificationViewModels = HandyNotificationViewModel.List.from(notifications);
     }
 
