@@ -152,8 +152,9 @@ public class NotificationFeedFragment extends InjectedFragment
 
     /**
      * currently marking notifications as read once we receive them from the server
-     *
+     * <p/>
      * TODO: mark as read only when user actually views them
+     *
      * @param notifications
      */
     private void markNotificationsAsRead(@NonNull HandyNotification.List notifications)
@@ -165,25 +166,22 @@ public class NotificationFeedFragment extends InjectedFragment
 
             //request to mark only the unread notifications as read
             List<Long> readNotificationsIdList = new ArrayList<>();
-            for(HandyNotification handyNotification : notifications)
+            for (HandyNotification handyNotification : notifications)
             {
-                if(!handyNotification.isRead())
+                if (!handyNotification.isRead())
                 {
                     readNotificationsIdList.add(handyNotification.getId());
                 }
             }
-
-            //convert to array, since request payload requires it
-            long[] readNotificationIdsArray = new long[readNotificationsIdList.size()];
-            for (int i = 0; i < readNotificationIdsArray.length; i++)
+            if (!readNotificationsIdList.isEmpty())
             {
-                readNotificationIdsArray[i] = readNotificationsIdList.get(i);
+                bus.post(
+                        new NotificationFeedEvent.RequestMarkNotificationAsRead(
+                                userId,
+                                new MarkNotificationsAsReadRequest(readNotificationsIdList)
+                        )
+                );
             }
-
-            MarkNotificationsAsReadRequest markNotificationsAsReadRequest =
-                    new MarkNotificationsAsReadRequest(readNotificationIdsArray);
-            bus.post(new NotificationFeedEvent.RequestMarkNotificationAsRead(
-                    userId, markNotificationsAsReadRequest));
         }
 
     }
@@ -191,10 +189,10 @@ public class NotificationFeedFragment extends InjectedFragment
     @Subscribe
     public void onNotificationResponseReceived(final NotificationFeedEvent.HandyNotificationsSuccess e)
     {
-        if(e.getPayload() != null)
+        if (e.getPayload() != null)
         {
             HandyNotification.List notificationsList = e.getPayload().getHandyNotifications();
-            if(notificationsList != null && !notificationsList.isEmpty())
+            if (notificationsList != null && !notificationsList.isEmpty())
             {
                 mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
 
@@ -216,7 +214,8 @@ public class NotificationFeedFragment extends InjectedFragment
     private void requestNotifications()
     {
         mSwipeRefreshLayout.setRefreshing(true);
-        if (userManager.isLoggedIn()){
+        if (userManager.isLoggedIn())
+        {
 
             final User currentUser = userManager.getCurrentUser();
             bus.post(
@@ -229,7 +228,9 @@ public class NotificationFeedFragment extends InjectedFragment
                     )
             );
 
-        } else {
+        }
+        else
+        {
             bus.post(
                     new NotificationFeedEvent.HandyNotificationsEvent(
                             null,

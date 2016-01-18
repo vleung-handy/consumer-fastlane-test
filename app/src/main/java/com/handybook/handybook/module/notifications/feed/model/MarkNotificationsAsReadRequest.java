@@ -2,13 +2,15 @@ package com.handybook.handybook.module.notifications.feed.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class MarkNotificationsAsReadRequest
 {
     @SerializedName("notification_ids")
-    long mNotificationIdArray[];
+    List<Long> mNotificationoIdsToMarkRead;
 
-    public MarkNotificationsAsReadRequest(long notificationIdArray[])
+    public MarkNotificationsAsReadRequest(List<Long> longs)
     {
-        mNotificationIdArray = notificationIdArray;
+        mNotificationoIdsToMarkRead = longs;
     }
 }
