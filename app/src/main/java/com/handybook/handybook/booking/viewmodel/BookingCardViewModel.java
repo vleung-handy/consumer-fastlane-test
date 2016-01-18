@@ -92,20 +92,43 @@ public class BookingCardViewModel
         return bcrvms;
     }
 
-    public static class List extends ArrayList<BookingCardViewModel>
+    private void addBooking(@NonNull final Booking booking)
+    {
+        mBookings.add(booking);
+    }
+
+    public static class List
     {
         public static final int TYPE_PAST = 100;
         public static final int TYPE_UPCOMING = 101;
         public static final int TYPE_MIXED = 102;
 
         private int mType;
-        private ArrayList<Booking> mBookings;
+        private ArrayList<BookingCardViewModel> mBookingCardViewModels = new ArrayList<>();
 
         public ArrayList<Booking> getBookings()
         {
-            return mBookings;
+            ArrayList<Booking> bookings = new ArrayList<>();
+            for (BookingCardViewModel model : mBookingCardViewModels)
+            {
+                bookings.addAll(model.getBookings());
+            }
+            return bookings;
         }
 
+        private List()
+        {
+        }
+
+        public int size()
+        {
+            return mBookingCardViewModels.size();
+        }
+
+        public BookingCardViewModel get(final int position)
+        {
+            return mBookingCardViewModels.get(position);
+        }
 
         /**
          * Defines type of BookingCardViewModel.List
@@ -126,13 +149,16 @@ public class BookingCardViewModel
             mType = type;
         }
 
-
         @ListType
         public int getType()
         {
             return mType;
         }
 
+        public static List empty()
+        {
+            return new List();
+        }
 
         public static List from(@NonNull final Collection<Booking> bookings, @ListType int type)
         {
@@ -141,7 +167,8 @@ public class BookingCardViewModel
                 case TYPE_PAST:
                     final List pastList = from(bookings, true);
                     // Reverse because we want them displayed in reverse
-                    Collections.sort(pastList, BookingCardViewModel.COMPARATOR_DATE_REVERSE);
+                    Collections.sort(pastList.mBookingCardViewModels,
+                            BookingCardViewModel.COMPARATOR_DATE_REVERSE);
                     pastList.setType(type);
                     return pastList;
                 case TYPE_UPCOMING:
@@ -161,13 +188,10 @@ public class BookingCardViewModel
             if (doNotGroup)
             {
                 final List bookingCardViewModels = new List();
-                bookingCardViewModels.mBookings = new ArrayList<>();
                 for (Booking eachBooking : bookings)
                 {
-                    // Add the BookingsCardViewModel
-                    bookingCardViewModels.add(new BookingCardViewModel(eachBooking));
-                    // Add it to the internal booking list
-                    bookingCardViewModels.mBookings.add(eachBooking);
+                    bookingCardViewModels.mBookingCardViewModels
+                            .add(new BookingCardViewModel(eachBooking));
                 }
                 return bookingCardViewModels;
             }
@@ -181,12 +205,8 @@ public class BookingCardViewModel
         {
             final HashMap<Long, BookingCardViewModel> recurringIdToBCVM = new HashMap<>();
             final List bookingCardViewModels = new List();
-            bookingCardViewModels.mBookings = new ArrayList<>();
             for (Booking eachBooking : bookings)
             {
-                // Add it to the internal booking list
-                bookingCardViewModels.mBookings.add(eachBooking);
-                // If it's part of recurring booking
                 if (eachBooking.isRecurring())
                 {
                     BookingCardViewModel bcvm = recurringIdToBCVM.get(
@@ -197,7 +217,7 @@ public class BookingCardViewModel
                         // We haven't seen a booking from this recurring series
                         bcvm = new BookingCardViewModel(eachBooking);
                         recurringIdToBCVM.put(eachBooking.getRecurringId(), bcvm);
-                        bookingCardViewModels.add(bcvm);
+                        bookingCardViewModels.mBookingCardViewModels.add(bcvm);
                     }
                     else
                     {
@@ -208,16 +228,12 @@ public class BookingCardViewModel
                 // If not part of recurring then just add to list
                 else
                 {
-                    bookingCardViewModels.add(new BookingCardViewModel(eachBooking));
+                    bookingCardViewModels.mBookingCardViewModels
+                            .add(new BookingCardViewModel(eachBooking));
                 }
             }
             return bookingCardViewModels;
         }
-    }
-
-    private void addBooking(@NonNull final Booking booking)
-    {
-        mBookings.add(booking);
     }
 
 }

@@ -47,7 +47,7 @@ public class NotificationFeedFragment extends InjectedFragment
     @Bind(R.id.notifications_feed_rv)
     EmptiableRecyclerView mEmptiableRecyclerView;
     @Bind(R.id.card_empty)
-    CardView mEmptyView;
+    View mEmptyView;
     @Bind(R.id.card_empty_text)
     TextView mNoBookingsText;
 

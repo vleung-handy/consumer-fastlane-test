@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 
@@ -61,8 +62,10 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         View view = inflater.inflate(R.layout.fragment_service_categories_overlay,
                 container, false);
@@ -75,6 +78,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
 
     private void initServices()
     {
+        mCloseButton.setClickable(false);
         ArrayList<Service> services = getArguments().getParcelableArrayList(BundleKeys.SERVICES);
         mServiceCategorySimpleViews = new ArrayList<>();
         for (final Service service : services)
@@ -102,6 +106,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                     TranslateAnimation animation = new TranslateAnimation(0, 0, fromYDelta, 0);
                     animation.setDuration(SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS);
                     animation.setInterpolator(new OvershootInterpolator());
+                    animation.setAnimationListener(mServiceIconAnimationListener);
                     serviceCategorySimpleView.startAnimation(animation);
                     serviceCategorySimpleView.setVisibility(View.VISIBLE);
                 }
@@ -109,6 +114,26 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
             mServiceCategorySimpleViews.add(serviceCategorySimpleView);
         }
     }
+
+    private final Animation.AnimationListener mServiceIconAnimationListener =
+            new Animation.AnimationListener()
+            {
+                @Override
+                public void onAnimationStart(final Animation animation)
+                {
+                }
+
+                @Override
+                public void onAnimationEnd(final Animation animation)
+                {
+                    mCloseButton.setClickable(true);
+                }
+
+                @Override
+                public void onAnimationRepeat(final Animation animation)
+                {
+                }
+            };
 
     private void initBackPressedListener()
     {
@@ -143,8 +168,10 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                 });
     }
 
-    private void handleServiceCategoryClicked(final ServiceCategorySimpleView serviceCategorySimpleView,
-                                              final Service service)
+    private void handleServiceCategoryClicked(
+            final ServiceCategorySimpleView serviceCategorySimpleView,
+            final Service service
+    )
     {
         bus.post(new MixpanelEvent.TrackAddBookingFabServiceSelected(service.getId(), service.getUniq()));
         if (service.getServices().size() > 0)

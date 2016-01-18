@@ -7,7 +7,7 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
 
-public class NotificationFeedEvent
+public abstract class NotificationFeedEvent
 {
     public static class HandyNotificationsEvent extends HandyEvent.RequestEvent
     {
