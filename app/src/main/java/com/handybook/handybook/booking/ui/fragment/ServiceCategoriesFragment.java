@@ -153,20 +153,23 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater)
     {
         inflater.inflate(R.menu.main_menu, menu);
+        initNotificationsMenuItem(menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item)
+    private void initNotificationsMenuItem(final Menu menu)
     {
-        switch (item.getItemId())
+        MenuItem item = menu.findItem(R.id.notifications);
+        item.setActionView(R.layout.layout_unread_count);
+        item.getActionView().setOnClickListener(new View.OnClickListener()
         {
-            case R.id.notifications:
+            @Override
+            public void onClick(final View v)
+            {
                 Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
                 startActivity(launchIntent);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+            }
+        });
     }
 
     @Override
