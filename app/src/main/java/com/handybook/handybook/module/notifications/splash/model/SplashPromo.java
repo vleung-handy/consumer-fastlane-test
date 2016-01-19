@@ -26,7 +26,7 @@ public class SplashPromo implements Parcelable
     private String mActionText;
     @SerializedName("template")
     private String mTemplate;
-    @SerializedName("none") //returns 1 if there is no splash promo to display, 0 otherwise
+    @SerializedName("none") //returns 1 if there is no splash promo to display, 0 or null otherwise
     private Integer mShouldNotDisplay;
 
     /**
@@ -91,6 +91,8 @@ public class SplashPromo implements Parcelable
         mDeepLinkUrl = stringData[4];
         mActionText = stringData[5];
         mTemplate = stringData[6];
+
+        mShouldNotDisplay = in.readInt();
     }
 
     public static final Parcelable.Creator<SplashPromo> CREATOR
@@ -116,5 +118,7 @@ public class SplashPromo implements Parcelable
                 mActionText,
                 mTemplate
         });
+
+        dest.writeInt(mShouldNotDisplay == null ? 0 : mShouldNotDisplay);
     }
 }
