@@ -1,9 +1,7 @@
 package com.handybook.handybook.module.referral.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -118,9 +116,6 @@ public class ReferralFragment extends InjectedFragment
     public void onEnvelopeClicked()
     {
         mBling.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.sparkle_fade));
-        final Vibrator vibrator =
-                (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(100);
     }
 
     @OnClick(R.id.share_button)

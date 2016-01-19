@@ -316,8 +316,8 @@
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
     <string name="scan_credit_card_button">Scan credit card</string>
     <string name="free_cleanings">Free Cleanings</string>
-    <string name="share_with_friends">Share with Friends</string>
-    <string name="share_invite_code">Share your invite code</string>
+    <string name="referral_cta_label">Invite Friends</string>
+    <string name="referral_code_label">Your code:</string>
     <string name="referral_title">Give %1$s, Get %2$s</string>
     <string name="referral_subtitle">Give your friends %1$s off their first Handy booking, and you get %2$s!</string>
 </resources>

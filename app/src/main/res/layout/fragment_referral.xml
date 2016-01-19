@@ -118,42 +118,74 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/share_button"
+            android:layout_height="match_parent"
             android:layout_below="@+id/referral_description_layout"
+            android:layout_margin="@dimen/default_margin_double"
             android:gravity="center"
             android:orientation="vertical"
             >
 
-            <TextView
-                style="@style/TextView.Small.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin_half"
-                android:text="@string/share_invite_code"
-                android:textAllCaps="true"
-                />
+            <RelativeLayout
+                style="@style/Button.White.Round"
+                android:layout_height="@dimen/default_button_height"
+                android:clickable="true"
+                android:paddingBottom="0dp"
+                android:paddingTop="0dp"
+                >
 
-            <TextView
-                android:id="@+id/code"
-                style="@style/TextView.XLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/handy_tertiary_gray"
-                android:textIsSelectable="true"
-                tools:text="JOHN1234"
-                />
+                <TextView
+                    android:id="@+id/code_label"
+                    style="@style/TextView.Small.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/default_margin_half"
+                    android:layout_marginRight="@dimen/default_margin_half"
+                    android:text="@string/referral_code_label"
+                    android:textAllCaps="true"
+                    />
 
+                <TextView
+                    android:id="@+id/code"
+                    style="@style/TextView.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/code_label"
+                    android:layout_toRightOf="@+id/code_label"
+                    android:textColor="@color/handy_tertiary_gray"
+                    android:textIsSelectable="true"
+                    tools:text="JOHN1234"
+                    />
+
+                <FrameLayout
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/share_button"
+                    android:layout_toStartOf="@+id/share_button"
+                    android:background="@color/handy_bg"
+                    />
+
+                <ImageView
+                    android:id="@+id/share_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/default_padding"
+                    android:paddingStart="@dimen/default_padding"
+                    android:src="@drawable/ic_share"
+                    />
+
+            </RelativeLayout>
+
+            <Button
+                style="@style/Button.Green.Round"
+                android:layout_height="@dimen/default_button_height"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/referral_cta_label"
+                android:textAllCaps="false"
+                />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/share_button"
-            style="@style/Button.Green.Round"
-            android:layout_marginBottom="@dimen/default_margin_double"
-            android:layout_marginLeft="@dimen/default_margin_double"
-            android:layout_marginRight="@dimen/default_margin_double"
-            android:text="@string/share_with_friends"
-            android:textAllCaps="false"
-            />
     </RelativeLayout>
 </LinearLayout>

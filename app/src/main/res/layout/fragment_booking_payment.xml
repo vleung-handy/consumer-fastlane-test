@@ -68,7 +68,7 @@
                 <LinearLayout
                     android:id="@+id/android_pay_button"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/select_payment_button_height"
+                    android:layout_height="@dimen/default_button_height"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/select_payment_button_gap"
                     android:layout_marginTop="@dimen/select_payment_button_gap"
@@ -90,7 +90,7 @@
                     android:id="@+id/enter_credit_card_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/select_payment_button_height"
+                    android:layout_height="@dimen/default_button_height"
                     android:layout_marginBottom="@dimen/select_payment_button_gap"
                     android:background="@drawable/grey_button_rounded"
                     android:foreground="?attr/selectableItemBackground"
