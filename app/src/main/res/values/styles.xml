@@ -573,7 +573,7 @@
         <item name="android:background">@color/white</item>
     </style>
 
-    <style name="BookingDetailSectionView.Transparent" parent="BookingDetailSectionView">
+    <style name="BookingDetailSectionView.Transparent">
         <item name="android:background">@color/transparent</item>
 
     </style>
@@ -637,6 +637,9 @@
         <item name="android:textColor">@color/handy_text_gray</item>
     </style>
 
+    <style name="HandyNotification.Timestamp.Promo">
+        <item name="android:layout_marginTop">@dimen/default_margin_half</item>
+    </style>
     <style name="HandyNotification.Promo"/>
 
     <style name="HandyNotification.Promo.Card">
@@ -648,7 +651,6 @@
     <style name="HandyNotification.Container">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">20dp</item>
         <item name="android:layout_marginLeft">@dimen/default_margin</item>
         <item name="android:layout_marginRight">@dimen/default_margin</item>
         <item name="android:layout_marginTop">@dimen/default_margin</item>
@@ -671,6 +673,16 @@
         <item name="android:gravity">left</item>
         <item name="android:orientation">vertical</item>
     </style>
+
+    <style name="HandyNotification.TextCta" parent="TextView.Headline.Blue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/default_margin_half</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/handy_blue</item>
+    </style>
+
 
 
 </resources>

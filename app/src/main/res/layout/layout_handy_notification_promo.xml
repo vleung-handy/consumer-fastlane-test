@@ -88,7 +88,7 @@
 
             <TextView
                 android:id="@+id/notification_card_timestamp"
-                style="@style/HandyNotification.Timestamp"
+                style="@style/HandyNotification.Timestamp.Promo"
                 tools:text="Sept 12, 2015 - 1:18 PM"
                 />
         </LinearLayout>
