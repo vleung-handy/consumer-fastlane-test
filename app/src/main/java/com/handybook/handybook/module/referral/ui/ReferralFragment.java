@@ -80,24 +80,37 @@ public class ReferralFragment extends InjectedFragment
         removeErrorLayout();
         removeUiBlockers();
         mReferralContent.setVisibility(View.VISIBLE);
-        final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
-        final ReferralDescriptor referralDescriptor =
-                event.getReferralResponse().getReferralDescriptor();
+        showReferralDetails(event.getReferralResponse().getReferralDescriptor());
+        startAnimations();
+    }
 
+    private void showReferralDetails(final ReferralDescriptor referralDescriptor)
+    {
+        final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
         String formattedReceiverCouponAmount = TextUtils.formatPrice(
                 referralDescriptor.getReceiverCouponAmount(), currencyChar, null);
         String formattedSenderCreditAmount = TextUtils.formatPrice(
                 referralDescriptor.getSenderCreditAmount(), currencyChar, null);
-
         mCode.setText(referralDescriptor.getCouponCode());
         mTitle.setText(getString(R.string.referral_title, formattedReceiverCouponAmount,
                 formattedSenderCreditAmount));
         mSubtitle.setText(getString(R.string.referral_subtitle, formattedReceiverCouponAmount,
                 formattedSenderCreditAmount));
+    }
 
+    private void startAnimations()
+    {
         mEnvelope.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.levitate));
         mEnvelopeShadow.startAnimation(
                 AnimationUtils.loadAnimation(getActivity(), R.anim.expand_contract));
+        mBling.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                onEnvelopeClicked();
+            }
+        }, 1000);
     }
 
     @Subscribe
