@@ -33,9 +33,17 @@
 
     </RelativeLayout>
 
+    <include
+        layout="@layout/layout_error"
+        tools:visibility="gone"
+        />
+
     <RelativeLayout
+        android:id="@+id/referral_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"
         >
 
         <LinearLayout

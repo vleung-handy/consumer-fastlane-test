@@ -28,6 +28,8 @@ public class ReferralFragment extends InjectedFragment
 {
     @Bind(R.id.menu_button_layout)
     ViewGroup mMenuButtonLayout;
+    @Bind(R.id.referral_content)
+    View mReferralContent;
     @Bind(R.id.title)
     TextView mTitle;
     @Bind(R.id.subtitle)
@@ -60,9 +62,16 @@ public class ReferralFragment extends InjectedFragment
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
 
-        bus.post(new ReferralsEvent.RequestPrepareReferrals());
+        requestPrepareReferrals();
 
         return view;
+    }
+
+    @OnClick(R.id.error_retry_button)
+    public void requestPrepareReferrals()
+    {
+        showUiBlockers();
+        bus.post(new ReferralsEvent.RequestPrepareReferrals());
     }
 
     @Subscribe
@@ -70,6 +79,9 @@ public class ReferralFragment extends InjectedFragment
             ReferralsEvent.ReceivePrepareReferralsSuccess event
     )
     {
+        removeErrorLayout();
+        removeUiBlockers();
+        mReferralContent.setVisibility(View.VISIBLE);
         final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
         final ReferralDescriptor referralDescriptor =
                 event.getReferralResponse().getReferralDescriptor();
@@ -93,6 +105,13 @@ public class ReferralFragment extends InjectedFragment
     @Subscribe
     public void onReceivePrepareReferralsError(ReferralsEvent.ReceivePrepareReferralsError event)
     {
+        String message = event.error.getMessage();
+        if (message == null || message.isEmpty())
+        {
+            message = getString(R.string.error_fetching_connectivity_issue);
+        }
+        showErrorLayout(message);
+        removeUiBlockers();
     }
 
     @OnClick(R.id.envelope)

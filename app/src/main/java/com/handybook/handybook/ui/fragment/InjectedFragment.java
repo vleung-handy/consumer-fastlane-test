@@ -3,6 +3,8 @@ package com.handybook.handybook.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -188,5 +190,28 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     {
         enableInputs();
         progressDialog.dismiss();
+    }
+
+    protected void showErrorLayout(String errorMessage)
+    {
+        final View errorLayout = getActivity().findViewById(R.id.error_layout);
+        if (errorLayout != null)
+        {
+            final View errorText = getActivity().findViewById(R.id.error_text);
+            if (errorText != null && errorText instanceof TextView)
+            {
+                ((TextView) errorText).setText(errorMessage);
+            }
+            errorLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void removeErrorLayout()
+    {
+        final View errorLayout = getActivity().findViewById(R.id.error_layout);
+        if (errorLayout != null)
+        {
+            errorLayout.setVisibility(View.GONE);
+        }
     }
 }
