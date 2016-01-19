@@ -13,8 +13,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.MenuButton;
+import com.handybook.handybook.util.TextUtils;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,15 +60,39 @@ public class ReferralFragment extends InjectedFragment
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
 
-        mTitle.setText("Give $35, Get $35");
-        mSubtitle.setText("Give your friends $35 off their first Handy booking, and you get $35!");
-        mCode.setText("JOHN1234");
+        bus.post(new ReferralsEvent.RequestPrepareReferrals());
+
+        return view;
+    }
+
+    @Subscribe
+    public void onReceivePrepareReferralsSuccess(
+            ReferralsEvent.ReceivePrepareReferralsSuccess event
+    )
+    {
+        final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
+        final ReferralDescriptor referralDescriptor =
+                event.getReferralResponse().getReferralDescriptor();
+
+        String formattedReceiverCouponAmount = TextUtils.formatPrice(
+                referralDescriptor.getReceiverCouponAmount(), currencyChar, null);
+        String formattedSenderCreditAmount = TextUtils.formatPrice(
+                referralDescriptor.getSenderCreditAmount(), currencyChar, null);
+
+        mCode.setText(referralDescriptor.getCouponCode());
+        mTitle.setText(getString(R.string.referral_title, formattedReceiverCouponAmount,
+                formattedSenderCreditAmount));
+        mSubtitle.setText(getString(R.string.referral_subtitle, formattedReceiverCouponAmount,
+                formattedSenderCreditAmount));
 
         mEnvelope.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.levitate));
         mEnvelopeShadow.startAnimation(
                 AnimationUtils.loadAnimation(getActivity(), R.anim.expand_contract));
+    }
 
-        return view;
+    @Subscribe
+    public void onReceivePrepareReferralsError(ReferralsEvent.ReceivePrepareReferralsError event)
+    {
     }
 
     @OnClick(R.id.envelope)

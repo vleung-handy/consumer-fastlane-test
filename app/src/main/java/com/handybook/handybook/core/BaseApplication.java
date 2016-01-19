@@ -24,6 +24,7 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
@@ -84,6 +85,8 @@ public class BaseApplication extends MultiDexApplication
     BookingEditManager bookingEditManager;
     @Inject
     ServicesManager servicesManager;
+    @Inject
+    ReferralsManager referralsManager;
 
     @Override
     public void onCreate()

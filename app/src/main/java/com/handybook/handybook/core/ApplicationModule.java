@@ -107,6 +107,7 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.ui.activity.BlockingActivity;
@@ -503,6 +504,13 @@ public final class ApplicationModule
     )
     {
         return new UrbanAirshipManager(mContext, bus, userManager);
+    }
+
+    @Provides
+    @Singleton
+    final ReferralsManager provideReferralsManager(final Bus bus, final DataManager dataManager)
+    {
+        return new ReferralsManager(bus, dataManager);
     }
 
     private String getDeviceId()

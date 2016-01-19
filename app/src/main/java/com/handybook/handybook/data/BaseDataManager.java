@@ -39,6 +39,7 @@ import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -820,6 +821,12 @@ public final class BaseDataManager extends DataManager
                 cb.onSuccess(null);
             }
         });
+    }
+
+    @Override
+    public void requestPrepareReferrals(final Callback<ReferralResponse> cb)
+    {
+        mService.requestPrepareReferrals(new ReferralResponseHandyRetrofitCallback(cb));
     }
 
     @Override
