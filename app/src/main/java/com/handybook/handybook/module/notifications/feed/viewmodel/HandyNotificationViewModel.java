@@ -154,5 +154,4 @@ public class HandyNotificationViewModel
             return notificationViewModelList;
         }
     }
-
 }

@@ -2,10 +2,10 @@ package com.handybook.handybook.module.notifications.feed.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,11 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.deeplink.DeepLinkUtils;
+import com.handybook.handybook.module.notifications.HandyNotificationSplashPromoConverter;
+import com.handybook.handybook.module.notifications.feed.HandyNotificationActionHandler;
 import com.handybook.handybook.module.notifications.feed.NotificationFeedEvent;
 import com.handybook.handybook.module.notifications.feed.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.feed.model.MarkNotificationsAsReadRequest;
+import com.handybook.handybook.module.notifications.feed.viewmodel.HandyNotificationViewModel;
+import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
 import com.squareup.otto.Subscribe;
@@ -31,7 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class NotificationFeedFragment extends InjectedFragment
-        implements SwipeRefreshLayout.OnRefreshListener
+        implements SwipeRefreshLayout.OnRefreshListener, HandyNotificationActionHandler
 {
 
     private static final String ARG_NOTIFICATIONS = "NOTIFICATIONS";
@@ -95,7 +102,7 @@ public class NotificationFeedFragment extends InjectedFragment
                 R.color.handy_service_plumber
         );
         // RecyclerView
-        mNotificationRecyclerViewAdapter = new NotificationRecyclerViewAdapter(mNotifications);
+        mNotificationRecyclerViewAdapter = new NotificationRecyclerViewAdapter(mNotifications, this);
         mEmptiableRecyclerView.setAdapter(mNotificationRecyclerViewAdapter);
         mEmptiableRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mEmptiableRecyclerView.setEmptyView(mEmptyView);
@@ -215,4 +222,49 @@ public class NotificationFeedFragment extends InjectedFragment
         bus.post(new NotificationFeedEvent.HandyNotificationsEvent(null, null, null));
     }
 
+    /**
+     * does something based on the Action item in a notification feed item
+     *
+     * called when certain views in a notification feed item are clicked
+     * @param action
+     * @return
+     */
+    @Override
+    public boolean handleNotificationAction(@Nullable HandyNotification.Action action)
+    {
+        if (action == null)
+        {
+            Crashlytics.logException(
+                    new RuntimeException("Action is now null"));
+        }
+        else
+        {
+            final String deeplink = action.getDeeplink();
+            if (deeplink == null)
+            {
+                Crashlytics.logException(new RuntimeException("Action without a deeplink received: "
+                        + action.toString()));
+            }
+            else
+            {
+                return DeepLinkUtils.safeLaunchDeepLink(deeplink, getContext());
+            }
+        }
+        return false;
+    }
+
+    /**
+     * called when a notification feed promo item is clicked
+     *
+     * currently requests to launch the splash promo
+     * @param promoNotificationViewModel
+     */
+    @Override
+    public void handleNotificationPromoItemClicked(@NonNull HandyNotificationViewModel
+                                                               promoNotificationViewModel)
+    {
+        SplashPromo splashPromo = HandyNotificationSplashPromoConverter.
+                convertToSplashPromo(promoNotificationViewModel, getContext());
+        bus.post(new SplashNotificationEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
+    }
 }

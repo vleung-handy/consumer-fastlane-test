@@ -1,5 +1,6 @@
 package com.handybook.handybook.module.notifications.feed;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -11,11 +12,15 @@ public class NotificationRecyclerViewAdapter
 {
 
     private HandyNotificationViewModel.List mHandyNotificationViewModels;
+    private HandyNotificationActionHandler mHandyNotificationActionHandler;
 
-    public NotificationRecyclerViewAdapter(final HandyNotification.List notifications)
+    public NotificationRecyclerViewAdapter(final HandyNotification.List notifications,
+                                           @NonNull final HandyNotificationActionHandler handyNotificationActionHandler
+    )
     {
         setHasStableIds(true);
         mHandyNotificationViewModels = HandyNotificationViewModel.List.from(notifications);
+        mHandyNotificationActionHandler = handyNotificationActionHandler;
     }
 
     @Override
@@ -24,11 +29,11 @@ public class NotificationRecyclerViewAdapter
         switch (HandyNotification.HandyNotificationType.values()[viewType])
         {
             case NOTIFICATION:
-                return DefaultNotificationViewHolder.newInstance(parent);
+                return DefaultNotificationViewHolder.newInstance(parent, mHandyNotificationActionHandler);
             case PROMO:
-                return PromoNotificationViewHolder.newInstance(parent);
+                return PromoNotificationViewHolder.newInstance(parent, mHandyNotificationActionHandler);
             default:
-                return DefaultNotificationViewHolder.newInstance(parent);
+                return DefaultNotificationViewHolder.newInstance(parent, mHandyNotificationActionHandler);
         }
     }
 
