@@ -6,8 +6,8 @@ import android.util.DisplayMetrics;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.util.TextUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,7 +15,7 @@ public class HandyNotificationViewModel
 {
     private HandyNotification mHandyNotification;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
+    private static final String DATE_FORMAT = "EEE, MMM d yyyy h:mm a";
 
     public HandyNotificationViewModel(final HandyNotification handyNotification)
     {
@@ -66,7 +66,7 @@ public class HandyNotificationViewModel
 
     public String getTimestamp()
     {
-        return DATE_FORMAT.format(mHandyNotification.getCreatedAt().getTime());
+        return TextUtils.formatDate(mHandyNotification.getCreatedAt(), DATE_FORMAT);
     }
 
     public HandyNotification.HandyNotificationType getType()
@@ -129,7 +129,7 @@ public class HandyNotificationViewModel
 
     public boolean isUnread()
     {
-        return ! mHandyNotification.isRead();
+        return !mHandyNotification.isRead();
     }
 
 
