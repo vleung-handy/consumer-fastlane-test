@@ -93,7 +93,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                                 ).into(mImage);
                     }
                 });
-        // Action : Default
+        // Actions : "call_to_action"
         if (mItem.hasLinkActions())
         {
             mView.setClickable(true);

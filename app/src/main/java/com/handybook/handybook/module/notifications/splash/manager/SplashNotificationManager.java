@@ -79,7 +79,7 @@ public class SplashNotificationManager
                 @Override
                 public void onSuccess(final SplashPromo splashPromo)
                 {
-                    mBus.post(new SplashNotificationEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
+                    mBus.post(new SplashNotificationEvent.RequestShowSplashPromo(splashPromo));
                 }
 
                 @Override

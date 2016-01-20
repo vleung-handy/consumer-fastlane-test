@@ -265,6 +265,6 @@ public class NotificationFeedFragment extends InjectedFragment
     {
         SplashPromo splashPromo = HandyNotificationSplashPromoConverter.
                 convertToSplashPromo(promoNotificationViewModel, getContext());
-        bus.post(new SplashNotificationEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
+        bus.post(new SplashNotificationEvent.RequestShowSplashPromo(splashPromo));
     }
 }
