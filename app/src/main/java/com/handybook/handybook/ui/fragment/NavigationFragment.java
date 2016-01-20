@@ -329,8 +329,8 @@ public final class NavigationFragment extends InjectedFragment
 
         if (userLoggedIn)
         {
-            items.add(getString(R.string.account));
             items.add(getString(R.string.my_bookings));
+            items.add(getString(R.string.account));
             if (currentUser.getStripeKey() != null)
             {
                 items.add(getString(R.string.payment));
