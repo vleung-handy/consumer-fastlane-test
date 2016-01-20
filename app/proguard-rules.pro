@@ -16,6 +16,12 @@
 #   public *;
 #}
 
+#card.io
+-keep class io.card.**
+-keepclassmembers class io.card.** {
+    *;
+}
+
 #DeepLinkDispatch library
 -keep class com.airbnb.deeplinkdispatch.** { *; }
 -keepclasseswithmembers class * {
