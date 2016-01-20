@@ -8,10 +8,10 @@ import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 public abstract class SplashNotificationEvent
 {
-    public static class ReceiveAvailableSplashPromoSuccess extends HandyEvent.ReceiveSuccessEvent
+    public static class RequestShowSplashPromo extends HandyEvent.RequestEvent
     {
         public final SplashPromo splashPromo;
-        public ReceiveAvailableSplashPromoSuccess(final SplashPromo splashPromo)
+        public RequestShowSplashPromo(final SplashPromo splashPromo)
         {
             this.splashPromo = splashPromo;
         }

@@ -2,6 +2,7 @@ package com.handybook.handybook.module.notifications.splash.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -25,12 +26,36 @@ public class SplashPromo implements Parcelable
     @SerializedName("action_text")
     private String mActionText;
     @SerializedName("template")
-    private String mTemplate;
+    private String mTemplate; //we don't need this
     @SerializedName("none") //returns 1 if there is no splash promo to display, 0 otherwise
     private Integer mShouldNotDisplay;
 
     /**
-     * mShouldNotDisplay == 1 if there is no splash promo to display, 0 otherwise
+     * currently being used by the HandyNotificationSplashPromoConverter
+     *
+     * created because don't want to create setters to expose the fields just for the converter
+     * @param id
+     * @param imageUrl
+     * @param title
+     * @param subtitle
+     * @param deepLinkUrl
+     * @param actionText
+     */
+    public SplashPromo (@Nullable String id, String imageUrl, String title,
+                                   String subtitle, String deepLinkUrl, String actionText)
+    {
+        mId = id;
+        mImageUrl = imageUrl;
+        mTitle = title;
+        mSubtitle = subtitle;
+        mDeepLinkUrl = deepLinkUrl;
+        mActionText = actionText;
+        mShouldNotDisplay = null;
+        //don't want to use setters
+    }
+
+    /**
+     * mShouldNotDisplay == 1 if there is no splash promo to display, 0 or null otherwise
      *
      * @return
      */
