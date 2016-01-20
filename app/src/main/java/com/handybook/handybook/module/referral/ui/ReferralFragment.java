@@ -1,5 +1,6 @@
 package com.handybook.handybook.module.referral.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +12,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
+import com.handybook.handybook.module.referral.model.ReferralInfo;
+import com.handybook.handybook.module.referral.model.ReferralMedia;
+import com.handybook.handybook.module.referral.util.IntentUtil;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
@@ -41,6 +46,9 @@ public class ReferralFragment extends InjectedFragment
     @Bind(R.id.bling)
     View mBling;
 
+    private ReferralDescriptor mReferralDescriptor;
+    private ReferralMedia mReferralMedia;
+
     public static Fragment newInstance()
     {
         return new ReferralFragment();
@@ -60,16 +68,41 @@ public class ReferralFragment extends InjectedFragment
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
 
-        requestPrepareReferrals();
-
         return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        requestPrepareReferrals();
     }
 
     @OnClick(R.id.error_retry_button)
     public void requestPrepareReferrals()
     {
         showUiBlockers();
+        mReferralContent.setVisibility(View.GONE);
         bus.post(new ReferralsEvent.RequestPrepareReferrals());
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
+    {
+        if (requestCode == ActivityResult.PICK_ACTIVITY)
+        {
+            if (resultCode == Activity.RESULT_OK && intent != null)
+            {
+                IntentUtil.addReferralIntentExtras(getActivity(), intent, mReferralMedia);
+                final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (extraText == null || extraText.isEmpty())
+                {
+                    intent.putExtra(Intent.EXTRA_TEXT, mReferralDescriptor.getCouponCode());
+                }
+                startActivity(intent);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, intent);
     }
 
     @Subscribe
@@ -77,21 +110,24 @@ public class ReferralFragment extends InjectedFragment
             ReferralsEvent.ReceivePrepareReferralsSuccess event
     )
     {
+        mReferralDescriptor = event.getReferralResponse().getReferralDescriptor();
+        mReferralMedia =
+                mReferralDescriptor.getReferralMedia(ReferralDescriptor.SOURCE_REFERRAL_PAGE);
         removeErrorLayout();
         removeUiBlockers();
         mReferralContent.setVisibility(View.VISIBLE);
-        showReferralDetails(event.getReferralResponse().getReferralDescriptor());
+        showReferralDetails();
         startAnimations();
     }
 
-    private void showReferralDetails(final ReferralDescriptor referralDescriptor)
+    private void showReferralDetails()
     {
         final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
         String formattedReceiverCouponAmount = TextUtils.formatPrice(
-                referralDescriptor.getReceiverCouponAmount(), currencyChar, null);
+                mReferralDescriptor.getReceiverCouponAmount(), currencyChar, null);
         String formattedSenderCreditAmount = TextUtils.formatPrice(
-                referralDescriptor.getSenderCreditAmount(), currencyChar, null);
-        mCode.setText(referralDescriptor.getCouponCode());
+                mReferralDescriptor.getSenderCreditAmount(), currencyChar, null);
+        mCode.setText(mReferralDescriptor.getCouponCode());
         mTitle.setText(getString(R.string.referral_title, formattedReceiverCouponAmount,
                 formattedSenderCreditAmount));
         mSubtitle.setText(getString(R.string.referral_subtitle, formattedReceiverCouponAmount,
@@ -121,6 +157,7 @@ public class ReferralFragment extends InjectedFragment
         {
             message = getString(R.string.error_fetching_connectivity_issue);
         }
+        mReferralContent.setVisibility(View.GONE);
         showErrorLayout(message);
         removeUiBlockers();
     }
@@ -134,10 +171,24 @@ public class ReferralFragment extends InjectedFragment
     @OnClick(R.id.share_button)
     public void onShareButtonClicked()
     {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "JOHN1234");
-        sendIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_to)));
+        final Intent dummyIntent = new Intent();
+        dummyIntent.setAction(Intent.ACTION_SEND);
+        dummyIntent.setType(IntentUtil.MIME_TYPE_PLAIN_TEXT);
+
+        final Intent activityPickerIntent = new Intent();
+        activityPickerIntent.setAction(Intent.ACTION_PICK_ACTIVITY);
+        activityPickerIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.share_using));
+        activityPickerIntent.putExtra(Intent.EXTRA_INTENT, dummyIntent);
+        startActivityForResult(activityPickerIntent, ActivityResult.PICK_ACTIVITY);
+    }
+
+    @OnClick(R.id.invite_button)
+    public void onInviteButtonClicked()
+    {
+        final ReferralInfo smsReferralInfo = mReferralMedia.getReferralInfo(ReferralMedia.SMS);
+        if (smsReferralInfo != null)
+        {
+            startActivity(IntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo));
+        }
     }
 }

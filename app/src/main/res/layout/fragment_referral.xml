@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/handy_bg"
     android:orientation="vertical"
     >
@@ -126,6 +127,7 @@
             >
 
             <RelativeLayout
+                android:id="@+id/share_button"
                 style="@style/Button.White.Round"
                 android:layout_height="@dimen/default_button_height"
                 android:clickable="true"
@@ -154,20 +156,19 @@
                     android:layout_toEndOf="@+id/code_label"
                     android:layout_toRightOf="@+id/code_label"
                     android:textColor="@color/handy_tertiary_gray"
-                    android:textIsSelectable="true"
                     tools:text="JOHN1234"
                     />
 
                 <FrameLayout
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/share_button"
-                    android:layout_toStartOf="@+id/share_button"
+                    android:layout_toLeftOf="@+id/share_icon"
+                    android:layout_toStartOf="@+id/share_icon"
                     android:background="@color/handy_bg"
                     />
 
                 <ImageView
-                    android:id="@+id/share_button"
+                    android:id="@+id/share_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -180,10 +181,11 @@
             </RelativeLayout>
 
             <Button
+                android:id="@+id/invite_button"
                 style="@style/Button.Green.Round"
                 android:layout_height="@dimen/default_button_height"
                 android:layout_marginTop="@dimen/default_margin"
-                android:text="@string/referral_cta_label"
+                android:text="@string/referral_invite_label"
                 android:textAllCaps="false"
                 />
         </LinearLayout>
