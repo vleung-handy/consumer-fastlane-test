@@ -34,4 +34,20 @@ public abstract class ReferralsEvent
             this.error = error;
         }
     }
+
+
+    public static class RequestConfirmReferral
+    {
+        private String mGuid;
+
+        public RequestConfirmReferral(final String guid)
+        {
+            mGuid = guid;
+        }
+
+        public String getGuid()
+        {
+            return mGuid;
+        }
+    }
 }

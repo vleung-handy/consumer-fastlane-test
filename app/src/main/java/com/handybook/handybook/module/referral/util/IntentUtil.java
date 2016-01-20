@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.model.ReferralMedia;
@@ -53,7 +54,8 @@ public class IntentUtil
         }
     }
 
-    public static void addReferralIntentExtras(
+    @Nullable @ReferralMedia.Medium
+    public static String addReferralIntentExtras(
             final Context context, final Intent intent, final ReferralMedia referralMedia
     )
     {
@@ -61,31 +63,34 @@ public class IntentUtil
         if (targetPackage.contains(PACKAGE_IDENTIFIER_GMAIL))
         {
             addReferralIntentExtrasForMail(intent, referralMedia, ReferralMedia.GMAIL);
+            return ReferralMedia.GMAIL;
         }
         else if (targetPackage.contains(PACKAGE_IDENTIFIER_GPLUS))
         {
             addReferralIntentExtrasForSocialMedia(intent, referralMedia, ReferralMedia.GPLUS);
+            return ReferralMedia.GPLUS;
         }
         else if (targetPackage.contains(PACKAGE_IDENTIFIER_FACEBOOK))
         {
             addReferralIntentExtrasForSocialMedia(intent, referralMedia, ReferralMedia.FACEBOOK);
+            return ReferralMedia.FACEBOOK;
         }
         else if (targetPackage.contains(PACKAGE_IDENTIFIER_TWITTER))
         {
             addReferralIntentExtrasForSocialMedia(intent, referralMedia, ReferralMedia.TWITTER);
+            return ReferralMedia.TWITTER;
         }
         else if (canPackageHandleScheme(context, targetPackage, SCHEME_SMS))
         {
-            final ReferralInfo referralInfo = referralMedia.getReferralInfo(ReferralMedia.SMS);
-            if (referralInfo != null)
-            {
-                intent.putExtra(Intent.EXTRA_TEXT, referralInfo.getMessage());
-            }
+            addReferralIntentExtrasForSms(intent, referralMedia);
+            return ReferralMedia.SMS;
         }
         else if (canPackageHandleScheme(context, targetPackage, SCHEME_MAIL))
         {
             addReferralIntentExtrasForMail(intent, referralMedia, ReferralMedia.EMAIL);
+            return ReferralMedia.EMAIL;
         }
+        return null;
     }
 
     private static void addReferralIntentExtrasForSocialMedia(
@@ -112,6 +117,18 @@ public class IntentUtil
         if (referralInfo != null)
         {
             intent.putExtra(Intent.EXTRA_SUBJECT, referralInfo.getSubject());
+            intent.putExtra(Intent.EXTRA_TEXT, referralInfo.getMessage());
+        }
+    }
+
+    private static void addReferralIntentExtrasForSms(
+            final Intent intent,
+            final ReferralMedia referralMedia
+    )
+    {
+        final ReferralInfo referralInfo = referralMedia.getReferralInfo(ReferralMedia.SMS);
+        if (referralInfo != null)
+        {
             intent.putExtra(Intent.EXTRA_TEXT, referralInfo.getMessage());
         }
     }

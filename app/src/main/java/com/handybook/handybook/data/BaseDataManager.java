@@ -830,6 +830,12 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
+    public void requestConfirmReferral(final String guid, final Callback<Void> cb)
+    {
+        mService.requestConfirmReferral(guid, new EmptyHandyRetroFitCallback(cb));
+    }
+
+    @Override
     public final void updateBookingNoteToPro(int bookingId,
                                              BookingUpdateNoteToProTransaction descriptionTransaction,
                                              final Callback<Void> cb)

@@ -274,6 +274,10 @@ public interface HandyRetrofitService
     @POST("/referrals/prepare")
     void requestPrepareReferrals(HandyRetrofitCallback cb);
 
+    @POST("/referrals/confirm")
+    void requestConfirmReferral(@Query("post_guid") String guid,
+                                EmptyHandyRetroFitCallback emptyHandyRetroFitCallback);
+
     final class RateProRequest
     {
         @SerializedName("positive_feedback")

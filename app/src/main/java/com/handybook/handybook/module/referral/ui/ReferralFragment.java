@@ -97,17 +97,33 @@ public class ReferralFragment extends InjectedFragment
         {
             if (resultCode == Activity.RESULT_OK && intent != null)
             {
-                IntentUtil.addReferralIntentExtras(getActivity(), intent, mReferralMedia);
+                final String resolvedMedium =
+                        IntentUtil.addReferralIntentExtras(getActivity(), intent, mReferralMedia);
                 final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (extraText == null || extraText.isEmpty())
                 {
                     intent.putExtra(Intent.EXTRA_TEXT, mReferralDescriptor.getCouponCode());
                 }
-                mIsReferralInfoFresh = false;
-                startActivity(intent);
+                launchShareIntent(intent, resolvedMedium);
             }
         }
         super.onActivityResult(requestCode, resultCode, intent);
+    }
+
+    private void launchShareIntent(
+            final Intent intent, @Nullable @ReferralMedia.Medium final String medium
+    )
+    {
+        mIsReferralInfoFresh = false;
+        if (medium != null)
+        {
+            final ReferralInfo referralInfo = mReferralMedia.getReferralInfo(medium);
+            if (referralInfo != null)
+            {
+                bus.post(new ReferralsEvent.RequestConfirmReferral(referralInfo.getGuid()));
+            }
+        }
+        startActivity(intent);
     }
 
     @Subscribe
@@ -194,8 +210,9 @@ public class ReferralFragment extends InjectedFragment
         final ReferralInfo smsReferralInfo = mReferralMedia.getReferralInfo(ReferralMedia.SMS);
         if (smsReferralInfo != null)
         {
-            mIsReferralInfoFresh = false;
-            startActivity(IntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo));
+            final Intent smsReferralIntent =
+                    IntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo);
+            launchShareIntent(smsReferralIntent, ReferralMedia.SMS);
         }
     }
 }

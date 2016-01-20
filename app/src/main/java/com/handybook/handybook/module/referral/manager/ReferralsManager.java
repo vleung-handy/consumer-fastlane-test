@@ -22,7 +22,7 @@ public class ReferralsManager
     }
 
     @Subscribe
-    public void onRequestPrepareReferrals(ReferralsEvent.RequestPrepareReferrals event)
+    public void onRequestPrepareReferrals(final ReferralsEvent.RequestPrepareReferrals event)
     {
         mDataManager.requestPrepareReferrals(new DataManager.Callback<ReferralResponse>()
         {
@@ -36,6 +36,23 @@ public class ReferralsManager
             public void onError(final DataManager.DataManagerError error)
             {
                 mBus.post(new ReferralsEvent.ReceivePrepareReferralsError(error));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onRequestConfirmReferral(final ReferralsEvent.RequestConfirmReferral event)
+    {
+        mDataManager.requestConfirmReferral(event.getGuid(), new DataManager.Callback<Void>()
+        {
+            @Override
+            public void onSuccess(final Void response)
+            {
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
             }
         });
     }

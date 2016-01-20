@@ -333,7 +333,14 @@ public abstract class DataManager
             Callback<Void> cb
     );
 
-    public abstract void requestPrepareReferrals(final Callback<ReferralResponse> callback);
+    public abstract void requestPrepareReferrals(
+            final Callback<ReferralResponse> callback
+    );
+
+    public abstract void requestConfirmReferral(
+            final String guid,
+            final Callback<Void> callback
+    );
 
     public abstract String getBaseUrl();
 
