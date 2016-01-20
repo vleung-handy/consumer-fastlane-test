@@ -48,6 +48,7 @@ public class ReferralFragment extends InjectedFragment
 
     private ReferralDescriptor mReferralDescriptor;
     private ReferralMedia mReferralMedia;
+    private boolean mIsReferralInfoFresh = false;
 
     public static Fragment newInstance()
     {
@@ -75,7 +76,10 @@ public class ReferralFragment extends InjectedFragment
     public void onResume()
     {
         super.onResume();
-        requestPrepareReferrals();
+        if (!mIsReferralInfoFresh)
+        {
+            requestPrepareReferrals();
+        }
     }
 
     @OnClick(R.id.error_retry_button)
@@ -99,6 +103,7 @@ public class ReferralFragment extends InjectedFragment
                 {
                     intent.putExtra(Intent.EXTRA_TEXT, mReferralDescriptor.getCouponCode());
                 }
+                mIsReferralInfoFresh = false;
                 startActivity(intent);
             }
         }
@@ -110,6 +115,7 @@ public class ReferralFragment extends InjectedFragment
             ReferralsEvent.ReceivePrepareReferralsSuccess event
     )
     {
+        mIsReferralInfoFresh = true;
         mReferralDescriptor = event.getReferralResponse().getReferralDescriptor();
         mReferralMedia =
                 mReferralDescriptor.getReferralMedia(ReferralDescriptor.SOURCE_REFERRAL_PAGE);
@@ -188,6 +194,7 @@ public class ReferralFragment extends InjectedFragment
         final ReferralInfo smsReferralInfo = mReferralMedia.getReferralInfo(ReferralMedia.SMS);
         if (smsReferralInfo != null)
         {
+            mIsReferralInfoFresh = false;
             startActivity(IntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo));
         }
     }
