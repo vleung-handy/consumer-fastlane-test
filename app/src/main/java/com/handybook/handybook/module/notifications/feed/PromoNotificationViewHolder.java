@@ -82,6 +82,8 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                         mImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         Picasso.with(mView.getContext())
                                 .load(mItem.getIconUrl(mView.getContext()))
+                                .placeholder(R.drawable.ic_no_image)
+                                .error(R.drawable.ic_no_image)
                                 .resize(mImage.getWidth(), 0)
                                 .transform(
                                         new RoundedTransformation(

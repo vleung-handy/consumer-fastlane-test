@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.deeplink.DeepLinkUtils;
 import com.handybook.handybook.module.notifications.HandyNotificationSplashPromoConverter;
 import com.handybook.handybook.module.notifications.feed.HandyNotificationActionHandler;
@@ -169,25 +168,25 @@ public class NotificationFeedFragment extends InjectedFragment
         if (userManager.isUserLoggedIn())
         {
             //request to mark only the unread notifications as read
-            List<Long> readNotificationsIdList = new ArrayList<>();
+            List<Long> readNotificationIdsList = new ArrayList<>();
             for (HandyNotification handyNotification : notifications)
             {
                 if (!handyNotification.isRead())
                 {
-                    readNotificationsIdList.add(handyNotification.getId());
+                    readNotificationIdsList.add(handyNotification.getId());
                 }
             }
-            if (!readNotificationsIdList.isEmpty())
+            if (!readNotificationIdsList.isEmpty())
             {
                 bus.post(
                         new NotificationFeedEvent.RequestMarkNotificationAsRead(
-                                new MarkNotificationsAsReadRequest(readNotificationsIdList)
+                                new MarkNotificationsAsReadRequest(readNotificationIdsList)
                         )
                 );
             }
 
             MarkNotificationsAsReadRequest markNotificationsAsReadRequest =
-                    new MarkNotificationsAsReadRequest(readNotificationIdsArray);
+                    new MarkNotificationsAsReadRequest(readNotificationIdsList);
             bus.post(new NotificationFeedEvent.RequestMarkNotificationAsRead(
                     markNotificationsAsReadRequest));
         }
