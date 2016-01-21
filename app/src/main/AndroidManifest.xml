@@ -112,6 +112,10 @@
             android:name=".ui.activity.UpdatePaymentActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".module.referral.ui.ReferralActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".booking.ui.activity.BookingOptionsActivity"/>
         <activity android:name=".booking.ui.activity.BookingDateActivity"/>
         <activity android:name=".booking.ui.activity.BookingAddressActivity"/>

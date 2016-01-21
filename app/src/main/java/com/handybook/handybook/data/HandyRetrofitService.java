@@ -271,6 +271,12 @@ public interface HandyRetrofitService
     @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
+    @POST("/referrals/prepare")
+    void requestPrepareReferrals(HandyRetrofitCallback cb);
+
+    @POST("/referrals/confirm")
+    void requestConfirmReferral(@Query("post_guid") String guid,
+                                EmptyHandyRetroFitCallback emptyHandyRetroFitCallback);
 
     final class RateProRequest
     {

@@ -18,6 +18,7 @@ import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 import org.json.JSONObject;
 
@@ -175,6 +176,14 @@ class HandyNotificationResultSetHandyRetrofitCallback
         extends TypedHandyRetrofitCallback<HandyNotification.ResultSet>
 {
     HandyNotificationResultSetHandyRetrofitCallback(final DataManager.Callback cb) {super(cb);}
+}
+
+class ReferralResponseHandyRetrofitCallback extends TypedHandyRetrofitCallback<ReferralResponse>
+{
+    ReferralResponseHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
 }
 
 

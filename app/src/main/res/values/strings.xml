@@ -15,7 +15,7 @@
     <string name="facebook_app_id">381615805205781</string>
     <string name="or">or</string>
     <string name="log_out">Log Out</string>
-    <string name="share">Share</string>
+    <string name="share_using">Share using…</string>
     <string name="my_bookings">My Bookings</string>
     <string name="account">Account</string>
     <string name="want_to_log_out">Are you sure you want to log out?</string>
@@ -315,4 +315,9 @@
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
     <string name="scan_credit_card_button">Scan credit card</string>
+    <string name="free_cleanings">Free Cleanings</string>
+    <string name="referral_invite_label">Invite Friends</string>
+    <string name="referral_code_label">Your code:</string>
+    <string name="referral_title_formatted">Give %1$s, Get %2$s</string>
+    <string name="referral_subtitle_formatted">Give your friends %1$s off their first Handy booking, and you get %2$s!</string>
 </resources>

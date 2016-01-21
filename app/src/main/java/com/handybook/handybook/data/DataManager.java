@@ -35,6 +35,7 @@ import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -330,6 +331,15 @@ public abstract class DataManager
     public abstract void createHelpCase(
             TypedInput body,
             Callback<Void> cb
+    );
+
+    public abstract void requestPrepareReferrals(
+            final Callback<ReferralResponse> callback
+    );
+
+    public abstract void requestConfirmReferral(
+            final String guid,
+            final Callback<Void> callback
     );
 
     public abstract String getBaseUrl();
