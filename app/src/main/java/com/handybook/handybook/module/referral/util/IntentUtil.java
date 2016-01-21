@@ -156,8 +156,8 @@ public class IntentUtil
     }
 
     private static void addReferralIntentExtrasForSms(
-            final Intent intent,
-            final ReferralChannels referralChannels
+            @NonNull final Intent intent,
+            @NonNull final ReferralChannels referralChannels
     )
     {
         final ReferralInfo referralInfo =
@@ -169,7 +169,9 @@ public class IntentUtil
     }
 
     private static boolean canPackageHandleScheme(
-            final Context context, final String targetPackage, final String scheme
+            @NonNull final Context context,
+            @NonNull final String targetPackage,
+            @NonNull final String scheme
     )
     {
         final Intent dummyIntent = new Intent();

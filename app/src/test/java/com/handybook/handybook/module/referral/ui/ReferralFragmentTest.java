@@ -2,9 +2,11 @@ package com.handybook.handybook.module.referral.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.TestBaseApplication;
@@ -31,7 +33,10 @@ import javax.inject.Inject;
 import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -63,6 +68,18 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
 
+        preventAnimationStart(mFragment, "mEnvelope");
+        preventAnimationStart(mFragment, "mEnvelopeShadow");
+        preventAnimationStart(mFragment, "mBling");
+
+        mFragment = spy(mFragment);
+        final FragmentActivity spyActivity = spy(mFragment.getActivity());
+        PackageManager mockPackageManager = mock(PackageManager.class);
+        when(mockPackageManager.resolveActivity(any(Intent.class), eq(0)))
+                .thenReturn(mock(ResolveInfo.class));
+        when(spyActivity.getPackageManager()).thenReturn(mockPackageManager);
+        when(mFragment.getActivity()).thenReturn(spyActivity);
+
         when(mMockReceivePrepareReferralsSuccessEvent.getReferralResponse())
                 .thenReturn(mMockReferralResponse);
         when(mMockReferralResponse.getReferralDescriptor()).thenReturn(mMockReferralDescriptor);
@@ -74,9 +91,6 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
         when(mMockReferralDescriptor.getReceiverCouponAmount()).thenReturn(30);
         when(mMockReferralDescriptor.getSenderCreditAmount()).thenReturn(20);
         when(mMockReferralDescriptor.getCouponCode()).thenReturn("ABC123");
-        preventAnimationStart(mFragment, "mEnvelope");
-        preventAnimationStart(mFragment, "mEnvelopeShadow");
-        preventAnimationStart(mFragment, "mBling");
     }
 
     @Test
@@ -101,14 +115,13 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldLaunchSmsIntentOnInviteFriendsClicked() throws Exception
     {
-        mFragment.onReceivePrepareReferralsSuccess(mMockReceivePrepareReferralsSuccessEvent);
         when(mMockReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS))
                 .thenReturn(mMockReferralInfo);
         when(mMockReferralInfo.getMessage()).thenReturn("share me!");
+        mFragment.onReceivePrepareReferralsSuccess(mMockReceivePrepareReferralsSuccessEvent);
 
-        mFragment.getView().findViewById(R.id.invite_button).performClick();
-        final Intent intent =
-                shadowOf(mFragment.getActivity()).getNextStartedActivity();
+        mFragment.onInviteButtonClicked();
+        final Intent intent = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(intent.getStringExtra("sms_body"), equalTo("share me!"));
         assertThat(intent.getAction(), equalTo(Intent.ACTION_VIEW));
     }
@@ -116,7 +129,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldLaunchActivityPickerOnShareClicked() throws Exception
     {
-        mFragment.getView().findViewById(R.id.share_button).performClick();
+        mFragment.onShareButtonClicked();
         final ShadowActivity.IntentForResult intent =
                 shadowOf(mFragment.getActivity()).getNextStartedActivityForResult();
         assertThat(intent.intent.getAction(), equalTo(Intent.ACTION_PICK_ACTIVITY));
@@ -141,8 +154,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
                         RequestConfirmReferral.class);
         assertNotNull(event);
         assertThat(event.getGuid(), equalTo("1234"));
-        final Intent intent =
-                shadowOf(mFragment.getActivity()).getNextStartedActivity();
+        final Intent intent = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         verify(intent).putExtra(Intent.EXTRA_TEXT, "referral/url");
     }
 }

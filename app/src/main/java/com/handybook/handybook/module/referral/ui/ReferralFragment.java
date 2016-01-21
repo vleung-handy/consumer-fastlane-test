@@ -14,13 +14,15 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
-import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.util.IntentUtil;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -101,7 +103,7 @@ public class ReferralFragment extends InjectedFragment
                         IntentUtil.addReferralIntentExtras(getActivity(), intent,
                                 mReferralChannels);
                 final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
-                if (extraText == null || extraText.isEmpty())
+                if (ValidationUtils.isNullOrEmpty(extraText))
                 {
                     intent.putExtra(Intent.EXTRA_TEXT, mReferralDescriptor.getCouponCode());
                 }
@@ -127,7 +129,7 @@ public class ReferralFragment extends InjectedFragment
                 bus.post(new ReferralsEvent.RequestConfirmReferral(referralInfo.getGuid()));
             }
         }
-        startActivity(intent);
+        Utils.safeLaunchIntent(intent, getActivity());
     }
 
     @Subscribe
@@ -156,9 +158,9 @@ public class ReferralFragment extends InjectedFragment
         String formattedSenderCreditAmount = TextUtils.formatPrice(
                 mReferralDescriptor.getSenderCreditAmount(), currencyChar, null);
         mCode.setText(mReferralDescriptor.getCouponCode());
-        mTitle.setText(getString(R.string.referral_title, formattedReceiverCouponAmount,
+        mTitle.setText(getString(R.string.referral_title_formatted, formattedReceiverCouponAmount,
                 formattedSenderCreditAmount));
-        mSubtitle.setText(getString(R.string.referral_subtitle, formattedReceiverCouponAmount,
+        mSubtitle.setText(getString(R.string.referral_subtitle_formatted, formattedReceiverCouponAmount,
                 formattedSenderCreditAmount));
     }
 
@@ -172,7 +174,10 @@ public class ReferralFragment extends InjectedFragment
             @Override
             public void run()
             {
-                onEnvelopeClicked();
+                if (isVisible())
+                {
+                    onEnvelopeClicked();
+                }
             }
         }, 1000);
     }
@@ -181,7 +186,7 @@ public class ReferralFragment extends InjectedFragment
     public void onReceivePrepareReferralsError(ReferralsEvent.ReceivePrepareReferralsError event)
     {
         String message = event.error.getMessage();
-        if (message == null || message.isEmpty())
+        if (ValidationUtils.isNullOrEmpty(message))
         {
             message = getString(R.string.error_fetching_connectivity_issue);
         }
