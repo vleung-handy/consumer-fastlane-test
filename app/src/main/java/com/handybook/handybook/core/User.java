@@ -177,7 +177,7 @@ public class User extends Observable
         triggerObservers();
     }
 
-    public final String getCurrencyChar()
+    public String getCurrencyChar()
     {
         return mCurrencyChar;
     }
