@@ -27,7 +27,7 @@ public final class PromosFragment extends BookingFlowFragment
     public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
 
     @Bind(R.id.menu_button_layout)
-    ViewGroup menuButtonLayout;
+    ViewGroup mMenuButtonLayout;
     @Bind(R.id.apply_button)
     Button applyButton;
     @Bind(R.id.promo_text)
@@ -54,8 +54,9 @@ public final class PromosFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
 
-        final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
-        menuButtonLayout.addView(menuButton);
+        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
+        menuButton.setColor(getResources().getColor(R.color.white));
+        mMenuButtonLayout.addView(menuButton);
 
         applyButton.setOnClickListener(new View.OnClickListener()
         {

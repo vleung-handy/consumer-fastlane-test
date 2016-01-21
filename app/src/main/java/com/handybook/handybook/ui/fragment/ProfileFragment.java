@@ -94,6 +94,7 @@ public final class ProfileFragment extends InjectedFragment {
         newPasswordtext.addTextChangedListener(passwordTextWatcher);
 
         final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
+        menuButton.setColor(getResources().getColor(R.color.white));
         menuButtonLayout.addView(menuButton);
 
         return view;
