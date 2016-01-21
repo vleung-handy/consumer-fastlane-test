@@ -77,8 +77,8 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
         // Icon
         Picasso.with(mView.getContext())
                 .load(mItem.getIconUrl(mView.getContext()))
-                .placeholder(R.drawable.ic_noimage)
-                .error(R.drawable.ic_noimage)
+                .placeholder(R.drawable.ic_no_image)
+                .error(R.drawable.ic_no_image)
                 .into(mImage);
         // Action : Default
         if (mItem.hasDefaultAction())
