@@ -1,7 +1,9 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
@@ -31,6 +34,7 @@ import com.stripe.exception.CardException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.card.payment.CardIOActivity;
 
 public class UpdatePaymentFragment extends InjectedFragment
 {
@@ -56,6 +60,56 @@ public class UpdatePaymentFragment extends InjectedFragment
     TextView mNavText;
     @Bind(R.id.lock_icon)
     ImageView mLockIcon;
+    @Bind(R.id.scan_card_button)
+    TextView mScanCardButton;
+
+    //TODO: this fragment duplicates a lots of logic in BookingPaymentFragment; we should consolidate
+    //as a consequence of not doing the above, we have lots of repeated code between
+    //this fragment and BookingPaymentFragment
+
+    /*
+    NOTE: duplicating the credit card scanning code from BookingPaymentFragment for now.
+    we are not going to put it in a shared class because:
+     1) we are assuming we will consolidate this fragment with BookingPaymentFragment soon
+     2) we require the activity lifecycle callback onActivityResult() which we cannot register a listener to
+     3) cannot extend the same class as BookingPaymentFragment because that needs to be a BookingFlowFragment
+     4) because of the above, we can't cleanly do it, so will leave it like this for clarity
+     */
+
+    @OnClick(R.id.scan_card_button)
+    public void onScanCardButtonPressed()
+    {
+        startCardScanActivity();
+    }
+
+    private void startCardScanActivity()
+    {
+        Intent scanIntent = new Intent(getContext(), CardIOActivity.class);
+
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+
+        startActivityForResult(scanIntent, ActivityResult.SCAN_CREDIT_CARD);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ActivityResult.SCAN_CREDIT_CARD)
+        {
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT))
+            {
+                io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                onScannedCardResult(scannedCardResult);
+            }
+            else
+            {
+                //canceled
+            }
+        }
+    }
 
     public static UpdatePaymentFragment newInstance()
     {
@@ -72,6 +126,7 @@ public class UpdatePaymentFragment extends InjectedFragment
         mChangeButton.setVisibility(View.GONE);
         mCreditCardIcon.setCardIcon(CreditCard.Type.OTHER);
         mCancelButton.setVisibility(View.VISIBLE);
+        mScanCardButton.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.cancel_button)
@@ -97,6 +152,7 @@ public class UpdatePaymentFragment extends InjectedFragment
         mChangeButton.setVisibility(View.VISIBLE);
         mCreditCardIcon.setCardIcon(brand);
         mCancelButton.setVisibility(View.GONE);
+        mScanCardButton.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.update_button)
@@ -186,14 +242,18 @@ public class UpdatePaymentFragment extends InjectedFragment
         mCreditCardText.addTextChangedListener(new TextWatcher()
         {
             @Override
-            public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                          final int count, final int after)
+            public void beforeTextChanged(
+                    final CharSequence charSequence, final int start,
+                    final int count, final int after
+            )
             {
             }
 
             @Override
-            public void onTextChanged(final CharSequence charSequence, final int start,
-                                      final int before, final int count)
+            public void onTextChanged(
+                    final CharSequence charSequence, final int start,
+                    final int before, final int count
+            )
             {
             }
 
@@ -210,5 +270,15 @@ public class UpdatePaymentFragment extends InjectedFragment
     private boolean areFieldsValid()
     {
         return mCreditCardText.validate() && mExpText.validate() && mCvcText.validate();
+    }
+
+    public void onScannedCardResult(@NonNull final io.card.payment.CreditCard scannedCardResult)
+    {
+        mCreditCardText.setText(scannedCardResult.cardNumber);
+        if (scannedCardResult.isExpiryValid())
+        {
+            mExpText.setTextFromMonthYear(scannedCardResult.expiryMonth, scannedCardResult.expiryYear);
+        }
+        mCvcText.setText(scannedCardResult.cvv);
     }
 }

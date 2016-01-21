@@ -67,6 +67,7 @@ import com.stripe.exception.CardException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.card.payment.CardIOActivity;
 
 public class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
@@ -115,6 +116,53 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     TextView mSelectPaymentPromoText;
     @Bind(R.id.booking_payment_terms_of_use_text)
     TextView mTermsOfUseText;
+    @Bind(R.id.scan_card_button)
+    TextView mScanCardButton;
+
+    @OnClick(R.id.scan_card_button)
+    public void onScanCardButtonPressed()
+    {
+        startCardScanActivity();
+    }
+
+    private void startCardScanActivity()
+    {
+        Intent scanIntent = new Intent(getContext(), CardIOActivity.class);
+
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+
+        startActivityForResult(scanIntent, ActivityResult.SCAN_CREDIT_CARD);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ActivityResult.SCAN_CREDIT_CARD)
+        {
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT))
+            {
+                io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                onScannedCardResult(scannedCardResult);
+            }
+            else
+            {
+                //canceled
+            }
+        }
+    }
+
+    public void onScannedCardResult(@NonNull final io.card.payment.CreditCard scannedCardResult)
+    {
+        mCreditCardText.setText(scannedCardResult.cardNumber);
+        if(scannedCardResult.isExpiryValid())
+        {
+            mExpText.setTextFromMonthYear(scannedCardResult.expiryMonth, scannedCardResult.expiryYear);
+        }
+        mCvcText.setText(scannedCardResult.cvv);
+    }
 
     @OnClick(R.id.enter_credit_card_button)
     public void onEnterCreditCardButtonClicked()
@@ -491,6 +539,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
+        mScanCardButton.setVisibility(View.VISIBLE);
         mUseAndroidPay = false;
         mUseExistingCard = false;
     }
@@ -646,6 +695,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         mCardExtrasLayout.setVisibility(View.GONE);
+        mScanCardButton.setVisibility(View.GONE);
         mUseExistingCard = false;
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;

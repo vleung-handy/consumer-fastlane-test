@@ -314,4 +314,5 @@
         &lt;a href="">Terms of Use&lt;/a></string>
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
+    <string name="scan_credit_card_button">Scan credit card</string>
 </resources>

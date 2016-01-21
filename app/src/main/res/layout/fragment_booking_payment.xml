@@ -102,17 +102,13 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <include
                 android:id="@+id/info_payment_layout"
+                layout="@layout/element_credit_card_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:visibility="gone"
-                >
-
-                <include layout="@layout/element_credit_card_info"/>
-
-            </LinearLayout>
+                />
 
             <TextView
                 android:id="@+id/apply_promo_button"
