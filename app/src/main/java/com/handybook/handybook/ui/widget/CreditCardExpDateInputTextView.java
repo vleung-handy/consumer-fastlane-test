@@ -41,7 +41,7 @@ public final class CreditCardExpDateInputTextView extends InputTextField {
         //the text for the year is expected to be in XX format
         String expYearString = String.valueOf(expYear);
         int lastNDigits = 2; //must be > 0
-        if(expYearString.length() >= lastNDigits)
+        if(expYearString.length() > lastNDigits)
         {
             expYearString = expYearString.substring(expYearString.length() - lastNDigits);
         }
