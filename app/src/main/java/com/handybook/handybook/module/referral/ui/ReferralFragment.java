@@ -228,4 +228,27 @@ public class ReferralFragment extends InjectedFragment
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
         }
     }
+
+    private void showErrorLayout(String errorMessage)
+    {
+        final View errorLayout = getActivity().findViewById(R.id.error_layout);
+        if (errorLayout != null)
+        {
+            final View errorText = getActivity().findViewById(R.id.error_text);
+            if (errorText != null && errorText instanceof TextView)
+            {
+                ((TextView) errorText).setText(errorMessage);
+            }
+            errorLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void removeErrorLayout()
+    {
+        final View errorLayout = getActivity().findViewById(R.id.error_layout);
+        if (errorLayout != null)
+        {
+            errorLayout.setVisibility(View.GONE);
+        }
+    }
 }
