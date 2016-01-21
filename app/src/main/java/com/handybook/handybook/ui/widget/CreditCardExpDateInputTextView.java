@@ -36,15 +36,17 @@ public final class CreditCardExpDateInputTextView extends InputTextField {
     public void setTextFromMonthYear(int expMonth, int expYear)
     {
         //the text for the month is expected to be in XX format
-        String expMonthString = expMonth >= 10 ? String.valueOf(expMonth) : "0" + expMonth;
+        String expMonthString = (expMonth >= 10) ? String.valueOf(expMonth) : ("0" + expMonth);
 
         //the text for the year is expected to be in XX format
         String expYearString = String.valueOf(expYear);
+
         int lastNDigits = 2; //must be > 0
         if(expYearString.length() > lastNDigits)
         {
             expYearString = expYearString.substring(expYearString.length() - lastNDigits);
         }
+
         //text is expected to be in MM/YY format
         setText(expMonthString + "/" + expYearString);
     }
