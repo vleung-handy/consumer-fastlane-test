@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.handybook.handybook.module.referral.model.ReferralInfo;
-import com.handybook.handybook.module.referral.model.ReferralMedia;
+import com.handybook.handybook.module.referral.model.ReferralChannels;
 
 import java.util.List;
 
@@ -72,53 +72,68 @@ public class IntentUtil
         }
     }
 
+    /**
+     * Adds extras to the intent provided based on its component's package name or the scheme
+     * it can handle. Returns a String object which corresponds to the channel used to obtain
+     * the ReferralInfo object where the data added to the intent came from.
+     *
+     * @param context          context
+     * @param intent           the intent to be modified
+     * @param referralChannels the ReferralChannels object used to obtain ReferralInfo
+     * @return channel associated with the intent
+     */
     @Nullable
-    @ReferralMedia.Medium
+    @ReferralChannels.Channel
     public static String addReferralIntentExtras(
-            final Context context, final Intent intent, final ReferralMedia referralMedia
+            final Context context, final Intent intent, final ReferralChannels referralChannels
     )
     {
         final String targetPackage = intent.getComponent().getPackageName();
         if (targetPackage.contains(PACKAGE_IDENTIFIER_GMAIL))
         {
-            addReferralIntentExtrasForMail(intent, referralMedia, ReferralMedia.GMAIL);
-            return ReferralMedia.GMAIL;
+            addReferralIntentExtrasForMail(intent, referralChannels,
+                    ReferralChannels.CHANNEL_GMAIL);
+            return ReferralChannels.CHANNEL_GMAIL;
         }
         else if (targetPackage.contains(PACKAGE_IDENTIFIER_GPLUS))
         {
-            addReferralIntentExtrasForSocialMedia(intent, referralMedia, ReferralMedia.GPLUS);
-            return ReferralMedia.GPLUS;
+            addReferralIntentExtrasForSocialMedia(intent, referralChannels,
+                    ReferralChannels.CHANNEL_GPLUS);
+            return ReferralChannels.CHANNEL_GPLUS;
         }
         else if (targetPackage.contains(PACKAGE_IDENTIFIER_FACEBOOK))
         {
-            addReferralIntentExtrasForSocialMedia(intent, referralMedia, ReferralMedia.FACEBOOK);
-            return ReferralMedia.FACEBOOK;
+            addReferralIntentExtrasForSocialMedia(intent, referralChannels,
+                    ReferralChannels.CHANNEL_FACEBOOK);
+            return ReferralChannels.CHANNEL_FACEBOOK;
         }
         else if (targetPackage.contains(PACKAGE_IDENTIFIER_TWITTER))
         {
-            addReferralIntentExtrasForSocialMedia(intent, referralMedia, ReferralMedia.TWITTER);
-            return ReferralMedia.TWITTER;
+            addReferralIntentExtrasForSocialMedia(intent, referralChannels,
+                    ReferralChannels.CHANNEL_TWITTER);
+            return ReferralChannels.CHANNEL_TWITTER;
         }
         else if (canPackageHandleScheme(context, targetPackage, SCHEME_SMS))
         {
-            addReferralIntentExtrasForSms(intent, referralMedia);
-            return ReferralMedia.SMS;
+            addReferralIntentExtrasForSms(intent, referralChannels);
+            return ReferralChannels.CHANNEL_SMS;
         }
         else if (canPackageHandleScheme(context, targetPackage, SCHEME_MAIL))
         {
-            addReferralIntentExtrasForMail(intent, referralMedia, ReferralMedia.EMAIL);
-            return ReferralMedia.EMAIL;
+            addReferralIntentExtrasForMail(intent, referralChannels,
+                    ReferralChannels.CHANNEL_EMAIL);
+            return ReferralChannels.CHANNEL_EMAIL;
         }
         return null;
     }
 
     private static void addReferralIntentExtrasForSocialMedia(
             final Intent intent,
-            final ReferralMedia referralMedia,
-            @NonNull @ReferralMedia.Medium final String medium
+            final ReferralChannels referralChannels,
+            @NonNull @ReferralChannels.Channel final String channel
     )
     {
-        final ReferralInfo referralInfo = referralMedia.getReferralInfo(medium);
+        final ReferralInfo referralInfo = referralChannels.getReferralInfoForChannel(channel);
         if (referralInfo != null)
         {
             intent.putExtra(Intent.EXTRA_SUBJECT, referralInfo.getMessage());
@@ -128,11 +143,11 @@ public class IntentUtil
 
     private static void addReferralIntentExtrasForMail(
             final Intent intent,
-            final ReferralMedia referralMedia,
-            @NonNull @ReferralMedia.Medium final String medium
+            final ReferralChannels referralChannels,
+            @NonNull @ReferralChannels.Channel final String channel
     )
     {
-        final ReferralInfo referralInfo = referralMedia.getReferralInfo(medium);
+        final ReferralInfo referralInfo = referralChannels.getReferralInfoForChannel(channel);
         if (referralInfo != null)
         {
             intent.putExtra(Intent.EXTRA_SUBJECT, referralInfo.getSubject());
@@ -142,10 +157,11 @@ public class IntentUtil
 
     private static void addReferralIntentExtrasForSms(
             final Intent intent,
-            final ReferralMedia referralMedia
+            final ReferralChannels referralChannels
     )
     {
-        final ReferralInfo referralInfo = referralMedia.getReferralInfo(ReferralMedia.SMS);
+        final ReferralInfo referralInfo =
+                referralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
         if (referralInfo != null)
         {
             intent.putExtra(Intent.EXTRA_TEXT, referralInfo.getMessage());

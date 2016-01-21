@@ -9,6 +9,12 @@ import com.google.gson.annotations.SerializedName;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Holds ReferralChannels objects for each supported source where in-app sharing could exist which
+ * includes the referral page and the profile page. It also holds information about the user
+ * referral which are not specific to the source (e.g. sender credit, receiver credit and coupon
+ * code).
+ */
 public class ReferralDescriptor
 {
     public static final String SOURCE_REFERRAL_PAGE = "referral_page";
@@ -23,13 +29,13 @@ public class ReferralDescriptor
     @SerializedName("coupon_code")
     private String mCouponCode;
     @SerializedName(SOURCE_REFERRAL_PAGE)
-    private ReferralMedia mReferralPageMedia;
+    private ReferralChannels mReferralPageChannels;
     @SerializedName(SOURCE_PROFILE_PAGE)
-    private ReferralMedia mProfilePageMedia;
+    private ReferralChannels mProfilePageChannels;
     @SerializedName(SOURCE_CONFIRMATION_PAGE)
-    private ReferralMedia mConfirmationPageMedia;
+    private ReferralChannels mConfirmationPageChannels;
     @SerializedName(SOURCE_HIGH_RATING_MODAL)
-    private ReferralMedia mHighRatingModalMedia;
+    private ReferralChannels mHighRatingModalChannels;
 
     public int getSenderCreditAmount()
     {
@@ -57,19 +63,27 @@ public class ReferralDescriptor
     {
     }
 
+    /**
+     * Returns ReferralChannels object associated with the supported source provided.
+     *
+     * @param source a supported source
+     * @return the object associated with the source provided
+     * @see ReferralChannels
+     * @see com.handybook.handybook.module.referral.model.ReferralDescriptor.Source
+     */
     @Nullable
-    public ReferralMedia getReferralMedia(@NonNull @Source final String source)
+    public ReferralChannels getReferralChannelsForSource(@NonNull @Source final String source)
     {
         switch (source)
         {
             case SOURCE_REFERRAL_PAGE:
-                return mReferralPageMedia;
+                return mReferralPageChannels;
             case SOURCE_PROFILE_PAGE:
-                return mProfilePageMedia;
+                return mProfilePageChannels;
             case SOURCE_CONFIRMATION_PAGE:
-                return mConfirmationPageMedia;
+                return mConfirmationPageChannels;
             case SOURCE_HIGH_RATING_MODAL:
-                return mHighRatingModalMedia;
+                return mHighRatingModalChannels;
             default:
                 return null;
         }

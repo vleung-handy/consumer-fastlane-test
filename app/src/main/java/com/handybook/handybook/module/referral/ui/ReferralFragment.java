@@ -16,7 +16,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
-import com.handybook.handybook.module.referral.model.ReferralMedia;
+import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.util.IntentUtil;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.MenuButton;
@@ -47,7 +47,7 @@ public class ReferralFragment extends InjectedFragment
     View mBling;
 
     private ReferralDescriptor mReferralDescriptor;
-    private ReferralMedia mReferralMedia;
+    private ReferralChannels mReferralChannels;
     private boolean mIsReferralInfoFresh = false;
 
     public static Fragment newInstance()
@@ -97,8 +97,9 @@ public class ReferralFragment extends InjectedFragment
         {
             if (resultCode == Activity.RESULT_OK && intent != null)
             {
-                final String resolvedMedium =
-                        IntentUtil.addReferralIntentExtras(getActivity(), intent, mReferralMedia);
+                final String resolvedChannel =
+                        IntentUtil.addReferralIntentExtras(getActivity(), intent,
+                                mReferralChannels);
                 final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (extraText == null || extraText.isEmpty())
                 {
@@ -107,20 +108,20 @@ public class ReferralFragment extends InjectedFragment
                 final String applicationName =
                         IntentUtil.getApplicationNameFromIntent(getActivity(), intent);
                 bus.post(new ReferralsEvent.OtherShareOptionsClicked(applicationName));
-                launchShareIntent(intent, resolvedMedium);
+                launchShareIntent(intent, resolvedChannel);
             }
         }
         super.onActivityResult(requestCode, resultCode, intent);
     }
 
     private void launchShareIntent(
-            final Intent intent, @Nullable @ReferralMedia.Medium final String medium
+            final Intent intent, @Nullable @ReferralChannels.Channel final String channel
     )
     {
         mIsReferralInfoFresh = false;
-        if (medium != null)
+        if (channel != null)
         {
-            final ReferralInfo referralInfo = mReferralMedia.getReferralInfo(medium);
+            final ReferralInfo referralInfo = mReferralChannels.getReferralInfoForChannel(channel);
             if (referralInfo != null)
             {
                 bus.post(new ReferralsEvent.RequestConfirmReferral(referralInfo.getGuid()));
@@ -136,8 +137,9 @@ public class ReferralFragment extends InjectedFragment
     {
         mIsReferralInfoFresh = true;
         mReferralDescriptor = event.getReferralResponse().getReferralDescriptor();
-        mReferralMedia =
-                mReferralDescriptor.getReferralMedia(ReferralDescriptor.SOURCE_REFERRAL_PAGE);
+        mReferralChannels =
+                mReferralDescriptor.getReferralChannelsForSource(
+                        ReferralDescriptor.SOURCE_REFERRAL_PAGE);
         removeErrorLayout();
         removeUiBlockers();
         mReferralContent.setVisibility(View.VISIBLE);
@@ -211,13 +213,14 @@ public class ReferralFragment extends InjectedFragment
     @OnClick(R.id.invite_button)
     public void onInviteButtonClicked()
     {
-        final ReferralInfo smsReferralInfo = mReferralMedia.getReferralInfo(ReferralMedia.SMS);
+        final ReferralInfo smsReferralInfo =
+                mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
         if (smsReferralInfo != null)
         {
             final Intent smsReferralIntent =
                     IntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo);
             bus.post(new ReferralsEvent.InviteFriendsClicked());
-            launchShareIntent(smsReferralIntent, ReferralMedia.SMS);
+            launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
         }
     }
 }
