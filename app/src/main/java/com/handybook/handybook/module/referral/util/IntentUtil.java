@@ -2,6 +2,8 @@ package com.handybook.handybook.module.referral.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
@@ -26,6 +28,22 @@ public class IntentUtil
     public static final String EXTRA_SMS_BODY = "sms_body";
 
     private IntentUtil() {}
+
+    public static String getApplicationNameFromIntent(final Context context, final Intent intent)
+    {
+        try
+        {
+            final String packageName = intent.getComponent().getPackageName();
+            final PackageManager packageManager = context.getPackageManager();
+            final ApplicationInfo applicationInfo =
+                    packageManager.getApplicationInfo(packageName, 0);
+            return packageManager.getApplicationLabel(applicationInfo).toString();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
 
     public static Intent getSmsReferralIntent(
             final Context context, final ReferralInfo smsReferralInfo
@@ -54,7 +72,8 @@ public class IntentUtil
         }
     }
 
-    @Nullable @ReferralMedia.Medium
+    @Nullable
+    @ReferralMedia.Medium
     public static String addReferralIntentExtras(
             final Context context, final Intent intent, final ReferralMedia referralMedia
     )

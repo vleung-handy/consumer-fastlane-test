@@ -104,6 +104,9 @@ public class ReferralFragment extends InjectedFragment
                 {
                     intent.putExtra(Intent.EXTRA_TEXT, mReferralDescriptor.getCouponCode());
                 }
+                final String applicationName =
+                        IntentUtil.getApplicationNameFromIntent(getActivity(), intent);
+                bus.post(new ReferralsEvent.OtherShareOptionsClicked(applicationName));
                 launchShareIntent(intent, resolvedMedium);
             }
         }
@@ -139,6 +142,7 @@ public class ReferralFragment extends InjectedFragment
         removeUiBlockers();
         mReferralContent.setVisibility(View.VISIBLE);
         showReferralDetails();
+        bus.post(new ReferralsEvent.ReferralScreenShown());
         startAnimations();
     }
 
@@ -212,6 +216,7 @@ public class ReferralFragment extends InjectedFragment
         {
             final Intent smsReferralIntent =
                     IntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo);
+            bus.post(new ReferralsEvent.InviteFriendsClicked());
             launchShareIntent(smsReferralIntent, ReferralMedia.SMS);
         }
     }

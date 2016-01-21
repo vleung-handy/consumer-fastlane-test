@@ -1,5 +1,7 @@
 package com.handybook.handybook.module.referral.event;
 
+import com.handybook.handybook.analytics.annotation.Track;
+import com.handybook.handybook.analytics.annotation.TrackField;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
@@ -48,6 +50,27 @@ public abstract class ReferralsEvent
         public String getGuid()
         {
             return mGuid;
+        }
+    }
+
+
+    @Track("referral screen shown")
+    public static class ReferralScreenShown {}
+
+
+    @Track("invite friends clicked")
+    public static class InviteFriendsClicked {}
+
+
+    @Track("other share option clicked")
+    public static class OtherShareOptionsClicked
+    {
+        @TrackField("share option")
+        private String mShareOption;
+
+        public OtherShareOptionsClicked(final String shareOption)
+        {
+            mShareOption = shareOption;
         }
     }
 }
