@@ -7,15 +7,25 @@ import com.google.gson.annotations.SerializedName;
 
 public class ChecklistItem implements Parcelable
 {
+    @SerializedName("id")
+    private Long mId;
+    @SerializedName("mahine_name")
+    private String mMachineName;
     @SerializedName("title")
     private String mTitle;
     @SerializedName("text")
     private String mText;
+    @SerializedName("state")
+    private String mState;
+
 
     protected ChecklistItem(Parcel in)
     {
+        mId = in.readLong();
+        mMachineName = in.readString();
         mTitle = in.readString();
         mText = in.readString();
+        mState = in.readString();
     }
 
     public static final Creator<ChecklistItem> CREATOR = new Creator<ChecklistItem>()
@@ -50,9 +60,12 @@ public class ChecklistItem implements Parcelable
     }
 
     @Override
-    public void writeToParcel(final Parcel out, final int flags)
+    public void writeToParcel(final Parcel dest, final int flags)
     {
-        out.writeString(mTitle);
-        out.writeString(mText);
+        dest.writeLong(mId);
+        dest.writeString(mMachineName);
+        dest.writeString(mTitle);
+        dest.writeString(mText);
+        dest.writeString(mState);
     }
 }
