@@ -41,22 +41,28 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
     @Bind(R.id.notification_card_indicator_read)
     View mReadIndicator;
 
-    private PromoNotificationViewHolder(View view)
+    HandyNotificationActionHandler mNotificationActionHandler;
+
+    private PromoNotificationViewHolder(View view,
+                                        @NonNull HandyNotificationActionHandler notificationActionHandler)
     {
         super(view);
         mView = view;
         ButterKnife.bind(this, mView);
+        mNotificationActionHandler = notificationActionHandler;
     }
 
-    public static PromoNotificationViewHolder newInstance(@NonNull final ViewGroup parentView)
+    public static PromoNotificationViewHolder newInstance(@NonNull final ViewGroup parentView,
+                                                          @NonNull HandyNotificationActionHandler notificationActionHandler)
     {
         return new PromoNotificationViewHolder(
                 LayoutInflater.from(parentView.getContext()).inflate(
                         R.layout.layout_handy_notification_promo,
                         parentView,
                         false
-                )
+                ), notificationActionHandler
         );
+
     }
 
     public void bind(@NonNull final HandyNotificationViewModel model, final int position)
@@ -89,8 +95,8 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                                 ).into(mImage);
                     }
                 });
-        // Action : Default
-        if (mItem.hasDefaultAction())
+        // Actions : "call_to_action"
+        if (mItem.hasLinkActions())
         {
             mView.setClickable(true);
             mView.setOnClickListener(new View.OnClickListener()
@@ -98,8 +104,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    final HandyNotification.Action action = mItem.getDefaultAction();
-                    handleNotificationAction(action, v.getContext());
+                    mNotificationActionHandler.handleNotificationPromoItemClicked(mItem);
                 }
             });
         }
@@ -122,31 +127,7 @@ public class PromoNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    handleNotificationAction(action, v.getContext());
-                }
-            });
-        }
-        // Actions : Links
-        mLinkContainer.setVisibility(
-                mItem.hasLinkActions() ? View.VISIBLE : View.GONE
-        );
-        mLinkContainer.removeAllViews();
-        for (final HandyNotification.Action action : mItem.getLinkActions())
-        {
-            TextView textView = (TextView) LayoutInflater.from(mView.getContext()).inflate(
-                    R.layout.layout_handy_notification_cta_link,
-                    mLinkContainer,
-                    false
-            );
-            mLinkContainer.addView(textView);
-            textView.setText(action.getText());
-
-            textView.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(final View v)
-                {
-                    handleNotificationAction(action, v.getContext());
+                    mNotificationActionHandler.handleNotificationAction(action);
                 }
             });
         }

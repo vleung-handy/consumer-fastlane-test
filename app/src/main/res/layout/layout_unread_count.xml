@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_marginTop="@dimen/default_margin_half"
-        android:background="@drawable/circle_red"
+        android:background="@drawable/pill_red"
         android:paddingBottom="@dimen/default_padding_eighth"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"

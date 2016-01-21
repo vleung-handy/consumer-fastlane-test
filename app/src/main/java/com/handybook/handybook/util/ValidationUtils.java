@@ -21,4 +21,10 @@ public class ValidationUtils
     {
         return string == null || string.isEmpty();
     }
+
+    //TODO: how to make this accept a generic/native type array?
+    public static boolean isNullOrEmpty(final Object[] array)
+    {
+        return array == null || array.length == 0;
+    }
 }

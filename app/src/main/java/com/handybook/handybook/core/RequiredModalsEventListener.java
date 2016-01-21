@@ -13,7 +13,7 @@ public class RequiredModalsEventListener //TODO: rename + move to better package
     }
 
     @Subscribe
-    public void onReceiveSplashPromoSuccess(SplashNotificationEvent.ReceiveAvailableSplashPromoSuccess event)
+    public void onRequestShowSplashPromo(SplashNotificationEvent.RequestShowSplashPromo event)
     {
         mRequiredModalsLauncher.showSplashPromo(event.splashPromo);
     }

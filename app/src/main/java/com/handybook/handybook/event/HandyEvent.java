@@ -43,60 +43,6 @@ public abstract class HandyEvent
                 return mOnlyBookingValue;
             }
         }
-
-
-        public static class HandyNotificationsEvent extends RequestEvent
-        {
-            private static final long USER_ID_FOR_LOGGED_OUT_USERS = 0;
-            private static final String AUTH_TOKEN_FOR_LOGGED_OUT_USERS = null;
-
-            final long mUserId;
-            final Long mSinceId;
-            final Long  mUntilId;
-            final Long  mCount;
-
-            public HandyNotificationsEvent(
-                    final long userId,
-                    final String authToken,
-                    final Long sinceId,
-                    final Long untilId,
-                    final Long count
-            )
-            {
-                mUserId = userId;
-                mSinceId = sinceId;
-                mUntilId = untilId;
-                mCount = count;
-            }
-
-            public HandyNotificationsEvent(final Long count, final Long untilId, final Long sinceId)
-            {
-                mUserId = USER_ID_FOR_LOGGED_OUT_USERS;
-                mCount = count;
-                mUntilId = untilId;
-                mSinceId = sinceId;
-            }
-
-            public long getUserId()
-            {
-                return mUserId;
-            }
-
-            public Long getSinceId()
-            {
-                return mSinceId;
-            }
-
-            public Long getUntilId()
-            {
-                return mUntilId;
-            }
-
-            public Long getCount()
-            {
-                return mCount;
-            }
-        }
     }
 
 

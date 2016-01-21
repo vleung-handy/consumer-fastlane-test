@@ -6,12 +6,12 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
-public class SplashNotificationEvent
+public abstract class SplashNotificationEvent
 {
-    public static class ReceiveAvailableSplashPromoSuccess extends HandyEvent.ReceiveSuccessEvent
+    public static class RequestShowSplashPromo extends HandyEvent.RequestEvent
     {
         public final SplashPromo splashPromo;
-        public ReceiveAvailableSplashPromoSuccess(final SplashPromo splashPromo)
+        public RequestShowSplashPromo(final SplashPromo splashPromo)
         {
             this.splashPromo = splashPromo;
         }

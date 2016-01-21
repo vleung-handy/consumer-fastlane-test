@@ -41,21 +41,27 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
     @Bind(R.id.notification_card_indicator_read)
     View mReadIndicator;
 
-    private DefaultNotificationViewHolder(View view)
+    HandyNotificationActionHandler mHandyNotificationActionHandler;
+
+    private DefaultNotificationViewHolder(View view, @NonNull HandyNotificationActionHandler handyNotificationActionHandler)
     {
         super(view);
         mView = view;
         ButterKnife.bind(this, mView);
+        mHandyNotificationActionHandler = handyNotificationActionHandler;
     }
 
-    public static DefaultNotificationViewHolder newInstance(@NonNull final ViewGroup parentView)
+    public static DefaultNotificationViewHolder newInstance(@NonNull final ViewGroup parentView,
+                                                            @NonNull HandyNotificationActionHandler handyNotificationActionHandler
+    )
     {
+
         return new DefaultNotificationViewHolder(
                 LayoutInflater.from(parentView.getContext()).inflate(
                         R.layout.layout_handy_notification_default,
                         parentView,
                         false
-                )
+                ), handyNotificationActionHandler
         );
     }
 
@@ -84,7 +90,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                 public void onClick(final View v)
                 {
                     final HandyNotification.Action action = mItem.getDefaultAction();
-                    handleNotificationAction(action, v.getContext());
+                    mHandyNotificationActionHandler.handleNotificationAction(action);
                 }
             });
         }
@@ -107,7 +113,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    handleNotificationAction(action, v.getContext());
+                    mHandyNotificationActionHandler.handleNotificationAction(action);
                 }
             });
         }
@@ -130,7 +136,7 @@ public class DefaultNotificationViewHolder extends BaseNotificationViewHolder
                 @Override
                 public void onClick(final View v)
                 {
-                    handleNotificationAction(action, v.getContext());
+                    mHandyNotificationActionHandler.handleNotificationAction(action);
                 }
             });
         }
