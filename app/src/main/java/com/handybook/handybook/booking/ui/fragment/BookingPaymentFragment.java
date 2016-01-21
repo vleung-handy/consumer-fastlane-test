@@ -119,8 +119,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     @Bind(R.id.scan_card_button)
     TextView mScanCardButton;
 
-    private io.card.payment.CreditCard mScannedCardResult = null;
-
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed()
     {
@@ -146,23 +144,13 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         {
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT))
             {
-                mScannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                onScannedCardResult(scannedCardResult);
             }
             else
             {
                 //canceled
             }
-        }
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if (mScannedCardResult != null)
-        {
-            onScannedCardResult(mScannedCardResult);
-            mScannedCardResult = null; //only apply this once
         }
     }
 
