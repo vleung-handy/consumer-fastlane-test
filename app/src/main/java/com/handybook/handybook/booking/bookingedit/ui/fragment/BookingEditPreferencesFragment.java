@@ -16,9 +16,9 @@ import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.booking.ui.widget.InstructionsLayout;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.widget.InstructionsLayout;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -62,12 +62,13 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_edit_preferences, container, false);   //TODO: Make this its own fragment?
-
+                .inflate(R.layout.fragment_booking_edit_preferences, container, false);
         ButterKnife.bind(this, view);
         initOptionsView();
         mInstructionsLayout.init(booking.getInstructions());
@@ -100,7 +101,9 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
 
 
     @Subscribe
-    public final void onReceiveUpdateBookingNoteToProSuccess(BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess event)
+    public final void onReceiveUpdateBookingNoteToProSuccess(
+            BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess event
+    )
     {
         enableInputs();
         progressDialog.dismiss();
@@ -111,7 +114,9 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingNoteToProError(BookingEditEvent.ReceiveUpdateBookingNoteToProError event)
+    public final void onReceiveUpdateBookingNoteToProError(
+            BookingEditEvent.ReceiveUpdateBookingNoteToProError event
+    )
     {
         enableInputs();
         progressDialog.dismiss();
@@ -142,14 +147,18 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         }
 
         @Override
-        public void onShowChildren(final BookingOptionsView view,
-                                   final String[] items)
+        public void onShowChildren(
+                final BookingOptionsView view,
+                final String[] items
+        )
         {
         }
 
         @Override
-        public void onHideChildren(final BookingOptionsView view,
-                                   final String[] items)
+        public void onHideChildren(
+                final BookingOptionsView view,
+                final String[] items
+        )
         {
         }
     };

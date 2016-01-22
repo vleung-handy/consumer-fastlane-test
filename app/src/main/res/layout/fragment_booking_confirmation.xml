@@ -77,7 +77,7 @@
                 tools:visibility="visible"
                 />
 
-            <com.handybook.handybook.ui.widget.InstructionsLayout
+            <com.handybook.handybook.booking.ui.widget.InstructionsLayout
                 android:id="@+id/instructions_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -25,12 +25,12 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.booking.ui.widget.InstructionsLayout;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
-import com.handybook.handybook.ui.widget.InstructionsLayout;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.util.TextUtils;
 
@@ -39,8 +39,10 @@ import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 
-//THIS CLASS HAS BEEN BROKEN UP INTO SUB FRAGMENT TYPES BUT WE ARE STILL USING THE ORIGINAL FRAGMENT IN THE BOOKING FLOW, SEE NOTE
-//TODO: Break this into distinct fragments, see BookingEditNoteToPro, BookingEditEntryInformation, still need to do the password prompt
+//THIS CLASS HAS BEEN BROKEN UP INTO SUB FRAGMENT TYPES BUT WE ARE STILL USING THE ORIGINAL FRAGMENT
+// IN THE BOOKING FLOW, SEE NOTE
+//TODO: Break this into distinct fragments, see BookingEditNoteToPro, BookingEditEntryInformation,
+// still need to do the password prompt
 public final class BookingConfirmationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener
 {
@@ -73,9 +75,11 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     @Bind(R.id.instructions_layout)
     InstructionsLayout mInstructionsLayout;
 
-    public static BookingConfirmationFragment newInstance(final int page,
-                                                          final boolean isNewUser,
-                                                          final Instructions instructions)
+    public static BookingConfirmationFragment newInstance(
+            final int page,
+            final boolean isNewUser,
+            final Instructions instructions
+    )
     {
         final BookingConfirmationFragment fragment = new BookingConfirmationFragment();
         final Bundle args = new Bundle();
@@ -99,8 +103,11 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_confirmation, container, false);
@@ -288,7 +295,8 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             disableInputs();
             progressDialog.show();
 
-            //TODO: Finish breaking up booking confirmation fragment/activity and then call the specific fragment instead of passing along an EXTRA_PAGE
+            //TODO: Finish breaking up booking confirmation fragment/activity and then call the
+            // specific fragment instead of passing along an EXTRA_PAGE
 
             if (mPage == PAGE_ENTRY_INFORMATION)
             {
@@ -399,14 +407,18 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
         }
 
         @Override
-        public void onShowChildren(final BookingOptionsView view,
-                                   final String[] items)
+        public void onShowChildren(
+                final BookingOptionsView view,
+                final String[] items
+        )
         {
         }
 
         @Override
-        public void onHideChildren(final BookingOptionsView view,
-                                   final String[] items)
+        public void onHideChildren(
+                final BookingOptionsView view,
+                final String[] items
+        )
         {
         }
     };
@@ -434,14 +446,18 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             }
 
             @Override
-            public void onShowChildren(final BookingOptionsView view,
-                                       final String[] items)
+            public void onShowChildren(
+                    final BookingOptionsView view,
+                    final String[] items
+            )
             {
             }
 
             @Override
-            public void onHideChildren(final BookingOptionsView view,
-                                       final String[] items)
+            public void onHideChildren(
+                    final BookingOptionsView view,
+                    final String[] items
+            )
             {
             }
         };
@@ -450,15 +466,19 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     private final TextWatcher keyTextWatcher = new TextWatcher()
     {
         @Override
-        public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                      final int count, final int after)
+        public void beforeTextChanged(
+                final CharSequence charSequence, final int start,
+                final int count, final int after
+        )
         {
 
         }
 
         @Override
-        public void onTextChanged(final CharSequence charSequence, final int start,
-                                  final int before, final int count)
+        public void onTextChanged(
+                final CharSequence charSequence, final int start,
+                final int before, final int count
+        )
         {
         }
 

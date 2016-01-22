@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.widget;
+package com.handybook.handybook.booking.ui.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.ChecklistItem;
 import com.handybook.handybook.booking.model.Instructions;
+import com.handybook.handybook.ui.widget.ChecklistView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
