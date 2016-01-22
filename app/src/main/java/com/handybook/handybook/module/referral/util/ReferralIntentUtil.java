@@ -17,7 +17,7 @@ import com.handybook.handybook.util.ValidationUtils;
 
 import java.util.List;
 
-public class IntentUtil
+public class ReferralIntentUtil
 {
     public static final String PACKAGE_IDENTIFIER_GMAIL = "android.gm";
     public static final String PACKAGE_IDENTIFIER_GPLUS = "android.apps.plus";
@@ -29,7 +29,7 @@ public class IntentUtil
     public static final String EXTRA_SMS_BODY = "sms_body";
     public static final String KEY_REFERRAL_GUID = "h";
 
-    private IntentUtil() {}
+    private ReferralIntentUtil() {}
 
     public static String getReferralGuidFromIntent(final Intent intent)
     {

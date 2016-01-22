@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.module.referral.util.IntentUtil;
+import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 
 import butterknife.Bind;
@@ -18,7 +18,6 @@ import butterknife.ButterKnife;
 
 public class RedemptionFragment extends InjectedFragment
 {
-
     @Bind(R.id.guid)
     TextView guid;
     private String mReferralGuid;
@@ -32,7 +31,7 @@ public class RedemptionFragment extends InjectedFragment
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mReferralGuid = IntentUtil.getReferralGuidFromIntent(getActivity().getIntent());
+        mReferralGuid = ReferralIntentUtil.getReferralGuidFromIntent(getActivity().getIntent());
         if (mReferralGuid == null)
         {
             startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
