@@ -113,5 +113,4 @@
         android:drawablePadding="@dimen/default_padding_half"
         android:visibility="gone"
         />
-    <!--TODO: add an icon to the left later-->
 </LinearLayout>
