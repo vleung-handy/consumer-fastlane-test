@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
+import com.handybook.handybook.util.ValidationUtils;
 
 import java.util.List;
 
@@ -26,8 +27,23 @@ public class IntentUtil
     public static final String SCHEME_MAIL = "mailto:";
     public static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
     public static final String EXTRA_SMS_BODY = "sms_body";
+    public static final String KEY_REFERRAL_GUID = "h";
 
     private IntentUtil() {}
+
+    public static String getReferralGuidFromIntent(final Intent intent)
+    {
+        final Uri data = intent.getData();
+        if (data != null)
+        {
+            final String referralGuid = data.getQueryParameter(KEY_REFERRAL_GUID);
+            if (!ValidationUtils.isNullOrEmpty(referralGuid))
+            {
+                return referralGuid;
+            }
+        }
+        return intent.getStringExtra(KEY_REFERRAL_GUID);
+    }
 
     public static String getApplicationNameFromIntent(final Context context, final Intent intent)
     {
