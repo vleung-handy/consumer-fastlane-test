@@ -167,6 +167,7 @@ public final class LoginFragment extends BookingFlowFragment
         else
         {
             final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
+            menuButton.setColor(getResources().getColor(R.color.white));
             mMenuButtonLayout.addView(menuButton);
         }
 
