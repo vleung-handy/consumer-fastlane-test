@@ -275,8 +275,10 @@ public interface HandyRetrofitService
     void requestPrepareReferrals(HandyRetrofitCallback cb);
 
     @POST("/referrals/confirm")
-    void requestConfirmReferral(@Query("post_guid") String guid,
-                                EmptyHandyRetroFitCallback emptyHandyRetroFitCallback);
+    void requestConfirmReferral(@Query("post_guid") String guid, HandyRetrofitCallback cb);
+
+    @GET("/referrals/claim_details")
+    void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);
 
     final class RateProRequest
     {

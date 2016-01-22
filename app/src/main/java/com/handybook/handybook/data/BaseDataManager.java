@@ -39,6 +39,7 @@ import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 import org.json.JSONArray;
@@ -833,6 +834,14 @@ public final class BaseDataManager extends DataManager
     public void requestConfirmReferral(final String guid, final Callback<Void> cb)
     {
         mService.requestConfirmReferral(guid, new EmptyHandyRetroFitCallback(cb));
+    }
+
+    @Override
+    public void requestRedemptionDetails(final String guid,
+                                         final Callback<RedemptionDetailsResponse> cb)
+    {
+        mService.requestRedemptionDetails(guid,
+                new RedemptionDetailsResponseHandyRetrofitCallback(cb));
     }
 
     @Override
