@@ -122,6 +122,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed()
     {
+        bus.post(new MixpanelEvent.TrackScanCreditCardClicked());
         startCardScanActivity();
     }
 
@@ -146,9 +147,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             {
                 io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
                 onScannedCardResult(scannedCardResult);
+                bus.post(new MixpanelEvent.TrackScanCreditCardResult(true));
             }
             else
             {
+                bus.post(new MixpanelEvent.TrackScanCreditCardResult(false));
                 //canceled
             }
         }

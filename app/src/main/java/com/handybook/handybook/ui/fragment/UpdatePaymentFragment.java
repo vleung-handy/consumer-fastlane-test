@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.CreditCard;
@@ -79,6 +80,7 @@ public class UpdatePaymentFragment extends InjectedFragment
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed()
     {
+        bus.post(new MixpanelEvent.TrackScanCreditCardClicked());
         startCardScanActivity();
     }
 
@@ -103,9 +105,11 @@ public class UpdatePaymentFragment extends InjectedFragment
             {
                 io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
                 onScannedCardResult(scannedCardResult);
+                bus.post(new MixpanelEvent.TrackScanCreditCardResult(true));
             }
             else
             {
+                bus.post(new MixpanelEvent.TrackScanCreditCardResult(false));
                 //canceled
             }
         }
