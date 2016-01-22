@@ -19,17 +19,19 @@
         android:textAppearance="@style/TextView.Medium"
         android:textColor="@color/handy_tertiary_gray"
         android:visibility="gone"
-        tools:text="Title"
+        tools:visibility="visible"
+        tools:text="Typical Cleaning Service"
         />
 
     <LinearLayout
-        android:id="@+id/checklists_layout"
+        android:id="@+id/preferences_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:orientation="vertical"
         android:visibility="gone"
-        />
+        >
+    </LinearLayout>
 
 </LinearLayout>

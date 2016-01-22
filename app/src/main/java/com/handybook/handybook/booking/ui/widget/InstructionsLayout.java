@@ -11,14 +11,13 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.ChecklistItem;
 import com.handybook.handybook.booking.model.Instructions;
-import com.handybook.handybook.ui.widget.ChecklistView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class InstructionsLayout extends FrameLayout
 {
-    @Bind(R.id.checklists_layout)
+    @Bind(R.id.preferences_container)
     ViewGroup mCheckListsLayout;
     @Bind(R.id.title)
     TextView mTitle;
@@ -59,9 +58,9 @@ public class InstructionsLayout extends FrameLayout
             mCheckListsLayout.setVisibility(VISIBLE);
             for (ChecklistItem checklistItem : instructions.getChecklist())
             {
-                final ChecklistView checklistView = new ChecklistView(getContext());
-                checklistView.init(checklistItem);
-                mCheckListsLayout.addView(checklistView);
+                final PreferenceView preferenceView = new PreferenceView(getContext());
+                preferenceView.init(checklistItem);
+                mCheckListsLayout.addView(preferenceView);
             }
         }
     }
