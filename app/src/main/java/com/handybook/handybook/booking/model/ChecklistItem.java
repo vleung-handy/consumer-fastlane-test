@@ -21,7 +21,7 @@ public class ChecklistItem implements Parcelable
 
     protected ChecklistItem(Parcel in)
     {
-        mId = in.readLong();
+        mId = (Long) in.readValue(Long.class.getClassLoader());
         mMachineName = in.readString();
         mTitle = in.readString();
         mText = in.readString();
@@ -62,7 +62,7 @@ public class ChecklistItem implements Parcelable
     @Override
     public void writeToParcel(final Parcel dest, final int flags)
     {
-        dest.writeLong(mId);
+        dest.writeValue(mId);
         dest.writeString(mMachineName);
         dest.writeString(mTitle);
         dest.writeString(mText);
