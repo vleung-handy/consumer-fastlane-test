@@ -11,21 +11,30 @@
         android:text="@string/update"
         style="@style/Button.Green" />
 
-    <FrameLayout
+    <!--TODO: make the nav layout more reusable-->
+    <RelativeLayout
         android:id="@+id/nav_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/nav_text"
-            android:text="@string/account"
-            style="@style/TextView.Navbar" />
+        style="@style/RelativeLayout.NavBar.Blue"
+        >
 
         <RelativeLayout
             android:id="@+id/menu_button_layout"
-            style="@style/MenuButtonLayout" />
+            style="@style/MenuButtonLayout"
+            />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/nav_text"
+            style="@style/TextView.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/menu_button_layout"
+            android:text="@string/account"
+            android:textColor="@color/handy_white"
+            android:textSize="@dimen/text_size_large"
+            />
+
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scroll_view"

@@ -15,7 +15,7 @@
         android:visibility="gone"
         />
 
-
+    <!--TODO: make the nav layout more reusable-->
     <RelativeLayout
         android:id="@+id/nav_layout"
         style="@style/RelativeLayout.NavBar.Blue"
