@@ -36,6 +36,8 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED = "add booking fab menu dismissed";
         public static final String APP_TRACK_SPLASH_PROMO_SHOW = "app splash promo show";
         public static final String APP_TRACK_SPLASH_PROMO_ACTION = "app splash promo action";
+        public static final String APP_TRACK_SCAN_CREDIT_CARD_CLICKED = "scan credit card clicked";
+        public static final String APP_TRACK_SCAN_CREDIT_CARD_RESULT = "scan credit card result";
     }
 
 
@@ -78,6 +80,33 @@ public abstract class MixpanelEvent
         public String toString()
         {
             return mStringValue;
+        }
+    }
+
+    /**
+     * tracks when the scan credit card button is clicked
+     */
+    @Track(EventKey.APP_TRACK_SCAN_CREDIT_CARD_CLICKED)
+    public static class TrackScanCreditCardClicked extends MixpanelEvent
+    {
+    }
+
+    /**
+     * tracks whether the credit card scanner successfully scans a card or not
+     *
+     * success=true: card data is extracted
+     * success=false: user cancelled the scan (maybe out of frustration) or an error occurred
+     *
+     */
+    @Track(EventKey.APP_TRACK_SCAN_CREDIT_CARD_RESULT)
+    public static class TrackScanCreditCardResult extends MixpanelEvent
+    {
+        @TrackField("success")
+        private final boolean success;
+
+        public TrackScanCreditCardResult(final boolean success)
+        {
+            this.success = success;
         }
     }
 
