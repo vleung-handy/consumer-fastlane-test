@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.widget;
+package com.handybook.handybook.booking.ui.widget;
 
 import android.content.Context;
 import android.text.Html;
@@ -14,29 +14,29 @@ import com.handybook.handybook.booking.model.ChecklistItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ChecklistView extends FrameLayout
+public class CustomerPreferenceView extends FrameLayout
 {
     @Bind(R.id.content)
     TextView mContent;
 
-    public ChecklistView(final Context context)
+    public CustomerPreferenceView(final Context context)
     {
         super(context);
     }
 
-    public ChecklistView(final Context context, final AttributeSet attrs)
+    public CustomerPreferenceView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public ChecklistView(final Context context, final AttributeSet attrs, final int defStyleAttr)
+    public CustomerPreferenceView(final Context context, final AttributeSet attrs, final int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
     }
 
     public void init(ChecklistItem checklistItem)
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_checklist, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_customer_preference, this);
         ButterKnife.bind(this);
 
         final Spanned formattedContent = Html.fromHtml("<b>" + checklistItem.getTitle() + ":</b> " +
