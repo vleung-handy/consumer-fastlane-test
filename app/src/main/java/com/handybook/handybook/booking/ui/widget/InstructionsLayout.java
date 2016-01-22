@@ -59,7 +59,7 @@ public class InstructionsLayout extends FrameLayout
             for (ChecklistItem checklistItem : instructions.getChecklist())
             {
                 final CustomerPreferenceView customerPreferenceView = new CustomerPreferenceView(getContext());
-                customerPreferenceView.init(checklistItem);
+                customerPreferenceView.reflect(checklistItem);
                 mCheckListsLayout.addView(customerPreferenceView);
             }
         }

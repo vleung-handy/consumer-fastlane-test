@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -12,15 +13,16 @@
     >
 
     <ImageView
+        android:id="@+id/state_image"
         android:layout_width="@dimen/default_icon_size_half"
         android:layout_height="@dimen/default_icon_size_half"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:src="@drawable/ic_check_dark"
+        tools:src="@drawable/ic_check_dark"
         />
 
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingMultiplier="1.3"

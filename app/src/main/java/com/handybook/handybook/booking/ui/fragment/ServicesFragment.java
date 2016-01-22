@@ -22,8 +22,8 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.ui.descriptor.ServiceCategoryDescriptor;
 import com.handybook.handybook.booking.ui.view.ServiceView;
+import com.handybook.handybook.ui.descriptor.ServiceCategoryDescriptor;
 import com.handybook.handybook.ui.descriptor.ServiceDescriptor;
 
 import butterknife.Bind;
@@ -35,7 +35,7 @@ public final class ServicesFragment extends BookingFlowFragment
 
     private Service mService;
 
-    @Bind(R.id.content)
+    @Bind(R.id.preference_text)
     ScrollView mContent;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;

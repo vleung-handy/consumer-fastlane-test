@@ -1,11 +1,12 @@
 package com.handybook.handybook.booking.ui.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.text.Html;
-import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -16,31 +17,167 @@ import butterknife.ButterKnife;
 
 public class CustomerPreferenceView extends FrameLayout
 {
-    @Bind(R.id.content)
-    TextView mContent;
+    @Bind(R.id.state_image)
+    ImageView mStateImage;
+    @Bind(R.id.text)
+    TextView mTextView;
+
+    private State mState;
+    private String mTitle;
+    private String mText;
+
 
     public CustomerPreferenceView(final Context context)
     {
         super(context);
+        init();
     }
 
     public CustomerPreferenceView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
+        init(attrs);
     }
 
     public CustomerPreferenceView(final Context context, final AttributeSet attrs, final int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
+        init(attrs);
     }
 
-    public void init(ChecklistItem checklistItem)
+    public State getState()
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_customer_preference, this);
-        ButterKnife.bind(this);
+        return mState;
+    }
 
-        final Spanned formattedContent = Html.fromHtml("<b>" + checklistItem.getTitle() + ":</b> " +
-                checklistItem.getText());
-        mContent.setText(formattedContent);
+    public void setState(final State state)
+    {
+        mState = state;
+        updateStateImage();
+    }
+
+    public String getTitle()
+    {
+        return mTitle;
+    }
+
+    public void setTitle(final String title)
+    {
+        mTitle = title;
+        updateText();
+    }
+
+    public String getText()
+    {
+        return mText;
+    }
+
+    public void setText(final String text)
+    {
+        mText = text;
+    }
+
+    private void init()
+    {
+        inflateAndBind();
+    }
+
+    private void init(AttributeSet attrs)
+    {
+        inflateAndBind();
+        TypedArray typedArray = getContext().obtainStyledAttributes(
+                attrs,
+                R.styleable.CustomerPreferenceView
+        );
+        try
+        {
+            mState = State.fromId(typedArray.getInt(R.styleable.CustomerPreferenceView_prefsState, 0));
+            mTitle = typedArray.getString(R.styleable.CustomerPreferenceView_prefsTitle);
+            mText = typedArray.getString(R.styleable.CustomerPreferenceView_prefsText);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            typedArray.recycle();
+        }
+        updateStateImage();
+        updateText();
+    }
+
+    private void inflateAndBind()
+    {
+        LayoutInflater.from(getContext()).inflate(R.layout.view_customer_preference, this, true);
+        ButterKnife.bind(this);
+    }
+
+    private void updateStateImage()
+    {
+        switch (mState)
+        {
+            case DEFAULT:
+                mStateImage.setImageResource(R.drawable.ic_check);
+                return;
+            case DISABLED:
+                mStateImage.setImageResource(R.drawable.ic_check_dark);
+                return;
+            case DONE:
+                mStateImage.setImageResource(R.drawable.ic_checkmark);
+                return;
+            case REQUESTED:
+                mStateImage.setImageResource(R.drawable.ic_chevron);
+                return;
+            case IN_PROGRESS:
+                mStateImage.setImageResource(R.drawable.com_mixpanel_android_ic_clipboard_checkmark);
+                return;
+
+        }
+        invalidate();
+        requestLayout();
+
+    }
+
+    private void updateText()
+    {
+        mTextView.setText(Html.fromHtml("<b>" + mTitle + ":</b> " + mText));
+        invalidate();
+        requestLayout();
+    }
+
+    public void reflect(ChecklistItem checklistItem)
+    {
+        setText(checklistItem.getText());
+        setTitle(checklistItem.getTitle());
+    }
+
+    public enum State
+    {
+        DEFAULT(0),
+        DISABLED(1),
+        REQUESTED(2),
+        IN_PROGRESS(3),
+        DONE(4);
+
+        int mId;
+
+
+        State(final int id)
+        {
+            mId = id;
+        }
+
+        static State fromId(final int id)
+        {
+            for (State eachState : values())
+            {
+                if (eachState.mId == id)
+                {
+                    return eachState;
+                }
+            }
+            return DEFAULT;
+        }
     }
 }
