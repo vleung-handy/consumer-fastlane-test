@@ -3,6 +3,7 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
@@ -28,6 +30,7 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -54,6 +57,10 @@ public final class LoginFragment extends BookingFlowFragment
     static final String EXTRA_BOOKING_EMAIL = "com.handy.handy.EXTRA_BOOKING_EMAIL";
     private static final String STATE_EMAIL_HIGHLIGHT = "EMAIL_HIGHLIGHT";
     private static final String STATE_PASSWORD_HIGHLIGHT = "PASSWORD_HIGHLIGHT";
+    private static final String KEY_FACEBOOK_ID = "id";
+    private static final String KEY_FACEBOOK_EMAIL = "email";
+    private static final String KEY_FACEBOOK_FIRST_NAME = "first_name";
+    private static final String KEY_FACEBOOK_LAST_NAME = "last_name";
 
     CallbackManager callbackManager;
     //private UiLifecycleHelper mUiHelper;
@@ -170,9 +177,6 @@ public final class LoginFragment extends BookingFlowFragment
             mMenuButtonLayout.addView(menuButton);
         }
 
-        //fbButton.setFragment(this);
-        //fbButton.setReadPermissions("email");
-
         mFbLoginButton.setFragment(this);
         mFbLoginButton.setReadPermissions("email");
 
@@ -182,8 +186,9 @@ public final class LoginFragment extends BookingFlowFragment
             @Override
             public void onSuccess(final LoginResult loginResult)
             {
+                final AccessToken accessToken = loginResult.getAccessToken();
                 GraphRequest.newMeRequest( // Request user info from FB through a GraphRequest
-                        loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
+                        accessToken, new GraphRequest.GraphJSONObjectCallback()
                         {
                             @Override
                             public void onCompleted(JSONObject me, GraphResponse response)
@@ -199,20 +204,12 @@ public final class LoginFragment extends BookingFlowFragment
                                 }
                                 else
                                 {
-                                    String fbid = me.optString("id");
-                                    String accessToken = loginResult.getAccessToken().getToken();
-                                    String email = me.optString("email");
-                                    String firstName = me.optString("first_name");
-                                    String lastName = me.optString("last_name");
-                                    //TODO: Make magic strings -> costants
+                                    final CreateUserRequest createUserRequest =
+                                            getCreateUserRequestFromFacebookUser(me);
+                                    createUserRequest.setFacebookAccessToken(
+                                            accessToken.getToken());
                                     mAuthType = AuthType.FACEBOOK;
-                                    dataManager.authFBUser( // send email and id to your web server
-                                            fbid,
-                                            accessToken,
-                                            email,
-                                            firstName,
-                                            lastName,
-                                            userCallback);
+                                    dataManager.authFBUser(createUserRequest, userCallback);
                                 }
                             }
                         }).executeAsync();
@@ -237,6 +234,17 @@ public final class LoginFragment extends BookingFlowFragment
         });
 
         return view;
+    }
+
+    @NonNull
+    private CreateUserRequest getCreateUserRequestFromFacebookUser(final JSONObject me)
+    {
+        final CreateUserRequest createUserRequest = new CreateUserRequest();
+        createUserRequest.setFacebookUserId(me.optString(KEY_FACEBOOK_ID));
+        createUserRequest.setEmail(me.optString(KEY_FACEBOOK_EMAIL));
+        createUserRequest.setFirstName(me.optString(KEY_FACEBOOK_FIRST_NAME));
+        createUserRequest.setLastName(me.optString(KEY_FACEBOOK_LAST_NAME));
+        return createUserRequest;
     }
 
     @Override

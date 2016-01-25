@@ -31,6 +31,7 @@ import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
@@ -292,11 +293,8 @@ public abstract class DataManager
     public abstract void updatePayment(String userId, String token, Callback<Void> cb);
 
     public abstract void authFBUser(
-            String fbid,
-            String accessToken,
-            String email,
-            String firstName,
-            String lastName, Callback<User> cb
+            CreateUserRequest createUserRequest,
+            Callback<User> cb
     );
 
     public abstract void requestPasswordReset(

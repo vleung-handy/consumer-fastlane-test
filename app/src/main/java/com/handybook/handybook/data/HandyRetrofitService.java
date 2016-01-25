@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressReque
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;
@@ -206,12 +207,8 @@ public interface HandyRetrofitService
     void createUserSession(@Field("email") String email, @Field("password") String password,
                            HandyRetrofitCallback cb);
 
-    @FormUrlEncoded
     @POST("/user_sessions/fb_create")
-    void createUserSessionFB(@Field("uid") String fbid,
-                             @Field("facebook_access_token") String accessToken,
-                             @Field("email") String email, @Field("first_name") String firstName,
-                             @Field("last_name") String lastName,
+    void createUserSessionFB(@Body CreateUserRequest createUserRequest,
                              HandyRetrofitCallback cb);
 
     @GET("/users/{user}")

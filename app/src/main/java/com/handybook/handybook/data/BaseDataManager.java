@@ -35,6 +35,7 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
@@ -701,10 +702,9 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public final void authFBUser(final String fbid, final String accessToken, final String email,
-                                 final String firstName, String lastName, final Callback<User> cb)
+    public final void authFBUser(final CreateUserRequest createUserRequest, final Callback<User> cb)
     {
-        mService.createUserSessionFB(fbid, accessToken, email, firstName, lastName,
+        mService.createUserSessionFB(createUserRequest,
                 new HandyRetrofitCallback(cb)
                 {
                     @Override
