@@ -179,7 +179,7 @@ public final class LoginFragment extends BookingFlowFragment
             public void onSuccess(final LoginResult loginResult)
             {
                 final AccessToken accessToken = loginResult.getAccessToken();
-                bus.post(new HandyEvent.RequestAuthFacebookUser(accessToken));
+                bus.post(new HandyEvent.RequestAuthFacebookUser(accessToken, null));
             }
 
             @Override

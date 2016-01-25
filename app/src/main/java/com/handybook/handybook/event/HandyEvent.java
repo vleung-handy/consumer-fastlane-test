@@ -242,15 +242,22 @@ public abstract class HandyEvent
     public static class RequestAuthFacebookUser extends RequestEvent
     {
         private AccessToken mAccessToken;
+        private String mReferralGuid;
 
-        public RequestAuthFacebookUser(final AccessToken accessToken)
+        public RequestAuthFacebookUser(final AccessToken accessToken, final String referralGuid)
         {
             mAccessToken = accessToken;
+            mReferralGuid = referralGuid;
         }
 
         public AccessToken getAccessToken()
         {
             return mAccessToken;
+        }
+
+        public String getReferralGuid()
+        {
+            return mReferralGuid;
         }
     }
 

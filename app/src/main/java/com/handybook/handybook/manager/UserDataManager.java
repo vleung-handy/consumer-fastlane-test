@@ -109,16 +109,21 @@ public class UserDataManager
                 }
                 else
                 {
-                    authFacebookUser(user, accessToken);
+                    authFacebookUser(user, accessToken, event.getReferralGuid());
                 }
             }
         }).executeAsync();
     }
 
-    private void authFacebookUser(final JSONObject user, final AccessToken accessToken)
+    private void authFacebookUser(
+            final JSONObject user,
+            final AccessToken accessToken,
+            final String referralGuid
+    )
     {
         final CreateUserRequest createUserRequest = getCreateUserRequestFromFacebookUser(user);
         createUserRequest.setFacebookAccessToken(accessToken.getToken());
+        createUserRequest.setReferralPostGuid(referralGuid);
         mDataManager.authFBUser(createUserRequest, new DataManager.Callback<User>()
         {
             @Override
