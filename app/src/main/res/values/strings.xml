@@ -322,4 +322,7 @@
     <string name="referral_subtitle_formatted">Give your friends %1$s off their first Handy booking, and you get %2$s!</string>
     <string name="redemption_title_formatted">%1$s sent you %2$s!</string>
     <string name="redemption_subtitle_formatted">Sign up to claim %1$s credit towards your first booking.</string>
+    <string name="sign_up_with_facebook">Sign Up with Facebook</string>
+    <string name="sign_up_with_email">Sign Up with Email</string>
+    <string name="already_have_account">Already have an account?\u0020</string>
 </resources>

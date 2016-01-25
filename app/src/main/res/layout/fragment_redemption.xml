@@ -17,4 +17,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
+
+    <Button
+        android:id="@+id/facebook_register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up_with_facebook"
+        />
+
+    <Button
+        android:id="@+id/email_register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up_with_email"
+        />
+
+    <LinearLayout
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/already_have_account"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_in"
+            />
+    </LinearLayout>
 </LinearLayout>

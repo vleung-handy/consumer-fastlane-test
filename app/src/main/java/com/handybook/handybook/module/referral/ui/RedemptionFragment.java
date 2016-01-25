@@ -13,12 +13,14 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
+import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.util.TextUtils;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RedemptionFragment extends InjectedFragment
 {
@@ -28,6 +30,24 @@ public class RedemptionFragment extends InjectedFragment
     TextView mSubtitle;
 
     private String mReferralGuid;
+
+    @OnClick(R.id.facebook_register_button)
+    public void onFacebookRegisterButtonClicked()
+    {
+
+    }
+
+    @OnClick(R.id.email_register_button)
+    public void onEmailRegisterButtonClicked()
+    {
+
+    }
+
+    @OnClick(R.id.login_button)
+    public void onLoginButtonClicked()
+    {
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+    }
 
     public static RedemptionFragment newInstance()
     {
@@ -39,7 +59,7 @@ public class RedemptionFragment extends InjectedFragment
     {
         super.onCreate(savedInstanceState);
         mReferralGuid = ReferralIntentUtil.getReferralGuidFromIntent(getActivity().getIntent());
-        if (mReferralGuid == null)
+        if (mReferralGuid == null || userManager.isUserLoggedIn()) // new users only
         {
             startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
             getActivity().finish();
