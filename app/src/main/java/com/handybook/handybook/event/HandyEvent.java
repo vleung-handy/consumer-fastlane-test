@@ -2,11 +2,13 @@ package com.handybook.handybook.event;
 
 import android.support.annotation.NonNull;
 
+import com.facebook.AccessToken;
 import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.stripe.android.model.Token;
 
@@ -22,7 +24,8 @@ public abstract class HandyEvent
 
             public BookingCardViewModelsEvent(
                     @NonNull final User user,
-                    @NonNull @Booking.List.OnlyBookingValues final String onlyBookingsValue)
+                    @NonNull @Booking.List.OnlyBookingValues final String onlyBookingsValue
+            )
             {
                 mUser = user;
                 mOnlyBookingValue = onlyBookingsValue;
@@ -52,8 +55,8 @@ public abstract class HandyEvent
 
             final long mUserId;
             final Long mSinceId;
-            final Long  mUntilId;
-            final Long  mCount;
+            final Long mUntilId;
+            final Long mCount;
 
             public HandyNotificationsEvent(
                     final long userId,
@@ -163,6 +166,7 @@ public abstract class HandyEvent
         public DataManager.DataManagerError error;
     }
 
+
     @Track("consumer app blocking screen displayed")
     public static class BlockingScreenDisplayed extends HandyEvent
     {
@@ -186,6 +190,7 @@ public abstract class HandyEvent
 
     }
 
+
     public static class RequestUpdatePayment extends RequestEvent
     {
         public final Token token;
@@ -196,9 +201,11 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class ReceiveUpdatePaymentSuccess extends ReceiveSuccessEvent
     {
     }
+
 
     public static class ReceiveUpdatePaymentError extends ReceiveErrorEvent
     {
@@ -208,4 +215,85 @@ public abstract class HandyEvent
         }
     }
 
+
+    public static class RequestAuthUser
+    {
+        private final String mEmail;
+        private final String mPassword;
+
+        public RequestAuthUser(final String email, final String password)
+        {
+            mEmail = email;
+            mPassword = password;
+        }
+
+        public String getEmail()
+        {
+            return mEmail;
+        }
+
+        public String getPassword()
+        {
+            return mPassword;
+        }
+    }
+
+
+    public static class RequestAuthFacebookUser extends RequestEvent
+    {
+        private AccessToken mAccessToken;
+
+        public RequestAuthFacebookUser(final AccessToken accessToken)
+        {
+            mAccessToken = accessToken;
+        }
+
+        public AccessToken getAccessToken()
+        {
+            return mAccessToken;
+        }
+    }
+
+
+    public static class ReceiveAuthUserSuccess extends ReceiveSuccessEvent
+    {
+        private final User mUser;
+        private final UserDataManager.AuthType mAuthType;
+
+        public ReceiveAuthUserSuccess(final User user, final UserDataManager.AuthType authType)
+        {
+            mUser = user;
+            mAuthType = authType;
+        }
+
+        public User getUser()
+        {
+            return mUser;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
+
+
+    public static class ReceiveAuthUserError extends ReceiveErrorEvent
+    {
+        private UserDataManager.AuthType mAuthType;
+
+        public ReceiveAuthUserError(
+                final DataManager.DataManagerError error,
+                final UserDataManager.AuthType authType
+        )
+        {
+            this.error = error;
+            mAuthType = authType;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
 }
