@@ -9,7 +9,7 @@
     <declare-styleable name="ThinIconButton">
         <attr name="iconResourceId" format="reference" />
     </declare-styleable>
-    <declare-styleable name="CustomerPreferenceView">
+    <declare-styleable name="InstructionView">
         <attr name="prefsState" >
             <enum name="undefined" value="0"/>
             <enum name="disabled" value="1"/>

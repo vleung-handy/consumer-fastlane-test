@@ -13,10 +13,11 @@ import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
+import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.booking.ui.widget.InstructionsLayout;
+import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.squareup.otto.Subscribe;
@@ -36,7 +37,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     @Bind(R.id.next_button)
     Button mNextButton;
     @Bind(R.id.instructions_layout)
-    InstructionsLayout mInstructionsLayout;
+    InstructionListView mInstructionListView;
 
     public static BookingEditPreferencesFragment newInstance(final Booking booking)
     {
@@ -71,7 +72,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_preferences, container, false);
         ButterKnife.bind(this, view);
         initOptionsView();
-        mInstructionsLayout.init(booking.getInstructions());
+        mInstructionListView.reflect(booking.getInstructions());
         return view;
     }
 
@@ -162,4 +163,17 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         {
         }
     };
+
+    private final InstructionListView.OnInstructionsChangedListener instructionsChanged =
+            new InstructionListView.OnInstructionsChangedListener()
+            {
+
+                @Override
+                public void onInstructionsChanged(final Instructions instructions)
+                {
+                    descriptionTransaction.setInstructions(instructions);
+                    toast.setText("Instructions changed.");
+                    toast.show();
+                }
+            };
 }

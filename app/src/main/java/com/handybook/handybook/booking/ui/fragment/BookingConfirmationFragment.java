@@ -25,7 +25,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.booking.ui.widget.InstructionsLayout;
+import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
@@ -73,7 +73,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     @Bind(R.id.password_text)
     PasswordInputTextView mPasswordText;
     @Bind(R.id.instructions_layout)
-    InstructionsLayout mInstructionsLayout;
+    InstructionListView mInstructionListView;
 
     public static BookingConfirmationFragment newInstance(
             final int page,
@@ -160,7 +160,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             mOptionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
             ((BookingOptionsTextView) mOptionsView).setValue(mPostInfo.getExtraMessage());
 
-            mInstructionsLayout.init(mInstructions);
+            mInstructionListView.reflect(mInstructions);
         }
         else if (mPage == PAGE_PASSWORD_PROMPT)
         {

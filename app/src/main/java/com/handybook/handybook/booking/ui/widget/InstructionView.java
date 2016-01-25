@@ -15,7 +15,7 @@ import com.handybook.handybook.booking.model.ChecklistItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class CustomerPreferenceView extends FrameLayout
+public class InstructionView extends FrameLayout
 {
     @Bind(R.id.state_image)
     ImageView mStateImage;
@@ -27,19 +27,19 @@ public class CustomerPreferenceView extends FrameLayout
     private String mText;
 
 
-    public CustomerPreferenceView(final Context context)
+    public InstructionView(final Context context)
     {
         super(context);
         init();
     }
 
-    public CustomerPreferenceView(final Context context, final AttributeSet attrs)
+    public InstructionView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
         init(attrs);
     }
 
-    public CustomerPreferenceView(final Context context, final AttributeSet attrs, final int defStyleAttr)
+    public InstructionView(final Context context, final AttributeSet attrs, final int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init(attrs);
@@ -87,13 +87,13 @@ public class CustomerPreferenceView extends FrameLayout
         inflateAndBind();
         TypedArray typedArray = getContext().obtainStyledAttributes(
                 attrs,
-                R.styleable.CustomerPreferenceView
+                R.styleable.InstructionView
         );
         try
         {
-            mState = State.fromId(typedArray.getInt(R.styleable.CustomerPreferenceView_prefsState, 0));
-            mTitle = typedArray.getString(R.styleable.CustomerPreferenceView_prefsTitle);
-            mText = typedArray.getString(R.styleable.CustomerPreferenceView_prefsText);
+            mState = State.fromId(typedArray.getInt(R.styleable.InstructionView_prefsState, 0));
+            mTitle = typedArray.getString(R.styleable.InstructionView_prefsTitle);
+            mText = typedArray.getString(R.styleable.InstructionView_prefsText);
         }
         catch (Exception e)
         {
