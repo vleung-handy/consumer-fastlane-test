@@ -1,9 +1,11 @@
 package com.handybook.handybook.booking.ui.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -17,11 +19,13 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class InstructionListView extends FrameLayout
+public class InstructionListView extends FrameLayout implements InstructionView.OnStateChangedListener
 {
 
     Instructions mInstructions;
-    ArrayList<InstructionView> mInstructionViews;
+    private ArrayList<InstructionView> mInstructionViews;
+    private OnInstructionsChangedListener mOnInstructionsChangedListener;
+    private boolean mIsDragEnabled = true;
 
     @Bind(R.id.preferences_container)
     ViewGroup mCheckListsLayout;
@@ -73,20 +77,53 @@ public class InstructionListView extends FrameLayout
         {
             mTitle.setVisibility(GONE);
         }
-
         if (mInstructions.getChecklist() != null)
         {
             mCheckListsLayout.setVisibility(VISIBLE);
             for (ChecklistItem checklistItem : instructions.getChecklist())
             {
                 final InstructionView instructionView = new InstructionView(getContext());
+                mInstructionViews.add(instructionView);
                 instructionView.reflect(checklistItem);
+                instructionView.setOnStateChangedListener(this);
+                instructionView.setOnLongClickListener(new OnLongClickListener()
+                {
+                    @Override
+                    public boolean onLongClick(final View v)
+                    {
+                        //TODO: Implement dragging
+                        return false;
+                    }
+                });
                 mCheckListsLayout.addView(instructionView);
             }
         }
         else
         {
             mCheckListsLayout.setVisibility(GONE);
+        }
+    }
+
+    public void setOnInstructionsChangedListener(@NonNull OnInstructionsChangedListener listener)
+    {
+        mOnInstructionsChangedListener = listener;
+    }
+
+    @Override
+    public void onStateChanged(final ChecklistItem checklistItem)
+    {
+        notifyObserver();
+    }
+
+    private void notifyObserver()
+    {
+        if (mOnInstructionsChangedListener == null)
+        {
+            return;
+        }
+        else
+        {
+            mOnInstructionsChangedListener.onInstructionsChanged(mInstructions);
         }
     }
 

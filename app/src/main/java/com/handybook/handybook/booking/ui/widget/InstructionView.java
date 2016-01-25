@@ -17,14 +17,17 @@ import butterknife.ButterKnife;
 
 public class InstructionView extends FrameLayout
 {
+    ChecklistItem mChecklistItem;
+
+    private State mState;
+    private OnStateChangedListener mOnStateChangedListener;
+    private String mTitle;
+    private String mText;
+
     @Bind(R.id.state_image)
     ImageView mStateImage;
     @Bind(R.id.text)
     TextView mTextView;
-
-    private State mState;
-    private String mTitle;
-    private String mText;
 
 
     public InstructionView(final Context context)
@@ -54,6 +57,19 @@ public class InstructionView extends FrameLayout
     {
         mState = state;
         updateStateImage();
+        notifyObserver();
+    }
+
+    private void notifyObserver()
+    {
+        if (mOnStateChangedListener == null)
+        {
+            return;
+        }
+        else
+        {
+            mOnStateChangedListener.onStateChanged(mChecklistItem);
+        }
     }
 
     public String getTitle()
@@ -80,6 +96,11 @@ public class InstructionView extends FrameLayout
     private void init()
     {
         inflateAndBind();
+    }
+
+    public void setOnStateChangedListener(OnStateChangedListener listener)
+    {
+        mOnStateChangedListener = listener;
     }
 
     private void init(AttributeSet attrs)
@@ -148,6 +169,7 @@ public class InstructionView extends FrameLayout
 
     public void reflect(ChecklistItem checklistItem)
     {
+        mChecklistItem = checklistItem;
         setText(checklistItem.getText());
         setTitle(checklistItem.getTitle());
     }
@@ -179,5 +201,11 @@ public class InstructionView extends FrameLayout
             }
             return DEFAULT;
         }
+    }
+
+
+    public interface OnStateChangedListener
+    {
+        public void onStateChanged(ChecklistItem checklistItem);
     }
 }
