@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttons_layout"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/default_padding_double"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextView.XXLarge.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:text="John sent you some Handy credits!"
+            />
+
+        <TextView
+            android:id="@+id/subtitle"
+            style="@style/TextView.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:gravity="center"
+            tools:text="Go get it!"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+        <com.handybook.handybook.ui.widget.LeftIconButton
+            android:id="@+id/facebook_register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin_double"
+            android:layout_marginRight="@dimen/default_margin_double"
+            android:background="@drawable/button_facebook_round"
+            />
+
+        <com.handybook.handybook.ui.widget.LeftIconButton
+            android:id="@+id/email_register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin_double"
+            android:layout_marginRight="@dimen/default_margin_double"
+            android:layout_marginTop="@dimen/default_margin"
+            android:background="@drawable/button_blue_round"
+            />
+    </LinearLayout>
+</RelativeLayout>

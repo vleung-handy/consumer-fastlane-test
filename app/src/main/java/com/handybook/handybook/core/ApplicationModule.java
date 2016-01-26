@@ -109,7 +109,9 @@ import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.ui.RedemptionActivity;
+import com.handybook.handybook.module.referral.ui.RedemptionEmailSignUpFragment;
 import com.handybook.handybook.module.referral.ui.RedemptionFragment;
+import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragment;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.ui.activity.BlockingActivity;
@@ -240,6 +242,8 @@ import retrofit.converter.GsonConverter;
         ReferralFragment.class,
         RedemptionActivity.class,
         RedemptionFragment.class,
+        RedemptionSignUpFragment.class,
+        RedemptionEmailSignUpFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
