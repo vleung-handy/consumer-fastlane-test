@@ -27,12 +27,6 @@ public class RedemptionFragment extends InjectedFragment
 {
     private String mReferralGuid;
 
-    @OnClick(R.id.login_button)
-    public void onLoginButtonClicked()
-    {
-        startActivity(new Intent(getActivity(), LoginActivity.class));
-    }
-
     public static RedemptionFragment newInstance()
     {
         return new RedemptionFragment();

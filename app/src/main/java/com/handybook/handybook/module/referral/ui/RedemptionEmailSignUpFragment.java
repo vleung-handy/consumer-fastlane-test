@@ -1,5 +1,6 @@
 package com.handybook.handybook.module.referral.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
@@ -35,6 +37,12 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
         arguments.putString(KEY_REFERRAL_GUID, referralGuid);
         fragment.setArguments(arguments);
         return fragment;
+    }
+
+    @OnClick(R.id.login_button)
+    public void onLoginButtonClicked()
+    {
+        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R.id.back_button)

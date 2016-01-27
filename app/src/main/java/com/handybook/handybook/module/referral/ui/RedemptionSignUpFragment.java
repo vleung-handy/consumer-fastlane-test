@@ -18,6 +18,7 @@ import com.facebook.login.LoginResult;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.LeftIconButton;
 
@@ -59,6 +60,12 @@ public class RedemptionSignUpFragment extends InjectedFragment
         arguments.putString(KEY_REFERRAL_GUID, referralGuid);
         fragment.setArguments(arguments);
         return fragment;
+    }
+
+    @OnClick(R.id.login_button)
+    public void onLoginButtonClicked()
+    {
+        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R.id.facebook_register_button)

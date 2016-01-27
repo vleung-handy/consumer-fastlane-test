@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:background="@color/handy_bg"
     >
 
@@ -38,7 +39,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nav_layout"
         android:layout_margin="@dimen/default_margin"
         android:background="@drawable/bg_rounded_white"
         android:orientation="vertical"
@@ -68,4 +68,30 @@
             />
 
     </LinearLayout>
-</RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_padding_half"
+        >
+
+        <TextView
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/already_have_account"
+            android:textColor="@color/dark_grey"
+            />
+
+        <TextView
+            style="@style/TextView.Medium.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_in"
+            android:textColor="@color/dark_grey"
+            />
+    </LinearLayout>
+</LinearLayout>
