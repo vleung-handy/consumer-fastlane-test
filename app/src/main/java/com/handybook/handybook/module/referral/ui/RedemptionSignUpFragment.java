@@ -18,6 +18,8 @@ import com.facebook.login.LoginResult;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.LeftIconButton;
@@ -66,6 +68,7 @@ public class RedemptionSignUpFragment extends InjectedFragment
     @OnClick(R.id.login_button)
     public void onLoginButtonClicked()
     {
+        bus.post(new ReferralsEvent.RedemptionLogin());
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
@@ -164,6 +167,8 @@ public class RedemptionSignUpFragment extends InjectedFragment
                 public void onSuccess(final LoginResult loginResult)
                 {
                     final AccessToken accessToken = loginResult.getAccessToken();
+                    bus.post(new ReferralsEvent.RedemptionSignUpClicked(
+                            UserDataManager.AuthType.FACEBOOK.toString().toLowerCase()));
                     bus.post(new HandyEvent.RequestAuthFacebookUser(accessToken, mReferralGuid));
                 }
 

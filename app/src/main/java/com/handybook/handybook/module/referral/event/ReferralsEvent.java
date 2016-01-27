@@ -115,4 +115,29 @@ public abstract class ReferralsEvent
             mShareOption = shareOption;
         }
     }
+
+
+    @Track("accept referral shown")
+    public static class RedemptionScreenShown
+    {
+    }
+
+
+    @Track("accept referral signup")
+    public static class RedemptionSignUpClicked
+    {
+        @TrackField("signup type")
+        private String mType;
+
+        public RedemptionSignUpClicked(final String type)
+        {
+            mType = type;
+        }
+    }
+
+
+    @Track("accept referral existing login")
+    public static class RedemptionLogin
+    {
+    }
 }

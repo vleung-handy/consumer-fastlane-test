@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
@@ -43,6 +45,7 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
     @OnClick(R.id.login_button)
     public void onLoginButtonClicked()
     {
+        bus.post(new ReferralsEvent.RedemptionLogin());
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
@@ -63,6 +66,8 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
 
             final String email = mEmailInput.getEmail();
             final String password = mPasswordInput.getPassword();
+            bus.post(new ReferralsEvent.RedemptionSignUpClicked(
+                    UserDataManager.AuthType.EMAIL.toString().toLowerCase()));
             bus.post(new HandyEvent.RequestCreateUser(email, password, mReferralGuid));
         }
     }

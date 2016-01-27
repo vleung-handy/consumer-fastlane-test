@@ -55,6 +55,7 @@ public class RedemptionFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_redemption, container, false);
         ButterKnife.bind(this, view);
 
+        bus.post(new ReferralsEvent.RedemptionScreenShown());
         requestRedemptionDetails();
 
         return view;
