@@ -7,14 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.ui.widget.EmailInputTextView;
+import com.handybook.handybook.ui.widget.PasswordInputTextView;
+import com.handybook.handybook.util.UiUtils;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RedemptionEmailSignUpFragment extends InjectedFragment
 {
     private static final String KEY_REFERRAL_GUID = "referral_guid";
+
+    @Bind(R.id.email)
+    EmailInputTextView mEmailInput;
+    @Bind(R.id.password)
+    PasswordInputTextView mPasswordInput;
 
     private String mReferralGuid;
 
@@ -30,7 +40,22 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
     @OnClick(R.id.back_button)
     public void onBackButtonClicked()
     {
+        UiUtils.dismissKeyboard(getActivity());
         getActivity().onBackPressed();
+    }
+
+    @OnClick(R.id.sign_up_button)
+    public void onSignUpButtonClicked()
+    {
+        if (mEmailInput.validate() && mPasswordInput.validate())
+        {
+            UiUtils.dismissKeyboard(getActivity());
+            showUiBlockers();
+
+            final String email = mEmailInput.getEmail();
+            final String password = mPasswordInput.getPassword();
+            bus.post(new HandyEvent.RequestCreateUser(email, password, mReferralGuid));
+        }
     }
 
     @Override
@@ -50,9 +75,16 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
     {
         final View view =
                 inflater.inflate(R.layout.fragment_redemption_email_sign_up, container, false);
-
         ButterKnife.bind(this, view);
 
         return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        UiUtils.toggleKeyboard(getActivity());
+        mEmailInput.requestFocus();
     }
 }

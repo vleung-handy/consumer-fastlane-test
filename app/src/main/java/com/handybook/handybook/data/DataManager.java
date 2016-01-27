@@ -273,6 +273,11 @@ public abstract class DataManager
             Callback<User> cb
     );
 
+    public abstract void createUser(
+            CreateUserRequest createUserRequest,
+            Callback<User> cb
+    );
+
     public abstract void getUser(
             String userId,
             String authToken,

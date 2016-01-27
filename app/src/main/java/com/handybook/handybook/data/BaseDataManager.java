@@ -702,6 +702,19 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
+    public void createUser(final CreateUserRequest createUserRequest, final Callback<User> cb)
+    {
+        mService.createUser(createUserRequest, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                handleCreateSessionResponse(response, cb);
+            }
+        });
+    }
+
+    @Override
     public final void authFBUser(final CreateUserRequest createUserRequest, final Callback<User> cb)
     {
         mService.createUserSessionFB(createUserRequest,

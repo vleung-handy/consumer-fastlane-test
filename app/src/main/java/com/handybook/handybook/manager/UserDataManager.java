@@ -89,6 +89,30 @@ public class UserDataManager
     }
 
     @Subscribe
+    public void onRequestCreateUser(final HandyEvent.RequestCreateUser event)
+    {
+        final CreateUserRequest createUserRequest = new CreateUserRequest();
+        createUserRequest.setEmail(event.getEmail());
+        createUserRequest.setPassword(event.getPassword());
+        createUserRequest.setReferralPostGuid(event.getReferralGuid());
+        mDataManager.createUser(createUserRequest,
+                new DataManager.Callback<User>()
+                {
+                    @Override
+                    public void onSuccess(final User user)
+                    {
+                        mBus.post(new HandyEvent.ReceiveAuthUserSuccess(user, AuthType.EMAIL));
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        mBus.post(new HandyEvent.ReceiveAuthUserError(error, AuthType.EMAIL));
+                    }
+                });
+    }
+
+    @Subscribe
     public void onRequestAuthFacebookUser(final HandyEvent.RequestAuthFacebookUser event)
     {
         final AccessToken accessToken = event.getAccessToken();

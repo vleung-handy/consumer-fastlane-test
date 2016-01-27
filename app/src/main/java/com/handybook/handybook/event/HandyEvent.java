@@ -303,4 +303,25 @@ public abstract class HandyEvent
             return mAuthType;
         }
     }
+
+
+    public static class RequestCreateUser extends RequestAuthUser
+    {
+        private final String mReferralGuid;
+
+        public RequestCreateUser(
+                final String email,
+                final String password,
+                final String referralGuid
+        )
+        {
+            super(email, password);
+            mReferralGuid = referralGuid;
+        }
+
+        public String getReferralGuid()
+        {
+            return mReferralGuid;
+        }
+    }
 }

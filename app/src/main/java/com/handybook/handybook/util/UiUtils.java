@@ -8,10 +8,15 @@ import android.view.inputmethod.InputMethodManager;
 
 public final class UiUtils
 {
-    public static void dismissOnBackPressed(Activity activity)
+    public static void toggleKeyboard(Activity activity)
     {
-        UiUtils.dismissKeyboard(activity);
-        activity.onBackPressed();
+        View currentFocus = activity.getCurrentFocus();
+        if (currentFocus != null)
+        {
+            final InputMethodManager inputMethodManager =
+                    (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
     }
 
     public static void dismissKeyboard(Activity activity)

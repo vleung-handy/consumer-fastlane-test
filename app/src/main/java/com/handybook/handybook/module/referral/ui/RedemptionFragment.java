@@ -105,13 +105,6 @@ public class RedemptionFragment extends InjectedFragment
                     public void onSuccess(final User user)
                     {
                         userManager.setCurrentUser(user);
-                        final Intent intent =
-                                new Intent(getActivity(), ServiceCategoriesActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        getActivity().finish();
                     }
 
                     @Override
@@ -120,5 +113,10 @@ public class RedemptionFragment extends InjectedFragment
                     }
                 });
 
+        final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

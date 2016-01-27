@@ -208,8 +208,10 @@ public interface HandyRetrofitService
                            HandyRetrofitCallback cb);
 
     @POST("/user_sessions/fb_create")
-    void createUserSessionFB(@Body CreateUserRequest createUserRequest,
-                             HandyRetrofitCallback cb);
+    void createUserSessionFB(@Body CreateUserRequest createUserRequest, HandyRetrofitCallback cb);
+
+    @POST("/users")
+    void createUser(@Body CreateUserRequest createUserRequest, HandyRetrofitCallback cb);
 
     @GET("/users/{user}")
     void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken,
