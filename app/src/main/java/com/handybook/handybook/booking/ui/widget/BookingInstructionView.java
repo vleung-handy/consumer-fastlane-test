@@ -2,11 +2,11 @@ package com.handybook.handybook.booking.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -15,7 +15,7 @@ import com.handybook.handybook.booking.model.ChecklistItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class InstructionView extends FrameLayout
+public class BookingInstructionView extends CardView
 {
     ChecklistItem mChecklistItem;
 
@@ -24,25 +24,25 @@ public class InstructionView extends FrameLayout
     private String mTitle;
     private String mText;
 
-    @Bind(R.id.state_image)
-    ImageView mStateImage;
-    @Bind(R.id.text)
+    @Bind(R.id.customer_preference_checkbox)
+    AppCompatCheckBox mCheckBox;
+    @Bind(R.id.customer_preference_text)
     TextView mTextView;
 
 
-    public InstructionView(final Context context)
+    public BookingInstructionView(final Context context)
     {
         super(context);
         init();
     }
 
-    public InstructionView(final Context context, final AttributeSet attrs)
+    public BookingInstructionView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
         init(attrs);
     }
 
-    public InstructionView(final Context context, final AttributeSet attrs, final int defStyleAttr)
+    public BookingInstructionView(final Context context, final AttributeSet attrs, final int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init(attrs);
@@ -108,13 +108,13 @@ public class InstructionView extends FrameLayout
         inflateAndBind();
         TypedArray typedArray = getContext().obtainStyledAttributes(
                 attrs,
-                R.styleable.InstructionView
+                R.styleable.BookingInstructionView
         );
         try
         {
-            mState = State.fromId(typedArray.getInt(R.styleable.InstructionView_prefsState, 0));
-            mTitle = typedArray.getString(R.styleable.InstructionView_prefsTitle);
-            mText = typedArray.getString(R.styleable.InstructionView_prefsText);
+            mState = State.fromId(typedArray.getInt(R.styleable.BookingInstructionView_prefsState, 0));
+            mTitle = typedArray.getString(R.styleable.BookingInstructionView_prefsTitle);
+            mText = typedArray.getString(R.styleable.BookingInstructionView_prefsText);
         }
         catch (Exception e)
         {
@@ -130,7 +130,7 @@ public class InstructionView extends FrameLayout
 
     private void inflateAndBind()
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_customer_preference, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_booking_instruction, this, true);
         ButterKnife.bind(this);
     }
 
@@ -139,19 +139,18 @@ public class InstructionView extends FrameLayout
         switch (mState)
         {
             case DEFAULT:
-                mStateImage.setImageResource(R.drawable.ic_check);
+                mCheckBox.setChecked(true);
                 return;
             case DISABLED:
-                mStateImage.setImageResource(R.drawable.ic_check_dark);
+                mCheckBox.setEnabled(false);
                 return;
             case DONE:
-                mStateImage.setImageResource(R.drawable.ic_checkmark);
+                mCheckBox.setChecked(true);
                 return;
             case REQUESTED:
-                mStateImage.setImageResource(R.drawable.ic_chevron);
+                mCheckBox.setChecked(true);
                 return;
             case IN_PROGRESS:
-                mStateImage.setImageResource(R.drawable.com_mixpanel_android_ic_clipboard_checkmark);
                 return;
 
         }
@@ -206,6 +205,6 @@ public class InstructionView extends FrameLayout
 
     public interface OnStateChangedListener
     {
-        public void onStateChanged(ChecklistItem checklistItem);
+        void onStateChanged(ChecklistItem checklistItem);
     }
 }
