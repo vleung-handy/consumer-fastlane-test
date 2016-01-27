@@ -49,6 +49,11 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
+import com.handybook.handybook.module.referral.ui.RedemptionActivity;
+import com.handybook.handybook.module.referral.ui.RedemptionEmailSignUpFragment;
+import com.handybook.handybook.module.referral.ui.RedemptionFragment;
+import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragment;
+import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragmentTest;
 import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.module.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.ui.activity.BaseActivity;
@@ -110,6 +115,10 @@ import static org.mockito.Mockito.when;
         ServiceCategoriesFragmentTest.class,
         ReferralFragment.class,
         ReferralFragmentTest.class,
+        RedemptionActivity.class,
+        RedemptionFragment.class,
+        RedemptionSignUpFragment.class,
+        RedemptionEmailSignUpFragment.class,
 }, library = true)
 public class TestApplicationModule
 {

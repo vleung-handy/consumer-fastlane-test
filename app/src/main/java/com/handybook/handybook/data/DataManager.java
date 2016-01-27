@@ -372,7 +372,7 @@ public abstract class DataManager
         OTHER, SERVER, CLIENT, NETWORK
     }
 
-    public static final class DataManagerError
+    public static class DataManagerError
     {
         private final Type type;
         private final String message;
@@ -400,12 +400,12 @@ public abstract class DataManager
             this.invalidInputs = inputs;
         }
 
-        public final String getMessage()
+        public String getMessage()
         {
             return message;
         }
 
-        public final Type getType()
+        public Type getType()
         {
             return type;
         }

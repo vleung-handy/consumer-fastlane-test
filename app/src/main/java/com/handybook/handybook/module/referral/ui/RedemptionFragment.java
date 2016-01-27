@@ -16,7 +16,6 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
-import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.ValidationUtils;
@@ -26,22 +25,23 @@ import butterknife.ButterKnife;
 
 public class RedemptionFragment extends InjectedFragment
 {
+    private static final String KEY_REFERRAL_GUID = "referral_guid";
     private String mReferralGuid;
 
-    public static RedemptionFragment newInstance()
+    public static RedemptionFragment newInstance(final String referralGuid)
     {
-        return new RedemptionFragment();
+        final RedemptionFragment fragment = new RedemptionFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putString(KEY_REFERRAL_GUID, referralGuid);
+        fragment.setArguments(arguments);
+        return fragment;
     }
 
     @Override
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mReferralGuid = ReferralIntentUtil.getReferralGuidFromIntent(getActivity().getIntent());
-        if (mReferralGuid == null || userManager.isUserLoggedIn()) // new users only
-        {
-            navigateToHomeScreen();
-        }
+        mReferralGuid = getArguments().getString(KEY_REFERRAL_GUID);
     }
 
     @Nullable
@@ -124,6 +124,7 @@ public class RedemptionFragment extends InjectedFragment
                         requestRedemptionDetails();
                     }
                 })
+                .setCancelable(false)
                 .create()
                 .show();
     }
