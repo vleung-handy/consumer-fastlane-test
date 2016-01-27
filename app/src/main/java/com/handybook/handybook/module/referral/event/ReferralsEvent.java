@@ -87,6 +87,15 @@ public abstract class ReferralsEvent
     }
 
 
+    public static class ReceiveRedemptionDetailsError extends HandyEvent.ReceiveErrorEvent
+    {
+        public ReceiveRedemptionDetailsError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
     @Track("referral screen shown")
     public static class ReferralScreenShown {}
 

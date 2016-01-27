@@ -305,8 +305,10 @@ public abstract class HandyEvent
     }
 
 
-    public static class RequestCreateUser extends RequestAuthUser
+    public static class RequestCreateUser extends RequestEvent
     {
+        private final String mEmail;
+        private final String mPassword;
         private final String mReferralGuid;
 
         public RequestCreateUser(
@@ -315,8 +317,19 @@ public abstract class HandyEvent
                 final String referralGuid
         )
         {
-            super(email, password);
+            mEmail = email;
+            mPassword = password;
             mReferralGuid = referralGuid;
+        }
+
+        public String getEmail()
+        {
+            return mEmail;
+        }
+
+        public String getPassword()
+        {
+            return mPassword;
         }
 
         public String getReferralGuid()

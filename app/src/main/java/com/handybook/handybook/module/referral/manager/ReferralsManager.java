@@ -74,6 +74,7 @@ public class ReferralsManager
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
+                        mBus.post(new ReferralsEvent.ReceiveRedemptionDetailsError(error));
                     }
                 });
     }

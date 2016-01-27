@@ -1,8 +1,10 @@
 package com.handybook.handybook.module.referral.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +17,12 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
-import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class RedemptionFragment extends InjectedFragment
 {
@@ -39,8 +40,7 @@ public class RedemptionFragment extends InjectedFragment
         mReferralGuid = ReferralIntentUtil.getReferralGuidFromIntent(getActivity().getIntent());
         if (mReferralGuid == null || userManager.isUserLoggedIn()) // new users only
         {
-            startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
-            getActivity().finish();
+            navigateToHomeScreen();
         }
     }
 
@@ -55,14 +55,19 @@ public class RedemptionFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_redemption, container, false);
         ButterKnife.bind(this, view);
 
-        showUiBlockers();
-        bus.post(new ReferralsEvent.RequestRedemptionDetails(mReferralGuid));
+        requestRedemptionDetails();
 
         return view;
     }
 
+    private void requestRedemptionDetails()
+    {
+        showUiBlockers();
+        bus.post(new ReferralsEvent.RequestRedemptionDetails(mReferralGuid));
+    }
+
     @Subscribe
-    public void onReceiveRequestRedemptionDetails(
+    public void onReceiveRedemptionDetailsSuccess(
             final ReferralsEvent.ReceiveRedemptionDetailsSuccess event
     )
     {
@@ -88,6 +93,41 @@ public class RedemptionFragment extends InjectedFragment
     }
 
     @Subscribe
+    public void onReceiveRedemptionDetailsError(
+            final ReferralsEvent.ReceiveRedemptionDetailsError event
+    )
+    {
+        removeUiBlockers();
+        String displayMessage = event.error.getMessage();
+        if (ValidationUtils.isNullOrEmpty(displayMessage))
+        {
+            displayMessage = getString(R.string.an_error_has_occurred);
+        }
+        new AlertDialog.Builder(getActivity())
+                .setTitle(displayMessage)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                        navigateToHomeScreen();
+                    }
+                })
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                        requestRedemptionDetails();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    @Subscribe
     public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event)
     {
         dataManager.getUser(
@@ -106,7 +146,23 @@ public class RedemptionFragment extends InjectedFragment
                     {
                     }
                 });
+        navigateToHomeScreen();
+    }
 
+    @Subscribe
+    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
+    {
+        removeUiBlockers();
+        String displayMessage = event.error.getMessage();
+        if (ValidationUtils.isNullOrEmpty(displayMessage))
+        {
+            displayMessage = getString(R.string.an_error_has_occurred);
+        }
+        showToast(displayMessage);
+    }
+
+    private void navigateToHomeScreen()
+    {
         final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);

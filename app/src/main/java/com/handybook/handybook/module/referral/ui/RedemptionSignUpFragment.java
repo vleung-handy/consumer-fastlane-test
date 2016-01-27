@@ -21,6 +21,7 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.LeftIconButton;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -148,6 +149,12 @@ public class RedemptionSignUpFragment extends InjectedFragment
                 R.drawable.facebook_pressed_round_left);
         mEmailRegisterButton.init(R.string.sign_up_with_email, R.drawable.ic_email_white,
                 R.drawable.handy_blue_pressed_round_left);
+    }
+
+    @Subscribe
+    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
+    {
+        removeUiBlockers();
     }
 
     private FacebookCallback<LoginResult> mFacebookCallback =

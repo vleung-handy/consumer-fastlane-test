@@ -14,6 +14,7 @@ import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.util.UiUtils;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -94,5 +95,11 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
         super.onResume();
         UiUtils.toggleKeyboard(getActivity());
         mEmailInput.requestFocus();
+    }
+
+    @Subscribe
+    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
+    {
+        removeUiBlockers();
     }
 }

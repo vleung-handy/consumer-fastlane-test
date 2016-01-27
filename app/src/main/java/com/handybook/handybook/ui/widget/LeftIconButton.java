@@ -47,6 +47,7 @@ public class LeftIconButton extends FrameLayout
 
     public void init(final int textId, final int iconId, final int iconBackgroundId)
     {
+        removeAllViews();
         LayoutInflater.from(getContext()).inflate(R.layout.element_left_icon_button, this);
         ButterKnife.bind(this);
         mLabel.setText(textId);
