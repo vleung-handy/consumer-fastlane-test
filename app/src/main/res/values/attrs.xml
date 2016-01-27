@@ -11,11 +11,8 @@
     </declare-styleable>
     <declare-styleable name="BookingInstructionView">
         <attr name="prefsState" >
-            <enum name="undefined" value="0"/>
-            <enum name="disabled" value="1"/>
-            <enum name="requested" value="2"/>
-            <enum name="inProgress" value="3"/>
-            <enum name="done" value="4"/>
+            <enum name="requested" value="0"/>
+            <enum name="declined" value="1"/>
         </attr>
         <attr name="prefsTitle" format="string"/>
         <attr name="prefsText" format="string"/>

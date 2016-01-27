@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -21,6 +22,7 @@ public class BookingInstructionView extends CardView
 
     private State mState;
     private OnStateChangedListener mOnStateChangedListener;
+    private AppCompatCheckBox.OnCheckedChangeListener mCheckboxCheckedChangeListener;
     private String mTitle;
     private String mText;
 
@@ -29,6 +31,16 @@ public class BookingInstructionView extends CardView
     @Bind(R.id.customer_preference_text)
     TextView mTextView;
 
+    {
+        mCheckboxCheckedChangeListener = new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked)
+            {
+                setState(isChecked ? State.REQUESTED : State.DECLINED);
+            }
+        };
+    }
 
     public BookingInstructionView(final Context context)
     {
@@ -56,7 +68,6 @@ public class BookingInstructionView extends CardView
     public void setState(final State state)
     {
         mState = state;
-        updateStateImage();
         notifyObserver();
     }
 
@@ -132,25 +143,18 @@ public class BookingInstructionView extends CardView
     {
         LayoutInflater.from(getContext()).inflate(R.layout.view_booking_instruction, this, true);
         ButterKnife.bind(this);
+        mCheckBox.setOnCheckedChangeListener(mCheckboxCheckedChangeListener);
     }
 
     private void updateStateImage()
     {
         switch (mState)
         {
-            case DEFAULT:
-                mCheckBox.setChecked(true);
-                return;
-            case DISABLED:
-                mCheckBox.setEnabled(false);
-                return;
-            case DONE:
-                mCheckBox.setChecked(true);
-                return;
             case REQUESTED:
                 mCheckBox.setChecked(true);
                 return;
-            case IN_PROGRESS:
+            case DECLINED:
+                mCheckBox.setChecked(false);
                 return;
 
         }
@@ -175,11 +179,8 @@ public class BookingInstructionView extends CardView
 
     public enum State
     {
-        DEFAULT(0),
-        DISABLED(1),
-        REQUESTED(2),
-        IN_PROGRESS(3),
-        DONE(4);
+        REQUESTED(0),
+        DECLINED(1);
 
         int mId;
 
@@ -198,7 +199,7 @@ public class BookingInstructionView extends CardView
                     return eachState;
                 }
             }
-            return DEFAULT;
+            return DECLINED;
         }
     }
 
