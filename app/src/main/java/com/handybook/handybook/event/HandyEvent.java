@@ -337,4 +337,80 @@ public abstract class HandyEvent
             return mReferralGuid;
         }
     }
+
+
+    public static class RequestUser extends RequestEvent
+    {
+        private String mUserId;
+        private String mAuthToken;
+        private UserDataManager.AuthType mAuthType;
+
+        public RequestUser(
+                final String userId, final String authToken,
+                final UserDataManager.AuthType authType
+        )
+        {
+            mUserId = userId;
+            mAuthToken = authToken;
+            mAuthType = authType;
+        }
+
+        public String getUserId()
+        {
+            return mUserId;
+        }
+
+        public String getAuthToken()
+        {
+            return mAuthToken;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
+
+
+    public static class ReceiveUserSuccess extends ReceiveSuccessEvent
+    {
+        private User mUser;
+        private UserDataManager.AuthType mAuthType;
+
+        public ReceiveUserSuccess(final User user, final UserDataManager.AuthType authType)
+        {
+            mUser = user;
+            mAuthType = authType;
+        }
+
+        public User getUser()
+        {
+            return mUser;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
+
+
+    public static class ReceiveUserError extends ReceiveErrorEvent
+    {
+        private UserDataManager.AuthType mAuthType;
+
+        public ReceiveUserError(
+                final DataManager.DataManagerError error,
+                final UserDataManager.AuthType authType
+        )
+        {
+            mAuthType = authType;
+            this.error = error;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
 }

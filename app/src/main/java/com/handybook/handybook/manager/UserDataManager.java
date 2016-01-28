@@ -139,6 +139,28 @@ public class UserDataManager
         }).executeAsync();
     }
 
+    @Subscribe
+    public void onRequestUser(final HandyEvent.RequestUser event)
+    {
+        mDataManager.getUser(event.getUserId(), event.getAuthToken(),
+                new DataManager.Callback<User>()
+                {
+                    @Override
+                    public void onSuccess(final User user)
+                    {
+                        mUserManager.setCurrentUser(user);
+                        mBus.post(new HandyEvent.ReceiveUserSuccess(user, event.getAuthType()));
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        mBus.post(new HandyEvent.ReceiveUserError(error, event.getAuthType()));
+                    }
+                });
+    }
+
+
     private void authFacebookUser(
             final JSONObject user,
             final AccessToken accessToken,

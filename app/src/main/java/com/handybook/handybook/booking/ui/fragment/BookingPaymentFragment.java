@@ -50,6 +50,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
@@ -157,7 +158,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     public void onScannedCardResult(@NonNull final io.card.payment.CreditCard scannedCardResult)
     {
         mCreditCardText.setText(scannedCardResult.cardNumber);
-        if(scannedCardResult.isExpiryValid())
+        if (scannedCardResult.isExpiryValid())
         {
             mExpText.setTextFromMonthYear(scannedCardResult.expiryMonth, scannedCardResult.expiryYear);
         }
@@ -249,8 +250,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         mixpanel.trackEventPaymentPage(bookingManager.getCurrentRequest(),
                 bookingManager.getCurrentQuote(),
@@ -312,8 +315,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mTermsOfUseText.setMovementMethod(new LinkMovementMethod()
         {
             @Override
-            public boolean onTouchEvent(final TextView widget,
-                                        final Spannable buffer, final MotionEvent event)
+            public boolean onTouchEvent(
+                    final TextView widget,
+                    final Spannable buffer, final MotionEvent event
+            )
             {
                 final int action = event.getAction();
                 if (action == MotionEvent.ACTION_DOWN)
@@ -895,20 +900,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         }
 
                         final User user = userManager.getCurrentUser();
-                        dataManager.getUser(user.getId(), user.getAuthToken(),
-                                new DataManager.Callback<User>()
-                                {
-                                    @Override
-                                    public void onSuccess(final User updatedUser)
-                                    {
-                                        userManager.setCurrentUser(updatedUser);
-                                    }
-
-                                    @Override
-                                    public void onError(final DataManager.DataManagerError error)
-                                    {
-                                    }
-                                });
+                        bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(),
+                                null));
 
                         bookingManager.setCurrentPostInfo(new BookingPostInfo());
 
@@ -939,14 +932,18 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     private final TextWatcher cardTextWatcher = new TextWatcher()
     {
         @Override
-        public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                      final int count, final int after)
+        public void beforeTextChanged(
+                final CharSequence charSequence, final int start,
+                final int count, final int after
+        )
         {
         }
 
         @Override
-        public void onTextChanged(final CharSequence charSequence, final int start,
-                                  final int before, final int count)
+        public void onTextChanged(
+                final CharSequence charSequence, final int start,
+                final int before, final int count
+        )
         {
         }
 
@@ -957,8 +954,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         }
     };
 
-    private void handlePromoSuccess(final BookingCoupon coupon, final BookingQuote quote,
-                                    final BookingTransaction transaction, final String promo)
+    private void handlePromoSuccess(
+            final BookingCoupon coupon, final BookingQuote quote,
+            final BookingTransaction transaction, final String promo
+    )
     {
         if (!allowCallbacks) { return; }
         quote.setPriceTable(coupon.getPriceTable());

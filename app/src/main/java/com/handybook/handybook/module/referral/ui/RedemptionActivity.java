@@ -10,24 +10,24 @@ import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public class RedemptionActivity extends MenuDrawerActivity
 {
-    private String mReferralGuid;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setDrawerDisabled(true);
-        mReferralGuid = ReferralIntentUtil.getReferralGuidFromIntent(getIntent());
-        if (mReferralGuid == null || mUserManager.isUserLoggedIn()) // new users only
-        {
-            navigateToHomeScreen();
-        }
     }
 
     @Override
     protected Fragment createFragment()
     {
-        return RedemptionFragment.newInstance(mReferralGuid);
+        String referralGuid = ReferralIntentUtil.getReferralGuidFromIntent(getIntent());
+        if (referralGuid == null || mUserManager.isUserLoggedIn()) // new users only
+        {
+            navigateToHomeScreen();
+            finish();
+        }
+        return RedemptionFragment.newInstance(referralGuid);
     }
 
     @Override
@@ -42,6 +42,5 @@ public class RedemptionActivity extends MenuDrawerActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
     }
 }

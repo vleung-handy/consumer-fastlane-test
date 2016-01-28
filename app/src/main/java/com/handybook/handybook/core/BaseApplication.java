@@ -14,6 +14,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.manager.AppBlockManager;
@@ -134,8 +135,10 @@ public class BaseApplication extends MultiDexApplication
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             @Override
-            public void onActivityCreated(final Activity activity,
-                                          final Bundle savedInstanceState)
+            public void onActivityCreated(
+                    final Activity activity,
+                    final Bundle savedInstanceState
+            )
             {
                 bus.post(new ActivityEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
@@ -181,7 +184,8 @@ public class BaseApplication extends MultiDexApplication
             @Override
             public void onActivitySaveInstanceState(
                     final Activity activity,
-                    final Bundle outState)
+                    final Bundle outState
+            )
             {
                 bus.post(new ActivityEvent.SavedInstanceState(activity, outState));
             }
@@ -198,10 +202,11 @@ public class BaseApplication extends MultiDexApplication
     {
         Fabric.with(this, new Crashlytics());
         Crashlytics.setUserIdentifier(
-                Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID)
+                Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID)
         );
         User currentUser = userManager.getCurrentUser();
-        if (currentUser != null){
+        if (currentUser != null)
+        {
             Crashlytics.setUserEmail(currentUser.getEmail());
         }
     }
@@ -216,19 +221,7 @@ public class BaseApplication extends MultiDexApplication
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
-            dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
-            {
-                @Override
-                public void onSuccess(final User updatedUser)
-                {
-                    userManager.setCurrentUser(updatedUser);
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-                }
-            });
+            bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(), null));
         }
     }
 

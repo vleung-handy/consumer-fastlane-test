@@ -94,7 +94,8 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldNavigateToHomeScreenOnErrorDialogRetry() throws Exception
+    public void shouldRequestRedemptionDetailsOnReceiveRedemptionDetailsErrorDialogRetry()
+            throws Exception
     {
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
         mFragment.onReceiveRedemptionDetailsError(mTestReceiveRedemptionDetailsError);
@@ -111,7 +112,8 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldNavigateToHomeScreenOnErrorDialogCancel() throws Exception
+    public void shouldNavigateToHomeScreenOnReceiveRedemptionDetailsErrorDialogCancel()
+            throws Exception
     {
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
         mFragment.onReceiveRedemptionDetailsError(mTestReceiveRedemptionDetailsError);
@@ -136,9 +138,40 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldNavigateToHomeScreenOnReceiveAuthUserSuccess() throws Exception
+    public void shouldRequestUserOnReceiveAuthUserSuccess() throws Exception
     {
         mFragment.onReceiveAuthUserSuccess(mock(HandyEvent.ReceiveAuthUserSuccess.class,
+                Answers.RETURNS_DEEP_STUBS.get()));
+
+        final HandyEvent.RequestUser event =
+                AppAssertionUtils.getFirstMatchingBusEvent(mFragment.bus,
+                        HandyEvent.RequestUser.class);
+        assertNotNull(event);
+    }
+
+    @Test
+    public void shouldRequestUserOnReceiveUserErrorDialogRetry()
+            throws Exception
+    {
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
+        mFragment.onReceiveAuthUserSuccess(mock(HandyEvent.ReceiveAuthUserSuccess.class,
+                Answers.RETURNS_DEEP_STUBS.get()));
+        mFragment.onReceiveUserError(new HandyEvent.ReceiveUserError(mMockError, null));
+        reset(mFragment.bus);
+
+        final Dialog dialog = ShadowAlertDialog.getLatestDialog();
+        dialog.findViewById(android.R.id.button1).performClick();
+
+        final HandyEvent.RequestUser event =
+                AppAssertionUtils.getFirstMatchingBusEvent(mFragment.bus,
+                        HandyEvent.RequestUser.class);
+        assertNotNull(event);
+    }
+
+    @Test
+    public void shouldNavigateToHomeScreenOnReceiveUserSuccess() throws Exception
+    {
+        mFragment.onReceiveUserSuccess(mock(HandyEvent.ReceiveUserSuccess.class,
                 Answers.RETURNS_DEEP_STUBS.get()));
 
         final Intent nextStartedActivity =

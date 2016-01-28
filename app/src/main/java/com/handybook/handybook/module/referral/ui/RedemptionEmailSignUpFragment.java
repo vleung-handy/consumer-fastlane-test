@@ -103,6 +103,13 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
     }
 
     @Subscribe
+    public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event)
+    {
+        // RedemptionFragment handles post authentication procedures
+        removeUiBlockers();
+    }
+
+    @Subscribe
     public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
     {
         removeUiBlockers();

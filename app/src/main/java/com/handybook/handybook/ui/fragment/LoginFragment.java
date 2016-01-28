@@ -36,6 +36,7 @@ import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
+import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
 
 import net.simonvt.menudrawer.MenuDrawer;
@@ -151,7 +152,7 @@ public final class LoginFragment extends BookingFlowFragment
             mFbLayout.setVisibility(View.GONE);
             mOrText.setVisibility(View.GONE);
             mEmailText.setText(mBookingUserEmail);
-            if (mBookingUserName == null || mBookingUserName.isEmpty())
+            if (ValidationUtils.isNullOrEmpty(mBookingUserName))
             {
                 mWelcomeText.setVisibility(View.GONE);
             }
@@ -455,54 +456,47 @@ public final class LoginFragment extends BookingFlowFragment
     {
         final User user = event.getUser();
         final UserDataManager.AuthType authType = event.getAuthType();
-        dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
-        {
-            @Override
-            public void onSuccess(final User user)
-            {
-                if (!allowCallbacks) { return; }
-
-                userManager.setCurrentUser(user);
-
-                if (authType == UserDataManager.AuthType.FACEBOOK)
-                {
-                    mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.FACEBOOK);
-                }
-                else { mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL); }
-
-/*
-                    Session session = Session.getActiveSession();
-                    if (session != null) session.closeAndClearTokenInformation();
-*/
-
-                if (mBookingUserName != null ||
-                        authType == UserDataManager.AuthType.FACEBOOK && mFindUser)
-                {
-                    continueBookingFlow();
-                    return;
-                }
-
-                progressDialog.dismiss();
-                enableInputs();
-
-                final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-                activity.setOnDrawerStateChangedListener(LoginFragment.this);
-
-                final MenuDrawer menuDrawer = activity.getMenuDrawer();
-                menuDrawer.openMenu(true);
-            }
-
-            @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
-                if (!allowCallbacks) { return; }
-                handleUserCallbackError(error, authType);
-            }
-        });
+        bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(), authType));
     }
 
     @Subscribe
     public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
+    {
+        handleUserCallbackError(event.error, event.getAuthType());
+    }
+
+    @Subscribe
+    public void onReceiveUserSuccess(final HandyEvent.ReceiveUserSuccess event)
+    {
+        final UserDataManager.AuthType authType = event.getAuthType();
+        if (authType == UserDataManager.AuthType.FACEBOOK)
+        {
+            mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.FACEBOOK);
+        }
+        else
+        {
+            mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
+        }
+
+        if (mBookingUserName != null ||
+                authType == UserDataManager.AuthType.FACEBOOK && mFindUser)
+        {
+            continueBookingFlow();
+            return;
+        }
+
+        progressDialog.dismiss();
+        enableInputs();
+
+        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+        activity.setOnDrawerStateChangedListener(LoginFragment.this);
+
+        final MenuDrawer menuDrawer = activity.getMenuDrawer();
+        menuDrawer.openMenu(true);
+    }
+
+    @Subscribe
+    public void onReceiveUserError(final HandyEvent.ReceiveUserError event)
     {
         handleUserCallbackError(event.error, event.getAuthType());
     }
