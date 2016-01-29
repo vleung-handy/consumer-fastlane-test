@@ -12,34 +12,34 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
+import com.handybook.handybook.util.ValidationUtils;
+import com.squareup.otto.Subscribe;
 
 import net.simonvt.menudrawer.MenuDrawer;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -61,13 +61,6 @@ public final class LoginFragment extends BookingFlowFragment
     private boolean mFindUser;
     private String mBookingUserName, mBookingUserEmail;
     private BookingRequest mBookingRequest;
-    private AuthType mAuthType;
-
-
-    private enum AuthType
-    {
-        EMAIL, FACEBOOK
-    }
 
 
     @Bind(R.id.nav_text)
@@ -93,8 +86,10 @@ public final class LoginFragment extends BookingFlowFragment
     @Bind(R.id.menu_button_layout)
     ViewGroup mMenuButtonLayout;
 
-    public static LoginFragment newInstance(final boolean findUser, final String bookingUserName,
-                                            final String bookingUserEmail)
+    public static LoginFragment newInstance(
+            final boolean findUser, final String bookingUserName,
+            final String bookingUserEmail
+    )
     {
         final LoginFragment fragment = new LoginFragment();
         final Bundle args = new Bundle();
@@ -129,8 +124,10 @@ public final class LoginFragment extends BookingFlowFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_login, container, false);
@@ -155,9 +152,12 @@ public final class LoginFragment extends BookingFlowFragment
             mFbLayout.setVisibility(View.GONE);
             mOrText.setVisibility(View.GONE);
             mEmailText.setText(mBookingUserEmail);
-            if(mBookingUserName == null || mBookingUserName.isEmpty()){
+            if (ValidationUtils.isNullOrEmpty(mBookingUserName))
+            {
                 mWelcomeText.setVisibility(View.GONE);
-            } else {
+            }
+            else
+            {
                 mWelcomeText.setText(String.format(getString(R.string.welcome_back), mBookingUserName));
                 mWelcomeText.setVisibility(View.VISIBLE);
             }
@@ -171,9 +171,6 @@ public final class LoginFragment extends BookingFlowFragment
             mMenuButtonLayout.addView(menuButton);
         }
 
-        //fbButton.setFragment(this);
-        //fbButton.setReadPermissions("email");
-
         mFbLoginButton.setFragment(this);
         mFbLoginButton.setReadPermissions("email");
 
@@ -183,40 +180,8 @@ public final class LoginFragment extends BookingFlowFragment
             @Override
             public void onSuccess(final LoginResult loginResult)
             {
-                GraphRequest.newMeRequest( // Request user info from FB through a GraphRequest
-                        loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
-                        {
-                            @Override
-                            public void onCompleted(JSONObject me, GraphResponse response)
-                            {
-                                if (response.getError() != null)
-                                {
-                                    Crashlytics.logException(
-                                            new FacebookAuthorizationException(
-                                                    response.getError().toString()
-                                            )
-                                    );
-                                    //TODO: Handle error
-                                }
-                                else
-                                {
-                                    String fbid = me.optString("id");
-                                    String accessToken = loginResult.getAccessToken().getToken();
-                                    String email = me.optString("email");
-                                    String firstName = me.optString("first_name");
-                                    String lastName = me.optString("last_name");
-                                    //TODO: Make magic strings -> costants
-                                    mAuthType = AuthType.FACEBOOK;
-                                    dataManager.authFBUser( // send email and id to your web server
-                                            fbid,
-                                            accessToken,
-                                            email,
-                                            firstName,
-                                            lastName,
-                                            userCallback);
-                                }
-                            }
-                        }).executeAsync();
+                final AccessToken accessToken = loginResult.getAccessToken();
+                bus.post(new HandyEvent.RequestAuthFacebookUser(accessToken, null));
             }
 
             @Override
@@ -295,8 +260,10 @@ public final class LoginFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onActivityResult(final int requestCode, final int resultCode,
-                                       final Intent data)
+    public final void onActivityResult(
+            final int requestCode, final int resultCode,
+            final Intent data
+    )
     {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -388,9 +355,7 @@ public final class LoginFragment extends BookingFlowFragment
                 }
                 else
                 {
-                    mAuthType = AuthType.EMAIL;
-                    dataManager.authUser(email,
-                            mPasswordText.getPassword(), userCallback);
+                    bus.post(new HandyEvent.RequestAuthUser(email, mPasswordText.getPassword()));
                 }
             }
         }
@@ -487,69 +452,61 @@ public final class LoginFragment extends BookingFlowFragment
     };
 */
 
-    private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>()
+    @Subscribe
+    public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event)
     {
-        @Override
-        public void onSuccess(final User user)
+        final User user = event.getUser();
+        final UserDataManager.AuthType authType = event.getAuthType();
+        bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(), authType));
+    }
+
+    @Subscribe
+    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
+    {
+        handleUserCallbackError(event.error, event.getAuthType());
+    }
+
+    @Subscribe
+    public void onReceiveUserSuccess(final HandyEvent.ReceiveUserSuccess event)
+    {
+        final UserDataManager.AuthType authType = event.getAuthType();
+        if (authType == UserDataManager.AuthType.FACEBOOK)
         {
-            if (!allowCallbacks) { return; }
-
-            dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
-            {
-                @Override
-                public void onSuccess(final User user)
-                {
-                    if (!allowCallbacks) { return; }
-
-                    userManager.setCurrentUser(user);
-
-                    if (mAuthType == AuthType.FACEBOOK)
-                    {
-                        mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.FACEBOOK);
-                    }
-                    else { mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL); }
-
-/*
-                    Session session = Session.getActiveSession();
-                    if (session != null) session.closeAndClearTokenInformation();
-*/
-
-                    if (mBookingUserName != null || mAuthType == AuthType.FACEBOOK && mFindUser)
-                    {
-                        continueBookingFlow();
-                        return;
-                    }
-
-                    progressDialog.dismiss();
-                    enableInputs();
-
-                    final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-                    activity.setOnDrawerStateChangedListener(LoginFragment.this);
-
-                    final MenuDrawer menuDrawer = activity.getMenuDrawer();
-                    menuDrawer.openMenu(true);
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-                    if (!allowCallbacks) { return; }
-                    handleUserCallbackError(error);
-                }
-            });
+            mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.FACEBOOK);
+        }
+        else
+        {
+            mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
         }
 
-        @Override
-        public void onError(final DataManager.DataManagerError error)
+        if (mBookingUserName != null ||
+                authType == UserDataManager.AuthType.FACEBOOK && mFindUser)
         {
-            if (!allowCallbacks) { return; }
-            handleUserCallbackError(error);
+            continueBookingFlow();
+            return;
         }
-    };
+
+        progressDialog.dismiss();
+        enableInputs();
+
+        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+        activity.setOnDrawerStateChangedListener(LoginFragment.this);
+
+        final MenuDrawer menuDrawer = activity.getMenuDrawer();
+        menuDrawer.openMenu(true);
+    }
+
+    @Subscribe
+    public void onReceiveUserError(final HandyEvent.ReceiveUserError event)
+    {
+        handleUserCallbackError(event.error, event.getAuthType());
+    }
 
     @Override
-    public void onDrawerStateChange(final MenuDrawer menuDrawer, final int oldState,
-                                    final int newState)
+    public void onDrawerStateChange(
+            final MenuDrawer menuDrawer, final int oldState,
+            final int newState
+    )
     {
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
         if (newState == MenuDrawer.STATE_OPEN)
@@ -558,9 +515,12 @@ public final class LoginFragment extends BookingFlowFragment
         }
     }
 
-    private void handleUserCallbackError(final DataManager.DataManagerError error)
+    private void handleUserCallbackError(
+            final DataManager.DataManagerError error,
+            final UserDataManager.AuthType authType
+    )
     {
-        if (mAuthType == AuthType.FACEBOOK)
+        if (authType == UserDataManager.AuthType.FACEBOOK)
         {
             mixpanel.trackEventLoginFailure(Mixpanel.LoginType.FACEBOOK);
         }

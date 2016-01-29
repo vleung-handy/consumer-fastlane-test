@@ -2,6 +2,7 @@ package com.handybook.handybook.module.referral.manager;
 
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -55,5 +56,26 @@ public class ReferralsManager
             {
             }
         });
+    }
+
+    @Subscribe
+    public void onRequestRedemptionDetails(final ReferralsEvent.RequestRedemptionDetails event)
+    {
+        mDataManager.requestRedemptionDetails(event.getGuid(),
+                new DataManager.Callback<RedemptionDetailsResponse>()
+                {
+                    @Override
+                    public void onSuccess(final RedemptionDetailsResponse redemptionDetailsResponse)
+                    {
+                        mBus.post(new ReferralsEvent.ReceiveRedemptionDetailsSuccess(
+                                redemptionDetailsResponse.getRedemptionDetails()));
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        mBus.post(new ReferralsEvent.ReceiveRedemptionDetailsError(error));
+                    }
+                });
     }
 }

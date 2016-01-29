@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressReque
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;
@@ -206,13 +207,11 @@ public interface HandyRetrofitService
     void createUserSession(@Field("email") String email, @Field("password") String password,
                            HandyRetrofitCallback cb);
 
-    @FormUrlEncoded
     @POST("/user_sessions/fb_create")
-    void createUserSessionFB(@Field("uid") String fbid,
-                             @Field("facebook_access_token") String accessToken,
-                             @Field("email") String email, @Field("first_name") String firstName,
-                             @Field("last_name") String lastName,
-                             HandyRetrofitCallback cb);
+    void createUserSessionFB(@Body CreateUserRequest createUserRequest, HandyRetrofitCallback cb);
+
+    @POST("/users")
+    void createUser(@Body CreateUserRequest createUserRequest, HandyRetrofitCallback cb);
 
     @GET("/users/{user}")
     void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken,
@@ -275,8 +274,10 @@ public interface HandyRetrofitService
     void requestPrepareReferrals(HandyRetrofitCallback cb);
 
     @POST("/referrals/confirm")
-    void requestConfirmReferral(@Query("post_guid") String guid,
-                                EmptyHandyRetroFitCallback emptyHandyRetroFitCallback);
+    void requestConfirmReferral(@Query("post_guid") String guid, HandyRetrofitCallback cb);
+
+    @GET("/referrals/claim_details")
+    void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);
 
     final class RateProRequest
     {

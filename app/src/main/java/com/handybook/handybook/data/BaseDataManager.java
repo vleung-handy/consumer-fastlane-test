@@ -35,10 +35,12 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 import org.json.JSONArray;
@@ -700,10 +702,22 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public final void authFBUser(final String fbid, final String accessToken, final String email,
-                                 final String firstName, String lastName, final Callback<User> cb)
+    public void createUser(final CreateUserRequest createUserRequest, final Callback<User> cb)
     {
-        mService.createUserSessionFB(fbid, accessToken, email, firstName, lastName,
+        mService.createUser(createUserRequest, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                handleCreateSessionResponse(response, cb);
+            }
+        });
+    }
+
+    @Override
+    public final void authFBUser(final CreateUserRequest createUserRequest, final Callback<User> cb)
+    {
+        mService.createUserSessionFB(createUserRequest,
                 new HandyRetrofitCallback(cb)
                 {
                     @Override
@@ -833,6 +847,14 @@ public final class BaseDataManager extends DataManager
     public void requestConfirmReferral(final String guid, final Callback<Void> cb)
     {
         mService.requestConfirmReferral(guid, new EmptyHandyRetroFitCallback(cb));
+    }
+
+    @Override
+    public void requestRedemptionDetails(final String guid,
+                                         final Callback<RedemptionDetailsResponse> cb)
+    {
+        mService.requestRedemptionDetails(guid,
+                new RedemptionDetailsResponseHandyRetrofitCallback(cb));
     }
 
     @Override

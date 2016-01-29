@@ -56,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Inject
     Mixpanel mMixpanel;
     @Inject
-    UserManager mUserManager;
+    protected UserManager mUserManager;
     @Inject
     DataManager mDataManager;
     @Inject

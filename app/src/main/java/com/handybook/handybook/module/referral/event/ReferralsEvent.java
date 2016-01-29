@@ -4,6 +4,7 @@ import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.analytics.annotation.TrackField;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.module.referral.model.RedemptionDetails;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 public abstract class ReferralsEvent
@@ -54,6 +55,47 @@ public abstract class ReferralsEvent
     }
 
 
+    public static class RequestRedemptionDetails
+    {
+        private String mGuid;
+
+        public RequestRedemptionDetails(final String guid)
+        {
+            mGuid = guid;
+        }
+
+        public String getGuid()
+        {
+            return mGuid;
+        }
+    }
+
+
+    public static class ReceiveRedemptionDetailsSuccess
+    {
+        private RedemptionDetails mRedemptionDetails;
+
+        public ReceiveRedemptionDetailsSuccess(final RedemptionDetails redemptionDetails)
+        {
+            mRedemptionDetails = redemptionDetails;
+        }
+
+        public RedemptionDetails getRedemptionDetails()
+        {
+            return mRedemptionDetails;
+        }
+    }
+
+
+    public static class ReceiveRedemptionDetailsError extends HandyEvent.ReceiveErrorEvent
+    {
+        public ReceiveRedemptionDetailsError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
     @Track("referral screen shown")
     public static class ReferralScreenShown {}
 
@@ -72,5 +114,30 @@ public abstract class ReferralsEvent
         {
             mShareOption = shareOption;
         }
+    }
+
+
+    @Track("accept referral shown")
+    public static class RedemptionScreenShown
+    {
+    }
+
+
+    @Track("accept referral signup")
+    public static class RedemptionSignUpClicked
+    {
+        @TrackField("signup type")
+        private String mType;
+
+        public RedemptionSignUpClicked(final String type)
+        {
+            mType = type;
+        }
+    }
+
+
+    @Track("accept referral existing login")
+    public static class RedemptionLogin
+    {
     }
 }

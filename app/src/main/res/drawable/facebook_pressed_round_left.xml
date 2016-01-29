@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners
+                android:bottomLeftRadius="@dimen/round_button_radius"
+                android:topLeftRadius="@dimen/round_button_radius"/>
+            <stroke android:width="1dip" android:color="@color/facebook_pressed"/>
+            <solid android:color="@color/facebook_pressed"/>
+        </shape>
+    </item>
+</selector>

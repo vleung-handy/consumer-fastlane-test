@@ -17,7 +17,7 @@ import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
-import com.handybook.handybook.module.referral.util.IntentUtil;
+import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
@@ -100,7 +100,7 @@ public class ReferralFragment extends InjectedFragment
             if (resultCode == Activity.RESULT_OK && intent != null)
             {
                 final String resolvedChannel =
-                        IntentUtil.addReferralIntentExtras(getActivity(), intent,
+                        ReferralIntentUtil.addReferralIntentExtras(getActivity(), intent,
                                 mReferralChannels);
                 final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (ValidationUtils.isNullOrEmpty(extraText))
@@ -108,7 +108,7 @@ public class ReferralFragment extends InjectedFragment
                     intent.putExtra(Intent.EXTRA_TEXT, mReferralDescriptor.getCouponCode());
                 }
                 final String applicationName =
-                        IntentUtil.getApplicationNameFromIntent(getActivity(), intent);
+                        ReferralIntentUtil.getApplicationNameFromIntent(getActivity(), intent);
                 bus.post(new ReferralsEvent.OtherShareOptionsClicked(applicationName));
                 launchShareIntent(intent, resolvedChannel);
             }
@@ -206,7 +206,7 @@ public class ReferralFragment extends InjectedFragment
     {
         final Intent dummyIntent = new Intent();
         dummyIntent.setAction(Intent.ACTION_SEND);
-        dummyIntent.setType(IntentUtil.MIME_TYPE_PLAIN_TEXT);
+        dummyIntent.setType(ReferralIntentUtil.MIME_TYPE_PLAIN_TEXT);
 
         final Intent activityPickerIntent = new Intent();
         activityPickerIntent.setAction(Intent.ACTION_PICK_ACTIVITY);
@@ -223,7 +223,7 @@ public class ReferralFragment extends InjectedFragment
         if (smsReferralInfo != null)
         {
             final Intent smsReferralIntent =
-                    IntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo);
+                    ReferralIntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo);
             bus.post(new ReferralsEvent.InviteFriendsClicked());
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
         }

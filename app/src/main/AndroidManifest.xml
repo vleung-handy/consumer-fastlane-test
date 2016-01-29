@@ -116,6 +116,24 @@
             android:name=".module.referral.ui.ReferralActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".module.referral.ui.RedemptionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="r.handy.com"
+                    android:path="/r"
+                    android:scheme="http"
+                    />
+            </intent-filter>
+        </activity>
         <activity android:name=".booking.ui.activity.BookingOptionsActivity"/>
         <activity android:name=".booking.ui.activity.BookingDateActivity"/>
         <activity android:name=".booking.ui.activity.BookingAddressActivity"/>
@@ -148,12 +166,15 @@
         <!--Required by the DeepLinkDispatch library-->
         <activity
             android:name="com.airbnb.deeplinkdispatch.DeepLinkActivity"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:theme="@android:style/Theme.NoDisplay"
+            >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="handybook" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="handybook"/>
                 <!--TODO: parameterize the scheme?-->
             </intent-filter>
         </activity>
@@ -230,13 +251,15 @@
 
         <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
         <activity
-            android:label="@string/title_activity_notification_feed"
             android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
+            android:label="@string/title_activity_notification_feed"
             android:parentActivityName=".booking.ui.activity.ServicesActivity"
-            android:theme="@style/Theme.Base">
+            android:theme="@style/Theme.Base"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.handybook.handybook.booking.ui.activity.ServicesActivity"/>
+                android:value="com.handybook.handybook.booking.ui.activity.ServicesActivity"
+                />
         </activity>
 
         <!-- REQUIRED for Urban Airship Landing Pages
