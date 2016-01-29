@@ -1,4 +1,5 @@
 import org.gradle.logging.StyledTextOutputFactory
+
 import static org.gradle.logging.StyledTextOutput.Style
 
 buildscript {
@@ -7,7 +8,7 @@ buildscript {
             dirs 'libs'
             dirs 'aars'
         }
-        mavenCentral()
+        jcenter()
         maven { url 'https://maven.fabric.io/public' }
     }
 
@@ -27,12 +28,11 @@ repositories {
         dirs 'libs'
         dirs 'aars'
     }
-    mavenCentral()
+    jcenter()
 }
 
-apply plugin: 'android'
-apply plugin: 'android-apt'
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 // This does not break the build when Android Studio is missing the JRebel for Android plugin.
 apply plugin: 'com.zeroturnaround.jrebel.android'
 apply plugin: 'io.fabric'
@@ -217,6 +217,9 @@ dependencies {
 
     //Location
     compile 'com.google.android.gms:play-services-location:8.4.8.7@aar'
+
+    //DragLinearLayout
+    compile 'com.jmedeisis:draglinearlayout:1.1.0'
 
     //Testing with junit and robolectric
     testCompile 'org.robolectric:robolectric:3.0'
