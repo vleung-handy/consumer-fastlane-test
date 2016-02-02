@@ -8,8 +8,9 @@ import android.util.AttributeSet;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -27,10 +28,12 @@ public class InstructionListView extends FrameLayout
     Instructions mInstructions;
     private ArrayList<BookingInstructionView> mBookingInstructionViews;
     private OnInstructionsChangedListener mOnInstructionsChangedListener;
-    private BookingInstructionView.OnStateChangedListener mInstructionStateListener;
 
+    private ScrollView mParentScrollView;
+
+    private BookingInstructionView.OnStateChangedListener mInstructionStateListener;
     @Bind(R.id.preferences_container)
-    ViewGroup mCheckListsLayout;
+    LinearLayout mCheckListsLayout;
     @Bind(R.id.title)
     TextView mTitle;
 
@@ -176,6 +179,11 @@ public class InstructionListView extends FrameLayout
         {
             mOnInstructionsChangedListener.onInstructionsChanged(mInstructions);
         }
+    }
+
+    public void setParentScrollContainer(final ScrollView scrollView)
+    {
+        mParentScrollView = scrollView;
     }
 
     public interface OnInstructionsChangedListener

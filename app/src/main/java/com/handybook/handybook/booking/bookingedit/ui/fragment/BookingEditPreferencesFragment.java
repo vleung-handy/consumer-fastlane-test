@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
@@ -38,6 +39,8 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     Button mNextButton;
     @Bind(R.id.instructions_layout)
     InstructionListView mInstructionListView;
+    @Bind(R.id.edit_preferences_scrollview)
+    ScrollView mScrollView;
 
     public static BookingEditPreferencesFragment newInstance(final Booking booking)
     {
@@ -72,6 +75,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_preferences, container, false);
         ButterKnife.bind(this, view);
         initOptionsView();
+        mInstructionListView.setParentScrollContainer(mScrollView);
         mInstructionListView.reflect(booking.getInstructions());
         return view;
     }
