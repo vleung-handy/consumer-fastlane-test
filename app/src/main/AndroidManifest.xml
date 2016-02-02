@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.handybook.handybook"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<manifest package="com.handybook.handybook"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
     >
 
     <uses-feature
@@ -50,6 +49,7 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
@@ -141,16 +141,19 @@
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
             />
-        <!--Required by the DeepLinkDispatch library-->
+        <!-- Required by the DeepLinkDispatch library -->
         <activity
             android:name="com.airbnb.deeplinkdispatch.DeepLinkActivity"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:theme="@android:style/Theme.NoDisplay"
+            >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="handybook" />
-                <!--TODO: parameterize the scheme?-->
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="handybook"/>
+                <!-- TODO: parameterize the scheme? -->
             </intent-filter>
         </activity>
         <activity
@@ -160,7 +163,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
 
-        <!-- Used for install referrer tracking by Yozio-->
+        <!-- Used for install referrer tracking by Yozio -->
         <receiver
             android:name=".receiver.InstallReferrerReceiver"
             android:exported="true"
@@ -203,45 +206,51 @@
 
         <!-- URBAN AIRSHIP -->
 
+
         <!-- REQUIRED for Action.startActivityForResult -->
         <activity android:name="com.urbanairship.actions.ActionActivity"/>
 
         <!-- REQUIRED for Urban Airship Push -->
         <activity android:name="com.urbanairship.CoreActivity"/>
 
-        <!-- REQUIRED for Urban Airship Push. The priority is important to be set lower than the
+        <!--
+        REQUIRED for Urban Airship Push. The priority is important to be set lower than the
         application's push intent receiver in order for the push intent receiver to handle push intents
         before the core receiver. This allows the application to launch any activities before Urban
-        Airship performs any actions or falls back to launching the application launch intent. -->
+        Airship performs any actions or falls back to launching the application launch intent.
+        -->
         <receiver
             android:name="com.urbanairship.CoreReceiver"
             android:exported="false"
             >
-
             <intent-filter android:priority="-999">
                 <action android:name="com.urbanairship.push.OPENED"/>
+
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </receiver>
 
         <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
         <activity
-            android:label="@string/title_activity_notification_feed"
             android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
+            android:label="@string/title_activity_notification_feed"
             android:parentActivityName=".booking.ui.activity.ServicesActivity"
-            android:theme="@style/Theme.Base">
+            android:theme="@style/Theme.Base"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.handybook.handybook.booking.ui.activity.ServicesActivity"/>
+                android:value="com.handybook.handybook.booking.ui.activity.ServicesActivity"
+                />
         </activity>
 
-        <!-- REQUIRED for Urban Airship Landing Pages
-           - For more customization details, see com.urbanairship.actions.LandingPageActivity -->
+        <!--
+           REQUIRED for Urban Airship Landing Pages
+           - For more customization details, see com.urbanairship.actions.LandingPageActivity
+        -->
         <activity
             android:name="com.urbanairship.actions.LandingPageActivity"
             android:exported="false"
             >
-
             <intent-filter>
                 <action android:name="com.urbanairship.actions.SHOW_LANDING_PAGE_INTENT_ACTION"/>
 
@@ -296,7 +305,6 @@
             android:name=".module.push.receiver.PushReceiver"
             android:exported="false"
             >
-
             <intent-filter>
                 <action android:name="com.urbanairship.push.CHANNEL_UPDATED"/>
                 <action android:name="com.urbanairship.push.OPENED"/>
@@ -312,7 +320,6 @@
             android:name="com.urbanairship.push.GCMPushReceiver"
             android:permission="com.google.android.c2dm.permission.SEND"
             >
-
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
@@ -320,6 +327,9 @@
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".booking.bookingedit.ui.activity.DevelopDragAndDropVerticalLinearLayoutActivity">
+        </activity>
     </application>
 
 </manifest>

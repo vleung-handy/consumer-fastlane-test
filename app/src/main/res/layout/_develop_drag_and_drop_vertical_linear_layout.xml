@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/default_padding"
+    tools:context=".booking.bookingedit.ui.activity.DevelopDragAndDropVerticalLinearLayoutActivity"
+    >
+
+    <FrameLayout
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="5dp"
+        android:background="@color/handy_blue"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:background="@color/handy_service_plumber"
+                />
+
+            <com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <com.handybook.handybook.booking.ui.widget.BookingInstructionView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:prefsState="requested"
+                    app:prefsTitle="First Title"
+                    app:prefsText="And it's text that follows right after."
+                    />
+
+                <com.handybook.handybook.booking.ui.widget.BookingInstructionView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:prefsState="declined"
+                    app:prefsTitle="Second Title"
+                    app:prefsText="And it's text that follows right after, this time a bit longer, yep."
+                    />
+
+                <com.handybook.handybook.booking.ui.widget.BookingInstructionView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:prefsState="requested"
+                    app:prefsTitle="Third Title"
+                    app:prefsText="This one.. &lt;br/&gt; ..will be &lt;br/&gt;..three lines long."
+                    />
+
+                <com.handybook.handybook.booking.ui.widget.BookingInstructionView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:prefsState="declined"
+                    app:prefsTitle="Fourth Title"
+                    app:prefsText="On the other hand, this one &lt;strong&gt; will be strong&lt;/strong&gt;!"
+                    />
+
+                <com.handybook.handybook.booking.ui.widget.BookingInstructionView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:prefsState="requested"
+                    app:prefsTitle="Fifth Title"
+                    app:prefsText="Can this do &lt;em&gt;italics&lt;/em&gt;?"
+                    />
+
+                <com.handybook.handybook.booking.ui.widget.BookingInstructionView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:prefsState="declined"
+                    app:prefsTitle="Sixth Title"
+                    app:prefsText="How about &lt;h1&gt;h1&lt;/h1&gt; or &lt;h2&gt;h2&lt;/&gt;!"
+                    />
+
+            </com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout>
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:background="@color/handy_service_painter"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="5dp"
+        android:background="@color/handy_service_electrician"
+        />
+</LinearLayout>
