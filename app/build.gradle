@@ -218,9 +218,6 @@ dependencies {
     //Location
     compile 'com.google.android.gms:play-services-location:8.4.8.7@aar'
 
-    //DragLinearLayout
-    compile 'com.jmedeisis:draglinearlayout:1.1.0'
-
     //Testing with junit and robolectric
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.robolectric:shadows-support-v4:3.0'
