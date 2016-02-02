@@ -33,17 +33,19 @@
         android:orientation="vertical"
         android:visibility="gone"
         >
-        <com.handybook.handybook.booking.ui.widget.CustomerPreferenceView
+
+        <com.handybook.handybook.booking.ui.widget.BookingInstructionView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:prefsState="requested"
             app:prefsTitle="Kitchen"
             app:prefsText="load dishwasher, wipe all surfaces, and clean sink"
             />
-        <com.handybook.handybook.booking.ui.widget.CustomerPreferenceView
+
+        <com.handybook.handybook.booking.ui.widget.BookingInstructionView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:prefsState="disabled"
+            app:prefsState="declined"
             app:prefsTitle="Bathroom"
             app:prefsText="scrub the sink, shower, tub, and toilet 'til they shine"
             />
