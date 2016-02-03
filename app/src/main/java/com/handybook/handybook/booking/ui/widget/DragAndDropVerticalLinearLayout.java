@@ -69,7 +69,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         getRootView().setOnDragListener(new OnDragListener()
         {
             @Override
-            public boolean onDrag(final View v, final DragEvent event)
+            public boolean onDrag(final View view, final DragEvent event)
             {
                 Log.v(CLASS_TAG, "DragEvent: " + event.toString());
                 int action = event.getAction();
@@ -84,13 +84,15 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
                         updateGhostLocation(event.getX(), event.getY());
                         break;
                     case DragEvent.ACTION_DRAG_EXITED:
+                        finishDragging();
                         break;
                     case DragEvent.ACTION_DROP:
                         // Dropped, reassign View to ViewGroup
-                        mViewBeingDragged.setVisibility(VISIBLE);
+                        finishDragging();
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
                         // Dropped, reassign View to ViewGroup
+                        finishDragging();
                     default:
                         break;
                 }
@@ -106,6 +108,22 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
                 return false;
             }
         });
+    }
+
+    private void initiateDragging(final View view)
+    {
+        mIsDragging = true;
+        mViewBeingDragged = view;
+        mShadowBuilder = new View.DragShadowBuilder(view);
+        ClipData data = ClipData.newPlainText("", "");
+        view.startDrag(data, mShadowBuilder, view, 0);
+        view.setVisibility(View.INVISIBLE);
+    }
+
+    private void finishDragging()
+    {
+        mViewBeingDragged.setVisibility(VISIBLE);
+        mIsDragging = false;
     }
 
     private void updateGhostLocation(final float x, final float y)
@@ -128,13 +146,13 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         {
             return false;
         }
-        return neighborAbove.getY() + neighborAbove.getHeight() / 2 < y;
+        return y < neighborAbove.getY() + neighborAbove.getHeight() / 2;
     }
 
     private boolean isBelowLowerBoundary(final float y)
     {
         View neighborBelow = getNeighbor(mViewBeingDragged, BELOW);
-        return neighborBelow.getY() + neighborBelow.getHeight() / 2 < y;
+        return y > neighborBelow.getY() + neighborBelow.getHeight() / 2;
     }
 
     private View getNeighbor(final View view, final int indexShift)
@@ -213,16 +231,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         removeView(viewB);
         super.addView(viewB, positionA);
         super.addView(viewA, positionB);
-    }
-
-    private void initiateDragging(final View view)
-    {
-        mIsDragging = true;
-        mViewBeingDragged = view;
-        mShadowBuilder = new View.DragShadowBuilder(view);
-        ClipData data = ClipData.newPlainText("", "");
-        view.startDrag(data, mShadowBuilder, view, 0);
-        view.setVisibility(View.INVISIBLE);
     }
 
     @Override
