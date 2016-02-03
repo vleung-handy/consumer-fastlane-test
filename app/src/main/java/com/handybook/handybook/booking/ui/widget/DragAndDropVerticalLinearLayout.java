@@ -84,7 +84,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
                         updateGhostLocation(event.getX(), event.getY());
                         break;
                     case DragEvent.ACTION_DRAG_EXITED:
-                        finishDragging();
+                        //finishDragging();
                         break;
                     case DragEvent.ACTION_DROP:
                         // Dropped, reassign View to ViewGroup
@@ -146,13 +146,13 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         {
             return false;
         }
-        return y < neighborAbove.getY() + neighborAbove.getHeight() / 2;
+        return neighborAbove != null && y < neighborAbove.getY() + neighborAbove.getHeight() / 2;
     }
 
     private boolean isBelowLowerBoundary(final float y)
     {
         View neighborBelow = getNeighbor(mViewBeingDragged, BELOW);
-        return y > neighborBelow.getY() + neighborBelow.getHeight() / 2;
+        return neighborBelow != null && y > neighborBelow.getY() + neighborBelow.getHeight() / 2;
     }
 
     private View getNeighbor(final View view, final int indexShift)
