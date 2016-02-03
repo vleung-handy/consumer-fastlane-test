@@ -11,11 +11,55 @@
     tools:context=".booking.bookingedit.ui.activity.DevelopDragAndDropVerticalLinearLayoutActivity"
     >
 
-    <FrameLayout
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_margin="5dp"
-        android:background="@color/handy_blue"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        >
+
+        <TextView
+            android:id="@+id/develop_swap_one"
+            style="@style/develop_box_small"
+            android:text="SW1"
+            />
+
+        <TextView
+            android:id="@+id/develop_swap_two"
+            style="@style/develop_box_small"
+            android:text="SW2"
+            />
+
+        <TextView
+            android:id="@+id/develop_swap_three"
+            style="@style/develop_box_small"
+            android:text="SW3"
+            />
+
+        <TextView
+            android:id="@+id/develop_swap_four"
+            style="@style/develop_box_small"
+            android:text="SW4"
+            />
+
+        <TextView
+            android:id="@+id/develop_move_one"
+            style="@style/develop_box_small"
+            android:text="MV1"
+            />
+
+        <TextView
+            android:id="@+id/develop_move_two"
+            style="@style/develop_box_small"
+            android:text="MV2"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/develop_text_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         />
 
     <ScrollView

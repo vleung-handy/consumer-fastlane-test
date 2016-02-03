@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.bookingedit.ui.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.handybook.handybook.R;
@@ -14,6 +15,7 @@ import com.handybook.handybook.util.StringUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DevelopDragAndDropVerticalLinearLayoutActivity extends AppCompatActivity
 {
@@ -21,6 +23,8 @@ public class DevelopDragAndDropVerticalLinearLayoutActivity extends AppCompatAct
     ScrollView mScrollView;
     @Bind(R.id.develop_dnd)
     DragAndDropVerticalLinearLayout mDndLayout;
+    @Bind(R.id.develop_text_out)
+    TextView mTextOut;
 
     private Instructions mInstructions;
 
@@ -41,4 +45,42 @@ public class DevelopDragAndDropVerticalLinearLayoutActivity extends AppCompatAct
             mDndLayout.addView(biv);
         }
     }
+
+    @OnClick(R.id.develop_swap_one)
+    void swap1()
+    {
+        mDndLayout.swapChildren(1, 2);
+    }
+
+    @OnClick(R.id.develop_swap_two)
+    void swap2()
+    {
+        mDndLayout.swapChildren(2, 1);
+    }
+
+    @OnClick(R.id.develop_swap_three)
+    void swap3()
+    {
+        mDndLayout.swapChildren(0, 3);
+    }
+
+    @OnClick(R.id.develop_swap_four)
+    void swap4()
+    {
+        mDndLayout.swapChildren(3, 0);
+    }
+
+    @OnClick(R.id.develop_move_one)
+    void move1()
+    {
+        mDndLayout.moveChild(0, 3);
+    }
+
+    @OnClick(R.id.develop_move_two)
+    void move2()
+    {
+        mDndLayout.moveChild(3, 0);
+    }
+
+
 }
