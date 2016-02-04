@@ -278,7 +278,21 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     public void moveChild(final int fromIndex, final int toIndex)
     {
         //Log.v(CLASS_TAG, "moveChild(" + fromIndex + ", " + toIndex + ")");
-        //TODO: Implement
+        if (fromIndex == toIndex || fromIndex < 0 || toIndex < 0
+                || fromIndex >= getChildCount() || toIndex >= getChildCount())
+        {
+            return;
+        }
+        final View view = getChildAt(fromIndex);
+        removeViewAt(fromIndex);
+        if (fromIndex < toIndex)
+        {
+            super.addView(view, toIndex - 1);
+        }
+        else
+        {
+            super.addView(view, toIndex);
+        }
     }
 
     public void swapChildren(final View childA, final View childB)
