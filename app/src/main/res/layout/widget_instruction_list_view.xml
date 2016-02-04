@@ -24,7 +24,7 @@
         tools:text="Typical Cleaning Service"
         />
 
-    <LinearLayout
+    <com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout
         android:id="@+id/preferences_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,6 +32,7 @@
         android:layout_marginTop="@dimen/default_margin"
         android:orientation="vertical"
         android:visibility="gone"
+        tools:visibility="visible"
         >
 
         <com.handybook.handybook.booking.ui.widget.BookingInstructionView
@@ -49,6 +50,6 @@
             app:prefsTitle="Bathroom"
             app:prefsText="scrub the sink, shower, tub, and toilet 'til they shine"
             />
-    </LinearLayout>
+    </com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout>
 
 </LinearLayout>

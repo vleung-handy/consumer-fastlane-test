@@ -9,7 +9,6 @@ import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,7 +32,7 @@ public class InstructionListView extends FrameLayout
 
     private BookingInstructionView.OnStateChangedListener mInstructionStateListener;
     @Bind(R.id.preferences_container)
-    LinearLayout mCheckListsLayout;
+    DragAndDropVerticalLinearLayout mDnDLinearLayout;
     @Bind(R.id.title)
     TextView mTitle;
 
@@ -73,7 +72,7 @@ public class InstructionListView extends FrameLayout
 
     private void inflateAndBind()
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.layout_instructions, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.widget_instruction_list_view, this, true);
         ButterKnife.bind(this);
         getRootView().setOnDragListener(new OnDragListener()
         {
@@ -130,7 +129,7 @@ public class InstructionListView extends FrameLayout
         }
         if (mInstructions.getChecklist() != null)
         {
-            mCheckListsLayout.setVisibility(VISIBLE);
+            mDnDLinearLayout.setVisibility(VISIBLE);
             for (ChecklistItem checklistItem : instructions.getChecklist())
             {
                 final BookingInstructionView bookingInstructionView = new BookingInstructionView(getContext());
@@ -150,12 +149,12 @@ public class InstructionListView extends FrameLayout
                         return false;
                     }
                 });
-                mCheckListsLayout.addView(bookingInstructionView);
+                mDnDLinearLayout.addView(bookingInstructionView);
             }
         }
         else
         {
-            mCheckListsLayout.setVisibility(GONE);
+            mDnDLinearLayout.setVisibility(GONE);
         }
     }
 
@@ -184,6 +183,7 @@ public class InstructionListView extends FrameLayout
     public void setParentScrollContainer(final ScrollView scrollView)
     {
         mParentScrollView = scrollView;
+        mDnDLinearLayout.linkScrollView(mParentScrollView);
     }
 
     public interface OnInstructionsChangedListener
