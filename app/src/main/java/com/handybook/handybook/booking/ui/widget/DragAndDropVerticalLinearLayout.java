@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.DragEvent;
 import android.view.View;
@@ -19,11 +18,9 @@ import android.widget.ScrollView;
 public class DragAndDropVerticalLinearLayout extends LinearLayout
 {
     public static final int LAYOUT_TRANSITION_DURATION = 125;
-    public static String CLASS_TAG = DragAndDropVerticalLinearLayout.class.getSimpleName();
-
     public static final int ABOVE = -1;
     public static final int BELOW = 1;
-
+    public static String CLASS_TAG = DragAndDropVerticalLinearLayout.class.getSimpleName();
     /**
      * Linked scrollview to be scrolled while dragging items
      */
@@ -39,6 +36,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     private boolean mIsScrolling;
     private ObjectAnimator mScrollAnimator;
     private LayoutTransition mLayoutTransition;
+    private OnChildMovedListener mOnChildMovedListener;
+    private OnChildrenSwappedListener mOnChildrenSwappedListener;
 
     public DragAndDropVerticalLinearLayout(final Context context)
     {
@@ -335,6 +334,19 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         {
             super.addView(view, toIndex);
         }
+        notififyChildMovedListener(view, fromIndex, toIndex);
+    }
+
+    private void notififyChildMovedListener(
+            final View child,
+            final int fromPosition,
+            final int toPosition
+    )
+    {
+    if(mOnChildMovedListener == null){
+        return;
+    }
+        mOnChildMovedListener.onChildMoved(child,fromPosition, toPosition);
     }
 
     public void swapChildren(final View childA, final View childB)
@@ -371,6 +383,25 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             super.addView(viewB, positionA);
 
         }
+        notifyChildrenSwappedListener(viewA, positionA, viewB, positionB);
+    }
+
+    private void notifyChildrenSwappedListener(
+            final View viewA,
+            final int originalPositionOfA,
+            final View viewB,
+            final int originalPositionOfB
+    )
+    {
+        if(mOnChildrenSwappedListener == null){
+            return;
+        }
+        mOnChildrenSwappedListener.onChildrenSwapped(
+                viewA,
+                originalPositionOfA,
+                viewB,
+                originalPositionOfB
+        );
     }
 
     @Override
@@ -416,6 +447,27 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         }
     }
 
+    public void setOnChildMovedListener(final OnChildMovedListener onChildMovedListener)
+    {
+        mOnChildMovedListener = onChildMovedListener;
+    }
+
+    public void seOnChildrenSwappedListener(final OnChildrenSwappedListener onChildrenSwappedListener)
+    {
+        mOnChildrenSwappedListener = onChildrenSwappedListener;
+    }
+
+
+    public interface OnChildMovedListener
+    {
+        void onChildMoved(View child, int fromPosition, int toPosition);
+    }
+
+    public interface OnChildrenSwappedListener
+    {
+        void onChildrenSwapped(View childA, int positionA, View childB, int positionB);
+    }
+
 
     /**
      * A representation of rectangle which decides if the linked scrollView should scroll
@@ -435,6 +487,18 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
         {
             reset();
+        }
+
+        public ScrollZone(
+                @NonNull final View root,
+                @NonNull final ScrollView scrollView,
+                @NonNull ScrollZoneType type
+        )
+        {
+            mView = root;
+            mScrollView = scrollView;
+            mScrollZoneType = type;
+            update();
         }
 
         private void reset()
@@ -471,27 +535,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
                     );
                     break;
             }
-            Log.v("ScrollZone", "getDuration():" + mDuration);
+            //Log.v("ScrollZone", "getDuration():" + mDuration);
             return mDuration;
-        }
-
-
-        public enum ScrollZoneType
-        {
-            TOP, BOTTOM
-        }
-
-
-        public ScrollZone(
-                @NonNull final View root,
-                @NonNull final ScrollView scrollView,
-                @NonNull ScrollZoneType type
-        )
-        {
-            mView = root;
-            mScrollView = scrollView;
-            mScrollZoneType = type;
-            update();
         }
 
         public void update()
@@ -544,6 +589,11 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         {
             return "ScrollZone:[top:" + mTop + ", right: " + mRight
                     + ", bottom:" + mBottom + ", left:" + mLeft + "]";
+        }
+
+        public enum ScrollZoneType
+        {
+            TOP, BOTTOM
         }
     }
 

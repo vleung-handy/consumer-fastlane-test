@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -44,6 +45,25 @@ public class DevelopDragAndDropVerticalLinearLayoutActivity extends AppCompatAct
             biv.reflect(eCheckListItem);
             mDndLayout.addView(biv);
         }
+        mDndLayout.setOnChildMovedListener(new DragAndDropVerticalLinearLayout.OnChildMovedListener()
+        {
+
+            @Override
+            public void onChildMoved(final View child, final int fromPosition, final int toPosition)
+            {
+                mTextOut.setText("Child moved:" + child + ", from: " + fromPosition + ", to: " + toPosition);
+            }
+        });
+        mDndLayout.seOnChildrenSwappedListener(new DragAndDropVerticalLinearLayout.OnChildrenSwappedListener()
+        {
+            @Override
+            public void onChildrenSwapped(final View childA, final int positionA, final View childB, final int positionB)
+            {
+                mTextOut.setText("Children swapped  [ ChildA: " + childA + ", posA: "
+                        + positionA+ "] and [ ChildB: " + childB+ ", posB: "
+                        + positionB + "]");
+            }
+        });
     }
 
     @OnClick(R.id.develop_swap_one)
