@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.ui.widget;
 
+import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.ClipData;
@@ -7,9 +8,9 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -36,7 +37,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     private DragShadowBuilder mShadowBuilder;
     private boolean mIsScrolling;
     private ObjectAnimator mScrollAnimator;
-
+    private LayoutTransition mLayoutTransition;
 
     public DragAndDropVerticalLinearLayout(final Context context)
     {
@@ -50,14 +51,23 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         init();
     }
 
-    public DragAndDropVerticalLinearLayout(final Context context, final AttributeSet attrs, final int defStyleAttr)
+    public DragAndDropVerticalLinearLayout(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr
+    )
     {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public DragAndDropVerticalLinearLayout(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes)
+    public DragAndDropVerticalLinearLayout(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr,
+            final int defStyleRes
+    )
     {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
@@ -65,11 +75,21 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     private void init()
     {
+        initLayoutTransition();
         enableDragAndDrop();
-        setAllChildrenDraggable(true);
     }
 
-    private void enableDragAndDrop()
+    private void initLayoutTransition()
+    {
+        mLayoutTransition = getLayoutTransition();
+        mLayoutTransition.setDuration(100);
+        mLayoutTransition.setStartDelay(LayoutTransition.APPEARING, 1);
+        mLayoutTransition.setStartDelay(LayoutTransition.DISAPPEARING, 1);
+        mLayoutTransition.setStartDelay(LayoutTransition.CHANGE_APPEARING, 1);
+        mLayoutTransition.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 1);
+    }
+
+    public void enableDragAndDrop()
     {
         //Log.v(CLASS_TAG, "Enabling drag and drop");
         mIsDraggingEnabled = true;
@@ -91,14 +111,11 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
                         updateGhostLocation(event.getX(), event.getY());
                         break;
                     case DragEvent.ACTION_DRAG_EXITED:
-                        //finishDragging();
                         break;
                     case DragEvent.ACTION_DROP:
-                        // Dropped, reassign View to ViewGroup
                         finishDragging();
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
-                        // Dropped, reassign View to ViewGroup
                         finishDragging();
                     default:
                         break;
@@ -106,15 +123,15 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
                 return true;
             }
         });
-        getRootView().setOnGenericMotionListener(new OnGenericMotionListener()
-        {
-            @Override
-            public boolean onGenericMotion(final View v, final MotionEvent event)
-            {
-                //Log.v(CLASS_TAG, "MotionEvent: " + event.toString());
-                return false;
-            }
-        });
+        setAllChildrenDraggable(true);
+    }
+
+    public void disableDragAndDrop()
+    {
+        mIsDraggingEnabled = false;
+        getRootView().setOnDragListener(null);
+        setAllChildrenDraggable(false);
+
     }
 
     private void initiateDragging(final View view)
@@ -158,7 +175,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         {
             if (mIsScrolling)
             {
-                //keep scrolling
+                startScrolling(x, y);
             }
             else
             {
@@ -181,17 +198,41 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         if (mTopScrollZone.isTriggeredBy(x, y))
         {
             int min = 0;
-            mScrollAnimator = ObjectAnimator.ofInt(mScrollView, "scrollY", min).setDuration(1000);
+            int d = mTopScrollZone.getDuration();
+            mScrollAnimator = ObjectAnimator.ofInt(mScrollView, "scrollY", min).setDuration(d);
             mScrollAnimator.start();
             mIsScrolling = true;
         }
         else if (mBottomScrollZone.isTriggeredBy(x, y))
         {
             int max = mScrollView.getMaxScrollAmount();
-            mScrollAnimator = ObjectAnimator.ofInt(mScrollView, "scrollY", max).setDuration(1000);
+            int d = mBottomScrollZone.getDuration();
+            mScrollAnimator = ObjectAnimator.ofInt(mScrollView, "scrollY", max).setDuration(d);
             mScrollAnimator.start();
             mIsScrolling = true;
         }
+    }
+
+
+    private void updateScrollingAnimation(final float x, final float y)
+    {
+        if (mScrollAnimator == null)
+        {
+            return;
+        }
+        int duration = Integer.MAX_VALUE;
+        if (mTopScrollZone.isTriggeredBy(x, y))
+        {
+            duration = mTopScrollZone.getDuration();
+        }
+        else if (mBottomScrollZone.isTriggeredBy(x, y))
+        {
+            duration = mBottomScrollZone.getDuration();
+        }
+        float fraction = mScrollAnimator.getAnimatedFraction();
+        mScrollAnimator.setDuration(duration);
+        mScrollAnimator.setCurrentPlayTime(Math.round(fraction * duration));
+        mScrollAnimator.setStartDelay(0);
     }
 
     private void stopScrolling()
@@ -375,14 +416,63 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     }
 
 
+    /**
+     * A representation of rectangle which decides if the linked scrollView should scroll
+     */
     private static class ScrollZone
     {
-        private static int SCROLL_ZONE_HEIGHT = 64;
+        private static int SCROLL_ZONE_HEIGHT = 256;
+        private static int MIN_DURATION = 750;
+        private static int DURATION_MULTIPLIER = 20;
 
         private final View mView;
         private final ScrollView mScrollView;
         private final ScrollZoneType mScrollZoneType;
-        private float mTop, mRight, mBottom, mLeft;
+        private float mTop, mRight, mBottom, mLeft, mLastX, mLastY;
+        private boolean mIsTriggered;
+        private int mDuration;
+
+        {
+            reset();
+        }
+
+        private void reset()
+        {
+            mLastX = 0;
+            mLastY = 0;
+            mDuration = Integer.MAX_VALUE;
+        }
+
+        public int getDuration()
+        {
+            if (!mIsTriggered)
+            {
+                return mDuration;
+            }
+            switch (mScrollZoneType)
+            {
+                case TOP:
+                    mDuration = Math.round(
+                            MIN_DURATION + (
+                                    DURATION_MULTIPLIER * MIN_DURATION * Math.min(
+                                            Math.max((mLastY - mTop) / SCROLL_ZONE_HEIGHT, 0), 1
+                                    ) //clamp!:)
+                            )
+                    );
+                    break;
+                case BOTTOM:
+                    mDuration = Math.round(
+                            MIN_DURATION + (
+                                    DURATION_MULTIPLIER * MIN_DURATION * (1 - Math.min(
+                                            Math.max((mLastY - mTop) / SCROLL_ZONE_HEIGHT, 0), 1)
+                                    ) //clamp!:)
+                            )
+                    );
+                    break;
+            }
+            Log.v("ScrollZone", "getDuration():" + mDuration);
+            return mDuration;
+        }
 
 
         public enum ScrollZoneType
@@ -438,7 +528,14 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
         public boolean isTriggeredBy(final float x, final float y)
         {
-            return x >= mLeft && x <= mRight && y >= mTop && y <= mBottom;
+            mLastX = x;
+            mLastY = y;
+            mIsTriggered = x >= mLeft && x <= mRight && y >= mTop && y <= mBottom;
+            if (!mIsTriggered)
+            {
+                reset();
+            }
+            return mIsTriggered;
         }
 
         @Override
