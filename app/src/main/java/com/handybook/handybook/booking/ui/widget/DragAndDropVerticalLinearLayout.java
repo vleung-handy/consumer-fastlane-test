@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 
 public class DragAndDropVerticalLinearLayout extends LinearLayout
 {
+    public static final int LAYOUT_TRANSITION_DURATION = 125;
     public static String CLASS_TAG = DragAndDropVerticalLinearLayout.class.getSimpleName();
 
     public static final int ABOVE = -1;
@@ -82,7 +83,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     private void initLayoutTransition()
     {
         mLayoutTransition = getLayoutTransition();
-        mLayoutTransition.setDuration(100);
+        mLayoutTransition.setDuration(LAYOUT_TRANSITION_DURATION);
         mLayoutTransition.setStartDelay(LayoutTransition.APPEARING, 1);
         mLayoutTransition.setStartDelay(LayoutTransition.DISAPPEARING, 1);
         mLayoutTransition.setStartDelay(LayoutTransition.CHANGE_APPEARING, 1);
