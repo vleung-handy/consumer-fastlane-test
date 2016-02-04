@@ -82,6 +82,9 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     private void initLayoutTransition()
     {
         mLayoutTransition = getLayoutTransition();
+        if(mLayoutTransition == null){
+            mLayoutTransition = new LayoutTransition();
+        }
         mLayoutTransition.setDuration(LAYOUT_TRANSITION_DURATION);
         mLayoutTransition.setStartDelay(LayoutTransition.APPEARING, 1);
         mLayoutTransition.setStartDelay(LayoutTransition.DISAPPEARING, 1);
@@ -148,6 +151,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     {
         mViewBeingDragged.setVisibility(VISIBLE);
         mIsDragging = false;
+        stopScrolling();
     }
 
     private void updateGhostLocation(final float x, final float y)
@@ -200,6 +204,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             int min = 0;
             int d = mTopScrollZone.getDuration();
             mScrollAnimator = ObjectAnimator.ofInt(mScrollView, "scrollY", min).setDuration(d);
+            mScrollAnimator.setStartDelay(0);
             mScrollAnimator.start();
             mIsScrolling = true;
         }
@@ -208,6 +213,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             int max = mScrollView.getMaxScrollAmount();
             int d = mBottomScrollZone.getDuration();
             mScrollAnimator = ObjectAnimator.ofInt(mScrollView, "scrollY", max).setDuration(d);
+            mScrollAnimator.setStartDelay(0);
             mScrollAnimator.start();
             mIsScrolling = true;
         }
@@ -346,7 +352,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     if(mOnChildMovedListener == null){
         return;
     }
-        mOnChildMovedListener.onChildMoved(child,fromPosition, toPosition);
+        mOnChildMovedListener.onChildMoved(child, fromPosition, toPosition);
     }
 
     public void swapChildren(final View childA, final View childB)
@@ -478,7 +484,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         private static int MIN_DURATION = 750;
         private static int DURATION_MULTIPLIER = 20;
 
-        private final View mView;
+        private final View mRoot;
         private final ScrollView mScrollView;
         private final ScrollZoneType mScrollZoneType;
         private float mTop, mRight, mBottom, mLeft, mLastX, mLastY;
@@ -495,7 +501,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
                 @NonNull ScrollZoneType type
         )
         {
-            mView = root;
+            mRoot = root;
             mScrollView = scrollView;
             mScrollZoneType = type;
             update();
@@ -554,21 +560,21 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
         private void updateTop()
         {
-            mTop = Math.max(mScrollView.getScrollY() - mView.getTop(), 0);
+            mTop = Math.max(mScrollView.getScrollY() - mRoot.getTop(), 0);
             mBottom = mTop + SCROLL_ZONE_HEIGHT;
             mLeft = 0;
-            mRight = mView.getWidth();
+            mRight = mRoot.getWidth();
             //Log.v("TopScrollZone", this.toString());
         }
 
         private void updateBottom()
         {
             mBottom = Math.min(
-                    mScrollView.getHeight() - mView.getY() + mScrollView.getScrollY(),
-                    mView.getHeight());
+                    mScrollView.getHeight() - mRoot.getY() + mScrollView.getScrollY(),
+                    mRoot.getHeight());
             mTop = mBottom - SCROLL_ZONE_HEIGHT;
             mLeft = 0;
-            mRight = mView.getWidth();
+            mRight = mRoot.getWidth();
             //Log.v("BottomScrollZone", this.toString());
         }
 
