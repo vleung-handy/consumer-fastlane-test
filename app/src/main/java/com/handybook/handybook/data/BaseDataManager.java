@@ -38,6 +38,7 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
@@ -855,6 +856,13 @@ public final class BaseDataManager extends DataManager
     {
         mService.requestRedemptionDetails(guid,
                 new RedemptionDetailsResponseHandyRetrofitCallback(cb));
+    }
+
+    @Override
+    public void requestConfiguration(final Callback<Configuration> cb)
+    {
+        mService.requestConfiguration(
+                new ConfigurationHandyRetrofitCallback(cb));
     }
 
     @Override

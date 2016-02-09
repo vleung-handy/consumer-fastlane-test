@@ -228,6 +228,9 @@ public interface HandyRetrofitService
     void updatePaymentInfo(@Path("user_id") String userId, @Query("stripe_token") String token,
                            HandyRetrofitCallback cb);
 
+    @GET("/configuration")
+    void requestConfiguration(HandyRetrofitCallback cb);
+
     // Notification Feed
     @GET("/users/{user_id}/notifications")
     void getNotificationResultSet(

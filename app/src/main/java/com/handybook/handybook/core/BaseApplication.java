@@ -7,11 +7,11 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.event.ActivityEvent;
 import com.handybook.handybook.event.HandyEvent;
@@ -21,10 +21,11 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
-import com.handybook.handybook.manager.UserDataManager;
-import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
@@ -88,6 +89,8 @@ public class BaseApplication extends MultiDexApplication
     ServicesManager servicesManager;
     @Inject
     ReferralsManager referralsManager;
+    @Inject
+    ConfigurationManager configurationManager;
 
     @Override
     public void onCreate()

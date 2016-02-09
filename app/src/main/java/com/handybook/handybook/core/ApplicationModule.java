@@ -100,6 +100,7 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.module.notifications.feed.ui.fragment.NotificationFeedFragment;
@@ -520,6 +521,16 @@ public final class ApplicationModule
     {
         return new ReferralsManager(bus, dataManager);
     }
+
+    @Provides
+    @Singleton
+    final ConfigurationManager provideConfigurationManager(final Bus bus,
+                                                           final PrefsManager prefsManager,
+                                                           final DataManager dataManager)
+    {
+        return new ConfigurationManager(bus, prefsManager, dataManager);
+    }
+
 
     private String getDeviceId()
     {
