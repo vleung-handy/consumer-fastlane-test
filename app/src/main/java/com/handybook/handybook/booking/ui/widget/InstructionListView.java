@@ -1,13 +1,10 @@
 package com.handybook.handybook.booking.ui.widget;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -78,10 +75,6 @@ public class InstructionListView extends FrameLayout
 
     public void reflect(@Nullable final Instructions instructions)
     {
-        if (instructions == null)
-        {
-            return;
-        }
         if (mBookingInstructionViews == null)
         {
             mBookingInstructionViews = new ArrayList<>();
@@ -89,6 +82,12 @@ public class InstructionListView extends FrameLayout
         else
         {
             mBookingInstructionViews.clear();
+
+        }
+        mDnDLinearLayout.removeAllViews();
+        if (instructions == null)
+        {
+            return;
         }
 
         mInstructions = instructions;

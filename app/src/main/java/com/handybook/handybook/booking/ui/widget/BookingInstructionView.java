@@ -109,11 +109,6 @@ public class BookingInstructionView extends FrameLayout
         inflateAndBind();
     }
 
-    public void setOnStateChangedListener(OnStateChangedListener listener)
-    {
-        mOnStateChangedListener = listener;
-    }
-
     private void init(AttributeSet attrs)
     {
         inflateAndBind();
@@ -137,6 +132,11 @@ public class BookingInstructionView extends FrameLayout
         }
         updateStateImage();
         updateText();
+    }
+
+    public void setOnStateChangedListener(OnStateChangedListener listener)
+    {
+        mOnStateChangedListener = listener;
     }
 
     private void inflateAndBind()

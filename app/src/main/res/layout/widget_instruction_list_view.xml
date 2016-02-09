@@ -30,6 +30,7 @@
         android:orientation="vertical"
         android:visibility="gone"
         android:animateLayoutChanges="true"
+        app:dragAndDropEnabled="false"
         tools:visibility="visible"
         >
 

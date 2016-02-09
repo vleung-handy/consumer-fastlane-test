@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+
+import com.handybook.handybook.R;
 
 public class DragAndDropVerticalLinearLayout extends LinearLayout
 {
@@ -48,7 +51,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     public DragAndDropVerticalLinearLayout(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     public DragAndDropVerticalLinearLayout(
@@ -58,7 +61,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     )
     {
         super(context, attrs, defStyleAttr);
-        init();
+        init(attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -70,13 +73,40 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     )
     {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init(attrs);
+    }
+
+    private void init(final AttributeSet attrs)
+    {
+        TypedArray typedArray = getContext().obtainStyledAttributes(
+                attrs,
+                R.styleable.DragAndDropVerticalLinearLayout
+        );
+        try
+        {
+            mIsDraggingEnabled = typedArray.getBoolean(
+                    R.styleable.DragAndDropVerticalLinearLayout_dragAndDropEnabled,
+                    true
+            );
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            typedArray.recycle();
+        }
         init();
     }
 
-    private void init()
-    {
+    private void init(){
         initLayoutTransition();
-        enableDragAndDrop();
+        if (mIsDraggingEnabled)
+        {
+            enableDragAndDrop();
+        }
+
     }
 
     private void initLayoutTransition()

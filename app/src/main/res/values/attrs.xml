@@ -17,4 +17,7 @@
         <attr name="prefsTitle" format="string"/>
         <attr name="prefsText" format="string"/>
     </declare-styleable>
+    <declare-styleable name="DragAndDropVerticalLinearLayout">
+        <attr name="dragAndDropEnabled" format="boolean"/>
+    </declare-styleable>
 </resources>
