@@ -28,10 +28,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class BookingEditPreferencesFragment extends BookingFlowFragment
+        implements InstructionListView.OnInstructionsChangedListener
 {
-    private BookingUpdateNoteToProTransaction descriptionTransaction;
+    private BookingUpdateNoteToProTransaction mBookingUpdateNoteToProTransaction;
 
-    private Booking booking;
+    private Booking mBooking;
 
     @Bind(R.id.options_layout)
     LinearLayout mOptionsLayout;
@@ -55,14 +56,15 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        booking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         initTransaction();
     }
 
     private void initTransaction()
     {
-        descriptionTransaction = new BookingUpdateNoteToProTransaction();
-        descriptionTransaction.setMessageToPro(booking.getProNote());
+        mBookingUpdateNoteToProTransaction = new BookingUpdateNoteToProTransaction();
+        mBookingUpdateNoteToProTransaction.setMessageToPro(mBooking.getProNote());
+        mBookingUpdateNoteToProTransaction.setInstructions(mBooking.getInstructions());
     }
 
     @Override
@@ -76,7 +78,8 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         ButterKnife.bind(this, view);
         initOptionsView();
         mInstructionListView.setParentScrollContainer(mScrollView);
-        mInstructionListView.reflect(booking.getInstructions());
+        mInstructionListView.reflect(mBooking.getInstructions());
+        mInstructionListView.setOnInstructionsChangedListener(this);
         return view;
     }
 
@@ -86,7 +89,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         option.setType(BookingOption.TYPE_TEXT);
         option.setDefaultValue(getString(R.string.additional_pro_info_hint));
         BookingOptionsView optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
-        ((BookingOptionsTextView) optionsView).setValue(descriptionTransaction.getMessageToPro());
+        ((BookingOptionsTextView) optionsView).setValue(mBookingUpdateNoteToProTransaction.getMessageToPro());
         mOptionsLayout.addView(optionsView, 0);
     }
 
@@ -138,8 +141,8 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     {
         disableInputs();
         progressDialog.show();
-        int bookingId = Integer.parseInt(booking.getId());
-        bus.post(new BookingEditEvent.RequestUpdateBookingNoteToPro(bookingId, descriptionTransaction));
+        int bookingId = Integer.parseInt(mBooking.getId());
+        bus.post(new BookingEditEvent.RequestUpdateBookingNoteToPro(bookingId, mBookingUpdateNoteToProTransaction));
     }
 
     private final BookingOptionsView.OnUpdatedListener textUpdated
@@ -148,7 +151,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         @Override
         public void onUpdate(final BookingOptionsView view)
         {
-            descriptionTransaction.setMessageToPro(view.getCurrentValue());
+            mBookingUpdateNoteToProTransaction.setMessageToPro(view.getCurrentValue());
         }
 
         @Override
@@ -168,16 +171,12 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         }
     };
 
-    private final InstructionListView.OnInstructionsChangedListener instructionsChanged =
-            new InstructionListView.OnInstructionsChangedListener()
-            {
 
-                @Override
-                public void onInstructionsChanged(final Instructions instructions)
-                {
-                    descriptionTransaction.setInstructions(instructions);
-                    toast.setText("Instructions changed.");
-                    toast.show();
-                }
-            };
+    @Override
+    public void onInstructionsChanged(final Instructions instructions)
+    {
+        mBookingUpdateNoteToProTransaction.setInstructions(instructions);
+        toast.setText("Instructions changed.");
+        toast.show();
+    }
 }
