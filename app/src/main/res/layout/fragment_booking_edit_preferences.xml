@@ -38,6 +38,7 @@
                 android:id="@id/header_text"
                 style="@style/TextView.CenteredHeader"
                 android:text="@string/booking_edit_preferences_subtitle"
+                android:visibility="gone"
                 />
 
             <LinearLayout
