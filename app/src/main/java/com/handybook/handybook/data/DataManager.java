@@ -25,6 +25,7 @@ import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.core.BlockedWrapper;
@@ -353,6 +354,8 @@ public abstract class DataManager
     );
 
     public abstract void requestConfiguration(final Callback<Configuration> callback);
+
+    public abstract void getRecurringBookings(final Callback<RecurringBookingsResponse> callback);
 
     public abstract String getBaseUrl();
 

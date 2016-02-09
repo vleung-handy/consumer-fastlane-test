@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
+import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
@@ -205,6 +206,16 @@ class RedemptionDetailsResponseHandyRetrofitCallback
 class ConfigurationHandyRetrofitCallback extends TypedHandyRetrofitCallback<Configuration>
 {
     ConfigurationHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class RecurringBookingsResponseHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<RecurringBookingsResponse>
+{
+    RecurringBookingsResponseHandyRetrofitCallback(final DataManager.Callback callback)
     {
         super(callback);
     }

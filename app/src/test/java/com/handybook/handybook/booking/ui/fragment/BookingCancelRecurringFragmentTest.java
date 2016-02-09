@@ -54,7 +54,7 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     @Test
     public void shouldRequestRecurringBookingsOnCreateView() throws Exception
     {
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestRecurringBookingsForUser.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestRecurringBookings.class));
     }
 
     @Test

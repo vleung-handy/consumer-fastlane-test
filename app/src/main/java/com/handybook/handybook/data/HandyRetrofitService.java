@@ -202,6 +202,9 @@ public interface HandyRetrofitService
     void addLaundry(@Path("booking") int bookingId, @Field("auth_token") String authToken,
                     HandyRetrofitCallback cb);
 
+    @GET("/recurring_bookings")
+    void getRecurringBookings(HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,

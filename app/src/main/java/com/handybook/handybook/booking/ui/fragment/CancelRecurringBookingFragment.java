@@ -47,7 +47,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new BookingEvent.RequestRecurringBookingsForUser(userManager.getCurrentUser()));
+        bus.post(new BookingEvent.RequestRecurringBookings());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     {
         //send the cancel recurring booking email for the series that the user selected
         showUiBlockers();
-        int recurringId = recurringBooking.getRecurringId();
+        int recurringId = recurringBooking.getId();
         bus.post(new BookingEvent.RequestSendCancelRecurringBookingEmail(recurringId));
     }
 

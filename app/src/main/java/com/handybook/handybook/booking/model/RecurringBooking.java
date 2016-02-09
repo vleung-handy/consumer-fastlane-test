@@ -7,38 +7,59 @@ import java.util.Date;
 public class RecurringBooking
 {
     @SerializedName("id")
-    private int mRecurringId;
-    @SerializedName("service_name")
-    private String mServiceName;
-    @SerializedName("service_machine")
-    private String mServiceMachine;
-    @SerializedName("recurring_string_short")
-    private String mRecurringStringShort;
-    @SerializedName("date_start")
-    private Date mNextRecurrenceDate;
+    private int mId;
+    @SerializedName("hashed")
+    private String mHashed;
+    @SerializedName("hours")
+    private float hours;
+    @SerializedName("next_booking_id")
+    private int mNextBookingId;
+    @SerializedName("next_booking_date")
+    private Date mNextBookingDate;
+    @SerializedName("address")
+    private String mAddress;
+    @SerializedName("frequency")
+    private String mFrequency;
+    @SerializedName("cancel_url")
+    private String mCancelUrl;
 
-    public int getRecurringId()
+    public int getId()
     {
-        return mRecurringId;
+        return mId;
     }
 
-    public String getServiceName()
+    public String getHashed()
     {
-        return mServiceName;
+        return mHashed;
     }
 
-    public String getServiceMachine()
+    public float getHours()
     {
-        return mServiceMachine;
+        return hours;
     }
 
-    public String getRecurringStringShort()
+    public int getNextBookingId()
     {
-        return mRecurringStringShort;
+        return mNextBookingId;
     }
 
-    public Date getNextRecurrenceDate()
+    public Date getNextBookingDate()
     {
-        return mNextRecurrenceDate;
+        return mNextBookingDate;
+    }
+
+    public String getAddress()
+    {
+        return mAddress;
+    }
+
+    public String getFrequency()
+    {
+        return mFrequency;
+    }
+
+    public String getCancelUrl()
+    {
+        return mCancelUrl;
     }
 }

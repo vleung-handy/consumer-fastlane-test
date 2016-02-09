@@ -27,6 +27,7 @@ import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.constant.PrefsKey;
@@ -863,6 +864,12 @@ public final class BaseDataManager extends DataManager
     {
         mService.requestConfiguration(
                 new ConfigurationHandyRetrofitCallback(cb));
+    }
+
+    @Override
+    public void getRecurringBookings(final Callback<RecurringBookingsResponse> cb)
+    {
+        mService.getRecurringBookings(new RecurringBookingsResponseHandyRetrofitCallback(cb));
     }
 
     @Override
