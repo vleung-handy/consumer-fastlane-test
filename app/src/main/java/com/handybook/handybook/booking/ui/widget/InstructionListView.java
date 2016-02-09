@@ -74,32 +74,6 @@ public class InstructionListView extends FrameLayout
     {
         LayoutInflater.from(getContext()).inflate(R.layout.widget_instruction_list_view, this, true);
         ButterKnife.bind(this);
-        getRootView().setOnDragListener(new OnDragListener()
-        {
-            @Override
-            public boolean onDrag(final View v, final DragEvent event)
-            {
-                int action = event.getAction();
-                switch (action)
-                {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        // do nothing
-                        break;
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        break;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        break;
-                    case DragEvent.ACTION_DROP:
-                        // Dropped, reassign View to ViewGroup
-                        break;
-                    case DragEvent.ACTION_DRAG_ENDED:
-                        // Dropped, reassign View to ViewGroup
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
     }
 
     public void reflect(@Nullable final Instructions instructions)
@@ -136,19 +110,6 @@ public class InstructionListView extends FrameLayout
                 mBookingInstructionViews.add(bookingInstructionView);
                 bookingInstructionView.reflect(checklistItem);
                 bookingInstructionView.setOnStateChangedListener(mInstructionStateListener);
-                bookingInstructionView.setOnLongClickListener(new OnLongClickListener()
-                {
-                    @Override
-                    public boolean onLongClick(final View view)
-                    {
-                        //TODO: Implement dragging
-                        DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                        ClipData data = ClipData.newPlainText("", "");
-                        view.startDrag(data, shadowBuilder, view, 0);
-                        view.setVisibility(View.INVISIBLE);
-                        return false;
-                    }
-                });
                 mDnDLinearLayout.addView(bookingInstructionView);
             }
         }
@@ -165,7 +126,16 @@ public class InstructionListView extends FrameLayout
 
     private void onInstructionStateChanged(final ChecklistItem checklistItem)
     {
+        int uncheckedInstructionPosition = mInstructions.getChecklist().indexOf(checklistItem);
+        int firstUncheckedPosition = getPositionOfFirstUncheckedInstruction();
+        mDnDLinearLayout.moveChild(uncheckedInstructionPosition, firstUncheckedPosition);
         notifyObserver();
+    }
+
+    private int getPositionOfFirstUncheckedInstruction()
+    {
+        //TODO: Implement
+        return 4;
     }
 
     private void notifyObserver()
