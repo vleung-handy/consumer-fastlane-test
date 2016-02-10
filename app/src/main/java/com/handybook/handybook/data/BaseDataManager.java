@@ -25,6 +25,7 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
@@ -872,6 +873,26 @@ public final class BaseDataManager extends DataManager
                                                      final Callback<BookingEditFrequencyInfoResponse> cb)
     {
         mService.getBookingPricesForFrequencies(bookingId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
+    }
+
+    @Override
+    public void finalizeBooking(
+            int bookingId,
+            @NonNull FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+            @NonNull final Callback<Void> cb
+    )
+    {
+        mService.finalizeBooking(
+                bookingId,
+                finalizeBookingRequestPayload,
+                new HandyRetrofitCallback(cb) {
+                    @Override
+                    void success(final JSONObject response)
+                    {
+                     cb.onSuccess(null);
+                    }
+                }
+        );
     }
 
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb)

@@ -524,4 +524,28 @@ public class BookingManager implements Observer
             }
         });
     }
+
+
+    @Subscribe
+    public final void onFinalizeBooking(
+            final BookingEvent.RequestFinalizeBooking event
+    ){
+        dataManager.finalizeBooking(
+                event.getBookingId(),
+                event.getPayload(),
+                new DataManager.Callback<Void>()
+                {
+                    @Override
+                    public void onSuccess(final Void response)
+                    {
+                        bus.post(new BookingEvent.FinalizeBookingSuccess());
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        bus.post(new BookingEvent.FinalizeBookingError());
+                    }
+                });
+    }
 }

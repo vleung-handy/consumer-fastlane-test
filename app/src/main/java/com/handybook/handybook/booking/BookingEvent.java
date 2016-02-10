@@ -4,6 +4,7 @@ import android.support.v4.util.Pair;
 
 import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
@@ -339,4 +340,40 @@ public class BookingEvent
     public static class ReceiveTipProError extends HandyEvent.ReceiveErrorEvent
     {
     }
+
+
+    public static class RequestFinalizeBooking extends HandyEvent.RequestEvent
+    {
+        private int mBookingId;
+        private FinalizeBookingRequestPayload mPayload;
+
+        private RequestFinalizeBooking()
+        {
+        }
+
+        public RequestFinalizeBooking(final int bookingId, final FinalizeBookingRequestPayload payload)
+        {
+            mBookingId = bookingId;
+            mPayload = payload;
+        }
+
+        public int getBookingId()
+        {
+            return mBookingId;
+        }
+
+        public FinalizeBookingRequestPayload getPayload()
+        {
+            return mPayload;
+        }
+
+
+    }
+
+
+    public static class FinalizeBookingSuccess extends HandyEvent.ReceiveSuccessEvent {}
+
+
+    public static class FinalizeBookingError extends HandyEvent.ReceiveErrorEvent {}
+
 }
