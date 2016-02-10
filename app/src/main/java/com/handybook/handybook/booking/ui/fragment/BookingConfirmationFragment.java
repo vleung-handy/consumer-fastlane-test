@@ -292,8 +292,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
             //discourage user from pressing button twice
             //note that this doesn't prevent super fast clicks
-            disableInputs();
-            progressDialog.show();
+            showUiBlockers();
 
             //TODO: Finish breaking up booking confirmation fragment/activity and then call the
             // specific fragment instead of passing along an EXTRA_PAGE
@@ -306,6 +305,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                 intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, mIsNewUser);
                 intent.putExtra(BookingConfirmationActivity.EXTRA_INSTRUCTIONS, mInstructions);
                 startActivity(intent);
+                removeUiBlockers();
             }
             else if (mPage == PAGE_PREFERENCES && mIsNewUser)
             {
@@ -314,6 +314,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                 intent.putExtra(BookingConfirmationActivity.EXTRA_PAGE, PAGE_PASSWORD_PROMPT);
                 intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, mIsNewUser);
                 startActivity(intent);
+                removeUiBlockers();
             }
             else
             {
@@ -341,8 +342,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
 
                                 String bookingId = Integer.toString(bookingManager.getCurrentTransaction().getBookingId());
                                 showBookingDetails(bookingId);
-                                enableInputs();
-                                progressDialog.dismiss();
+                                removeUiBlockers();
                             }
 
                             @Override
@@ -353,8 +353,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
                                     return;
                                 }
 
-                                enableInputs();
-                                progressDialog.dismiss();
+                                removeUiBlockers();
                                 dataManagerErrorHandler.handleError(getActivity(), error);
                             }
                         });

@@ -82,7 +82,7 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 15
         targetSdkVersion 23
-        versionName '1.11.2'
+        versionName '1.12.3'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -159,6 +159,9 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton:butterknife:7.0.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+    //card.io credit card scanner
+    compile 'io.card:android-sdk:5.3.0'
 
     //Stripe payment processing
     compile 'com.stripe:stripe-android:1.0.0.1'

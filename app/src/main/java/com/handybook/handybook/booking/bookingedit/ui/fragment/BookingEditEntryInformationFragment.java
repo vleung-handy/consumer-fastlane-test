@@ -14,19 +14,20 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.ui.widget.BasicInputTextView;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingEditEntryInformationFragment extends BookingFlowFragment
 {
@@ -78,14 +79,27 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
             final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_confirmation, container, false);   //TODO: Make this its own fragment?
+                .inflate(R.layout.fragment_booking_edit_entry_info, container, false);
         ButterKnife.bind(this, view);
         initHeader();
         initKeysText();
         initOptionsView();
-        nextButton.setText(R.string.update);
-        nextButton.setOnClickListener(nextClicked);
         return view;
+    }
+
+    @OnClick(R.id.next_button)
+    public void onNextButtonClicked()
+    {
+        if (entryInformationTransaction.getGetInId() == ENTRY_INFORMATION_HIDE_KEY
+                && keysText.length() <= 0)
+        {
+            showToast(R.string.toast_error_missing_hidden_key_note);
+            return;
+        }
+        disableInputs();
+        progressDialog.show();
+        int bookingId = Integer.parseInt(booking.getId());
+        bus.post(new BookingEditEvent.RequestUpdateBookingEntryInformation(bookingId, entryInformationTransaction));
     }
 
     private void initHeader()
@@ -154,24 +168,6 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         progressDialog.dismiss();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
-
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View view)
-        {
-            if (entryInformationTransaction.getGetInId() == ENTRY_INFORMATION_HIDE_KEY
-                    && keysText.length() <= 0)
-            {
-                showToast(R.string.toast_error_missing_hidden_key_note);
-                return;
-            }
-            disableInputs();
-            progressDialog.show();
-            int bookingId = Integer.parseInt(booking.getId());
-            bus.post(new BookingEditEvent.RequestUpdateBookingEntryInformation(bookingId, entryInformationTransaction));
-        }
-    };
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated;
 

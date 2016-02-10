@@ -15,7 +15,7 @@
         android:visibility="gone"
         />
 
-
+    <!--TODO: make the nav layout more reusable-->
     <RelativeLayout
         android:id="@+id/nav_layout"
         style="@style/RelativeLayout.NavBar.Blue"
@@ -61,17 +61,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/nav_layout"
+        android:id="@+id/scrollView"
         >
 
-        <LinearLayout
+        <include
+            layout="@layout/element_credit_card_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_double"
-            android:orientation="vertical"
-            >
-
-            <include layout="@layout/element_credit_card_info"/>
-        </LinearLayout>
+            />
     </ScrollView>
 
 </RelativeLayout>

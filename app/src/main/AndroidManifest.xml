@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.handybook.handybook"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
+<manifest
+    package="com.handybook.handybook"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <uses-feature
@@ -49,7 +50,6 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
@@ -112,6 +112,28 @@
             android:name=".ui.activity.UpdatePaymentActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".module.referral.ui.ReferralActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".module.referral.ui.RedemptionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="r.handy.com"
+                    android:path="/r"
+                    android:scheme="http"
+                    />
+            </intent-filter>
+        </activity>
         <activity android:name=".booking.ui.activity.BookingOptionsActivity"/>
         <activity android:name=".booking.ui.activity.BookingDateActivity"/>
         <activity android:name=".booking.ui.activity.BookingAddressActivity"/>
@@ -141,19 +163,16 @@
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
             />
-        <!-- Required by the DeepLinkDispatch library -->
+        <!--Required by the DeepLinkDispatch library-->
         <activity
             android:name="com.airbnb.deeplinkdispatch.DeepLinkActivity"
-            android:theme="@android:style/Theme.NoDisplay"
-            >
+            android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="handybook"/>
-                <!-- TODO: parameterize the scheme? -->
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="handybook" />
+                <!--TODO: parameterize the scheme?-->
             </intent-filter>
         </activity>
         <activity
@@ -163,7 +182,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
 
-        <!-- Used for install referrer tracking by Yozio -->
+        <!-- Used for install referrer tracking by Yozio-->
         <receiver
             android:name=".receiver.InstallReferrerReceiver"
             android:exported="true"
@@ -206,7 +225,6 @@
 
         <!-- URBAN AIRSHIP -->
 
-
         <!-- REQUIRED for Action.startActivityForResult -->
         <activity android:name="com.urbanairship.actions.ActionActivity"/>
 
@@ -223,9 +241,9 @@
             android:name="com.urbanairship.CoreReceiver"
             android:exported="false"
             >
+
             <intent-filter android:priority="-999">
                 <action android:name="com.urbanairship.push.OPENED"/>
-
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </receiver>
@@ -251,6 +269,7 @@
             android:name="com.urbanairship.actions.LandingPageActivity"
             android:exported="false"
             >
+
             <intent-filter>
                 <action android:name="com.urbanairship.actions.SHOW_LANDING_PAGE_INTENT_ACTION"/>
 
@@ -305,6 +324,7 @@
             android:name=".module.push.receiver.PushReceiver"
             android:exported="false"
             >
+
             <intent-filter>
                 <action android:name="com.urbanairship.push.CHANNEL_UPDATED"/>
                 <action android:name="com.urbanairship.push.OPENED"/>
@@ -320,6 +340,7 @@
             android:name="com.urbanairship.push.GCMPushReceiver"
             android:permission="com.google.android.c2dm.permission.SEND"
             >
+
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>

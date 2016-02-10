@@ -7,13 +7,13 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.manager.BookingManager;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;

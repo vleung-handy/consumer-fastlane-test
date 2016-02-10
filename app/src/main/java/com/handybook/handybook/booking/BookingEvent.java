@@ -14,7 +14,7 @@ import com.handybook.handybook.event.HandyEvent;
 
 import java.util.List;
 
-public class BookingEvent
+public abstract class BookingEvent
 {
     public abstract static class RequestBookingActionEvent extends HandyEvent.RequestEvent
     {

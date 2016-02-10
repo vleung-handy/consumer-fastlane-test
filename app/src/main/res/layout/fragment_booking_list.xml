@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/handy_background_gray"
     >
+
+    <include layout="@layout/layout_card_empty"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fragment_booking_list_swipe_refresh_layout"
@@ -13,45 +15,17 @@
         android:layout_height="match_parent"
         >
 
-        <RelativeLayout
+        <com.handybook.handybook.ui.view.EmptiableRecyclerView
+            android:id="@+id/fragment_booking_list_booking_card_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/handy_background_gray"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/default_padding_quarter"
+            android:paddingRight="@dimen/default_padding_quarter"
+            android:paddingTop="@dimen/default_padding_quarter"
+            tools:listitem="@layout/layout_card_booking"
             >
-
-            <include layout="@layout/layout_card_empty"/>
-
-            <com.handybook.handybook.ui.view.EmptiableRecyclerView
-                android:id="@+id/fragment_booking_list_booking_card_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:paddingTop="4dp"
-                tools:listitem="@layout/layout_card_booking"
-                >
-            </com.handybook.handybook.ui.view.EmptiableRecyclerView>
-
-            <android.support.design.widget.CoordinatorLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/add_booking_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
-                    android:layout_margin="@dimen/default_margin"
-                    android:src="@drawable/ic_plus_white"
-                    android:tag="fab"
-                    app:backgroundTint="@color/handy_blue"
-                    app:fabSize="normal"
-                    />
-            </android.support.design.widget.CoordinatorLayout>
-
-        </RelativeLayout>
+        </com.handybook.handybook.ui.view.EmptiableRecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

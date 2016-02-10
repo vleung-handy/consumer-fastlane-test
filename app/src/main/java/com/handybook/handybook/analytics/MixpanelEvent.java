@@ -30,11 +30,14 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_SHOW_RATING_PROMPT = "app rate prompt";
         public static final String APP_TRACK_SHOW_TIP_PROMPT = "present tips";
         public static final String APP_TRACK_SUBMIT_TIP = "submit tips";
-        public static final String APP_TRACK_ADD_BOOKING_FAB_SERVICE = "add booking fab service selected";
+        public static final String APP_TRACK_ADD_BOOKING_FAB_CLICKED = "add booking fab clicked";
+        public static final String APP_TRACK_ADD_BOOKING_FAB_SERVICE_SELECTED = "add booking fab service selected";
         public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_SHOWN = "add booking fab menu shown";
         public static final String APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED = "add booking fab menu dismissed";
         public static final String APP_TRACK_SPLASH_PROMO_SHOW = "app splash promo show";
         public static final String APP_TRACK_SPLASH_PROMO_ACTION = "app splash promo action";
+        public static final String APP_TRACK_SCAN_CREDIT_CARD_CLICKED = "scan credit card clicked";
+        public static final String APP_TRACK_SCAN_CREDIT_CARD_RESULT = "scan credit card result";
     }
 
 
@@ -77,6 +80,33 @@ public abstract class MixpanelEvent
         public String toString()
         {
             return mStringValue;
+        }
+    }
+
+    /**
+     * tracks when the scan credit card button is clicked
+     */
+    @Track(EventKey.APP_TRACK_SCAN_CREDIT_CARD_CLICKED)
+    public static class TrackScanCreditCardClicked extends MixpanelEvent
+    {
+    }
+
+    /**
+     * tracks whether the credit card scanner successfully scans a card or not
+     *
+     * success=true: card data is extracted
+     * success=false: user cancelled the scan (maybe out of frustration) or an error occurred
+     *
+     */
+    @Track(EventKey.APP_TRACK_SCAN_CREDIT_CARD_RESULT)
+    public static class TrackScanCreditCardResult extends MixpanelEvent
+    {
+        @TrackField("success")
+        private final boolean success;
+
+        public TrackScanCreditCardResult(final boolean success)
+        {
+            this.success = success;
         }
     }
 
@@ -197,8 +227,10 @@ public abstract class MixpanelEvent
         }
     }
 
+    @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_CLICKED)
+    public static class TrackAddBookingFabClicked {}
 
-    @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_SERVICE)
+    @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_SERVICE_SELECTED)
     public static class TrackAddBookingFabServiceSelected
     {
         @TrackField("service id")
@@ -212,7 +244,6 @@ public abstract class MixpanelEvent
             mUniq = uniq;
         }
     }
-
 
     @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_MENU_SHOWN)
     public static class TrackAddBookingFabMenuShown {}

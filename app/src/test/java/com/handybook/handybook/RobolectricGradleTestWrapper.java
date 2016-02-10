@@ -1,12 +1,19 @@
 package com.handybook.handybook;
 
 import android.os.Build;
+import android.view.View;
+import android.view.animation.Animation;
 
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.lang.reflect.Field;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 
 @Ignore
 @RunWith(RobolectricGradleTestRunner.class)
@@ -15,15 +22,20 @@ import org.robolectric.annotation.Config;
         packageName = "com.handybook.handybook")
 public class RobolectricGradleTestWrapper
 {
-    protected  <T> T getBusCaptorValue(ArgumentCaptor<?> captor, Class<T> classType)
+    protected void preventAnimationStart(final Object parent, final String viewFieldName)
     {
-        for (Object o : captor.getAllValues())
+        try
         {
-            if (classType.isInstance(o))
-            {
-                return classType.cast(o);
-            }
+            final Field viewField = parent.getClass().getDeclaredField(viewFieldName);
+            viewField.setAccessible(true);
+            final View view = (View) viewField.get(parent);
+            final View spy = spy(view);
+            doNothing().when(spy).startAnimation(any(Animation.class));
+            viewField.set(parent, spy);
         }
-        return null;
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

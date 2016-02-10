@@ -6,7 +6,7 @@ import com.handybook.handybook.event.HandyEvent;
 
 import retrofit.mime.TypedInput;
 
-public class HelpEvent
+public abstract class HelpEvent
 {
     //Help Self Service Center
     public static class RequestHelpNode extends HandyEvent

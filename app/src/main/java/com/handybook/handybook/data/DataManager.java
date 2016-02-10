@@ -32,10 +32,13 @@ import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
+import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -271,6 +274,11 @@ public abstract class DataManager
             Callback<User> cb
     );
 
+    public abstract void createUser(
+            CreateUserRequest createUserRequest,
+            Callback<User> cb
+    );
+
     public abstract void getUser(
             String userId,
             String authToken,
@@ -291,11 +299,8 @@ public abstract class DataManager
     public abstract void updatePayment(String userId, String token, Callback<Void> cb);
 
     public abstract void authFBUser(
-            String fbid,
-            String accessToken,
-            String email,
-            String firstName,
-            String lastName, Callback<User> cb
+            CreateUserRequest createUserRequest,
+            Callback<User> cb
     );
 
     public abstract void requestPasswordReset(
@@ -339,6 +344,20 @@ public abstract class DataManager
             @NonNull Callback<Void> cb
     );
 
+    public abstract void requestPrepareReferrals(
+            final Callback<ReferralResponse> callback
+    );
+
+    public abstract void requestConfirmReferral(
+            final String guid,
+            final Callback<Void> callback
+    );
+
+    public abstract void requestRedemptionDetails(
+            final String guid,
+            final Callback<RedemptionDetailsResponse> callback
+    );
+
     public abstract String getBaseUrl();
 
     public interface Callback<T>
@@ -360,7 +379,7 @@ public abstract class DataManager
         OTHER, SERVER, CLIENT, NETWORK
     }
 
-    public static final class DataManagerError
+    public static class DataManagerError
     {
         private final Type type;
         private final String message;
@@ -388,12 +407,12 @@ public abstract class DataManager
             this.invalidInputs = inputs;
         }
 
-        public final String getMessage()
+        public String getMessage()
         {
             return message;
         }
 
-        public final Type getType()
+        public Type getType()
         {
             return type;
         }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/default_button_height"
+    tools:background="@color/handy_blue"
+    >
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/default_margin_half"
+        android:layout_marginRight="@dimen/default_margin_half"
+        android:paddingEnd="@dimen/default_padding_half"
+        android:paddingLeft="@dimen/default_padding_half"
+        android:paddingRight="@dimen/default_padding_half"
+        android:paddingStart="@dimen/default_padding_half"
+        android:src="@drawable/ic_email_white"
+        tools:background="@color/handy_blue_pressed"
+        />
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/TextView.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toEndOf="@+id/icon"
+        android:layout_toRightOf="@+id/icon"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingStart="@dimen/default_padding"
+        android:textColor="@color/white"
+        tools:text="Log In Now!"
+        />
+
+</RelativeLayout>

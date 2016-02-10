@@ -2,13 +2,14 @@ package com.handybook.handybook.event;
 
 import android.support.annotation.NonNull;
 
+import com.facebook.AccessToken;
 import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
-import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.stripe.android.model.Token;
 
 public abstract class HandyEvent
@@ -23,7 +24,8 @@ public abstract class HandyEvent
 
             public BookingCardViewModelsEvent(
                     @NonNull final User user,
-                    @NonNull @Booking.List.OnlyBookingValues final String onlyBookingsValue)
+                    @NonNull @Booking.List.OnlyBookingValues final String onlyBookingsValue
+            )
             {
                 mUser = user;
                 mOnlyBookingValue = onlyBookingsValue;
@@ -53,8 +55,8 @@ public abstract class HandyEvent
 
             final long mUserId;
             final Long mSinceId;
-            final Long  mUntilId;
-            final Long  mCount;
+            final Long mUntilId;
+            final Long mCount;
 
             public HandyNotificationsEvent(
                     final long userId,
@@ -164,6 +166,7 @@ public abstract class HandyEvent
         public DataManager.DataManagerError error;
     }
 
+
     @Track("consumer app blocking screen displayed")
     public static class BlockingScreenDisplayed extends HandyEvent
     {
@@ -187,6 +190,7 @@ public abstract class HandyEvent
 
     }
 
+
     public static class RequestUpdatePayment extends RequestEvent
     {
         public final Token token;
@@ -197,9 +201,11 @@ public abstract class HandyEvent
         }
     }
 
+
     public static class ReceiveUpdatePaymentSuccess extends ReceiveSuccessEvent
     {
     }
+
 
     public static class ReceiveUpdatePaymentError extends ReceiveErrorEvent
     {
@@ -209,4 +215,202 @@ public abstract class HandyEvent
         }
     }
 
+
+    public static class RequestAuthUser
+    {
+        private final String mEmail;
+        private final String mPassword;
+
+        public RequestAuthUser(final String email, final String password)
+        {
+            mEmail = email;
+            mPassword = password;
+        }
+
+        public String getEmail()
+        {
+            return mEmail;
+        }
+
+        public String getPassword()
+        {
+            return mPassword;
+        }
+    }
+
+
+    public static class RequestAuthFacebookUser extends RequestEvent
+    {
+        private AccessToken mAccessToken;
+        private String mReferralGuid;
+
+        public RequestAuthFacebookUser(final AccessToken accessToken, final String referralGuid)
+        {
+            mAccessToken = accessToken;
+            mReferralGuid = referralGuid;
+        }
+
+        public AccessToken getAccessToken()
+        {
+            return mAccessToken;
+        }
+
+        public String getReferralGuid()
+        {
+            return mReferralGuid;
+        }
+    }
+
+
+    public static class ReceiveAuthUserSuccess extends ReceiveSuccessEvent
+    {
+        private final User mUser;
+        private final UserDataManager.AuthType mAuthType;
+
+        public ReceiveAuthUserSuccess(final User user, final UserDataManager.AuthType authType)
+        {
+            mUser = user;
+            mAuthType = authType;
+        }
+
+        public User getUser()
+        {
+            return mUser;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
+
+
+    public static class ReceiveAuthUserError extends ReceiveErrorEvent
+    {
+        private UserDataManager.AuthType mAuthType;
+
+        public ReceiveAuthUserError(
+                final DataManager.DataManagerError error,
+                final UserDataManager.AuthType authType
+        )
+        {
+            this.error = error;
+            mAuthType = authType;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
+
+
+    public static class RequestCreateUser extends RequestEvent
+    {
+        private final String mEmail;
+        private final String mPassword;
+        private final String mReferralGuid;
+
+        public RequestCreateUser(
+                final String email,
+                final String password,
+                final String referralGuid
+        )
+        {
+            mEmail = email;
+            mPassword = password;
+            mReferralGuid = referralGuid;
+        }
+
+        public String getEmail()
+        {
+            return mEmail;
+        }
+
+        public String getPassword()
+        {
+            return mPassword;
+        }
+
+        public String getReferralGuid()
+        {
+            return mReferralGuid;
+        }
+    }
+
+
+    public static class RequestUser extends RequestEvent
+    {
+        private String mUserId;
+        private String mAuthToken;
+        private UserDataManager.AuthType mAuthType;
+
+        public RequestUser(
+                final String userId, final String authToken,
+                final UserDataManager.AuthType authType
+        )
+        {
+            mUserId = userId;
+            mAuthToken = authToken;
+            mAuthType = authType;
+        }
+
+        public String getUserId()
+        {
+            return mUserId;
+        }
+
+        public String getAuthToken()
+        {
+            return mAuthToken;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
+
+
+    public static class ReceiveUserSuccess extends ReceiveSuccessEvent
+    {
+        private User mUser;
+        private UserDataManager.AuthType mAuthType;
+
+        public ReceiveUserSuccess(final User user, final UserDataManager.AuthType authType)
+        {
+            mUser = user;
+            mAuthType = authType;
+        }
+
+        public User getUser()
+        {
+            return mUser;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
+
+
+    public static class ReceiveUserError extends ReceiveErrorEvent
+    {
+        private UserDataManager.AuthType mAuthType;
+
+        public ReceiveUserError(
+                final DataManager.DataManagerError error,
+                final UserDataManager.AuthType authType
+        )
+        {
+            mAuthType = authType;
+            this.error = error;
+        }
+
+        public UserDataManager.AuthType getAuthType()
+        {
+            return mAuthType;
+        }
+    }
 }

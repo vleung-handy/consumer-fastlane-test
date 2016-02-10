@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,6 +98,19 @@
                 />
 
         </FrameLayout>
-
     </LinearLayout>
-</merge>
+    <TextView
+        android:id="@+id/scan_card_button"
+        style="@style/TextView.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="@dimen/default_padding"
+        android:text="@string/scan_credit_card_button"
+        android:textColor="@color/handy_darkened_blue"
+        android:drawableLeft="@drawable/ic_camera"
+        android:drawablePadding="@dimen/default_padding_half"
+        android:visibility="gone"
+        />
+</LinearLayout>

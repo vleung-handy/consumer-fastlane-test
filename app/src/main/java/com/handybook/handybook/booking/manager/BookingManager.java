@@ -146,7 +146,8 @@ public class BookingManager implements Observer
 
     @Subscribe
     public void onRequestBookingCardViewModels(
-            @NonNull final HandyEvent.RequestEvent.BookingCardViewModelsEvent event)
+            @NonNull final HandyEvent.RequestEvent.BookingCardViewModelsEvent event
+    )
     {
         if (null != event.getOnlyBookingValue())
         {
@@ -161,21 +162,9 @@ public class BookingManager implements Observer
                             final List<Booking> bookings = result.getBookings();
                             Collections.sort(bookings, Booking.COMPARATOR_DATE);
                             // Mark bookingCardViewModels accordingly and emit it.
-                            BookingCardViewModel.List models = new BookingCardViewModel.List();
-                            switch (event.getOnlyBookingValue())
-                            {
-                                case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
-                                    models = BookingCardViewModel.List
-                                            .from(bookings, BookingCardViewModel.List.TYPE_PAST);
-                                    break;
-                                case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
-                                    models = BookingCardViewModel.List
-                                            .from(bookings, BookingCardViewModel.List.TYPE_UPCOMING);
-                                    models.setType(BookingCardViewModel.List.TYPE_UPCOMING);
-                                    break;
-                                default:
-                                    Crashlytics.log("event.getOnlyBookingValue() hit default :(");
-                            }
+                            BookingCardViewModel.List models = getBookingCardViewModelListFromResult(
+                                    bookings,
+                                    event.getOnlyBookingValue());
                             bus.post(new HandyEvent.ResponseEvent.BookingCardViewModels(models));
                         }
 
@@ -186,6 +175,29 @@ public class BookingManager implements Observer
                         }
                     });
         }
+    }
+
+    private BookingCardViewModel.List getBookingCardViewModelListFromResult(
+            @NonNull List<Booking> bookings,
+            @Booking.List.OnlyBookingValues @NonNull String onlyBookingValue
+    )
+    {
+        BookingCardViewModel.List models = BookingCardViewModel.List.empty();
+        switch (onlyBookingValue)
+        {
+            case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
+                models = BookingCardViewModel.List
+                        .from(bookings, BookingCardViewModel.List.TYPE_PAST);
+                break;
+            case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
+                models = BookingCardViewModel.List
+                        .from(bookings, BookingCardViewModel.List.TYPE_UPCOMING);
+                break;
+            default:
+                Crashlytics.logException(
+                        new RuntimeException("Unrecognized booking list type: " + onlyBookingValue));
+        }
+        return models;
     }
 
     @Subscribe
@@ -477,7 +489,8 @@ public class BookingManager implements Observer
 
     @Subscribe
     public void onRequestSendCancelRecurringBookingEmail(
-            final BookingEvent.RequestSendCancelRecurringBookingEmail event)
+            final BookingEvent.RequestSendCancelRecurringBookingEmail event
+    )
     {
         dataManager.sendCancelRecurringBookingEmail(event.bookingRecurringId, new DataManager
                 .Callback<SuccessWrapper>()
@@ -501,11 +514,13 @@ public class BookingManager implements Observer
      * TODO: no endpoint to only return the recurring bookings, must fetch part of the user
      * bookings payload for now
      * TODO: would be nice to have caching
+     *
      * @param event
      */
     @Subscribe
     public final void onRequestRecurringBookings(
-            final BookingEvent.RequestRecurringBookingsForUser event)
+            final BookingEvent.RequestRecurringBookingsForUser event
+    )
     {
 
         dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
@@ -514,7 +529,9 @@ public class BookingManager implements Observer
             public void onSuccess(final UserBookingsWrapper result)
             {
                 //TODO: need to sort the recurring bookings?
-                bus.post(new BookingEvent.ReceiveRecurringBookingsSuccess(result.getRecurringBookings()));
+                bus.post(new BookingEvent.ReceiveRecurringBookingsSuccess(
+                                result.getRecurringBookings())
+                );
             }
 
             @Override

@@ -16,6 +16,11 @@ public class HandySnackbar
 
     private static final String FAB_VIEW_TAG = "fab";
 
+    public static void show(Activity activity, String message)
+    {
+        show(activity, message, TYPE_DEFAULT);
+    }
+
     public static void show(Activity activity, String message, String type)
     {
         final View view = getView(activity);

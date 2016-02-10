@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
@@ -28,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link InjectedFragment} subclass.
@@ -42,6 +45,8 @@ public class BookingsFragment extends InjectedFragment
     ViewPager mViewPager;
     @Bind(R.id.tab_layout)
     HandyTabLayout mTabLayout;
+    @Bind(R.id.add_booking_button)
+    FloatingActionButton mAddBookingButton;
     private TabAdapter mTabAdapter;
     private List<Service> mServices;
 
@@ -80,8 +85,10 @@ public class BookingsFragment extends InjectedFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+    )
     {
         final View view = inflater.inflate(R.layout.fragment_bookings, container, false);
         ButterKnife.bind(this, view);
@@ -94,6 +101,24 @@ public class BookingsFragment extends InjectedFragment
         mMenuButtonLayout.addView(menuButton);
         bus.post(new BookingEvent.RequestServices());
 
+        getActivity().getSupportFragmentManager()
+                .addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
+                {
+                    @Override
+                    public void onBackStackChanged()
+                    {
+                        int backStackEntryCount = getActivity().getSupportFragmentManager()
+                                .getBackStackEntryCount();
+                        if (backStackEntryCount == 0)
+                        {
+                            mAddBookingButton.show();
+                        }
+                        else
+                        {
+                            mAddBookingButton.hide();
+                        }
+                    }
+                });
         return view;
     }
 
@@ -109,9 +134,10 @@ public class BookingsFragment extends InjectedFragment
         mServices = event.getServices();
     }
 
-    @Subscribe
-    public void onAddBookingButtonClicked(BookingEvent.AddBookingButtonClicked event)
+    @OnClick(R.id.add_booking_button)
+    public void onServicesButtonClicked()
     {
+        bus.post(new MixpanelEvent.TrackAddBookingFabClicked());
         if (mServices != null)
         {
             final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

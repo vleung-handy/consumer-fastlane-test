@@ -141,6 +141,10 @@
         <item name="android:textColor">@color/handy_text_black</item>
     </style>
 
+    <style name="Button.White.Round">
+        <item name="android:background">@drawable/button_white_round</item>
+    </style>
+
     <style name="RoundedButton">
         <item name="android:layout_width">64dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -440,8 +444,8 @@
         <item name="android:layout_height">50dp</item>
         <item name="android:gravity">center</item>
         <item name="android:singleLine">true</item>
-        <item name="android:background">@drawable/nav_bar</item>
-        <item name="android:textColor">@color/handy_text_black</item>
+        <item name="android:background">@color/handy_blue</item>
+        <item name="android:textColor">@color/handy_white</item>
         <item name="fontPath">fonts/CircularStd-Book.otf</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:paddingTop">0dp</item>

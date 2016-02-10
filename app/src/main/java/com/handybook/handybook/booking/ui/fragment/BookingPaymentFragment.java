@@ -50,6 +50,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
@@ -67,6 +68,7 @@ import com.stripe.exception.CardException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.card.payment.CardIOActivity;
 
 public class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
@@ -115,6 +117,56 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     TextView mSelectPaymentPromoText;
     @Bind(R.id.booking_payment_terms_of_use_text)
     TextView mTermsOfUseText;
+    @Bind(R.id.scan_card_button)
+    TextView mScanCardButton;
+
+    @OnClick(R.id.scan_card_button)
+    public void onScanCardButtonPressed()
+    {
+        bus.post(new MixpanelEvent.TrackScanCreditCardClicked());
+        startCardScanActivity();
+    }
+
+    private void startCardScanActivity()
+    {
+        Intent scanIntent = new Intent(getContext(), CardIOActivity.class);
+
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+
+        startActivityForResult(scanIntent, ActivityResult.SCAN_CREDIT_CARD);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ActivityResult.SCAN_CREDIT_CARD)
+        {
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT))
+            {
+                io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                onScannedCardResult(scannedCardResult);
+                bus.post(new MixpanelEvent.TrackScanCreditCardResult(true));
+            }
+            else
+            {
+                bus.post(new MixpanelEvent.TrackScanCreditCardResult(false));
+                //canceled
+            }
+        }
+    }
+
+    public void onScannedCardResult(@NonNull final io.card.payment.CreditCard scannedCardResult)
+    {
+        mCreditCardText.setText(scannedCardResult.cardNumber);
+        if (scannedCardResult.isExpiryValid())
+        {
+            mExpText.setTextFromMonthYear(scannedCardResult.expiryMonth, scannedCardResult.expiryYear);
+        }
+        mCvcText.setText(scannedCardResult.cvv);
+    }
 
     @OnClick(R.id.enter_credit_card_button)
     public void onEnterCreditCardButtonClicked()
@@ -201,8 +253,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         mixpanel.trackEventPaymentPage(bookingManager.getCurrentRequest(),
                 bookingManager.getCurrentQuote(),
@@ -264,8 +318,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mTermsOfUseText.setMovementMethod(new LinkMovementMethod()
         {
             @Override
-            public boolean onTouchEvent(final TextView widget,
-                                        final Spannable buffer, final MotionEvent event)
+            public boolean onTouchEvent(
+                    final TextView widget,
+                    final Spannable buffer, final MotionEvent event
+            )
             {
                 final int action = event.getAction();
                 if (action == MotionEvent.ACTION_DOWN)
@@ -491,6 +547,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
+        mScanCardButton.setVisibility(View.VISIBLE);
         mUseAndroidPay = false;
         mUseExistingCard = false;
     }
@@ -646,6 +703,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCreditCardText.setText(null);
         mCreditCardText.setDisabled(true, maskedWallet.getPaymentDescriptions()[0]);
         mCardExtrasLayout.setVisibility(View.GONE);
+        mScanCardButton.setVisibility(View.GONE);
         mUseExistingCard = false;
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;
@@ -845,20 +903,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         }
 
                         final User user = userManager.getCurrentUser();
-                        dataManager.getUser(user.getId(), user.getAuthToken(),
-                                new DataManager.Callback<User>()
-                                {
-                                    @Override
-                                    public void onSuccess(final User updatedUser)
-                                    {
-                                        userManager.setCurrentUser(updatedUser);
-                                    }
-
-                                    @Override
-                                    public void onError(final DataManager.DataManagerError error)
-                                    {
-                                    }
-                                });
+                        bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(),
+                                null));
 
                         bookingManager.setCurrentPostInfo(new BookingPostInfo());
 
@@ -889,14 +935,18 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     private final TextWatcher cardTextWatcher = new TextWatcher()
     {
         @Override
-        public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                      final int count, final int after)
+        public void beforeTextChanged(
+                final CharSequence charSequence, final int start,
+                final int count, final int after
+        )
         {
         }
 
         @Override
-        public void onTextChanged(final CharSequence charSequence, final int start,
-                                  final int before, final int count)
+        public void onTextChanged(
+                final CharSequence charSequence, final int start,
+                final int before, final int count
+        )
         {
         }
 
@@ -907,8 +957,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         }
     };
 
-    private void handlePromoSuccess(final BookingCoupon coupon, final BookingQuote quote,
-                                    final BookingTransaction transaction, final String promo)
+    private void handlePromoSuccess(
+            final BookingCoupon coupon, final BookingQuote quote,
+            final BookingTransaction transaction, final String promo
+    )
     {
         if (!allowCallbacks) { return; }
         quote.setPriceTable(coupon.getPriceTable());

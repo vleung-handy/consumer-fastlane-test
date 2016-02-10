@@ -2,11 +2,13 @@ package com.handybook.handybook.module.notifications.splash.view.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -69,13 +71,46 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState)
     {
-        //TODO: placeholder image?
         super.onViewCreated(view, savedInstanceState);
-        Picasso.with(getContext()).
-                load(mSplashPromo.getImageUrl()).
-                placeholder(R.drawable.ic_noimage).
-                error(R.drawable.ic_noimage).
-                into(mUrlImageView);
+        mUrlImageView.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout()
+                    {
+                        try //picasso doesn't catch all errors like empty URL!
+                        {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                            {
+                                mUrlImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
+                            else
+                            {
+                                mUrlImageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            }
+                            //we are going to use an animated placeholder eventually
+                            Picasso.with(getContext()).
+                                    load(mSplashPromo.getImageUrl()).
+                                    error(R.drawable.banner_image_load_failed).
+                                    resize(mUrlImageView.getWidth(), 0).
+                                    into(mUrlImageView);
+                            /*
+                            need to call resize() because ImageView
+                            can have rounding errors when scaling
+                            that causes a 1px margin around the image and
+                            there's no known way of scaling it against one dimension
+                            using the view params
+                             */
+                        }
+                        catch (Exception e)
+                        {
+                            Crashlytics.log("Exception in loading image url: '" + mSplashPromo.getImageUrl() + "' " +
+                                    "with Picasso for splash promo id " + mSplashPromo.getId());
+                            Crashlytics.logException(e);
+                        }
+                    }
+                });
+
+
         mTitle.setText(mSplashPromo.getTitle());
         mSubtitle.setText(mSplashPromo.getSubtitle());
         mActionButton.setText(mSplashPromo.getActionText());
