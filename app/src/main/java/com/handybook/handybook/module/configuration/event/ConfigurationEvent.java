@@ -11,16 +11,16 @@ public class ConfigurationEvent
 
     public static class ReceiveConfigurationSuccess extends HandyEvent.ReceiveSuccessEvent
     {
-        private Configuration mResponse;
+        private Configuration mConfiguration;
 
-        public ReceiveConfigurationSuccess(final Configuration response)
+        public ReceiveConfigurationSuccess(final Configuration configuration)
         {
-            mResponse = response;
+            mConfiguration = configuration;
         }
 
-        public Configuration getResponse()
+        public Configuration getConfiguration()
         {
-            return mResponse;
+            return mConfiguration;
         }
     }
 
