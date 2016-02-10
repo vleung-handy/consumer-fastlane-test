@@ -65,6 +65,12 @@ public class BookingInstructionView extends FrameLayout
         return mState;
     }
 
+    public void setState(final ChecklistItem checklistItem)
+    {
+        setState(checklistItem.getIsRequested() ? State.REQUESTED : State.DECLINED);
+        notifyObserver();
+    }
+
     public void setState(final State state)
     {
         mState = state;
@@ -175,6 +181,7 @@ public class BookingInstructionView extends FrameLayout
         mChecklistItem = checklistItem;
         setText(checklistItem.getText());
         setTitle(checklistItem.getTitle());
+        setState(checklistItem);
     }
 
     public enum State
