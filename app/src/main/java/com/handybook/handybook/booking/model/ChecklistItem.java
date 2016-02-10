@@ -9,14 +9,18 @@ public class ChecklistItem implements Parcelable
 {
     @SerializedName("id")
     private Long mId;
-    @SerializedName("mahine_name")
+    @SerializedName("machine_name")
     private String mMachineName;
     @SerializedName("title")
     private String mTitle;
     @SerializedName("text")
     private String mText;
-    @SerializedName("state")
-    private String mState;
+    @SerializedName("description")
+    private String mDescription;
+    @SerializedName("instruction_type")
+    private String mInstructionType;
+    @SerializedName("requested")
+    private Boolean mIsRequested;
 
 
     protected ChecklistItem(Parcel in)
@@ -25,7 +29,9 @@ public class ChecklistItem implements Parcelable
         mMachineName = in.readString();
         mTitle = in.readString();
         mText = in.readString();
-        mState = in.readString();
+        mDescription = in.readString();
+        mInstructionType = in.readString();
+        mIsRequested = (in.readInt() == 0) ? false : true;
     }
 
     public static final Creator<ChecklistItem> CREATOR = new Creator<ChecklistItem>()
@@ -53,6 +59,31 @@ public class ChecklistItem implements Parcelable
         return mText;
     }
 
+    public Long getId()
+    {
+        return mId;
+    }
+
+    public String getMachineName()
+    {
+        return mMachineName;
+    }
+
+    public String getDescription()
+    {
+        return mDescription;
+    }
+
+    public String getInstructionType()
+    {
+        return mInstructionType;
+    }
+
+    public boolean getIsRequested()
+    {
+        return mIsRequested != null && mIsRequested;
+    }
+
     @Override
     public int describeContents()
     {
@@ -66,6 +97,8 @@ public class ChecklistItem implements Parcelable
         dest.writeString(mMachineName);
         dest.writeString(mTitle);
         dest.writeString(mText);
-        dest.writeString(mState);
+        dest.writeString(mDescription);
+        dest.writeString(mInstructionType);
+        dest.writeInt((mIsRequested != null && mIsRequested) ? 1 : 0);
     }
 }
