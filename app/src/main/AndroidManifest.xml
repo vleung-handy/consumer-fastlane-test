@@ -142,7 +142,7 @@
             android:windowSoftInputMode="stateHidden"
             />
         <activity android:name=".booking.ui.activity.BookingDetailActivity"/>
-        <activity android:name=".booking.ui.activity.BookingConfirmationActivity"/>
+        <activity android:name=".booking.ui.activity.BookingFinalizeActivity"/>
         <activity android:name=".booking.ui.activity.BookingRecurrenceActivity"/>
         <activity android:name=".booking.ui.activity.BookingExtrasActivity"/>
         <activity android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"/>

@@ -45,7 +45,7 @@ import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
+import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
@@ -909,10 +909,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         bookingManager.setCurrentPostInfo(new BookingPostInfo());
 
                         final Intent intent = new Intent(getActivity(),
-                                BookingConfirmationActivity.class);
+                                BookingFinalizeActivity.class);
 
-                        intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, isNewUser);
-                        intent.putExtra(BookingConfirmationActivity.EXTRA_INSTRUCTIONS,
+                        intent.putExtra(BookingFinalizeActivity.EXTRA_NEW_USER, isNewUser);
+                        intent.putExtra(BookingFinalizeActivity.EXTRA_INSTRUCTIONS,
                                 trans.getInstructions());
                         startActivity(intent);
 
