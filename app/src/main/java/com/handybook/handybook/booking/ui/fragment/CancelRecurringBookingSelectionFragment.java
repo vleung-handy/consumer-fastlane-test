@@ -110,7 +110,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
         {
             removeUiBlockers();
             final String cancelUrl = recurringBooking.getCancelUrl();
-            final Fragment fragment = CancelRecurringBookingDetailsFragment.newInstance(cancelUrl);
+            final Fragment fragment = CancelRecurringBookingFragment.newInstance(cancelUrl);
             final FragmentTransaction transaction = getFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
                     .add(R.id.fragment_container, fragment);

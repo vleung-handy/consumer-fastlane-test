@@ -20,15 +20,14 @@ import butterknife.ButterKnife;
 /**
  * Used to display a web view that will take the user through recurring booking cancellation steps.
  */
-public class CancelRecurringBookingDetailsFragment extends InjectedFragment
+public class CancelRecurringBookingFragment extends InjectedFragment
 {
     @Bind(R.id.web_view)
     HandyWebView mWebView;
 
-    public static CancelRecurringBookingDetailsFragment newInstance(final String cancelUrl)
+    public static CancelRecurringBookingFragment newInstance(final String cancelUrl)
     {
-        final CancelRecurringBookingDetailsFragment fragment =
-                new CancelRecurringBookingDetailsFragment();
+        final CancelRecurringBookingFragment fragment = new CancelRecurringBookingFragment();
         Bundle arguments = new Bundle();
         arguments.putString(BundleKeys.CANCEL_RECURRING_BOOKING_URL, cancelUrl);
         fragment.setArguments(arguments);
