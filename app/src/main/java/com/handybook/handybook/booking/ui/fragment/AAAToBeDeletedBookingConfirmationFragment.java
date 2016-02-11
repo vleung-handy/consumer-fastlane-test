@@ -18,8 +18,8 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.Instructions;
-import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
@@ -43,7 +43,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 // IN THE BOOKING FLOW, SEE NOTE
 //TODO: Break this into distinct fragments, see BookingEditNoteToPro, BookingEditEntryInformation,
 // still need to do the password prompt
-public final class BookingConfirmationFragment extends BookingFlowFragment
+public final class AAAToBeDeletedBookingConfirmationFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener
 {
     private static final int PAGE_ENTRY_INFORMATION = 0;
@@ -75,13 +75,13 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     @Bind(R.id.instructions_layout)
     InstructionListView mInstructionListView;
 
-    public static BookingConfirmationFragment newInstance(
+    public static AAAToBeDeletedBookingConfirmationFragment newInstance(
             final int page,
             final boolean isNewUser,
             final Instructions instructions
     )
     {
-        final BookingConfirmationFragment fragment = new BookingConfirmationFragment();
+        final AAAToBeDeletedBookingConfirmationFragment fragment = new AAAToBeDeletedBookingConfirmationFragment();
         final Bundle args = new Bundle();
 
         args.putInt(EXTRA_PAGE, page);
@@ -110,7 +110,7 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
     )
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_confirmation, container, false);
+                .inflate(R.layout._to_be_deleted_fragment_booking_confirmation, container, false);
 
         ButterKnife.bind(this, view);
 
@@ -300,19 +300,19 @@ public final class BookingConfirmationFragment extends BookingFlowFragment
             if (mPage == PAGE_ENTRY_INFORMATION)
             {
                 //goto the next page / activity
-                final Intent intent = new Intent(getActivity(), BookingConfirmationActivity.class);
-                intent.putExtra(BookingConfirmationActivity.EXTRA_PAGE, PAGE_PREFERENCES);
-                intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, mIsNewUser);
-                intent.putExtra(BookingConfirmationActivity.EXTRA_INSTRUCTIONS, mInstructions);
+                final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
+                intent.putExtra(BookingFinalizeActivity.EXTRA_PAGE, PAGE_PREFERENCES);
+                intent.putExtra(BookingFinalizeActivity.EXTRA_NEW_USER, mIsNewUser);
+                intent.putExtra(BookingFinalizeActivity.EXTRA_INSTRUCTIONS, mInstructions);
                 startActivity(intent);
                 removeUiBlockers();
             }
             else if (mPage == PAGE_PREFERENCES && mIsNewUser)
             {
                 //goto the next page / activity
-                final Intent intent = new Intent(getActivity(), BookingConfirmationActivity.class);
-                intent.putExtra(BookingConfirmationActivity.EXTRA_PAGE, PAGE_PASSWORD_PROMPT);
-                intent.putExtra(BookingConfirmationActivity.EXTRA_NEW_USER, mIsNewUser);
+                final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
+                intent.putExtra(BookingFinalizeActivity.EXTRA_PAGE, PAGE_PASSWORD_PROMPT);
+                intent.putExtra(BookingFinalizeActivity.EXTRA_NEW_USER, mIsNewUser);
                 startActivity(intent);
                 removeUiBlockers();
             }
