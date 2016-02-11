@@ -202,6 +202,9 @@ public interface HandyRetrofitService
     void addLaundry(@Path("booking") int bookingId, @Field("auth_token") String authToken,
                     HandyRetrofitCallback cb);
 
+    @GET("/recurring_bookings")
+    void getRecurringBookings(HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,
@@ -227,6 +230,9 @@ public interface HandyRetrofitService
     @PUT("/users/{user_id}/update_credit_card")
     void updatePaymentInfo(@Path("user_id") String userId, @Query("stripe_token") String token,
                            HandyRetrofitCallback cb);
+
+    @GET("/configuration")
+    void requestConfiguration(HandyRetrofitCallback cb);
 
     // Notification Feed
     @GET("/users/{user_id}/notifications")

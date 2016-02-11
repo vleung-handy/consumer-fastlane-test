@@ -122,7 +122,11 @@ public final class ProfileFragment extends InjectedFragment {
     @Override
     public final void onStart() {
         super.onStart();
-        if (!loadedUserInfo) loadUserInfo();
+        if (!loadedUserInfo)
+        {
+            loadUserInfo();
+        }
+        showCancelCleaningPlanButtonIfApplicable();
     }
 
     @Override

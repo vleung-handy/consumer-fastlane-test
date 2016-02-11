@@ -37,4 +37,5 @@ public class BundleKeys
 
     public static final String SERVICES = "services";
 
+    public static final String CANCEL_RECURRING_BOOKING_URL = "cancel_recurring_booking_url";
 }

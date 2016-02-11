@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.PrefsKey;
@@ -511,26 +512,22 @@ public class BookingManager implements Observer
     }
 
     /**
-     * TODO: no endpoint to only return the recurring bookings, must fetch part of the user
-     * bookings payload for now
      * TODO: would be nice to have caching
      *
      * @param event
      */
     @Subscribe
     public final void onRequestRecurringBookings(
-            final BookingEvent.RequestRecurringBookingsForUser event
+            final BookingEvent.RequestRecurringBookings event
     )
     {
-
-        dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
+        dataManager.getRecurringBookings(new DataManager.Callback<RecurringBookingsResponse>()
         {
             @Override
-            public void onSuccess(final UserBookingsWrapper result)
+            public void onSuccess(final RecurringBookingsResponse response)
             {
-                //TODO: need to sort the recurring bookings?
                 bus.post(new BookingEvent.ReceiveRecurringBookingsSuccess(
-                                result.getRecurringBookings())
+                                response.getRecurringBookings())
                 );
             }
 

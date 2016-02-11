@@ -3,7 +3,7 @@ package com.handybook.handybook.booking.ui.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
+import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public final class CancelRecurringBookingActivity extends MenuDrawerActivity
@@ -12,7 +12,7 @@ public final class CancelRecurringBookingActivity extends MenuDrawerActivity
     @Override
     protected final Fragment createFragment()
     {
-        return CancelRecurringBookingFragment.newInstance();
+        return CancelRecurringBookingSelectionFragment.newInstance();
     }
 
     @Override

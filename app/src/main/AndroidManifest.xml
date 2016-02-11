@@ -158,7 +158,10 @@
         <activity android:name=".booking.bookingedit.ui.activity.BookingEditExtrasActivity"/>
         <activity android:name=".booking.bookingedit.ui.activity.BookingEditHoursActivity"/>
         <activity android:name=".booking.bookingedit.ui.activity.BookingEditAddressActivity"/>
-        <activity android:name=".booking.ui.activity.CancelRecurringBookingActivity"/>
+        <activity
+            android:name=".booking.ui.activity.CancelRecurringBookingActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
