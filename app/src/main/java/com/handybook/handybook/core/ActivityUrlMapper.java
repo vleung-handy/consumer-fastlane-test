@@ -56,10 +56,13 @@ public enum ActivityUrlMapper
     {
         final Matcher matcher = getMatcher(url);
         final Bundle arguments = new Bundle();
-        for (int i = 0; i < mExtrasKeys.length; i++)
+        if (matcher.matches())
         {
-            final String key = mExtrasKeys[i];
-            arguments.putString(key, matcher.group(i + 1));
+            for (int i = 0; i < mExtrasKeys.length; i++)
+            {
+                final String key = mExtrasKeys[i];
+                arguments.putString(key, matcher.group(i + 1));
+            }
         }
         return arguments;
     }
