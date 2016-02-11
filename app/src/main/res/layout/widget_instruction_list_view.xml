@@ -38,16 +38,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:prefsState="requested"
-            app:prefsTitle="Kitchen"
-            app:prefsText="load dishwasher, wipe all surfaces, and clean sink"
+            app:prefsTitle="Le Test One"
+            app:prefsText="be excellent to each other"
             />
 
         <com.handybook.handybook.booking.ui.widget.BookingInstructionView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:prefsState="declined"
-            app:prefsTitle="Bathroom"
-            app:prefsText="scrub the sink, shower, tub, and toilet 'til they shine"
+            app:prefsTitle="Le Test Due"
+            app:prefsText="Do the things French people do."
             />
     </com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout>
 
