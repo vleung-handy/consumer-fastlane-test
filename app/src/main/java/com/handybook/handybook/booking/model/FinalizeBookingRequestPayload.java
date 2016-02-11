@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -44,5 +46,17 @@ public class FinalizeBookingRequestPayload
     public void setBookingInstructions(final ArrayList<BookingInstruction> bookingInstructions)
     {
         mBookingInstructions = bookingInstructions;
+    }
+
+    public static FinalizeBookingRequestPayload fromJson(final String jsonIn)
+    {
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+                .fromJson(jsonIn, FinalizeBookingRequestPayload.class);
+    }
+
+    public String toJson()
+    {
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+        return gson.toJson(this);
     }
 }
