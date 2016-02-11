@@ -27,7 +27,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWrapper
 {
-    private CancelRecurringBookingFragment mFragment;
+    private CancelRecurringBookingSelectionFragment mFragment;
 
     @Mock
     private RecurringBooking mRecurringBooking1;
@@ -41,7 +41,7 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     {
         initMocks(this);
 
-        mFragment = CancelRecurringBookingFragment.newInstance();
+        mFragment = CancelRecurringBookingSelectionFragment.newInstance();
 
         Date mockDate = new Date();
         when(mRecurringBooking1.getRecurringId()).thenReturn(1);

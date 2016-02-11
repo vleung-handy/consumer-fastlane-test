@@ -1,6 +1,8 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CancelRecurringBookingFragment extends InjectedFragment
+public class CancelRecurringBookingSelectionFragment extends InjectedFragment
 {
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
@@ -37,10 +39,9 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     private Configuration mConfiguration;
     private DataSynchronizer mDataSynchronizer;
 
-    public static CancelRecurringBookingFragment newInstance()
+    public static CancelRecurringBookingSelectionFragment newInstance()
     {
-        final CancelRecurringBookingFragment fragment = new CancelRecurringBookingFragment();
-        return fragment;
+        return new CancelRecurringBookingSelectionFragment();
     }
 
     private void setContentViewVisible(boolean visible)
@@ -82,7 +83,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     )
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_cancel_recurring_booking, container, false);
+                .inflate(R.layout.fragment_cancel_recurring_booking_selection, container, false);
 
         ButterKnife.bind(this, view);
         return view;
@@ -95,15 +96,28 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         setContentViewVisible(false); //want the fragment to be invisible until options can be rendered
     }
 
-    private void handleCancelRecurringBooking(final RecurringBooking recurringBooking)
+    private void handleCancelRecurringBooking(
+            final RecurringBooking recurringBooking,
+            final boolean isFromSelection
+    )
     {
-        //send the cancel recurring booking email for the series that the user selected
         if (mConfiguration.shouldUseCancelRecurringWebview())
         {
-            // load webview using recurringBooking.getCancelUrl();
+            removeUiBlockers();
+            final String cancelUrl = recurringBooking.getCancelUrl();
+            final Fragment fragment = CancelRecurringBookingDetailsFragment.newInstance(cancelUrl);
+            final FragmentTransaction transaction = getFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
+                    .add(R.id.fragment_container, fragment);
+            if (isFromSelection)
+            {
+                transaction.addToBackStack(null);
+            }
+            transaction.commit();
         }
         else
         {
+            //send the cancel recurring booking email for the series that the user selected
             showUiBlockers();
             int recurringId = recurringBooking.getId();
             bus.post(new BookingEvent.RequestSendCancelRecurringBookingEmail(recurringId));
@@ -115,7 +129,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     {
         RecurringBooking selectedBooking = mBookingCancelRecurringViewModel.getBookingForIndex
                 (mOptionsView.getCurrentIndex());
-        handleCancelRecurringBooking(selectedBooking);
+        handleCancelRecurringBooking(selectedBooking, true);
     }
 
     private void createOptionsView()
@@ -224,7 +238,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             else
             {
                 //send cancellation email for the only recurring booking that user has
-                handleCancelRecurringBooking(mRecurringBookings.get(0));
+                handleCancelRecurringBooking(mRecurringBookings.get(0), false);
             }
         }
         else

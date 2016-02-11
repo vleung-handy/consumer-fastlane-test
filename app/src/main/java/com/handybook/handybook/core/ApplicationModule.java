@@ -67,7 +67,8 @@ import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
-import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
+import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingDetailsFragment;
+import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
 import com.handybook.handybook.booking.ui.fragment.EmailCancellationDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
@@ -231,7 +232,8 @@ import retrofit.converter.GsonConverter;
         TipDialogFragment.class,
         NotificationFeedFragment.class,
         CancelRecurringBookingActivity.class,
-        CancelRecurringBookingFragment.class,
+        CancelRecurringBookingSelectionFragment.class,
+        CancelRecurringBookingDetailsFragment.class,
         EmailCancellationDialogFragment.class,
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,
