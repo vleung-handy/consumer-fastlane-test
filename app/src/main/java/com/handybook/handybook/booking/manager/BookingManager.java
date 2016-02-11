@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
@@ -43,6 +44,7 @@ public class BookingManager implements Observer
     private BookingQuote quote;
     private BookingTransaction transaction;
     private BookingPostInfo postInfo;
+    private FinalizeBookingRequestPayload finalizeBookingRequestPayload;
 
     @Inject
     public BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
@@ -419,6 +421,35 @@ public class BookingManager implements Observer
         prefsManager.setString(PrefsKey.BOOKING_POST, postInfo.toJson());
     }
 
+    public FinalizeBookingRequestPayload getCurrentFinalizeBookingPayload()
+    {
+        if (finalizeBookingRequestPayload != null)
+        {
+            return finalizeBookingRequestPayload;
+        }
+        else
+        {
+            finalizeBookingRequestPayload = FinalizeBookingRequestPayload.fromJson(
+                    prefsManager.getString(PrefsKey.BOOKING_FINALIZE_PAYLOAD)
+            );
+            return finalizeBookingRequestPayload;
+        }
+    }
+
+    public void setCurrentFinalizeBookingRequestPayload(final FinalizeBookingRequestPayload payload)
+    {
+        if (payload == null)
+        {
+            finalizeBookingRequestPayload = null;
+            prefsManager.removeValue(PrefsKey.BOOKING_FINALIZE_PAYLOAD);
+        }
+        else
+        {
+            finalizeBookingRequestPayload = payload;
+            prefsManager.setString(PrefsKey.BOOKING_FINALIZE_PAYLOAD, finalizeBookingRequestPayload.toJson());
+        }
+    }
+
     public void setPromoTabCoupon(final String code)
     {
         prefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
@@ -510,6 +541,7 @@ public class BookingManager implements Observer
         });
     }
 
+
     /**
      * TODO: no endpoint to only return the recurring bookings, must fetch part of the user
      * bookings payload for now
@@ -542,11 +574,11 @@ public class BookingManager implements Observer
         });
     }
 
-
     @Subscribe
     public final void onFinalizeBooking(
             final BookingEvent.RequestFinalizeBooking event
-    ){
+    )
+    {
         dataManager.finalizeBooking(
                 event.getBookingId(),
                 event.getPayload(),
