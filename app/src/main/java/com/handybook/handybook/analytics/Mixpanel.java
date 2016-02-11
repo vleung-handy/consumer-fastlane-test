@@ -430,11 +430,36 @@ public class Mixpanel
     }
 
     // APP_TRACK_CONFIRMATION ("App Track Confirmation");
+    @Deprecated
     public void trackEventAppTrackConfirmation()
     {
         final JSONObject props = new JSONObject();
         addProps(props, "device", "Android");
         mixpanelAPI.track("App Track Confirmation", props);
+    }
+
+    // APP_TRACK_ENTRY_INFO ("App Track Entry Info");
+    public void trackEventAppTrackEntryInfo()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Entry Info", props);
+    }
+
+    // APP_TRACK_PREFERENCES ("App Track Preferences");
+    public void trackEventAppTrackPreferences()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Preferences", props);
+    }
+
+    // APP_TRACK_PASSWORD_PROMPT ("App Track Password Prompt");
+    public void trackEventAppTrackPasswordPrompt()
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "device", "Android");
+        mixpanelAPI.track("App Track Password Prompt", props);
     }
 
 
