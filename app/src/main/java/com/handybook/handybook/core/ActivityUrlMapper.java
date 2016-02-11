@@ -12,6 +12,10 @@ import com.handybook.handybook.ui.activity.ProfileActivity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Contains mappings of URL patterns to activities. Parts of the URL may also be captured using
+ * the supplied pattern and mapped to the supplied keys.
+ */
 public enum ActivityUrlMapper
 {
     NEW_QUOTE(ServiceCategoriesActivity.class, Pattern.compile(".*/quotes/new.*")),

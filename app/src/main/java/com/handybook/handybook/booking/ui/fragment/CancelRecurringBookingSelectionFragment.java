@@ -27,8 +27,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * Used to display a selection of recurring bookings that the user may want to cancel.
+ */
 public class CancelRecurringBookingSelectionFragment extends InjectedFragment
 {
+    public static final int INITIAL_REQUEST_COUNT = 2;
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
 
@@ -56,22 +60,23 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     {
         super.onResume();
         showUiBlockers();
-        mDataSynchronizer = new DataSynchronizer(2, new DataSynchronizer.Callback()
-        {
-            @Override
-            public void onSuccess()
-            {
-                displayData();
-            }
+        mDataSynchronizer = new DataSynchronizer(INITIAL_REQUEST_COUNT,
+                new DataSynchronizer.Callback()
+                {
+                    @Override
+                    public void onSuccess()
+                    {
+                        displayData();
+                    }
 
-            @Override
-            public void onError(final List<DataManager.DataManagerError> errors)
-            {
-                //TODO: change other option-based screens to exit if the options data is missing?
-                //exit and show toast if we cannot render the options
-                showToastAndExit(R.string.default_error_string);
-            }
-        });
+                    @Override
+                    public void onError(final List<DataManager.DataManagerError> errors)
+                    {
+                        //TODO: change other option-based screens to exit if the options data is missing?
+                        //exit and show toast if we cannot render the options
+                        showToastAndExit(R.string.default_error_string);
+                    }
+                });
         bus.post(new ConfigurationEvent.RequestConfiguration());
         bus.post(new BookingEvent.RequestRecurringBookings());
     }

@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+/**
+ *  Subclass of WebViewClient that will handle links specific to Handy.
+ *
+ *  @see ActivityUrlMapper
+ */
 public class HandyWebViewClient extends WebViewClient
 {
     private Context mContext;

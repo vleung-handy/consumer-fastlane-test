@@ -17,6 +17,9 @@ import com.handybook.handybook.ui.view.HandyWebView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * Used to display a web view that will take the user through recurring booking cancellation steps.
+ */
 public class CancelRecurringBookingDetailsFragment extends InjectedFragment
 {
     @Bind(R.id.web_view)
