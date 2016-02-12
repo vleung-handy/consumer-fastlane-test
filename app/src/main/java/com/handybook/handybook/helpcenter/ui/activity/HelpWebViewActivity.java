@@ -2,15 +2,15 @@ package com.handybook.handybook.helpcenter.ui.activity;
 
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
-public class HelpActivity extends MenuDrawerActivity
+public class HelpWebViewActivity extends MenuDrawerActivity
 {
     @Override
     protected Fragment createFragment()
     {
-        return new HelpFragment();
+        return new HelpWebViewFragment();
     }
 
     @Override

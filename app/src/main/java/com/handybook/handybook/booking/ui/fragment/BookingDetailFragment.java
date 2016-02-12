@@ -22,7 +22,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
@@ -372,25 +372,25 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         switch (id)
         {
             case R.id.menu_panic_cancel:
-                startActivity(HelpActivity.getIntentToOpenNodeId(
+                startActivity(HelpNativeActivity.getIntentToOpenNodeId(
                         getActivity(),
-                        HelpActivity.HELP_NODE_ID_CANCEL
+                        HelpNativeActivity.HELP_NODE_ID_CANCEL
                 ));
                 break;
             case R.id.menu_panic_pro_late:
-                startActivity(HelpActivity.getIntentToOpenNodeId(
+                startActivity(HelpNativeActivity.getIntentToOpenNodeId(
                         getActivity(),
-                        HelpActivity.HELP_NODE_ID_PRO_LATE
+                        HelpNativeActivity.HELP_NODE_ID_PRO_LATE
                 ));
                 break;
             case R.id.menu_panic_adjust_hours:
-                startActivity(HelpActivity.getIntentToOpenNodeId(
+                startActivity(HelpNativeActivity.getIntentToOpenNodeId(
                         getActivity(),
-                        HelpActivity.HELP_NODE_ID_ADJUST_HOURS
+                        HelpNativeActivity.HELP_NODE_ID_ADJUST_HOURS
                 ));
                 break;
             case R.id.menu_panic_help:
-                startActivity(new Intent(getActivity(), HelpActivity.class));
+                startActivity(new Intent(getActivity(), HelpNativeActivity.class));
             default:
                 return false;
         }
