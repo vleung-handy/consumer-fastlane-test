@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -23,7 +22,6 @@ import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.BundleKeys;
@@ -44,20 +42,17 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
     static final String EXTRA_INSTRUCTIONS = "com.handy.handy.EXTRA_INSTRUCTIONS";
 
-    private BookingOptionsView mOptionsView;
     private BookingPostInfo mPostInfo;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
     private boolean mIsNewUser;
     private Instructions mInstructions;
 
-    @Bind(R.id.options_layout)
-    LinearLayout mOptionsLayout;
     @Bind(R.id.header_text)
     TextView mHeaderText;
     @Bind(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.keys_text)
-    BasicInputTextView mKeysText;
+    @Bind(R.id.preferences_note_to_pro)
+    BasicInputTextView mNoteToProTextView;
     @Bind(R.id.instructions_layout)
     InstructionListView mInstructionListView;
 
@@ -94,9 +89,9 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_preferences, container, false);
 
         ButterKnife.bind(this, view);
-        mKeysText.setMinLength(2);
-        mKeysText.setHint(getString(R.string.where_hide_key));
-        mKeysText.addTextChangedListener(keyTextWatcher);
+        mNoteToProTextView.setMinLength(2);
+        mNoteToProTextView.setHint(getString(R.string.preferences_note_to_pro_placeholder));
+        mNoteToProTextView.addTextChangedListener(mNoteToProWatcher);
         mPostInfo = bookingManager.getCurrentPostInfo();
         if (bookingManager.getCurrentFinalizeBookingPayload() == null)
         {
@@ -113,10 +108,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_TEXT);
         option.setDefaultValue(getString(R.string.additional_pro_info_hint));
-        mOptionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
-        ((BookingOptionsTextView) mOptionsView).setValue(mPostInfo.getExtraMessage());
         mInstructionListView.reflect(mInstructions);
-        mOptionsLayout.addView(mOptionsView, 0);
         mNextButton.setOnClickListener(nextClicked);
         return view;
     }
@@ -247,7 +239,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         }
     };
 
-    private final TextWatcher keyTextWatcher = new TextWatcher()
+    private final TextWatcher mNoteToProWatcher = new TextWatcher()
     {
         @Override
         public void beforeTextChanged(
@@ -269,7 +261,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         @Override
         public void afterTextChanged(final Editable editable)
         {
-            mPostInfo.setGetInText(mKeysText.getInput());
+            mPostInfo.setGetInText(mNoteToProTextView.getInput());
         }
     };
 

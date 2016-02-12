@@ -125,9 +125,10 @@ public class InstructionListView extends FrameLayout
 
     private void onInstructionStateChanged(final ChecklistItem checklistItem)
     {
-        int uncheckedInstructionPosition = mInstructions.getChecklist().indexOf(checklistItem);
-        int firstUncheckedPosition = getPositionOfFirstUncheckedInstruction();
-        mDnDLinearLayout.moveChild(uncheckedInstructionPosition, firstUncheckedPosition);
+//        int uncheckedInstructionPosition = mInstructions.getChecklist().indexOf(checklistItem);
+//        int firstUncheckedPosition = getPositionOfFirstUncheckedInstruction();
+//        mDnDLinearLayout.moveChild(uncheckedInstructionPosition, firstUncheckedPosition);
+
         notifyObserver();
     }
 
