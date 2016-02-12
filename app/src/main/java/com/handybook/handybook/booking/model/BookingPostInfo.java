@@ -30,7 +30,7 @@ public final class BookingPostInfo extends Observable {
         triggerObservers();
     }
 
-    final String getGetInText() {
+    public final String getGetInText() {
         return getInText;
     }
 

@@ -12,9 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.booking.model.ChecklistItem;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
@@ -26,6 +30,9 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
+import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +46,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
 
     private BookingOptionsView mOptionsView;
     private BookingPostInfo mPostInfo;
+    private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
     private boolean mIsNewUser;
     private Instructions mInstructions;
 
@@ -90,6 +98,13 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         mKeysText.setHint(getString(R.string.where_hide_key));
         mKeysText.addTextChangedListener(keyTextWatcher);
         mPostInfo = bookingManager.getCurrentPostInfo();
+        if (bookingManager.getCurrentFinalizeBookingPayload() == null)
+        {
+            bookingManager.setCurrentFinalizeBookingRequestPayload(
+                    new FinalizeBookingRequestPayload()
+            );
+        }
+        mFinalizeBookingRequestPayload = bookingManager.getCurrentFinalizeBookingPayload();
         mHeaderText.setText(getString(R.string.booking_edit_preferences_subtitle));
         if (!mIsNewUser)
         {
@@ -133,7 +148,20 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             //discourage user from pressing button twice
             //note that this doesn't prevent super fast clicks
             showUiBlockers();
-            if (mIsNewUser)
+            ArrayList<BookingInstruction> bookingInstructions = new ArrayList<>();
+            for (ChecklistItem eItem : mInstructions.getChecklist())
+            {
+                bookingInstructions.add(new BookingInstruction(
+                        eItem.getId(),
+                        eItem.getMachineName(),
+                        eItem.getInstructionType(),
+                        eItem.getDescription(),
+                        eItem.getIsRequested()
+                ));
+            }
+            mFinalizeBookingRequestPayload.setBookingInstructions(bookingInstructions);
+            mFinalizeBookingRequestPayload.setNoteToPro(mPostInfo.getExtraMessage());
+            if (mIsNewUser) // Prompt the user to create a pasword
             {
                 final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
                 intent.putExtra(
@@ -149,39 +177,46 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             }
             else
             {
-                dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
-                        mPostInfo, new DataManager.Callback<Void>()
-                        {
-                            @Override
-                            public void onSuccess(final Void response)
-                            {
-                                if (!allowCallbacks ||
-                                        bookingManager.getCurrentTransaction() == null)
-                                    /*
-                                    hot fix to prevent NPE caused by rapid multi-click
-                                    of the next button
-                                     */
-                                {
-                                    return;
-                                }
-                                String bookingId = Integer.toString(
-                                        bookingManager.getCurrentTransaction().getBookingId()
-                                );
-                                showBookingDetails(bookingId);
-                                removeUiBlockers();
-                            }
+                bus.post(
+                        new BookingEvent.RequestFinalizeBooking(
+                                bookingManager.getCurrentTransaction().getBookingId(),
+                                mFinalizeBookingRequestPayload
+                        )
+                );
 
-                            @Override
-                            public void onError(final DataManager.DataManagerError error)
-                            {
-                                if (!allowCallbacks)
-                                {
-                                    return;
-                                }
-                                removeUiBlockers();
-                                dataManagerErrorHandler.handleError(getActivity(), error);
-                            }
-                        });
+//                dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
+//                        mPostInfo, new DataManager.Callback<Void>()
+//                        {
+//                            @Override
+//                            public void onSuccess(final Void response)
+//                            {
+//                                if (!allowCallbacks ||
+//                                        bookingManager.getCurrentTransaction() == null)
+//                                    /*
+//                                    hot fix to prevent NPE caused by rapid multi-click
+//                                    of the next button
+//                                     */
+//                                {
+//                                    return;
+//                                }
+//                                String bookingId = Integer.toString(
+//                                        bookingManager.getCurrentTransaction().getBookingId()
+//                                );
+//                                showBookingDetails(bookingId);
+//                                removeUiBlockers();
+//                            }
+//
+//                            @Override
+//                            public void onError(final DataManager.DataManagerError error)
+//                            {
+//                                if (!allowCallbacks)
+//                                {
+//                                    return;
+//                                }
+//                                removeUiBlockers();
+//                                dataManagerErrorHandler.handleError(getActivity(), error);
+//                            }
+//                        });
             }
         }
     };
@@ -237,6 +272,36 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             mPostInfo.setGetInText(mKeysText.getInput());
         }
     };
+
+    @Subscribe()
+    public void onFinalizedSuccess(final BookingEvent.FinalizeBookingSuccess event)
+    {
+        if (!allowCallbacks ||
+                bookingManager.getCurrentTransaction() == null)
+                                    /*
+                                    hot fix to prevent NPE caused by rapid multi-click
+                                    of the next button
+                                     */
+        {
+            return;
+        }
+        String bookingId = Integer.toString(
+                bookingManager.getCurrentTransaction().getBookingId()
+        );
+        showBookingDetails(bookingId);
+        removeUiBlockers();
+    }
+
+    @Subscribe()
+    public void onFinalizedError(final BookingEvent.FinalizeBookingError event)
+    {
+        if (!allowCallbacks)
+        {
+            return;
+        }
+        removeUiBlockers();
+    }
+
 
     private void showBookingDetails(String bookingId)
     {

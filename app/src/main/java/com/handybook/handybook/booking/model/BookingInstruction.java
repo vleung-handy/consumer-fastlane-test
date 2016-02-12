@@ -19,6 +19,21 @@ public class BookingInstruction implements Parcelable
     private Boolean mIsRequested;
 
 
+    public BookingInstruction(
+            final Long id,
+            final String machineName,
+            final String instructionType,
+            final String description,
+            final Boolean isRequested
+    )
+    {
+        mId = id;
+        mMachineName = machineName;
+        mInstructionType = instructionType;
+        mDescription = description;
+        mIsRequested = isRequested;
+    }
+
     protected BookingInstruction(Parcel in)
     {
         mId = (Long) in.readValue(Long.class.getClassLoader());

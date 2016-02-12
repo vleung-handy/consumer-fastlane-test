@@ -9,14 +9,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +30,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
     private static final String STATE_PWD_HIGHLIGHT = "PWD_HIGHLIGHT";
     public static final int PASSWORD_MIN_CHARS = 8;
 
-    private BookingPostInfo mPostInfo;
+    private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
 
     @Bind(R.id.header_text)
     TextView mHeaderText;
@@ -63,7 +65,13 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_password_prompt, container, false);
 
         ButterKnife.bind(this, view);
-        mPostInfo = bookingManager.getCurrentPostInfo();
+        if (bookingManager.getCurrentFinalizeBookingPayload() == null)
+        {
+            bookingManager.setCurrentFinalizeBookingRequestPayload(
+                    new FinalizeBookingRequestPayload()
+            );
+        }
+        mFinalizeBookingRequestPayload = bookingManager.getCurrentFinalizeBookingPayload();
         mHeaderText.setText(getString(R.string.use_your_pwd));
         mNextButton.setText(getString(R.string.finish));
         mPasswordText.setVisibility(View.VISIBLE);
@@ -148,42 +156,79 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
             //note that this doesn't prevent super fast clicks
             disableInputs();
             progressDialog.show();
-            mPostInfo.setPassword(mPasswordText.getPassword());
-            dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
-                    mPostInfo, new DataManager.Callback<Void>()
-                    {
-                        @Override
-                        public void onSuccess(final Void response)
-                        {
-                            if (!allowCallbacks ||
-                                    bookingManager.getCurrentTransaction() == null)
-                                    /*
-                                    hot fix to prevent NPE caused by rapid multi-click
-                                    of the next button
-                                     */
-                            {
-                                return;
-                            }
-                            String bookingId = Integer.toString(bookingManager.getCurrentTransaction().getBookingId());
-                            showBookingDetails(bookingId);
-                            enableInputs();
-                            progressDialog.dismiss();
-                        }
+            mFinalizeBookingRequestPayload.setPassword(mPasswordText.getPassword());
+            bus.post(
+                    new BookingEvent.RequestFinalizeBooking(
+                            bookingManager.getCurrentTransaction().getBookingId(),
+                            mFinalizeBookingRequestPayload
+                    )
+            );
 
-                        @Override
-                        public void onError(final DataManager.DataManagerError error)
-                        {
-                            if (!allowCallbacks)
-                            {
-                                return;
-                            }
-                            enableInputs();
-                            progressDialog.dismiss();
-                            dataManagerErrorHandler.handleError(getActivity(), error);
-                        }
-                    });
+//            dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
+//                    mPostInfo, new DataManager.Callback<Void>()
+//                    {
+//                        @Override
+//                        public void onSuccess(final Void response)
+//                        {
+//                            if (!allowCallbacks ||
+//                                    bookingManager.getCurrentTransaction() == null)
+//                                    /*
+//                                    hot fix to prevent NPE caused by rapid multi-click
+//                                    of the next button
+//                                     */
+//                            {
+//                                return;
+//                            }
+//                            String bookingId = Integer.toString(bookingManager.getCurrentTransaction().getBookingId());
+//                            showBookingDetails(bookingId);
+//                            enableInputs();
+//                            progressDialog.dismiss();
+//                        }
+//
+//                        @Override
+//                        public void onError(final DataManager.DataManagerError error)
+//                        {
+//                            if (!allowCallbacks)
+//                            {
+//                                return;
+//                            }
+//                            enableInputs();
+//                            progressDialog.dismiss();
+//                            dataManagerErrorHandler.handleError(getActivity(), error);
+//                        }
+//                    });
+//        }
         }
     };
+
+    @Subscribe()
+    public void onFinalizedSuccess(final BookingEvent.FinalizeBookingSuccess event)
+    {
+        if (!allowCallbacks || bookingManager.getCurrentTransaction() == null)
+        {
+            /*
+            hot fix to prevent NPE caused by rapid multi-click
+            of the next button
+             */
+            return;
+        }
+        String bookingId = Integer.toString(bookingManager.getCurrentTransaction().getBookingId());
+        showBookingDetails(bookingId);
+        enableInputs();
+        progressDialog.dismiss();
+    }
+
+    @Subscribe()
+    public void onFinalizedError(final BookingEvent.FinalizeBookingError event)
+    {
+        if (!allowCallbacks)
+        {
+            return;
+        }
+        enableInputs();
+        progressDialog.dismiss();
+    }
+
 
     private void showBookingDetails(String bookingId)
     {

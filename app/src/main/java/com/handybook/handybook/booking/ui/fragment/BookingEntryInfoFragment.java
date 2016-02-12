@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
@@ -39,15 +40,17 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
     private BookingOptionsView mOptionsView;
     private BookingPostInfo mPostInfo;
+    private FinalizeBookingRequestPayload mFinalizeBookingPayload;
     private boolean mIsNewUser;
-    private Instructions mInstructions;
 
+    private Instructions mInstructions;
     @Bind(R.id.options_layout)
     LinearLayout mOptionsLayout;
     @Bind(R.id.header_text)
     TextView mHeaderText;
     @Bind(R.id.next_button)
     Button mNextButton;
+
     @Bind(R.id.keys_text)
     BasicInputTextView mKeysText;
 
@@ -198,7 +201,10 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             //note that this doesn't prevent super fast clicks
             disableInputs();
             progressDialog.show();
-
+            bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
+                    Integer.parseInt(mPostInfo.getGetInId()),
+                    mPostInfo.getGetInText()
+            );
             final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
             intent.putExtra(
                     BookingFinalizeActivity.EXTRA_PAGE,
@@ -213,6 +219,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         }
     };
 
+
     private void showBookings()
     {
         bookingManager.clearAll();
@@ -222,7 +229,6 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated;
 

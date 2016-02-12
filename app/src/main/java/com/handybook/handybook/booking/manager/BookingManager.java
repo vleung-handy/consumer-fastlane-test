@@ -432,12 +432,18 @@ public class BookingManager implements Observer
             finalizeBookingRequestPayload = FinalizeBookingRequestPayload.fromJson(
                     prefsManager.getString(PrefsKey.BOOKING_FINALIZE_PAYLOAD)
             );
+            if(finalizeBookingRequestPayload !=null){
+                finalizeBookingRequestPayload.addObserver(this);
+            }
             return finalizeBookingRequestPayload;
         }
     }
 
     public void setCurrentFinalizeBookingRequestPayload(final FinalizeBookingRequestPayload payload)
     {
+        if(finalizeBookingRequestPayload != null){
+            finalizeBookingRequestPayload.deleteObserver(this);
+        }
         if (payload == null)
         {
             finalizeBookingRequestPayload = null;
@@ -482,6 +488,11 @@ public class BookingManager implements Observer
         {
             setCurrentPostInfo((BookingPostInfo) observable);
         }
+
+        if (observable instanceof FinalizeBookingRequestPayload)
+        {
+            setCurrentFinalizeBookingRequestPayload((FinalizeBookingRequestPayload) observable);
+        }
     }
 
     public void clear()
@@ -490,6 +501,7 @@ public class BookingManager implements Observer
         setCurrentQuote(null);
         setCurrentTransaction(null);
         setCurrentPostInfo(null);
+        setCurrentFinalizeBookingRequestPayload(null);
         prefsManager.removeValue(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION);
         bus.post(new BookingFlowClearedEvent());
     }
