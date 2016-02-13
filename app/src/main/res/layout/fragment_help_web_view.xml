@@ -1,13 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
+
+    <RelativeLayout
+        android:id="@+id/nav_layout"
+        style="@style/RelativeLayout.NavBar.Blue"
+        >
+
+        <RelativeLayout
+            android:id="@+id/menu_button_layout"
+            style="@style/MenuButtonLayout"
+            />
+
+        <TextView
+            android:id="@+id/nav_text"
+            style="@style/TextView.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/menu_button_layout"
+            android:layout_toRightOf="@id/menu_button_layout"
+            android:text="@string/help"
+            android:textColor="@color/handy_white"
+            android:textSize="@dimen/text_size_large"
+            />
+
+    </RelativeLayout>
 
     <com.handybook.handybook.ui.view.HandyWebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         />
 
-</FrameLayout>
+</LinearLayout>

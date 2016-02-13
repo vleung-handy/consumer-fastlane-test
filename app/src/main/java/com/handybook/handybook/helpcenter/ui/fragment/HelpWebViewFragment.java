@@ -13,6 +13,7 @@ import com.handybook.handybook.core.HandyWebViewClient;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyWebView;
+import com.handybook.handybook.ui.widget.MenuButton;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -20,6 +21,8 @@ import butterknife.ButterKnife;
 
 public class HelpWebViewFragment extends InjectedFragment
 {
+    @Bind(R.id.menu_button_layout)
+    ViewGroup mMenuButtonLayout;
     @Bind(R.id.web_view)
     HandyWebView mWebView;
 
@@ -33,6 +36,11 @@ public class HelpWebViewFragment extends InjectedFragment
     {
         final View view = inflater.inflate(R.layout.fragment_help_web_view, container, false);
         ButterKnife.bind(this, view);
+
+        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
+        menuButton.setColor(getResources().getColor(R.color.white));
+        mMenuButtonLayout.addView(menuButton);
+
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity())
         {
             @Override
