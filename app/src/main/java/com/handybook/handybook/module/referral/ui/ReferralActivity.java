@@ -8,6 +8,12 @@ import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 public class ReferralActivity extends MenuDrawerActivity
 {
     @Override
+    protected boolean requiresUser()
+    {
+        return true;
+    }
+
+    @Override
     protected Fragment createFragment()
     {
         return ReferralFragment.newInstance();

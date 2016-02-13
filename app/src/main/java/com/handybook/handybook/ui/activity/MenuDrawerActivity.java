@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.simplealertdialog.SimpleAlertDialog;
 
@@ -33,6 +34,13 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        if (requiresUser() && !mUserManager.isUserLoggedIn())
+        {
+            navigateToActivity(ServiceCategoriesActivity.class);
+            finish();
+            return;
+        }
 
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY, Position.LEFT,
                 MenuDrawer.MENU_DRAG_WINDOW);
@@ -104,6 +112,11 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
                     {
                     }
                 });
+    }
+
+    protected boolean requiresUser()
+    {
+        return false;
     }
 
     @Override

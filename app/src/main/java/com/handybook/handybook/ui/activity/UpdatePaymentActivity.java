@@ -8,6 +8,12 @@ import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 public class UpdatePaymentActivity extends MenuDrawerActivity
 {
     @Override
+    protected boolean requiresUser()
+    {
+        return true;
+    }
+
+    @Override
     protected Fragment createFragment()
     {
         return UpdatePaymentFragment.newInstance();
