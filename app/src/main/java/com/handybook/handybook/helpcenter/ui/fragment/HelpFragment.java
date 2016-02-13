@@ -3,6 +3,7 @@ package com.handybook.handybook.helpcenter.ui.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpWebViewActivity;
@@ -26,6 +27,11 @@ public class HelpFragment extends InjectedFragment
     {
         super.onResume();
         showUiBlockers();
+        requestConfiguration();
+    }
+
+    private void requestConfiguration()
+    {
         bus.post(new ConfigurationEvent.RequestConfiguration());
     }
 
@@ -53,6 +59,20 @@ public class HelpFragment extends InjectedFragment
             final ConfigurationEvent.ReceiveConfigurationError event
     )
     {
-        // TODO: Implement
+        showErrorDialog(event.error.getMessage(), new DialogCallback()
+        {
+            @Override
+            public void onRetry()
+            {
+                requestConfiguration();
+            }
+
+            @Override
+            public void onCancel()
+            {
+                ((MenuDrawerActivity) getActivity())
+                        .navigateToActivity(ServiceCategoriesActivity.class);
+            }
+        });
     }
 }
