@@ -106,7 +106,7 @@ public class HelpNativeFragment extends InjectedFragment
                                    final Bundle savedInstanceState)
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_help, container, false);
+                .inflate(R.layout.fragment_help_native, container, false);
 
         ButterKnife.bind(this, view);
 
