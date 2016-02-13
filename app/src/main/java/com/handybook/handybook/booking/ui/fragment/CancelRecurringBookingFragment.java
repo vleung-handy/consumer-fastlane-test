@@ -43,7 +43,7 @@ public class CancelRecurringBookingFragment extends InjectedFragment
     )
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_cancel_recurring_booking_details, container, false);
+                .inflate(R.layout.fragment_cancel_recurring_booking, container, false);
         ButterKnife.bind(this, view);
 
         final String cancelUrl = getArguments().getString(BundleKeys.CANCEL_RECURRING_BOOKING_URL);
