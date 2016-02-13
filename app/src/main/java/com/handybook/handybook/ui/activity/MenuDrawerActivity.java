@@ -164,9 +164,15 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
 
     public final void navigateToActivity(final Class<? extends Activity> clazz)
     {
+        navigateToActivity(clazz, new Bundle());
+    }
+
+    public final void navigateToActivity(final Class<? extends Activity> clazz, final Bundle extras)
+    {
         final Intent intent = new Intent(this, clazz);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
+        intent.putExtras(extras);
         startActivity(intent);
         MenuDrawerActivity.this.overridePendingTransition(0, 0);
         MenuDrawerActivity.this.finish();

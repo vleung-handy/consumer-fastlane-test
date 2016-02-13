@@ -10,7 +10,7 @@ public class HelpWebViewActivity extends MenuDrawerActivity
     @Override
     protected Fragment createFragment()
     {
-        return new HelpWebViewFragment();
+        return HelpWebViewFragment.newInstance(getIntent().getExtras());
     }
 
     @Override

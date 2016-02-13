@@ -1,7 +1,5 @@
 package com.handybook.handybook.helpcenter.ui.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
@@ -12,10 +10,6 @@ import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public class HelpNativeActivity extends MenuDrawerActivity
 {
-    public static final int HELP_NODE_ID_CANCEL = 296;
-    public static final int HELP_NODE_ID_PRO_LATE = 450;
-    public static final int HELP_NODE_ID_ADJUST_HOURS = 498;
-
     @Override
     protected final Fragment createFragment()
     {
@@ -26,13 +20,6 @@ public class HelpNativeActivity extends MenuDrawerActivity
         final String path = getIntent().getStringExtra(BundleKeys.PATH);
         final boolean nodeIsBooking = getIntent().getBooleanExtra(BundleKeys.HELP_NODE_IS_BOOKING, false);
         return HelpNativeFragment.newInstance(bookingId, loginToken, path, associatedNode, nodeId, nodeIsBooking);
-    }
-
-    public static Intent getIntentToOpenNodeId(final Context context, final int helpNodeId)
-    {
-        final Intent intent = new Intent(context, HelpNativeActivity.class);
-        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNodeId));
-        return intent;
     }
 
     @Override

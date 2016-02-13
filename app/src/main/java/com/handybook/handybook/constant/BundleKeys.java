@@ -12,6 +12,7 @@ public class BundleKeys
     public static final String DATE_EPOCH_TIME = "date_epoch_time";
     public static final String HELP_NODE = "help_node";
     public static final String HELP_NODE_ID = "help_node_id";
+    public static final String HELP_ARTICLE_ID = "help_article_id";
     public static final String HELP_NODE_IS_BOOKING = "help_node_is_booking";
     public static final String PATH = "path";
     public static final String TAB = "tab";
@@ -38,4 +39,6 @@ public class BundleKeys
     public static final String SERVICES = "services";
 
     public static final String CANCEL_RECURRING_BOOKING_URL = "cancel_recurring_booking_url";
+
+    public static final String HELP_CENTER_URL = "help_center_url";
 }

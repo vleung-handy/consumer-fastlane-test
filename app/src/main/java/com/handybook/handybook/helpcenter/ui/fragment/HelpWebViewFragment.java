@@ -1,6 +1,7 @@
 package com.handybook.handybook.helpcenter.ui.fragment;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,12 +10,11 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.HandyWebViewClient;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyWebView;
 import com.handybook.handybook.ui.widget.MenuButton;
-import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +25,13 @@ public class HelpWebViewFragment extends InjectedFragment
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.web_view)
     HandyWebView mWebView;
+
+    public static HelpWebViewFragment newInstance(final Bundle arguments)
+    {
+        final HelpWebViewFragment fragment = new HelpWebViewFragment();
+        fragment.setArguments(arguments);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -65,32 +72,17 @@ public class HelpWebViewFragment extends InjectedFragment
             }
         });
         mWebView.getSettings().setJavaScriptEnabled(true);
-        return view;
-    }
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        showUiBlockers();
-        bus.post(new ConfigurationEvent.RequestConfiguration());
-    }
-
-    @Subscribe
-    public void onReceiveConfigurationSuccess(
-            final ConfigurationEvent.ReceiveConfigurationSuccess event
-    )
-    {
-        removeUiBlockers();
-        final String helpCenterUrl = event.getConfiguration().getHelpCenterUrl();
+        String helpCenterUrl = getArguments().getString(BundleKeys.HELP_CENTER_URL);
+        final String articleId = getArguments().getString(BundleKeys.HELP_ARTICLE_ID);
+        if (articleId != null)
+        {
+            helpCenterUrl = Uri.parse(helpCenterUrl).buildUpon()
+                    .appendQueryParameter("redirect_to", "/articles/" + articleId)
+                    .build().toString();
+        }
         mWebView.loadUrl(helpCenterUrl);
-    }
 
-    @Subscribe
-    public void onReceiveConfigurationError(
-            final ConfigurationEvent.ReceiveConfigurationError event
-    )
-    {
-        // TODO: Implement
+        return view;
     }
 }
