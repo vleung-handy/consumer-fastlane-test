@@ -58,11 +58,12 @@ public class FinalizeBookingRequestPayload extends Observable
         for (BookingInstruction eBookingInstruction : mBookingInstructions)
         {
             if (eBookingInstruction.getMachineName() == null
-                    || eBookingInstruction.getMachineName() == ""
-                    || eBookingInstruction.getMachineName() == "preference")
+                    || eBookingInstruction.getMachineName().isEmpty()
+                    || eBookingInstruction.getMachineName().equals("preference"))
             {
                 continue;
             }
+
             filteredBookingInstructions.add(eBookingInstruction);
         }
         filteredBookingInstructions.addAll(bookingInstructions);

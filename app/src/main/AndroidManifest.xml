@@ -349,8 +349,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".booking.bookingedit.ui.activity.DevelopDragAndDropVerticalLinearLayoutActivity">
-        </activity>
     </application>
 
 </manifest>

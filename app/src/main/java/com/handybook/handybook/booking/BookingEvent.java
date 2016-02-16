@@ -367,7 +367,6 @@ public abstract class BookingEvent
             return mPayload;
         }
 
-
     }
 
 
