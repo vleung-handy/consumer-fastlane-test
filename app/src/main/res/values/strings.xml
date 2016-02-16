@@ -327,4 +327,5 @@
     <string name="already_have_account">Already have an account?\u0020</string>
     <string name="sign_up">Sign Up</string>
     <string name="preferences_note_to_pro_placeholder">i.e. Pets, location of trash bin, preferences, etc.</string>
+    <string name="error_setting_password">There was an error setting your password, please try again.</string>
 </resources>

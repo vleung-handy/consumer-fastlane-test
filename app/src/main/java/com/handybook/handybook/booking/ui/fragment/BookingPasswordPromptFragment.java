@@ -225,6 +225,8 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
         {
             return;
         }
+        toast.setText(R.string.error_setting_password);
+        toast.show();
         enableInputs();
         progressDialog.dismiss();
     }
