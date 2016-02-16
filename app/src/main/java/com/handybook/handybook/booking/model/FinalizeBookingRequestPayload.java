@@ -13,6 +13,7 @@ import java.util.Observable;
  */
 public class FinalizeBookingRequestPayload extends Observable
 {
+    public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
     @SerializedName("password")
     private String mPassword;
     @SerializedName("apply_to_all")
@@ -73,13 +74,12 @@ public class FinalizeBookingRequestPayload extends Observable
 
     public static FinalizeBookingRequestPayload fromJson(final String jsonIn)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(jsonIn, FinalizeBookingRequestPayload.class);
+        return GSON.fromJson(jsonIn, FinalizeBookingRequestPayload.class);
     }
 
     public String toJson()
     {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+        final Gson gson = GSON;
         return gson.toJson(this);
     }
 
