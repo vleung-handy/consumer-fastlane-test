@@ -35,7 +35,7 @@ public final class ServicesFragment extends BookingFlowFragment
 
     private Service mService;
 
-    @Bind(R.id.preference_text)
+    @Bind(R.id.content)
     ScrollView mContent;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
