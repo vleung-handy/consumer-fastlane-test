@@ -303,7 +303,7 @@
     <string name="booking_edit_update_will_apply_subsequent_bookings">Your update will apply to all subsequent bookings.</string>
     <string name="booking_edit_address_title">Edit Address</string>
     <string name="booking_edit_preferences_title">Edit Preferences</string>
-    <string name="booking_edit_preferences_subtitle">Add a note to your professional</string>
+    <string name="booking_edit_preferences_subtitle">Any other notes to your pro?</string>
     <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
     <string name="android_pay_unavailable">Android Pay is unavailable</string>
     <string name="enter_credit_card">Enter a Credit Card</string>
@@ -326,4 +326,7 @@
     <string name="sign_up_with_email">Sign Up with Email</string>
     <string name="already_have_account">Already have an account?\u0020</string>
     <string name="sign_up">Sign Up</string>
+    <string name="preferences_note_to_pro_placeholder">i.e. Pets, location of trash bin, preferences, etc.</string>
+    <string name="error_setting_password">There was an error setting your password, please try again.</string>
+    <string name="error_sending_preferences">Error sending your preferences, please try again.</string>
 </resources>

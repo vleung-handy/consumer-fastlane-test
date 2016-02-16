@@ -12,7 +12,7 @@ import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
+import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -148,6 +148,6 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingConfirmationActivity.class.getName()));
+                equalTo(BookingFinalizeActivity.class.getName()));
     }
 }

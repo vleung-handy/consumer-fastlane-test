@@ -142,7 +142,7 @@
             android:windowSoftInputMode="stateHidden"
             />
         <activity android:name=".booking.ui.activity.BookingDetailActivity"/>
-        <activity android:name=".booking.ui.activity.BookingConfirmationActivity"/>
+        <activity android:name=".booking.ui.activity.BookingFinalizeActivity"/>
         <activity android:name=".booking.ui.activity.BookingRecurrenceActivity"/>
         <activity android:name=".booking.ui.activity.BookingExtrasActivity"/>
         <activity android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"/>
@@ -234,10 +234,12 @@
         <!-- REQUIRED for Urban Airship Push -->
         <activity android:name="com.urbanairship.CoreActivity"/>
 
-        <!-- REQUIRED for Urban Airship Push. The priority is important to be set lower than the
+        <!--
+        REQUIRED for Urban Airship Push. The priority is important to be set lower than the
         application's push intent receiver in order for the push intent receiver to handle push intents
         before the core receiver. This allows the application to launch any activities before Urban
-        Airship performs any actions or falls back to launching the application launch intent. -->
+        Airship performs any actions or falls back to launching the application launch intent.
+        -->
         <receiver
             android:name="com.urbanairship.CoreReceiver"
             android:exported="false"
@@ -262,8 +264,10 @@
                 />
         </activity>
 
-        <!-- REQUIRED for Urban Airship Landing Pages
-           - For more customization details, see com.urbanairship.actions.LandingPageActivity -->
+        <!--
+           REQUIRED for Urban Airship Landing Pages
+           - For more customization details, see com.urbanairship.actions.LandingPageActivity
+        -->
         <activity
             android:name="com.urbanairship.actions.LandingPageActivity"
             android:exported="false"
@@ -347,6 +351,7 @@
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

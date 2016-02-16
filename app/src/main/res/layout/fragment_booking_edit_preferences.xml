@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/handy_bg"
+    android:orientation="vertical"
     >
-
-    <!--TODO: layout needs refactoring. mostly duplicated from fragment_booking_confirmation.xml-->
-    <Button
-        android:id="@+id/next_button"
-        style="@style/Button.Green"
-        android:text="@string/update"
-        android:textAllCaps="false"
-        />
 
     <com.handybook.handybook.ui.widget.BackButtonNavBar
         android:id="@+id/nav_bar"
@@ -22,42 +15,49 @@
         />
 
     <ScrollView
+        android:id="@+id/edit_preferences_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_bar"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         >
 
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             >
+
+            <com.handybook.handybook.booking.ui.widget.InstructionListView
+                android:id="@+id/instructions_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
             <TextView
                 android:id="@id/header_text"
                 style="@style/TextView.CenteredHeader"
                 android:text="@string/booking_edit_preferences_subtitle"
+                android:visibility="gone"
                 />
 
             <LinearLayout
                 android:id="@+id/options_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/header_text"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:background="@color/white"
                 android:orientation="vertical"
                 />
 
-            <com.handybook.handybook.ui.widget.InstructionsLayout
-                android:id="@+id/instructions_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/options_layout"
-                />
-
-        </RelativeLayout>
-
+        </LinearLayout>
     </ScrollView>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/next_button"
+        style="@style/Button.Green"
+        android:text="@string/update"
+        android:textAllCaps="false"
+        />
+
+</LinearLayout>

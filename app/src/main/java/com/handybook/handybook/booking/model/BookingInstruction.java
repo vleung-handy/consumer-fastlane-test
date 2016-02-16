@@ -5,59 +5,58 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ChecklistItem implements Parcelable
+public class BookingInstruction implements Parcelable
 {
     @SerializedName("id")
     private Long mId;
     @SerializedName("machine_name")
     private String mMachineName;
-    @SerializedName("title")
-    private String mTitle;
-    @SerializedName("text")
-    private String mText;
-    @SerializedName("description")
-    private String mDescription;
     @SerializedName("instruction_type")
     private String mInstructionType;
+    @SerializedName("description")
+    private String mDescription;
     @SerializedName("requested")
     private Boolean mIsRequested;
 
 
-    protected ChecklistItem(Parcel in)
+    public BookingInstruction(
+            final Long id,
+            final String machineName,
+            final String instructionType,
+            final String description,
+            final Boolean isRequested
+    )
+    {
+        mId = id;
+        mMachineName = machineName;
+        mInstructionType = instructionType;
+        mDescription = description;
+        mIsRequested = isRequested;
+    }
+
+    protected BookingInstruction(Parcel in)
     {
         mId = (Long) in.readValue(Long.class.getClassLoader());
         mMachineName = in.readString();
-        mTitle = in.readString();
-        mText = in.readString();
-        mDescription = in.readString();
         mInstructionType = in.readString();
+        mDescription = in.readString();
         mIsRequested = (in.readInt() == 0) ? false : true;
     }
 
-    public static final Creator<ChecklistItem> CREATOR = new Creator<ChecklistItem>()
+    public static final Creator<BookingInstruction> CREATOR = new Creator<BookingInstruction>()
     {
         @Override
-        public ChecklistItem createFromParcel(Parcel in)
+        public BookingInstruction createFromParcel(Parcel in)
         {
-            return new ChecklistItem(in);
+            return new BookingInstruction(in);
         }
 
         @Override
-        public ChecklistItem[] newArray(int size)
+        public BookingInstruction[] newArray(int size)
         {
-            return new ChecklistItem[size];
+            return new BookingInstruction[size];
         }
     };
-
-    public String getTitle()
-    {
-        return mTitle;
-    }
-
-    public String getText()
-    {
-        return mText;
-    }
 
     public Long getId()
     {
@@ -95,10 +94,8 @@ public class ChecklistItem implements Parcelable
     {
         dest.writeValue(mId);
         dest.writeString(mMachineName);
-        dest.writeString(mTitle);
-        dest.writeString(mText);
-        dest.writeString(mDescription);
         dest.writeString(mInstructionType);
+        dest.writeString(mDescription);
         dest.writeInt((mIsRequested != null && mIsRequested) ? 1 : 0);
     }
 }

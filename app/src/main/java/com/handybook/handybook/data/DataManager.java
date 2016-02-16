@@ -23,6 +23,7 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
@@ -109,7 +110,7 @@ public abstract class DataManager
             @Nullable final Long untilId,
             @NonNull final Callback<HandyNotification.ResultSet> cb
     );
-    
+
     public abstract void getQuoteOptions(int serviceId,
                                          String userId,
                                          Callback<BookingOptionsWrapper> cb);
@@ -135,7 +136,7 @@ public abstract class DataManager
             BookingTransaction bookingTransaction,
             Callback<BookingCompleteTransaction> cb
     );
-    
+
     public abstract void validateBookingZip(int serviceId,
                                             String zipCode,
                                             String userId,
@@ -335,6 +336,12 @@ public abstract class DataManager
     public abstract void createHelpCase(
             TypedInput body,
             Callback<Void> cb
+    );
+
+    public abstract void finalizeBooking(
+            int bookingId,
+            @NonNull FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+            @NonNull Callback<Void> cb
     );
 
     public abstract void requestPrepareReferrals(

@@ -4,9 +4,9 @@ public class StringUtils
 {
     public static String capitalizeFirstCharacter(String s)
     {
-        if(ValidationUtils.isNullOrEmpty(s)) return s;
+        if (ValidationUtils.isNullOrEmpty(s)) { return s; }
         String returnValue = Character.toString(Character.toUpperCase(s.charAt(0)));
-        if(s.length() > 1)
+        if (s.length() > 1)
         {
             returnValue += s.substring(1);
         }

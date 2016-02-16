@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg"
+    >
+
+    <Button
+        android:id="@+id/next_button"
+        style="@style/Button.Green"
+        android:text="@string/next"
+        />
+
+    <TextView
+        android:id="@+id/nav_text"
+        style="@style/TextView.Navbar"
+        android:text="@string/confirmation"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/next_button"
+        android:layout_below="@id/nav_text"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/default_margin"
+            >
+
+            <TextView
+                android:id="@+id/header_text"
+                style="@style/TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:freezesText="false"
+                android:gravity="center"
+                android:paddingLeft="@dimen/default_margin"
+                android:paddingRight="@dimen/default_margin"
+                android:text="@string/payment_confirmed"
+                />
+
+            <LinearLayout
+                android:id="@+id/options_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/header_text"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:background="@color/white"
+                android:orientation="vertical"
+                />
+
+            <com.handybook.handybook.ui.widget.BasicInputTextView
+                android:id="@+id/keys_text"
+                style="@style/EditText.Last"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/options_layout"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:singleLine="true"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

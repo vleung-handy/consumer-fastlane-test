@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasReques
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.model.request.CreateUserRequest;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;
@@ -148,6 +149,11 @@ public interface HandyRetrofitService
         //points to same endpoint as update note to pro but that is because the endpoint currently does too much
     void updateBookingEntryInformation(@Path("booking") int bookingId,
                                        @Body BookingUpdateEntryInformationTransaction entryInformationTransaction,
+                                       HandyRetrofitCallback cb);
+
+    @POST("/bookings/{booking}/finalize_booking")
+    void finalizeBooking(@Path("booking") int bookingId,
+                                       @Body FinalizeBookingRequestPayload finalizeBookingRequestPayload,
                                        HandyRetrofitCallback cb);
 
     @POST("/bookings/{booking}/edit_frequency")
