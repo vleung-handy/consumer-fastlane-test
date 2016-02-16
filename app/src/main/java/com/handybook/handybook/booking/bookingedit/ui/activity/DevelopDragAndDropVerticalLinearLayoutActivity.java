@@ -20,6 +20,7 @@ import butterknife.OnClick;
 
 public class DevelopDragAndDropVerticalLinearLayoutActivity extends AppCompatActivity
 {
+    public static final String MOCK_INSTRUCTION_FILENAME = "mock_instructions.json";
     @Bind(R.id.develop_scrollview)
     ScrollView mScrollView;
     @Bind(R.id.develop_dnd)
@@ -35,7 +36,7 @@ public class DevelopDragAndDropVerticalLinearLayoutActivity extends AppCompatAct
         super.onCreate(savedInstanceState);
         setContentView(R.layout._develop_drag_and_drop_vertical_linear_layout);
         ButterKnife.bind(this);
-        String jsonInstructions = StringUtils.readAssetFile(this, "mock_instructions.json");
+        String jsonInstructions = StringUtils.readAssetFile(this, MOCK_INSTRUCTION_FILENAME);
         mInstructions = new Gson().fromJson(jsonInstructions, Instructions.class);
         mDndLayout.removeAllViews();
         mDndLayout.linkScrollView(mScrollView);
