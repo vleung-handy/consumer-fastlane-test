@@ -176,7 +176,5 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     public void onInstructionsChanged(final Instructions instructions)
     {
         mBookingUpdateNoteToProTransaction.setInstructions(instructions);
-        toast.setText("Instructions changed.");
-        toast.show();
     }
 }
