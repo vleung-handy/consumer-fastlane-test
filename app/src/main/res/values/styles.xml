@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.Base"
+           parent="Theme.AppCompat.Light.NoActionBar">
         <item name="simpleAlertDialogStyle">@style/Theme.SimpleAlertDialog.Light</item>
         <item name="abstractWheelViewStyle">@style/abstractWheelViewStyle</item>
         <item name="vpiCirclePageIndicatorStyle">@style/CirclePageIndicatorStyle</item>
@@ -565,7 +566,8 @@
         <item name="android:background">@color/white</item>
     </style>
 
-    <style name="BookingDetailSectionView.Transparent" parent="BookingDetailSectionView">
+    <style name="BookingDetailSectionView.Transparent"
+           parent="BookingDetailSectionView">
         <item name="android:background">@color/transparent</item>
 
     </style>
@@ -623,12 +625,14 @@
 
     </style>
 
-    <style name="HandyNotification.TextView.Body" parent="TextView.Medium">
+    <style name="HandyNotification.TextView.Body"
+           parent="TextView.Medium">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="HandyNotification.TextView.Title" parent="TextView.Large">
+    <style name="HandyNotification.TextView.Title"
+           parent="TextView.Large">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center</item>
@@ -663,28 +667,21 @@
         <item name="android:layout_height">160dp</item>
     </style>
 
-    <style name="HandyNotification.Button" parent="Button.BookingAction.Blue.Empty">
+    <style name="HandyNotification.Button"
+           parent="Button.BookingAction.Blue.Empty">
         <item name="android:layout_marginTop">@dimen/default_margin_half</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
     </style>
 
-    <style name="HandyNotification.TextView.Timestamp" parent="TextView.Small">
+    <style name="HandyNotification.TextView.Timestamp"
+           parent="TextView.Small">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:textColor">@color/handy_text_gray</item>
         <item name="android:layout_marginTop">@dimen/default_margin</item>
         <item name="android:layout_marginBottom">20dp</item>
-    </style>
-
-    <style name="develop_box_small">
-        <item name="android:layout_width">42dp</item>
-        <item name="android:layout_height">42dp</item>
-        <item name="android:background">#AAA</item>
-        <item name="android:padding">4dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">2dp</item>
     </style>
 
     <string name="name">Name</string>
