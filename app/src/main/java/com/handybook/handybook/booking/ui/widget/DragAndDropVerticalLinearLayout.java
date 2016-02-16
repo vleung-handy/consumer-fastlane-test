@@ -124,14 +124,12 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     public void enableDragAndDrop()
     {
-        //Log.v(CLASS_TAG, "Enabling drag and drop");
         mIsDraggingEnabled = true;
         getRootView().setOnDragListener(new OnDragListener()
         {
             @Override
             public boolean onDrag(final View view, final DragEvent event)
             {
-                ////Log.v(CLASS_TAG, "DragEvent: " + event.toString());
                 int action = event.getAction();
                 switch (action)
                 {
@@ -186,7 +184,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     private void updateGhostLocation(final float x, final float y)
     {
-        //Log.v(CLASS_TAG, "updateGhostLocation(" + x + "," + y + ")");
         updateScrollView(x, y);
         if (shouldSwapWithViewAbove(y))
         {
@@ -315,7 +312,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     private void setAllChildrenDraggable(final boolean isDraggable)
     {
-        //Log.v(CLASS_TAG, "Setting all children draggable");
         for (int i = 0; i < getChildCount(); i++)
         {
             setChildDraggable(getChildAt(i), isDraggable);
@@ -324,7 +320,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     private void setChildDraggable(final View childView, final boolean setDraggable)
     {
-        //Log.v(CLASS_TAG, "Setting a child (" + childView + ") draggable");
         int indexOfChild = indexOfChild(childView);
         if (indexOfChild < 0)
         {
@@ -354,7 +349,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     public void moveChild(final int fromIndex, final int toIndex)
     {
-        //Log.v(CLASS_TAG, "moveChild(" + fromIndex + ", " + toIndex + ")");
         if (fromIndex == toIndex || fromIndex < 0 || toIndex < 0
                 || fromIndex >= getChildCount() || toIndex >= getChildCount())
         {
@@ -387,7 +381,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     public void swapChildren(final View childA, final View childB)
     {
-        //Log.v(CLASS_TAG, "swapChildren(" + childA + ", " + childB + ")");
         int positionA = indexOfChild(childA);
         int positionB = indexOfChild(childB);
         swapChildren(positionA, positionB);
@@ -395,7 +388,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     public void swapChildren(final int positionA, final int positionB)
     {
-        //Log.v(CLASS_TAG, "swapChildren(" + positionA + ", " + positionB + ")");
         if (positionA == positionB || positionA < 0 || positionB < 0
                 || positionA >= getChildCount() || positionB >= getChildCount())
         {
@@ -571,7 +563,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
                     );
                     break;
             }
-            //Log.v("ScrollZone", "getDuration():" + mDuration);
             return mDuration;
         }
 
@@ -594,7 +585,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             mBottom = mTop + SCROLL_ZONE_HEIGHT;
             mLeft = 0;
             mRight = mRoot.getWidth();
-            //Log.v("TopScrollZone", this.toString());
         }
 
         private void updateBottom()
@@ -605,7 +595,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             mTop = mBottom - SCROLL_ZONE_HEIGHT;
             mLeft = 0;
             mRight = mRoot.getWidth();
-            //Log.v("BottomScrollZone", this.toString());
         }
 
         public boolean isTriggeredBy(final float x, final float y)
