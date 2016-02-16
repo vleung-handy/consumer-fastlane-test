@@ -328,4 +328,5 @@
     <string name="sign_up">Sign Up</string>
     <string name="preferences_note_to_pro_placeholder">i.e. Pets, location of trash bin, preferences, etc.</string>
     <string name="error_setting_password">There was an error setting your password, please try again.</string>
+    <string name="error_sending_preferences">Error sending your preferences, please try again.</string>
 </resources>

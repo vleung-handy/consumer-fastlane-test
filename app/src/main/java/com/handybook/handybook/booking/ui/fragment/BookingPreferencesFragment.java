@@ -291,6 +291,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         {
             return;
         }
+        showToast(R.string.error_sending_preferences);
         removeUiBlockers();
     }
 
