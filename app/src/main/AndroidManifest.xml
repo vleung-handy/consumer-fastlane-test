@@ -166,12 +166,15 @@
         <!--Required by the DeepLinkDispatch library-->
         <activity
             android:name="com.airbnb.deeplinkdispatch.DeepLinkActivity"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:theme="@android:style/Theme.NoDisplay"
+            >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="handybook" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="handybook"/>
                 <!--TODO: parameterize the scheme?-->
             </intent-filter>
         </activity>
@@ -349,8 +352,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".booking.bookingedit.ui.activity.DevelopDragAndDropVerticalLinearLayoutActivity">
-        </activity>
     </application>
 
 </manifest>
