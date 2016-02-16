@@ -37,22 +37,22 @@ import javax.inject.Inject;
 //TODO: Add caching like we do for portal, navigating back and forth from my bookings page is painfully slow right now
 public class BookingManager implements Observer
 {
-    private final PrefsManager prefsManager;
-    private final DataManager dataManager;
-    private final Bus bus;
-    private BookingRequest request;
-    private BookingQuote quote;
-    private BookingTransaction transaction;
-    private BookingPostInfo postInfo;
-    private FinalizeBookingRequestPayload finalizeBookingRequestPayload;
+    private final PrefsManager mPrefsManager;
+    private final DataManager mDataManager;
+    private final Bus mBus;
+    private BookingRequest mBookingRequest;
+    private BookingQuote mBookingQuote;
+    private BookingTransaction mBookingTransaction;
+    private BookingPostInfo mBookingPostInfo;
+    private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
 
     @Inject
     public BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
     {
-        this.prefsManager = prefsManager;
-        this.dataManager = dataManager;
-        this.bus = bus;
-        this.bus.register(this);
+        this.mPrefsManager = prefsManager;
+        this.mDataManager = dataManager;
+        this.mBus = bus;
+        this.mBus.register(this);
     }
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers
@@ -61,7 +61,7 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestPreBookingPromo(BookingEvent.RequestPreBookingPromo event)
     {
-        dataManager.getPreBookingPromo(event.getPromoCode(), new DataManager.Callback<PromoCode>()
+        mDataManager.getPreBookingPromo(event.getPromoCode(), new DataManager.Callback<PromoCode>()
         {
             @Override
             public void onSuccess(final PromoCode response)
@@ -75,13 +75,13 @@ public class BookingManager implements Observer
                      */
                     setPromoTabCoupon(response.getCode());
                 }
-                bus.post(new BookingEvent.ReceivePreBookingPromoSuccess(response));
+                mBus.post(new BookingEvent.ReceivePreBookingPromoSuccess(response));
             }
 
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
-                bus.post(new BookingEvent.ReceivePreBookingPromoError(error));
+                mBus.post(new BookingEvent.ReceivePreBookingPromoError(error));
             }
         });
     }
@@ -89,18 +89,18 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestPreRescheduleInfo(BookingEvent.RequestPreRescheduleInfo event)
     {
-        dataManager.getPreRescheduleInfo(event.bookingId, new DataManager.Callback<String>()
+        mDataManager.getPreRescheduleInfo(event.bookingId, new DataManager.Callback<String>()
         {
             @Override
             public void onSuccess(String notice)
             {
-                bus.post(new BookingEvent.ReceivePreRescheduleInfoSuccess(notice));
+                mBus.post(new BookingEvent.ReceivePreRescheduleInfoSuccess(notice));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new BookingEvent.ReceivePreRescheduleInfoError(error));
+                mBus.post(new BookingEvent.ReceivePreRescheduleInfoError(error));
             }
         });
     }
@@ -108,19 +108,19 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestPreCancelationInfo(BookingEvent.RequestPreCancelationInfo event)
     {
-        dataManager.getPreCancelationInfo(event.bookingId, new DataManager.Callback<Pair<String,
+        mDataManager.getPreCancelationInfo(event.bookingId, new DataManager.Callback<Pair<String,
                 List<String>>>()
         {
             @Override
             public void onSuccess(final Pair<String, List<String>> result)
             {
-                bus.post(new BookingEvent.ReceivePreCancelationInfoSuccess(result));
+                mBus.post(new BookingEvent.ReceivePreCancelationInfoSuccess(result));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new BookingEvent.ReceivePreCancelationInfoError(error));
+                mBus.post(new BookingEvent.ReceivePreCancelationInfoError(error));
             }
         });
     }
@@ -129,19 +129,19 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestUpdateBookingNoteToPro(BookingEditEvent.RequestUpdateBookingNoteToPro event)
     {
-        dataManager.updateBookingNoteToPro(event.bookingId, event.descriptionTransaction,
+        mDataManager.updateBookingNoteToPro(event.bookingId, event.descriptionTransaction,
                 new DataManager.Callback<Void>()
                 {
                     @Override
                     public void onSuccess(final Void response)
                     {
-                        bus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess());
+                        mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess());
                     }
 
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        bus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProError(error));
+                        mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProError(error));
                     }
                 });
     }
@@ -153,7 +153,7 @@ public class BookingManager implements Observer
     {
         if (null != event.getOnlyBookingValue())
         {
-            dataManager.getBookings(
+            mDataManager.getBookings(
                     event.getUser(),
                     event.getOnlyBookingValue(),
                     new DataManager.Callback<UserBookingsWrapper>()
@@ -167,13 +167,13 @@ public class BookingManager implements Observer
                             BookingCardViewModel.List models = getBookingCardViewModelListFromResult(
                                     bookings,
                                     event.getOnlyBookingValue());
-                            bus.post(new HandyEvent.ResponseEvent.BookingCardViewModels(models));
+                            mBus.post(new HandyEvent.ResponseEvent.BookingCardViewModels(models));
                         }
 
                         @Override
                         public void onError(DataManager.DataManagerError error)
                         {
-                            bus.post(new HandyEvent.ResponseEvent.BookingCardViewModelsError(error));
+                            mBus.post(new HandyEvent.ResponseEvent.BookingCardViewModelsError(error));
                         }
                     });
         }
@@ -205,18 +205,18 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestBookingDetails(BookingEvent.RequestBookingDetails event)
     {
-        dataManager.getBooking(event.bookingId, new DataManager.Callback<Booking>()
+        mDataManager.getBooking(event.bookingId, new DataManager.Callback<Booking>()
         {
             @Override
             public void onSuccess(final Booking result)
             {
-                bus.post(new BookingEvent.ReceiveBookingDetailsSuccess(result));
+                mBus.post(new BookingEvent.ReceiveBookingDetailsSuccess(result));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new BookingEvent.ReceiveBookingDetailsError(error));
+                mBus.post(new BookingEvent.ReceiveBookingDetailsError(error));
             }
         });
     }
@@ -224,7 +224,7 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestRateBooking(BookingEvent.RateBookingEvent event)
     {
-        dataManager.ratePro(
+        mDataManager.ratePro(
                 event.getBookingId(),
                 event.getFinalRating(),
                 event.getTipAmountCents(),
@@ -233,13 +233,13 @@ public class BookingManager implements Observer
                     @Override
                     public void onSuccess(final Void response)
                     {
-                        bus.post(new BookingEvent.ReceiveRateBookingSuccess());
+                        mBus.post(new BookingEvent.ReceiveRateBookingSuccess());
                     }
 
                     @Override
                     public void onError(DataManager.DataManagerError error)
                     {
-                        bus.post(new BookingEvent.ReceiveRateBookingError(error));
+                        mBus.post(new BookingEvent.ReceiveRateBookingError(error));
                     }
                 }
         );
@@ -248,18 +248,18 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestTipPro(BookingEvent.RequestTipPro event)
     {
-        dataManager.tipPro(event.bookingId, event.tipAmount, new DataManager.Callback<Void>()
+        mDataManager.tipPro(event.bookingId, event.tipAmount, new DataManager.Callback<Void>()
         {
             @Override
             public void onSuccess(final Void response)
             {
-                bus.post(new BookingEvent.ReceiveTipProSuccess());
+                mBus.post(new BookingEvent.ReceiveTipProSuccess());
             }
 
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
-                bus.post(new BookingEvent.ReceiveTipProError());
+                mBus.post(new BookingEvent.ReceiveTipProError());
             }
         });
     }
@@ -268,203 +268,205 @@ public class BookingManager implements Observer
 
     public BookingRequest getCurrentRequest()
     {
-        if (request != null)
+        if (mBookingRequest != null)
         {
-            return request;
+            return mBookingRequest;
         }
         else
         {
-            if ((request = BookingRequest
-                    .fromJson(prefsManager.getString(PrefsKey.BOOKING_REQUEST))) != null)
+            if ((mBookingRequest = BookingRequest
+                    .fromJson(mPrefsManager.getString(PrefsKey.BOOKING_REQUEST))) != null)
             {
-                request.addObserver(this);
+                mBookingRequest.addObserver(this);
             }
-            return request;
+            return mBookingRequest;
         }
     }
 
     public void setCurrentRequest(final BookingRequest newRequest)
     {
-        if (request != null)
+        if (mBookingRequest != null)
         {
-            request.deleteObserver(this);
+            mBookingRequest.deleteObserver(this);
         }
 
         if (newRequest == null)
         {
-            request = null;
-            prefsManager.removeValue(PrefsKey.BOOKING_REQUEST);
+            mBookingRequest = null;
+            mPrefsManager.removeValue(PrefsKey.BOOKING_REQUEST);
             return;
         }
 
-        request = newRequest;
-        request.addObserver(this);
+        mBookingRequest = newRequest;
+        mBookingRequest.addObserver(this);
 
-        prefsManager.setString(PrefsKey.BOOKING_REQUEST, request.toJson());
+        mPrefsManager.setString(PrefsKey.BOOKING_REQUEST, mBookingRequest.toJson());
     }
 
     public BookingQuote getCurrentQuote()
     {
-        if (quote != null)
+        if (mBookingQuote != null)
         {
-            return quote;
+            return mBookingQuote;
         }
         else
         {
-            if ((quote = BookingQuote
-                    .fromJson(prefsManager.getString(PrefsKey.BOOKING_QUOTE))) != null)
+            if ((mBookingQuote = BookingQuote
+                    .fromJson(mPrefsManager.getString(PrefsKey.BOOKING_QUOTE))) != null)
             {
-                quote.addObserver(this);
+                mBookingQuote.addObserver(this);
             }
-            return quote;
+            return mBookingQuote;
         }
     }
 
     public void setCurrentQuote(final BookingQuote newQuote)
     {
-        if (quote != null)
+        if (mBookingQuote != null)
         {
-            quote.deleteObserver(this);
+            mBookingQuote.deleteObserver(this);
         }
 
         if (newQuote == null)
         {
-            quote = null;
-            prefsManager.removeValue(PrefsKey.BOOKING_QUOTE);
+            mBookingQuote = null;
+            mPrefsManager.removeValue(PrefsKey.BOOKING_QUOTE);
             return;
         }
 
-        quote = newQuote;
-        quote.addObserver(this);
-        prefsManager.setString(PrefsKey.BOOKING_QUOTE, quote.toJson());
+        mBookingQuote = newQuote;
+        mBookingQuote.addObserver(this);
+        mPrefsManager.setString(PrefsKey.BOOKING_QUOTE, mBookingQuote.toJson());
     }
 
     public BookingTransaction getCurrentTransaction()
     {
-        if (transaction != null)
+        if (mBookingTransaction != null)
         {
-            return transaction;
+            return mBookingTransaction;
         }
         else
         {
-            final String transactionJson = prefsManager.getString(PrefsKey.BOOKING_TRANSACTION);
+            final String transactionJson = mPrefsManager.getString(PrefsKey.BOOKING_TRANSACTION);
             Crashlytics.log("Transaction JSON is " + transactionJson);
             if (transactionJson == null)
             {
                 return null;
             }
-            transaction = BookingTransaction.fromJson(transactionJson);
-            if (transaction != null)
+            mBookingTransaction = BookingTransaction.fromJson(transactionJson);
+            if (mBookingTransaction != null)
             {
-                transaction.addObserver(this);
+                mBookingTransaction.addObserver(this);
             }
             else
             {
                 Crashlytics.log("Transaction object is null");
             }
-            return transaction;
+            return mBookingTransaction;
         }
     }
 
     public void setCurrentTransaction(final BookingTransaction newTransaction)
     {
-        if (transaction != null)
+        if (mBookingTransaction != null)
         {
-            transaction.deleteObserver(this);
+            mBookingTransaction.deleteObserver(this);
         }
 
         if (newTransaction == null)
         {
-            transaction = null;
-            prefsManager.removeValue(PrefsKey.BOOKING_TRANSACTION);
+            mBookingTransaction = null;
+            mPrefsManager.removeValue(PrefsKey.BOOKING_TRANSACTION);
             return;
         }
 
-        transaction = newTransaction;
-        transaction.addObserver(this);
-        prefsManager.setString(PrefsKey.BOOKING_TRANSACTION, transaction.toJson());
+        mBookingTransaction = newTransaction;
+        mBookingTransaction.addObserver(this);
+        mPrefsManager.setString(PrefsKey.BOOKING_TRANSACTION, mBookingTransaction.toJson());
     }
 
     public BookingPostInfo getCurrentPostInfo()
     {
-        if (postInfo != null)
+        if (mBookingPostInfo != null)
         {
-            return postInfo;
+            return mBookingPostInfo;
         }
         else
         {
-            if ((postInfo = BookingPostInfo
-                    .fromJson(prefsManager.getString(PrefsKey.BOOKING_POST))) != null)
+            if ((mBookingPostInfo = BookingPostInfo
+                    .fromJson(mPrefsManager.getString(PrefsKey.BOOKING_POST))) != null)
             {
-                postInfo.addObserver(this);
+                mBookingPostInfo.addObserver(this);
             }
-            return postInfo;
+            return mBookingPostInfo;
         }
     }
 
     public void setCurrentPostInfo(final BookingPostInfo newInfo)
     {
-        if (postInfo != null)
+        if (mBookingPostInfo != null)
         {
-            postInfo.deleteObserver(this);
+            mBookingPostInfo.deleteObserver(this);
         }
 
         if (newInfo == null)
         {
-            postInfo = null;
-            prefsManager.removeValue(PrefsKey.BOOKING_POST);
+            mBookingPostInfo = null;
+            mPrefsManager.removeValue(PrefsKey.BOOKING_POST);
             return;
         }
 
-        postInfo = newInfo;
-        postInfo.addObserver(this);
-        prefsManager.setString(PrefsKey.BOOKING_POST, postInfo.toJson());
+        mBookingPostInfo = newInfo;
+        mBookingPostInfo.addObserver(this);
+        mPrefsManager.setString(PrefsKey.BOOKING_POST, mBookingPostInfo.toJson());
     }
 
     public FinalizeBookingRequestPayload getCurrentFinalizeBookingPayload()
     {
-        if (finalizeBookingRequestPayload != null)
+        if (mFinalizeBookingRequestPayload != null)
         {
-            return finalizeBookingRequestPayload;
+            return mFinalizeBookingRequestPayload;
         }
         else
         {
-            finalizeBookingRequestPayload = FinalizeBookingRequestPayload.fromJson(
-                    prefsManager.getString(PrefsKey.BOOKING_FINALIZE_PAYLOAD)
+            mFinalizeBookingRequestPayload = FinalizeBookingRequestPayload.fromJson(
+                    mPrefsManager.getString(PrefsKey.BOOKING_FINALIZE_PAYLOAD)
             );
-            if(finalizeBookingRequestPayload !=null){
-                finalizeBookingRequestPayload.addObserver(this);
+            if (mFinalizeBookingRequestPayload != null)
+            {
+                mFinalizeBookingRequestPayload.addObserver(this);
             }
-            return finalizeBookingRequestPayload;
+            return mFinalizeBookingRequestPayload;
         }
     }
 
     public void setCurrentFinalizeBookingRequestPayload(final FinalizeBookingRequestPayload payload)
     {
-        if(finalizeBookingRequestPayload != null){
-            finalizeBookingRequestPayload.deleteObserver(this);
+        if (mFinalizeBookingRequestPayload != null)
+        {
+            mFinalizeBookingRequestPayload.deleteObserver(this);
         }
         if (payload == null)
         {
-            finalizeBookingRequestPayload = null;
-            prefsManager.removeValue(PrefsKey.BOOKING_FINALIZE_PAYLOAD);
+            mFinalizeBookingRequestPayload = null;
+            mPrefsManager.removeValue(PrefsKey.BOOKING_FINALIZE_PAYLOAD);
         }
         else
         {
-            finalizeBookingRequestPayload = payload;
-            prefsManager.setString(PrefsKey.BOOKING_FINALIZE_PAYLOAD, finalizeBookingRequestPayload.toJson());
+            mFinalizeBookingRequestPayload = payload;
+            mPrefsManager.setString(PrefsKey.BOOKING_FINALIZE_PAYLOAD, mFinalizeBookingRequestPayload.toJson());
         }
     }
 
     public void setPromoTabCoupon(final String code)
     {
-        prefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
+        mPrefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
     }
 
     @Nullable
     public String getPromoTabCoupon()
     {
-        return prefsManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
+        return mPrefsManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
     }
 
     @Override
@@ -502,13 +504,13 @@ public class BookingManager implements Observer
         setCurrentTransaction(null);
         setCurrentPostInfo(null);
         setCurrentFinalizeBookingRequestPayload(null);
-        prefsManager.removeValue(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION);
-        bus.post(new BookingFlowClearedEvent());
+        mPrefsManager.removeValue(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION);
+        mBus.post(new BookingFlowClearedEvent());
     }
 
     public void clearAll()
     {
-        prefsManager.removeValue(PrefsKey.BOOKING_PROMO_TAB_COUPON);
+        mPrefsManager.removeValue(PrefsKey.BOOKING_PROMO_TAB_COUPON);
         clear();
     }
 
@@ -535,19 +537,19 @@ public class BookingManager implements Observer
             final BookingEvent.RequestSendCancelRecurringBookingEmail event
     )
     {
-        dataManager.sendCancelRecurringBookingEmail(event.bookingRecurringId, new DataManager
+        mDataManager.sendCancelRecurringBookingEmail(event.bookingRecurringId, new DataManager
                 .Callback<SuccessWrapper>()
         {
             @Override
             public void onSuccess(SuccessWrapper response)
             {
-                bus.post(new BookingEvent.ReceiveSendCancelRecurringBookingEmailSuccess());
+                mBus.post(new BookingEvent.ReceiveSendCancelRecurringBookingEmailSuccess());
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new BookingEvent.ReceiveSendCancelRecurringBookingEmailError(error));
+                mBus.post(new BookingEvent.ReceiveSendCancelRecurringBookingEmailError(error));
 
             }
         });
@@ -567,13 +569,13 @@ public class BookingManager implements Observer
     )
     {
 
-        dataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
+        mDataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
         {
             @Override
             public void onSuccess(final UserBookingsWrapper result)
             {
                 //TODO: need to sort the recurring bookings?
-                bus.post(new BookingEvent.ReceiveRecurringBookingsSuccess(
+                mBus.post(new BookingEvent.ReceiveRecurringBookingsSuccess(
                                 result.getRecurringBookings())
                 );
             }
@@ -581,7 +583,7 @@ public class BookingManager implements Observer
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new BookingEvent.ReceiveRecurringBookingsError(error));
+                mBus.post(new BookingEvent.ReceiveRecurringBookingsError(error));
             }
         });
     }
@@ -591,7 +593,7 @@ public class BookingManager implements Observer
             final BookingEvent.RequestFinalizeBooking event
     )
     {
-        dataManager.finalizeBooking(
+        mDataManager.finalizeBooking(
                 event.getBookingId(),
                 event.getPayload(),
                 new DataManager.Callback<Void>()
@@ -599,13 +601,13 @@ public class BookingManager implements Observer
                     @Override
                     public void onSuccess(final Void response)
                     {
-                        bus.post(new BookingEvent.FinalizeBookingSuccess());
+                        mBus.post(new BookingEvent.FinalizeBookingSuccess());
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
-                        bus.post(new BookingEvent.FinalizeBookingError());
+                        mBus.post(new BookingEvent.FinalizeBookingError());
                     }
                 });
     }
