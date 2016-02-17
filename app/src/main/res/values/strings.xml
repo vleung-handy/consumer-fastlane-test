@@ -133,7 +133,8 @@
     <string name="add_laundry">Add to Future Cleanings</string>
     <string name="frequency">Frequency</string>
     <string name="entry_info">Entry Information</string>
-    <string name="preferences">Cleaning Routine</string>
+    <string name="cleaning_routine">Cleaning Routine</string>
+    <string name="job_details">Job Details</string>
     <string name="total">Total</string>
     <string name="what_need_help_with">What do you need \nhelp with?</string>
     <string name="what_can_help_with">What can we help with?</string>
