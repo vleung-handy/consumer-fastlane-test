@@ -2,8 +2,13 @@ package com.handybook.handybook.booking.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BookingInstruction implements Parcelable
 {
@@ -18,6 +23,18 @@ public class BookingInstruction implements Parcelable
     @SerializedName("requested")
     private Boolean mIsRequested;
 
+
+    private static final Map<String, Integer> ICONS;
+
+    static
+    {
+        ICONS = new HashMap<>();
+        ICONS.put("kitchen", R.drawable.ic_instruction_kitchen);
+        ICONS.put("bedroom", R.drawable.ic_instruction_bedroom);
+        ICONS.put("bathroom", R.drawable.ic_instruction_bathroom);
+        ICONS.put("floors", R.drawable.ic_instruction_floor);
+        ICONS.put("general", R.drawable.ic_instruction_general);
+    }
 
     public BookingInstruction(
             final Long id,
@@ -81,6 +98,42 @@ public class BookingInstruction implements Parcelable
     public boolean getIsRequested()
     {
         return mIsRequested != null && mIsRequested;
+    }
+
+    public void setId(final Long id)
+    {
+        mId = id;
+    }
+
+    public void setMachineName(final String machineName)
+    {
+        mMachineName = machineName;
+    }
+
+    public void setInstructionType(final String instructionType)
+    {
+        mInstructionType = instructionType;
+    }
+
+    public void setDescription(final String description)
+    {
+        mDescription = description;
+    }
+
+    public void setIsRequested(final Boolean isRequested)
+    {
+        mIsRequested = isRequested;
+    }
+
+    @DrawableRes
+    public final int getImageResource()
+    {
+        if (ICONS.get(getInstructionType()) != null)
+        {
+            return ICONS.get(getInstructionType());
+        }
+
+        return ICONS.get("general");
     }
 
     @Override

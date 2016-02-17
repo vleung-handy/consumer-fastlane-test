@@ -10,7 +10,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.model.ChecklistItem;
+import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.Instructions;
 
 import java.util.ArrayList;
@@ -37,9 +37,9 @@ public class InstructionListView extends FrameLayout
         mInstructionStateListener = new BookingInstructionView.OnStateChangedListener()
         {
             @Override
-            public void onStateChanged(final ChecklistItem checklistItem)
+            public void onStateChanged(final BookingInstruction bookingInstruction)
             {
-                onInstructionStateChanged(checklistItem);
+                onInstructionStateChanged(bookingInstruction);
             }
         };
     }
@@ -100,14 +100,14 @@ public class InstructionListView extends FrameLayout
         {
             mTitle.setVisibility(GONE);
         }
-        if (mInstructions.getChecklist() != null)
+        if (mInstructions.getBookingInstructions() != null)
         {
             mDnDLinearLayout.setVisibility(VISIBLE);
-            for (ChecklistItem checklistItem : instructions.getChecklist())
+            for (BookingInstruction BookingInstruction : instructions.getBookingInstructions())
             {
                 final BookingInstructionView bookingInstructionView = new BookingInstructionView(getContext());
                 mBookingInstructionViews.add(bookingInstructionView);
-                bookingInstructionView.reflect(checklistItem);
+                bookingInstructionView.reflect(BookingInstruction);
                 bookingInstructionView.setOnStateChangedListener(mInstructionStateListener);
                 mDnDLinearLayout.addView(bookingInstructionView);
             }
@@ -123,7 +123,7 @@ public class InstructionListView extends FrameLayout
         mOnInstructionsChangedListener = listener;
     }
 
-    private void onInstructionStateChanged(final ChecklistItem checklistItem)
+    private void onInstructionStateChanged(final BookingInstruction BookingInstruction)
     {
         //TODO: If unchecked then animate to top of unchecked instructions (they group at the bottom)
         notifyObserver();
