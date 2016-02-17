@@ -111,7 +111,9 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
      */
     private boolean hasInstructions()
     {
-        if (booking != null && booking.getInstructions() != null && !booking.getInstructions().getChecklist().isEmpty())
+        if (booking != null && booking.getInstructions() != null
+                && booking.getInstructions().getChecklist() != null
+                && !booking.getInstructions().getChecklist().isEmpty())
         {
 
             for (ChecklistItem item : booking.getInstructions().getChecklist())

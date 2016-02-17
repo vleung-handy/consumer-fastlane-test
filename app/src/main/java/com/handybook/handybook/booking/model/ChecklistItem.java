@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.R;
@@ -99,6 +100,7 @@ public class ChecklistItem implements Parcelable
         return mIsRequested != null && mIsRequested;
     }
 
+    @DrawableRes
     public final int getImageResource()
     {
         if (ICONS.get(getInstructionType()) != null)
