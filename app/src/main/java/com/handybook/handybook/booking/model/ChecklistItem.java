@@ -4,6 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChecklistItem implements Parcelable
 {
@@ -22,6 +26,17 @@ public class ChecklistItem implements Parcelable
     @SerializedName("requested")
     private Boolean mIsRequested;
 
+    private static final Map<String, Integer> ICONS;
+
+    static
+    {
+        ICONS = new HashMap<>();
+        ICONS.put("kitchen", R.drawable.ic_instruction_kitchen);
+        ICONS.put("bedroom", R.drawable.ic_instruction_bedroom);
+        ICONS.put("bathroom", R.drawable.ic_instruction_bathroom);
+        ICONS.put("floors", R.drawable.ic_instruction_floor);
+        ICONS.put("general", R.drawable.ic_instruction_general);
+    }
 
     protected ChecklistItem(Parcel in)
     {
@@ -82,6 +97,16 @@ public class ChecklistItem implements Parcelable
     public boolean getIsRequested()
     {
         return mIsRequested != null && mIsRequested;
+    }
+
+    public final int getImageResource()
+    {
+        if (ICONS.get(getInstructionType()) != null)
+        {
+            return ICONS.get(getInstructionType());
+        }
+
+        return ICONS.get("general");
     }
 
     @Override

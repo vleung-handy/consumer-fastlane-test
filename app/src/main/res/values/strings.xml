@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Handy</string>
     <string name="home">Home</string>
     <string name="help">Help</string>
     <string name="promotions">Promotions</string>
@@ -133,7 +132,7 @@
     <string name="add_laundry">Add to Future Cleanings</string>
     <string name="frequency">Frequency</string>
     <string name="entry_info">Entry Information</string>
-    <string name="preferences">Preferences</string>
+    <string name="preferences">Cleaning Routine</string>
     <string name="total">Total</string>
     <string name="what_need_help_with">What do you need \nhelp with?</string>
     <string name="what_can_help_with">What can we help with?</string>
@@ -329,4 +328,5 @@
     <string name="preferences_note_to_pro_placeholder">i.e. Pets, location of trash bin, preferences, etc.</string>
     <string name="error_setting_password">There was an error setting your password, please try again.</string>
     <string name="error_sending_preferences">Error sending your preferences, please try again.</string>
+    <string name="note_to_pro">Note To Pro</string>
 </resources>
