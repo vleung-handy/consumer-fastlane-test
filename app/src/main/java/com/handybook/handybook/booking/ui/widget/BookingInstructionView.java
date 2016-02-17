@@ -11,14 +11,14 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.model.ChecklistItem;
+import com.handybook.handybook.booking.model.BookingInstruction;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class BookingInstructionView extends FrameLayout
 {
-    ChecklistItem mChecklistItem;
+    BookingInstruction mBookingInstruction;
 
     private State mState;
     private OnStateChangedListener mOnStateChangedListener;
@@ -65,15 +65,10 @@ public class BookingInstructionView extends FrameLayout
         return mState;
     }
 
-    public void setState(final ChecklistItem checklistItem)
-    {
-        setState(checklistItem.getIsRequested() ? State.REQUESTED : State.DECLINED);
-        notifyObserver();
-    }
-
     public void setState(final State state)
     {
         mState = state;
+        mCheckBox.setChecked(state == State.REQUESTED);
         notifyObserver();
     }
 
@@ -85,7 +80,7 @@ public class BookingInstructionView extends FrameLayout
         }
         else
         {
-            mOnStateChangedListener.onStateChanged(mChecklistItem);
+            mOnStateChangedListener.onStateChanged(mBookingInstruction);
         }
     }
 
@@ -176,12 +171,12 @@ public class BookingInstructionView extends FrameLayout
         requestLayout();
     }
 
-    public void reflect(ChecklistItem checklistItem)
+    public void reflect(BookingInstruction bookingInstruction)
     {
-        mChecklistItem = checklistItem;
-        setText(checklistItem.getText());
-        setTitle(checklistItem.getTitle());
-        setState(checklistItem);
+        mBookingInstruction = bookingInstruction;
+        setText(bookingInstruction.getDescription());
+        setTitle(bookingInstruction.getInstructionType());
+        setState(bookingInstruction.getIsRequested() ? State.REQUESTED : State.DECLINED);
     }
 
     public enum State
@@ -190,7 +185,6 @@ public class BookingInstructionView extends FrameLayout
         DECLINED(1);
 
         int mId;
-
 
         State(final int id)
         {
@@ -213,6 +207,6 @@ public class BookingInstructionView extends FrameLayout
 
     public interface OnStateChangedListener
     {
-        void onStateChanged(ChecklistItem checklistItem);
+        void onStateChanged(BookingInstruction bookingInstruction);
     }
 }

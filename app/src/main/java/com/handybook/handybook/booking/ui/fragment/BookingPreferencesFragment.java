@@ -13,10 +13,8 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
-import com.handybook.handybook.booking.model.ChecklistItem;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
@@ -29,8 +27,6 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -140,22 +136,12 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             //discourage user from pressing button twice
             //note that this doesn't prevent super fast clicks
             showUiBlockers();
-
-            if (mInstructions != null) {
-                ArrayList<BookingInstruction> bookingInstructions = new ArrayList<>();
-                for (ChecklistItem eItem : mInstructions.getChecklist())
-                {
-                    bookingInstructions.add(new BookingInstruction(
-                            eItem.getId(),
-                            eItem.getMachineName(),
-                            eItem.getInstructionType(),
-                            eItem.getDescription(),
-                            eItem.getIsRequested()
-                    ));
-                }
-                mFinalizeBookingRequestPayload.setBookingInstructions(bookingInstructions);
+            if (mInstructions != null)
+            {
+                mFinalizeBookingRequestPayload.setBookingInstructions(
+                        mInstructions.getBookingInstructions()
+                );
             }
-
             mFinalizeBookingRequestPayload.setNoteToPro(mPostInfo.getExtraMessage());
             if (mIsNewUser) // Prompt the user to create a pasword
             {
@@ -179,40 +165,6 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                                 mFinalizeBookingRequestPayload
                         )
                 );
-
-//                dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
-//                        mPostInfo, new DataManager.Callback<Void>()
-//                        {
-//                            @Override
-//                            public void onSuccess(final Void response)
-//                            {
-//                                if (!allowCallbacks ||
-//                                        bookingManager.getCurrentTransaction() == null)
-//                                    /*
-//                                    hot fix to prevent NPE caused by rapid multi-click
-//                                    of the next button
-//                                     */
-//                                {
-//                                    return;
-//                                }
-//                                String bookingId = Integer.toString(
-//                                        bookingManager.getCurrentTransaction().getBookingId()
-//                                );
-//                                showBookingDetails(bookingId);
-//                                removeUiBlockers();
-//                            }
-//
-//                            @Override
-//                            public void onError(final DataManager.DataManagerError error)
-//                            {
-//                                if (!allowCallbacks)
-//                                {
-//                                    return;
-//                                }
-//                                removeUiBlockers();
-//                                dataManagerErrorHandler.handleError(getActivity(), error);
-//                            }
-//                        });
             }
         }
     };

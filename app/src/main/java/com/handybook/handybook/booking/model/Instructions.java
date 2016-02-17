@@ -13,13 +13,13 @@ public class Instructions implements Parcelable
     @SerializedName("title")
     private String mTitle;
     @SerializedName("instructions_checklist")
-    private List<ChecklistItem> mChecklistItems;
+    private List<BookingInstruction> mBookingInstructions;
 
     protected Instructions(Parcel in)
     {
         mTitle = in.readString();
-        mChecklistItems = new ArrayList<>();
-        in.readTypedList(mChecklistItems, ChecklistItem.CREATOR);
+        mBookingInstructions = new ArrayList<>();
+        in.readTypedList(mBookingInstructions, BookingInstruction.CREATOR);
     }
 
     public static final Creator<Instructions> CREATOR = new Creator<Instructions>()
@@ -42,9 +42,9 @@ public class Instructions implements Parcelable
         return mTitle;
     }
 
-    public List<ChecklistItem> getChecklist()
+    public List<BookingInstruction> getBookingInstructions()
     {
-        return mChecklistItems;
+        return mBookingInstructions;
     }
 
     @Override
@@ -57,6 +57,6 @@ public class Instructions implements Parcelable
     public void writeToParcel(final Parcel out, final int flags)
     {
         out.writeString(mTitle);
-        out.writeTypedList(mChecklistItems);
+        out.writeTypedList(mBookingInstructions);
     }
 }

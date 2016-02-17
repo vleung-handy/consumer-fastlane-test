@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditPreferencesActivity;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.ChecklistItem;
+import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionImageItemView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
@@ -89,17 +89,22 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
      */
     private void populatePreferencesInSection()
     {
-        final List<ChecklistItem> checklistItems = booking.getInstructions().getChecklist();
+        final List<BookingInstruction> bookingInstructions =
+                booking.getInstructions().getBookingInstructions();
         preferencesSection.removeAllViews();
-        for (int i = 0; i < checklistItems.size(); i++)
+        for (int i = 0; i < bookingInstructions.size(); i++)
         {
-            final ChecklistItem preference = checklistItems.get(i);
-            BookingDetailSectionImageItemView itemView = (BookingDetailSectionImageItemView)
-                    getActivity().getLayoutInflater().inflate(R.layout.layout_section_image_item, null);
-
-            itemView.updateDisplay(preference.getImageResource(), View.VISIBLE, preference.getTitle(),
-                    BookingDetailSectionImageItemView.TextStyle.BOLD, preference.getDescription());
-
+            final BookingInstruction preference = bookingInstructions.get(i);
+            BookingDetailSectionImageItemView itemView =
+                    (BookingDetailSectionImageItemView) getActivity().getLayoutInflater()
+                            .inflate(R.layout.layout_section_image_item, null);
+            itemView.updateDisplay(
+                    preference.getImageResource(),
+                    View.VISIBLE,
+                    preference.getInstructionType(),
+                    BookingDetailSectionImageItemView.TextStyle.BOLD,
+                    preference.getDescription()
+            );
             preferencesSection.addView(itemView);
         }
     }
@@ -112,11 +117,11 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
     private boolean hasInstructions()
     {
         if (booking != null && booking.getInstructions() != null
-                && booking.getInstructions().getChecklist() != null
-                && !booking.getInstructions().getChecklist().isEmpty())
+                && booking.getInstructions().getBookingInstructions() != null
+                && !booking.getInstructions().getBookingInstructions().isEmpty())
         {
 
-            for (ChecklistItem item : booking.getInstructions().getChecklist())
+            for (BookingInstruction item : booking.getInstructions().getBookingInstructions())
             {
                 if (item.getIsRequested())
                 {
