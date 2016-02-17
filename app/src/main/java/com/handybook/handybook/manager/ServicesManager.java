@@ -24,6 +24,12 @@ public class ServicesManager
     }
 
     @Subscribe
+    public void onRequestCachedServices(final BookingEvent.RequestCachedServices event)
+    {
+        mBus.post(new BookingEvent.ReceiveCachedServicesSuccess(mDataManager.getCachedServices()));
+    }
+
+    @Subscribe
     public void onRequestServices(final BookingEvent.RequestServices event)
     {
         mDataManager.getServices(new DataManager.CacheResponse<List<Service>>()
