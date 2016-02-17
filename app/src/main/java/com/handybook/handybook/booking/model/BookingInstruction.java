@@ -83,6 +83,31 @@ public class BookingInstruction implements Parcelable
         return mIsRequested != null && mIsRequested;
     }
 
+    public void setId(final Long id)
+    {
+        mId = id;
+    }
+
+    public void setMachineName(final String machineName)
+    {
+        mMachineName = machineName;
+    }
+
+    public void setInstructionType(final String instructionType)
+    {
+        mInstructionType = instructionType;
+    }
+
+    public void setDescription(final String description)
+    {
+        mDescription = description;
+    }
+
+    public void setIsRequested(final Boolean isRequested)
+    {
+        mIsRequested = isRequested;
+    }
+
     @Override
     public int describeContents()
     {
