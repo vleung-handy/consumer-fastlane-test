@@ -140,18 +140,22 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             //discourage user from pressing button twice
             //note that this doesn't prevent super fast clicks
             showUiBlockers();
-            ArrayList<BookingInstruction> bookingInstructions = new ArrayList<>();
-            for (ChecklistItem eItem : mInstructions.getChecklist())
-            {
-                bookingInstructions.add(new BookingInstruction(
-                        eItem.getId(),
-                        eItem.getMachineName(),
-                        eItem.getInstructionType(),
-                        eItem.getDescription(),
-                        eItem.getIsRequested()
-                ));
+
+            if (mInstructions != null) {
+                ArrayList<BookingInstruction> bookingInstructions = new ArrayList<>();
+                for (ChecklistItem eItem : mInstructions.getChecklist())
+                {
+                    bookingInstructions.add(new BookingInstruction(
+                            eItem.getId(),
+                            eItem.getMachineName(),
+                            eItem.getInstructionType(),
+                            eItem.getDescription(),
+                            eItem.getIsRequested()
+                    ));
+                }
+                mFinalizeBookingRequestPayload.setBookingInstructions(bookingInstructions);
             }
-            mFinalizeBookingRequestPayload.setBookingInstructions(bookingInstructions);
+
             mFinalizeBookingRequestPayload.setNoteToPro(mPostInfo.getExtraMessage());
             if (mIsNewUser) // Prompt the user to create a pasword
             {
