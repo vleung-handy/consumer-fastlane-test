@@ -375,4 +375,38 @@ public abstract class BookingEvent
 
     public static class FinalizeBookingError extends HandyEvent.ReceiveErrorEvent {}
 
+
+    public static class RequestUpdatePreferences extends HandyEvent.RequestEvent
+    {
+        private int mBookingId;
+        private FinalizeBookingRequestPayload mPayload;
+
+        private RequestUpdatePreferences()
+        {
+        }
+
+        public RequestUpdatePreferences(final int bookingId, final FinalizeBookingRequestPayload payload)
+        {
+            mBookingId = bookingId;
+            mPayload = payload;
+        }
+
+        public int getBookingId()
+        {
+            return mBookingId;
+        }
+
+        public FinalizeBookingRequestPayload getPayload()
+        {
+            return mPayload;
+        }
+
+    }
+
+
+    public static class UpdatePreferencesSuccess extends HandyEvent.ReceiveSuccessEvent {}
+
+
+    public static class UpdatePreferencesError extends HandyEvent.ReceiveErrorEvent {}
+
 }

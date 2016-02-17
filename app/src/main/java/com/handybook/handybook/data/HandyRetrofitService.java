@@ -3,17 +3,17 @@ package com.handybook.handybook.data;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.booking.model.BookingPostInfo;
-import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
-import com.handybook.handybook.model.request.CreateUserRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;
@@ -155,6 +155,13 @@ public interface HandyRetrofitService
     void finalizeBooking(@Path("booking") int bookingId,
                                        @Body FinalizeBookingRequestPayload finalizeBookingRequestPayload,
                                        HandyRetrofitCallback cb);
+
+    @POST("/bookings/{booking}/preferences")
+    void updatePreferences(
+            @Path("booking") int bookingId,
+            @Body FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+            HandyRetrofitCallback cb
+    );
 
     @POST("/bookings/{booking}/edit_frequency")
     void updateBookingFrequency(@Path("booking") int bookingId,

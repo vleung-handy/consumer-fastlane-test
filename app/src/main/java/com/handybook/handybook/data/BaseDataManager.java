@@ -988,6 +988,27 @@ public final class BaseDataManager extends DataManager
         );
     }
 
+    @Override
+    public void updatePreferences(
+            int bookingId,
+            @NonNull FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+            @NonNull final Callback<Void> cb
+    )
+    {
+        mService.finalizeBooking(
+                bookingId,
+                finalizeBookingRequestPayload,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    void success(final JSONObject response)
+                    {
+                        cb.onSuccess(null);
+                    }
+                }
+        );
+    }
+
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb)
     {
         final User user = new User();
