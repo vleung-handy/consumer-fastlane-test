@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.handybook.handybook.booking.ui.view.BookingDetailSectionExtrasEntryView
+<com.handybook.handybook.booking.ui.view.BookingDetailSectionImageItemView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:paddingTop="@dimen/default_padding_quarter"
+    android:paddingBottom="@dimen/default_padding_quarter"
     >
 
     <ImageView
@@ -19,9 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/extra_image"
         android:layout_toEndOf="@id/extra_image"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="@dimen/default_margin"
         android:layout_centerVertical="true"
         android:textSize="16sp"
         />
 
-</com.handybook.handybook.booking.ui.view.BookingDetailSectionExtrasEntryView>
+</com.handybook.handybook.booking.ui.view.BookingDetailSectionImageItemView>

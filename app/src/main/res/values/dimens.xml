@@ -36,4 +36,5 @@
     <dimen name="select_payment_button_gap">10dp</dimen>
     <dimen name="default_button_height">48dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="short_divider_width">100dp</dimen>
 </resources>
