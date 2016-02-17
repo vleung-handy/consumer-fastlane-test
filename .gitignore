@@ -59,3 +59,5 @@ proguard/
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+app/src/main/.DS_Store
+app/src/main/res/.DS_Store
