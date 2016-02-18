@@ -995,7 +995,7 @@ public final class BaseDataManager extends DataManager
             @NonNull final Callback<Void> cb
     )
     {
-        mService.finalizeBooking(
+        mService.updatePreferences(
                 bookingId,
                 finalizeBookingRequestPayload,
                 new HandyRetrofitCallback(cb)
