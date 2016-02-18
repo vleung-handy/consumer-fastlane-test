@@ -1,6 +1,8 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -23,18 +25,27 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
     @Bind(R.id.preferences_section)
     public LinearLayout preferencesSection;
 
+    @StringRes
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {
-        return R.string.preferences;
+
+        if (hasInstructions())
+        {
+            return R.string.cleaning_routine;
+        }
+
+        return R.string.job_details;
     }
 
+    @StringRes
     @Override
     protected int getEntryActionTextResourceId(Booking booking)
     {
         return R.string.edit;
     }
 
+    @LayoutRes
     @Override
     protected int getFragmentResourceId()
     {
@@ -84,7 +95,8 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
     }
 
     /**
-     * Loops through the list of instructions (checklist items) and add the view to the section.
+     * Loops through the list of instructions (checklist items) and add the view to the section only
+     * if that preference is "requested"
      * Assumes there are instructions to be displayed.
      */
     private void populatePreferencesInSection()
@@ -95,17 +107,23 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
         for (int i = 0; i < bookingInstructions.size(); i++)
         {
             final BookingInstruction preference = bookingInstructions.get(i);
-            BookingDetailSectionImageItemView itemView =
-                    (BookingDetailSectionImageItemView) getActivity().getLayoutInflater()
-                            .inflate(R.layout.layout_section_image_item, null);
-            itemView.updateDisplay(
-                    preference.getImageResource(),
-                    View.VISIBLE,
-                    preference.getInstructionType(),
-                    BookingDetailSectionImageItemView.TextStyle.BOLD,
-                    preference.getDescription()
-            );
-            preferencesSection.addView(itemView);
+
+            if (preference.getIsRequested())
+            {
+                BookingDetailSectionImageItemView itemView =
+                        (BookingDetailSectionImageItemView) getActivity().getLayoutInflater()
+                                .inflate(R.layout.layout_section_image_item, null);
+
+                itemView.updateDisplay(
+                        preference.getImageResource(),
+                        View.VISIBLE,
+                        preference.getInstructionType(),
+                        BookingDetailSectionImageItemView.TextStyle.BOLD,
+                        preference.getDescription()
+                );
+
+                preferencesSection.addView(itemView);
+            }
         }
     }
 

@@ -59,6 +59,9 @@ public abstract class DataManager
             CacheResponse<List<Service>> cache,
             Callback<List<Service>> cb
     );
+
+    public abstract List<Service> getCachedServices();
+
     public abstract void editBookingAddress(int bookingId,
                                             BookingEditAddressRequest bookingEditAddressRequest,
                                             Callback<SuccessWrapper> cb);
