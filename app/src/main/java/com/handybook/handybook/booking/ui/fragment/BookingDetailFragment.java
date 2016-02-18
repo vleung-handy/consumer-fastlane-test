@@ -17,23 +17,23 @@ import android.widget.TextView;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
-import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -372,22 +372,13 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         switch (id)
         {
             case R.id.menu_panic_cancel:
-                startActivity(HelpActivity.getIntentToOpenNodeId(
-                        getActivity(),
-                        HelpActivity.HELP_NODE_ID_CANCEL
-                ));
+                startActivity(HelpActivity.DeepLink.CANCEL.getIntent(getActivity()));
                 break;
             case R.id.menu_panic_pro_late:
-                startActivity(HelpActivity.getIntentToOpenNodeId(
-                        getActivity(),
-                        HelpActivity.HELP_NODE_ID_PRO_LATE
-                ));
+                startActivity(HelpActivity.DeepLink.PRO_LATE.getIntent(getActivity()));
                 break;
             case R.id.menu_panic_adjust_hours:
-                startActivity(HelpActivity.getIntentToOpenNodeId(
-                        getActivity(),
-                        HelpActivity.HELP_NODE_ID_ADJUST_HOURS
-                ));
+                startActivity(HelpActivity.DeepLink.ADJUST_HOURS.getIntent(getActivity()));
                 break;
             case R.id.menu_panic_help:
                 startActivity(new Intent(getActivity(), HelpActivity.class));

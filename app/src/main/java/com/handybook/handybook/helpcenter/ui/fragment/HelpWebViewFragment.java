@@ -1,6 +1,7 @@
-package com.handybook.handybook.booking.ui.fragment;
+package com.handybook.handybook.helpcenter.ui.fragment;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,23 +14,21 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.HandyWebViewClient;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyWebView;
+import com.handybook.handybook.ui.widget.MenuButton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Used to display a web view that will take the user through recurring booking cancellation steps.
- */
-public class CancelRecurringBookingFragment extends InjectedFragment
+public class HelpWebViewFragment extends InjectedFragment
 {
+    @Bind(R.id.menu_button_layout)
+    ViewGroup mMenuButtonLayout;
     @Bind(R.id.web_view)
     HandyWebView mWebView;
 
-    public static CancelRecurringBookingFragment newInstance(final String cancelUrl)
+    public static HelpWebViewFragment newInstance(final Bundle arguments)
     {
-        final CancelRecurringBookingFragment fragment = new CancelRecurringBookingFragment();
-        Bundle arguments = new Bundle();
-        arguments.putString(BundleKeys.CANCEL_RECURRING_BOOKING_URL, cancelUrl);
+        final HelpWebViewFragment fragment = new HelpWebViewFragment();
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -42,11 +41,13 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_cancel_recurring_booking, container, false);
+        final View view = inflater.inflate(R.layout.fragment_help_web_view, container, false);
         ButterKnife.bind(this, view);
 
-        final String cancelUrl = getArguments().getString(BundleKeys.CANCEL_RECURRING_BOOKING_URL);
+        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
+        menuButton.setColor(getResources().getColor(R.color.white));
+        mMenuButtonLayout.addView(menuButton);
+
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity())
         {
             @Override
@@ -71,7 +72,17 @@ public class CancelRecurringBookingFragment extends InjectedFragment
             }
         });
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.loadUrl(cancelUrl);
+
+        String helpCenterUrl = getArguments().getString(BundleKeys.HELP_CENTER_URL);
+        final String articleId = getArguments().getString(BundleKeys.HELP_ARTICLE_ID);
+        if (articleId != null)
+        {
+            helpCenterUrl = Uri.parse(helpCenterUrl).buildUpon()
+                    .appendQueryParameter("redirect_to", "/articles/" + articleId)
+                    .build().toString();
+        }
+        mWebView.loadUrl(helpCenterUrl);
+
         return view;
     }
 }

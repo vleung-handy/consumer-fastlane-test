@@ -95,7 +95,11 @@ import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactAct
 import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpWebViewActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpNativeFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
@@ -197,6 +201,10 @@ import retrofit.converter.GsonConverter;
         OnboardPageFragment.class,
         HelpActivity.class,
         HelpFragment.class,
+        HelpWebViewActivity.class,
+        HelpWebViewFragment.class,
+        HelpNativeActivity.class,
+        HelpNativeFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class,
