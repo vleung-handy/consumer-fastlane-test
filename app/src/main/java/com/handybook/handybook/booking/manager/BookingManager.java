@@ -611,4 +611,28 @@ public class BookingManager implements Observer
                     }
                 });
     }
+
+    @Subscribe
+    public final void onUpdatePreferences(
+            final BookingEditEvent.RequestEditPreferences event
+    )
+    {
+        mDataManager.updatePreferences(
+                event.getBookingId(),
+                event.getPayload(),
+                new DataManager.Callback<Void>()
+                {
+                    @Override
+                    public void onSuccess(final Void response)
+                    {
+                        mBus.post(new BookingEditEvent.ReceiveEditPreferencesSuccess());
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        mBus.post(new BookingEditEvent.ReceiveEditPreferencesError());
+                    }
+                });
+    }
 }

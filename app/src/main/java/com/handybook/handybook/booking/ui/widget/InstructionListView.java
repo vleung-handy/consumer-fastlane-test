@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.Instructions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +26,8 @@ public class InstructionListView extends FrameLayout
     Instructions mInstructions;
     private ArrayList<BookingInstructionView> mBookingInstructionViews;
     private OnInstructionsChangedListener mOnInstructionsChangedListener;
+    private DragAndDropVerticalLinearLayout.OnChildrenSwappedListener mOnChildrenSwappedListener;
+    private DragAndDropVerticalLinearLayout.OnChildMovedListener mOnChildMovedListener;
 
     private ScrollView mParentScrollView;
 
@@ -39,7 +43,48 @@ public class InstructionListView extends FrameLayout
             @Override
             public void onStateChanged(final BookingInstruction bookingInstruction)
             {
-                onInstructionStateChanged(bookingInstruction);
+                notifyObserver();
+            }
+        };
+        mOnChildMovedListener = new DragAndDropVerticalLinearLayout.OnChildMovedListener()
+        {
+            @Override
+            public void onChildMoved(final View child, final int fromPosition, final int toPosition)
+            {
+                //TODO: Move the BookingInstruction too!
+                notifyObserver();
+            }
+        };
+        mOnChildrenSwappedListener = new DragAndDropVerticalLinearLayout.OnChildrenSwappedListener()
+        {
+            @Override
+            public void onChildrenSwapped(
+                    final View childA,
+                    final int positionA,
+                    final View childB,
+                    final int positionB
+            )
+            {
+                final List<BookingInstruction> bookingInstructions = mInstructions.getBookingInstructions();
+                BookingInstruction biA = ((BookingInstructionView) childA).getBookingInstruction();
+                BookingInstruction biB = ((BookingInstructionView) childB).getBookingInstruction();
+                int realPosA = bookingInstructions.indexOf(biA);
+                int realPosB = bookingInstructions.indexOf(biB);
+                if (realPosA < realPosB)
+                {// Let's not duck up the order
+                    bookingInstructions.remove(realPosB);
+                    bookingInstructions.remove(realPosA);
+                    bookingInstructions.add(realPosA, biB);
+                    bookingInstructions.add(realPosB, biA);
+                }
+                else
+                {
+                    bookingInstructions.remove(realPosA);
+                    bookingInstructions.remove(realPosB);
+                    bookingInstructions.add(realPosB, biA);
+                    bookingInstructions.add(realPosA, biB);
+                }
+                notifyObserver();
             }
         };
     }
@@ -65,12 +110,16 @@ public class InstructionListView extends FrameLayout
     private void init()
     {
         inflateAndBind();
+        mDnDLinearLayout.seOnChildrenSwappedListener(mOnChildrenSwappedListener);
+        mDnDLinearLayout.setOnChildMovedListener(mOnChildMovedListener);
+
     }
 
     private void inflateAndBind()
     {
         LayoutInflater.from(getContext()).inflate(R.layout.widget_instruction_list_view, this, true);
         ButterKnife.bind(this);
+
     }
 
     public void reflect(@Nullable final Instructions instructions)
@@ -103,11 +152,11 @@ public class InstructionListView extends FrameLayout
         if (mInstructions.getBookingInstructions() != null)
         {
             mDnDLinearLayout.setVisibility(VISIBLE);
-            for (BookingInstruction BookingInstruction : instructions.getBookingInstructions())
+            for (BookingInstruction bookingInstruction : instructions.getBookingInstructions())
             {
                 final BookingInstructionView bookingInstructionView = new BookingInstructionView(getContext());
                 mBookingInstructionViews.add(bookingInstructionView);
-                bookingInstructionView.reflect(BookingInstruction);
+                bookingInstructionView.reflect(bookingInstruction);
                 bookingInstructionView.setOnStateChangedListener(mInstructionStateListener);
                 mDnDLinearLayout.addView(bookingInstructionView);
             }
@@ -123,11 +172,6 @@ public class InstructionListView extends FrameLayout
         mOnInstructionsChangedListener = listener;
     }
 
-    private void onInstructionStateChanged(final BookingInstruction BookingInstruction)
-    {
-        //TODO: If unchecked then animate to top of unchecked instructions (they group at the bottom)
-        notifyObserver();
-    }
 
     private void notifyObserver()
     {

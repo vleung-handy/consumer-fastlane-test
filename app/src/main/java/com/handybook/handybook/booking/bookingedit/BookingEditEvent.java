@@ -10,6 +10,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProT
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
@@ -304,4 +305,40 @@ public abstract class BookingEditEvent
             this.error = error;
         }
     }
+
+
+    public static class RequestEditPreferences extends HandyEvent.RequestEvent
+    {
+        private int mBookingId;
+        private FinalizeBookingRequestPayload mPayload;
+
+        private RequestEditPreferences()
+        {
+        }
+
+        public RequestEditPreferences(final int bookingId, final FinalizeBookingRequestPayload payload)
+        {
+            mBookingId = bookingId;
+            mPayload = payload;
+        }
+
+        public int getBookingId()
+        {
+            return mBookingId;
+        }
+
+        public FinalizeBookingRequestPayload getPayload()
+        {
+            return mPayload;
+        }
+
+    }
+
+
+    public static class ReceiveEditPreferencesSuccess extends HandyEvent.ReceiveSuccessEvent {}
+
+
+    public static class ReceiveEditPreferencesError extends HandyEvent.ReceiveErrorEvent {}
+
+
 }

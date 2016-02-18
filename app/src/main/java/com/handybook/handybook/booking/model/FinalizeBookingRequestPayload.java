@@ -50,25 +50,21 @@ public class FinalizeBookingRequestPayload extends Observable
 
     public void setBookingInstructions(final List<BookingInstruction> bookingInstructions)
     {
-        //filter out all previous instructions of
         if (mBookingInstructions == null)
         {
             mBookingInstructions = new ArrayList<>();
         }
-        ArrayList<BookingInstruction> filteredBookingInstructions = new ArrayList<>();
+        //filter out all previous instructions of
+        ArrayList<BookingInstruction> preferenceInstructions = new ArrayList<>();
         for (BookingInstruction eBookingInstruction : mBookingInstructions)
         {
-            if (eBookingInstruction.getMachineName() == null
-                    || eBookingInstruction.getMachineName().isEmpty()
-                    || eBookingInstruction.getMachineName().equals("preference"))
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.PREFERENCE))
             {
-                continue;
+                preferenceInstructions.add(eBookingInstruction);
             }
-
-            filteredBookingInstructions.add(eBookingInstruction);
         }
-        filteredBookingInstructions.addAll(bookingInstructions);
-        mBookingInstructions = filteredBookingInstructions;
+        mBookingInstructions.removeAll(preferenceInstructions);
+        mBookingInstructions.addAll(bookingInstructions);
         triggerObservers();
     }
 
@@ -109,34 +105,68 @@ public class FinalizeBookingRequestPayload extends Observable
         switch (entryMethodIndex)
         {
             case 0:
-                entryMethodInstructionType = "at_home";
+                entryMethodInstructionType = BookingInstruction.InstructionType.AT_HOME;
                 break;
             case 1:
-                entryMethodInstructionType = "doorman";
+                entryMethodInstructionType = BookingInstruction.InstructionType.DOORMAN;
                 break;
             case 2:
-                entryMethodInstructionType = "hide_key";
+                entryMethodInstructionType = BookingInstruction.InstructionType.HIDE_KEY;
                 break;
             default:
-                entryMethodInstructionType = "at_home";
+                entryMethodInstructionType = BookingInstruction.InstructionType.AT_HOME;
         }
         BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
                 null,
-                "entry_method",
+                BookingInstruction.MachineName.ENTRY_METHOD,
                 entryMethodInstructionType,
                 null,
                 null
         );
         BookingInstruction entryInfoMessageInstruction = new BookingInstruction(
                 null,
-                "key_location",
+                BookingInstruction.MachineName.KEY_LOCATION,
                 null,
                 getInText,
                 null
         );
-        mBookingInstructions.add(entryInfoTypeInstruction);
-        mBookingInstructions.add(entryInfoMessageInstruction);
-        notifyObservers();
+        // Find it and if it exists update it, or create the new one.
+        int entryMethodPosition = -1, keyLocationPosition = -1;
+        for (int i = 0; i < mBookingInstructions.size(); i++)
+        {
+            BookingInstruction eBookingInstruction = mBookingInstructions.get(i);
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.ENTRY_METHOD))
+            {
+                entryMethodPosition = i;
+                continue;
+            }
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.KEY_LOCATION))
+            {
+                keyLocationPosition = i;
+                continue;
+            }
+        }
+        if (entryMethodPosition >= 0)
+        {
+            mBookingInstructions.get(entryMethodPosition).setInstructionType(
+                    entryInfoTypeInstruction.getInstructionType()
+            );
+        }
+        else
+        {
+            mBookingInstructions.add(entryInfoTypeInstruction);
+        }
+        if (keyLocationPosition >= 0)
+        {
+            mBookingInstructions.get(keyLocationPosition).setDescription(
+                    entryInfoMessageInstruction.getDescription()
+            );
+        }
+        else
+        {
+            mBookingInstructions.add(entryInfoMessageInstruction);
+        }
+        triggerObservers();
     }
 
     public void setNoteToPro(final String noteToPro)
@@ -151,12 +181,44 @@ public class FinalizeBookingRequestPayload extends Observable
         }
         BookingInstruction noteToProInstruction = new BookingInstruction(
                 null,
-                "note_to_pro",
+                BookingInstruction.MachineName.NOTE_TO_PRO,
                 null,
                 noteToPro,
-                null
-        );
+                null);
+
+        // Find it and if it exists update it
+        for (BookingInstruction eBookingInstruction : mBookingInstructions)
+        {
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.NOTE_TO_PRO))
+            {
+                eBookingInstruction.setDescription(noteToPro);
+                notifyObservers();
+                return;
+            }
+        }
+        // Didn't exist yet, create it.
         mBookingInstructions.add(noteToProInstruction);
-        notifyObservers();
+        triggerObservers();
+    }
+
+    /**
+     * Returns content of first note to pro instruction, or null if none found
+     *
+     * @return
+     */
+    public String getNoteToPro()
+    {
+        if (mBookingInstructions == null)
+        {
+            return null;
+        }
+        for (BookingInstruction eBookingInstruction : mBookingInstructions)
+        {
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.NOTE_TO_PRO))
+            {
+                return eBookingInstruction.getDescription();
+            }
+        }
+        return null;
     }
 }

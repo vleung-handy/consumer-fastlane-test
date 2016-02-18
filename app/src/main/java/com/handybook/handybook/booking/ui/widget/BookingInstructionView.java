@@ -68,6 +68,10 @@ public class BookingInstructionView extends FrameLayout
     public void setState(final State state)
     {
         mState = state;
+        if (mBookingInstruction != null)
+        {
+            mBookingInstruction.setIsRequested(state == State.REQUESTED);
+        }
         mCheckBox.setChecked(state == State.REQUESTED);
         notifyObserver();
     }
@@ -177,6 +181,11 @@ public class BookingInstructionView extends FrameLayout
         setText(bookingInstruction.getDescription());
         setTitle(bookingInstruction.getInstructionType());
         setState(bookingInstruction.getIsRequested() ? State.REQUESTED : State.DECLINED);
+    }
+
+    public BookingInstruction getBookingInstruction()
+    {
+        return mBookingInstruction;
     }
 
     public enum State

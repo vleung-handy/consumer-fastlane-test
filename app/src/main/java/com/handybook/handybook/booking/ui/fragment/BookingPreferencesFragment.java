@@ -106,7 +106,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         }
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_TEXT);
-        option.setDefaultValue(getString(R.string.additional_pro_info_hint));
+        option.setDefaultValue(getString(R.string.preferences_note_to_pro_placeholder));
 
         if (mInstructions != null && mInstructions.getBookingInstructions() != null &&
                 !mInstructions.getBookingInstructions().isEmpty())

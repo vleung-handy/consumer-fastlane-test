@@ -347,6 +347,12 @@ public abstract class DataManager
             @NonNull Callback<Void> cb
     );
 
+    public abstract void updatePreferences(
+            int bookingId,
+            @NonNull FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+            @NonNull Callback<Void> cb
+    );
+
     public abstract void requestPrepareReferrals(
             final Callback<ReferralResponse> callback
     );
