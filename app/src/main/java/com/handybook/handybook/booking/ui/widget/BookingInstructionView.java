@@ -183,6 +183,11 @@ public class BookingInstructionView extends FrameLayout
         setState(bookingInstruction.getIsRequested() ? State.REQUESTED : State.DECLINED);
     }
 
+    public BookingInstruction getBookingInstruction()
+    {
+        return mBookingInstruction;
+    }
+
     public enum State
     {
         REQUESTED(0),

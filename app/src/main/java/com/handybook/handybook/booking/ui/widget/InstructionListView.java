@@ -15,6 +15,7 @@ import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.Instructions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +51,7 @@ public class InstructionListView extends FrameLayout
             @Override
             public void onChildMoved(final View child, final int fromPosition, final int toPosition)
             {
+                //TODO: Move the BookingInstruction too!
                 notifyObserver();
             }
         };
@@ -63,6 +65,25 @@ public class InstructionListView extends FrameLayout
                     final int positionB
             )
             {
+                final List<BookingInstruction> bookingInstructions = mInstructions.getBookingInstructions();
+                BookingInstruction biA = ((BookingInstructionView) childA).getBookingInstruction();
+                BookingInstruction biB = ((BookingInstructionView) childB).getBookingInstruction();
+                int realPosA = bookingInstructions.indexOf(biA);
+                int realPosB = bookingInstructions.indexOf(biB);
+                if (realPosA < realPosB)
+                {// Let's not duck up the order
+                    bookingInstructions.remove(realPosB);
+                    bookingInstructions.remove(realPosA);
+                    bookingInstructions.add(realPosA, biB);
+                    bookingInstructions.add(realPosB, biA);
+                }
+                else
+                {
+                    bookingInstructions.remove(realPosA);
+                    bookingInstructions.remove(realPosB);
+                    bookingInstructions.add(realPosB, biA);
+                    bookingInstructions.add(realPosA, biB);
+                }
                 notifyObserver();
             }
         };
