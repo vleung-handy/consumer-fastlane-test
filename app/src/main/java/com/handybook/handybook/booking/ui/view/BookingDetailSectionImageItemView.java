@@ -64,7 +64,7 @@ public class BookingDetailSectionImageItemView extends InjectedRelativeLayout
                     extraTitle.setText(Html.fromHtml("<b>" + title + ":</b> " + text));
                     break;
                 case ITALICS:
-                    extraTitle.setText(Html.fromHtml("<i>" + title + ":</i> &nbsp; " + text));
+                    extraTitle.setText(Html.fromHtml("<i>" + title + ":</i> &nbsp;" + text));
                     break;
                 default:
                     extraTitle.setText(Html.fromHtml(title + ": " + text));
