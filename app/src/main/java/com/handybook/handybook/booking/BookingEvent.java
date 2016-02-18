@@ -240,6 +240,9 @@ public abstract class BookingEvent
     public static class RequestServices {}
 
 
+    public static class RequestCachedServices {}
+
+
     public static class ReceiveServicesSuccess extends HandyEvent.ReceiveSuccessEvent
     {
         private List<Service> mServices;

@@ -17,23 +17,24 @@ import android.widget.TextView;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
-import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ import butterknife.OnClick;
 public final class BookingDetailFragment extends InjectedFragment implements PopupMenu.OnMenuItemClickListener
 {
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
+    private static final String STATE_SERVICES = "STATE_SERVICES";
 
     private Booking mBooking;
     private String mBookingId;
@@ -58,6 +60,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     BookingDetailView mBookingDetailView;
     @Bind(R.id.nav_help)
     TextView mHelp;
+
+    private ArrayList<Service> mServices;
 
     public static BookingDetailFragment newInstance(final Booking booking)
     {
@@ -91,6 +95,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             {
                 setUpdatedBookingResult();
             }
+
+            mServices = (ArrayList<Service>) savedInstanceState.getSerializable(STATE_SERVICES);
         }
     }
 
@@ -118,6 +124,11 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         {
             showUiBlockers();
             bus.post(new BookingEvent.RequestBookingDetails(mBookingId));
+        }
+
+        if (mServices == null)
+        {
+            bus.post(new BookingEvent.RequestCachedServices());
         }
     }
 
@@ -164,6 +175,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_UPDATED_BOOKING, mBookingUpdated);
+        outState.putSerializable(STATE_SERVICES, mServices);
     }
 
     @Override
@@ -201,7 +213,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     private void setupForBooking(Booking booking)
     {
         mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.INVISIBLE);
-        mBookingDetailView.updateDisplay(booking, userManager.getCurrentUser());
+        mBookingDetailView.updateDisplay(booking, mServices);
         setupClickListeners();
         addSectionFragments();
     }
@@ -274,6 +286,18 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             getActivity().onBackPressed();
         }
     };
+
+    /**
+     * Receives the services tree, and now we can fill the booking icon properly
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onReceiveCachedServicesSuccess(BookingEvent.ReceiveCachedServicesSuccess event)
+    {
+        mServices = (ArrayList<Service>) event.getServices();
+        mBookingDetailView.updateServiceIcon(mBooking, mServices);
+    }
 
     @Subscribe
     public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event)

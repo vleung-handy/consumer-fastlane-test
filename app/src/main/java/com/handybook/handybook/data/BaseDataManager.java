@@ -85,16 +85,7 @@ public final class BaseDataManager extends DataManager
     )
     {
 
-        String cachedServicesJson = mPrefsManager.getString(PrefsKey.CACHED_SERVICES);
-        List<Service> cachedServices = null;
-        if (cachedServicesJson != null)
-        {
-            cachedServices = new Gson().fromJson(
-                    mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
-                    new TypeToken<List<Service>>()
-                    {
-                    }.getType());
-        }
+        List<Service> cachedServices = getCachedServices();
 
         cache.onResponse(cachedServices != null ? cachedServices : new ArrayList<Service>());
 
@@ -222,6 +213,23 @@ public final class BaseDataManager extends DataManager
                 });
             }
         });
+    }
+
+    @Override
+    public List<Service> getCachedServices()
+    {
+        String cachedServicesJson = mPrefsManager.getString(PrefsKey.CACHED_SERVICES);
+        List<Service> cachedServices = null;
+        if (cachedServicesJson != null)
+        {
+            cachedServices = new Gson().fromJson(
+                    mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
+                    new TypeToken<List<Service>>()
+                    {
+                    }.getType());
+        }
+
+        return cachedServices;
     }
 
     @Override

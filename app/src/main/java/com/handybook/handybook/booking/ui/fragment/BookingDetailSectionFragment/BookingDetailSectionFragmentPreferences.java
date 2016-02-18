@@ -1,6 +1,8 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -23,18 +25,27 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
     @Bind(R.id.preferences_section)
     public LinearLayout preferencesSection;
 
+    @StringRes
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {
-        return R.string.preferences;
+
+        if (hasInstructions())
+        {
+            return R.string.cleaning_routine;
+        }
+
+        return R.string.job_details;
     }
 
+    @StringRes
     @Override
     protected int getEntryActionTextResourceId(Booking booking)
     {
         return R.string.edit;
     }
 
+    @LayoutRes
     @Override
     protected int getFragmentResourceId()
     {
