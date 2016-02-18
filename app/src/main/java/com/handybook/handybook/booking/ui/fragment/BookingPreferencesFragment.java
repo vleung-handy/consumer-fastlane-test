@@ -52,6 +52,9 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     @Bind(R.id.instructions_layout)
     InstructionListView mInstructionListView;
 
+    @Bind(R.id.nav_text)
+    TextView mNavText;
+
     public static BookingPreferencesFragment newInstance(
             final boolean isNewUser,
             final Instructions instructions
@@ -104,7 +107,20 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_TEXT);
         option.setDefaultValue(getString(R.string.additional_pro_info_hint));
-        mInstructionListView.reflect(mInstructions);
+
+        if (mInstructions != null && mInstructions.getBookingInstructions() != null &&
+                !mInstructions.getBookingInstructions().isEmpty())
+        {
+
+            mNavText.setText(getString(R.string.cleaning_routine));
+            mInstructionListView.reflect(mInstructions);
+            mInstructionListView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mInstructionListView.setVisibility(View.GONE);
+        }
+
         mNextButton.setOnClickListener(nextClicked);
         return view;
     }

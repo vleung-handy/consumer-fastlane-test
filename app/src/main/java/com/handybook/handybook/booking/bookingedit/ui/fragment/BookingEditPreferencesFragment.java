@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.ui.widget.BackButtonNavBar;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -42,6 +43,9 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     InstructionListView mInstructionListView;
     @Bind(R.id.edit_preferences_scrollview)
     ScrollView mScrollView;
+
+    @Bind(R.id.nav_bar)
+    BackButtonNavBar mNavBar;
 
     public static BookingEditPreferencesFragment newInstance(final Booking booking)
     {
@@ -78,8 +82,22 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         ButterKnife.bind(this, view);
         initOptionsView();
         mInstructionListView.setParentScrollContainer(mScrollView);
-        mInstructionListView.reflect(mBooking.getInstructions());
-        mInstructionListView.setOnInstructionsChangedListener(this);
+
+        //if there are instructions (even if they are not requested)
+        if (mBooking != null && mBooking.getInstructions() != null
+                && mBooking.getInstructions().getBookingInstructions() != null
+                && !mBooking.getInstructions().getBookingInstructions().isEmpty())
+        {
+            mNavBar.setText(getString(R.string.booking_edit_cleaning_routine_title));
+            mInstructionListView.reflect(mBooking.getInstructions());
+            mInstructionListView.setOnInstructionsChangedListener(this);
+            mInstructionListView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mInstructionListView.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
