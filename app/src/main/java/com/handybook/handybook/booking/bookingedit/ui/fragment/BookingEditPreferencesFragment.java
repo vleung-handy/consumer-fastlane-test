@@ -14,6 +14,7 @@ import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
+import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
@@ -78,6 +79,17 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         initOptionsView();
         mInstructionListView.setParentScrollContainer(mScrollView);
         mInstructionListView.reflect(mBooking.getInstructions());
+        mInstructionListView.setOnInstructionsChangedListener(
+                new InstructionListView.OnInstructionsChangedListener()
+                {
+                    @Override
+                    public void onInstructionsChanged(final Instructions instructions)
+                    {
+                        mFinalizeBookingRequestPayload.setBookingInstructions(
+                                instructions.getBookingInstructions()
+                        );
+                    }
+                });
         return view;
     }
 
