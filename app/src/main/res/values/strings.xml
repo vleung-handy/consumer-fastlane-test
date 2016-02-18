@@ -330,5 +330,5 @@
     <string name="preferences_note_to_pro_placeholder">i.e. Pets, location of trash bin, preferences, etc.</string>
     <string name="error_setting_password">There was an error setting your password, please try again.</string>
     <string name="error_sending_preferences">Error sending your preferences, please try again.</string>
-    <string name="note_to_pro">Note To Pro</string>
+    <string name="note_to_pro">Note to Pro</string>
 </resources>
