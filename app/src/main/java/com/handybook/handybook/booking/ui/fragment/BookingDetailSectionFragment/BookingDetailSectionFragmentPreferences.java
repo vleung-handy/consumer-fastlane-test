@@ -72,7 +72,7 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
 
         boolean showSection = false;
 
-        if (hasInstructions())
+        if (hasRequestedInstructions())
         {
             showSection = true;
             populatePreferencesInSection();
@@ -127,16 +127,21 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
         }
     }
 
+    private boolean hasInstructions()
+    {
+        return booking != null && booking.getInstructions() != null
+                && booking.getInstructions().getBookingInstructions() != null
+                && !booking.getInstructions().getBookingInstructions().isEmpty();
+    }
+
     /**
      * returns true if there is at least one instruction marked as "requested"
      *
      * @return
      */
-    private boolean hasInstructions()
+    private boolean hasRequestedInstructions()
     {
-        if (booking != null && booking.getInstructions() != null
-                && booking.getInstructions().getBookingInstructions() != null
-                && !booking.getInstructions().getBookingInstructions().isEmpty())
+        if (hasInstructions())
         {
 
             for (BookingInstruction item : booking.getInstructions().getBookingInstructions())
@@ -163,7 +168,7 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
     private void addNoteToSection(String note)
     {
 
-        if (hasInstructions())
+        if (hasRequestedInstructions())
         {
             getActivity().getLayoutInflater().inflate(R.layout.layout_section_separator_view_short, preferencesSection);
         }
