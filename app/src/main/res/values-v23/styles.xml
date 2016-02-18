@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextView"
+           parent="android:Widget.TextView">
+        <item name="android:textColor">@color/handy_text_black</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:freezesText">true</item>
+    </style>
+
+</resources>
