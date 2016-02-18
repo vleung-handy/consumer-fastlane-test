@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="@dimen/default_margin"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             >
 
 
@@ -41,15 +42,13 @@
 
             <TextView
                 android:id="@+id/header_text"
-                style="@style/TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                style="@style/TextView.CenteredHeader.NoMargin"
                 android:freezesText="false"
-                android:gravity="center"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin"
                 android:text="@string/payment_confirmed"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginRight="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
                 />
 
             <com.handybook.handybook.ui.widget.BasicInputTextView
@@ -60,6 +59,8 @@
                 android:layout_marginBottom="@dimen/default_margin"
                 android:minLines="3"
                 android:gravity="top"
+                android:layout_marginLeft="@dimen/default_padding_half"
+                android:layout_marginRight="@dimen/default_padding_half"
                 />
 
         </LinearLayout>

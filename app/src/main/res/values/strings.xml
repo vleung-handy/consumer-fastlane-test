@@ -304,6 +304,7 @@
     <string name="booking_edit_update_will_apply_subsequent_bookings">Your update will apply to all subsequent bookings.</string>
     <string name="booking_edit_address_title">Edit Address</string>
     <string name="booking_edit_preferences_title">Edit Preferences</string>
+    <string name="booking_edit_cleaning_routine_title">Edit Cleaning Routine</string>
     <string name="booking_edit_preferences_subtitle">Any other notes to your pro?</string>
     <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
     <string name="android_pay_unavailable">Android Pay is unavailable</string>
