@@ -29,11 +29,11 @@ public class BookingInstruction implements Parcelable
     static
     {
         ICONS = new HashMap<>();
-        ICONS.put("kitchen", R.drawable.ic_instruction_kitchen);
-        ICONS.put("bedroom", R.drawable.ic_instruction_bedroom);
-        ICONS.put("bathroom", R.drawable.ic_instruction_bathroom);
-        ICONS.put("floors", R.drawable.ic_instruction_floor);
-        ICONS.put("general", R.drawable.ic_instruction_general);
+        ICONS.put(InstructionType.KITCHEN, R.drawable.ic_instruction_kitchen);
+        ICONS.put(InstructionType.BEDROOM, R.drawable.ic_instruction_bedroom);
+        ICONS.put(InstructionType.BATHROOM, R.drawable.ic_instruction_bathroom);
+        ICONS.put(InstructionType.FLOORS, R.drawable.ic_instruction_floor);
+        ICONS.put(InstructionType.GENERAL, R.drawable.ic_instruction_general);
     }
 
     public BookingInstruction(
@@ -150,5 +150,32 @@ public class BookingInstruction implements Parcelable
         dest.writeString(mInstructionType);
         dest.writeString(mDescription);
         dest.writeInt((mIsRequested != null && mIsRequested) ? 1 : 0);
+    }
+
+    public boolean isOfMachineName(final String machineName)
+    {
+        return mMachineName != null && mMachineName.equals(machineName);
+    }
+
+
+    public static final class MachineName
+    {
+        public static final String PREFERENCE = "preference";
+        public static final String NOTE_TO_PRO = "note_to_pro";
+        public static final String ENTRY_METHOD = "entry_method";
+        public static final String KEY_LOCATION = "key_location";
+    }
+
+
+    public static final class InstructionType
+    {
+        public static final String KITCHEN = "kitchen";
+        public static final String BEDROOM = "bedroom";
+        public static final String BATHROOM = "bathroom";
+        public static final String FLOORS = "floors";
+        public static final String GENERAL = "general";
+        public static final String AT_HOME = "at_home";
+        public static final String DOORMAN = "doorman";
+        public static final String HIDE_KEY = "hide_key";
     }
 }
