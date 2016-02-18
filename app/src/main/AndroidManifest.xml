@@ -134,31 +134,79 @@
                     />
             </intent-filter>
         </activity>
-        <activity android:name=".booking.ui.activity.BookingOptionsActivity"/>
-        <activity android:name=".booking.ui.activity.BookingDateActivity"/>
-        <activity android:name=".booking.ui.activity.BookingAddressActivity"/>
+        <activity
+            android:name=".booking.ui.activity.BookingOptionsActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.BookingDateActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.BookingAddressActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".booking.ui.activity.BookingPaymentActivity"
             android:windowSoftInputMode="stateHidden"
             />
-        <activity android:name=".booking.ui.activity.BookingDetailActivity"/>
-        <activity android:name=".booking.ui.activity.BookingFinalizeActivity"/>
-        <activity android:name=".booking.ui.activity.BookingRecurrenceActivity"/>
-        <activity android:name=".booking.ui.activity.BookingExtrasActivity"/>
-        <activity android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"/>
-        <activity android:name=".booking.ui.activity.BookingCancelOptionsActivity"/>
+        <activity
+            android:name=".booking.ui.activity.BookingDetailActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.BookingFinalizeActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.BookingRecurrenceActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.BookingExtrasActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.BookingCancelOptionsActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".booking.ui.activity.PeakPricingActivity"/>
         <activity android:name=".booking.ui.activity.PromosActivity"/>
         <activity android:name=".ui.activity.OnboardActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
         <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
-        <activity android:name=".booking.bookingedit.ui.activity.BookingEditPreferencesActivity"/>
-        <activity android:name=".booking.bookingedit.ui.activity.BookingEditEntryInformationActivity"/>
-        <activity android:name=".booking.bookingedit.ui.activity.BookingEditFrequencyActivity"/>
-        <activity android:name=".booking.bookingedit.ui.activity.BookingEditExtrasActivity"/>
-        <activity android:name=".booking.bookingedit.ui.activity.BookingEditHoursActivity"/>
-        <activity android:name=".booking.bookingedit.ui.activity.BookingEditAddressActivity"/>
-        <activity android:name=".booking.ui.activity.CancelRecurringBookingActivity"/>
+        <activity
+            android:name=".booking.bookingedit.ui.activity.BookingEditPreferencesActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.bookingedit.ui.activity.BookingEditEntryInformationActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.bookingedit.ui.activity.BookingEditFrequencyActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.bookingedit.ui.activity.BookingEditExtrasActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.bookingedit.ui.activity.BookingEditHoursActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.bookingedit.ui.activity.BookingEditAddressActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.CancelRecurringBookingActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
