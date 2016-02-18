@@ -95,7 +95,8 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
     }
 
     /**
-     * Loops through the list of instructions (checklist items) and add the view to the section.
+     * Loops through the list of instructions (checklist items) and add the view to the section only
+     * if that preference is "requested"
      * Assumes there are instructions to be displayed.
      */
     private void populatePreferencesInSection()
@@ -106,17 +107,23 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
         for (int i = 0; i < bookingInstructions.size(); i++)
         {
             final BookingInstruction preference = bookingInstructions.get(i);
-            BookingDetailSectionImageItemView itemView =
-                    (BookingDetailSectionImageItemView) getActivity().getLayoutInflater()
-                            .inflate(R.layout.layout_section_image_item, null);
-            itemView.updateDisplay(
-                    preference.getImageResource(),
-                    View.VISIBLE,
-                    preference.getInstructionType(),
-                    BookingDetailSectionImageItemView.TextStyle.BOLD,
-                    preference.getDescription()
-            );
-            preferencesSection.addView(itemView);
+
+            if (preference.getIsRequested())
+            {
+                BookingDetailSectionImageItemView itemView =
+                        (BookingDetailSectionImageItemView) getActivity().getLayoutInflater()
+                                .inflate(R.layout.layout_section_image_item, null);
+
+                itemView.updateDisplay(
+                        preference.getImageResource(),
+                        View.VISIBLE,
+                        preference.getInstructionType(),
+                        BookingDetailSectionImageItemView.TextStyle.BOLD,
+                        preference.getDescription()
+                );
+
+                preferencesSection.addView(itemView);
+            }
         }
     }
 
