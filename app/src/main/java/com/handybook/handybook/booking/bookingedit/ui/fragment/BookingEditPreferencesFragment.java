@@ -90,7 +90,6 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         {
             mNavBar.setText(getString(R.string.booking_edit_cleaning_routine_title));
             mInstructionListView.reflect(mBooking.getInstructions());
-            mInstructionListView.setOnInstructionsChangedListener(this);
             mInstructionListView.setVisibility(View.VISIBLE);
         }
         else
@@ -117,7 +116,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     {
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_TEXT);
-        option.setDefaultValue(getString(R.string.additional_pro_info_hint));
+        option.setDefaultValue(getString(R.string.preferences_note_to_pro_placeholder));
         BookingOptionsView optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
         ((BookingOptionsTextView) optionsView).setValue(mFinalizeBookingRequestPayload.getNoteToPro());
         mOptionsLayout.addView(optionsView, 0);

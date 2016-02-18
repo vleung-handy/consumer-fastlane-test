@@ -76,7 +76,6 @@
     <string name="doorman">Doorman</string>
     <string name="will_hide_key">I’ll hide the key</string>
     <string name="finish">Finish</string>
-    <string name="additional_pro_info_hint">(optional) Any specific preferences or areas to focus on?</string>
     <string name="where_hide_key">Where will you hide the key?</string>
     <string name="use_your_pwd">Use your password to log in and \nmanage your bookings.</string>
     <string name="how_often">How Often?</string>
@@ -328,7 +327,7 @@
     <string name="sign_up_with_email">Sign Up with Email</string>
     <string name="already_have_account">Already have an account?\u0020</string>
     <string name="sign_up">Sign Up</string>
-    <string name="preferences_note_to_pro_placeholder">i.e. Pets, location of trash bin, preferences, etc.</string>
+    <string name="preferences_note_to_pro_placeholder">i.e. Pets, location of trash bin, preferences, parking, etc.</string>
     <string name="error_setting_password">There was an error setting your password, please try again.</string>
     <string name="error_sending_preferences">Error sending your preferences, please try again.</string>
     <string name="note_to_pro">Note to Pro</string>
