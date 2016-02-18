@@ -80,13 +80,6 @@
                 tools:visibility="visible"
                 />
 
-            <com.handybook.handybook.ui.widget.InstructionsLayout
-                android:id="@+id/instructions_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/options_layout"
-                />
-
         </RelativeLayout>
 
     </ScrollView>
