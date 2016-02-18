@@ -11,10 +11,9 @@ import android.widget.ScrollView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.model.Instructions;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
@@ -28,11 +27,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class BookingEditPreferencesFragment extends BookingFlowFragment
-        implements InstructionListView.OnInstructionsChangedListener
 {
-    private BookingUpdateNoteToProTransaction mBookingUpdateNoteToProTransaction;
-
     private Booking mBooking;
+    private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
 
     @Bind(R.id.options_layout)
     LinearLayout mOptionsLayout;
@@ -57,14 +54,16 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        initTransaction();
+        initRequestPayload();
     }
 
-    private void initTransaction()
+    private void initRequestPayload()
     {
-        mBookingUpdateNoteToProTransaction = new BookingUpdateNoteToProTransaction();
-        mBookingUpdateNoteToProTransaction.setMessageToPro(mBooking.getProNote());
-        mBookingUpdateNoteToProTransaction.setInstructions(mBooking.getInstructions());
+        mFinalizeBookingRequestPayload = new FinalizeBookingRequestPayload();
+        mFinalizeBookingRequestPayload.setNoteToPro(mBooking.getProNote());
+        mFinalizeBookingRequestPayload.setBookingInstructions(
+                mBooking.getInstructions().getBookingInstructions()
+        );
     }
 
     @Override
@@ -79,7 +78,6 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         initOptionsView();
         mInstructionListView.setParentScrollContainer(mScrollView);
         mInstructionListView.reflect(mBooking.getInstructions());
-        mInstructionListView.setOnInstructionsChangedListener(this);
         return view;
     }
 
@@ -89,7 +87,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         option.setType(BookingOption.TYPE_TEXT);
         option.setDefaultValue(getString(R.string.additional_pro_info_hint));
         BookingOptionsView optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
-        ((BookingOptionsTextView) optionsView).setValue(mBookingUpdateNoteToProTransaction.getMessageToPro());
+        ((BookingOptionsTextView) optionsView).setValue(mFinalizeBookingRequestPayload.getNoteToPro());
         mOptionsLayout.addView(optionsView, 0);
     }
 
@@ -109,21 +107,20 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
 
 
     @Subscribe
-    public final void onReceiveUpdateBookingNoteToProSuccess(
-            BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess event
+    public final void onUpdateSuccess(
+            BookingEditEvent.ReceiveEditPreferencesSuccess event
     )
     {
         enableInputs();
         progressDialog.dismiss();
         showToast(R.string.updated_preferences);
-
         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
     }
 
     @Subscribe
-    public final void onReceiveUpdateBookingNoteToProError(
-            BookingEditEvent.ReceiveUpdateBookingNoteToProError event
+    public final void onUpdateError(
+            BookingEditEvent.ReceiveEditPreferencesError event
     )
     {
         enableInputs();
@@ -142,7 +139,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         disableInputs();
         progressDialog.show();
         int bookingId = Integer.parseInt(mBooking.getId());
-        bus.post(new BookingEditEvent.RequestUpdateBookingNoteToPro(bookingId, mBookingUpdateNoteToProTransaction));
+        bus.post(new BookingEditEvent.RequestEditPreferences(bookingId, mFinalizeBookingRequestPayload));
     }
 
     private final BookingOptionsView.OnUpdatedListener textUpdated
@@ -151,7 +148,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         @Override
         public void onUpdate(final BookingOptionsView view)
         {
-            mBookingUpdateNoteToProTransaction.setMessageToPro(view.getCurrentValue());
+            mFinalizeBookingRequestPayload.setNoteToPro(view.getCurrentValue());
         }
 
         @Override
@@ -172,9 +169,4 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     };
 
 
-    @Override
-    public void onInstructionsChanged(final Instructions instructions)
-    {
-        mBookingUpdateNoteToProTransaction.setInstructions(instructions);
-    }
 }

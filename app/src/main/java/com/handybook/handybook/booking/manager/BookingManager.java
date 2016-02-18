@@ -614,7 +614,7 @@ public class BookingManager implements Observer
 
     @Subscribe
     public final void onUpdatePreferences(
-            final BookingEvent.RequestUpdatePreferences event
+            final BookingEditEvent.RequestEditPreferences event
     )
     {
         mDataManager.updatePreferences(
@@ -625,13 +625,13 @@ public class BookingManager implements Observer
                     @Override
                     public void onSuccess(final Void response)
                     {
-                        mBus.post(new BookingEvent.UpdatePreferencesSuccess());
+                        mBus.post(new BookingEditEvent.ReceiveEditPreferencesSuccess());
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
-                        mBus.post(new BookingEvent.UpdatePreferencesSuccess());
+                        mBus.post(new BookingEditEvent.ReceiveEditPreferencesError());
                     }
                 });
     }
