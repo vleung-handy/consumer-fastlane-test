@@ -2,8 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +12,11 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
@@ -38,13 +34,11 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
     static final String EXTRA_INSTRUCTIONS = "com.handy.handy.EXTRA_INSTRUCTIONS";
 
-    private BookingPostInfo mPostInfo;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
     private boolean mIsNewUser;
     private Instructions mInstructions;
+    private final View.OnClickListener mOnNextClickedListener;
 
-    @Bind(R.id.header_text)
-    TextView mHeaderText;
     @Bind(R.id.next_button)
     Button mNextButton;
     @Bind(R.id.preferences_note_to_pro)
@@ -54,6 +48,50 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
 
     @Bind(R.id.nav_text)
     TextView mNavText;
+
+    {
+
+        mOnNextClickedListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View view)
+            {
+                //discourage user from pressing button twice
+                //note that this doesn't prevent super fast clicks
+                showUiBlockers();
+                if (mInstructions != null)
+                {
+                    mFinalizeBookingRequestPayload.setBookingInstructions(
+                            mInstructions.getBookingInstructions()
+                    );
+                }
+                mFinalizeBookingRequestPayload.setNoteToPro(mNoteToProTextView.getInput());
+                if (mIsNewUser) // Prompt the user to create a pasword
+                {
+                    final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
+                    intent.putExtra(
+                            BookingFinalizeActivity.EXTRA_PAGE,
+                            BookingFinalizeActivity.PAGE_PASSWORD_PROMPT
+                    );
+                    intent.putExtra(
+                            BookingFinalizeActivity.EXTRA_NEW_USER,
+                            mIsNewUser
+                    );
+                    startActivity(intent);
+                    removeUiBlockers();
+                }
+                else
+                {
+                    bus.post(
+                            new BookingEvent.RequestFinalizeBooking(
+                                    bookingManager.getCurrentTransaction().getBookingId(),
+                                    mFinalizeBookingRequestPayload
+                            )
+                    );
+                }
+            }
+        };
+    }
 
     public static BookingPreferencesFragment newInstance(
             final boolean isNewUser,
@@ -88,10 +126,6 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_preferences, container, false);
 
         ButterKnife.bind(this, view);
-        mNoteToProTextView.setMinLength(2);
-        mNoteToProTextView.setHint(getString(R.string.preferences_note_to_pro_placeholder));
-        mNoteToProTextView.addTextChangedListener(mNoteToProWatcher);
-        mPostInfo = bookingManager.getCurrentPostInfo();
         if (bookingManager.getCurrentFinalizeBookingPayload() == null)
         {
             bookingManager.setCurrentFinalizeBookingRequestPayload(
@@ -99,7 +133,6 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             );
         }
         mFinalizeBookingRequestPayload = bookingManager.getCurrentFinalizeBookingPayload();
-        mHeaderText.setText(getString(R.string.booking_edit_preferences_subtitle));
         if (!mIsNewUser)
         {
             mNextButton.setText(getString(R.string.finish));
@@ -121,7 +154,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             mInstructionListView.setVisibility(View.GONE);
         }
 
-        mNextButton.setOnClickListener(nextClicked);
+        mNextButton.setOnClickListener(mOnNextClickedListener);
         return view;
     }
 
@@ -144,98 +177,6 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     {
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View view)
-        {
-            //discourage user from pressing button twice
-            //note that this doesn't prevent super fast clicks
-            showUiBlockers();
-            if (mInstructions != null)
-            {
-                mFinalizeBookingRequestPayload.setBookingInstructions(
-                        mInstructions.getBookingInstructions()
-                );
-            }
-            mFinalizeBookingRequestPayload.setNoteToPro(mPostInfo.getExtraMessage());
-            if (mIsNewUser) // Prompt the user to create a pasword
-            {
-                final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
-                intent.putExtra(
-                        BookingFinalizeActivity.EXTRA_PAGE,
-                        BookingFinalizeActivity.PAGE_PASSWORD_PROMPT
-                );
-                intent.putExtra(
-                        BookingFinalizeActivity.EXTRA_NEW_USER,
-                        mIsNewUser
-                );
-                startActivity(intent);
-                removeUiBlockers();
-            }
-            else
-            {
-                bus.post(
-                        new BookingEvent.RequestFinalizeBooking(
-                                bookingManager.getCurrentTransaction().getBookingId(),
-                                mFinalizeBookingRequestPayload
-                        )
-                );
-            }
-        }
-    };
-
-    private final BookingOptionsView.OnUpdatedListener textUpdated
-            = new BookingOptionsView.OnUpdatedListener()
-    {
-        @Override
-        public void onUpdate(final BookingOptionsView view)
-        {
-            mPostInfo.setExtraMessage(view.getCurrentValue());
-        }
-
-        @Override
-        public void onShowChildren(
-                final BookingOptionsView view,
-                final String[] items
-        )
-        {
-        }
-
-        @Override
-        public void onHideChildren(
-                final BookingOptionsView view,
-                final String[] items
-        )
-        {
-        }
-    };
-
-    private final TextWatcher mNoteToProWatcher = new TextWatcher()
-    {
-        @Override
-        public void beforeTextChanged(
-                final CharSequence charSequence, final int start,
-                final int count, final int after
-        )
-        {
-
-        }
-
-        @Override
-        public void onTextChanged(
-                final CharSequence charSequence, final int start,
-                final int before, final int count
-        )
-        {
-        }
-
-        @Override
-        public void afterTextChanged(final Editable editable)
-        {
-            mPostInfo.setGetInText(mNoteToProTextView.getInput());
-        }
-    };
 
     @Subscribe()
     public void onFinalizedSuccess(final BookingEvent.FinalizeBookingSuccess event)

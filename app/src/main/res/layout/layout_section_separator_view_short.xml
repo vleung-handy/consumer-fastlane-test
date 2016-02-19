@@ -24,7 +24,7 @@
     <View
         android:id="@+id/entry_sep"
         android:layout_width="@dimen/short_divider_width"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginBottom="@dimen/default_margin_half"
         android:layout_marginTop="@dimen/default_margin_half"
         android:layout_toRightOf="@id/extra_image"
