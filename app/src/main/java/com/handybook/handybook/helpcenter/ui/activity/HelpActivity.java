@@ -4,40 +4,43 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
-public final class HelpActivity extends MenuDrawerActivity
+public class HelpActivity extends MenuDrawerActivity
 {
-    public static final int HELP_NODE_ID_CANCEL = 296;
-    public static final int HELP_NODE_ID_PRO_LATE = 450;
-    public static final int HELP_NODE_ID_ADJUST_HOURS = 498;
-
-    @Override
-    protected final Fragment createFragment()
+    public enum DeepLink
     {
-        final HelpNode associatedNode = getIntent().getParcelableExtra(BundleKeys.HELP_NODE);
-        final String nodeId = getIntent().getStringExtra(BundleKeys.HELP_NODE_ID);
-        final String bookingId = getIntent().getStringExtra(BundleKeys.BOOKING_ID);
-        final String loginToken = getIntent().getStringExtra(BundleKeys.LOGIN_TOKEN);
-        final String path = getIntent().getStringExtra(BundleKeys.PATH);
-        final boolean nodeIsBooking = getIntent().getBooleanExtra(BundleKeys.HELP_NODE_IS_BOOKING, false);
-        return HelpFragment.newInstance(bookingId, loginToken, path, associatedNode, nodeId, nodeIsBooking);
+        CANCEL(296, 215562927), PRO_LATE(450, 214917058), ADJUST_HOURS(498, 215563597);
+
+        private final int mNodeId;
+        private final int mArticleId;
+
+        DeepLink(final int nodeId, final int articleId)
+        {
+            mNodeId = nodeId;
+            mArticleId = articleId;
+        }
+
+        public Intent getIntent(final Context context)
+        {
+            final Intent intent = new Intent(context, HelpActivity.class);
+            intent.putExtra(BundleKeys.HELP_ARTICLE_ID, Integer.toString(mArticleId));
+            intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(mNodeId));
+            return intent;
+        }
     }
 
-    public static Intent getIntentToOpenNodeId(final Context context, final int helpNodeId)
+    @Override
+    protected Fragment createFragment()
     {
-        final Intent intent = new Intent(context, HelpActivity.class);
-        intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(helpNodeId));
-        return intent;
+        return HelpFragment.newInstance(getIntent().getExtras());
     }
 
     @Override
-    protected final String getNavItemTitle()
+    protected String getNavItemTitle()
     {
-        return getString(R.string.help);
+        return null;
     }
 }

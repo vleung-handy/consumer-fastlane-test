@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -41,6 +42,17 @@ public class HandyWebView extends WebView //TODO: refactor class name
     {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    @Override
+    public boolean onKeyDown(final int keyCode, final KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK && canGoBack())
+        {
+            goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void clearHtml()

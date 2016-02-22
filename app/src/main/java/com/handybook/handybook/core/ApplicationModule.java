@@ -70,6 +70,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
+import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
 import com.handybook.handybook.booking.ui.fragment.EmailCancellationDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
@@ -96,12 +97,17 @@ import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactAct
 import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpWebViewActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpNativeFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.module.notifications.feed.ui.fragment.NotificationFeedFragment;
@@ -199,6 +205,10 @@ import retrofit.converter.GsonConverter;
         OnboardPageFragment.class,
         HelpActivity.class,
         HelpFragment.class,
+        HelpWebViewActivity.class,
+        HelpWebViewFragment.class,
+        HelpNativeActivity.class,
+        HelpNativeFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class,
@@ -234,6 +244,7 @@ import retrofit.converter.GsonConverter;
         TipDialogFragment.class,
         NotificationFeedFragment.class,
         CancelRecurringBookingActivity.class,
+        CancelRecurringBookingSelectionFragment.class,
         CancelRecurringBookingFragment.class,
         EmailCancellationDialogFragment.class,
         UpdatePaymentActivity.class,
@@ -524,6 +535,16 @@ public final class ApplicationModule
     {
         return new ReferralsManager(bus, dataManager);
     }
+
+    @Provides
+    @Singleton
+    final ConfigurationManager provideConfigurationManager(final Bus bus,
+                                                           final PrefsManager prefsManager,
+                                                           final DataManager dataManager)
+    {
+        return new ConfigurationManager(bus, prefsManager, dataManager);
+    }
+
 
     private String getDeviceId()
     {

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.simplealertdialog.SimpleAlertDialog;
 
@@ -33,6 +34,13 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        if (requiresUser() && !mUserManager.isUserLoggedIn())
+        {
+            navigateToActivity(ServiceCategoriesActivity.class);
+            finish();
+            return;
+        }
 
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY, Position.LEFT,
                 MenuDrawer.MENU_DRAG_WINDOW);
@@ -106,6 +114,11 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
                 });
     }
 
+    protected boolean requiresUser()
+    {
+        return false;
+    }
+
     @Override
     protected final void onStart()
     {
@@ -151,9 +164,15 @@ public abstract class MenuDrawerActivity extends BaseActivity implements SimpleA
 
     public final void navigateToActivity(final Class<? extends Activity> clazz)
     {
+        navigateToActivity(clazz, new Bundle());
+    }
+
+    public final void navigateToActivity(final Class<? extends Activity> clazz, final Bundle extras)
+    {
         final Intent intent = new Intent(this, clazz);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
+        intent.putExtras(extras);
         startActivity(intent);
         MenuDrawerActivity.this.overridePendingTransition(0, 0);
         MenuDrawerActivity.this.finish();

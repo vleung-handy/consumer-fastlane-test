@@ -5,6 +5,8 @@ import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;
@@ -25,14 +27,16 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWrapper
+public class CancelRecurringBookingSelectionFragmentTest extends RobolectricGradleTestWrapper
 {
-    private CancelRecurringBookingFragment mFragment;
+    private CancelRecurringBookingSelectionFragment mFragment;
 
     @Mock
     private RecurringBooking mRecurringBooking1;
     @Mock
     private RecurringBooking mRecurringBooking2;
+    @Mock
+    private Configuration mConfiguration;
     @Captor
     private ArgumentCaptor<Object> mCaptor;
 
@@ -41,20 +45,27 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
     {
         initMocks(this);
 
-        mFragment = CancelRecurringBookingFragment.newInstance();
+        mFragment = CancelRecurringBookingSelectionFragment.newInstance();
 
         Date mockDate = new Date();
-        when(mRecurringBooking1.getRecurringId()).thenReturn(1);
-        when(mRecurringBooking1.getNextRecurrenceDate()).thenReturn(mockDate);
-        when(mRecurringBooking2.getRecurringId()).thenReturn(2);
-        when(mRecurringBooking2.getNextRecurrenceDate()).thenReturn(mockDate);
+        when(mRecurringBooking1.getId()).thenReturn(1);
+        when(mRecurringBooking1.getNextBookingDate()).thenReturn(mockDate);
+        when(mRecurringBooking2.getId()).thenReturn(2);
+        when(mRecurringBooking2.getNextBookingDate()).thenReturn(mockDate);
+        when(mConfiguration.shouldUseCancelRecurringWebview()).thenReturn(false);
         SupportFragmentTestUtil.startFragment(mFragment);
     }
 
     @Test
     public void shouldRequestRecurringBookingsOnCreateView() throws Exception
     {
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestRecurringBookingsForUser.class));
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestRecurringBookings.class));
+    }
+
+    @Test
+    public void shouldRequestConfigurationOnCreateView() throws Exception
+    {
+        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(ConfigurationEvent.RequestConfiguration.class));
     }
 
     @Test
@@ -65,6 +76,7 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
         recurringBookingList.add(mRecurringBooking2);
 
         mFragment.onReceiveRecurringBookingsSuccess(new BookingEvent.ReceiveRecurringBookingsSuccess(recurringBookingList));
+        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
         mFragment.onNextButtonClicked();
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestSendCancelRecurringBookingEmail.class));
     }
@@ -75,6 +87,7 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
         List<RecurringBooking> recurringBookingList = new ArrayList<>();
         recurringBookingList.add(mRecurringBooking1);
         mFragment.onReceiveRecurringBookingsSuccess(new BookingEvent.ReceiveRecurringBookingsSuccess(recurringBookingList));
+        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestSendCancelRecurringBookingEmail.class));
     }
 
@@ -85,6 +98,7 @@ public class BookingCancelRecurringFragmentTest extends RobolectricGradleTestWra
                 .default_error_string);
         mFragment.onReceiveSendCancelRecurringBookingEmailError(new BookingEvent.ReceiveSendCancelRecurringBookingEmailError(new DataManager.DataManagerError(DataManager
                 .Type.SERVER)));
+        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }
 }
