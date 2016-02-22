@@ -8,7 +8,6 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 
@@ -206,15 +205,7 @@ public abstract class BookingEvent
     }
 
 
-    public static class RequestRecurringBookingsForUser extends HandyEvent.RequestEvent
-    {
-        public final User user;
-
-        public RequestRecurringBookingsForUser(final User user)
-        {
-            this.user = user;
-        }
-    }
+    public static class RequestRecurringBookings extends HandyEvent.RequestEvent {}
 
 
     public static class ReceiveRecurringBookingsSuccess extends HandyEvent.ReceiveSuccessEvent

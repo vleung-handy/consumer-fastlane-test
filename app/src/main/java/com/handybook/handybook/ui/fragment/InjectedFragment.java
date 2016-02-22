@@ -1,7 +1,9 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
@@ -188,5 +191,45 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     {
         enableInputs();
         progressDialog.dismiss();
+    }
+
+    protected void showErrorDialog(final String errorMessage, final DialogCallback callback)
+    {
+        removeUiBlockers();
+        String displayMessage = errorMessage;
+        if (ValidationUtils.isNullOrEmpty(displayMessage))
+        {
+            displayMessage = getString(R.string.an_error_has_occurred);
+        }
+        new AlertDialog.Builder(getActivity())
+                .setTitle(displayMessage)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                        callback.onCancel();
+                    }
+                })
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                        callback.onRetry();
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+    protected interface DialogCallback
+    {
+        void onRetry();
+
+        void onCancel();
     }
 }

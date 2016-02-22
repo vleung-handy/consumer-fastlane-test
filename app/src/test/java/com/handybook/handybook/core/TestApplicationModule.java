@@ -36,7 +36,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragmentTest;
-import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
+import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
@@ -53,7 +53,6 @@ import com.handybook.handybook.module.referral.ui.RedemptionActivity;
 import com.handybook.handybook.module.referral.ui.RedemptionEmailSignUpFragment;
 import com.handybook.handybook.module.referral.ui.RedemptionFragment;
 import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragment;
-import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragmentTest;
 import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.module.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.ui.activity.BaseActivity;
@@ -107,7 +106,7 @@ import static org.mockito.Mockito.when;
         BookingPaymentActivity.class,
         BookingPaymentFragment.class,
         BookingPaymentFragmentTest.class,
-        CancelRecurringBookingFragment.class,
+        CancelRecurringBookingSelectionFragment.class,
         BookingEditAddressFragment.class,
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,

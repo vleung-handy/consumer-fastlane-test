@@ -14,6 +14,7 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.PrefsKey;
@@ -565,18 +566,16 @@ public class BookingManager implements Observer
      */
     @Subscribe
     public final void onRequestRecurringBookings(
-            final BookingEvent.RequestRecurringBookingsForUser event
+            final BookingEvent.RequestRecurringBookings event
     )
     {
-
-        mDataManager.getBookings(event.user, new DataManager.Callback<UserBookingsWrapper>()
+        mDataManager.getRecurringBookings(new DataManager.Callback<RecurringBookingsResponse>()
         {
             @Override
-            public void onSuccess(final UserBookingsWrapper result)
+            public void onSuccess(final RecurringBookingsResponse response)
             {
-                //TODO: need to sort the recurring bookings?
                 mBus.post(new BookingEvent.ReceiveRecurringBookingsSuccess(
-                                result.getRecurringBookings())
+                                response.getRecurringBookings())
                 );
             }
 

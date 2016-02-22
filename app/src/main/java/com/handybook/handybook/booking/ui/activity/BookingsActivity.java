@@ -9,6 +9,11 @@ import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public final class BookingsActivity extends MenuDrawerActivity
 {
+    @Override
+    protected boolean requiresUser()
+    {
+        return true;
+    }
 
     @Override
     protected final Fragment createFragment() {

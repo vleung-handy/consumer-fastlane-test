@@ -171,44 +171,4 @@ public class RedemptionFragment extends InjectedFragment
         startActivity(intent);
         getActivity().finish();
     }
-
-    private void showErrorDialog(final String errorMessage, final DialogCallback callback)
-    {
-        removeUiBlockers();
-        String displayMessage = errorMessage;
-        if (ValidationUtils.isNullOrEmpty(displayMessage))
-        {
-            displayMessage = getString(R.string.an_error_has_occurred);
-        }
-        new AlertDialog.Builder(getActivity())
-                .setTitle(displayMessage)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which)
-                    {
-                        dialog.dismiss();
-                        callback.onCancel();
-                    }
-                })
-                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which)
-                    {
-                        dialog.dismiss();
-                        callback.onRetry();
-                    }
-                })
-                .setCancelable(false)
-                .create()
-                .show();
-    }
-
-    private interface DialogCallback
-    {
-        void onRetry();
-
-        void onCancel();
-    }
 }

@@ -33,6 +33,7 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
@@ -315,6 +316,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     {
         super.onStart();
         allowCallbacks = true;
+        mBus.post(new ConfigurationEvent.RefreshConfiguration());
     }
 
     public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener)

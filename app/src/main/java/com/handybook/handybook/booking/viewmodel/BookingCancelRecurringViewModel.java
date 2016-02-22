@@ -7,7 +7,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.util.DateTimeUtils;
-import com.handybook.handybook.util.StringUtils;
 
 import java.util.List;
 
@@ -41,13 +40,10 @@ public class BookingCancelRecurringViewModel
         for (int i = 0; i < optionStrings.length; i++)
         {
             RecurringBooking recurringBooking = mRecurringBookingList.get(i);
-
-            //server sends us "every 2 weeks" but we want to display "Every 2 weeks"
-            optionStrings[i] = StringUtils.capitalizeFirstCharacter(
-                    recurringBooking.getRecurringStringShort());
+            optionStrings[i] = recurringBooking.getFrequency();
             optionSubtitleStrings[i] = context.getString(R.string
                             .cancel_recurring_booking_option_entry_subtitle_formatted,
-                    DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(recurringBooking.getNextRecurrenceDate()));
+                    DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(recurringBooking.getNextBookingDate()));
         }
         option.setOptions(optionStrings);
         option.setOptionsSubText(optionSubtitleStrings);
