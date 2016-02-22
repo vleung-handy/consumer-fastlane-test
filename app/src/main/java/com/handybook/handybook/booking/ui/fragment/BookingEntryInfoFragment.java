@@ -200,7 +200,6 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             //discourage user from pressing button twice
             //note that this doesn't prevent super fast clicks
             disableInputs();
-            progressDialog.show();
             bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
                     Integer.parseInt(mPostInfo.getGetInId()),
                     mPostInfo.getGetInText()
