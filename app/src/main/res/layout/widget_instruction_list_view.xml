@@ -19,7 +19,6 @@
         android:gravity="center"
         android:textAppearance="@style/TextView.Medium"
         android:visibility="gone"
-        android:text="@string/drag_and_drop_instruction"
         tools:text="Typical Cleaning Service"
         tools:visibility="visible"
         />

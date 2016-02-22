@@ -140,10 +140,17 @@ public class InstructionListView extends FrameLayout
         }
 
         mInstructions = instructions;
-
-        if (mInstructions.getBookingInstructions() != null)
+        if (mInstructions.getTitle() != null)
         {
             mTitle.setVisibility(VISIBLE);
+            mTitle.setText(instructions.getTitle());
+        }
+        else
+        {
+            mTitle.setVisibility(GONE);
+        }
+        if (mInstructions.getBookingInstructions() != null)
+        {
             mDnDLinearLayout.setVisibility(VISIBLE);
             for (BookingInstruction bookingInstruction : instructions.getBookingInstructions())
             {
@@ -156,7 +163,6 @@ public class InstructionListView extends FrameLayout
         }
         else
         {
-            mTitle.setVisibility(GONE);
             mDnDLinearLayout.setVisibility(GONE);
         }
     }
