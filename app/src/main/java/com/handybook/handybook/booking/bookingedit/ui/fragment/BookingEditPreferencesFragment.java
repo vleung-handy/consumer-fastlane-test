@@ -2,26 +2,25 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
-import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
-import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.widget.BackButtonNavBar;
+import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -33,14 +32,14 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     private Booking mBooking;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
 
-    @Bind(R.id.options_layout)
-    LinearLayout mOptionsLayout;
     @Bind(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.instructions_layout)
+    @Bind(R.id.edit_preferences_instructions_layout)
     InstructionListView mInstructionListView;
     @Bind(R.id.edit_preferences_scrollview)
     ScrollView mScrollView;
+    @Bind(R.id.edit_preferences_note_to_pro)
+    BasicInputTextView mNoteToProTextView;
 
     @Bind(R.id.nav_bar)
     BackButtonNavBar mNavBar;
@@ -59,12 +58,6 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        initRequestPayload();
-    }
-
-    private void initRequestPayload()
-    {
-        mFinalizeBookingRequestPayload = new FinalizeBookingRequestPayload();
         mFinalizeBookingRequestPayload.setNoteToPro(mBooking.getProNote());
         mFinalizeBookingRequestPayload.setBookingInstructions(
                 mBooking.getInstructions().getBookingInstructions()
@@ -80,9 +73,14 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_edit_preferences, container, false);
         ButterKnife.bind(this, view);
-        initOptionsView();
-        mInstructionListView.setParentScrollContainer(mScrollView);
+        return view;
+    }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mInstructionListView.setParentScrollContainer(mScrollView);
         //if there are instructions (even if they are not requested)
         if (mBooking != null && mBooking.getInstructions() != null
                 && mBooking.getInstructions().getBookingInstructions() != null
@@ -96,7 +94,6 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         {
             mInstructionListView.setVisibility(View.GONE);
         }
-
         mInstructionListView.reflect(mBooking.getInstructions());
         mInstructionListView.setOnInstructionsChangedListener(
                 new InstructionListView.OnInstructionsChangedListener()
@@ -109,17 +106,35 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                         );
                     }
                 });
-        return view;
-    }
+        mNoteToProTextView.setText(mFinalizeBookingRequestPayload.getNoteToPro());
+        mNoteToProTextView.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(
+                    final CharSequence s,
+                    final int start,
+                    final int count,
+                    final int after
+            )
+            {
+            }
 
-    private void initOptionsView()
-    {
-        final BookingOption option = new BookingOption();
-        option.setType(BookingOption.TYPE_TEXT);
-        option.setDefaultValue(getString(R.string.preferences_note_to_pro_placeholder));
-        BookingOptionsView optionsView = new BookingOptionsTextView(getActivity(), option, textUpdated);
-        ((BookingOptionsTextView) optionsView).setValue(mFinalizeBookingRequestPayload.getNoteToPro());
-        mOptionsLayout.addView(optionsView, 0);
+            @Override
+            public void onTextChanged(
+                    final CharSequence s,
+                    final int start,
+                    final int before,
+                    final int count
+            )
+            {
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s)
+            {
+                mFinalizeBookingRequestPayload.setNoteToPro(s.toString());
+            }
+        });
     }
 
     @Override
@@ -135,7 +150,6 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         super.enableInputs();
         mNextButton.setClickable(true);
     }
-
 
     @Subscribe
     public final void onUpdateSuccess(
@@ -162,42 +176,10 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     @OnClick(R.id.next_button)
     public void onNextButtonClick()
     {
-        requestUpdateBookingNoteToPro();
-    }
-
-    private void requestUpdateBookingNoteToPro()
-    {
         disableInputs();
         progressDialog.show();
         int bookingId = Integer.parseInt(mBooking.getId());
         bus.post(new BookingEditEvent.RequestEditPreferences(bookingId, mFinalizeBookingRequestPayload));
     }
-
-    private final BookingOptionsView.OnUpdatedListener textUpdated
-            = new BookingOptionsView.OnUpdatedListener()
-    {
-        @Override
-        public void onUpdate(final BookingOptionsView view)
-        {
-            mFinalizeBookingRequestPayload.setNoteToPro(view.getCurrentValue());
-        }
-
-        @Override
-        public void onShowChildren(
-                final BookingOptionsView view,
-                final String[] items
-        )
-        {
-        }
-
-        @Override
-        public void onHideChildren(
-                final BookingOptionsView view,
-                final String[] items
-        )
-        {
-        }
-    };
-
 
 }
