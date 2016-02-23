@@ -126,6 +126,13 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_preferences, container, false);
 
         ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
         if (bookingManager.getCurrentFinalizeBookingPayload() == null)
         {
             bookingManager.setCurrentFinalizeBookingRequestPayload(
@@ -140,22 +147,30 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_TEXT);
         option.setDefaultValue(getString(R.string.preferences_note_to_pro_placeholder));
-
         if (mInstructions != null && mInstructions.getBookingInstructions() != null &&
                 !mInstructions.getBookingInstructions().isEmpty())
         {
 
             mNavText.setText(getString(R.string.cleaning_routine));
             mInstructionListView.reflect(mInstructions);
+            mInstructionListView.setOnInstructionsChangedListener(
+                    new InstructionListView.OnInstructionsChangedListener()
+                    {
+                        @Override
+                        public void onInstructionsChanged(final Instructions instructions)
+                        {
+                            mFinalizeBookingRequestPayload.setBookingInstructions(
+                                    instructions.getBookingInstructions()
+                            );
+                        }
+                    });
             mInstructionListView.setVisibility(View.VISIBLE);
         }
         else
         {
             mInstructionListView.setVisibility(View.GONE);
         }
-
         mNextButton.setOnClickListener(mOnNextClickedListener);
-        return view;
     }
 
     @Override
