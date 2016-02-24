@@ -102,6 +102,13 @@ public class BookingListFragment extends InjectedFragment
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        loadBookings();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
