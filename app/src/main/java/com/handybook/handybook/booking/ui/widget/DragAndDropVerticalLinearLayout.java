@@ -6,6 +6,8 @@ import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -35,10 +37,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     private boolean mIsDragging;
     private View mViewBeingDragged;
     private boolean mIsDraggingEnabled;
-    private DragShadowBuilder mShadowBuilder;
     private boolean mIsScrolling;
     private ObjectAnimator mScrollAnimator;
-    private LayoutTransition mLayoutTransition;
     private OnChildMovedListener mOnChildMovedListener;
     private OnChildrenSwappedListener mOnChildrenSwappedListener;
 
@@ -111,15 +111,16 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     private void initLayoutTransition()
     {
-        mLayoutTransition = getLayoutTransition();
-        if(mLayoutTransition == null){
-            mLayoutTransition = new LayoutTransition();
+        LayoutTransition layoutTransition = getLayoutTransition();
+        if (layoutTransition == null)
+        {
+            layoutTransition = new LayoutTransition();
         }
-        mLayoutTransition.setDuration(LAYOUT_TRANSITION_DURATION);
-        mLayoutTransition.setStartDelay(LayoutTransition.APPEARING, 1);
-        mLayoutTransition.setStartDelay(LayoutTransition.DISAPPEARING, 1);
-        mLayoutTransition.setStartDelay(LayoutTransition.CHANGE_APPEARING, 1);
-        mLayoutTransition.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 1);
+        layoutTransition.setDuration(LAYOUT_TRANSITION_DURATION);
+        layoutTransition.setStartDelay(LayoutTransition.APPEARING, 1);
+        layoutTransition.setStartDelay(LayoutTransition.DISAPPEARING, 1);
+        layoutTransition.setStartDelay(LayoutTransition.CHANGE_APPEARING, 1);
+        layoutTransition.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 1);
     }
 
     public void enableDragAndDrop()
@@ -169,9 +170,24 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     {
         mIsDragging = true;
         mViewBeingDragged = view;
-        mShadowBuilder = new View.DragShadowBuilder(view);
+        DragShadowBuilder shadowBuilder = new DragShadowBuilder(view)
+        {
+            @Override
+            public void onDrawShadow(final Canvas canvas)
+            {
+                canvas.rotate(2);
+                view.draw(canvas);
+            }
+
+            @Override
+            public void onProvideShadowMetrics(final Point shadowSize, final Point shadowTouchPoint)
+            {
+                shadowSize.set(view.getWidth() + 5, view.getHeight() + 25);
+                shadowTouchPoint.set(shadowSize.x / 2, shadowSize.y / 2);
+            }
+        };
         ClipData data = ClipData.newPlainText("", "");
-        view.startDrag(data, mShadowBuilder, view, 0);
+        view.startDrag(data, shadowBuilder, view, 0);
         view.setVisibility(View.INVISIBLE);
     }
 
