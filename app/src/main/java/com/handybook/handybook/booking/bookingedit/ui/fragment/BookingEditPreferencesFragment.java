@@ -30,7 +30,8 @@ import butterknife.OnClick;
 public final class BookingEditPreferencesFragment extends BookingFlowFragment
 {
     private Booking mBooking;
-    private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
+    private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload
+            = new FinalizeBookingRequestPayload();
 
     @Bind(R.id.next_button)
     Button mNextButton;
@@ -58,10 +59,13 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        mFinalizeBookingRequestPayload.setNoteToPro(mBooking.getProNote());
-        mFinalizeBookingRequestPayload.setBookingInstructions(
-                mBooking.getInstructions().getBookingInstructions()
-        );
+        if (mBooking != null)
+        {
+            mFinalizeBookingRequestPayload.setNoteToPro(mBooking.getProNote());
+            mFinalizeBookingRequestPayload.setBookingInstructions(
+                    mBooking.getInstructions().getBookingInstructions()
+            );
+        }
     }
 
     @Override
