@@ -59,13 +59,19 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        if (mBooking != null)
+        if (mBooking == null)
         {
-            mFinalizeBookingRequestPayload.setNoteToPro(mBooking.getProNote());
-            mFinalizeBookingRequestPayload.setBookingInstructions(
-                    mBooking.getInstructions().getBookingInstructions()
-            );
+            return;
         }
+        mFinalizeBookingRequestPayload.setNoteToPro(mBooking.getProNote());
+        if (mBooking.getInstructions() == null)
+        {
+            return;
+        }
+        mFinalizeBookingRequestPayload.setBookingInstructions(
+                mBooking.getInstructions().getBookingInstructions()
+        );
+
     }
 
     @Override
@@ -92,24 +98,23 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         {
             mNavBar.setText(getString(R.string.booking_edit_cleaning_routine_title));
             mInstructionListView.reflect(mBooking.getInstructions());
+            mInstructionListView.setOnInstructionsChangedListener(
+                    new InstructionListView.OnInstructionsChangedListener()
+                    {
+                        @Override
+                        public void onInstructionsChanged(final Instructions instructions)
+                        {
+                            mFinalizeBookingRequestPayload.setBookingInstructions(
+                                    instructions.getBookingInstructions()
+                            );
+                        }
+                    });
             mInstructionListView.setVisibility(View.VISIBLE);
         }
         else
         {
             mInstructionListView.setVisibility(View.GONE);
         }
-        mInstructionListView.reflect(mBooking.getInstructions());
-        mInstructionListView.setOnInstructionsChangedListener(
-                new InstructionListView.OnInstructionsChangedListener()
-                {
-                    @Override
-                    public void onInstructionsChanged(final Instructions instructions)
-                    {
-                        mFinalizeBookingRequestPayload.setBookingInstructions(
-                                instructions.getBookingInstructions()
-                        );
-                    }
-                });
         mNoteToProTextView.setText(mFinalizeBookingRequestPayload.getNoteToPro());
         mNoteToProTextView.addTextChangedListener(new TextWatcher()
         {
