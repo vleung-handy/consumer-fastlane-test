@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    This separator is designed to be used specifically within a booking detail section, so that the
+     divider can start where the image/icon ends.
+-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
+
+    <ImageView
+        android:id="@+id/extra_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_instruction_general"
+        android:visibility="invisible"
+        />
+
+
+    <View
+        android:id="@+id/entry_sep"
+        android:layout_width="@dimen/short_divider_width"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_toRightOf="@id/extra_image"
+        android:layout_toEndOf="@id/extra_image"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_centerVertical="true"
+        android:background="@color/cell_sep"
+        />
+
+</RelativeLayout>
+

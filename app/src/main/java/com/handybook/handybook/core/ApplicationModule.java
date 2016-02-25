@@ -28,10 +28,10 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
-import com.handybook.handybook.booking.ui.activity.BookingConfirmationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
+import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
@@ -46,7 +46,6 @@ import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingCancelOptionsFragment;
-import com.handybook.handybook.booking.ui.fragment.BookingConfirmationFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
@@ -58,12 +57,15 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
+import com.handybook.handybook.booking.ui.fragment.BookingEntryInfoFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingListFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingPasswordPromptFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
@@ -169,7 +171,6 @@ import retrofit.converter.GsonConverter;
         BookingPaymentFragment.class,
         PeakPricingFragment.class,
         PeakPricingTableFragment.class,
-        BookingConfirmationFragment.class,
         PromosFragment.class,
         BookingExtrasFragment.class,
         BookingRecurrenceFragment.class,
@@ -187,7 +188,10 @@ import retrofit.converter.GsonConverter;
         BookingExtrasActivity.class,
         BookingDetailActivity.class,
         BookingDateActivity.class,
-        BookingConfirmationActivity.class,
+        BookingFinalizeActivity.class,
+        BookingPreferencesFragment.class,
+        BookingPasswordPromptFragment.class,
+        BookingEntryInfoFragment.class,
         BookingAddressActivity.class,
         PromosActivity.class,
         BaseApplication.class,

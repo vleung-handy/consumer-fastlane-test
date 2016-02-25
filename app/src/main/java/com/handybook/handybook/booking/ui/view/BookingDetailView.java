@@ -8,12 +8,13 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.core.User;
+import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -54,16 +55,21 @@ public final class BookingDetailView extends InjectedRelativeLayout
         super(context, attrs, defStyle);
     }
 
-    public void updateDisplay(final Booking booking, final User user)
+    public void updateDisplay(final Booking booking, List<Service> serviceList)
     {
         navText.setText(booking.getServiceName());
         bookingText.setText(getContext().getString(R.string.booking_number) + booking.getId());
-
         updateDateTimeInfoText(booking);
-
         updateFrequencySectionDisplay(booking);
+        updateServiceIcon(booking, serviceList);
+    }
 
-        serviceIcon.updateServiceIconByBooking(booking);
+    public void updateServiceIcon(final Booking booking, List<Service> serviceList)
+    {
+        if (booking != null && serviceList != null && !serviceList.isEmpty())
+        {
+            serviceIcon.updateServiceIconByBooking(booking, serviceList);
+        }
     }
 
     //TODO: don't like having an exception the fragment should talk to the view in as few ways as

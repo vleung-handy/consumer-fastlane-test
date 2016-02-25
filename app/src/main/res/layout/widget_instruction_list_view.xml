@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_margin_half"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:gravity="center"
+        android:textAppearance="@style/TextView.Medium"
+        android:visibility="gone"
+        tools:text="Typical Cleaning Service"
+        tools:visibility="visible"
+        />
+
+    <com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout
+        android:id="@+id/preferences_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:dragAndDropEnabled="true"
+        tools:visibility="visible"
+        >
+
+        <com.handybook.handybook.booking.ui.widget.BookingInstructionView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:prefsState="requested"
+            app:prefsText="be excellent to each other"
+            app:prefsTitle="Le Test One"
+            />
+
+        <com.handybook.handybook.booking.ui.widget.BookingInstructionView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:prefsState="declined"
+            app:prefsText="Do the things French people do."
+            app:prefsTitle="Le Test Due"
+            />
+    </com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout>
+
+</LinearLayout>
