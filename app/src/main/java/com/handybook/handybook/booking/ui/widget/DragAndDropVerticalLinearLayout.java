@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -25,6 +26,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     public static final int LAYOUT_TRANSITION_DURATION = 125;
     public static final int ABOVE = -1;
     public static final int BELOW = 1;
+    public static final int VIBRATE_TIME_MILLISECONDS = 15;
     public static String CLASS_TAG = DragAndDropVerticalLinearLayout.class.getSimpleName();
     /**
      * Linked scrollview to be scrolled while dragging items
@@ -163,7 +165,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         mIsDraggingEnabled = false;
         getRootView().setOnDragListener(null);
         setAllChildrenDraggable(false);
-
     }
 
     private void initiateDragging(final View view)
@@ -189,6 +190,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         ClipData data = ClipData.newPlainText("", "");
         view.startDrag(data, shadowBuilder, view, 0);
         view.setVisibility(View.INVISIBLE);
+        vibrate();
     }
 
     private void finishDragging()
@@ -428,6 +430,15 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
         }
         notifyChildrenSwappedListener(viewA, positionA, viewB, positionB);
+        vibrate();
+    }
+
+    private void vibrate()
+    {
+        Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        if(vibrator.hasVibrator()){
+            vibrator.vibrate(VIBRATE_TIME_MILLISECONDS);
+        }
     }
 
     private void notifyChildrenSwappedListener(
