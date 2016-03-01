@@ -32,6 +32,7 @@
                 android:layout_width="@dimen/default_icon_size"
                 android:onClick="onExitButtonClick"
                 android:padding="@dimen/icon_padding"
+                android:tint="@color/white"
                 android:src="@drawable/ic_x_dark"
                 />
         </RelativeLayout>

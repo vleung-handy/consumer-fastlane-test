@@ -16,6 +16,18 @@
 #   public *;
 #}
 
+#card.io
+-keep class io.card.**
+-keepclassmembers class io.card.** {
+    *;
+}
+
+#DeepLinkDispatch library
+-keep class com.airbnb.deeplinkdispatch.** { *; }
+-keepclasseswithmembers class * {
+     @com.airbnb.deeplinkdispatch.DeepLink <methods>;
+}
+
 -keepattributes EnclosingMethod, InnerClasses
 
 -dontshrink  #currently having compile issues
@@ -91,3 +103,11 @@
    public *;
 }
 -keep public class * extends com.urbanairship.Autopilot
+
+#Yozio
+-keep public class com.handybook.handybook.yozio.YozioMetaDataCallback
+
+#Android 23 workaround
+-dontwarn com.viewpagerindicator.LinePageIndicator
+-dontwarn com.mixpanel.android.mpmetrics.GCMReceiver
+-dontwarn net.simonvt.menudrawer.Scroller

@@ -3,15 +3,17 @@ package com.handybook.handybook.data;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.core.BookingPostInfo;
-import com.handybook.handybook.core.BookingRequest;
-import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.model.request.BookingEditAddressRequest;
-import com.handybook.handybook.model.request.BookingEditExtrasRequest;
-import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
-import com.handybook.handybook.model.request.BookingEditHoursRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
+import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 
 import java.util.Date;
@@ -28,6 +30,12 @@ import retrofit.mime.TypedInput;
 
 public interface HandyRetrofitService
 {
+    @GET("/promos")
+    void getAvailableSplashPromo(@Query("user_id") String userId,
+                                 @Query("displayed_promos[]") String[] displayedPromos,
+                                 @Query("accepted_promos[]") String[] acceptedPromos,
+                                 HandyRetrofitCallback cb);
+
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(@Path("id") int bookingId,
                             @Body BookingEditAddressRequest bookingEditAddressRequest,
@@ -143,6 +151,18 @@ public interface HandyRetrofitService
                                        @Body BookingUpdateEntryInformationTransaction entryInformationTransaction,
                                        HandyRetrofitCallback cb);
 
+    @POST("/bookings/{booking}/finalize_booking")
+    void finalizeBooking(@Path("booking") int bookingId,
+                                       @Body FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+                                       HandyRetrofitCallback cb);
+
+    @POST("/bookings/{booking}/preferences")
+    void updatePreferences(
+            @Path("booking") int bookingId,
+            @Body FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+            HandyRetrofitCallback cb
+    );
+
     @POST("/bookings/{booking}/edit_frequency")
     void updateBookingFrequency(@Path("booking") int bookingId,
                                 @Body BookingEditFrequencyRequest bookingEditFrequencyRequest,
@@ -195,18 +215,19 @@ public interface HandyRetrofitService
     void addLaundry(@Path("booking") int bookingId, @Field("auth_token") String authToken,
                     HandyRetrofitCallback cb);
 
+    @GET("/recurring_bookings")
+    void getRecurringBookings(HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(@Field("email") String email, @Field("password") String password,
                            HandyRetrofitCallback cb);
 
-    @FormUrlEncoded
     @POST("/user_sessions/fb_create")
-    void createUserSessionFB(@Field("uid") String fbid,
-                             @Field("facebook_access_token") String accessToken,
-                             @Field("email") String email, @Field("first_name") String firstName,
-                             @Field("last_name") String lastName,
-                             HandyRetrofitCallback cb);
+    void createUserSessionFB(@Body CreateUserRequest createUserRequest, HandyRetrofitCallback cb);
+
+    @POST("/users")
+    void createUser(@Body CreateUserRequest createUserRequest, HandyRetrofitCallback cb);
 
     @GET("/users/{user}")
     void getUserInfo(@Path("user") String userId, @Query("auth_token") String authToken,
@@ -222,6 +243,19 @@ public interface HandyRetrofitService
     @PUT("/users/{user_id}/update_credit_card")
     void updatePaymentInfo(@Path("user_id") String userId, @Query("stripe_token") String token,
                            HandyRetrofitCallback cb);
+
+    @GET("/configuration")
+    void requestConfiguration(HandyRetrofitCallback cb);
+
+    // Notification Feed
+    @GET("/users/{user_id}/notifications")
+    void getNotificationResultSet(
+            @Path("user_id") long userId,
+            @Query("count") Long count,
+            @Query("since_id") Long sinceId,
+            @Query("until_id") Long untilId,
+            HandyRetrofitCallback cb
+            );
 
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
@@ -255,6 +289,14 @@ public interface HandyRetrofitService
     @POST("/self_service/create_case")
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
+    @POST("/referrals/prepare")
+    void requestPrepareReferrals(HandyRetrofitCallback cb);
+
+    @POST("/referrals/confirm")
+    void requestConfirmReferral(@Query("post_guid") String guid, HandyRetrofitCallback cb);
+
+    @GET("/referrals/claim_details")
+    void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);
 
     final class RateProRequest
     {

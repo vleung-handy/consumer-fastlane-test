@@ -1,4 +1,5 @@
 import org.gradle.logging.StyledTextOutputFactory
+
 import static org.gradle.logging.StyledTextOutput.Style
 
 buildscript {
@@ -7,11 +8,12 @@ buildscript {
             dirs 'libs'
             dirs 'aars'
         }
-        mavenCentral()
+        jcenter()
         maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
         classpath 'com.newrelic.agent.android:agent-gradle-plugin:5.3.2'
         classpath 'io.fabric.tools:gradle:1.19.2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
@@ -26,12 +28,12 @@ repositories {
         dirs 'libs'
         dirs 'aars'
     }
-    mavenCentral()
+    jcenter()
 }
 
 apply plugin: 'com.android.application'
-// This does not break the build when Android Studio is missing the JRebel for Android plugin.
-apply plugin: 'com.zeroturnaround.jrebel.android'
+apply plugin: 'android-apt'
+
 apply plugin: 'io.fabric'
 apply plugin: 'newrelic'
 apply plugin: 'com.getkeepsafe.dexcount'
@@ -43,7 +45,6 @@ dexcount {
     orderByMethodCount = false
     verbose = false
 }
-
 def computeVersionCode(versionName) {
     def versionNameMatcher = (versionName =~ /^([1-9]\d*)\.(\d{1,2})\.(\d{1,2})$/)
     if (versionNameMatcher.matches()) {
@@ -53,7 +54,6 @@ def computeVersionCode(versionName) {
 
         def out = services.get(StyledTextOutputFactory).create("debug")
         out.withStyle(Style.Info).println("\nBuilding version ${versionName} (${versionCode})\n")
-
         return versionCode
     } else {
         throw new InvalidUserDataException("Illegal version name ${versionName}")
@@ -75,13 +75,13 @@ android {
             storePassword 'S0H@ndy!'
         }
     }
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId 'com.handy.handy'
         minSdkVersion 15
-        targetSdkVersion 22
-        versionName '1.11.2'
+        targetSdkVersion 23
+        versionName '1.13.2'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -121,18 +121,22 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
+    useLibrary 'org.apache.http.legacy'
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     //Android Support Libraries
     compile 'com.android.support:multidex:1.0.0'
-    compile 'com.android.support:support-v4:22.2.0'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:cardview-v7:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:support-annotations:22.2.0'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-annotations:23.1.1'
 
     //fix missing nullable annotations warnings
     compile 'com.google.code.findbugs:jsr305:2.0.2'
@@ -155,6 +159,9 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
+    //card.io credit card scanner
+    compile 'io.card:android-sdk:5.3.0'
+
     //Stripe payment processing
     compile 'com.stripe:stripe-android:1.0.0.1'
 
@@ -163,9 +170,6 @@ dependencies {
 
     //Calligraphy for fonts
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
-
-    // Urban Airship for cloud messaging
-    compile 'com.urbanairship.android:urbanairship-sdk:6.3.1'
 
     //Guava
     compile 'com.google.guava:guava:18.0'
@@ -179,21 +183,23 @@ dependencies {
     //Mixpanel
     compile 'com.mixpanel.android:mixpanel-android:4.6.3'
 
-    //STILL NEEDED? - Netflix RX Java : https://github.com/ReactiveX/RxJava/wiki : Reactive library,
-    // to investigate for adoption or removal
-    compile 'com.netflix.rxjava:rxjava-android:0.18.4' //TODO: Update to RxAndroid
+    //Picasso library for image downloading and caching
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
-    //STILL NEEDED? - reactive location : https://github.com/mcharmas/Android-ReactiveLocation
-    // : RxJava wrapper for google play services
-    compile 'pl.charmas.android:android-reactive-location:0.2@aar' //TODO: Update after RxJava updtd
+    //Deeplink library
+    compile 'com.airbnb:deeplinkdispatch:1.5.0'
+    apt 'com.airbnb:deeplinkdispatch-processor:1.5.0'
 
-    //This is for a view page indicator : http://viewpagerindicator.com/ : We are not using that but
-    // we do have some style / theme dependencies, to remove in future
+    //This is for a view page indicator : http://viewpagerindicator.com/
+    //Currently used in the OnBoardFragment
     compile 'com.viewpagerindicator:library:2.4.1'
 
     compile files('../libs/yozio-android-sdk.jar')
     compile project(':simplealertdialog')
     compile project(':androidspinner')
+
+    //Urban Airship SDK
+    compile 'com.urbanairship.android:urbanairship-sdk:6.4.1'
 
     //Espresso libraries for automation testing
     androidTestCompile ('com.android.support.test:runner:0.4.1') {
@@ -213,7 +219,7 @@ dependencies {
 
     //Location
     compile 'com.google.android.gms:play-services-location:8.4.8.7@aar'
-    
+
     //Testing with junit and robolectric
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.robolectric:shadows-support-v4:3.0'

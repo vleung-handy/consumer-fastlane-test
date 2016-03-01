@@ -5,17 +5,23 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.core.BookingOptionsWrapper;
-import com.handybook.handybook.model.response.UserExistsResponse;
-import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
-import com.handybook.handybook.core.BookingProRequestResponse;
-import com.handybook.handybook.core.BookingRequestablePros;
-import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingOptionsWrapper;
+import com.handybook.handybook.booking.model.BookingProRequestResponse;
+import com.handybook.handybook.booking.model.BookingRequestablePros;
+import com.handybook.handybook.booking.model.RecurringBookingsResponse;
+import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
-import com.handybook.handybook.core.UserBookingsWrapper;
-import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
+import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 import org.json.JSONObject;
 
@@ -156,6 +162,60 @@ class UserExistsHandyRetrofitCallback extends TypedHandyRetrofitCallback<UserExi
 {
 
     UserExistsHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class AvailableSplashPromoRetrofitCallback extends TypedHandyRetrofitCallback<SplashPromo>
+{
+    AvailableSplashPromoRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class HandyNotificationResultSetHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<HandyNotification.ResultSet>
+{
+    HandyNotificationResultSetHandyRetrofitCallback(final DataManager.Callback cb) {super(cb);}
+}
+
+
+class ReferralResponseHandyRetrofitCallback extends TypedHandyRetrofitCallback<ReferralResponse>
+{
+    ReferralResponseHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class RedemptionDetailsResponseHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<RedemptionDetailsResponse>
+{
+    RedemptionDetailsResponseHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class ConfigurationHandyRetrofitCallback extends TypedHandyRetrofitCallback<Configuration>
+{
+    ConfigurationHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class RecurringBookingsResponseHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<RecurringBookingsResponse>
+{
+    RecurringBookingsResponseHandyRetrofitCallback(final DataManager.Callback callback)
     {
         super(callback);
     }

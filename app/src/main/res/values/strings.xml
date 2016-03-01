@@ -15,9 +15,9 @@
     <string name="facebook_app_id">381615805205781</string>
     <string name="or">or</string>
     <string name="log_out">Log Out</string>
-    <string name="share">Share</string>
+    <string name="share_using">Share using…</string>
     <string name="my_bookings">My Bookings</string>
-    <string name="profile">Profile</string>
+    <string name="account">Account</string>
     <string name="want_to_log_out">Are you sure you want to log out?</string>
     <string name="update">Update</string>
     <string name="you_have_credits">YOU HAVE&#160;&#160;#&#160;&#160;CREDITS</string>
@@ -75,9 +75,7 @@
     <string name="will_be_home">I’ll be home</string>
     <string name="doorman">Doorman</string>
     <string name="will_hide_key">I’ll hide the key</string>
-    <string name="pro_to_know">Anything you’d like your \nprofessional to know?</string>
     <string name="finish">Finish</string>
-    <string name="additional_pro_info">e.g, Focus on or skip specific rooms or surfaces, or other special requests.</string>
     <string name="where_hide_key">Where will you hide the key?</string>
     <string name="use_your_pwd">Use your password to log in and \nmanage your bookings.</string>
     <string name="how_often">How Often?</string>
@@ -134,9 +132,9 @@
     <string name="add_laundry">Add to Future Cleanings</string>
     <string name="frequency">Frequency</string>
     <string name="entry_info">Entry Information</string>
-    <string name="preferences">Preferences</string>
+    <string name="cleaning_routine">Cleaning Routine</string>
+    <string name="job_details">Job Details</string>
     <string name="total">Total</string>
-    <string name="pro_note">Note to Professional</string>
     <string name="what_need_help_with">What do you need \nhelp with?</string>
     <string name="what_can_help_with">What can we help with?</string>
     <string name="related_faq">Related FAQs</string>
@@ -174,10 +172,10 @@
     <string name="no_tip_amount">None</string>
     <string name="tip_amount">Amount:</string>
     <string name="tip_usage_notice">Tip is not expected but is appreciated.\nAll tips go straight to the professional.</string>
-    <string name="thanks_for_leaving_a_tip">Thanks for leaving a tip!</string>
+    <string name="tip_success_message_formatted">Thanks for tipping %1$s!</string>
     <string name="set_dropoff">Set Drop-Off</string>
     <string name="email_receipt">Email Receipt</string>
-    <string name="updated_note_to_pro">Note to pro updated</string>
+    <string name="updated_preferences">Preferences updated</string>
     <string name="updated_entry_information">Entry information updated</string>
     <string name="pro_entry_information">How will your professional get in?</string>
     <string name="pro_assignment_pending">Assignment pending</string>
@@ -294,6 +292,9 @@
     <string name="menu_panic_title_adjust_hours">Adjust hours</string>
     <string name="menu_panic_title_help">Other issues</string>
     <string name="nav_help">help</string>
+    <string name="title_activity_notification_feed">NotificationFeedActivity</string>
+    <string name="cd_notification_feed_button">Open notificaton center</string>
+    <string name="empty_card_default_text">It seems we have nothing to show… Sorry</string>
 
     <string name="select">Select</string>
     <string name="email_cancellation_dialog_title">Check your email</string>
@@ -301,7 +302,10 @@
     <string name="updated_booking_address">Updated booking address</string>
     <string name="booking_edit_update_will_apply_subsequent_bookings">Your update will apply to all subsequent bookings.</string>
     <string name="booking_edit_address_title">Edit Address</string>
-    <string name="booking_edit_note_to_pro_title">Edit Note to Pro</string>
+    <string name="booking_edit_preferences_title">Edit Preferences</string>
+    <string name="booking_edit_cleaning_routine_title">Edit Cleaning Routine</string>
+    <string name="drag_and_drop_instruction">Tap and drag list items to let your pro know what to prioritize</string>
+    <string name="booking_edit_preferences_subtitle">Any other notes to your pro?</string>
     <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
     <string name="android_pay_unavailable">Android Pay is unavailable</string>
     <string name="enter_credit_card">Enter a Credit Card</string>
@@ -312,4 +316,20 @@
         &lt;a href="">Terms of Use&lt;/a></string>
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
+    <string name="scan_credit_card_button">Scan credit card</string>
+    <string name="free_cleanings">Free Cleanings</string>
+    <string name="referral_invite_label">Invite Friends</string>
+    <string name="referral_code_label">Your code:</string>
+    <string name="referral_title_formatted">Give %1$s, Get %2$s</string>
+    <string name="referral_subtitle_formatted">Give your friends %1$s off their first Handy booking, and you get %2$s!</string>
+    <string name="redemption_title_formatted">%1$s sent you %2$s!</string>
+    <string name="redemption_subtitle_formatted">Sign up to claim %1$s credit towards your first booking.</string>
+    <string name="sign_up_with_facebook">Sign Up with Facebook</string>
+    <string name="sign_up_with_email">Sign Up with Email</string>
+    <string name="already_have_account">Already have an account?\u0020</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="preferences_note_to_pro_placeholder">i.e. Pets, location of trash bin, preferences, parking, etc.</string>
+    <string name="error_setting_password">There was an error setting your password, please try again.</string>
+    <string name="error_sending_preferences">Error sending your preferences, please try again.</string>
+    <string name="note_to_pro">Note to Pro</string>
 </resources>

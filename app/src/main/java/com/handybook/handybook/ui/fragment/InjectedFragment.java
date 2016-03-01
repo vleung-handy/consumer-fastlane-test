@@ -1,20 +1,24 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.BookingManager;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
@@ -30,16 +34,17 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     protected Toast toast;
 
     //UPGRADE: Move away from direct calls to these and go through the bus
-    @Inject BookingManager bookingManager;
+    @Inject protected BookingManager bookingManager;
     @Inject protected UserManager userManager;
     @Inject protected Mixpanel mixpanel;
-    @Inject DataManager dataManager;
-    @Inject DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject protected DataManager dataManager;
+    @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject protected NavigationManager navigationManager;
 
+    //TODO: acknowledged this is not ideal
+    @VisibleForTesting
     @Inject
-    protected
-    Bus bus;
+    public Bus bus;
 
 
     @Override
@@ -186,5 +191,45 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     {
         enableInputs();
         progressDialog.dismiss();
+    }
+
+    protected void showErrorDialog(final String errorMessage, final DialogCallback callback)
+    {
+        removeUiBlockers();
+        String displayMessage = errorMessage;
+        if (ValidationUtils.isNullOrEmpty(displayMessage))
+        {
+            displayMessage = getString(R.string.an_error_has_occurred);
+        }
+        new AlertDialog.Builder(getActivity())
+                .setTitle(displayMessage)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                        callback.onCancel();
+                    }
+                })
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                        callback.onRetry();
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+    protected interface DialogCallback
+    {
+        void onRetry();
+
+        void onCancel();
     }
 }

@@ -7,17 +7,18 @@ import android.net.Uri;
 import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.ui.activity.BookingCancelOptionsActivity;
-import com.handybook.handybook.ui.activity.BookingDateActivity;
-import com.handybook.handybook.ui.activity.BookingsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
-import com.handybook.handybook.ui.activity.PromosActivity;
-import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.CTANavigationData;
 
 import java.util.ArrayList;

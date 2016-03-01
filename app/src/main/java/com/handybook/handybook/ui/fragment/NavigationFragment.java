@@ -20,19 +20,20 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.activity.BookingsActivity;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
-import com.handybook.handybook.ui.activity.BookingsActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
-import com.handybook.handybook.ui.activity.PromosActivity;
-import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.simplealertdialog.SimpleAlertDialog;
 import com.simplealertdialog.SimpleAlertDialogSupportFragment;
@@ -155,7 +156,7 @@ public final class NavigationFragment extends InjectedFragment
         //since it is currently keyed by a string we can't do it statically, yet another reason to move over to static ids
         Map<String, Integer> nameToResourceId = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         nameToResourceId.put(getString(R.string.home), R.id.nav_menu_home);
-        nameToResourceId.put(getString(R.string.profile), R.id.nav_menu_profile);
+        nameToResourceId.put(getString(R.string.account), R.id.nav_menu_profile);
         nameToResourceId.put(getString(R.string.my_bookings), R.id.nav_menu_my_bookings);
         nameToResourceId.put(getString(R.string.payment), R.id.nav_menu_payment);
         nameToResourceId.put(getString(R.string.help), R.id.nav_menu_help);
@@ -183,8 +184,10 @@ public final class NavigationFragment extends InjectedFragment
                 R.layout.list_item_nav, items)
         {
             @Override
-            public final View getView(final int position, final View convertView,
-                                      final ViewGroup parent)
+            public final View getView(
+                    final int position, final View convertView,
+                    final ViewGroup parent
+            )
             {
                 View view = convertView;
                 if (view == null)
@@ -221,8 +224,10 @@ public final class NavigationFragment extends InjectedFragment
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(final AdapterView<?> parent, final View view,
-                                    final int position, final long id)
+            public void onItemClick(
+                    final AdapterView<?> parent, final View view,
+                    final int position, final long id
+            )
             {
                 final TextView textView = (TextView) view.findViewById(R.id.nav_item);
                 final String item = textView.getText().toString();
@@ -233,8 +238,8 @@ public final class NavigationFragment extends InjectedFragment
                 {
                     activity.navigateToActivity(ServiceCategoriesActivity.class);
                 }
-                else if (item.equalsIgnoreCase(getString(R.string.profile))
-                        && !getString(R.string.profile).equalsIgnoreCase(mSelectedItem))
+                else if (item.equalsIgnoreCase(getString(R.string.account))
+                        && !getString(R.string.account).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(ProfileActivity.class);
                 }
@@ -247,6 +252,11 @@ public final class NavigationFragment extends InjectedFragment
                         && !getString(R.string.payment).equalsIgnoreCase(mSelectedItem))
                 {
                     activity.navigateToActivity(UpdatePaymentActivity.class);
+                }
+                else if (item.equalsIgnoreCase(getString(R.string.free_cleanings))
+                        && !getString(R.string.free_cleanings).equalsIgnoreCase(mSelectedItem))
+                {
+                    activity.navigateToActivity(ReferralActivity.class);
                 }
                 else if (item.equalsIgnoreCase(getString(R.string.help))
                         && !getString(R.string.help).equalsIgnoreCase(mSelectedItem))
@@ -329,12 +339,13 @@ public final class NavigationFragment extends InjectedFragment
 
         if (userLoggedIn)
         {
-            items.add(getString(R.string.profile));
             items.add(getString(R.string.my_bookings));
+            items.add(getString(R.string.account));
             if (currentUser.getStripeKey() != null)
             {
                 items.add(getString(R.string.payment));
             }
+            items.add(getString(R.string.free_cleanings));
         }
 
         items.add(getString(R.string.help));

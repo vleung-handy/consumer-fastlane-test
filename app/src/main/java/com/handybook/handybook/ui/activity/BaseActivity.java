@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -14,22 +15,30 @@ import android.widget.Toast;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.LaundryDropInfo;
+import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.core.LaundryDropInfo;
-import com.handybook.handybook.core.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.NavigationManager;
+import com.handybook.handybook.core.RequiredModalsEventListener;
+import com.handybook.handybook.core.RequiredModalsLauncher;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.Mixpanel;
-import com.handybook.handybook.ui.fragment.LaundryDropOffDialogFragment;
-import com.handybook.handybook.ui.fragment.LaundryInfoDialogFragment;
-import com.handybook.handybook.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Bus;
-import com.urbanairship.google.PlayServicesUtils;
 import com.yozio.android.Yozio;
 
 import java.util.ArrayList;
@@ -38,17 +47,17 @@ import javax.inject.Inject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public abstract class BaseActivity extends AppCompatActivity
+public abstract class BaseActivity extends AppCompatActivity implements RequiredModalsLauncher
 {
-
-
+    private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
+    private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
     protected boolean allowCallbacks;
     protected ProgressDialog mProgressDialog;
     protected Toast mToast;
     @Inject
     Mixpanel mMixpanel;
     @Inject
-    UserManager mUserManager;
+    protected UserManager mUserManager;
     @Inject
     DataManager mDataManager;
     @Inject
@@ -57,8 +66,8 @@ public abstract class BaseActivity extends AppCompatActivity
     NavigationManager mNavigationManager;
     @Inject
     Bus mBus;
+    private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
-    private RateServiceDialogFragment mRateServiceDialogFragment;
 
     //Public Properties
     public boolean getAllowCallbacks()
@@ -72,15 +81,16 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         Yozio.initialize(this);
         ((BaseApplication) this.getApplication()).inject(this);
+        mRequiredModalsEventListener = new RequiredModalsEventListener(this);
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)
-                && !BuildConfig.BUILD_TYPE.equals("debug"))
+                && !BuildConfig.DEBUG)
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
         }
         final Intent intent = getIntent();
         final Uri data = intent.getData();
-        if (data != null && data.getHost() != null && data.getHost().equals("deeplink.yoz.io"))
+        if (data != null && data.getHost() != null && data.getHost().equals(YOZIO_DEEPLINK_HOST))
         {
             mMixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
         }
@@ -100,6 +110,23 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResumeFragments()
+    {
+        super.onResumeFragments();
+        mBus.register(mRequiredModalsEventListener);
+        mBus.post(new ActivityEvent.FragmentsResumed(this));
+        //can't put this in BaseApplication where activity lifecycle callbacks are registered
+        //because this is only for FragmentActivity
+    }
+
+    @Override
+    protected void onPause()
+    {
+        mBus.unregister(mRequiredModalsEventListener);
+        super.onPause();
+    }
+
+    @Override
     protected void onPostResume()
     {
         super.onPostResume();
@@ -113,15 +140,46 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+    @Override
+    public void showBlockingScreen()
+    {
+        Intent launchBlockingActivity = new Intent(this, BlockingActivity.class);
+        launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(launchBlockingActivity);
+        finish();
+    }
+
+    @Override
+    public void showSplashPromo(@NonNull SplashPromo splashPromo)
+    {
+        if (splashPromo.shouldDisplay())
+        {
+            SplashPromoDialogFragment splashPromoDialogFragment =
+                    SplashPromoDialogFragment.newInstance(splashPromo);
+            FragmentUtils.safeLaunchDialogFragment(splashPromoDialogFragment, this, SplashPromoDialogFragment.class.getSimpleName());
+        }
+    }
+
     private void showRequiredUserModals()
     {
         final FragmentManager fm = getSupportFragmentManager();
         final User user = mUserManager.getCurrentUser();
-        if (user == null || fm.findFragmentByTag("RateServiceDialogFragment") != null
-                || fm.findFragmentByTag("LaundryDropOffDialogFragment") != null
-                || fm.findFragmentByTag("LaundryInfoDialogFragment") != null
+        if (user == null
+                || fm.findFragmentByTag(RateServiceDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
                 || !(BaseActivity.this instanceof ServiceCategoriesActivity))
         {
+            return;
+        }
+        final String proName = getIntent().getStringExtra(BundleKeys.BOOKING_RATE_PRO_NAME);
+        final String bookingId = getIntent().getStringExtra(BundleKeys.BOOKING_ID);
+        if (proName != null && bookingId != null)
+        {
+            showProRateDialog(user, proName, Integer.parseInt(bookingId));
+            getIntent().removeExtra(BundleKeys.BOOKING_RATE_PRO_NAME);
+            getIntent().removeExtra(BundleKeys.BOOKING_ID);
             return;
         }
         mDataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
@@ -138,27 +196,20 @@ public abstract class BaseActivity extends AppCompatActivity
                 final String proName = user.getBookingRatePro();
                 final SharedPreferences prefs = PreferenceManager
                         .getDefaultSharedPreferences(BaseActivity.this);
-                if (addLaundryBookingId > 0 && !prefs.getBoolean("APP_LAUNDRY_INFO_SHOWN", false))
+                if (addLaundryBookingId > 0 && !prefs.getBoolean(KEY_APP_LAUNDRY_INFO_SHOWN, false))
                 {
                     showLaundryInfoModal(addLaundryBookingId, user.getAuthToken());
-                } else if (laundryBookingId > 0)
+                }
+                else if (laundryBookingId > 0)
                 {
                     showLaundryDropOffModal(
                             laundryBookingId,
                             user.getAuthToken()
                     );
-                } else if (proName != null)
+                }
+                else if (proName != null)
                 {
-                    final int bookingId = user.getBookingRateId();
-                    final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts = user.getDefaultTipAmounts();
-
-                    mRateServiceDialogFragment = RateServiceDialogFragment
-                            .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
-
-                    mRateServiceDialogFragment.show(BaseActivity.this.getSupportFragmentManager(),
-                            "RateServiceDialogFragment");
-                    mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
-                            proName, 0);
+                    showProRateDialog(user, proName, user.getBookingRateId());
                 }
             }
 
@@ -167,6 +218,25 @@ public abstract class BaseActivity extends AppCompatActivity
             {
             }
         });
+    }
+
+    private void showProRateDialog(final User user, final String proName, final int bookingId)
+    {
+        final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
+                user.getDefaultTipAmounts();
+
+        RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
+                .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
+
+        boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
+                rateServiceDialogFragment,
+                BaseActivity.this,
+                RateServiceDialogFragment.class.getSimpleName());
+        if (successfullyLaunched)
+        {
+            mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
+                    proName, 0);
+        }
     }
 
     private void showLaundryInfoModal(final int bookingId, final String authToken)
@@ -181,10 +251,11 @@ public abstract class BaseActivity extends AppCompatActivity
                     return;
                 }
 
-                LaundryInfoDialogFragment.newInstance(booking).show(
-                        BaseActivity.this.getSupportFragmentManager(),
-                        "LaundryInfoDialogFragment"
-                );
+                FragmentUtils.safeLaunchDialogFragment(
+                        LaundryInfoDialogFragment.newInstance(booking),
+                        BaseActivity.this,
+                        LaundryInfoDialogFragment.class.getSimpleName());
+
             }
 
             @Override
@@ -207,8 +278,10 @@ public abstract class BaseActivity extends AppCompatActivity
                             return;
                         }
 
-                        LaundryDropOffDialogFragment.newInstance(bookingId, info)
-                                .show(BaseActivity.this.getSupportFragmentManager(), "LaundryDropOffDialogFragment");
+                        FragmentUtils.safeLaunchDialogFragment(
+                                LaundryDropOffDialogFragment.newInstance(bookingId, info),
+                                BaseActivity.this,
+                                LaundryDropOffDialogFragment.class.getSimpleName());
                     }
 
                     @Override
@@ -230,7 +303,8 @@ public abstract class BaseActivity extends AppCompatActivity
         if (mOnBackPressedListener != null)
         {
             mOnBackPressedListener.onBack();
-        } else
+        }
+        else
         {
             super.onBackPressed();
         }
@@ -241,16 +315,13 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        if (PlayServicesUtils.isGooglePlayStoreAvailable())
-        {
-            PlayServicesUtils.handleAnyPlayServicesError(this);
-        }
         allowCallbacks = true;
+        mBus.post(new ConfigurationEvent.RefreshConfiguration());
     }
 
     public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener)
     {
-        this.mOnBackPressedListener = onBackPressedListener;
+        mOnBackPressedListener = onBackPressedListener;
     }
 
     public interface OnBackPressedListener

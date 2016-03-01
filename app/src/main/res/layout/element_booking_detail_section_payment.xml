@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.handybook.handybook.ui.widget.BookingDetailSectionPaymentView
+<com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView
     style="@style/BookingDetailSectionView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -32,4 +32,4 @@
 
     <include layout="@layout/layout_section_action_buttons"/>
 
-</com.handybook.handybook.ui.widget.BookingDetailSectionPaymentView>
+</com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView>

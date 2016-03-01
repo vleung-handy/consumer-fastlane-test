@@ -4,60 +4,70 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.login.LoginManager;
+import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditAddressFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditExtrasFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditFrequencyFragment;
+import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditHoursFragment;
+import com.handybook.handybook.booking.manager.BookingManager;
+import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
+import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
+import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
+import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingLocationFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingLocationFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
+import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
+import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
-import com.handybook.handybook.data.Mixpanel;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
+import com.handybook.handybook.module.referral.ui.RedemptionActivity;
+import com.handybook.handybook.module.referral.ui.RedemptionEmailSignUpFragment;
+import com.handybook.handybook.module.referral.ui.RedemptionFragment;
+import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragment;
+import com.handybook.handybook.module.referral.ui.ReferralFragment;
+import com.handybook.handybook.module.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.ui.activity.BookingAddressActivity;
-import com.handybook.handybook.ui.activity.BookingDateActivity;
-import com.handybook.handybook.ui.activity.BookingEditExtrasActivity;
-import com.handybook.handybook.ui.activity.BookingEditFrequencyActivity;
-import com.handybook.handybook.ui.activity.BookingEditHoursActivity;
-import com.handybook.handybook.ui.activity.BookingExtrasActivity;
-import com.handybook.handybook.ui.activity.BookingLocationActivity;
-import com.handybook.handybook.ui.activity.BookingOptionsActivity;
-import com.handybook.handybook.ui.activity.BookingPaymentActivity;
-import com.handybook.handybook.ui.activity.BookingRecurrenceActivity;
-import com.handybook.handybook.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
-import com.handybook.handybook.ui.fragment.BookingAddressFragment;
-import com.handybook.handybook.ui.fragment.BookingAddressFragmentTest;
-import com.handybook.handybook.ui.fragment.BookingDateFragment;
-import com.handybook.handybook.ui.fragment.BookingDateFragmentTest;
-import com.handybook.handybook.ui.fragment.BookingEditAddressFragment;
-import com.handybook.handybook.ui.fragment.BookingEditExtrasFragment;
-import com.handybook.handybook.ui.fragment.BookingEditFrequencyFragment;
-import com.handybook.handybook.ui.fragment.BookingEditHoursFragment;
-import com.handybook.handybook.ui.fragment.BookingExtrasFragment;
-import com.handybook.handybook.ui.fragment.BookingExtrasFragmentTest;
-import com.handybook.handybook.ui.fragment.BookingHeaderFragment;
-import com.handybook.handybook.ui.fragment.BookingLocationFragment;
-import com.handybook.handybook.ui.fragment.BookingLocationFragmentTest;
-import com.handybook.handybook.ui.fragment.BookingOptionsFragment;
-import com.handybook.handybook.ui.fragment.BookingOptionsFragmentTest;
-import com.handybook.handybook.ui.fragment.BookingPaymentFragment;
-import com.handybook.handybook.ui.fragment.BookingPaymentFragmentTest;
-import com.handybook.handybook.ui.fragment.BookingRecurrenceFragment;
-import com.handybook.handybook.ui.fragment.BookingRecurrenceFragmentTest;
-import com.handybook.handybook.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.ui.fragment.NavigationFragment;
-import com.handybook.handybook.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.squareup.otto.Bus;
+
+import java.util.Properties;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -96,11 +106,18 @@ import static org.mockito.Mockito.when;
         BookingPaymentActivity.class,
         BookingPaymentFragment.class,
         BookingPaymentFragmentTest.class,
-        CancelRecurringBookingFragment.class,
+        CancelRecurringBookingSelectionFragment.class,
         BookingEditAddressFragment.class,
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,
         UpdatePaymentFragmentTest.class,
+        ServiceCategoriesFragmentTest.class,
+        ReferralFragment.class,
+        ReferralFragmentTest.class,
+        RedemptionActivity.class,
+        RedemptionFragment.class,
+        RedemptionSignUpFragment.class,
+        RedemptionEmailSignUpFragment.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -109,6 +126,13 @@ public class TestApplicationModule
     public TestApplicationModule(Context context)
     {
         this.context = context;
+    }
+
+    @Provides
+    @Singleton
+    final Properties providerProperties()
+    {
+        return mock(Properties.class);
     }
 
     @Provides
@@ -229,15 +253,15 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
-    final ReactiveLocationProvider provideReactiveLocationProvider()
+    final StripeManager provideStripeManager()
     {
-        return mock(ReactiveLocationProvider.class);
+        return mock(StripeManager.class);
     }
 
     @Provides
     @Singleton
-    final StripeManager provideStripeManager()
+    final UrbanAirshipManager provideUrbanAirshipManager()
     {
-        return mock(StripeManager.class);
+        return mock(UrbanAirshipManager.class);
     }
 }

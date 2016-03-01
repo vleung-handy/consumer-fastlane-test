@@ -24,6 +24,8 @@ public class BackButtonNavBar extends InjectedLinearLayout
     @Bind(R.id.back_button)
     ImageButton mBackButton;
 
+    TextView mNavText;
+
     //putting this into a widget because we will soon use these everywhere
     public BackButtonNavBar(final Context context)
     {
@@ -57,6 +59,14 @@ public class BackButtonNavBar extends InjectedLinearLayout
         }
     }
 
+    public void setText(String text)
+    {
+        if (mNavText != null)
+        {
+            mNavText.setText(text);
+        }
+    }
+
     private void initView(final Context context, final AttributeSet attrs)
     {
         if (attrs == null) { return; }
@@ -69,8 +79,8 @@ public class BackButtonNavBar extends InjectedLinearLayout
             String s = androidAttributes.getString(0);
             if (s != null)
             {
-                TextView textView = (TextView) findViewById(R.id.nav_text);
-                textView.setText(s);
+                mNavText = (TextView) findViewById(R.id.nav_text);
+                mNavText.setText(s);
             }
         }
         finally

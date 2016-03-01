@@ -1,5 +1,6 @@
 package com.handybook.handybook.core;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
@@ -25,6 +26,11 @@ public class UserManager implements Observer
         this.prefsManager = prefsManager;
         this.bus = bus;
         this.bus.register(this);
+    }
+
+    public boolean isUserLoggedIn()
+    {
+        return getCurrentUser() != null;
     }
 
     public User getCurrentUser()
@@ -54,6 +60,7 @@ public class UserManager implements Observer
         {
             user = null;
             prefsManager.removeValue(PrefsKey.USER);
+            Crashlytics.setUserEmail(null);
             bus.post(new UserLoggedInEvent(false));
             return;
         }
@@ -64,7 +71,7 @@ public class UserManager implements Observer
         prefsManager.setString(PrefsKey.USER, user.toJson());
 
         UAirship.shared().getPushManager().setAlias(user.getId());
-
+        Crashlytics.setUserEmail(user.getEmail());
         bus.post(new UserLoggedInEvent(true));
     }
 

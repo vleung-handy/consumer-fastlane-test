@@ -9,4 +9,15 @@
     <declare-styleable name="ThinIconButton">
         <attr name="iconResourceId" format="reference" />
     </declare-styleable>
+    <declare-styleable name="BookingInstructionView">
+        <attr name="prefsState" >
+            <enum name="requested" value="0"/>
+            <enum name="declined" value="1"/>
+        </attr>
+        <attr name="prefsTitle" format="string"/>
+        <attr name="prefsText" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="DragAndDropVerticalLinearLayout">
+        <attr name="dragAndDropEnabled" format="boolean"/>
+    </declare-styleable>
 </resources>

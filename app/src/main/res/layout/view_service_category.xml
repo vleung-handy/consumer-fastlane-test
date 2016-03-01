@@ -16,7 +16,8 @@
     app:contentPadding="0dp"
     app:paddingEnd="@dimen/default_margin_half"
     app:paddingStart="@dimen/default_margin_half"
-    tools:context=".ui.activity.ServiceCategoriesActivity">
+    android:foreground="?attr/selectableItemBackground"
+    tools:context=".booking.ui.activity.ServiceCategoriesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

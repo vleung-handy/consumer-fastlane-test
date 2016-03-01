@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="default_icon_size_half">20dp</dimen>
     <dimen name="default_icon_size">40dp</dimen>
     <dimen name="default_icon_size_double">80dp</dimen>
     <dimen name="default_logo_padding">6dp</dimen>
@@ -11,6 +12,7 @@
     <dimen name="default_margin_half">8dp</dimen>
     <dimen name="default_margin_double">32dp</dimen>
     <dimen name="default_padding_eighth">2dp</dimen>
+    <dimen name="default_padding_quarter">4dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_padding_double">32dp</dimen>
     <dimen name="default_padding_half">8dp</dimen>
@@ -32,5 +34,7 @@
     <dimen name="select_payment_vertical_padding">30dp</dimen>
     <dimen name="select_payment_horizontal_padding">40dp</dimen>
     <dimen name="select_payment_button_gap">10dp</dimen>
-    <dimen name="select_payment_button_height">48dp</dimen>
+    <dimen name="default_button_height">48dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="short_divider_width">100dp</dimen>
 </resources>

@@ -4,7 +4,7 @@ package com.handybook.handybook.event;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 
-public class StripeEvent
+public abstract class StripeEvent
 {
     public static class RequestCreateToken
     {

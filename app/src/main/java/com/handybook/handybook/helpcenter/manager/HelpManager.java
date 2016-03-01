@@ -5,7 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.squareup.otto.Bus;
@@ -42,7 +42,7 @@ public class HelpManager
     }
 
     @Subscribe
-    public void onRequestHelpNodeDetails(HandyEvent.RequestHelpNode event)
+    public void onRequestHelpNodeDetails(HelpEvent.RequestHelpNode event)
     {
         String nodeId = event.nodeId;
         String bookingId = event.bookingId;
@@ -52,7 +52,7 @@ public class HelpManager
             final HelpNode cachedHelpNode = helpNodeCache.getIfPresent(nodeId);
             if (cachedHelpNode != null)
             {
-                bus.post(new HandyEvent.ReceiveHelpNodeSuccess(cachedHelpNode));
+                bus.post(new HelpEvent.ReceiveHelpNodeSuccess(cachedHelpNode));
                 return;
             }
         }
@@ -71,19 +71,19 @@ public class HelpManager
                 HelpNode helpNode = helpNodeWrapper.getHelpNode();
                 helpNodeCache.put(Integer.toString(helpNode.getId()), helpNode);
                 //don't cache the child nodes, they look like full data but don't have their children
-                bus.post(new HandyEvent.ReceiveHelpNodeSuccess(helpNode));
+                bus.post(new HelpEvent.ReceiveHelpNodeSuccess(helpNode));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveHelpNodeError(error));
+                bus.post(new HelpEvent.ReceiveHelpNodeError(error));
             }
         });
     }
 
     @Subscribe
-    public void onRequestHelpBookingNodeDetails(HandyEvent.RequestHelpBookingNode event)
+    public void onRequestHelpBookingNodeDetails(HelpEvent.RequestHelpBookingNode event)
     {
         String nodeId = event.nodeId;
         String bookingId = event.bookingId;
@@ -95,13 +95,13 @@ public class HelpManager
             public void onSuccess(HelpNodeWrapper helpNodeWrapper)
             {
                 HelpNode helpNode = helpNodeWrapper.getHelpNode();
-                bus.post(new HandyEvent.ReceiveHelpBookingNodeSuccess(helpNode));
+                bus.post(new HelpEvent.ReceiveHelpBookingNodeSuccess(helpNode));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                bus.post(new HandyEvent.ReceiveHelpBookingNodeError(error));
+                bus.post(new HelpEvent.ReceiveHelpBookingNodeError(error));
             }
         });
 

@@ -2,26 +2,38 @@ package com.handybook.handybook.core;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.Mixpanel;
+import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.event.ActivityEvent;
-import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
+import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
+import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
+import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.notifications.DefaultNotificationFactory;
+
+import java.util.Properties;
 
 import javax.inject.Inject;
 
@@ -61,13 +73,31 @@ public class BaseApplication extends MultiDexApplication
     StripeManager stripeManager;
     @Inject
     UserDataManager userDataManager;
+    @Inject
+    NotificationManager mNotificationManager;
+    @Inject
+    UrbanAirshipManager urbanAirshipManager;
+    @Inject
+    Properties properties;
+    @Inject
+    DeepLinkIntentProvider mDeepLinkIntentProvider;
+    @Inject
+    SplashNotificationManager mSplashNotificationManager;
+    @Inject
+    BookingEditManager bookingEditManager;
+    @Inject
+    ServicesManager servicesManager;
+    @Inject
+    ReferralsManager referralsManager;
+    @Inject
+    ConfigurationManager configurationManager;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
         createObjectGraph();
-        Fabric.with(this, new Crashlytics());
+        initFabric();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
         {
@@ -92,10 +122,11 @@ public class BaseApplication extends MultiDexApplication
 
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
-            NewRelic.withApplicationToken("AA7a37dccf925fd1e474142399691d1b6b3f84648b").start(this);
-        } else
+            NewRelic.withApplicationToken(properties.getProperty("new_relic_key")).start(this);
+        }
+        else
         {
-            NewRelic.withApplicationToken("AAbaf8c55fb9788d1664e82661d94bc18ea7c39aa6").start(this);
+            NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal")).start(this);
         }
         // If this is the first ever run of the application, emit Mixpanel event
         if (prefsManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
@@ -103,11 +134,14 @@ public class BaseApplication extends MultiDexApplication
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
             mixpanel.trackEventAppTrackInstall();
         }
+        //TODO: is there a way to register onResumeFragments?
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             @Override
-            public void onActivityCreated(final Activity activity,
-                    final Bundle savedInstanceState)
+            public void onActivityCreated(
+                    final Activity activity,
+                    final Bundle savedInstanceState
+            )
             {
                 bus.post(new ActivityEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
@@ -123,7 +157,8 @@ public class BaseApplication extends MultiDexApplication
                     if (!savedInstance)
                     {
                         mixpanel.trackEventAppOpened(true);
-                    } else
+                    }
+                    else
                     {
                         mixpanel.trackEventAppOpened(false);
                     }
@@ -152,7 +187,8 @@ public class BaseApplication extends MultiDexApplication
             @Override
             public void onActivitySaveInstanceState(
                     final Activity activity,
-                    final Bundle outState)
+                    final Bundle outState
+            )
             {
                 bus.post(new ActivityEvent.SavedInstanceState(activity, outState));
             }
@@ -165,6 +201,19 @@ public class BaseApplication extends MultiDexApplication
         });
     }
 
+    private void initFabric()
+    {
+        Fabric.with(this, new Crashlytics());
+        Crashlytics.setUserIdentifier(
+                Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID)
+        );
+        User currentUser = userManager.getCurrentUser();
+        if (currentUser != null)
+        {
+            Crashlytics.setUserEmail(currentUser.getEmail());
+        }
+    }
+
     public final void inject(final Object object)
     {
         graph.inject(object);
@@ -175,19 +224,7 @@ public class BaseApplication extends MultiDexApplication
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
-            dataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
-            {
-                @Override
-                public void onSuccess(final User updatedUser)
-                {
-                    userManager.setCurrentUser(updatedUser);
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-                }
-            });
+            bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(), null));
         }
     }
 

@@ -1,37 +1,46 @@
 package com.handybook.handybook.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCompleteTransaction;
+import com.handybook.handybook.booking.model.BookingCoupon;
+import com.handybook.handybook.booking.model.BookingOptionsWrapper;
+import com.handybook.handybook.booking.model.BookingPostInfo;
+import com.handybook.handybook.booking.model.BookingProRequestResponse;
+import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.model.BookingRequestablePros;
+import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
+import com.handybook.handybook.booking.model.LaundryDropInfo;
+import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.model.RecurringBookingsResponse;
+import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.core.BlockedWrapper;
-import com.handybook.handybook.core.Booking;
-import com.handybook.handybook.core.BookingCompleteTransaction;
-import com.handybook.handybook.core.BookingCoupon;
-import com.handybook.handybook.core.BookingOptionsWrapper;
-import com.handybook.handybook.core.BookingPostInfo;
-import com.handybook.handybook.model.request.BookingEditAddressRequest;
-import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.model.response.BookingEditFrequencyInfoResponse;
-import com.handybook.handybook.core.BookingProRequestResponse;
-import com.handybook.handybook.core.BookingQuote;
-import com.handybook.handybook.core.BookingRequest;
-import com.handybook.handybook.core.BookingRequestablePros;
-import com.handybook.handybook.core.BookingTransaction;
-import com.handybook.handybook.core.BookingUpdateEntryInformationTransaction;
-import com.handybook.handybook.model.request.BookingEditExtrasRequest;
-import com.handybook.handybook.model.request.BookingEditFrequencyRequest;
-import com.handybook.handybook.core.BookingUpdateNoteToProTransaction;
-import com.handybook.handybook.model.response.BookingEditExtrasInfoResponse;
-import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
-import com.handybook.handybook.core.LaundryDropInfo;
-import com.handybook.handybook.core.PromoCode;
-import com.handybook.handybook.core.Service;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.UserBookingsWrapper;
-import com.handybook.handybook.model.request.BookingEditHoursRequest;
-import com.handybook.handybook.model.response.BookingEditHoursInfoResponse;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.model.request.CreateUserRequest;
+import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
+import com.handybook.handybook.module.referral.model.ReferralResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -43,15 +52,24 @@ import retrofit.mime.TypedInput;
 
 public abstract class DataManager
 {
+    public abstract void getAvailableSplashPromo(String userId,
+                                                 String[] displayedPromos,
+                                                 String[] acceptedPromos,
+                                                 Callback<SplashPromo> cb);
+
+    public abstract void getServices(
+            CacheResponse<List<Service>> cache,
+            Callback<List<Service>> cb
+    );
+
+    public abstract List<Service> getCachedServices();
+
     public abstract void editBookingAddress(int bookingId,
                                             BookingEditAddressRequest bookingEditAddressRequest,
                                             Callback<SuccessWrapper> cb);
 
     public abstract void sendCancelRecurringBookingEmail(int bookingRecurringId,
                                      Callback<SuccessWrapper> cb);
-
-    public abstract void getServices(CacheResponse<List<Service>> cache,
-                                     Callback<List<Service>> cb);
 
     public abstract void getEditBookingExtrasInfo(int bookingId,
                                                   Callback<BookingEditExtrasInfoResponse> cb);
@@ -70,12 +88,32 @@ public abstract class DataManager
      * Requests a ShouldBlockObject defining if the app is recent enough to be used
      * @param versionCode Android version code (Not version name!)
      * @param shouldBlockObjectCacheResponse ..
-     * @param shouldBlockObjectCallback ..
+     * @param shouldBlockObjectCallback      ..
      */
     public abstract void getBlockedWrapper(
             final int versionCode,
             final CacheResponse<BlockedWrapper> shouldBlockObjectCacheResponse,
             final Callback<BlockedWrapper> shouldBlockObjectCallback
+    );
+
+    /**
+     * Requests a HandyNotification.ResultSet from the server
+     *
+     * @param userId  id of the user to request notifications for
+     * @param count   max size of the notification list (can be smaller)
+     * @param sinceId <i>optional</i> Bottom delimiter, exclusive. Only notification after this id.
+     * @param untilId <i>optional</i> Top delimiter, exclusive. Only get notification before this
+     *                id
+     * @param cb      the callback used for returning data
+     * @see <a href="https://dev.twitter.com/rest/public/timelines">Twitter's implementation</a>
+     * <p/>
+     */
+    public abstract void getNotifications(
+            long userId,
+            @Nullable final Long count,
+            @Nullable final Long sinceId,
+            @Nullable final Long untilId,
+            @NonNull final Callback<HandyNotification.ResultSet> cb
     );
 
     public abstract void getQuoteOptions(int serviceId,
@@ -99,8 +137,10 @@ public abstract class DataManager
     public abstract void removePromo(int quoteId,
                                      Callback<BookingCoupon> cb);
 
-    public abstract void createBooking(BookingTransaction bookingTransaction,
-                                       Callback<BookingCompleteTransaction> cb);
+    public abstract void createBooking(
+            BookingTransaction bookingTransaction,
+            Callback<BookingCompleteTransaction> cb
+    );
 
     public abstract void validateBookingZip(int serviceId,
                                             String zipCode,
@@ -109,136 +149,229 @@ public abstract class DataManager
                                             String promoCode,
                                             Callback<Void> cb);
 
-    public abstract void getBookings(User user,
-            Callback<UserBookingsWrapper> cb);
+    public abstract void getBookings(
+            User user,
+            Callback<UserBookingsWrapper> cb
+    );
 
     public abstract void getBookings(
             @NonNull final User user,
             @NonNull @Booking.List.OnlyBookingValues String onlyBookingValues,
-            @NonNull Callback<UserBookingsWrapper> cb);
+            @NonNull Callback<UserBookingsWrapper> cb
+    );
 
-    public abstract void getBooking(String bookingId,
-                                    Callback<Booking> cb);
+    public abstract void getBooking(
+            String bookingId,
+            Callback<Booking> cb
+    );
 
-    public abstract void getPreBookingPromo(String promoCode,
-                                            Callback<PromoCode> cb);
+    public abstract void getPreBookingPromo(
+            String promoCode,
+            Callback<PromoCode> cb
+    );
 
-    public abstract void getPreRescheduleInfo(String bookingId,
-                                              Callback<String> cb);
+    public abstract void getPreRescheduleInfo(
+            String bookingId,
+            Callback<String> cb
+    );
 
-    public abstract void rescheduleBooking(String bookingId,
-                                           String date,
-                                           boolean rescheduleAll,
-                                           String userId,
-                                           String authToken,
-                                           Callback<Pair<String, BookingQuote>> cb);
+    public abstract void rescheduleBooking(
+            String bookingId,
+            String date,
+            boolean rescheduleAll,
+            String userId,
+            String authToken,
+            Callback<Pair<String, BookingQuote>> cb
+    );
 
-    public abstract void getPreCancelationInfo(String bookingId,
-                                               Callback<Pair<String, List<String>>> cb);
+    public abstract void getPreCancelationInfo(
+            String bookingId,
+            Callback<Pair<String, List<String>>> cb
+    );
 
-    public abstract void cancelBooking(String bookingId,
-                                       int reasonCode,
-                                       String userId,
-                                       String authToken,
-                                       Callback<String> cb);
+    public abstract void cancelBooking(
+            String bookingId,
+            int reasonCode,
+            String userId,
+            String authToken,
+            Callback<String> cb
+    );
 
-    public abstract void getLaundryScheduleInfo(int bookingId,
-                                                String authToken,
-                                                Callback<LaundryDropInfo> cb);
+    public abstract void getLaundryScheduleInfo(
+            int bookingId,
+            String authToken,
+            Callback<LaundryDropInfo> cb
+    );
 
-    public abstract void setLaundryDropOff(int bookingId,
-                                           String authToken,
-                                           String date,
-                                           int hour,
-                                           int minute,
-                                           String type,
-                                           Callback<Void> cb);
+    public abstract void setLaundryDropOff(
+            int bookingId,
+            String authToken,
+            String date,
+            int hour,
+            int minute,
+            String type,
+            Callback<Void> cb
+    );
 
-    public abstract void getAddLaundryInfo(int bookingId,
-                                           String authToken,
-                                           Callback<Booking> cb);
+    public abstract void getAddLaundryInfo(
+            int bookingId,
+            String authToken,
+            Callback<Booking> cb
+    );
 
-    public abstract void addLaundry(int bookingId,
-                                    String authToken,
-                                    Callback<Void> cb);
+    public abstract void addLaundry(
+            int bookingId,
+            String authToken,
+            Callback<Void> cb
+    );
 
-    public abstract void addBookingPostInfo(int bookingId,
-                                            BookingPostInfo postInfo,
-                                            Callback<Void> cb);
+    public abstract void addBookingPostInfo(
+            int bookingId,
+            BookingPostInfo postInfo,
+            Callback<Void> cb
+    );
 
-    public abstract void updateBookingNoteToPro(int bookingId,
-                                                BookingUpdateNoteToProTransaction descriptionTransaction,
-                                                Callback<Void> cb);
+    public abstract void updateBookingNoteToPro(
+            int bookingId,
+            BookingUpdateNoteToProTransaction descriptionTransaction,
+            Callback<Void> cb
+    );
 
-    public abstract void updateBookingEntryInformation(int bookingId,
-                                                       BookingUpdateEntryInformationTransaction entryInformationTransaction,
-                                                       Callback<Void> cb);
+    public abstract void updateBookingEntryInformation(
+            int bookingId,
+            BookingUpdateEntryInformationTransaction entryInformationTransaction,
+            Callback<Void> cb
+    );
 
-    public abstract void updateBookingFrequency(int bookingId,
-                                                BookingEditFrequencyRequest bookingEditFrequencyRequest,
-                                                Callback<Void> cb);
+    public abstract void updateBookingFrequency(
+            int bookingId,
+            BookingEditFrequencyRequest bookingEditFrequencyRequest,
+            Callback<Void> cb
+    );
 
-    public abstract void getBookingPricesForFrequencies(int bookingId,
-                                                        Callback<BookingEditFrequencyInfoResponse> cb);
+    public abstract void getBookingPricesForFrequencies(
+            int bookingId,
+            Callback<BookingEditFrequencyInfoResponse> cb
+    );
 
-    public abstract void ratePro(int bookingId,
-                                 int rating,
-                                 Integer tipAmount,
-                                 Callback<Void> cb);
+    public abstract void ratePro(
+            int bookingId,
+            int rating,
+            Integer tipAmount,
+            Callback<Void> cb
+    );
 
-    public abstract void tipPro(int bookingId,
-                                Integer tipAmount,
-                                Callback<Void> cb);
+    public abstract void tipPro(
+            int bookingId,
+            Integer tipAmount,
+            Callback<Void> cb
+    );
 
-    public abstract void submitProRatingDetails(int bookingId,
-                                                final String positiveFeedback,
-                                                Callback<Void> cb);
+    public abstract void submitProRatingDetails(
+            int bookingId,
+            final String positiveFeedback,
+            Callback<Void> cb
+    );
 
-    public abstract void authUser(String email,
-                                  String password,
-                                  Callback<User> cb);
+    public abstract void authUser(
+            String email,
+            String password,
+            Callback<User> cb
+    );
 
-    public abstract void getUser(String userId,
-                                 String authToken,
-                                 Callback<User> cb);
+    public abstract void createUser(
+            CreateUserRequest createUserRequest,
+            Callback<User> cb
+    );
 
-    public abstract void getUserExists(String email,
-                                       Callback<UserExistsResponse> cb);
+    public abstract void getUser(
+            String userId,
+            String authToken,
+            Callback<User> cb
+    );
 
-    public abstract void updateUser(UpdateUserRequest updateUserRequest,
-                                    String authToken,
-                                    Callback<User> cb);
+    public abstract void getUserExists(
+            String email,
+            Callback<UserExistsResponse> cb
+    );
+
+    public abstract void updateUser(
+            UpdateUserRequest updateUserRequest,
+            String authToken,
+            Callback<User> cb
+    );
 
     public abstract void updatePayment(String userId, String token, Callback<Void> cb);
 
-    public abstract void authFBUser(String fbid,
-                                    String accessToken,
-                                    String email,
-                                    String firstName,
-                                    String lastName, Callback<User> cb);
+    public abstract void authFBUser(
+            CreateUserRequest createUserRequest,
+            Callback<User> cb
+    );
 
-    public abstract void requestPasswordReset(String email,
-                                              Callback<String> cb);
+    public abstract void requestPasswordReset(
+            String email,
+            Callback<String> cb
+    );
 
-    public abstract void getRequestProInfo(int bookingId,
-                                           Callback<BookingRequestablePros> cb);
+    public abstract void getRequestProInfo(
+            int bookingId,
+            Callback<BookingRequestablePros> cb
+    );
 
-    public abstract void requestProForBooking(int bookingId,
-                                              int requestedProId,
-                                              Callback<BookingProRequestResponse> cb);
+    public abstract void requestProForBooking(
+            int bookingId,
+            int requestedProId,
+            Callback<BookingProRequestResponse> cb
+    );
 
-    public abstract void getHelpInfo(String nodeId,
-                                     String authToken,
-                                     String bookingId,
-                                     Callback<HelpNodeWrapper> cb);
+    public abstract void getHelpInfo(
+            String nodeId,
+            String authToken,
+            String bookingId,
+            Callback<HelpNodeWrapper> cb
+    );
 
-    public abstract void getHelpBookingsInfo(String nodeId,
-                                             String authToken,
-                                             String bookingId,
-                                             Callback<HelpNodeWrapper> cb);
+    public abstract void getHelpBookingsInfo(
+            String nodeId,
+            String authToken,
+            String bookingId,
+            Callback<HelpNodeWrapper> cb
+    );
 
-    public abstract void createHelpCase(TypedInput body,
-                                        Callback<Void> cb);
+    public abstract void createHelpCase(
+            TypedInput body,
+            Callback<Void> cb
+    );
+
+    public abstract void finalizeBooking(
+            int bookingId,
+            @NonNull FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+            @NonNull Callback<Void> cb
+    );
+
+    public abstract void updatePreferences(
+            int bookingId,
+            @NonNull FinalizeBookingRequestPayload finalizeBookingRequestPayload,
+            @NonNull Callback<Void> cb
+    );
+
+    public abstract void requestPrepareReferrals(
+            final Callback<ReferralResponse> callback
+    );
+
+    public abstract void requestConfirmReferral(
+            final String guid,
+            final Callback<Void> callback
+    );
+
+    public abstract void requestRedemptionDetails(
+            final String guid,
+            final Callback<RedemptionDetailsResponse> callback
+    );
+
+    public abstract void requestConfiguration(final Callback<Configuration> callback);
+
+    public abstract void getRecurringBookings(final Callback<RecurringBookingsResponse> callback);
 
     public abstract String getBaseUrl();
 
@@ -261,7 +394,7 @@ public abstract class DataManager
         OTHER, SERVER, CLIENT, NETWORK
     }
 
-    public static final class DataManagerError
+    public static class DataManagerError
     {
         private final Type type;
         private final String message;
@@ -289,12 +422,12 @@ public abstract class DataManager
             this.invalidInputs = inputs;
         }
 
-        final String getMessage()
+        public String getMessage()
         {
             return message;
         }
 
-        public final Type getType()
+        public Type getType()
         {
             return type;
         }
