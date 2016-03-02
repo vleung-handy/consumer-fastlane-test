@@ -20,6 +20,7 @@ import net.simonvt.menudrawer.MenuDrawer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class PromosFragment extends BookingFlowFragment
         implements MenuDrawerActivity.OnDrawerStateChangeListener {
@@ -28,10 +29,10 @@ public final class PromosFragment extends BookingFlowFragment
 
     @Bind(R.id.menu_button_layout)
     ViewGroup mMenuButtonLayout;
-    @Bind(R.id.apply_button)
-    Button applyButton;
-    @Bind(R.id.promo_text)
-    EditText promoText;
+    @Bind(R.id.promotions_apply_button)
+    Button mApplyButton;
+    @Bind(R.id.promotions_coupon_text)
+    EditText mPromoText;
 
     public static PromosFragment newInstance(String extraPromoCode)
     {
@@ -49,66 +50,12 @@ public final class PromosFragment extends BookingFlowFragment
     @Override
     public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                                    final Bundle savedInstanceState) {
-        final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_promos, container, false);
-
+        final View view = getActivity()
+                .getLayoutInflater().inflate(R.layout.fragment_promos, container, false);
         ButterKnife.bind(this, view);
-
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
-
-        applyButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(final View v)
-            {
-                final String promoCode = promoText.getText().toString();
-
-                if (promoCode.trim().length() > 0)
-                {
-                    disableInputs();
-                    progressDialog.show();
-
-                    dataManager.getPreBookingPromo(promoCode, new DataManager.Callback<PromoCode>()
-                    {
-                        @Override
-                        public void onSuccess(final PromoCode code)
-                        {
-                            if (!allowCallbacks) return;
-
-                            progressDialog.dismiss();
-                            enableInputs();
-
-                            if (code.getType() == PromoCode.Type.VOUCHER)
-                            {
-                                startBookingFlow(code.getServiceId(), code.getUniq(), code);
-                            }
-                            else if (code.getType() == PromoCode.Type.COUPON)
-                            {
-                                bookingManager.setPromoTabCoupon(code.getCode());
-
-                                final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-                                activity.setOnDrawerStateChangedListener(PromosFragment.this);
-
-                                final MenuDrawer menuDrawer = activity.getMenuDrawer();
-                                menuDrawer.openMenu(true);
-                            }
-                        }
-
-                        @Override
-                        public void onError(final DataManager.DataManagerError error)
-                        {
-                            if (!allowCallbacks) return;
-                            progressDialog.dismiss();
-                            enableInputs();
-                            dataManagerErrorHandler.handleError(getActivity(), error);
-                        }
-                    });
-                }
-            }
-        });
-
         return view;
     }
 
@@ -126,7 +73,7 @@ public final class PromosFragment extends BookingFlowFragment
             if (promoCode != null)
             {
                 args.remove(EXTRA_PROMO_CODE);
-                promoText.setText(promoCode);
+                mPromoText.setText(promoCode);
             }
         }
     }
@@ -135,22 +82,71 @@ public final class PromosFragment extends BookingFlowFragment
     public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         handleBundleArguments();
-        promoText.requestFocus();
+        mPromoText.requestFocus();
         InputMethodManager imm
                 = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(promoText, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(mPromoText, InputMethodManager.SHOW_IMPLICIT);
     }
+
+    @OnClick(R.id.promotions_apply_button)
+    public void onClick(final View v)
+    {
+        final String promoCode = mPromoText.getText().toString();
+
+        if (promoCode.trim().length() > 0)
+        {
+            disableInputs();
+            progressDialog.show();
+
+            dataManager.getPreBookingPromo(promoCode, new DataManager.Callback<PromoCode>()
+            {
+                @Override
+                public void onSuccess(final PromoCode code)
+                {
+                    if (!allowCallbacks) return;
+
+                    progressDialog.dismiss();
+                    enableInputs();
+
+                    if (code.getType() == PromoCode.Type.VOUCHER)
+                    {
+                        startBookingFlow(code.getServiceId(), code.getUniq(), code);
+                    }
+                    else if (code.getType() == PromoCode.Type.COUPON)
+                    {
+                        bookingManager.setPromoTabCoupon(code.getCode());
+
+                        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+                        activity.setOnDrawerStateChangedListener(PromosFragment.this);
+
+                        final MenuDrawer menuDrawer = activity.getMenuDrawer();
+                        menuDrawer.openMenu(true);
+                    }
+                }
+
+                @Override
+                public void onError(final DataManager.DataManagerError error)
+                {
+                    if (!allowCallbacks) return;
+                    progressDialog.dismiss();
+                    enableInputs();
+                    dataManagerErrorHandler.handleError(getActivity(), error);
+                }
+            });
+        }
+    }
+
 
     @Override
     protected final void disableInputs() {
         super.disableInputs();
-        applyButton.setClickable(false);
+        mApplyButton.setClickable(false);
     }
 
     @Override
     protected final void enableInputs() {
         super.enableInputs();
-        applyButton.setClickable(true);
+        mApplyButton.setClickable(true);
     }
 
     @Override
