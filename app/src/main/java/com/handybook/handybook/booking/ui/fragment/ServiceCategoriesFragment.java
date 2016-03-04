@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -119,18 +118,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
 
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-                activity.getMenuDrawer().toggleMenu();
-            }
-        });
+        activity.setupHamburgerMenu(mToolbar);
 
         mPromoImage.setColorFilter(
                 getResources().getColor(R.color.handy_blue),

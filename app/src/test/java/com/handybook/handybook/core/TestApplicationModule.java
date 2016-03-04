@@ -75,7 +75,6 @@ import static org.mockito.Mockito.when;
 @Module(injects = {
         TestBaseApplication.class,
         BaseActivity.class,
-        NavigationFragment.class,
         BookingEditFrequencyActivity.class,
         BookingEditFrequencyFragment.class,
         BookingEditHoursActivity.class,

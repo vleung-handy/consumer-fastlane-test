@@ -37,4 +37,5 @@
     <dimen name="default_button_height">48dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="short_divider_width">100dp</dimen>
+    <dimen name="menu_header_height">160dp</dimen>
 </resources>

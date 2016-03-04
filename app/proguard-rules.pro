@@ -110,4 +110,3 @@
 #Android 23 workaround
 -dontwarn com.viewpagerindicator.LinePageIndicator
 -dontwarn com.mixpanel.android.mpmetrics.GCMReceiver
--dontwarn net.simonvt.menudrawer.Scroller

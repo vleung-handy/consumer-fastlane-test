@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Group ids are required if we want to show a divider between groups-->
+    <group
+        android:id="@+id/top_group"
+        android:checkableBehavior="single"
+        >
+        <item
+            android:id="@id/nav_menu_home"
+            android:checked="false"
+            android:title="@string/make_a_booking"
+            android:icon="@drawable/menu_booking"
+            />
+
+        <item
+            android:id="@id/nav_menu_profile"
+            android:checked="false"
+            android:title="@string/account"
+            android:icon="@drawable/menu_account"
+            />
+
+        <item
+            android:id="@id/nav_menu_my_bookings"
+            android:checked="false"
+            android:title="@string/my_bookings"
+            android:icon="@drawable/menu_my_bookings"
+            />
+
+        <item
+            android:id="@id/nav_menu_payment"
+            android:checked="false"
+            android:title="@string/payment"
+            android:icon="@drawable/menu_payment"
+            />
+
+        <item
+            android:id="@+id/nav_menu_free_cleanings"
+            android:checked="false"
+            android:title="@string/free_cleanings"
+            android:icon="@drawable/menu_referral"
+            />
+
+        <item
+            android:id="@id/nav_menu_promotions"
+            android:checked="false"
+            android:title="@string/promotions"
+            android:icon="@drawable/menu_promo"
+            />
+
+    </group>
+    <group android:id="@+id/bottom_group">
+        <item
+            android:id="@id/nav_menu_help"
+            android:checked="false"
+            android:title="@string/help"
+            android:icon="@drawable/menu_help"
+            />
+
+        <item
+            android:id="@id/nav_menu_log_out"
+            android:checked="false"
+            android:title="@string/log_out"
+            android:icon="@drawable/menu_logout"
+            />
+
+        <item
+            android:id="@id/nav_menu_log_in"
+            android:checked="false"
+            android:title="@string/log_in"
+            android:icon="@drawable/menu_login"
+            />
+    </group>
+
+</menu>
