@@ -92,7 +92,6 @@
                     android:layout_height="8dp"
                     android:layout_below="@+id/envelope"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/default_margin_half"
                     android:src="@drawable/circle_grey"
                     />
             </RelativeLayout>
@@ -129,7 +128,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/referral_description_layout"
-            android:layout_margin="@dimen/default_margin_double"
+            android:layout_marginEnd="@dimen/default_margin_double"
+            android:layout_marginLeft="@dimen/default_margin_double"
+            android:layout_marginRight="@dimen/default_margin_double"
+            android:layout_marginStart="@dimen/default_margin_double"
             android:gravity="center"
             android:orientation="vertical"
             >
@@ -149,8 +151,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/default_margin_half"
-                    android:layout_marginRight="@dimen/default_margin_half"
+                    android:layout_marginEnd="@dimen/default_margin_quarter"
+                    android:layout_marginRight="@dimen/default_margin_quarter"
                     android:text="@string/referral_code_label"
                     android:textAllCaps="true"
                     />
@@ -161,8 +163,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/default_margin_quarter"
+                    android:layout_marginRight="@dimen/default_margin_quarter"
                     android:layout_toEndOf="@+id/code_label"
+                    android:layout_toLeftOf="@+id/share_icon"
                     android:layout_toRightOf="@+id/code_label"
+                    android:layout_toStartOf="@+id/share_icon"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:textColor="@color/handy_tertiary_gray"
                     tools:text="JOHN1234"
                     />
