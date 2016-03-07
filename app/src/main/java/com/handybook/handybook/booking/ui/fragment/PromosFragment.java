@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,8 @@ public final class PromosFragment extends BookingFlowFragment
     @Bind(R.id.promotions_coupon_text_clear)
     View mPromoTextClearImage;
 
+    private String mPromoCoupon;
+
     public static PromosFragment newInstance(String extraPromoCode)
     {
         PromosFragment fragment = new PromosFragment();
@@ -64,10 +67,10 @@ public final class PromosFragment extends BookingFlowFragment
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
-        final String promoCoupon = bookingManager.getPromoTabCoupon();
-        if (promoCoupon != null)
+        mPromoCoupon = bookingManager.getPromoTabCoupon();
+        if (mPromoCoupon != null)
         {
-            mPromoText.setText(promoCoupon);
+            mPromoText.setText(mPromoCoupon);
             mPromoTextClearImage.setVisibility(View.VISIBLE);
         }
         return view;
@@ -149,12 +152,26 @@ public final class PromosFragment extends BookingFlowFragment
                 }
             });
         }
-        else
+        else if(mPromoCoupon != null)
         {
             // The user wants to delete the promo code
             bookingManager.setPromoTabCoupon(null);
-            final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-            startActivity(intent);
+            final Snackbar snackbar = Snackbar.make(
+                    getView(),
+                    R.string.snackbar_promo_code_deleted,
+                    Snackbar.LENGTH_SHORT
+            );
+            snackbar.show();
+            snackbar.setAction(R.string.undo, new View.OnClickListener() {
+                @Override
+                public void onClick(final View v)
+                {
+                    bookingManager.setPromoTabCoupon(mPromoCoupon);
+                    mPromoText.setText(mPromoCoupon);
+                }
+            });
+//            final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+//            startActivity(intent);
         }
     }
 
