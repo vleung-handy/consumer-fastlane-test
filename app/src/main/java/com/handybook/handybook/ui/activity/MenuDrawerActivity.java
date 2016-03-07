@@ -158,12 +158,25 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         navigateToActivity(clazz, new Bundle());
     }
 
+    /**
+     * Navigates to the activity if it's not already there.
+     *
+     * @param clazz
+     * @param menuIdToBeSelected
+     */
     public final void navigateToActivity(final Class<? extends Activity> clazz, int menuIdToBeSelected)
     {
-        Bundle bundle = new Bundle();
-        bundle.putInt(MenuDrawerActivity.EXTRA_SHOW_SELECTED_MENU_ITEM, menuIdToBeSelected);
-
-        navigateToActivity(clazz, bundle);
+        if (this.getClass().getName().equals(clazz.getName()))
+        {
+            //close drawers and not do anything further
+            mDrawerLayout.closeDrawers();
+        }
+        else
+        {
+            Bundle bundle = new Bundle();
+            bundle.putInt(MenuDrawerActivity.EXTRA_SHOW_SELECTED_MENU_ITEM, menuIdToBeSelected);
+            navigateToActivity(clazz, bundle);
+        }
     }
 
 
@@ -277,7 +290,14 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         switch (menuItem.getItemId())
         {
             case R.id.nav_menu_home:
-                navigateToActivity(ServiceCategoriesActivity.class);
+                if (this instanceof ServiceCategoriesActivity)
+                {
+                    mDrawerLayout.closeDrawers();
+                }
+                else
+                {
+                    navigateToActivity(ServiceCategoriesActivity.class);
+                }
                 return true;
             case R.id.nav_menu_profile:
                 navigateToActivity(ProfileActivity.class, menuItem.getItemId());
