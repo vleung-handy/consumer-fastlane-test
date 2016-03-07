@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class PromosFragment extends BookingFlowFragment
-        implements MenuDrawerActivity.OnDrawerStateChangeListener {
+        implements MenuDrawerActivity.OnDrawerStateChangeListener
+{
 
     public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
 
@@ -33,6 +35,8 @@ public final class PromosFragment extends BookingFlowFragment
     Button mApplyButton;
     @Bind(R.id.promotions_coupon_text)
     EditText mPromoText;
+    @Bind(R.id.promotions_coupon_text_clear)
+    View mPromoTextClearImage;
 
     public static PromosFragment newInstance(String extraPromoCode)
     {
@@ -43,25 +47,35 @@ public final class PromosFragment extends BookingFlowFragment
         return fragment;
     }
 
-    public static PromosFragment newInstance() {
+    public static PromosFragment newInstance()
+    {
         return new PromosFragment();
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
+    {
         final View view = getActivity()
                 .getLayoutInflater().inflate(R.layout.fragment_promos, container, false);
         ButterKnife.bind(this, view);
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
+        final String promoCoupon = bookingManager.getPromoTabCoupon();
+        if (promoCoupon != null)
+        {
+            mPromoText.setText(promoCoupon);
+            mPromoTextClearImage.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
     /**
      * handles the bundle arguments. currently arguments are only passed from deep links
-     *
+     * <p/>
      * must be called after onCreateView() due to butterknife dependency
      */
     private void handleBundleArguments()
@@ -79,12 +93,13 @@ public final class PromosFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public final void onViewCreated(final View view, final Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
         handleBundleArguments();
         mPromoText.requestFocus();
         InputMethodManager imm
-                = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(mPromoText, InputMethodManager.SHOW_IMPLICIT);
     }
 
@@ -103,7 +118,7 @@ public final class PromosFragment extends BookingFlowFragment
                 @Override
                 public void onSuccess(final PromoCode code)
                 {
-                    if (!allowCallbacks) return;
+                    if (!allowCallbacks) { return; }
 
                     progressDialog.dismiss();
                     enableInputs();
@@ -127,33 +142,52 @@ public final class PromosFragment extends BookingFlowFragment
                 @Override
                 public void onError(final DataManager.DataManagerError error)
                 {
-                    if (!allowCallbacks) return;
+                    if (!allowCallbacks) { return; }
                     progressDialog.dismiss();
                     enableInputs();
                     dataManagerErrorHandler.handleError(getActivity(), error);
                 }
             });
         }
+        else
+        {
+            // The user wants to delete the promo code
+            bookingManager.setPromoTabCoupon(null);
+            final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+            startActivity(intent);
+        }
     }
 
 
+    @OnClick(R.id.promotions_coupon_text_clear)
+    public void clearPromoCode()
+    {
+        mPromoText.setText("");
+    }
+
     @Override
-    protected final void disableInputs() {
+    protected final void disableInputs()
+    {
         super.disableInputs();
         mApplyButton.setClickable(false);
     }
 
     @Override
-    protected final void enableInputs() {
+    protected final void enableInputs()
+    {
         super.enableInputs();
         mApplyButton.setClickable(true);
     }
 
     @Override
-    public void onDrawerStateChange(final MenuDrawer menuDrawer, final int oldState,
-                                    final int newState) {
+    public void onDrawerStateChange(
+            final MenuDrawer menuDrawer, final int oldState,
+            final int newState
+    )
+    {
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        if (newState == MenuDrawer.STATE_OPEN) {
+        if (newState == MenuDrawer.STATE_OPEN)
+        {
             activity.navigateToActivity(ServiceCategoriesActivity.class);
         }
     }
