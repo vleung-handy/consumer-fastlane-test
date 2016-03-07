@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.PromoCode;
@@ -152,27 +154,48 @@ public final class PromosFragment extends BookingFlowFragment
                 }
             });
         }
-        else if(mPromoCoupon != null)
+        else if (mPromoCoupon != null)
         {
             // The user wants to delete the promo code
             bookingManager.setPromoTabCoupon(null);
-            final Snackbar snackbar = Snackbar.make(
-                    getView(),
-                    R.string.snackbar_promo_code_deleted,
-                    Snackbar.LENGTH_SHORT
-            );
-            snackbar.show();
-            snackbar.setAction(R.string.undo, new View.OnClickListener() {
-                @Override
-                public void onClick(final View v)
-                {
-                    bookingManager.setPromoTabCoupon(mPromoCoupon);
-                    mPromoText.setText(mPromoCoupon);
-                }
-            });
+            showSnackbar();
 //            final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
 //            startActivity(intent);
         }
+    }
+
+    private void showSnackbar()
+    {
+        final Snackbar snackbar = Snackbar.make(
+                getView(),
+                R.string.snackbar_promo_code_deleted,
+                Snackbar.LENGTH_LONG
+        );
+
+        final TextView snackText = (TextView) snackbar.getView()
+                .findViewById(android.support.design.R.id.snackbar_text);
+        snackText.setTextColor(Color.WHITE);
+        snackbar.setAction(R.string.undo, new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                bookingManager.setPromoTabCoupon(mPromoCoupon);
+                mPromoText.setText(mPromoCoupon);
+                Snackbar undoSnackbar = Snackbar.make(
+                        getView(),
+                        "Promo code restored!",
+                        Snackbar.LENGTH_SHORT);
+                final TextView undoSnackText = (TextView) undoSnackbar.getView()
+                        .findViewById(android.support.design.R.id.snackbar_text);
+                undoSnackText.setTextColor(Color.WHITE);
+                undoSnackbar.show();
+            }
+        });
+        snackbar.setActionTextColor(
+                getResources().getColor(R.color.handy_blue)
+        );
+        snackbar.show();
     }
 
 
@@ -208,4 +231,6 @@ public final class PromosFragment extends BookingFlowFragment
             activity.navigateToActivity(ServiceCategoriesActivity.class);
         }
     }
+
+
 }
