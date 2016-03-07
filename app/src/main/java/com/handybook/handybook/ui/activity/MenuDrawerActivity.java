@@ -318,7 +318,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 navigateToActivity(PromosActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_log_out:
-
+                mDrawerLayout.closeDrawers();
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(MenuDrawerActivity.this)
                         .setMessage(R.string.want_to_log_out)
                         .setPositiveButton(R.string.log_out, new DialogInterface.OnClickListener()
