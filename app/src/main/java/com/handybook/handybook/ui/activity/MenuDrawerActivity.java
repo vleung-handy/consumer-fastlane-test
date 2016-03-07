@@ -274,8 +274,6 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem)
     {
-
-        mDrawerLayout.closeDrawers();
         switch (menuItem.getItemId())
         {
             case R.id.nav_menu_home:
