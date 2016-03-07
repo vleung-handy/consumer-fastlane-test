@@ -110,3 +110,8 @@
 #Android 23 workaround
 -dontwarn com.viewpagerindicator.LinePageIndicator
 -dontwarn com.mixpanel.android.mpmetrics.GCMReceiver
+
+#v7 support libraries
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
