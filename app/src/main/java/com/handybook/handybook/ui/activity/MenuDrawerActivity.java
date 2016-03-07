@@ -230,7 +230,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         //calling sync state is necessary or else your hamburger icon wont show up
-        actionBarDrawerToggle.syncState();
+//        actionBarDrawerToggle.syncState();
     }
 
     @Override

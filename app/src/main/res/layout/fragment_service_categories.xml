@@ -13,6 +13,7 @@
         android:minHeight="?attr/actionBarSize"
         android:elevation="@dimen/low_elevation"
         android:theme="@style/Theme.Handy.AppBarOverlay"
+        app:navigationIcon="@drawable/ic_menu"
         >
         <ImageView
             android:layout_width="wrap_content"
