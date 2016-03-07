@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
-             android:layout_height="@dimen/menu_header_height"
-             android:background="@color/handy_blue"
-             android:paddingTop="@dimen/default_padding"
+             android:layout_height="wrap_content"
+             android:paddingTop="@dimen/default_padding_double"
     >
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:scaleType="fitCenter"
-        android:src="@drawable/handy_logo"
-        />
-
     <!-- We want a little button/text to show the current version/environment of the handy app -->
     <Button
         android:id="@+id/env_button"
