@@ -13,24 +13,10 @@
             />
 
         <item
-            android:id="@id/nav_menu_profile"
-            android:checked="false"
-            android:title="@string/account"
-            android:icon="@drawable/menu_account"
-            />
-
-        <item
             android:id="@id/nav_menu_my_bookings"
             android:checked="false"
             android:title="@string/my_bookings"
             android:icon="@drawable/menu_my_bookings"
-            />
-
-        <item
-            android:id="@id/nav_menu_payment"
-            android:checked="false"
-            android:title="@string/payment"
-            android:icon="@drawable/menu_payment"
             />
 
         <item
@@ -43,8 +29,22 @@
         <item
             android:id="@id/nav_menu_promotions"
             android:checked="false"
-            android:title="@string/promotions"
+            android:title="@string/promotions_menu"
             android:icon="@drawable/menu_promo"
+            />
+
+        <item
+            android:id="@id/nav_menu_payment"
+            android:checked="false"
+            android:title="@string/payment"
+            android:icon="@drawable/menu_payment"
+            />
+
+        <item
+            android:id="@id/nav_menu_profile"
+            android:checked="false"
+            android:title="@string/account"
+            android:icon="@drawable/menu_account"
             />
 
     </group>

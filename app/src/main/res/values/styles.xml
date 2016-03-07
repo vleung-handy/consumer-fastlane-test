@@ -29,6 +29,9 @@
         <item name="color">@color/handy_white</item>
     </style>
 
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
 
     <style name="Theme.Handy.PopupOverlay">
 
