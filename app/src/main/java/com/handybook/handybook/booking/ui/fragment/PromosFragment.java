@@ -189,8 +189,6 @@ public final class PromosFragment extends BookingFlowFragment
             // The user wants to delete the promo code
             bookingManager.setPromoTabCoupon(null);
             showSnackbar();
-//            final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-//            startActivity(intent);
         }
     }
 
