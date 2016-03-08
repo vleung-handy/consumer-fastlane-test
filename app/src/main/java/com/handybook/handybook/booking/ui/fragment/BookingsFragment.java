@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.analytics.MixpanelEvent;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
@@ -49,6 +49,8 @@ public class BookingsFragment extends InjectedFragment
     FloatingActionButton mAddBookingButton;
     private TabAdapter mTabAdapter;
     private List<Service> mServices;
+
+    public static final String mOverlayFragmentTag = ServiceCategoriesOverlayFragment.class.getSimpleName();
 
     public BookingsFragment()
     {
@@ -141,14 +143,13 @@ public class BookingsFragment extends InjectedFragment
         if (mServices != null)
         {
             final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            final String tag = ServiceCategoriesOverlayFragment.class.getSimpleName();
-            if (fragmentManager.findFragmentByTag(tag) == null)
+            if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null)
             {
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
                         .add(R.id.fragment_container,
                                 ServiceCategoriesOverlayFragment.newInstance(mServices),
-                                tag)
+                                mOverlayFragmentTag)
                         .addToBackStack(null)
                         .commit();
             }
