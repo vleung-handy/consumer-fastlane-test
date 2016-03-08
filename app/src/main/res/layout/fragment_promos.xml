@@ -64,7 +64,7 @@
                 android:id="@+id/promotions_coupon_text_clear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
+                android:layout_gravity="center_vertical|end"
                 android:layout_marginRight="@dimen/default_margin_half"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"

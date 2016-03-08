@@ -277,7 +277,7 @@
     </style>
 
     <style name="EditText.Last.PromoCode">
-        <item name="android:inputType">textCapCharacters</item>
+        <item name="android:inputType">textCapCharacters|textNoSuggestions|</item>
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/promo_code</item>
         <item name="android:maxLength">100</item>

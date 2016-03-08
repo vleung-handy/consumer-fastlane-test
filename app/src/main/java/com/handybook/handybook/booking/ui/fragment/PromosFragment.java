@@ -1,10 +1,11 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,17 +71,46 @@ public final class PromosFragment extends BookingFlowFragment
         menuButton.setColor(getResources().getColor(R.color.white));
         mMenuButtonLayout.addView(menuButton);
         mPromoCoupon = bookingManager.getPromoTabCoupon();
+        mPromoText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(
+                    final CharSequence s,
+                    final int start,
+                    final int count,
+                    final int after
+            )
+            {
+            }
+
+            @Override
+            public void onTextChanged(
+                    final CharSequence s,
+                    final int start,
+                    final int before,
+                    final int count
+            )
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s)
+            {
+                mPromoTextClearImage.setVisibility(s.toString().isEmpty() ? View.GONE : View.VISIBLE);
+            }
+        });
         if (mPromoCoupon != null)
         {
             mPromoText.setText(mPromoCoupon);
-            mPromoTextClearImage.setVisibility(View.VISIBLE);
         }
         return view;
     }
 
+
     /**
      * handles the bundle arguments. currently arguments are only passed from deep links
-     * <p/>
+     * <p>
      * must be called after onCreateView() due to butterknife dependency
      */
     private void handleBundleArguments()
