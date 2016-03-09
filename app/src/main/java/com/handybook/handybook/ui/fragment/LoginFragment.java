@@ -39,15 +39,12 @@ import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
 import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class LoginFragment extends BookingFlowFragment
-        implements MenuDrawerActivity.OnDrawerStateChangeListener
 {
     static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
     static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
@@ -490,29 +487,13 @@ public final class LoginFragment extends BookingFlowFragment
         enableInputs();
 
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        activity.setOnDrawerStateChangedListener(LoginFragment.this);
-
-        final MenuDrawer menuDrawer = activity.getMenuDrawer();
-        menuDrawer.openMenu(true);
+        activity.navigateToActivity(ServiceCategoriesActivity.class);
     }
 
     @Subscribe
     public void onReceiveUserError(final HandyEvent.ReceiveUserError event)
     {
         handleUserCallbackError(event.error, event.getAuthType());
-    }
-
-    @Override
-    public void onDrawerStateChange(
-            final MenuDrawer menuDrawer, final int oldState,
-            final int newState
-    )
-    {
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        if (newState == MenuDrawer.STATE_OPEN)
-        {
-            activity.navigateToActivity(ServiceCategoriesActivity.class);
-        }
     }
 
     private void handleUserCallbackError(

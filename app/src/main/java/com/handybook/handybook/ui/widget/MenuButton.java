@@ -47,7 +47,7 @@ public final class MenuButton extends ImageButton {
             @Override
             public void onClick(final View v) {
                 final MenuDrawerActivity activity = (MenuDrawerActivity)context;
-                activity.getMenuDrawer().toggleMenu();
+                activity.toggleMenu();
             }
         });
     }

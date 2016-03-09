@@ -9,17 +9,31 @@
         <item name="colorPrimary">@color/handy_blue</item>
         <item name="colorPrimaryDark">@color/handy_darkened_blue</item>
         <item name="colorAccent">@color/handy_service_painter</item>
-        <item name="android:windowContentTransitions">true</item>
         <item name="android:colorBackground">@color/handy_white</item>
         <item name="android:textViewStyle">@style/TextView</item>
+        <item name="android:listDivider">@color/handy_divider_line</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-    <style name="Theme.Base.AppBarOverlay">
+    <style name="Theme.Handy"
+           parent="Theme.Base"></style>
 
+    <style name="Theme.Handy.AppBarOverlay">
+        <item name="android:background">?colorPrimary</item>
     </style>
 
+    <!-- This style allows us to keep the Light.NoActionBar theme while having a white hamburger menu-->
+    <style name="DrawerArrowStyle"
+           parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/handy_white</item>
+    </style>
 
-    <style name="Theme.Base.PopupOverlay">
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="Theme.Handy.PopupOverlay">
 
     </style>
 

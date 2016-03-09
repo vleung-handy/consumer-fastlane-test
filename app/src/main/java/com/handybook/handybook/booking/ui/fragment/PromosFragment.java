@@ -16,20 +16,16 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.MenuButton;
-
-import net.simonvt.menudrawer.MenuDrawer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class PromosFragment extends BookingFlowFragment
-        implements MenuDrawerActivity.OnDrawerStateChangeListener
-{
+public final class PromosFragment extends BookingFlowFragment {
 
     public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
 
@@ -91,7 +87,6 @@ public final class PromosFragment extends BookingFlowFragment
                     final int count
             )
             {
-
             }
 
             @Override
@@ -165,12 +160,7 @@ public final class PromosFragment extends BookingFlowFragment
                     else if (code.getType() == PromoCode.Type.COUPON)
                     {
                         bookingManager.setPromoTabCoupon(code.getCode());
-
-                        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-                        activity.setOnDrawerStateChangedListener(PromosFragment.this);
-
-                        final MenuDrawer menuDrawer = activity.getMenuDrawer();
-                        menuDrawer.openMenu(true);
+                        ((MenuDrawerActivity)getActivity()).navigateToActivity(ServiceCategoriesActivity.class);
                     }
                 }
 
@@ -246,19 +236,4 @@ public final class PromosFragment extends BookingFlowFragment
         super.enableInputs();
         mApplyButton.setClickable(true);
     }
-
-    @Override
-    public void onDrawerStateChange(
-            final MenuDrawer menuDrawer, final int oldState,
-            final int newState
-    )
-    {
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        if (newState == MenuDrawer.STATE_OPEN)
-        {
-            activity.navigateToActivity(ServiceCategoriesActivity.class);
-        }
-    }
-
-
 }

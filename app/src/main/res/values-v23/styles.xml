@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- This deals with the weird spacing issue happening only on M-->
     <style name="TextView"
            parent="android:Widget.TextView">
         <item name="android:textColor">@color/handy_text_black</item>
