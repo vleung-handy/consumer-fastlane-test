@@ -11,17 +11,14 @@
         android:text="@string/next"
         />
 
-    <TextView
-        android:id="@+id/nav_text"
-        style="@style/TextView.Navbar"
-        android:text="@string/location"
+    <include layout="@layout/toolbar"
         />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text"
+        android:layout_below="@id/toolbar"
         >
 
         <TextView

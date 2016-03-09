@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,9 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
     @Bind(R.id.next_button)
     Button nextButton;
 
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     public static BookingRecurrenceFragment newInstance() {
         final BookingRecurrenceFragment fragment = new BookingRecurrenceFragment();
         return fragment;
@@ -46,7 +50,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
                 .inflate(R.layout.fragment_booking_recurrence, container, false);
 
         ButterKnife.bind(this, view);
-
+        setupToolbar(mToolbar, getString(R.string.how_often));
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();

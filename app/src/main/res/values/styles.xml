@@ -20,6 +20,7 @@
 
     <style name="Theme.Handy.AppBarOverlay">
         <item name="android:background">?colorPrimary</item>
+        <item name="android:textColorPrimary">@color/handy_white</item>
     </style>
 
     <!-- This style allows us to keep the Light.NoActionBar theme while having a white hamburger menu-->

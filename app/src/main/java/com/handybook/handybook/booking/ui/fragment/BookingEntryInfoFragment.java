@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -23,6 +24,7 @@ import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.util.TextUtils;
 
@@ -50,6 +52,9 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     TextView mHeaderText;
     @Bind(R.id.next_button)
     Button mNextButton;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Bind(R.id.keys_text)
     BasicInputTextView mKeysText;
@@ -89,6 +94,11 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_entry_info, container, false);
 
         ButterKnife.bind(this, view);
+
+        //we don't allow the user to go back to the previous screen.
+        mToolbar.setNavigationIcon(R.drawable.ic_menu);
+        setupToolbar(mToolbar, getString(R.string.confirmation));
+        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
 
         mKeysText.setMinLength(2);
         mKeysText.setHint(getString(R.string.where_hide_key));

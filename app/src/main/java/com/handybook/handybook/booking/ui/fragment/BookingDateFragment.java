@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.view.GroovedTimePicker;
 
 import java.util.ArrayList;
@@ -42,10 +43,13 @@ public final class BookingDateFragment extends BookingFlowFragment
     DatePicker mDatePicker;
     @Bind(R.id.time_picker)
     GroovedTimePicker mGroovedTimePicker;
-    @Bind(R.id.nav_text)
-    TextView mNavTextView;
+
     @Bind(R.id.notice_text)
     TextView mNoticeTextView;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     private ArrayList<BookingOption> mBookingOptions;
     private Booking mRescheduleBooking;
     private final View.OnClickListener nextClicked = new View.OnClickListener()
@@ -191,10 +195,13 @@ public final class BookingDateFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_date, container, false);
         ButterKnife.bind(this, view);
+
+        setupToolbar(mToolbar, getString(R.string.time));
+
         mGroovedTimePicker.setInterval(MINUTE_INTERVAL);
         if (mRescheduleBooking != null)
         {
-            mNavTextView.setText(getString(R.string.reschedule));
+            setToolbarTitle(getString(R.string.reschedule));
             mNextButton.setText(getString(R.string.reschedule));
             if (mNotice != null)
             {

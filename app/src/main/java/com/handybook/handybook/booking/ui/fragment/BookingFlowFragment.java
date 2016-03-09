@@ -3,6 +3,9 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.booking.model.Booking;
@@ -87,6 +90,32 @@ public class BookingFlowFragment extends InjectedFragment
 
         final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * This method will be used by those that actually have a toolbar
+     *
+     * @param title
+     */
+    public void setupToolbar(Toolbar toolbar, String title)
+    {
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        setToolbarTitle(title);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().onBackPressed();
+            }
+        });
+    }
+
+    public void setToolbarTitle(String title)
+    {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
     }
 
     public final void continueBookingFlow()
