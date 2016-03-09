@@ -57,7 +57,6 @@ import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.module.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
-import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.squareup.otto.Bus;
