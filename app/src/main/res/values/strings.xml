@@ -338,4 +338,6 @@
     <string name="note_to_pro">Note to Pro</string>
     <string name="close_drawer">Close Drawer</string>
     <string name="open_drawer">Open Drawer</string>
+    <string name="snackbar_promo_code_deleted">Promo code deleted.</string>
+    <string name="undo">UNDO</string>
 </resources>

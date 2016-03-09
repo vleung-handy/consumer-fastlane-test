@@ -24,6 +24,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -37,6 +38,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class ServiceCategoriesFragment extends BookingFlowFragment
 {
@@ -48,13 +50,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     /**
      * maps the service id to its icon image view as rendered.
      * using service id rather than service object as key in case the object references differ
-     *
+     * <p/>
      * used for the cool icon transition to ServicesActivity
-     *
+     * <p/>
      * we need this because the transition requires a
      * reference to the EXACT image view of the service icon
      * rendered in the service category views
-     *
      */
     private Map<Integer, ImageView> mServiceIconMap = new HashMap<>();
 
@@ -146,7 +147,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     /**
      * handles bundle arguments. currently only from deeplinks
-     *
+     * <p/>
      * should be called after handleLoadServicesResponse() so that we have the list of services
      */
     private void handleBundleArguments()
@@ -277,6 +278,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onStart();
         showCouponAppliedNotificationIfNecessary();
+    }
+
+    @OnClick(R.id.coupon_layout)
+    public void onCouponClick()
+    {
+        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class);
     }
 
     /**
