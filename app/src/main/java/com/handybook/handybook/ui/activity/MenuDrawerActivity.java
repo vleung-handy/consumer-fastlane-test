@@ -238,12 +238,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     public void setupHamburgerMenu(Toolbar toolbar)
     {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
-
-        //Setting the actionbarToggle to drawer layout
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
-
-        //calling sync state is necessary or else your hamburger icon wont show up
-//        actionBarDrawerToggle.syncState();
     }
 
     @Override
