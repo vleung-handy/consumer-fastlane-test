@@ -1,15 +1,15 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
-import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.core.TestBaseApplication;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class BookingOptionsFragmentTest extends RobolectricGradleTestWrapper
                 false
         );
 
-        SupportFragmentTestUtil.startVisibleFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test

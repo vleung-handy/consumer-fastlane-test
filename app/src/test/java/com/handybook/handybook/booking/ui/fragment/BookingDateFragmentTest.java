@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.manager.BookingManager;
@@ -66,7 +67,7 @@ public class BookingDateFragmentTest extends RobolectricGradleTestWrapper
         when(mMockBookingQuote.getAddress()).thenReturn(mock(BookingQuote.Address.class));
 
         mFragment = BookingDateFragment.newInstance(new ArrayList<BookingOption>());
-        SupportFragmentTestUtil.startVisibleFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test

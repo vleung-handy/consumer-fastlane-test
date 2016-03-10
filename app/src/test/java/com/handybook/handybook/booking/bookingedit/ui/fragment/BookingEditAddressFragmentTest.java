@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
+import android.support.v7.app.AppCompatActivity;
+
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
@@ -43,7 +45,7 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
         when(mBooking.getId()).thenReturn("12345");
         when(mBooking.getAddress()).thenReturn(mBookingAddress);
         mFragment = BookingEditAddressFragment.newInstance(mBooking);
-        SupportFragmentTestUtil.startFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test

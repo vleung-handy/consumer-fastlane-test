@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.manager.BookingManager;
@@ -8,9 +9,8 @@ import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
-import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
+import com.handybook.handybook.core.TestBaseApplication;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class BookingExtrasFragmentTest extends RobolectricGradleTestWrapper
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
         mFragment = BookingExtrasFragment.newInstance();
-        SupportFragmentTestUtil.startVisibleFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test
