@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -31,6 +32,9 @@ import java.util.Date;
 
 public class BookingFlowFragment extends InjectedFragment
 {
+
+    private boolean mUseCoupon = true;
+
     @Override
     public void onCreate(final Bundle savedInstanceState)
     {
@@ -383,6 +387,11 @@ public class BookingFlowFragment extends InjectedFragment
 
         enableInputs();
         progressDialog.dismiss();
+        if (isErrorCausedByInvalidCoupon(error))
+        {
+            informUserWeWillProceedWithoutCoupon(error);
+            return;
+        }
         dataManagerErrorHandler.handleError(getActivity(), error);
 
         if (BookingFlowFragment.this instanceof LoginFragment)
@@ -390,6 +399,20 @@ public class BookingFlowFragment extends InjectedFragment
             getActivity().setResult(ActivityResult.LOGIN_FINISH);
             getActivity().finish();
         }
+    }
+
+    private boolean isErrorCausedByInvalidCoupon(final DataManager.DataManagerError error)
+    {
+        return error != null
+                && error.getMessage() != null
+                && error.getMessage().toUpperCase().contains("CODE") // This is dirty but at least
+                && error.getMessage().toUpperCase().contains("INVALID"); // they can finish booking
+    }
+
+    private void informUserWeWillProceedWithoutCoupon(final DataManager.DataManagerError error)
+    {
+        mUseCoupon = false;
+        showToast(R.string.toast_error_booking_flow_coupon_invalid);
     }
 
     private void handleBookingQuoteSuccess(final BookingQuote quote, final boolean isUpdate)
@@ -429,7 +452,7 @@ public class BookingFlowFragment extends InjectedFragment
         final String authToken = user != null ? user.getAuthToken() : null;
         final String coupon = bookingManager.getPromoTabCoupon();
 
-        if (coupon != null && !coupon.isEmpty())
+        if (coupon != null && !coupon.isEmpty() && mUseCoupon)
         {
             dataManager.applyPromo(coupon, quote.getBookingId(), userId, email, authToken,
                     new DataManager.Callback<BookingCoupon>()

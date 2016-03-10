@@ -134,7 +134,7 @@ public final class PromosFragment extends BookingFlowFragment {
     }
 
     @OnClick(R.id.promotions_apply_button)
-    public void onClick(final View v)
+    public void applyChanges()
     {
         final String promoCode = mPromoText.getText().toString();
 
@@ -149,10 +149,8 @@ public final class PromosFragment extends BookingFlowFragment {
                 public void onSuccess(final PromoCode code)
                 {
                     if (!allowCallbacks) { return; }
-
                     progressDialog.dismiss();
                     enableInputs();
-
                     if (code.getType() == PromoCode.Type.VOUCHER)
                     {
                         startBookingFlow(code.getServiceId(), code.getUniq(), code);
@@ -189,7 +187,6 @@ public final class PromosFragment extends BookingFlowFragment {
                 R.string.snackbar_promo_code_deleted,
                 Snackbar.LENGTH_LONG
         );
-
         final TextView snackText = (TextView) snackbar.getView()
                 .findViewById(android.support.design.R.id.snackbar_text);
         snackText.setTextColor(Color.WHITE);
@@ -202,7 +199,7 @@ public final class PromosFragment extends BookingFlowFragment {
                 mPromoText.setText(mPromoCoupon);
                 Snackbar undoSnackbar = Snackbar.make(
                         getView(),
-                        "Promo code restored!",
+                        R.string.snackbar_promo_code_restored,
                         Snackbar.LENGTH_SHORT);
                 final TextView undoSnackText = (TextView) undoSnackbar.getView()
                         .findViewById(android.support.design.R.id.snackbar_text);
@@ -221,6 +218,10 @@ public final class PromosFragment extends BookingFlowFragment {
     public void clearPromoCode()
     {
         mPromoText.setText("");
+        if (mPromoCoupon != null)
+        { // If the user had a coupon and clears the field, apply changes
+            applyChanges();
+        }
     }
 
     @Override
