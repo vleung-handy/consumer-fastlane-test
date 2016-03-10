@@ -405,8 +405,8 @@ public class BookingFlowFragment extends InjectedFragment
     {
         return error != null
                 && error.getMessage() != null
-                && error.getMessage().toUpperCase().contains("CODE")
-                && error.getMessage().toUpperCase().contains("INVALID");
+                && error.getMessage().toUpperCase().contains("CODE") // This is dirty but at least
+                && error.getMessage().toUpperCase().contains("INVALID"); // they can finish booking
     }
 
     private void informUserWeWillProceedWithoutCoupon(final DataManager.DataManagerError error)
