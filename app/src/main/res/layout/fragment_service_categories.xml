@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:elevation="@dimen/low_elevation"
+        android:elevation="@dimen/med_elevation"
         android:theme="@style/Theme.Handy.AppBarOverlay"
         app:navigationIcon="@drawable/ic_menu"
         >

@@ -587,7 +587,7 @@
     <style name="RelativeLayout.NavBar.Blue">
         <item name="android:textColor">@color/handy_white</item>
         <item name="android:background">@color/handy_blue</item>
-        <item name="android:elevation">@dimen/low_elevation</item>
+        <item name="android:elevation">@dimen/med_elevation</item>
     </style>
 
     <style name="BookingDetailSectionView">
