@@ -340,4 +340,6 @@
     <string name="open_drawer">Open Drawer</string>
     <string name="snackbar_promo_code_deleted">Promo code deleted.</string>
     <string name="undo">UNDO</string>
+    <string name="toast_error_booking_flow_coupon_invalid">Sorry, that coupon is invalid for this booking. It will not be applied to your total.</string>
+    <string name="snackbar_promo_code_restored">Promo code restored!</string>
 </resources>
