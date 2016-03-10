@@ -132,7 +132,6 @@ import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
-import com.handybook.handybook.ui.fragment.NavigationFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.ui.fragment.ProfileFragment;
@@ -156,7 +155,6 @@ import retrofit.converter.GsonConverter;
 @Module(injects = {
         ServiceCategoriesFragment.class,
         LoginFragment.class,
-        NavigationFragment.class,
         ProfileFragment.class,
         BookingsFragment.class,
         BookingListFragment.class,

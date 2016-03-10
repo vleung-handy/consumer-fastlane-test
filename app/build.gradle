@@ -165,9 +165,6 @@ dependencies {
     //Stripe payment processing
     compile 'com.stripe:stripe-android:1.0.0.1'
 
-    //Menu drawer for navigation
-    compile 'net.simonvt.menudrawer:menudrawer:3.0.6'
-
     //Calligraphy for fonts
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
