@@ -2,46 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:tools="http://schemas.android.com/tools"
                 xmlns:custom="http://schemas.android.com/apk/res-auto"
-                android:background="@color/handy_bg">
+                android:background="@color/handy_bg"
+    >
 
     <Button
         android:id="@+id/update_button"
         android:text="@string/update"
         style="@style/Button.Green" />
 
-    <!--TODO: make the nav layout more reusable-->
-    <RelativeLayout
-        android:id="@+id/nav_layout"
-        style="@style/RelativeLayout.NavBar.Blue"
-        >
-
-        <RelativeLayout
-            android:id="@+id/menu_button_layout"
-            style="@style/MenuButtonLayout"
-            />
-
-        <TextView
-            android:id="@+id/nav_text"
-            style="@style/TextView.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/menu_button_layout"
-            android:text="@string/account"
-            android:textColor="@color/handy_white"
-            android:textSize="@dimen/text_size_large"
-            />
-
-    </RelativeLayout>
+    <include layout="@layout/toolbar"
+        />
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/update_button"
-        android:layout_below="@id/nav_layout">
+        android:layout_below="@id/toolbar"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"

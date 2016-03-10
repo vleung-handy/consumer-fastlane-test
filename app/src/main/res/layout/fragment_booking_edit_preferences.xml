@@ -7,11 +7,7 @@
     android:orientation="vertical"
     >
 
-    <com.handybook.handybook.ui.widget.BackButtonNavBar
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/booking_edit_preferences_title"
+    <include layout="@layout/toolbar"
         />
 
     <ScrollView

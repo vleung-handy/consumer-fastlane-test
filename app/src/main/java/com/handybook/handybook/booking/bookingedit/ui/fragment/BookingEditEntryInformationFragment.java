@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -48,6 +49,9 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     @Bind(R.id.keys_text)
     BasicInputTextView keysText;
 
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     private BookingOptionsView optionsView;
 
     public static BookingEditEntryInformationFragment newInstance(final Booking booking)
@@ -81,6 +85,9 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_edit_entry_info, container, false);
         ButterKnife.bind(this, view);
+
+        setupToolbar(mToolbar, getString(R.string.entry_info));
+
         initHeader();
         initKeysText();
         initOptionsView();

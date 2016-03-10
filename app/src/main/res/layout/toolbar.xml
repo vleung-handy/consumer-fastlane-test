@@ -11,6 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="@dimen/low_elevation"
         android:theme="@style/Theme.Handy.AppBarOverlay"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
         app:contentInsetStart="0dp"
         app:navigationIcon="@drawable/ic_back"
         />

@@ -4,7 +4,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -59,6 +62,32 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
         progressDialog.setDelay(400);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.loading));
+    }
+
+    /**
+     * This method will be used by those that actually have a toolbar
+     *
+     * @param title
+     */
+    public void setupToolbar(Toolbar toolbar, String title)
+    {
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        setToolbarTitle(title);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().onBackPressed();
+            }
+        });
+    }
+
+    public void setToolbarTitle(String title)
+    {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
     }
 
     @Override
