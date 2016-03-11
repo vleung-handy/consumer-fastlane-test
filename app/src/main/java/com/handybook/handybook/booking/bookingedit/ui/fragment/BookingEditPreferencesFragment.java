@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,7 +20,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.widget.BackButtonNavBar;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
@@ -42,8 +42,8 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     @Bind(R.id.edit_preferences_note_to_pro)
     BasicInputTextView mNoteToProTextView;
 
-    @Bind(R.id.nav_bar)
-    BackButtonNavBar mNavBar;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     public static BookingEditPreferencesFragment newInstance(final Booking booking)
     {
@@ -83,6 +83,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_edit_preferences, container, false);
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.booking_edit_preferences_title));
         return view;
     }
 
@@ -96,7 +97,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                 && mBooking.getInstructions().getBookingInstructions() != null
                 && !mBooking.getInstructions().getBookingInstructions().isEmpty())
         {
-            mNavBar.setText(getString(R.string.booking_edit_cleaning_routine_title));
+            setToolbarTitle(getString(R.string.booking_edit_cleaning_routine_title));
             mInstructionListView.reflect(mBooking.getInstructions());
             mInstructionListView.setOnInstructionsChangedListener(
                     new InstructionListView.OnInstructionsChangedListener()

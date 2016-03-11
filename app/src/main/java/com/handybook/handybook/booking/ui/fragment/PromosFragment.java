@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,7 +20,6 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.widget.MenuButton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,14 +29,15 @@ public final class PromosFragment extends BookingFlowFragment {
 
     public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
 
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
     @Bind(R.id.promotions_apply_button)
     Button mApplyButton;
     @Bind(R.id.promotions_coupon_text)
     EditText mPromoText;
     @Bind(R.id.promotions_coupon_text_clear)
     View mPromoTextClearImage;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     private String mPromoCoupon;
 
@@ -63,9 +64,11 @@ public final class PromosFragment extends BookingFlowFragment {
         final View view = getActivity()
                 .getLayoutInflater().inflate(R.layout.fragment_promos, container, false);
         ButterKnife.bind(this, view);
-        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(getResources().getColor(R.color.white));
-        mMenuButtonLayout.addView(menuButton);
+
+        mToolbar.setNavigationIcon(R.drawable.ic_menu);
+        setupToolbar(mToolbar, getString(R.string.promotions));
+        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+
         mPromoCoupon = bookingManager.getPromoTabCoupon();
         mPromoText.addTextChangedListener(new TextWatcher()
         {

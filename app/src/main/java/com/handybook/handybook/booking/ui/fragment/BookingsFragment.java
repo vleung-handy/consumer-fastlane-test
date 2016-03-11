@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,9 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
-import com.handybook.handybook.ui.widget.MenuButton;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -39,14 +40,16 @@ import butterknife.OnClick;
  */
 public class BookingsFragment extends InjectedFragment
 {
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
     @Bind(R.id.pager)
     ViewPager mViewPager;
     @Bind(R.id.tab_layout)
     HandyTabLayout mTabLayout;
     @Bind(R.id.add_booking_button)
     FloatingActionButton mAddBookingButton;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     private TabAdapter mTabAdapter;
     private List<Service> mServices;
 
@@ -94,13 +97,15 @@ public class BookingsFragment extends InjectedFragment
     {
         final View view = inflater.inflate(R.layout.fragment_bookings, container, false);
         ButterKnife.bind(this, view);
+
+        setupToolbar(mToolbar, getString(R.string.my_bookings));
+        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
-        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(getResources().getColor(R.color.white));
-        mMenuButtonLayout.addView(menuButton);
+
         bus.post(new BookingEvent.RequestServices());
 
         getActivity().getSupportFragmentManager()

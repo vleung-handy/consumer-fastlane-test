@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:background="@color/handy_bg"
               android:layout_height="match_parent"
               android:layout_width="match_parent"
               android:orientation="vertical"
     >
 
-    <!--TODO: create templates for the booking flow screens-->
-    <com.handybook.handybook.ui.widget.BackButtonNavBar
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/booking_edit_address_title"
+    <include layout="@layout/toolbar"
         />
+
 
     <ScrollView
         android:layout_weight="1"

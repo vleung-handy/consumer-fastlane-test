@@ -2,11 +2,11 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
@@ -46,8 +46,8 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     @Bind(R.id.instructions_layout)
     InstructionListView mInstructionListView;
 
-    @Bind(R.id.nav_text)
-    TextView mNavText;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     {
 
@@ -126,6 +126,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_preferences, container, false);
 
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.job_details));
         return view;
     }
 
@@ -151,7 +152,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 !mInstructions.getBookingInstructions().isEmpty())
         {
 
-            mNavText.setText(getString(R.string.cleaning_routine));
+            setToolbarTitle(getString(R.string.cleaning_routine));
             mInstructionListView.reflect(mInstructions);
             mInstructionListView.setOnInstructionsChangedListener(
                     new InstructionListView.OnInstructionsChangedListener()

@@ -3,6 +3,7 @@ package com.handybook.handybook.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -16,13 +17,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
-import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.ThinIconButton;
@@ -60,10 +61,11 @@ public final class ProfileFragment extends InjectedFragment {
     PasswordInputTextView oldPasswordtext;
     @Bind(R.id.new_password_text)
     PasswordInputTextView newPasswordtext;
-    @Bind(R.id.menu_button_layout)
-    ViewGroup menuButtonLayout;
     @Bind(R.id.cancel_cleaning_plan_button)
     ThinIconButton mCancelCleaningPlanButton;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -89,13 +91,13 @@ public final class ProfileFragment extends InjectedFragment {
 
         ButterKnife.bind(this, view);
 
+        mToolbar.setNavigationIcon(R.drawable.ic_menu);
+        setupToolbar(mToolbar, getString(R.string.account));
+        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+
         phoneText.setCountryCode(user.getPhonePrefix());
         oldPasswordtext.addTextChangedListener(passwordTextWatcher);
         newPasswordtext.addTextChangedListener(passwordTextWatcher);
-
-        final MenuButton menuButton = new MenuButton(getActivity(), menuButtonLayout);
-        menuButton.setColor(getResources().getColor(R.color.white));
-        menuButtonLayout.addView(menuButton);
 
         return view;
     }

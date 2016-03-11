@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,8 @@ import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.Utils;
 import com.handybook.handybook.util.ValidationUtils;
@@ -31,8 +32,6 @@ import butterknife.OnClick;
 
 public class ReferralFragment extends InjectedFragment
 {
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
     @Bind(R.id.referral_content)
     View mReferralContent;
     @Bind(R.id.title)
@@ -47,6 +46,9 @@ public class ReferralFragment extends InjectedFragment
     View mEnvelopeShadow;
     @Bind(R.id.bling)
     View mBling;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
@@ -67,9 +69,9 @@ public class ReferralFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_referral, container, false);
         ButterKnife.bind(this, view);
 
-        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(getResources().getColor(R.color.white));
-        mMenuButtonLayout.addView(menuButton);
+        mToolbar.setNavigationIcon(R.drawable.ic_menu);
+        setupToolbar(mToolbar, getString(R.string.free_cleanings));
+        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
 
         return view;
     }

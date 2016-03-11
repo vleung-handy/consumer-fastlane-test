@@ -12,11 +12,7 @@
         android:text="@string/update"
         />
 
-    <com.handybook.handybook.ui.widget.BackButtonNavBar
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/confirmation"
+    <include layout="@layout/toolbar"
         />
 
     <!--below is completely duplicated from fragment_booking_confirmation-->
@@ -25,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_bar"
+        android:layout_below="@id/toolbar"
         >
 
         <RelativeLayout

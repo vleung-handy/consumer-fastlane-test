@@ -39,7 +39,7 @@
     <dimen name="short_divider_width">100dp</dimen>
     <dimen name="menu_header_height">160dp</dimen>
 
+    <dimen name="med_elevation">4dp</dimen>
     <dimen name="low_elevation">2dp</dimen>
-    <dimen name="medium_elevation">4dp</dimen>
     <dimen name="high_elevation">8dp</dimen>
 </resources>

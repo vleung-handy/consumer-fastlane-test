@@ -1,4 +1,4 @@
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,36 +7,24 @@
     tools:context=".booking.ui.fragment.BookingsFragment"
     >
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/handy_blue"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Handy.AppBarOverlay"
         >
 
-        <FrameLayout
-            android:id="@+id/nav_layout"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/Theme.Handy.AppBarOverlay"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:contentInsetStart="0dp"
+            app:navigationIcon="@drawable/ic_menu"
+            android:title="@string/my_bookings"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            />
 
-            <TextView
-                android:id="@+id/nav_text"
-                style="@style/TextView.Large"
-                android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:layout_marginLeft="72dp"
-                android:layout_marginStart="72dp"
-                android:gravity="center_vertical"
-                android:text="@string/my_bookings"
-                android:textColor="@color/white"
-                />
-
-            <RelativeLayout
-                android:id="@+id/menu_button_layout"
-                style="@style/MenuButtonLayout"
-                />
-        </FrameLayout>
 
         <com.handybook.handybook.ui.view.HandyTabLayout
             android:id="@+id/tab_layout"
@@ -48,24 +36,21 @@
             app:tabSelectedTextColor="@color/white"
             app:tabTextAppearance="@style/TextAppearance.TabText"
             app:tabTextColor="@color/handy_white_semitransparent"
-
+            android:layout_below="@id/nav_text"
+            android:layout_centerInParent="true"
             >
         </com.handybook.handybook.ui.view.HandyTabLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            />
+    </android.support.design.widget.AppBarLayout>
 
-    </LinearLayout>
-
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/add_booking_button"
@@ -78,6 +63,4 @@
             app:backgroundTint="@color/handy_blue"
             app:fabSize="normal"
             />
-    </android.support.design.widget.CoordinatorLayout>
-
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
