@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
@@ -44,6 +45,8 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
+    private boolean mIsPreferenceDragged, mIsPreferenceToggled;
 
     public static BookingEditPreferencesFragment newInstance(final Booking booking)
     {
@@ -103,8 +106,21 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                     new InstructionListView.OnInstructionsChangedListener()
                     {
                         @Override
-                        public void onInstructionsChanged(final Instructions instructions)
+                        public void onInstructionsChanged(
+                                final Instructions instructions,
+                                InstructionListView.ChangeType changeType
+                        )
                         {
+                            switch (changeType)
+                            {
+                                case UNKNOWN:
+                                    break;
+                                case POSITION_CHANGE:
+                                    mIsPreferenceDragged = true;
+                                    break;
+                                case STATE_CHANGE:
+                                    mIsPreferenceToggled = true;
+                            }
                             mFinalizeBookingRequestPayload.setBookingInstructions(
                                     instructions.getBookingInstructions()
                             );
@@ -189,6 +205,12 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         disableInputs();
         progressDialog.show();
         int bookingId = Integer.parseInt(mBooking.getId());
+        bus.post(new MixpanelEvent.TrackChecklist(
+                Integer.parseInt(mBooking.getId()),
+                false, // This is not post booking (it's edit)
+                mIsPreferenceDragged,
+                mIsPreferenceToggled
+        ));
         bus.post(new BookingEditEvent.RequestEditPreferences(bookingId, mFinalizeBookingRequestPayload));
     }
 
