@@ -88,11 +88,6 @@
                     android:path="/"
                     android:scheme="handy"
                     />
-                <data
-                    android:host="bookings"
-                    android:path="/"
-                    android:scheme="handy"
-                    />
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.LoginActivity"/>
@@ -226,6 +221,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data android:scheme="handybook"/>
+                <data android:scheme="handy"/>
                 <!-- TODO: parameterize the scheme? -->
             </intent-filter>
         </activity>
