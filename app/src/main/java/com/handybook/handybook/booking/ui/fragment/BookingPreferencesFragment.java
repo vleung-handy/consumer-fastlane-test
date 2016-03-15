@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
@@ -49,6 +50,8 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    private boolean mIsPreferenceDragged, mIsPreferenceToggled;
+
     {
 
         mOnNextClickedListener = new View.OnClickListener()
@@ -66,6 +69,12 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                     );
                 }
                 mFinalizeBookingRequestPayload.setNoteToPro(mNoteToProTextView.getInput());
+                bus.post(new MixpanelEvent.TrackChecklist(
+                        bookingManager.getCurrentTransaction().getBookingId(),
+                        true,
+                        mIsPreferenceDragged,
+                        mIsPreferenceToggled
+                ));
                 if (mIsNewUser) // Prompt the user to create a pasword
                 {
                     final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
@@ -158,8 +167,21 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                     new InstructionListView.OnInstructionsChangedListener()
                     {
                         @Override
-                        public void onInstructionsChanged(final Instructions instructions)
+                        public void onInstructionsChanged(
+                                final Instructions instructions,
+                                InstructionListView.ChangeType changeType
+                        )
                         {
+                            switch (changeType)
+                            {
+                                case UNKNOWN:
+                                    break;
+                                case POSITION_CHANGE:
+                                    mIsPreferenceDragged = true;
+                                    break;
+                                case STATE_CHANGE:
+                                    mIsPreferenceToggled = true;
+                            }
                             mFinalizeBookingRequestPayload.setBookingInstructions(
                                     instructions.getBookingInstructions()
                             );

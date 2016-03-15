@@ -22,6 +22,7 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_EXTRAS = "App Track Extras";
         public static final String APP_TRACK_ADDRESS = "App Track Address";
         public static final String APP_TRACK_PAYMENT = "App Track Payment";
+        public static final String APP_TRACK_CHECKLIST = "App Track Checklist";
         //TODO: ^this event key already exists in Mixpanel.java, need to move it out
         public static final String APP_TRACK_CONFIRMATION = "App Track Confirmation";
         public static final String APP_TRACK_BOOKING_MADE = "booking made";
@@ -251,4 +252,32 @@ public abstract class MixpanelEvent
 
     @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED)
     public static class TrackAddBookingFabMenuDismissed {}
+
+
+    @Track(EventKey.APP_TRACK_CHECKLIST)
+    public static class TrackChecklist
+    {
+        @TrackField("booking_id")
+        private final int mBookingId;
+        @TrackField("is_post_booking")
+        private final boolean mIsPostBooking;
+        @TrackField("preference_dragged")
+        private final boolean mIsPreferenceDragged;
+        @TrackField("preference_toggled")
+        private final boolean mIsPreferenceToggled;
+
+        public TrackChecklist(
+                final int bookingId,
+                final boolean isPostBooking,
+                final boolean isPreferenceDragged,
+                final boolean isPreferenceToggled
+        )
+        {
+            mBookingId = bookingId;
+            mIsPostBooking = isPostBooking;
+            mIsPreferenceDragged = isPreferenceDragged;
+            mIsPreferenceToggled = isPreferenceToggled;
+        }
+    }
+
 }
