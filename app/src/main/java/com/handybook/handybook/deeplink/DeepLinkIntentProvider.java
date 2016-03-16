@@ -46,7 +46,8 @@ public class DeepLinkIntentProvider
     @DeepLink({
             DEEP_LINK_BASE_URL + "home",
             DEEP_LINK_BASE_URL + "normal_flow",
-            DEEP_LINK_BASE_URL + "promo_applied"})
+            DEEP_LINK_BASE_URL + "promo_applied",
+            DEEP_LINK_NEW_BASE_URL + "home"})
     public static Intent getHomeIntent(Context context)
     {
         Intent intent = new Intent(context, ServiceCategoriesActivity.class);
@@ -63,7 +64,8 @@ public class DeepLinkIntentProvider
         return intent;
     }
 
-    @DeepLink(DEEP_LINK_SIDE_MENU_URL + "promo")
+    @DeepLink({DEEP_LINK_SIDE_MENU_URL + "promo",
+            DEEP_LINK_NEW_BASE_URL + "promo"})
     public static Intent getPromoIntent(Context context)
     {
         return new Intent(context, PromosActivity.class);
@@ -92,7 +94,8 @@ public class DeepLinkIntentProvider
     }
 
 
-    @DeepLink(DEEP_LINK_SIDE_MENU_URL + "account")
+    @DeepLink({DEEP_LINK_SIDE_MENU_URL + "account",
+            DEEP_LINK_NEW_BASE_URL + "account"})
     public static Intent getAccountIntent(Context context)
     {
         if(isUserLoggedIn())
@@ -102,7 +105,8 @@ public class DeepLinkIntentProvider
         return getHomeIntent(context);
     }
 
-    @DeepLink(DEEP_LINK_SIDE_MENU_URL + "help")
+    @DeepLink({DEEP_LINK_SIDE_MENU_URL + "help",
+            DEEP_LINK_NEW_BASE_URL + "help"})
     public static Intent getHelpIntent(Context context)
     {
         return new Intent(context, HelpActivity.class);
