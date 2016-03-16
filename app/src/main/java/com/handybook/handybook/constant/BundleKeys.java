@@ -42,4 +42,5 @@ public class BundleKeys
     public static final String CANCEL_RECURRING_BOOKING_URL = "cancel_recurring_booking_url";
 
     public static final String HELP_CENTER_URL = "help_center_url";
+    public static final String ACTIVITY = "activity";
 }

@@ -56,9 +56,10 @@ public class DeepLinkIntentProvider
         return intent;
     }
 
-    public static Intent getLoginIntent(Context context)
+    public static Intent getLoginIntent(Context context, Class<?> destinationClass)
     {
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra(BundleKeys.ACTIVITY, destinationClass.getName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;
@@ -79,7 +80,7 @@ public class DeepLinkIntentProvider
         {
             return new Intent(context, BookingsActivity.class);
         }
-        return getLoginIntent(context);
+        return getLoginIntent(context, BookingsActivity.class);
     }
 
     @DeepLink({DEEP_LINK_SIDE_MENU_URL + "mybookings/id/{" + BundleKeys.DEEPLINK_BOOKING_ID + "}",
@@ -90,7 +91,7 @@ public class DeepLinkIntentProvider
         {
             return new Intent(context, BookingDetailActivity.class);
         }
-        return getLoginIntent(context);
+        return getLoginIntent(context, BookingDetailActivity.class);
     }
 
 

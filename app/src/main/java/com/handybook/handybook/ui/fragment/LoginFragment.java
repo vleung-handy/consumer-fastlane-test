@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.airbnb.deeplinkdispatch.DeepLink;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -24,11 +24,10 @@ import com.facebook.login.widget.LoginButton;
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
@@ -124,26 +123,18 @@ public final class LoginFragment extends BookingFlowFragment
             mixpanel.trackPageLogin();
         }
 
-        if (getActivity().getIntent().getBooleanExtra(DeepLink.IS_DEEP_LINK, false))
+        String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
+        if (!TextUtils.isEmpty(mDestinationActivity))
         {
-
-            String path = getActivity().getIntent().getDataString();
-
-            //We may have to do this to handle future deeplinks that have to go through login
-            if (path.contains("booking"))
+            try
             {
-                String id = getActivity().getIntent().getStringExtra("id");
-                if (id == null)
-                {
-                    mDestinationClass = BookingsActivity.class;
-                }
-                else
-                {
-                    mDestinationClass = BookingDetailActivity.class;
-                }
+                mDestinationClass = (Class<? extends Activity>) Class.forName(mDestinationActivity);
+            }
+            catch (ClassNotFoundException e)
+            {
+                e.printStackTrace();
             }
         }
-
     }
 
     @Override
