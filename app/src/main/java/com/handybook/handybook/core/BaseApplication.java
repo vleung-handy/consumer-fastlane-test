@@ -49,11 +49,10 @@ public class BaseApplication extends MultiDexApplication
     public static final String FLAVOR_PROD = "prod";
     public static final String FLAVOR_STAGE = "stage";
 
-    protected ObjectGraph graph;
-    private int started;
-    private boolean savedInstance;
-    private Tracker mTracker;
+    private static GoogleAnalytics googleAnalytics;
+    private static Tracker tracker;
 
+    protected ObjectGraph graph;
     @Inject
     UserManager userManager;
     @Inject
@@ -62,7 +61,6 @@ public class BaseApplication extends MultiDexApplication
     Mixpanel mixpanel;
     @Inject
     Bus bus;
-
     // We are injecting all of our event bus listening managers in BaseApplication to start them
     // up for event listening
     @Inject
@@ -95,11 +93,23 @@ public class BaseApplication extends MultiDexApplication
     ReferralsManager referralsManager;
     @Inject
     ConfigurationManager configurationManager;
+    private int started;
+    private boolean savedInstance;
+
+    public static GoogleAnalytics googleAnalytics()
+    {
+        return googleAnalytics;
+    }
 
     @Override
     public void onCreate()
     {
         super.onCreate();
+        googleAnalytics = GoogleAnalytics.getInstance(this);
+        tracker = googleAnalytics.newTracker(R.xml.global_tracker);
+        tracker.enableExceptionReporting(true);
+        tracker.enableAdvertisingIdCollection(true);
+        tracker.enableAutoActivityTracking(true);
         createObjectGraph();
         initFabric();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
@@ -147,7 +157,8 @@ public class BaseApplication extends MultiDexApplication
                     final Bundle savedInstanceState
             )
             {
-                track(activity, "created");
+                trackScreen(activity);
+                track(activity, "created ");
                 bus.post(new ActivityEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
             }
@@ -225,11 +236,6 @@ public class BaseApplication extends MultiDexApplication
         }
     }
 
-    public final void inject(final Object object)
-    {
-        graph.inject(object);
-    }
-
     public void updateUser()
     {
         final User user = userManager.getCurrentUser();
@@ -252,26 +258,28 @@ public class BaseApplication extends MultiDexApplication
         inject(this);
     }
 
-    synchronized public Tracker getDefaultTracker()
+    public final void inject(final Object object)
     {
-        if (mTracker == null)
-        {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
-            mTracker = analytics.newTracker(R.xml.global_tracker);
-            mTracker.enableAutoActivityTracking(true);
-            mTracker.enableAdvertisingIdCollection(true);
-            mTracker.enableExceptionReporting(true);
-        }
-        return mTracker;
+        graph.inject(object);
     }
 
-    private void track(final Activity activity, final String action)
+    private static void track(final Activity activity, final String action)
     {
-        getDefaultTracker().send(
+        BaseApplication.tracker().send(
                 new HitBuilders.EventBuilder("activity_lifecycle", action)
                         .setLabel(activity.getLocalClassName())
                         .build()
         );
+    }
+
+    private static void trackScreen(final Activity activity)
+    {
+        tracker.setScreenName(activity.getLocalClassName());
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    public static Tracker tracker()
+    {
+        return tracker;
     }
 }
