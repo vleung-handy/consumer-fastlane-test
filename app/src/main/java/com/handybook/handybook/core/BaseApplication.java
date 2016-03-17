@@ -6,6 +6,9 @@ import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.Mixpanel;
@@ -49,6 +52,7 @@ public class BaseApplication extends MultiDexApplication
     protected ObjectGraph graph;
     private int started;
     private boolean savedInstance;
+    private Tracker mTracker;
 
     @Inject
     UserManager userManager;
@@ -143,6 +147,7 @@ public class BaseApplication extends MultiDexApplication
                     final Bundle savedInstanceState
             )
             {
+                track(activity, "created");
                 bus.post(new ActivityEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
             }
@@ -150,6 +155,7 @@ public class BaseApplication extends MultiDexApplication
             @Override
             public void onActivityStarted(final Activity activity)
             {
+                track(activity, "started");
                 bus.post(new ActivityEvent.Started(activity));
                 ++started;
                 if (started == 1)
@@ -169,18 +175,21 @@ public class BaseApplication extends MultiDexApplication
             @Override
             public void onActivityResumed(final Activity activity)
             {
+                track(activity, "resumed");
                 bus.post(new ActivityEvent.Resumed(activity));
             }
 
             @Override
             public void onActivityPaused(final Activity activity)
             {
+                track(activity, "paused");
                 bus.post(new ActivityEvent.Paused(activity));
             }
 
             @Override
             public void onActivityStopped(final Activity activity)
             {
+                track(activity, "stopped");
                 bus.post(new ActivityEvent.Stopped(activity));
             }
 
@@ -190,12 +199,14 @@ public class BaseApplication extends MultiDexApplication
                     final Bundle outState
             )
             {
+                track(activity, "resumed");
                 bus.post(new ActivityEvent.SavedInstanceState(activity, outState));
             }
 
             @Override
             public void onActivityDestroyed(final Activity activity)
             {
+                track(activity, "destroyed");
                 bus.post(new ActivityEvent.Destroyed(activity));
             }
         });
@@ -239,5 +250,28 @@ public class BaseApplication extends MultiDexApplication
     {
         graph = ObjectGraph.create(new ApplicationModule(this));
         inject(this);
+    }
+
+    synchronized public Tracker getDefaultTracker()
+    {
+        if (mTracker == null)
+        {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(R.xml.global_tracker);
+            mTracker.enableAutoActivityTracking(true);
+            mTracker.enableAdvertisingIdCollection(true);
+            mTracker.enableExceptionReporting(true);
+        }
+        return mTracker;
+    }
+
+    private void track(final Activity activity, final String action)
+    {
+        getDefaultTracker().send(
+                new HitBuilders.EventBuilder("activity_lifecycle", action)
+                        .setLabel(activity.getLocalClassName())
+                        .build()
+        );
     }
 }
