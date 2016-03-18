@@ -1,9 +1,11 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
@@ -59,6 +62,7 @@ public final class LoginFragment extends BookingFlowFragment
     private String mBookingUserName, mBookingUserEmail;
     private BookingRequest mBookingRequest;
 
+    Class<? extends Activity> mDestinationClass;
 
     @Bind(R.id.nav_text)
     TextView mNavText;
@@ -117,6 +121,19 @@ public final class LoginFragment extends BookingFlowFragment
         if (!mFindUser && mBookingUserName == null)
         {
             mixpanel.trackPageLogin();
+        }
+
+        String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
+        if (!TextUtils.isEmpty(mDestinationActivity))
+        {
+            try
+            {
+                mDestinationClass = (Class<? extends Activity>) Class.forName(mDestinationActivity);
+            }
+            catch (ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -487,7 +504,15 @@ public final class LoginFragment extends BookingFlowFragment
         enableInputs();
 
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        activity.navigateToActivity(ServiceCategoriesActivity.class);
+
+        if (mDestinationClass != null)
+        {
+            activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras());
+        }
+        else
+        {
+            activity.navigateToActivity(ServiceCategoriesActivity.class);
+        }
     }
 
     @Subscribe
