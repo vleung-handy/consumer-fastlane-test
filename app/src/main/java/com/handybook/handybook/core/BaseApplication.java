@@ -274,7 +274,7 @@ public class BaseApplication extends MultiDexApplication
 
     private static void trackScreen(final Activity activity)
     {
-        tracker.setScreenName(activity.getLocalClassName());
+        tracker.setScreenName(ScreenName.from(activity));
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
