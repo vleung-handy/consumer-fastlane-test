@@ -83,8 +83,8 @@ public class DeepLinkIntentProvider
         return getLoginIntent(context, BookingsActivity.class);
     }
 
-    @DeepLink({DEEP_LINK_SIDE_MENU_URL + "mybookings/id/{" + BundleKeys.DEEPLINK_BOOKING_ID + "}",
-            DEEP_LINK_NEW_BASE_URL + "booking/id/{" + BundleKeys.DEEPLINK_BOOKING_ID + "}"})
+    @DeepLink({DEEP_LINK_SIDE_MENU_URL + "mybookings/id/{" + BundleKeys.BOOKING_ID + "}",
+            DEEP_LINK_NEW_BASE_URL + "booking/id/{" + BundleKeys.BOOKING_ID + "}"})
     public static Intent getMyBookingDetailsIntent(Context context)
     {
         if (isUserLoggedIn())

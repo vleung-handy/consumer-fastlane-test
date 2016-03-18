@@ -3,7 +3,6 @@ package com.handybook.handybook.booking.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
@@ -23,13 +22,7 @@ public final class BookingDetailActivity extends MenuDrawerActivity
         }
         else
         {
-            String bookingId;
-
-            bookingId = getIntent().getStringExtra(BundleKeys.BOOKING_ID);
-            if (TextUtils.isEmpty(bookingId))
-            {
-                bookingId = getIntent().getStringExtra(BundleKeys.DEEPLINK_BOOKING_ID);
-            }
+            final String bookingId = getIntent().getStringExtra(BundleKeys.BOOKING_ID);
             return BookingDetailFragment.newInstance(bookingId);
         }
     }
