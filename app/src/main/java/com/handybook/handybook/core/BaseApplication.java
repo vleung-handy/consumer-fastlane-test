@@ -109,7 +109,12 @@ public class BaseApplication extends MultiDexApplication
         tracker = googleAnalytics.newTracker(R.xml.global_tracker);
         tracker.enableExceptionReporting(true);
         tracker.enableAdvertisingIdCollection(true);
-        tracker.enableAutoActivityTracking(true);
+        //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
+        final User user = userManager.getCurrentUser();
+        if (user != null)
+        {
+            tracker.setClientId(user.getId());
+        }
         createObjectGraph();
         initFabric();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
@@ -148,7 +153,6 @@ public class BaseApplication extends MultiDexApplication
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
             mixpanel.trackEventAppTrackInstall();
         }
-        //TODO: is there a way to register onResumeFragments?
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             @Override

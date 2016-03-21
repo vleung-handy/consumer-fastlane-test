@@ -1,5 +1,7 @@
 package com.handybook.handybook.core;
 
+import android.support.annotation.Nullable;
+
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
@@ -33,6 +35,7 @@ public class UserManager implements Observer
         return getCurrentUser() != null;
     }
 
+    @Nullable
     public User getCurrentUser()
     {
         if (user != null)
