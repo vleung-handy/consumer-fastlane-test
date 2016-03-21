@@ -48,6 +48,7 @@ public class BaseApplication extends MultiDexApplication
 {
     public static final String FLAVOR_PROD = "prod";
     public static final String FLAVOR_STAGE = "stage";
+    private static final long GA_SESSION_TIMEOUT_SECONDS = 600L;
 
     private static GoogleAnalytics googleAnalytics;
     private static Tracker tracker;
@@ -109,6 +110,7 @@ public class BaseApplication extends MultiDexApplication
         tracker = googleAnalytics.newTracker(R.xml.global_tracker);
         tracker.enableExceptionReporting(true);
         tracker.enableAdvertisingIdCollection(true);
+        tracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
         //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
         final User user = userManager.getCurrentUser();
         if (user != null)
