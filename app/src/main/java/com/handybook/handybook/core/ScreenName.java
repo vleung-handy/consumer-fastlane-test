@@ -1,16 +1,115 @@
 package com.handybook.handybook.core;
 
+
 import android.app.Activity;
 
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditPreferencesActivity;
+import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
+import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
+import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
+import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
+import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
+import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
+import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingsActivity;
+import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
+import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.activity.ServicesActivity;
+import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
+import com.handybook.handybook.helpcenter.ui.activity.HelpWebViewActivity;
+import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
+import com.handybook.handybook.module.referral.ui.RedemptionActivity;
+import com.handybook.handybook.module.referral.ui.ReferralActivity;
+import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.BlockingActivity;
+import com.handybook.handybook.ui.activity.LoginActivity;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.activity.OnboardActivity;
+import com.handybook.handybook.ui.activity.ProfileActivity;
+import com.handybook.handybook.ui.activity.SplashActivity;
+import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
+
+import java.util.HashMap;
 
 /**
- * ScreenName will eventually map Activities and Fragments to their String names for
- * Analytucs purposes, unless we will find a better way to go about this.
+ * ScreenName will map app locations to their names analytics purposes
  */
 public class ScreenName
 {
+    private static final HashMap<String, String> sScreenNames = new HashMap<>();
+
+    static
+    {
+        sScreenNames.put(BookingEditAddressActivity.class.getCanonicalName(), "Edit: Address");
+        sScreenNames.put(BookingEditEntryInformationActivity.class.getCanonicalName(), "Edit: EntryInformation");
+        sScreenNames.put(BookingEditExtrasActivity.class.getCanonicalName(), "Edit: Extras");
+        sScreenNames.put(BookingEditFrequencyActivity.class.getCanonicalName(), "Edit: Frequency");
+        sScreenNames.put(BookingEditHoursActivity.class.getCanonicalName(), "Edit: Hours");
+        sScreenNames.put(BookingEditPreferencesActivity.class.getCanonicalName(), "Edit: Preferences");
+        sScreenNames.put(BookingAddressActivity.class.getCanonicalName(), "Booking: Address");
+        sScreenNames.put(BookingCancelOptionsActivity.class.getCanonicalName(), "Booking: CancelOptions");
+        sScreenNames.put(BookingDateActivity.class.getCanonicalName(), "Booking: Date");
+        sScreenNames.put(BookingDetailActivity.class.getCanonicalName(), "Booking: Detail");
+        sScreenNames.put(BookingExtrasActivity.class.getCanonicalName(), "Booking: Extras");
+        sScreenNames.put(BookingFinalizeActivity.class.getCanonicalName(), "Booking: Finalize");
+        sScreenNames.put(BookingLocationActivity.class.getCanonicalName(), "Booking: Location");
+        sScreenNames.put(BookingOptionsActivity.class.getCanonicalName(), "Booking: Options");
+        sScreenNames.put(BookingPaymentActivity.class.getCanonicalName(), "Booking: Payment");
+        sScreenNames.put(BookingRecurrenceActivity.class.getCanonicalName(), "Booking: Recurrence");
+        sScreenNames.put(BookingRescheduleOptionsActivity.class.getCanonicalName(), "Booking: RescheduleOptions");
+        sScreenNames.put(BookingsActivity.class.getCanonicalName(), "Bookings");
+        sScreenNames.put(CancelRecurringBookingActivity.class.getCanonicalName(), "Cancel Recurring");
+        sScreenNames.put(PeakPricingActivity.class.getCanonicalName(), "Booking: Peak Pricing");
+        sScreenNames.put(PromosActivity.class.getCanonicalName(), "Promos");
+        sScreenNames.put(ServiceCategoriesActivity.class.getCanonicalName(), "Service Categories");
+        sScreenNames.put(ServicesActivity.class.getCanonicalName(), "Services");
+        sScreenNames.put(HelpContactActivity.class.getCanonicalName(), "Help Contact");
+        sScreenNames.put(HelpActivity.class.getCanonicalName(), "Help");
+        sScreenNames.put(HelpNativeActivity.class.getCanonicalName(), "Help (Native)");
+        sScreenNames.put(HelpWebViewActivity.class.getCanonicalName(), "Hlep (Web View)");
+        sScreenNames.put(NotificationsActivity.class.getCanonicalName(), "Notifications");
+        sScreenNames.put(RedemptionActivity.class.getCanonicalName(), "Redemption");
+        sScreenNames.put(ReferralActivity.class.getCanonicalName(), "Referral");
+        sScreenNames.put(BaseActivity.class.getCanonicalName(), "Base Activity");
+        sScreenNames.put(BlockingActivity.class.getCanonicalName(), "Blocking Screen");
+        sScreenNames.put(LoginActivity.class.getCanonicalName(), "Login");
+        sScreenNames.put(MenuDrawerActivity.class.getCanonicalName(), "Menu Drawer");
+        sScreenNames.put(OnboardActivity.class.getCanonicalName(), "Onboard");
+        sScreenNames.put(ProfileActivity.class.getCanonicalName(), "Profile");
+        sScreenNames.put(SplashActivity.class.getCanonicalName(), "Splash");
+        sScreenNames.put(UpdatePaymentActivity.class.getCanonicalName(), "Update Payment");
+
+
+    }
+
+
+    /**
+     * Returns defined name for provided activity or it's canonical name by default
+     *
+     * @param activity The activity whose name we will provide
+     * @return the name defined for activity or it's canonical name
+     */
     public static final String from(final Activity activity)
     {
-        return activity.getClass().getSimpleName();
+        final String canonicalName = activity.getClass().getCanonicalName();
+        final String screenName = sScreenNames.get(canonicalName);
+        if (screenName == null)
+        {
+            return canonicalName;
+        }
+        return screenName;
     }
 }
