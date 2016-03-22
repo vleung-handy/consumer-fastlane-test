@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +27,7 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public final class BookingEditPreferencesFragment extends BookingFlowFragment
@@ -42,9 +44,10 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     ScrollView mScrollView;
     @Bind(R.id.edit_preferences_note_to_pro)
     BasicInputTextView mNoteToProTextView;
-
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.edit_preferences_apply_to_all_container)
+    View mApplyToAllContainer;
 
     private boolean mIsPreferenceDragged, mIsPreferenceToggled;
 
@@ -87,6 +90,11 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_preferences, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_edit_preferences_title));
+        if (mBooking.isRecurring())
+        {
+            mFinalizeBookingRequestPayload.setShouldApplyToAll(true);
+            mApplyToAllContainer.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
@@ -212,6 +220,12 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                 mIsPreferenceToggled
         ));
         bus.post(new BookingEditEvent.RequestEditPreferences(bookingId, mFinalizeBookingRequestPayload));
+    }
+
+    @OnCheckedChanged(R.id.edit_preferences_apply_to_all_checkbox)
+    public void onApplyToAllToggked(AppCompatCheckBox checkbox)
+    {
+        mFinalizeBookingRequestPayload.setShouldApplyToAll(checkbox.isChecked());
     }
 
 }

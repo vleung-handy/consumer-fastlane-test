@@ -342,4 +342,5 @@
     <string name="undo">UNDO</string>
     <string name="toast_error_booking_flow_coupon_invalid">Sorry, that coupon is invalid for this booking. It will not be applied to your total.</string>
     <string name="snackbar_promo_code_restored">Promo code restored!</string>
+    <string name="edit_preferences_apply_to_all_text">Apply to all subsequent\nbookings in the series</string>
 </resources>
