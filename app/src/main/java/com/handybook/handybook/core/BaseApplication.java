@@ -6,6 +6,9 @@ import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.Mixpanel;
@@ -45,11 +48,12 @@ public class BaseApplication extends MultiDexApplication
 {
     public static final String FLAVOR_PROD = "prod";
     public static final String FLAVOR_STAGE = "stage";
+    private static final long GA_SESSION_TIMEOUT_SECONDS = 600L;
+
+    private static GoogleAnalytics googleAnalytics;
+    private static Tracker tracker;
 
     protected ObjectGraph graph;
-    private int started;
-    private boolean savedInstance;
-
     @Inject
     UserManager userManager;
     @Inject
@@ -58,7 +62,6 @@ public class BaseApplication extends MultiDexApplication
     Mixpanel mixpanel;
     @Inject
     Bus bus;
-
     // We are injecting all of our event bus listening managers in BaseApplication to start them
     // up for event listening
     @Inject
@@ -91,12 +94,30 @@ public class BaseApplication extends MultiDexApplication
     ReferralsManager referralsManager;
     @Inject
     ConfigurationManager configurationManager;
+    private int started;
+    private boolean savedInstance;
+
+    public static GoogleAnalytics googleAnalytics()
+    {
+        return googleAnalytics;
+    }
 
     @Override
     public void onCreate()
     {
         super.onCreate();
+        googleAnalytics = GoogleAnalytics.getInstance(this);
+        tracker = googleAnalytics.newTracker(R.xml.global_tracker);
+        tracker.enableExceptionReporting(true);
+        tracker.enableAdvertisingIdCollection(true);
+        tracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
+        //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
         createObjectGraph();
+        final User user = userManager.getCurrentUser();
+        if (user != null)
+        {
+            tracker.setClientId(user.getId());
+        }
         initFabric();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
@@ -134,7 +155,6 @@ public class BaseApplication extends MultiDexApplication
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
             mixpanel.trackEventAppTrackInstall();
         }
-        //TODO: is there a way to register onResumeFragments?
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             @Override
@@ -143,6 +163,7 @@ public class BaseApplication extends MultiDexApplication
                     final Bundle savedInstanceState
             )
             {
+                trackScreen(activity);
                 bus.post(new ActivityEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
             }
@@ -214,11 +235,6 @@ public class BaseApplication extends MultiDexApplication
         }
     }
 
-    public final void inject(final Object object)
-    {
-        graph.inject(object);
-    }
-
     public void updateUser()
     {
         final User user = userManager.getCurrentUser();
@@ -239,5 +255,30 @@ public class BaseApplication extends MultiDexApplication
     {
         graph = ObjectGraph.create(new ApplicationModule(this));
         inject(this);
+    }
+
+    public final void inject(final Object object)
+    {
+        graph.inject(object);
+    }
+
+    private static void track(final Activity activity, final String action)
+    {
+        BaseApplication.tracker().send(
+                new HitBuilders.EventBuilder("activity_lifecycle", action)
+                        .setLabel(activity.getLocalClassName())
+                        .build()
+        );
+    }
+
+    private static void trackScreen(final Activity activity)
+    {
+        tracker.setScreenName(ScreenName.from(activity));
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    public static Tracker tracker()
+    {
+        return tracker;
     }
 }

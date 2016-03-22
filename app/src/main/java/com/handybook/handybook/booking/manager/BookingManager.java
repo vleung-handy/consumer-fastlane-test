@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.HitBuilders;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
@@ -18,6 +19,7 @@ import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
@@ -152,6 +154,7 @@ public class BookingManager implements Observer
             @NonNull final HandyEvent.RequestEvent.BookingCardViewModelsEvent event
     )
     {
+        final long nanosNow = System.nanoTime();
         if (null != event.getOnlyBookingValue())
         {
             mDataManager.getBookings(
@@ -168,6 +171,14 @@ public class BookingManager implements Observer
                             BookingCardViewModel.List models = getBookingCardViewModelListFromResult(
                                     bookings,
                                     event.getOnlyBookingValue());
+                            BaseApplication.tracker().send(
+                                    new HitBuilders.TimingBuilder()
+                                            .setCategory("Api")
+                                            .setValue((System.nanoTime() - nanosNow) / 1000000)
+                                            .setVariable("Bookings")
+                                            .setLabel(event.getOnlyBookingValue())
+                                            .build()
+                            );
                             mBus.post(new HandyEvent.ResponseEvent.BookingCardViewModels(models));
                         }
 
