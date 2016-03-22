@@ -112,12 +112,12 @@ public class BaseApplication extends MultiDexApplication
         tracker.enableAdvertisingIdCollection(true);
         tracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
         //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
+        createObjectGraph();
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
             tracker.setClientId(user.getId());
         }
-        createObjectGraph();
         initFabric();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
