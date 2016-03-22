@@ -720,8 +720,8 @@
     </style>
 
     <style name="checkbox.round">
-        <item name="android:layout_width">32dp</item>
-        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">@dimen/checkbox_round_square</item>
+        <item name="android:layout_height">@dimen/checkbox_round_square</item>
         <item name="android:button">@drawable/round_checkbox</item>
     </style>
 

@@ -42,4 +42,6 @@
     <dimen name="med_elevation">4dp</dimen>
     <dimen name="low_elevation">2dp</dimen>
     <dimen name="high_elevation">8dp</dimen>
+    <dimen name="checkbox_round_square">32dp</dimen>
+
 </resources>
