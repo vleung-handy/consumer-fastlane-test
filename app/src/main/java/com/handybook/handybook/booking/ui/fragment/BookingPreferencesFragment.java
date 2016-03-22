@@ -75,6 +75,10 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                         mIsPreferenceDragged,
                         mIsPreferenceToggled
                 ));
+                mFinalizeBookingRequestPayload.setShouldApplyToAll(
+                        // Yeah I don't like this either, but see BookingRecurrenceFragment...
+                        bookingManager.getCurrentTransaction().getRecurringFrequency() > 0
+                );
                 if (mIsNewUser) // Prompt the user to create a pasword
                 {
                     final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
