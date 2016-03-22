@@ -164,7 +164,6 @@ public class BaseApplication extends MultiDexApplication
             )
             {
                 trackScreen(activity);
-                track(activity, "created ");
                 bus.post(new ActivityEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
             }
@@ -172,7 +171,6 @@ public class BaseApplication extends MultiDexApplication
             @Override
             public void onActivityStarted(final Activity activity)
             {
-                track(activity, "started");
                 bus.post(new ActivityEvent.Started(activity));
                 ++started;
                 if (started == 1)
@@ -192,21 +190,18 @@ public class BaseApplication extends MultiDexApplication
             @Override
             public void onActivityResumed(final Activity activity)
             {
-                track(activity, "resumed");
                 bus.post(new ActivityEvent.Resumed(activity));
             }
 
             @Override
             public void onActivityPaused(final Activity activity)
             {
-                track(activity, "paused");
                 bus.post(new ActivityEvent.Paused(activity));
             }
 
             @Override
             public void onActivityStopped(final Activity activity)
             {
-                track(activity, "stopped");
                 bus.post(new ActivityEvent.Stopped(activity));
             }
 
@@ -216,14 +211,12 @@ public class BaseApplication extends MultiDexApplication
                     final Bundle outState
             )
             {
-                track(activity, "resumed");
                 bus.post(new ActivityEvent.SavedInstanceState(activity, outState));
             }
 
             @Override
             public void onActivityDestroyed(final Activity activity)
             {
-                track(activity, "destroyed");
                 bus.post(new ActivityEvent.Destroyed(activity));
             }
         });
