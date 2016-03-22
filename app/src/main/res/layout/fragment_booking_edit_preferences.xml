@@ -69,14 +69,12 @@
 
                 <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/edit_preferences_apply_to_all_checkbox"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
                     android:layout_marginEnd="@dimen/default_margin"
                     android:layout_marginRight="@dimen/default_margin"
                     android:layout_marginLeft="@dimen/default_margin_half"
                     android:layout_marginStart="@dimen/default_margin_half"
                     android:checked="true"
-                    android:button="@drawable/round_checkbox"
+                    style="@style/checkbox.round"
                     />
 
                 <TextView
