@@ -223,7 +223,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     }
 
     @OnCheckedChanged(R.id.edit_preferences_apply_to_all_checkbox)
-    public void onApplyToAllToggked(AppCompatCheckBox checkbox)
+    public void onApplyToAllToggled(AppCompatCheckBox checkbox)
     {
         mFinalizeBookingRequestPayload.setShouldApplyToAll(checkbox.isChecked());
     }
