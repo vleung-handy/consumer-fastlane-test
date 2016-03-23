@@ -36,13 +36,10 @@ import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
-import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
-
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -380,6 +377,7 @@ public final class LoginFragment extends BookingFlowFragment
         @Override
         public void onClick(final View view)
         {
+            mEmailText.unHighlight();
             mPasswordText.unHighlight();
             if (mEmailText.validate())
             {
@@ -540,9 +538,6 @@ public final class LoginFragment extends BookingFlowFragment
         if (session != null) session.closeAndClearTokenInformation();
 */
 
-        final HashMap<String, InputTextField> inputMap = new HashMap<>();
-        inputMap.put("password", mPasswordText);
-        inputMap.put("email", mEmailText);
-        dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
+        dataManagerErrorHandler.handleError(getActivity(), error, null);
     }
 }
