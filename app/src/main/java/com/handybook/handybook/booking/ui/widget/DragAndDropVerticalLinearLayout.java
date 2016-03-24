@@ -102,7 +102,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         init();
     }
 
-    private void init(){
+    private void init()
+    {
         initLayoutTransition();
         if (mIsDraggingEnabled)
         {
@@ -391,9 +392,10 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             final int toPosition
     )
     {
-    if(mOnChildMovedListener == null){
-        return;
-    }
+        if (mOnChildMovedListener == null)
+        {
+            return;
+        }
         mOnChildMovedListener.onChildMoved(child, fromPosition, toPosition);
     }
 
@@ -401,11 +403,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     {
         int positionA = indexOfChild(childA);
         int positionB = indexOfChild(childB);
-        swapChildren(positionA, positionB);
-    }
-
-    public void swapChildren(final int positionA, final int positionB)
-    {
         if (positionA == positionB || positionA < 0 || positionB < 0
                 || positionA >= getChildCount() || positionB >= getChildCount())
         {
@@ -436,7 +433,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     private void vibrate()
     {
         Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        if(vibrator.hasVibrator()){
+        if (vibrator.hasVibrator())
+        {
             vibrator.vibrate(VIBRATE_TIME_MILLISECONDS);
         }
     }
@@ -448,7 +446,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             final int originalPositionOfB
     )
     {
-        if(mOnChildrenSwappedListener == null){
+        if (mOnChildrenSwappedListener == null)
+        {
             return;
         }
         mOnChildrenSwappedListener.onChildrenSwapped(
@@ -517,6 +516,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     {
         void onChildMoved(View child, int fromPosition, int toPosition);
     }
+
 
     public interface OnChildrenSwappedListener
     {
