@@ -119,7 +119,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     private void initKeysText()
     {
         keysText.setMinLength(2);
-        keysText.setHint(getString(R.string.where_hide_key));
+        keysText.setHint(R.string.where_hide_key);
         keysText.addTextChangedListener(keyTextWatcher);
         if (booking.getExtraEntryInfo() != null && !booking.getExtraEntryInfo().isEmpty())
         {
@@ -190,19 +190,17 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                 if (keysText == null) return;
 
                 final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-
                 entryInformationTransaction.setGetInId(index);
 
-                if (index == ENTRY_INFORMATION_HIDE_KEY)
+                switch (index)
                 {
-                    keysText.setVisibility(View.VISIBLE);
+                    case ENTRY_INFORMATION_BE_HOME:
+                    case ENTRY_INFORMATION_DOORMAN:
+                        keysText.setHint(R.string.any_instructions);
+                        break;
+                    case ENTRY_INFORMATION_HIDE_KEY:
+                        keysText.setHint(R.string.where_hide_key);
                 }
-                else
-                {
-                    keysText.unHighlight();
-                    keysText.setVisibility(View.GONE);
-                }
-
             }
 
             @Override

@@ -72,8 +72,7 @@
                 android:layout_below="@id/options_layout"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:singleLine="true"
-                android:visibility="gone"
-                tools:visibility="visible"
+                android:visibility="visible"
                 />
 
         </RelativeLayout>
