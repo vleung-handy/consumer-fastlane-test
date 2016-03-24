@@ -149,6 +149,7 @@
         <activity
             android:name=".booking.ui.activity.BookingDetailActivity"
             android:screenOrientation="portrait"
+            android:parentActivityName=".booking.ui.activity.BookingsActivity"
             />
         <activity
             android:name=".booking.ui.activity.BookingFinalizeActivity"
