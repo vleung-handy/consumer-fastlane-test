@@ -81,6 +81,7 @@
     <string name="will_hide_key">I’ll hide the key</string>
     <string name="finish">Finish</string>
     <string name="where_hide_key">Where will you hide the key?</string>
+    <string name="any_instructions">Any entry instructions?</string>
     <string name="use_your_pwd">Use your password to log in and \nmanage your bookings.</string>
     <string name="how_often">How Often?</string>
     <string name="every_week">Every week</string>
