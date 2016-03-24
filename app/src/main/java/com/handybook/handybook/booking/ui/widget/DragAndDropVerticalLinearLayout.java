@@ -413,21 +413,22 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         viewB = getChildAt(positionB);
         if (positionA < positionB)
         { // First fiddle with higher indexes, to not affect smaller one
-            super.removeView(viewB);            // 0:K  1:L (2:M) 3:N   -> 0:K  1:K  2:M
-            super.removeView(viewA);            // 0:K (1:L) 2:N        -> 0:K  1:D
-            super.addView(viewB, positionA);    // 0:K  1:N             -> 0:K (1:B) 2:D
-            super.addView(viewA, positionB);    // 0:K  1:M (2:L) 3:N   -> 0:K  1:B (2:C) 3:D
+            swapViews(positionB, viewB, positionA, viewA);
         }
         else
         {
-            super.removeView(viewA);
-            super.removeView(viewB);
-            super.addView(viewA, positionB);
-            super.addView(viewB, positionA);
-
+            swapViews(positionA, viewA, positionB, viewB);
         }
         notifyChildrenSwappedListener(viewA, positionA, viewB, positionB);
         vibrate();
+    }
+
+    private void swapViews(final int positionA, final View viewA, final int positionB, final View viewB)
+    {
+        super.removeView(viewA);
+        super.removeView(viewB);
+        super.addView(viewA, positionB);
+        super.addView(viewB, positionA);
     }
 
     private void vibrate()
