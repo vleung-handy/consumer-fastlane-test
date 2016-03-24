@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
 
 import java.lang.reflect.Type;
@@ -155,7 +156,7 @@ public class BookingRequest extends Observable {
             jsonObj.add("service_attributes", context.serialize(value.getOptions()));
 
             jsonObj.add("date_start", context.serialize(TextUtils.formatDate(value.getStartDate(),
-                    "yyyy-MM-dd'T'HH:mm")));
+                    DateTimeUtils.UNIVERSAL_DATE_FORMAT)));
 
             if (value.getPromoCode() != null) {
                 jsonObj.add("entered_code", context.serialize(value.getPromoCode()));

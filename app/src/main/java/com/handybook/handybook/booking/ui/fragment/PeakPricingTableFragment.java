@@ -11,6 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.Utils;
 
@@ -102,7 +103,8 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
             final TextView timeText = (TextView) row.findViewById(R.id.time_text);
             final TextView priceText = (TextView) row.findViewById(R.id.price_text);
 
-            timeText.setText(TextUtils.formatDate(info.getDate(), "h:mm aaa"));
+            //we want to display the time using the booking location's time zone
+            timeText.setText(DateTimeUtils.formatDate(info.getDate(), "h:mm aaa", bookingManager.getTimeZone()));
             priceText.setText(TextUtils.formatPrice(info.getPrice(), currChar, null));
 
             final int freq = forVoucher || forReschedule ? -1

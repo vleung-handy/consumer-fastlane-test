@@ -18,7 +18,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
@@ -166,8 +166,9 @@ public final class PeakPricingFragment extends BookingFlowFragment
     }
 
     private void updateDateHeader() {
-        dateText.setText(TextUtils.formatDate(peakPriceTable
-                .get(currentIndex).get(0).getDate(), "EEEE',' MMMM d"));
+        //we want to display the time using the booking location's time zone
+        dateText.setText(DateTimeUtils.formatDate(peakPriceTable
+                .get(currentIndex).get(0).getDate(), "EEEE',' MMMM d", bookingManager.getTimeZone()));
 
         arrowRight.setVisibility(View.VISIBLE);
         arrowLeft.setVisibility(View.VISIBLE);

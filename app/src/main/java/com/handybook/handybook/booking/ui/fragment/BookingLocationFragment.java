@@ -14,6 +14,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -152,13 +153,14 @@ public final class BookingLocationFragment extends BookingFlowFragment
                         userId,
                         authToken,
                         request.getPromoCode(),
-                        new DataManager.Callback<Void>()
+                        new DataManager.Callback<ZipValidationResponse>()
                         {
                             @Override
-                            public void onSuccess(Void v)
+                            public void onSuccess(ZipValidationResponse response)
                             {
                                 final BookingRequest request = bookingManager.getCurrentRequest();
                                 request.setZipCode(mZipCodeInputTextView.getZipCode());
+                                bookingManager.setTimeZone(response.timeZone);
                                 mixpanel.trackEventWhenPage(request);
                                 if (!allowCallbacks) { return; }
                                 enableInputs();

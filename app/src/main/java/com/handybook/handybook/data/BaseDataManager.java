@@ -31,6 +31,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
@@ -418,18 +419,11 @@ public final class BaseDataManager extends DataManager
     public final void validateBookingZip(
             final int serviceId, final String zipCode, final String userId,
             final String authToken, final String promoCode,
-            final Callback<Void> cb
+            final Callback<ZipValidationResponse> cb
     )
     {
         mService.validateBookingZip(serviceId, zipCode, userId, authToken, promoCode,
-                new HandyRetrofitCallback(cb)
-                {
-                    @Override
-                    void success(final JSONObject response)
-                    {
-                        cb.onSuccess(null);
-                    }
-                });
+                new ZipValidationRetroFitCallback(cb));
     }
 
     @Override
