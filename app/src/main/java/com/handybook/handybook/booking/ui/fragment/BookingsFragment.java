@@ -143,6 +143,10 @@ public class BookingsFragment extends InjectedFragment
     public void onReceiveCachedServicesSuccess(final BookingEvent.ReceiveCachedServicesSuccess event)
     {
         mServices = event.getServices();
+        if (mServices != null)
+        {
+            UiUtils.revealView(mAddBookingButton);
+        }
     }
 
     @OnClick(R.id.add_booking_button)
