@@ -225,11 +225,19 @@ public final class BaseDataManager extends DataManager
         List<Service> cachedServices = null;
         if (cachedServicesJson != null)
         {
-            cachedServices = new Gson().fromJson(
-                    mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
-                    new TypeToken<List<Service>>()
-                    {
-                    }.getType());
+            try
+            {
+                cachedServices = new Gson().fromJson(
+                        mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
+                        new TypeToken<List<Service>>()
+                        {
+                        }.getType());
+            }
+            catch (Exception e)
+            {
+                //if there is ever an error parsing this, fall out and let it create a new set
+            }
+
         }
 
         return cachedServices;
