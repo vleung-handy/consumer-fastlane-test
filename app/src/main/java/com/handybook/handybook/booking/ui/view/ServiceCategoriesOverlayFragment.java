@@ -61,6 +61,12 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
 
     public void animateAndDismissFragment()
     {
+        if (isRemoving())
+        {
+            //this fragment is already being removed, exit and do nothing. This typically
+            //happens if someone is frantically tapping the back button to remove this fragment
+            return;
+        }
         mCloseButton.setClickable(false);
         for (ServiceCategorySimpleView view : mServiceCategorySimpleViews)
         {
