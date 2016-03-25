@@ -17,13 +17,13 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
+import com.handybook.handybook.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -133,6 +133,10 @@ public class BookingsFragment extends InjectedFragment
     public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
     {
         mServices = event.getServices();
+        if (mServices != null)
+        {
+            UiUtils.revealView(mAddBookingButton);
+        }
     }
 
     @Subscribe
@@ -145,23 +149,17 @@ public class BookingsFragment extends InjectedFragment
     public void onServicesButtonClicked()
     {
         bus.post(new MixpanelEvent.TrackAddBookingFabClicked());
-        if (mServices != null)
+
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null)
         {
-            final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null)
-            {
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
-                        .add(R.id.fragment_container,
-                                ServiceCategoriesOverlayFragment.newInstance(mServices),
-                                mOverlayFragmentTag)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        }
-        else
-        {
-            startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
+            fragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
+                    .add(R.id.fragment_container,
+                            ServiceCategoriesOverlayFragment.newInstance(mServices),
+                            mOverlayFragmentTag)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 

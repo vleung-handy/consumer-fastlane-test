@@ -1,8 +1,12 @@
 package com.handybook.handybook.util;
 
+import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
@@ -54,5 +58,29 @@ public final class UiUtils
         removeView(currentView);
         removeView(newView);
         parent.addView(newView, index);
+    }
+
+    /**
+     * Users the circular reveal animation for making a view visible
+     *
+     * @param view
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void revealView(final View view)
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        {
+            view.setVisibility(View.VISIBLE);
+            return;
+        }
+        int cx = (view.getWidth()) / 2;
+        int cy = (view.getHeight()) / 2;
+
+        int finalRadius = Math.max(view.getWidth(), view.getHeight()) / 2;
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
+        view.setVisibility(View.VISIBLE);
+        anim.start();
+
     }
 }

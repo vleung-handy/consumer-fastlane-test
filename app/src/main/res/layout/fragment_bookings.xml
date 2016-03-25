@@ -61,6 +61,7 @@
             android:src="@drawable/ic_plus_white"
             android:tag="fab"
             app:backgroundTint="@color/handy_blue"
+            android:visibility="gone"
             app:fabSize="normal"
             />
 </android.support.design.widget.CoordinatorLayout>
