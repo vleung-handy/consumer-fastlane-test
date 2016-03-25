@@ -104,7 +104,9 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
             final TextView priceText = (TextView) row.findViewById(R.id.price_text);
 
             //we want to display the time using the booking location's time zone
-            timeText.setText(DateTimeUtils.formatDate(info.getDate(), "h:mm aaa", bookingManager.getTimeZone()));
+            timeText.setText(DateTimeUtils.formatDate(info.getDate(), "h:mm aaa",
+                    bookingManager.getCurrentRequest().getTimeZone()));
+
             priceText.setText(TextUtils.formatPrice(info.getPrice(), currChar, null));
 
             final int freq = forVoucher || forReschedule ? -1

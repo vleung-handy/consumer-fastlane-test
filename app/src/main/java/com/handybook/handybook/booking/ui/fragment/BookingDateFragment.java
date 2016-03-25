@@ -276,9 +276,9 @@ public final class BookingDateFragment extends BookingFlowFragment
         {
             tempCal.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
         }
-        else if (!TextUtils.isEmpty(bookingManager.getTimeZone()))
+        else if (bookingManager.getCurrentRequest() != null && !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
         {
-            tempCal.setTimeZone(TimeZone.getTimeZone(bookingManager.getTimeZone()));
+            tempCal.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone()));
         }
 
         mGroovedTimePicker.setCurrentHour(tempCal.get(Calendar.HOUR_OF_DAY));
@@ -349,9 +349,9 @@ public final class BookingDateFragment extends BookingFlowFragment
         {
             date.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
         }
-        else if (bookingManager.getTimeZone() != null)
+        else if (bookingManager.getCurrentRequest() != null && !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
         {
-            date.setTimeZone(TimeZone.getTimeZone(bookingManager.getTimeZone()));
+            date.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone()));
         }
         final Date newDate = date.getTime();
 

@@ -83,8 +83,11 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         final Date startDate = transaction.getStartDate();
 
         //we want to display the time using the booking location's time zone
-        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMMM d", bookingManager.getTimeZone()));
-        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa", bookingManager.getTimeZone()) + " - "
+        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMMM d",
+                bookingManager.getCurrentRequest().getTimeZone()));
+
+        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa",
+                bookingManager.getCurrentRequest().getTimeZone()) + " - "
                 + TextUtils.formatDecimal(hours, "#.#")
                 + " " + getString(R.string.hours));
 

@@ -43,7 +43,8 @@ public class BookingCardRowViewModel
     public String getSubtitle(@NonNull Context context)
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String start = DateTimeUtils.formatDate(mBooking.getStartDate(), SUBTITLE_DATE_FORMAT, mBooking.getBookingTimezone());
+        final String start = DateTimeUtils.formatDate(mBooking.getStartDate(),
+                SUBTITLE_DATE_FORMAT, mBooking.getBookingTimezone());
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(mBooking.getStartDate());
@@ -51,7 +52,9 @@ public class BookingCardRowViewModel
         final Date endDate = cal.getTime();
 
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String end = DateTimeUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT, mBooking.getBookingTimezone());
+        final String end = DateTimeUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT,
+                mBooking.getBookingTimezone());
+
         final String duration = TextUtils.formatDecimal(mBooking.getHours(), DURATION_FORMAT);
 
         final String subtitle = context.getString(

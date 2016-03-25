@@ -168,7 +168,8 @@ public final class PeakPricingFragment extends BookingFlowFragment
     private void updateDateHeader() {
         //we want to display the time using the booking location's time zone
         dateText.setText(DateTimeUtils.formatDate(peakPriceTable
-                .get(currentIndex).get(0).getDate(), "EEEE',' MMMM d", bookingManager.getTimeZone()));
+                        .get(currentIndex).get(0).getDate(), "EEEE',' MMMM d",
+                bookingManager.getCurrentRequest().getTimeZone()));
 
         arrowRight.setVisibility(View.VISIBLE);
         arrowLeft.setVisibility(View.VISIBLE);

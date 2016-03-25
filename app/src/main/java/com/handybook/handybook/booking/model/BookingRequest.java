@@ -29,6 +29,8 @@ public class BookingRequest extends Observable {
     @SerializedName("entered_code") private String promoCode;
     @SerializedName("_android_promo_type") private PromoCode.Type promoType;
 
+    transient private String mTimeZone;
+
     public int getServiceId() {
         return serviceId;
     }
@@ -100,6 +102,16 @@ public class BookingRequest extends Observable {
     public void setPromoCode(final String promoCode) {
         this.promoCode = promoCode;
         triggerObservers();
+    }
+
+    public String getTimeZone()
+    {
+        return mTimeZone;
+    }
+
+    public void setTimeZone(final String timeZone)
+    {
+        mTimeZone = timeZone;
     }
 
     public PromoCode.Type getPromoType() {
