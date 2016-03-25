@@ -48,25 +48,25 @@ public class BookingManager implements Observer
     private BookingTransaction mBookingTransaction;
     private BookingPostInfo mBookingPostInfo;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
-    private String timeZone;
+    private String mTimeZone;
 
     @Inject
     public BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
     {
-        this.mPrefsManager = prefsManager;
-        this.mDataManager = dataManager;
-        this.mBus = bus;
-        this.mBus.register(this);
+        mPrefsManager = prefsManager;
+        mDataManager = dataManager;
+        mBus = bus;
+        mBus.register(this);
     }
 
     public String getTimeZone()
     {
-        return timeZone;
+        return mTimeZone;
     }
 
     public void setTimeZone(final String timeZone)
     {
-        this.timeZone = timeZone;
+        mTimeZone = timeZone;
     }
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers
