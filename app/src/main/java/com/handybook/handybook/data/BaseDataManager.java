@@ -64,6 +64,8 @@ import retrofit.mime.TypedInput;
 
 public final class BaseDataManager extends DataManager
 {
+    private static final String TAG = BaseDataManager.class.getName();
+
     private final HandyRetrofitService mService;
     private final HandyRetrofitEndpoint mEndpoint;
     private final PrefsManager mPrefsManager;
@@ -238,7 +240,8 @@ public final class BaseDataManager extends DataManager
             catch (Exception e)
             {
                 //if there is ever an error parsing this, fall out and let it create a new set
-                Crashlytics.log(e.getMessage() + ":  JSON:" + cachedServicesJson);
+                Crashlytics.log(TAG + " error when deserializing JSON:" + cachedServicesJson);
+                Crashlytics.logException(e);
             }
 
         }

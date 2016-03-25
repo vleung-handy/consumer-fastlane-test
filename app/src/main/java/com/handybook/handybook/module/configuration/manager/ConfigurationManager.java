@@ -15,9 +15,11 @@ import javax.inject.Inject;
 
 public class ConfigurationManager
 {
+
     private final Bus mBus;
     private PrefsManager mPrefsManager;
     private final DataManager mDataManager;
+    private final String TAG = ConfigurationManager.class.getName();
 
     @Inject
     public ConfigurationManager(
@@ -99,7 +101,8 @@ public class ConfigurationManager
             catch (Exception e)
             {
                 //if there is ever an error parsing this, fall out and let it create a new set
-                Crashlytics.log(e.getMessage() + ":  JSON:" + configurationJson);
+                Crashlytics.log(TAG + " error when deserializing JSON:" + configurationJson);
+                Crashlytics.logException(e);
             }
 
         }
