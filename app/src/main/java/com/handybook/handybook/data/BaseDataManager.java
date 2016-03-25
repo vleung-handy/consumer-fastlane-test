@@ -238,7 +238,7 @@ public final class BaseDataManager extends DataManager
             catch (Exception e)
             {
                 //if there is ever an error parsing this, fall out and let it create a new set
-                Crashlytics.log(e.getMessage() + ":  JSON:" + cachedServicesJson);
+                Crashlytics.logException(new RuntimeException("JSON: " + cachedServicesJson, e));
             }
 
         }

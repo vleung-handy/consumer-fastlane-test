@@ -99,7 +99,7 @@ public class ConfigurationManager
             catch (Exception e)
             {
                 //if there is ever an error parsing this, fall out and let it create a new set
-                Crashlytics.log(e.getMessage() + ":  JSON:" + configurationJson);
+                Crashlytics.logException(new RuntimeException("JSON: " + configurationJson, e));
             }
 
         }
