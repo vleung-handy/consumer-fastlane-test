@@ -52,10 +52,10 @@ public class BookingManager implements Observer
     @Inject
     public BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
     {
-        this.mPrefsManager = prefsManager;
-        this.mDataManager = dataManager;
-        this.mBus = bus;
-        this.mBus.register(this);
+        mPrefsManager = prefsManager;
+        mDataManager = dataManager;
+        mBus = bus;
+        mBus.register(this);
     }
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers

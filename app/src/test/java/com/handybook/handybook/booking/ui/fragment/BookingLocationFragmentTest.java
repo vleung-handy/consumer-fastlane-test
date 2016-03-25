@@ -8,6 +8,7 @@ import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.data.DataManager;
@@ -74,7 +75,11 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
                 anyString(),
                 mCallbackCaptor.capture()
         );
-        mCallbackCaptor.getValue().onSuccess(null);
+
+        ZipValidationResponse responseObject = new ZipValidationResponse();
+        responseObject.timeZone = "America/Los_Angeles";
+
+        mCallbackCaptor.getValue().onSuccess(responseObject);
         verify(mMockRequest).setZipCode("10001");
 
         verify(mDataManager).getQuoteOptions(

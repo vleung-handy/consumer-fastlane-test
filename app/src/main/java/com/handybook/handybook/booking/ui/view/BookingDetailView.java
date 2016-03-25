@@ -10,6 +10,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.ui.view.InjectedRelativeLayout;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.Calendar;
@@ -89,12 +90,14 @@ public final class BookingDetailView extends InjectedRelativeLayout
         endDate.setTime(startDate);
         endDate.add(Calendar.MINUTE, minutes);
 
-        timeText.setText(TextUtils.formatDate(startDate, "h:mm aaa – ")
-                + TextUtils.formatDate(endDate.getTime(), "h:mm aaa (")
+        //we want to display the time using the booking location's time zone
+        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa – ", booking.getBookingTimezone())
+                + DateTimeUtils.formatDate(endDate.getTime(), "h:mm aaa (", booking.getBookingTimezone())
                 + TextUtils.formatDecimal(hours, "#.#") + " "
                 + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours)) + ")");
 
-        dateText.setText(TextUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy"));
+        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
+                booking.getBookingTimezone()));
     }
 
     private void updateFrequencySectionDisplay(final Booking booking)

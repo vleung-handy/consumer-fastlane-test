@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,6 +70,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                 date.set(Calendar.MINUTE, mGroovedTimePicker.getCurrentMinute());
                 date.set(Calendar.SECOND, 0);
                 date.set(Calendar.MILLISECOND, 0);
+                date.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
                 if (mRescheduleBooking.isRecurring())
                 {
                     final Intent intent = new Intent(
@@ -154,8 +157,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         final Calendar startDate = currentStartDate();
         mDatePicker.updateDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH),
                 startDate.get(Calendar.DAY_OF_MONTH));
-        mGroovedTimePicker.setCurrentHour(startDate.get(Calendar.HOUR_OF_DAY));
-        mGroovedTimePicker.setCurrentMinute(startDate.get(Calendar.MINUTE) / MINUTE_INTERVAL);
+        setTimePicker(startDate);
     }
 
     @Override
@@ -228,8 +230,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         // resolves issue https://code.google.com/p/android/issues/detail?id=22754
         mGroovedTimePicker.setSaveFromParentEnabled(false);
         mGroovedTimePicker.setSaveEnabled(true);
-        mGroovedTimePicker.setCurrentHour(startDate.get(Calendar.HOUR_OF_DAY));
-        mGroovedTimePicker.setCurrentMinute(startDate.get(Calendar.MINUTE) / MINUTE_INTERVAL);
+        setTimePicker(startDate);
         mGroovedTimePicker.setOnTimeChangedListener(
                 new TimePicker.OnTimeChangedListener()
                 {
@@ -260,6 +261,30 @@ public final class BookingDateFragment extends BookingFlowFragment
         {
             outState.putLong(STATE_RESCHEDULE_DATE, mRescheduleDate.getTime());
         }
+    }
+
+    /**
+     * This takes in a date, and displays the time in the booking location's time zone.
+     *
+     * @param startDate
+     */
+    private void setTimePicker(Calendar startDate)
+    {
+        Calendar tempCal = (Calendar) startDate.clone();
+
+        if (mRescheduleBooking != null &&
+                !android.text.TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone()))
+        {
+            tempCal.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
+        }
+        else if (bookingManager.getCurrentRequest() != null &&
+                !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
+        {
+            tempCal.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone()));
+        }
+
+        mGroovedTimePicker.setCurrentHour(tempCal.get(Calendar.HOUR_OF_DAY));
+        mGroovedTimePicker.setCurrentMinute(tempCal.get(Calendar.MINUTE) / MINUTE_INTERVAL);
     }
 
     private Calendar currentStartDate()
@@ -319,7 +344,20 @@ public final class BookingDateFragment extends BookingFlowFragment
         date.set(Calendar.MINUTE, mGroovedTimePicker.getCurrentMinute());
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
+
+        //Since the date picker was formatted to show in the booking location's time zone,
+        //we have to make sure we specify that in the Calendar, otherwise it will assume the device's timezone
+        if (mRescheduleBooking != null && !TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone()))
+        {
+            date.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
+        }
+        else if (bookingManager.getCurrentRequest() != null &&
+                !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
+        {
+            date.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone()));
+        }
         final Date newDate = date.getTime();
+
         if (mRescheduleBooking != null)
         {
             mRescheduleDate = newDate;

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.TestBaseApplication;
@@ -33,6 +34,8 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
     @Mock
     private BookingTransaction mMockTransaction;
     @Mock
+    private BookingRequest mMockBookingRequest;
+    @Mock
     private BookingQuote mMockQuote;
     @Inject
     BookingManager mBookingManager;
@@ -43,7 +46,9 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
+        when(mMockBookingRequest.getTimeZone()).thenReturn("America/Los_Angeles");
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
+        when(mBookingManager.getCurrentRequest()).thenReturn(mMockBookingRequest);
         when(mMockQuote.getPricing(anyFloat(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         mFragment = BookingAddressFragment.newInstance();

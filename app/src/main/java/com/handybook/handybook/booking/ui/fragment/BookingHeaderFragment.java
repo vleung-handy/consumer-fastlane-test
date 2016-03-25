@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.Date;
@@ -81,9 +82,12 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         final float hours = transaction.getHours() + transaction.getExtraHours();
         final Date startDate = transaction.getStartDate();
 
-        dateText.setText(TextUtils.formatDate(startDate, "EEEE',' MMMM d"));
+        //we want to display the time using the booking location's time zone
+        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMMM d",
+                bookingManager.getCurrentRequest().getTimeZone()));
 
-        timeText.setText(TextUtils.formatDate(startDate, "h:mm aaa") + " - "
+        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa",
+                bookingManager.getCurrentRequest().getTimeZone()) + " - "
                 + TextUtils.formatDecimal(hours, "#.#")
                 + " " + getString(R.string.hours));
 
