@@ -34,6 +34,11 @@ public class DateTimeUtils
      */
     public static String formatDate(Date date, String format, String timeZone)
     {
+        if (date == null || android.text.TextUtils.isEmpty(format))
+        {
+            return null;
+        }
+
         DateFormat customFormatter = new SimpleDateFormat(format);
         if (!android.text.TextUtils.isEmpty(timeZone))
         {
