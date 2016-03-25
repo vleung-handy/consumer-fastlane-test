@@ -272,11 +272,13 @@ public final class BookingDateFragment extends BookingFlowFragment
     {
         Calendar tempCal = (Calendar) startDate.clone();
 
-        if (mRescheduleBooking != null && !android.text.TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone()))
+        if (mRescheduleBooking != null &&
+                !android.text.TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone()))
         {
             tempCal.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
         }
-        else if (bookingManager.getCurrentRequest() != null && !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
+        else if (bookingManager.getCurrentRequest() != null &&
+                !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
         {
             tempCal.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone()));
         }
@@ -349,7 +351,8 @@ public final class BookingDateFragment extends BookingFlowFragment
         {
             date.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
         }
-        else if (bookingManager.getCurrentRequest() != null && !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
+        else if (bookingManager.getCurrentRequest() != null &&
+                !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
         {
             date.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone()));
         }

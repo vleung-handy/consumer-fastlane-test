@@ -96,7 +96,8 @@ public final class BookingDetailView extends InjectedRelativeLayout
                 + TextUtils.formatDecimal(hours, "#.#") + " "
                 + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours)) + ")");
 
-        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy", booking.getBookingTimezone()));
+        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
+                booking.getBookingTimezone()));
     }
 
     private void updateFrequencySectionDisplay(final Booking booking)
