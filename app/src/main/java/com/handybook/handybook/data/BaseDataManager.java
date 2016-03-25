@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
@@ -218,6 +219,7 @@ public final class BaseDataManager extends DataManager
         });
     }
 
+    @Nullable
     @Override
     public List<Service> getCachedServices()
     {
@@ -225,11 +227,20 @@ public final class BaseDataManager extends DataManager
         List<Service> cachedServices = null;
         if (cachedServicesJson != null)
         {
-            cachedServices = new Gson().fromJson(
-                    mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
-                    new TypeToken<List<Service>>()
-                    {
-                    }.getType());
+            try
+            {
+                cachedServices = new Gson().fromJson(
+                        cachedServicesJson,
+                        new TypeToken<List<Service>>()
+                        {
+                        }.getType());
+            }
+            catch (Exception e)
+            {
+                //if there is ever an error parsing this, fall out and let it create a new set
+                Crashlytics.log(e.getMessage() + ":  JSON:" + cachedServicesJson);
+            }
+
         }
 
         return cachedServices;
