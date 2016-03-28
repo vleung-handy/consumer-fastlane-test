@@ -177,7 +177,7 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 
     //Guava
-    compile 'com.google.guava:guava:18.0'
+    compile 'com.google.guava:guava:19.0'
 
     //SecurePrefs storage
     compile 'com.scottyab:secure-preferences-lib:0.1.1'
