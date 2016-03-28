@@ -186,7 +186,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.10.1'
 
     //Mixpanel
-    compile 'com.mixpanel.android:mixpanel-android:4.6.3'
+    compile 'com.mixpanel.android:mixpanel-android:4.8.5'
 
     //Picasso library for image downloading and caching
     compile 'com.squareup.picasso:picasso:2.5.2'
