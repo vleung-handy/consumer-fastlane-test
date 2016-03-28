@@ -102,7 +102,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         init();
     }
 
-    private void init(){
+    private void init()
+    {
         initLayoutTransition();
         if (mIsDraggingEnabled)
         {
@@ -391,9 +392,10 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             final int toPosition
     )
     {
-    if(mOnChildMovedListener == null){
-        return;
-    }
+        if (mOnChildMovedListener == null)
+        {
+            return;
+        }
         mOnChildMovedListener.onChildMoved(child, fromPosition, toPosition);
     }
 
@@ -401,11 +403,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     {
         int positionA = indexOfChild(childA);
         int positionB = indexOfChild(childB);
-        swapChildren(positionA, positionB);
-    }
-
-    public void swapChildren(final int positionA, final int positionB)
-    {
         if (positionA == positionB || positionA < 0 || positionB < 0
                 || positionA >= getChildCount() || positionB >= getChildCount())
         {
@@ -416,27 +413,29 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
         viewB = getChildAt(positionB);
         if (positionA < positionB)
         { // First fiddle with higher indexes, to not affect smaller one
-            removeViewAt(positionB);            // 0:K  1:L (2:M) 3:N   -> 0:K  1:K  2:M
-            removeViewAt(positionA);            // 0:K (1:L) 2:N        -> 0:K  1:D
-            super.addView(viewB, positionA);    // 0:K  1:N             -> 0:K (1:B) 2:D
-            super.addView(viewA, positionB);    // 0:K  1:M (2:L) 3:N   -> 0:K  1:B (2:C) 3:D
+            swapViews(positionB, viewB, positionA, viewA);
         }
         else
         {
-            removeViewAt(positionA);
-            removeViewAt(positionB);
-            super.addView(viewA, positionB);
-            super.addView(viewB, positionA);
-
+            swapViews(positionA, viewA, positionB, viewB);
         }
         notifyChildrenSwappedListener(viewA, positionA, viewB, positionB);
         vibrate();
     }
 
+    private void swapViews(final int positionA, final View viewA, final int positionB, final View viewB)
+    {
+        super.removeView(viewA);
+        super.removeView(viewB);
+        super.addView(viewA, positionB);
+        super.addView(viewB, positionA);
+    }
+
     private void vibrate()
     {
         Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        if(vibrator.hasVibrator()){
+        if (vibrator.hasVibrator())
+        {
             vibrator.vibrate(VIBRATE_TIME_MILLISECONDS);
         }
     }
@@ -448,7 +447,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
             final int originalPositionOfB
     )
     {
-        if(mOnChildrenSwappedListener == null){
+        if (mOnChildrenSwappedListener == null)
+        {
             return;
         }
         mOnChildrenSwappedListener.onChildrenSwapped(
@@ -517,6 +517,7 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     {
         void onChildMoved(View child, int fromPosition, int toPosition);
     }
+
 
     public interface OnChildrenSwappedListener
     {
