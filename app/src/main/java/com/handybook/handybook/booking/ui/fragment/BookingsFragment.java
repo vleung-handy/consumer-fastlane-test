@@ -106,8 +106,6 @@ public class BookingsFragment extends InjectedFragment
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
 
-        bus.post(new BookingEvent.RequestServices());
-
         getActivity().getSupportFragmentManager()
                 .addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
                 {
@@ -165,6 +163,16 @@ public class BookingsFragment extends InjectedFragment
                     .addToBackStack(null)
                     .commit();
         }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        //do not post this before onResume, because this fragment registers the bus onResume. If
+        //post prior to onResume, this fragment won't be listening to the bus for results.
+        bus.post(new BookingEvent.RequestServices());
     }
 
     private static class TabAdapter extends FragmentPagerAdapter

@@ -28,6 +28,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.squareup.otto.Subscribe;
@@ -105,7 +106,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             edit.apply();
         }
 
-        if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false))
+        final User user = userManager.getCurrentUser();
+        if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false) && user == null)
         {
             final Intent intent = new Intent(getActivity(), OnboardActivity.class);
             startActivity(intent);
