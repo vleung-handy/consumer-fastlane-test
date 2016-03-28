@@ -183,7 +183,7 @@ dependencies {
     compile 'com.scottyab:secure-preferences-lib:0.1.1'
 
     //Facebook (just for login)
-    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.10.1'
 
     //Mixpanel
     compile 'com.mixpanel.android:mixpanel-android:4.6.3'
