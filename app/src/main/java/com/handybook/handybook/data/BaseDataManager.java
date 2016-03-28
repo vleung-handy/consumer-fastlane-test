@@ -84,16 +84,27 @@ public final class BaseDataManager extends DataManager
         return mEndpoint.getBaseUrl();
     }
 
+    /**
+     * If there is a cached version, return the cache, and updates the cache in the background.
+     * If there was a cached version, then cache update success will not be broadcasted.
+     * This is to prevent a client from having to deal with multiple broadcasts (cache, updates, etc).
+     *
+     * @param cache
+     * @param cb
+     */
     @Override
     public final void getServices(
             final CacheResponse<List<Service>> cache,
             final Callback<List<Service>> cb
     )
     {
+        final List<Service> cachedServices = getCachedServices();
 
-        List<Service> cachedServices = getCachedServices();
-
-        cache.onResponse(cachedServices != null ? cachedServices : new ArrayList<Service>());
+        if (cachedServices != null && cache != null)
+        {
+            //if there is a cached version, we notify right away.
+            cache.onResponse(cachedServices);
+        }
 
         final ArrayList<Service> servicesMenu = new ArrayList<>();
         final HashMap<String, Service> menuMap = new HashMap<>();
@@ -105,8 +116,9 @@ public final class BaseDataManager extends DataManager
             {
                 final JSONArray array = response.optJSONArray("menu_structure");
 
-                if (array == null)
+                if (array == null && cachedServices == null)
                 {
+                    //we only notify of error if there is not already a cached version returned.
                     cb.onError(new DataManagerError(Type.SERVER));
                     return;
                 }
@@ -143,8 +155,9 @@ public final class BaseDataManager extends DataManager
                     {
                         final JSONArray array = response.optJSONArray("services_list");
 
-                        if (array == null)
+                        if (array == null && cachedServices == null)
                         {
+                            //we only notify of error if there is not already a cached version returned.
                             cb.onError(new DataManagerError(Type.SERVER));
                             return;
                         }
@@ -212,9 +225,15 @@ public final class BaseDataManager extends DataManager
                             }
                         });
 
+                        //updates the cache with fresh version of services
                         mPrefsManager.setString(PrefsKey.CACHED_SERVICES, new Gson()
                                 .toJsonTree(servicesMenu).getAsJsonArray().toString());
-                        cb.onSuccess(servicesMenu);
+
+                        //we only notify of error if there is not already a cached version returned.
+                        if (cachedServices == null)
+                        {
+                            cb.onSuccess(servicesMenu);
+                        }
                     }
                 });
             }

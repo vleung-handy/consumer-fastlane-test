@@ -25,21 +25,18 @@
             android:src="@drawable/ic_home_logo"/>
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
+    <com.handybook.handybook.booking.ui.view.AnimatedRecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/list_animation"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_below="@id/toolbar"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:id="@+id/category_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/default_margin"
-            android:paddingTop="@dimen/default_margin_half"/>
-
-    </ScrollView>
+        android:paddingBottom="@dimen/default_margin"
+        android:paddingTop="@dimen/default_margin_half"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        />
 
     <LinearLayout
         android:id="@+id/coupon_layout"

@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.view;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -32,22 +31,12 @@ public final class ServiceCategoryView extends FrameLayout
     public ServiceCategoryView(final Context context)
     {
         super(context);
-    }
-
-    ServiceCategoryView(final Context context, final AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
-
-    ServiceCategoryView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
-        super(context, attrs, defStyle);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_service_category, this);
+        ButterKnife.bind(this);
     }
 
     public void init(final Service service)
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_service_category, this);
-        ButterKnife.bind(this);
 
         try
         {

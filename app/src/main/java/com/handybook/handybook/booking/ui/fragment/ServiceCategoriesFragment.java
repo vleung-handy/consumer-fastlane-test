@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -16,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -45,23 +46,22 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     private static final String EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID";
     private static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
+    private static final String TAG = ServiceCategoriesFragment.class.getName();
+
     private List<Service> mServices = new ArrayList<>();
     private boolean mUsedCache;
     /**
      * maps the service id to its icon image view as rendered.
      * using service id rather than service object as key in case the object references differ
-     * <p/>
+     * <p>
      * used for the cool icon transition to ServicesActivity
-     * <p/>
+     * <p>
      * we need this because the transition requires a
      * reference to the EXACT image view of the service icon
      * rendered in the service category views
      */
     private Map<Integer, ImageView> mServiceIconMap = new HashMap<>();
 
-
-    @Bind(R.id.category_layout)
-    LinearLayout mCategoryLayout;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.coupon_layout)
@@ -70,6 +70,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     ImageView mPromoImage;
     @Bind(R.id.promo_text)
     TextView mPromoText;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
+    RecyclerViewAdapter mAdapter;
 
     public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
     {
@@ -128,6 +132,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 getResources().getColor(R.color.handy_blue),
                 PorterDuff.Mode.SRC_ATOP);
 
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
         return view;
     }
 
@@ -147,7 +155,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     /**
      * handles bundle arguments. currently only from deeplinks
-     * <p/>
+     * <p>
      * should be called after handleLoadServicesResponse() so that we have the list of services
      */
     private void handleBundleArguments()
@@ -217,12 +225,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         handleLoadServicesResponse(event.getServices(), false);
     }
 
-    @Subscribe
-    public void onReceiveCachedServicesSuccess(final BookingEvent.ReceiveCachedServicesSuccess event)
-    {
-        handleLoadServicesResponse(event.getServices(), true);
-    }
-
     private void handleLoadServicesResponse(List<Service> services, boolean usedCache)
     {
         if (!allowCallbacks)
@@ -232,7 +234,27 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         mUsedCache = usedCache;
         mServices = services;
         handleBundleArguments();
-        displayServices();
+
+        if (mAdapter == null)
+        {
+            mAdapter = new RecyclerViewAdapter(mServices, new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    int itemPosition = mRecyclerView.getChildLayoutPosition(view);
+                    Service service = mServices.get(itemPosition);
+                    mServiceIconMap.put(service.getId(), ((ServiceCategoryView) view).getIcon());
+                    launchServiceActivity(service);
+                }
+            });
+            mRecyclerView.setAdapter(mAdapter);
+        }
+        else
+        {
+            mAdapter.clearAndAdd(mServices);
+        }
+
         progressDialog.dismiss();
     }
 
@@ -321,36 +343,55 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
     }
 
-    private void displayServices()
+    static class RecyclerViewHolder extends RecyclerView.ViewHolder
     {
-        mCategoryLayout.removeAllViews();
-        for (final Service service : mServices)
+        public RecyclerViewHolder(View itemView)
         {
-            ServiceCategoryView serviceCategoryView = new ServiceCategoryView(getActivity());
-            serviceCategoryView.init(service);
-            serviceCategoryView.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    launchServiceActivity(service);
-                }
-            });
-
-            /*
-            for transition to ServiceActivity, which needs a reference to the
-            exact image view of the service icon that is rendered
-             */
-            mServiceIconMap.put(service.getId(), serviceCategoryView.getIcon());
-            mCategoryLayout.addView(serviceCategoryView);
+            super(itemView);
         }
     }
 
-    //not supported for now
-//    @OnClick(R.id.ib_notification_feed)
-//    void onNotificationFeedButtonClicked()
-//    {
-//        Intent launchIntent = new Intent(getActivity(), NotificationsActivity.class);
-//        startActivity(launchIntent);
-//    }
+
+    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder>
+    {
+        private final String TAG = RecyclerViewAdapter.class.getName();
+
+        private List<Service> services;
+        private View.OnClickListener mListener;
+
+        public RecyclerViewAdapter(List<Service> itemList, View.OnClickListener listener)
+        {
+            services = itemList;
+            mListener = listener;
+        }
+
+        @Override
+        public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            ServiceCategoryView v = new ServiceCategoryView(getContext());
+            v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            v.setOnClickListener(mListener);
+            RecyclerViewHolder rcv = new RecyclerViewHolder(v);
+            return rcv;
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerViewHolder holder, int position)
+        {
+            ((ServiceCategoryView) holder.itemView).init(services.get(position));
+        }
+
+        @Override
+        public int getItemCount()
+        {
+            return services.size();
+        }
+
+        public void clearAndAdd(List<Service> s)
+        {
+            services.clear();
+            services.addAll(s);
+            notifyDataSetChanged();
+        }
+    }
 }
