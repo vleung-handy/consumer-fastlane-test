@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.ui.descriptor.ServiceCategoryListDescriptor;
-import com.handybook.handybook.ui.transformation.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -55,17 +54,6 @@ public final class ServiceCategoryView extends FrameLayout
             {
                 Picasso.with(getContext())
                         .load(descriptor.getImageDrawable())
-                        .transform(
-                                new RoundedTransformation(
-                                        getContext().getResources()
-                                                .getDimension(R.dimen.default_corner_radius),
-                                        0,
-                                        true,
-                                        true,
-                                        false,
-                                        false
-                                )
-                        )
                         .fit()
                         .into(mImage);
             }

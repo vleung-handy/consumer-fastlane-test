@@ -36,6 +36,8 @@
         android:paddingTop="@dimen/default_margin_half"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:animationCache="true"
+        android:persistentDrawingCache="animation"
         />
 
     <LinearLayout

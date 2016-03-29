@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,6 +138,19 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
+        mAdapter = new RecyclerViewAdapter(mServices, new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                int itemPosition = mRecyclerView.getChildLayoutPosition(view);
+                Service service = mServices.get(itemPosition);
+                mServiceIconMap.put(service.getId(), ((ServiceCategoryView) view).getIcon());
+                launchServiceActivity(service);
+            }
+        });
+
+        mRecyclerView.setAdapter(mAdapter);
         return view;
     }
 
@@ -238,28 +250,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         mServices = services;
         handleBundleArguments();
 
-        if (mAdapter == null)
-        {
-            Log.d(TAG, "recycler: new adapter");
-            mAdapter = new RecyclerViewAdapter(mServices, new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    int itemPosition = mRecyclerView.getChildLayoutPosition(view);
-                    Service service = mServices.get(itemPosition);
-                    mServiceIconMap.put(service.getId(), ((ServiceCategoryView) view).getIcon());
-                    launchServiceActivity(service);
-                }
-            });
-            mRecyclerView.setAdapter(mAdapter);
-        }
-        else
-        {
-            Log.d(TAG, "recycler: clearing and add");
-            mAdapter.clearAndAdd(mServices);
-        }
-
+        mAdapter.clearAndAdd(mServices);
         progressDialog.dismiss();
     }
 
