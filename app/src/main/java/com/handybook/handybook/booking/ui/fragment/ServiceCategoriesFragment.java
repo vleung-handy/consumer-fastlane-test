@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -239,6 +240,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         if (mAdapter == null)
         {
+            Log.d(TAG, "recycler: new adapter");
             mAdapter = new RecyclerViewAdapter(mServices, new View.OnClickListener()
             {
                 @Override
@@ -254,6 +256,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
         else
         {
+            Log.d(TAG, "recycler: clearing and add");
             mAdapter.clearAndAdd(mServices);
         }
 
