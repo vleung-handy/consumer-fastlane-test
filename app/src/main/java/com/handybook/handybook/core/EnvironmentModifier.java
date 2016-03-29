@@ -2,7 +2,6 @@ package com.handybook.handybook.core;
 
 import android.content.Context;
 
-import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
@@ -44,19 +43,7 @@ public class EnvironmentModifier
 
     public String getEnvironment()
     {
-        String defaultEnvironment = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
-                Environment.PRODUCTION : Environment.STAGING;
-
-        String response = mPrefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, defaultEnvironment);
-
-        if (android.text.TextUtils.isEmpty(response))
-        {
-            return defaultEnvironment;
-        }
-        else
-        {
-            return response;
-        }
+       return "s";
     }
 
     public boolean isProduction()

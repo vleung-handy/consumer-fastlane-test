@@ -246,8 +246,14 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, mBookingId, mProName, finalRating);
 
-        RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating).show(getActivity()
-                .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
+        //TODO: JIA: if the rating was less than 5, then show the rating flow instead.
+
+        if (mRating < 5) {
+
+        } else {
+            RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating).show(getActivity()
+                    .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
+        }
     }
 
     @Subscribe

@@ -11,6 +11,8 @@
     <dimen name="default_corner_radius_double">8dp</dimen>
     <dimen name="default_margin_half">8dp</dimen>
     <dimen name="default_margin_double">32dp</dimen>
+    <dimen name="default_margin_3x">48dp</dimen>
+    <dimen name="default_margin_4x">64dp</dimen>
     <dimen name="default_padding_eighth">2dp</dimen>
     <dimen name="default_padding_quarter">4dp</dimen>
     <dimen name="default_padding">16dp</dimen>
@@ -38,6 +40,11 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="short_divider_width">100dp</dimen>
     <dimen name="menu_header_height">160dp</dimen>
+
+    <dimen name="service_circle">92dp</dimen>
+    <dimen name="service_circle_half">46dp</dimen>
+    <dimen name="service_circle_inner_icon">48dp</dimen>
+    <dimen name="service_circle_top_margin">-46dp</dimen>
 
     <dimen name="med_elevation">4dp</dimen>
     <dimen name="low_elevation">2dp</dimen>
