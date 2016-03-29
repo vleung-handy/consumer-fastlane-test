@@ -46,7 +46,17 @@ public class EnvironmentModifier
     {
         String defaultEnvironment = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
                 Environment.PRODUCTION : Environment.STAGING;
-        return mPrefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, defaultEnvironment);
+
+        String response = mPrefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, defaultEnvironment);
+
+        if (android.text.TextUtils.isEmpty(response))
+        {
+            return defaultEnvironment;
+        }
+        else
+        {
+            return response;
+        }
     }
 
     public boolean isProduction()
