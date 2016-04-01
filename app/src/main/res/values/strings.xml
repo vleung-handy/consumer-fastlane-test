@@ -309,7 +309,7 @@
     <string name="booking_edit_address_title">Edit Address</string>
     <string name="booking_edit_preferences_title">Edit Preferences</string>
     <string name="booking_edit_cleaning_routine_title">Edit Cleaning Routine</string>
-    <string name="drag_and_drop_instruction">Tap and drag list items to let your pro know what to prioritize</string>
+    <string name="drag_and_drop_instruction">Tap and drag to let your pro know what to prioritize. We\'ll only send the items you check.</string>
     <string name="booking_edit_preferences_subtitle">Any other notes to your pro?</string>
     <string name="spending_limit_exceeded">You have exceeded your spending limit</string>
     <string name="android_pay_unavailable">Android Pay is unavailable</string>
