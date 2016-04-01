@@ -16,6 +16,8 @@ public class BookingInstruction implements Parcelable
     private Long mId;
     @SerializedName("machine_name")
     private String mMachineName;
+    @SerializedName("title")
+    private String mTitle;
     @SerializedName("instruction_type")
     private String mInstructionType;
     @SerializedName("description")
@@ -39,6 +41,7 @@ public class BookingInstruction implements Parcelable
     public BookingInstruction(
             final Long id,
             final String machineName,
+            final String title,
             final String instructionType,
             final String description,
             final Boolean isRequested
@@ -46,6 +49,7 @@ public class BookingInstruction implements Parcelable
     {
         mId = id;
         mMachineName = machineName;
+        mTitle = title;
         mInstructionType = instructionType;
         mDescription = description;
         mIsRequested = isRequested;
@@ -55,6 +59,7 @@ public class BookingInstruction implements Parcelable
     {
         mId = (Long) in.readValue(Long.class.getClassLoader());
         mMachineName = in.readString();
+        mTitle = in.readString();
         mInstructionType = in.readString();
         mDescription = in.readString();
         mIsRequested = (in.readInt() == 0) ? false : true;
@@ -85,6 +90,11 @@ public class BookingInstruction implements Parcelable
         return mMachineName;
     }
 
+    public String getTitle()
+    {
+        return mTitle;
+    }
+
     public String getDescription()
     {
         return mDescription;
@@ -108,6 +118,11 @@ public class BookingInstruction implements Parcelable
     public void setMachineName(final String machineName)
     {
         mMachineName = machineName;
+    }
+
+    public void setTitle(final String title)
+    {
+        mTitle = title;
     }
 
     public void setInstructionType(final String instructionType)
@@ -147,6 +162,7 @@ public class BookingInstruction implements Parcelable
     {
         dest.writeValue(mId);
         dest.writeString(mMachineName);
+        dest.writeString(mTitle);
         dest.writeString(mInstructionType);
         dest.writeString(mDescription);
         dest.writeInt((mIsRequested != null && mIsRequested) ? 1 : 0);
