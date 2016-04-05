@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/transparent"
+              android:clipChildren="false"
+              android:clipToPadding="false"
+              android:gravity="center"
+    >
+
+    <ImageView
+        android:contentDescription="rate"
+        android:layout_gravity="center"
+        android:layout_height="@dimen/service_circle"
+        android:layout_width="@dimen/service_circle"
+        android:src="@drawable/ic_question_fill"
+        />
+
+    <TextView
+        android:id="@+id/tv_rating_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextView.XLarge.Bold"
+        android:gravity="center"
+        tools:text="@string/rating_improvement_title"
+        android:layout_marginTop="@dimen/default_margin"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_margin_half"
+        />
+
+    <TextView
+        android:id="@+id/tv_rating_anonymous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextView.Medium"
+        android:textColor="@color/dark_grey_pressed"
+        android:gravity="center"
+        android:text="@string/rating_improvement_anonymous"
+        />
+
+    <TextView
+        android:id="@+id/tv_rating_all_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextView.Medium"
+        android:textColor="@color/dark_grey_pressed"
+        android:gravity="center"
+        android:text="@string/rating_improvement_all_that_apply"
+        />
+</LinearLayout>

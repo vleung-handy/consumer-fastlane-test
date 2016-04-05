@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,9 +26,9 @@ public class BaseDialogFragment extends InjectedDialogFragment
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState)
     {
-        super.onCreateDialog(savedInstanceState);
-        this.setStyle(DialogFragment.STYLE_NO_FRAME, 0);
-        return new Dialog(getActivity());
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        this.setStyle(android.support.v4.app.DialogFragment.STYLE_NO_FRAME, 0);
+        return dialog;
     }
 
     @Override

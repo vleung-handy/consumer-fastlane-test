@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/handy_white"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+    <!-- TODO: JIA: use correct image here-->
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="@dimen/default_margin_double"
+        android:layout_marginLeft="@dimen/default_margin_5x"
+        android:layout_marginRight="@dimen/default_margin_5x"
+        android:layout_marginTop="@dimen/default_margin_3x"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_cleaner"
+        />
+
+    <TextView
+        style="@style/TextView.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin_3x"
+        android:layout_marginRight="@dimen/default_margin_3x"
+        android:gravity="center"
+        android:text="@string/rating_bad_apologize"
+        />
+
+    <TextView
+        style="@style/TextView.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/rating_text_margin"
+        android:layout_marginRight="@dimen/rating_text_margin"
+        android:gravity="center"
+        android:text="@string/rating_customer_service_contact"
+        android:textColor="@color/dark_grey_pressed"
+        />
+
+    <Button
+        android:id="@+id/btn_ok"
+        style="@style/Button.Green"
+        android:layout_marginTop="@dimen/default_margin_double"
+        android:text="@string/ok"
+        />
+</LinearLayout>

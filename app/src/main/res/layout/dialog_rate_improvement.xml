@@ -1,58 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             android:background="@color/transparent"
+    >
 
-
-    <FrameLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="@dimen/service_circle_top_margin"
-        android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"
-        >
-        <ImageView
-            android:contentDescription="rate"
-            android:id="@+id/service_icon"
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/circle_green"/>
-
-        <ImageView
-            android:contentDescription="rate"
-            android:layout_centerInParent="true"
-            android:layout_height="@dimen/service_circle_inner_icon"
-            android:layout_width="@dimen/service_circle_inner_icon"
-            android:src="@drawable/ic_clean"/>
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/tv_rating_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TextView.XLarge.Bold"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        tools:text="@string/rating_improvement_title"
-        android:layout_marginTop="@dimen/default_margin_4x"
-        android:layout_marginRight="@dimen/default_margin_3x"
-        android:layout_marginLeft="@dimen/default_margin_3x"
+    <com.handybook.handybook.booking.ui.view.DynamicHeightViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
         />
-    <TextView
-        android:id="@+id/tv_rating_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TextView.Medium"
-        android:textColor="@color/dark_grey_pressed"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/tv_rating_title"
-        android:gravity="center"
-        tools:text="@string/rating_improvement_message"
-        android:layout_marginTop="@dimen/default_margin"
-        />
-</RelativeLayout>
+
+</FrameLayout>

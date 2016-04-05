@@ -71,4 +71,13 @@
             />
     </group>
 
+    <!--TODO: JIA: remove this testing code-->
+    <group android:id="@+id/sdfsdf">
+        <item
+            android:id="@+id/nav_test"
+            android:checked="false"
+            android:title="Get Pro Rate Info"
+            />
+    </group>
+
 </menu>

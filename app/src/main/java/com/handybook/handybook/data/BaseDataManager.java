@@ -3,6 +3,7 @@ package com.handybook.handybook.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -33,6 +34,8 @@ import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
+import com.handybook.handybook.booking.rating.PrerateProInfo;
+import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
@@ -542,6 +545,40 @@ public final class BaseDataManager extends DataManager
                 {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
+            }
+        });
+    }
+
+    @Override
+    public void requestPrerateProInfo(
+            final String bookingId,
+            final Callback<PrerateProInfo> cb
+    )
+    {
+        mService.requestPrerateProInfo(bookingId, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(PrerateProInfo.fromJson(response.toString()));
+            }
+        });
+    }
+
+    @Override
+    public void postLowRatingFeedback(
+            RateImprovementFeedback feedback,
+            final Callback<Void> cb
+    )
+    {
+        Log.d(TAG, "postLowRatingFeedback: ");
+        mService.postLowRatingFeedback(feedback.getBookingId(), feedback, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                Log.d(TAG, "success: ");
+                cb.onSuccess(null);
             }
         });
     }

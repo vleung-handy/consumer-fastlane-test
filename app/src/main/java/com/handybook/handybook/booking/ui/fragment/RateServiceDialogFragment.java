@@ -15,10 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.analytics.MixpanelEvent;
+import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.squareup.otto.Subscribe;
@@ -246,10 +247,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, mBookingId, mProName, finalRating);
 
-        //TODO: JIA: if the rating was less than 5, then show the rating flow instead.
-
-        if (mRating < 5) {
-
+        if (mRating < 4)
+        {
+            RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)).show(getActivity()
+                    .getSupportFragmentManager(), RateImprovementDialogFragment.class.getSimpleName());
         } else {
             RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating).show(getActivity()
                     .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");

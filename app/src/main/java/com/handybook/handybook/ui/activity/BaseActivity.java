@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -53,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
 {
     private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
     private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
+    private static final String TAG = BaseActivity.class.getName();
     protected boolean allowCallbacks;
     protected ProgressDialog mProgressDialog;
     protected Toast mToast;
@@ -133,6 +136,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     {
         super.onPostResume();
         showRequiredUserModals();
+
+        Log.d(TAG, "onPostResume: launching rating fragment");
+//        TODO: JIA: Delete this
+        RateImprovementDialogFragment.newInstance(String.valueOf("189669")).
+                show(getSupportFragmentManager(), RateImprovementDialogFragment.class.getSimpleName());
+
+
     }
 
     @Override

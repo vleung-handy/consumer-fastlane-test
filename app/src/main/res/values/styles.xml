@@ -193,6 +193,11 @@
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
+    <!-- This is to override the selected color of a radio button -->
+    <style name="RadioButtonStyle"
+           parent="Theme.Handy">
+        <item name="colorAccent">@color/handy_blue</item>
+    </style>
 
     <style name="EditText">
         <item name="android:layout_width">match_parent</item>

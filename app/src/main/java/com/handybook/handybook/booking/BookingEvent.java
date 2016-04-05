@@ -8,6 +8,8 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.rating.PrerateProInfo;
+import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 
@@ -56,6 +58,61 @@ public abstract class BookingEvent
 
     }
 
+
+    public static class PostLowRatingFeedback extends HandyEvent.RequestEvent
+    {
+        public RateImprovementFeedback mFeedback;
+
+        public PostLowRatingFeedback(final RateImprovementFeedback feedback)
+        {
+            mFeedback = feedback;
+        }
+    }
+
+
+    public static class PostLowRatingFeedbackSuccess extends HandyEvent.ReceiveSuccessEvent
+    {
+    }
+
+
+    public static class PostLowRatingFeedbackError extends HandyEvent.ReceiveErrorEvent
+    {
+        public PostLowRatingFeedbackError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
+    public static class RequestPrerateProInfo extends HandyEvent.RequestEvent
+    {
+        public String bookingId;
+
+        public RequestPrerateProInfo(String bookingId)
+        {
+            this.bookingId = bookingId;
+        }
+    }
+
+
+    public static class RequestPrerateProInfoSuccess extends HandyEvent.ReceiveSuccessEvent
+    {
+        public PrerateProInfo mPrerateProInfo;
+
+        public RequestPrerateProInfoSuccess(PrerateProInfo prerateProInfo)
+        {
+            this.mPrerateProInfo = prerateProInfo;
+        }
+    }
+
+
+    public static class RequestPrerateProInfoError extends HandyEvent.ReceiveErrorEvent
+    {
+        public RequestPrerateProInfoError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
 
     public static class RequestPreRescheduleInfo extends HandyEvent.RequestEvent
     {

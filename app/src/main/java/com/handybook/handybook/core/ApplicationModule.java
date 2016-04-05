@@ -26,6 +26,10 @@ import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
+import com.handybook.handybook.booking.rating.RatingsGridFragment;
+import com.handybook.handybook.booking.rating.RatingsRadioFragment;
+import com.handybook.handybook.booking.ui.RateServiceApologyDialogFragment;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
@@ -209,6 +213,7 @@ import retrofit.converter.GsonConverter;
         HelpNativeFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,
+        RateServiceApologyDialogFragment.class,
         LaundryDropOffDialogFragment.class,
         LaundryInfoDialogFragment.class,
         AddLaundryDialogFragment.class,
@@ -257,6 +262,9 @@ import retrofit.converter.GsonConverter;
         RedemptionFragment.class,
         RedemptionSignUpFragment.class,
         RedemptionEmailSignUpFragment.class,
+        RateImprovementDialogFragment.class,
+        RatingsGridFragment.class,
+        RatingsRadioFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule

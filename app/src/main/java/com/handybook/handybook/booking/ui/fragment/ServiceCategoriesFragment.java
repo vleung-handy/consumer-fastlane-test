@@ -31,12 +31,15 @@ import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,6 +78,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     RecyclerView mRecyclerView;
 
     RecyclerViewAdapter mAdapter;
+
+    @Inject
+    public Bus bus;
 
     public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
     {

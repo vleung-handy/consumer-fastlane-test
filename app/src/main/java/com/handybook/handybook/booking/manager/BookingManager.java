@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.manager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -17,6 +18,7 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
@@ -40,6 +42,8 @@ import javax.inject.Inject;
 //TODO: Add caching like we do for portal, navigating back and forth from my bookings page is painfully slow right now
 public class BookingManager implements Observer
 {
+    private static final String TAG = BookingManager.class.getName();
+    
     private final PrefsManager mPrefsManager;
     private final DataManager mDataManager;
     private final Bus mBus;
@@ -48,6 +52,7 @@ public class BookingManager implements Observer
     private BookingTransaction mBookingTransaction;
     private BookingPostInfo mBookingPostInfo;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
+    private PrerateProInfo mPrerateProInfo;
 
     @Inject
     public BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
@@ -104,6 +109,47 @@ public class BookingManager implements Observer
             public void onError(DataManager.DataManagerError error)
             {
                 mBus.post(new BookingEvent.ReceivePreRescheduleInfoError(error));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onRequestPrerateProInfo(BookingEvent.RequestPrerateProInfo event)
+    {
+        mDataManager.requestPrerateProInfo(event.bookingId, new DataManager.Callback<PrerateProInfo>()
+        {
+            @Override
+            public void onSuccess(PrerateProInfo object)
+            {
+                mBus.post(new BookingEvent.RequestPrerateProInfoSuccess(object));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                mBus.post(new BookingEvent.RequestPrerateProInfoError(error));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onPostLowRatingFeedback(BookingEvent.PostLowRatingFeedback event)
+    {
+        Log.d(TAG, "onPostLowRatingFeedback: ");
+        mDataManager.postLowRatingFeedback(event.mFeedback, new DataManager.Callback<Void>()
+        {
+            @Override
+            public void onSuccess(final Void response)
+            {
+                Log.d(TAG, "onSuccess: ");
+                mBus.post(new BookingEvent.PostLowRatingFeedbackSuccess());
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                Log.d(TAG, "onError: ");
+                mBus.post(new BookingEvent.PostLowRatingFeedbackError(error));
             }
         });
     }
