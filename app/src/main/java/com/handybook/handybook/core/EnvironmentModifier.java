@@ -41,9 +41,12 @@ public class EnvironmentModifier
         }
     }
 
+
+    String env = "q440";
+
     public String getEnvironment()
     {
-       return "s";
+        return env;
     }
 
     public boolean isProduction()

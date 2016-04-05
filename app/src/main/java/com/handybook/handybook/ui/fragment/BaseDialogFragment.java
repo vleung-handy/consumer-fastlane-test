@@ -40,13 +40,28 @@ public class BaseDialogFragment extends InjectedDialogFragment
         getDialog().getWindow().setBackgroundDrawable(
                 new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+        updateDialogState();
+
+        return view;
+    }
+
+    protected void allowDialogDismissable()
+    {
+        canDismiss = true;
+        updateDialogState();
+    }
+
+    private void updateDialogState()
+    {
         getDialog().setCancelable(canDismiss);
         getDialog().setCanceledOnTouchOutside(canDismiss);
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener()
         {
             @Override
-            public boolean onKey(final DialogInterface dialog, final int keyCode,
-                                 final KeyEvent event)
+            public boolean onKey(
+                    final DialogInterface dialog, final int keyCode,
+                    final KeyEvent event
+            )
             {
                 // Disable the back key when cannot dismiss
                 if (keyCode == KeyEvent.KEYCODE_BACK)
@@ -58,8 +73,6 @@ public class BaseDialogFragment extends InjectedDialogFragment
                 return false;
             }
         });
-
-        return view;
     }
 
     //Helpers

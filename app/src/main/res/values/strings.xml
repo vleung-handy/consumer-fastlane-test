@@ -121,7 +121,7 @@
     <string name="amazing">Amazing!</string>
     <string name="submit">Submit</string>
     <string name="thanks_for_feedback">Thanks for your feedback!</string>
-    <string name="were_sorry_feedback">We’re sorry to hear that you had a less than perfect experience. Your feedback will help us improve the service for next time.</string>
+    <string name="were_sorry_feedback">We’re sorry to hear that you had a less than perfect experience.\nYour feedback will help us improve the service for next time.</string>
     <string name="rating_improvement_title">What could your professional do to improve?</string>
     <string name="rating_improvement_anonymous">All feedback is anonymous.</string>
     <string name="rating_improvement_all_that_apply">Select all that apply</string>

@@ -29,7 +29,6 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.booking.rating.RatingsGridFragment;
 import com.handybook.handybook.booking.rating.RatingsRadioFragment;
-import com.handybook.handybook.booking.ui.RateServiceApologyDialogFragment;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
@@ -213,7 +212,6 @@ import retrofit.converter.GsonConverter;
         HelpNativeFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,
-        RateServiceApologyDialogFragment.class,
         LaundryDropOffDialogFragment.class,
         LaundryInfoDialogFragment.class,
         AddLaundryDialogFragment.class,

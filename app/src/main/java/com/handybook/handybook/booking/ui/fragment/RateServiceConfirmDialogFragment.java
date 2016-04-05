@@ -150,6 +150,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
         else {
             titleText.setText(getResources().getString(R.string.thanks_for_feedback));
             messageText.setText(getResources().getString(R.string.were_sorry_feedback));
+            allowDialogDismissable();
         }
     }
 

@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.view.DynamicHeightViewPager;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.squareup.otto.Subscribe;
@@ -77,8 +79,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        canDismiss = true;
-
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.dialog_rate_improvement, container, false);
@@ -229,18 +229,21 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     {
         progressDialog.dismiss();
         Log.d(TAG, "submissionSuccessResponse: ");
-        //TODO: JIA: Show the feedback success dialog
+        dismiss();
+        //the rating passed in doesn't matter. Just need to be a number less than 4.
+        RateServiceConfirmDialogFragment.newInstance(Integer.parseInt(mBookingId), 1).show(getActivity()
+                .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
     }
 
     @Subscribe
     public void submissionFailedResponse(BookingEvent.PostLowRatingFeedbackError response)
     {
+        Toast.makeText(getContext(), R.string.default_error_string, Toast.LENGTH_LONG).show();
         progressDialog.dismiss();
         //The error has been shown by the BaseDataManagerErrorHandler, so we don't have to do anything here.
         Log.d(TAG, "submissionFailedResponse: ");
         //since we errored out, allow the customer to exit out if they choose.
-        canDismiss = true;
-        getDialog().setCancelable(true);
+        allowDialogDismissable();
     }
 
     /**
