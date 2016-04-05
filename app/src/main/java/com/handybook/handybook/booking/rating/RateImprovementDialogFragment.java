@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
@@ -137,9 +136,10 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     @Subscribe
     public void onRequestPrerateProInfoError(BookingEvent.RequestPrerateProInfoError error)
     {
+        handleRequestError(error);
+
         //since there was an issue loading the ratings dialog, then log and dismiss. Pretend nothing happened.
         //Don't worry, the next time an activity is launched, this ratings dialog will automatically re-appear.
-        Crashlytics.logException(new RuntimeException(TAG + ":" + error.error.getMessage()));
         progressDialog.dismiss();
         dismiss();
     }
@@ -238,9 +238,9 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     }
 
     @Subscribe
-    public void submissionFailedResponse(BookingEvent.PostLowRatingFeedbackError response)
+    public void submissionFailedResponse(BookingEvent.PostLowRatingFeedbackError error)
     {
-        Toast.makeText(getContext(), R.string.default_error_string, Toast.LENGTH_LONG).show();
+        handleRequestError(error);
         progressDialog.dismiss();
         //The error has been shown by the BaseDataManagerErrorHandler, so we don't have to do anything here.
         Log.d(TAG, "submissionFailedResponse: ");

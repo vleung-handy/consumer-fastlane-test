@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.event.HandyEvent;
 
 import javax.inject.Inject;
 
@@ -96,5 +99,18 @@ public class BaseDialogFragment extends InjectedDialogFragment
         toast = Toast.makeText(getActivity().getApplicationContext(), message, length);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    protected void handleRequestError(HandyEvent.ReceiveErrorEvent error)
+    {
+        Crashlytics.logException(new RuntimeException(error.getClass().getName() + ":" + error.error.getMessage()));
+        if (error.error.getType() == DataManager.Type.NETWORK)
+        {
+            showToast(R.string.error_fetching_connectivity_issue);
+        }
+        else
+        {
+            showToast(R.string.default_error_string);
+        }
     }
 }
