@@ -137,9 +137,11 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     @Subscribe
     public void onRequestPrerateProInfoError(BookingEvent.RequestPrerateProInfoError error)
     {
-        //TODO: JIA: revisit this. We may not even want to show a reload view..., just a toast and move on.
-        Crashlytics.logException(new RuntimeException(error.error.getMessage()));
+        //since there was an issue loading the ratings dialog, then log and dismiss. Pretend nothing happened.
+        //Don't worry, the next time an activity is launched, this ratings dialog will automatically re-appear.
+        Crashlytics.logException(new RuntimeException(TAG + ":" + error.error.getMessage()));
         progressDialog.dismiss();
+        dismiss();
     }
 
     public void loadData()
