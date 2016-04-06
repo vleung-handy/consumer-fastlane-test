@@ -58,6 +58,14 @@ public class BaseDialogFragment extends InjectedDialogFragment
     {
         getDialog().setCancelable(canDismiss);
         getDialog().setCanceledOnTouchOutside(canDismiss);
+        applyDefaultKeyListener();
+    }
+
+    /**
+     * Handles keypresses depending on whether this dialog is dismissable or not
+     */
+    protected void applyDefaultKeyListener()
+    {
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener()
         {
             @Override

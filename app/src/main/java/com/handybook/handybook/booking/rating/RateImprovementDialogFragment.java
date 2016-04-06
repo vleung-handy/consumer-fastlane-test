@@ -1,13 +1,16 @@
 package com.handybook.handybook.booking.rating;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +19,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
-import com.handybook.handybook.booking.ui.view.DynamicHeightViewPager;
+import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.squareup.otto.Subscribe;
 
@@ -33,7 +36,7 @@ import butterknife.ButterKnife;
  * <p>
  * Created by jtse on 3/29/16.
  */
-public class RateImprovementDialogFragment extends BaseDialogFragment implements WizardCallback
+public class RateImprovementDialogFragment extends BaseDialogFragment implements WizardCallback, ViewPager.OnPageChangeListener
 {
     public static final String EXTRA_BOOKING_ID = "booking_id";
     public static final String EXTRA_REASONS = "reasons";
@@ -41,7 +44,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     private static final String TAG = RateImprovementDialogFragment.class.getName();
 
     @Bind(R.id.pager)
-    DynamicHeightViewPager mPager;
+    SwipeableViewPager mPager;
 
     FragmentStatePagerAdapter mAdapter;
 
@@ -88,6 +91,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
 
         mAdapter = new WizardPagerAdapter(getChildFragmentManager());
         mPager.setAdapter(mAdapter);
+        mPager.addOnPageChangeListener(this);
 
         final Bundle args = getArguments();
 
@@ -246,6 +250,55 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         Log.d(TAG, "submissionFailedResponse: ");
         //since we errored out, allow the customer to exit out if they choose.
         allowDialogDismissable();
+    }
+
+    @Override
+    public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels)
+    {
+
+    }
+
+    @Override
+    public void onPageSelected(final int position)
+    {
+        //if we're not on the first page, we want to handle backpresses, to help the user
+        //swipe their way back to the first page
+        if (mPager.getCurrentItem() > 0)
+        {
+            getDialog().setOnKeyListener(new DialogInterface.OnKeyListener()
+            {
+                @Override
+                public boolean onKey(
+                        final DialogInterface dialog, final int keyCode,
+                        final KeyEvent event
+                )
+                {
+                    if (keyCode == KeyEvent.KEYCODE_BACK)
+                    {
+                        backOnePage();
+                        return true;
+                    }
+
+                    // Otherwise return false, do not consume the event
+                    return false;
+                }
+            });
+        }
+        else
+        {
+            applyDefaultKeyListener();
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(final int state)
+    {
+
+    }
+
+    private void backOnePage()
+    {
+        mPager.setCurrentItem(mPager.getCurrentItem() - 1);
     }
 
     /**
