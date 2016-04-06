@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -136,13 +135,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     {
         super.onPostResume();
         showRequiredUserModals();
-
-        Log.d(TAG, "onPostResume: launching rating fragment");
-//        TODO: JIA: Delete this
-        RateImprovementDialogFragment.newInstance(String.valueOf("189669")).
-                show(getSupportFragmentManager(), RateImprovementDialogFragment.class.getSimpleName());
-
-
     }
 
     @Override
@@ -181,6 +173,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 || fm.findFragmentByTag(RateServiceDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
                 || !(
                 BaseActivity.this instanceof ServiceCategoriesActivity
                         || BaseActivity.this instanceof BookingDetailActivity

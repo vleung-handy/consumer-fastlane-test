@@ -42,7 +42,7 @@ public class EnvironmentModifier
     }
 
 
-    String env = "q440";
+    String env = "s";
 
     public String getEnvironment()
     {

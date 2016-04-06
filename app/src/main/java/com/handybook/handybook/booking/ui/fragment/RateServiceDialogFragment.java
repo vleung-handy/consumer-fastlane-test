@@ -247,7 +247,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, mBookingId, mProName, finalRating);
 
-        if (mRating < 4)
+        if (finalRating < 4)
         {
             RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)).show(getActivity()
                     .getSupportFragmentManager(), RateImprovementDialogFragment.class.getSimpleName());
