@@ -36,7 +36,6 @@ public class Reason implements Serializable
         ICONS.put("left_early", R.drawable.ic_rating_left_early);
         ICONS.put("arrived_late", R.drawable.ic_rating_arrived_late);
 
-//        TODO: JIA: test on a handy man booking to see if the handyman icons show up
         ICONS.put(CLEAN_PREFIX + QUALITY_OF_SERVICE, R.drawable.ic_rating_clean_quality);
         ICONS.put(HANDYMAN_PREFIX + QUALITY_OF_SERVICE, R.drawable.ic_rating_handyman_quality);
         ICONS.put(CLEAN_PREFIX + "supplies", R.drawable.ic_rating_clean_supplies);
