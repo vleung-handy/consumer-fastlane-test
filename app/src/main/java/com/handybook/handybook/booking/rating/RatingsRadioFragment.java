@@ -60,6 +60,9 @@ public class RatingsRadioFragment extends BaseWizardFragment
         View view = inflater.inflate(R.layout.fragment_ratings_radio, container, false);
         ButterKnife.bind(this, view);
 
+        mSubmitText = getResources().getString(R.string.submit);
+        mNextText = getResources().getString(R.string.next);
+
         mReasons = (Reasons) getArguments().getSerializable(RateImprovementDialogFragment.EXTRA_REASONS);
         mValuesToKeys = new HashMap<>();
 
@@ -94,10 +97,15 @@ public class RatingsRadioFragment extends BaseWizardFragment
             }
         }
 
-        mSubmitText = getResources().getString(R.string.submit);
-        mNextText = getResources().getString(R.string.next);
+        syncSubmitButtonState();
 
-        if (((RateImprovementDialogFragment) getParentFragment()).haveMorePages())
+        return view;
+    }
+
+    @Override
+    void syncSubmitButtonState()
+    {
+        if (((RateImprovementDialogFragment) getParentFragment()).haveMorePages(this))
         {
             mSubmitButton.setText(mNextText);
         }
@@ -105,8 +113,6 @@ public class RatingsRadioFragment extends BaseWizardFragment
         {
             mSubmitButton.setText(mSubmitText);
         }
-
-        return view;
     }
 
     @OnClick(R.id.ratings_late_submit_button)

@@ -75,6 +75,13 @@ public class RatingsGridFragment extends BaseWizardFragment
         View view = inflater.inflate(R.layout.fragment_ratings_grid, container, false);
         ButterKnife.bind(this, view);
 
+        mSubmitText = getResources().getString(R.string.submit);
+        mNextText = getResources().getString(R.string.next);
+        mDefaultBGColor = ContextCompat.getColor(getContext(), R.color.handy_white);
+        mSelectedBGColor = ContextCompat.getColor(getContext(), R.color.handy_blue);
+        mSelectedFGColor = ContextCompat.getColor(getContext(), R.color.handy_white);
+        mDefaultFGColor = ContextCompat.getColor(getContext(), R.color.handy_tertiary_gray);
+
         if (savedInstanceState != null)
         {
             mSelectedItems = (ArrayList<Reason>) savedInstanceState.getSerializable(EXTRA_SELECTED_ITEMS);
@@ -89,6 +96,7 @@ public class RatingsGridFragment extends BaseWizardFragment
         mIsFirstFragment = getArguments().getBoolean(RateImprovementDialogFragment.EXTRA_FIRST_FRAGMENT, false);
 
         convertToDisplayItems(mReasons, mSelectedItems);
+        syncSubmitButtonState();
 
         mTvTitle.setText(mReasons.mTitle);
         mTvAllApply.setVisibility(View.VISIBLE);
@@ -117,12 +125,6 @@ public class RatingsGridFragment extends BaseWizardFragment
             }
         });
 
-        mDefaultBGColor = ContextCompat.getColor(getContext(), R.color.handy_white);
-        mSelectedBGColor = ContextCompat.getColor(getContext(), R.color.handy_blue);
-        mSelectedFGColor = ContextCompat.getColor(getContext(), R.color.handy_white);
-        mDefaultFGColor = ContextCompat.getColor(getContext(), R.color.handy_tertiary_gray);
-        mSubmitText = getResources().getString(R.string.submit);
-        mNextText = getResources().getString(R.string.next);
         return view;
     }
 
@@ -223,6 +225,39 @@ public class RatingsGridFragment extends BaseWizardFragment
         mCallback.done(this);
     }
 
+    /**
+     * If there is a selected item that has subreasons, then update the button to say "next", otherwise
+     * it will callback to the parent to see if there are more fragments to go on the pager.
+     */
+    void syncSubmitButtonState()
+    {
+        for (GridDisplayItem item : mDisplayedItems)
+        {
+            if (item.selected && item.reason.subReasons != null)
+            {
+                //there is a subreason
+                mSubmitButton.setText(mNextText);
+                return;
+            }
+        }
+
+        if (((RateImprovementDialogFragment) getParentFragment()).haveMorePages(this))
+        {
+            mSubmitButton.setText(mNextText);
+        }
+        else
+        {
+            mSubmitButton.setText(mSubmitText);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EXTRA_SELECTED_ITEMS, (ArrayList) getSelectedItems());
+    }
+
     public class GridAdapter extends BaseAdapter implements Serializable
     {
         public int getCount()
@@ -275,31 +310,5 @@ public class RatingsGridFragment extends BaseWizardFragment
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             return drawable;
         }
-    }
-
-    /**
-     * If there is a selected item that has subreasons, then update the button to say "next", otherwise
-     * it will say submit
-     */
-    private void syncSubmitButtonState()
-    {
-        for (GridDisplayItem item : mDisplayedItems)
-        {
-            if (item.selected && item.reason.subReasons != null)
-            {
-                //there is a subreason
-                mSubmitButton.setText(mNextText);
-                return;
-            }
-        }
-
-        mSubmitButton.setText(mSubmitText);
-    }
-
-    @Override
-    public void onSaveInstanceState(final Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(EXTRA_SELECTED_ITEMS, (ArrayList) getSelectedItems());
     }
 }

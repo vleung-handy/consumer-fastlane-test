@@ -186,6 +186,8 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
                             {
                                 mQualityFragment = RatingsGridFragment.newInstance(r.subReasons, false);
                             }
+
+                            //Grids are added to the end of the list.
                             mFragmentList.add(mQualityFragment);
                             adapterChanged = true;
                             break;
@@ -194,7 +196,9 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
                             {
                                 mRatingsRadioFragment = RatingsRadioFragment.newInstance(r.subReasons);
                             }
-                            mFragmentList.add(mRatingsRadioFragment);
+
+                            //radios are added to the front of the list
+                            mFragmentList.add(1, mRatingsRadioFragment);
                             adapterChanged = true;
                             break;
                     }
@@ -220,9 +224,17 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         }
     }
 
-    public boolean haveMorePages()
+    public boolean haveMorePages(Fragment requester)
     {
-        if (mFragmentList.size() - mPager.getCurrentItem() > 2)
+        int position = mFragmentList.indexOf(requester);
+
+        //if we're on the first page, that is the main page, and the decision of whether there are
+        //more pages should be left to the child.
+        if (position == 0)
+        {
+            return false;
+        }
+        if (mFragmentList.size() - position > 1)
         {
             return true;
         }
@@ -287,7 +299,12 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
                 {
                     if (keyCode == KeyEvent.KEYCODE_BACK)
                     {
-                        backOnePage();
+                        //keycodes come in pairs. One with action = ACTION_UP and another one for ACTION_DOWN.
+                        //We need to skip one of those actions
+                        if (event.getAction() == KeyEvent.ACTION_DOWN)
+                        {
+                            backOnePage();
+                        }
                         return true;
                     }
 

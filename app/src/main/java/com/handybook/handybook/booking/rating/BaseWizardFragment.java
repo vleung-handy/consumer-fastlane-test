@@ -49,4 +49,6 @@ public abstract class BaseWizardFragment extends Fragment implements Serializabl
     }
 
     abstract HashMap<String, ArrayList<String>> getSelectedItemsMap();
+
+    abstract void syncSubmitButtonState();
 }
