@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +41,9 @@ public class RatingsGridFragment extends BaseWizardFragment
     @Bind(R.id.grid_view)
     GridView mGridView;
 
+    @Bind(R.id.ratings_improvement_submit_button)
+    Button mSubmitButton;
+
     private List<GridDisplayItem> mDisplayedItems;
     private GridAdapter mAdapter;
 
@@ -50,6 +54,8 @@ public class RatingsGridFragment extends BaseWizardFragment
     private boolean mIsFirstFragment;
     private Reasons mReasons;
     ArrayList<Reason> mSelectedItems;
+    private String mSubmitText;
+    private String mNextText;
 
     public static RatingsGridFragment newInstance(Reasons displayItems, boolean isFirstFragment)
     {
@@ -104,8 +110,10 @@ public class RatingsGridFragment extends BaseWizardFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                mDisplayedItems.get(position).selected = !mDisplayedItems.get(position).selected;
+                GridDisplayItem item = mDisplayedItems.get(position);
+                item.selected = !item.selected;
                 mAdapter.notifyDataSetChanged();
+                syncSubmitButtonState();
             }
         });
 
@@ -113,6 +121,8 @@ public class RatingsGridFragment extends BaseWizardFragment
         mSelectedBGColor = ContextCompat.getColor(getContext(), R.color.handy_blue);
         mSelectedFGColor = ContextCompat.getColor(getContext(), R.color.handy_white);
         mDefaultFGColor = ContextCompat.getColor(getContext(), R.color.handy_tertiary_gray);
+        mSubmitText = getResources().getString(R.string.submit);
+        mNextText = getResources().getString(R.string.next);
         return view;
     }
 
@@ -265,6 +275,25 @@ public class RatingsGridFragment extends BaseWizardFragment
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             return drawable;
         }
+    }
+
+    /**
+     * If there is a selected item that has subreasons, then update the button to say "next", otherwise
+     * it will say submit
+     */
+    private void syncSubmitButtonState()
+    {
+        for (GridDisplayItem item : mDisplayedItems)
+        {
+            if (item.selected && item.reason.subReasons != null)
+            {
+                //there is a subreason
+                mSubmitButton.setText(mNextText);
+                return;
+            }
+        }
+
+        mSubmitButton.setText(mSubmitText);
     }
 
     @Override

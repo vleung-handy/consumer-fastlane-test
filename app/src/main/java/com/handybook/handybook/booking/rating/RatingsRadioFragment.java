@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -31,10 +32,16 @@ public class RatingsRadioFragment extends BaseWizardFragment
     @Bind(R.id.rating_radio_group)
     RadioGroup mRadioGroup;
 
+    @Bind(R.id.ratings_late_submit_button)
+    Button mSubmitButton;
+
     Map<String, String> mValuesToKeys;
     Reasons mReasons;
 
     String mSelectedKey;
+
+    private String mSubmitText;
+    private String mNextText;
 
     public static RatingsRadioFragment newInstance(Reasons displayItems)
     {
@@ -85,6 +92,18 @@ public class RatingsRadioFragment extends BaseWizardFragment
             {
                 mRadioGroup.check(rb.getId());
             }
+        }
+
+        mSubmitText = getResources().getString(R.string.submit);
+        mNextText = getResources().getString(R.string.next);
+
+        if (((RateImprovementDialogFragment) getParentFragment()).haveMorePages())
+        {
+            mSubmitButton.setText(mNextText);
+        }
+        else
+        {
+            mSubmitButton.setText(mSubmitText);
         }
 
         return view;

@@ -220,6 +220,18 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         }
     }
 
+    public boolean haveMorePages()
+    {
+        if (mFragmentList.size() - mPager.getCurrentItem() > 2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     /**
      * The user is done with the ratings flow, submit the response to the server.
      */
