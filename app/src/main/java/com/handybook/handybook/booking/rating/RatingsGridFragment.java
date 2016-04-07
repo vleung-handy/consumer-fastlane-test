@@ -4,6 +4,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -34,6 +35,8 @@ public class RatingsGridFragment extends BaseWizardFragment
 {
     private static final String TAG = RatingsGridFragment.class.getName();
 
+    public static final String EXTRA_SELECTED_ITEMS = "selected_items";
+
     @Bind(R.id.grid_view)
     GridView mGridView;
 
@@ -46,6 +49,7 @@ public class RatingsGridFragment extends BaseWizardFragment
     private int mSelectedFGColor;
     private boolean mIsFirstFragment;
     private Reasons mReasons;
+    ArrayList<Reason> mSelectedItems;
 
     public static RatingsGridFragment newInstance(Reasons displayItems, boolean isFirstFragment)
     {
@@ -65,10 +69,20 @@ public class RatingsGridFragment extends BaseWizardFragment
         View view = inflater.inflate(R.layout.fragment_ratings_grid, container, false);
         ButterKnife.bind(this, view);
 
+        if (savedInstanceState != null)
+        {
+            mSelectedItems = (ArrayList<Reason>) savedInstanceState.getSerializable(EXTRA_SELECTED_ITEMS);
+        }
+
+        if (mSelectedItems == null)
+        {
+            mSelectedItems = new ArrayList<>();
+        }
+
         mReasons = (Reasons) getArguments().getSerializable(RateImprovementDialogFragment.EXTRA_REASONS);
         mIsFirstFragment = getArguments().getBoolean(RateImprovementDialogFragment.EXTRA_FIRST_FRAGMENT, false);
 
-        convertToDisplayItems(mReasons);
+        convertToDisplayItems(mReasons, mSelectedItems);
 
         mTvTitle.setText(mReasons.mTitle);
         mTvAllApply.setVisibility(View.VISIBLE);
@@ -105,28 +119,37 @@ public class RatingsGridFragment extends BaseWizardFragment
     /**
      * This is super hacky, since we have to manually pair the mReasons with a drawable.
      */
-    private void convertToDisplayItems(Reasons reasons)
+    private void convertToDisplayItems(@NonNull Reasons reasons, @NonNull List<Reason> selectedReasons)
     {
         mDisplayedItems = new ArrayList<>();
         for (Reason reason : reasons.mReasons)
         {
-            mDisplayedItems.add(new GridDisplayItem(reason, reason.getDrawableRes(), false));
+            boolean mSelected = false;
+            for (Reason r : selectedReasons)
+            {
+                if (reason.key.equals(r.key))
+                {
+                    mSelected = true;
+                    break;
+                }
+            }
+
+            mDisplayedItems.add(new GridDisplayItem(reason, reason.getDrawableRes(), mSelected));
         }
     }
 
     public List<Reason> getSelectedItems()
     {
-        List<Reason> rval = new ArrayList<>();
-
+        mSelectedItems.clear();
         for (GridDisplayItem item : mDisplayedItems)
         {
             if (item.selected)
             {
-                rval.add(item.reason);
+                mSelectedItems.add(item.reason);
             }
         }
 
-        return rval;
+        return mSelectedItems;
     }
 
 
@@ -242,5 +265,12 @@ public class RatingsGridFragment extends BaseWizardFragment
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             return drawable;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EXTRA_SELECTED_ITEMS, (ArrayList) getSelectedItems());
     }
 }

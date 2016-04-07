@@ -2,6 +2,8 @@ package com.handybook.handybook.booking.rating;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +25,16 @@ import butterknife.OnClick;
  */
 public class RatingsRadioFragment extends BaseWizardFragment
 {
+    private static final String TAG = RatingsRadioFragment.class.getName();
+    public static final String SELECTED_KEY = "selected_key";
+
     @Bind(R.id.rating_radio_group)
     RadioGroup mRadioGroup;
 
     Map<String, String> mValuesToKeys;
     Reasons mReasons;
+
+    String mSelectedKey;
 
     public static RatingsRadioFragment newInstance(Reasons displayItems)
     {
@@ -53,6 +60,17 @@ public class RatingsRadioFragment extends BaseWizardFragment
         mTvAllApply.setVisibility(View.GONE);
         mTvAnonymous.setVisibility(View.GONE);
 
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(final RadioGroup group, final int checkedId)
+            {
+                String radiovalue = ((RadioButton) group.findViewById(checkedId)).getText().toString();
+                mSelectedKey = mValuesToKeys.get(radiovalue);
+                Log.d(TAG, "onCheckedChanged: checked: " + mSelectedKey);
+            }
+        });
+
         for (int i = 0; i < mReasons.mReasons.size(); i++)
         {
             Reason r = mReasons.mReasons.get(i);
@@ -63,7 +81,7 @@ public class RatingsRadioFragment extends BaseWizardFragment
             mRadioGroup.addView(rb);
 
             //defaults to the first element as selected
-            if (i == 0)
+            if ((i == 0 && TextUtils.isEmpty(mSelectedKey)) || mSelectedKey.equals(r.key))
             {
                 mRadioGroup.check(rb.getId());
             }
@@ -92,6 +110,13 @@ public class RatingsRadioFragment extends BaseWizardFragment
         values.add(mValuesToKeys.get(radiovalue));
         rval.put(mReasons.mKey, values);
         return rval;
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putString(SELECTED_KEY, mSelectedKey);
     }
 }
 

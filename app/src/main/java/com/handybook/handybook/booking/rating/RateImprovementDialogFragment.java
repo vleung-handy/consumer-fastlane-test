@@ -46,7 +46,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     @Bind(R.id.pager)
     SwipeableViewPager mPager;
 
-    FragmentStatePagerAdapter mAdapter;
+    WizardPagerAdapter mAdapter;
 
     RatingsGridFragment mMainFragment;
     RatingsRadioFragment mRatingsRadioFragment;
@@ -65,7 +65,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
      * The first fragment will always be the main fragment with list of options.
      * The next series of fragments will be determined depending on the user's selections,
      */
-    List<Fragment> mFragments;
+    List<Fragment> mFragmentList;
 
     public static RateImprovementDialogFragment newInstance(String bookingId)
     {
@@ -87,7 +87,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
 
         ButterKnife.bind(this, view);
 
-        mFragments = new ArrayList<>();
+        mFragmentList = new ArrayList<>();
 
         mAdapter = new WizardPagerAdapter(getChildFragmentManager());
         mPager.setAdapter(mAdapter);
@@ -132,7 +132,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     {
         mPrerateProInfo = event.mPrerateProInfo;
         mMainFragment = RatingsGridFragment.newInstance(mPrerateProInfo.getReasons(), true);
-        mFragments.add(mMainFragment);
+        mFragmentList.add(mMainFragment);
         mAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
     }
@@ -164,9 +164,9 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
             //This is the first screen to the user, depending on its selection
             //everything else changes. So get rid of the rest of the pages in this pager
             boolean adapterChanged = false;
-            while (mFragments.size() > 1)
+            while (mFragmentList.size() > 1)
             {
-                mFragments.remove(mFragments.size() - 1);
+                mFragmentList.remove(mFragmentList.size() - 1);
                 adapterChanged = true;
             }
 
@@ -186,7 +186,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
                             {
                                 mQualityFragment = RatingsGridFragment.newInstance(r.subReasons, false);
                             }
-                            mFragments.add(mQualityFragment);
+                            mFragmentList.add(mQualityFragment);
                             adapterChanged = true;
                             break;
                         case Reason.ARRIVED_LATE:
@@ -194,7 +194,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
                             {
                                 mRatingsRadioFragment = RatingsRadioFragment.newInstance(r.subReasons);
                             }
-                            mFragments.add(mRatingsRadioFragment);
+                            mFragmentList.add(mRatingsRadioFragment);
                             adapterChanged = true;
                             break;
                     }
@@ -210,7 +210,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         mFeedback.putAll(callerFragment.getSelectedItemsMap());
 
         //If there are more pages to go, advance the pager to the next page
-        if (mFragments.size() - 1 > mPager.getCurrentItem())
+        if (mFragmentList.size() - 1 > mPager.getCurrentItem())
         {
             mPager.setCurrentItem(mPager.getCurrentItem() + 1);
         }
@@ -315,17 +315,26 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         @Override
         public Fragment getItem(int position)
         {
-            return mFragments.get(position);
+            return mFragmentList.get(position);
         }
 
         @Override
         public int getCount()
         {
-            /**
-             * We only have about 3 fragments, but setting this to a much bigger number so we
-             * don't run into issues where we can't advance to the next page.
-             */
-            return mFragments.size();
+            return mFragmentList.size();
+        }
+
+
+        /**
+         * This is needed so the FragmentStatePagerAdapter doesn't hold on to stale fragments
+         *
+         * @param object
+         * @return
+         */
+        @Override
+        public int getItemPosition(Object object)
+        {
+            return POSITION_NONE;
         }
     }
 
