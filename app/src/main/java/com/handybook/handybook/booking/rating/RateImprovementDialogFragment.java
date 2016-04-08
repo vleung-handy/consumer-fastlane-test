@@ -65,7 +65,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
      * The first fragment will always be the main fragment with list of options.
      * The next series of fragments will be determined depending on the user's selections,
      */
-    List<Fragment> mFragmentList;
+    List<BaseWizardFragment> mFragmentList;
 
     public static RateImprovementDialogFragment newInstance(String bookingId)
     {
@@ -211,8 +211,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
             }
         }
 
-        mFeedback.putAll(callerFragment.getSelectedItemsMap());
-
         //If there are more pages to go, advance the pager to the next page
         if (mFragmentList.size() - 1 > mPager.getCurrentItem())
         {
@@ -249,6 +247,15 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
      */
     private void submitResponse()
     {
+        //for every fragment that was part of the wizard, get the results. The reason we do it
+        //here instead of getting the results right away when the user clicks "next" is so that
+        //we don't have to worry about synching the user's selections, if they hit back and select
+        //a different option the second time.
+        for (BaseWizardFragment frag : mFragmentList)
+        {
+            mFeedback.putAll(frag.getSelectedItemsMap());
+        }
+
         Log.d(TAG, "submitResponse: " + mFeedback);
         progressDialog.show();
         mBus.post(new BookingEvent.PostLowRatingFeedback(mFeedback));
