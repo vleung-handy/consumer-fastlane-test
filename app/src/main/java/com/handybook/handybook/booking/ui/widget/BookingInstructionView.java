@@ -179,7 +179,7 @@ public class BookingInstructionView extends FrameLayout
     {
         mBookingInstruction = bookingInstruction;
         setText(bookingInstruction.getDescription());
-        setTitle(bookingInstruction.getInstructionType());
+        setTitle(bookingInstruction.getTitle());
         setState(bookingInstruction.getIsRequested() ? State.REQUESTED : State.DECLINED);
     }
 

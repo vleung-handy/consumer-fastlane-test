@@ -117,7 +117,7 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
                 itemView.updateDisplay(
                         preference.getImageResource(),
                         View.VISIBLE,
-                        preference.getInstructionType(),
+                        preference.getTitle(),
                         BookingDetailSectionImageItemView.TextStyle.BOLD,
                         preference.getDescription()
                 );
