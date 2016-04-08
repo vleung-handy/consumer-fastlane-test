@@ -64,20 +64,6 @@ public class PrerateProInfo implements Serializable
                 .fromJson(json, PrerateProInfo.class);
     }
 
-    /**
-     * Beware, this complicated. Reasons is a hash map. Each key is a "title" that will be displayed to the
-     * user. For example, The map can look like this:
-     * title: "What could your professional do to improve?"
-     * left_early: {}
-     * quality_of_service: {}
-     * <p>
-     * We have to ignore the "title" key. For the rest of the keys, we have to remove the underscore
-     * and capitalize the first word. For example:
-     * <p>
-     * quality_of_service will be Quality of service
-     *
-     * @return
-     */
     @NonNull
     public Reasons getReasons()
     {

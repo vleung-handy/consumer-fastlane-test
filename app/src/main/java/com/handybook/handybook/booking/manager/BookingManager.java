@@ -3,7 +3,6 @@ package com.handybook.handybook.booking.manager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -42,8 +41,6 @@ import javax.inject.Inject;
 //TODO: Add caching like we do for portal, navigating back and forth from my bookings page is painfully slow right now
 public class BookingManager implements Observer
 {
-    private static final String TAG = BookingManager.class.getName();
-    
     private final PrefsManager mPrefsManager;
     private final DataManager mDataManager;
     private final Bus mBus;
@@ -135,20 +132,17 @@ public class BookingManager implements Observer
     @Subscribe
     public void onPostLowRatingFeedback(BookingEvent.PostLowRatingFeedback event)
     {
-        Log.d(TAG, "onPostLowRatingFeedback: ");
         mDataManager.postLowRatingFeedback(event.mFeedback, new DataManager.Callback<Void>()
         {
             @Override
             public void onSuccess(final Void response)
             {
-                Log.d(TAG, "onSuccess: ");
                 mBus.post(new BookingEvent.PostLowRatingFeedbackSuccess());
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                Log.d(TAG, "onError: ");
                 mBus.post(new BookingEvent.PostLowRatingFeedbackError(error));
             }
         });

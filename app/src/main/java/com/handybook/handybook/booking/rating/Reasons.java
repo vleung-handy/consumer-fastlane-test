@@ -46,6 +46,19 @@ public class Reasons implements Serializable
      */
     public String mKey;
 
+
+    /**
+     * Beware, this complicated. Reasons is a hash map. Each key is a "title" that will be displayed to the
+     * user. For example, The map can look like this:
+     * title: "What could your professional do to improve?"
+     * left_early: {}
+     * quality_of_service: {}
+     * <p>
+     * We have to ignore the "title" key. For the rest of the keys, we have to remove the underscore
+     * and capitalize the first word. For example:
+     * <p>
+     * quality_of_service will be Quality of service
+     */
     public Reasons(Map<String, Object> mRawReasons, boolean isCleaning, String key)
     {
         mKey = key;

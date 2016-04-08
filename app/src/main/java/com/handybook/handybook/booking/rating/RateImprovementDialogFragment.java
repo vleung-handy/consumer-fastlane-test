@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -172,8 +171,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
             }
 
             //for each "reason" selected, if there are sub reasons, then add those fragments to
-            //the pager adapter. Otherwise, record the user's selections. We're looping the list
-            //backwards, because iOS displays late arrival options first, and that comes later in the list
+            //the pager adapter.
             for (int i = selectedReasons.size() - 1; i >= 0; i--)
             {
                 Reason r = selectedReasons.get(i);
@@ -225,6 +223,8 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
 
     public boolean haveMorePages(Fragment requester)
     {
+
+        //do not use the pager.current item because this call may be made in between page changes
         int position = mFragmentList.indexOf(requester);
 
         //if we're on the first page, that is the main page, and the decision of whether there are
@@ -257,7 +257,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
             mFeedback.putAll(frag.getSelectedItemsMap());
         }
 
-        Log.d(TAG, "submitResponse: " + mFeedback);
         progressDialog.show();
         mBus.post(new BookingEvent.PostLowRatingFeedback(mFeedback));
     }
@@ -266,7 +265,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     public void submissionSuccessResponse(BookingEvent.PostLowRatingFeedbackSuccess response)
     {
         progressDialog.dismiss();
-        Log.d(TAG, "submissionSuccessResponse: ");
 
         int bookingId = Integer.parseInt(mBookingId);
         mixpanel.trackEventLowRatingWizard(Mixpanel.ProRateEventType.SUBMIT, bookingId);
@@ -294,8 +292,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     {
         handleRequestError(error);
         progressDialog.dismiss();
-        //The error has been shown by the BaseDataManagerErrorHandler, so we don't have to do anything here.
-        Log.d(TAG, "submissionFailedResponse: ");
+
         //since we errored out, allow the customer to exit out if they choose.
         allowDialogDismissable();
     }
