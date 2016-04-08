@@ -22,6 +22,7 @@ import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
+import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -249,11 +250,20 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         if (finalRating < 4)
         {
-            RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)).show(getActivity()
-                    .getSupportFragmentManager(), RateImprovementDialogFragment.class.getSimpleName());
+            boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
+                    RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)),
+                    getActivity(),
+                    RateImprovementDialogFragment.class.getSimpleName()
+            );
+            if (successfullyLaunched)
+            {
+                mixpanel.trackEventLowRatingWizard(Mixpanel.ProRateEventType.SHOW, mBookingId);
+            }
         } else {
-            RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating).show(getActivity()
-                    .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
+            FragmentUtils.safeLaunchDialogFragment(
+                    RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),
+                    getActivity(),
+                    "RateServiceConfirmDialogFragment");
         }
     }
 

@@ -17,10 +17,11 @@ import android.view.ViewGroup;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -266,10 +267,26 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     {
         progressDialog.dismiss();
         Log.d(TAG, "submissionSuccessResponse: ");
+
+        int bookingId = Integer.parseInt(mBookingId);
+        mixpanel.trackEventLowRatingWizard(Mixpanel.ProRateEventType.SUBMIT, bookingId);
+
+        for (String key : mFeedback.getSelectedOptions().keySet())
+        {
+            if (!mFeedback.getSelectedOptions().get(key).isEmpty())
+            {
+                //this key has subreasons, track it.
+                mixpanel.trackEventLowRatingSubReason(Mixpanel.ProRateEventType.SUBMIT, bookingId, key);
+            }
+        }
+
+        FragmentUtils.safeLaunchDialogFragment(
+                RateImprovementConfirmationDialogFragment.newInstance(bookingId),
+                getActivity(),
+                RateImprovementConfirmationDialogFragment.class.getSimpleName()
+        );
+
         dismiss();
-        //the rating passed in doesn't matter. Just need to be a number less than 4.
-        RateServiceConfirmDialogFragment.newInstance(Integer.parseInt(mBookingId), 1).show(getActivity()
-                .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
     }
 
     @Subscribe

@@ -22,7 +22,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -129,17 +128,6 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 Log.d(TAG, "received EnvironmentUpdatedEvent");
                 setupEnvButton();
             }
-
-            //TODO: JIA: remove this testing code
-            @Subscribe
-            public void onWhatever(BookingEvent.RequestPrerateProInfoSuccess event)
-            {
-
-                Log.d(TAG, event.toString());
-                event.mPrerateProInfo.getReasons();
-
-            }
-
         };
     }
 
@@ -350,11 +338,6 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 return false;
             case R.id.nav_menu_log_in:
                 navigateToActivity(LoginActivity.class);
-                return false;
-            case R.id.nav_test:
-                //TODO: JIA: remove this testing code
-                mBus.post(new BookingEvent.RequestPrerateProInfo("189623"));
-
                 return false;
         }
 

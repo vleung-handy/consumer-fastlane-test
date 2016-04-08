@@ -43,4 +43,9 @@ public class RateImprovementFeedback implements Serializable
     {
         return mBookingId;
     }
+
+    public HashMap<String, ArrayList<String>> getSelectedOptions()
+    {
+        return mSelectedOptions;
+    }
 }

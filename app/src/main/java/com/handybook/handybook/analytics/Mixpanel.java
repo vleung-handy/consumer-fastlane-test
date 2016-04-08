@@ -31,6 +31,8 @@ public class Mixpanel
     private PrefsManager prefsManager;
     private HashMap<String, Boolean> calledMap;
 
+    public static final String LOW_REASON_RATING = "Low rating reasons screen";
+
     @Inject
     public Mixpanel(final Context context,
                     final PrefsManager prefsManager)
@@ -294,6 +296,32 @@ public class Mixpanel
         }
 
         mixpanelAPI.track("app pro rate event", props);
+    }
+
+    public void trackEventLowRatingWizard(final ProRateEventType type, final int bookingId)
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "dialog_event", type.getValue());
+        addProps(props, "booking_id", bookingId);
+        mixpanelAPI.track(LOW_REASON_RATING, props);
+    }
+
+    public void trackEventLowRatingSubReason(final ProRateEventType type, final int bookingId, String subReason)
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "dialog_event", type.getValue());
+        addProps(props, "booking_id", bookingId);
+        addProps(props, "subreason", subReason);
+        mixpanelAPI.track(LOW_REASON_RATING, props);
+    }
+
+    public void trackEventLowRatingHelp(final ProRateEventType type, final int bookingId)
+    {
+        final JSONObject props = new JSONObject();
+        addProps(props, "dialog_event", type.getValue());
+        addProps(props, "booking_id", bookingId);
+        addProps(props, "help", true);
+        mixpanelAPI.track(LOW_REASON_RATING, props);
     }
 
     public void trackPageAddLaundryIntro(final LaundryEventSource source)

@@ -19,6 +19,7 @@ import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.rating.RateImprovementConfirmationDialogFragment;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
@@ -174,6 +175,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) != null
                 || !(
                 BaseActivity.this instanceof ServiceCategoriesActivity
                         || BaseActivity.this instanceof BookingDetailActivity
