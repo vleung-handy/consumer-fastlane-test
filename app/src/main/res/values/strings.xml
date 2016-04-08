@@ -123,8 +123,9 @@
     <string name="thanks_for_feedback">Thanks for your feedback!</string>
     <string name="were_sorry_feedback">We’re sorry to hear that you had a less than perfect experience.\nYour feedback will help us improve the service for next time.</string>
     <string name="rating_improvement_title">What could your professional do to improve?</string>
+    <string name="improvement_selection_required">Please make a selection.</string>
     <string name="rating_improvement_anonymous">All feedback is anonymous.</string>
-    <string name="rating_improvement_all_that_apply">Select all that apply</string>
+    <string name="rating_improvement_all_that_apply">Select all that apply.</string>
     <string name="close">Close</string>
     <string name="ok">Ok</string>
     <string name="glad_you_enjoy">Glad you enjoyed it!</string>

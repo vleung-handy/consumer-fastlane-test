@@ -222,7 +222,14 @@ public class RatingsGridFragment extends BaseWizardFragment
     @OnClick(R.id.ratings_improvement_submit_button)
     void submit()
     {
-        mCallback.done(this);
+        if (getSelectedItems().isEmpty())
+        {
+            showToast(R.string.improvement_selection_required);
+        }
+        else
+        {
+            mCallback.done(this);
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.ui.fragment.InjectedFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import butterknife.Bind;
 /**
  * Created by jtse on 3/30/16.
  */
-public abstract class BaseWizardFragment extends Fragment implements Serializable
+public abstract class BaseWizardFragment extends InjectedFragment implements Serializable
 {
     protected WizardCallback mCallback;
 
