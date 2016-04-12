@@ -427,6 +427,7 @@ public class BookingManager implements Observer
 
         if (newTransaction == null)
         {
+            Crashlytics.log("BookingManager: Setting current transaction to null!");
             mBookingTransaction = null;
             mPrefsManager.removeValue(PrefsKey.BOOKING_TRANSACTION);
             return;
