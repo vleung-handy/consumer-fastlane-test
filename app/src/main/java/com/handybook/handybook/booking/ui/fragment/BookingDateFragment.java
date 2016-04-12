@@ -365,7 +365,10 @@ public final class BookingDateFragment extends BookingFlowFragment
         else
         {
             final BookingRequest request = bookingManager.getCurrentRequest();
-            request.setStartDate(newDate);
+            if (request != null)
+            {
+                request.setStartDate(newDate);
+            }
             final BookingTransaction transaction = bookingManager.getCurrentTransaction();
             if (transaction != null)
             {
