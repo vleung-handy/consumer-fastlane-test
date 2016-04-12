@@ -2,6 +2,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.Status;
@@ -87,7 +88,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
         mFragment = BookingPaymentFragment.newInstance();
-        SupportFragmentTestUtil.startVisibleFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test

@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Layout;
@@ -120,6 +121,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     TextView mTermsOfUseText;
     @Bind(R.id.scan_card_button)
     TextView mScanCardButton;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed()
@@ -266,6 +270,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                 .inflate(R.layout.fragment_booking_payment, container, false);
 
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.payment));
 
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

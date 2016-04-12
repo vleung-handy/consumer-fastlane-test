@@ -9,16 +9,16 @@
         android:text="@string/next"
         style="@style/Button.Green" />
 
-    <TextView
-        android:id="@+id/nav_text"
-        android:text="@string/time"
-        style="@style/TextView.Navbar" />
+    <include
+        layout="@layout/toolbar"
+        />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_text">
+        android:layout_below="@id/toolbar"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"

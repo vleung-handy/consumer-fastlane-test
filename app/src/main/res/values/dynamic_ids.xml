@@ -4,7 +4,11 @@
     <item type="id" name="nav_menu_profile" />
     <item type="id" name="nav_menu_my_bookings" />
     <item type="id" name="nav_menu_payment" />
+    <item type="id"
+          name="nav_menu_free_cleanings"/>
     <item type="id" name="nav_menu_help" />
+    <item type="id"
+          name="toolbar"/>
     <item type="id" name="nav_menu_promotions" />
     <item type="id" name="nav_menu_log_out" />
     <item type="id" name="nav_menu_log_in" />

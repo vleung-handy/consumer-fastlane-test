@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
 
 import java.lang.reflect.Type;
@@ -27,6 +28,8 @@ public class BookingRequest extends Observable {
     @SerializedName("date_start") private Date startDate;
     @SerializedName("entered_code") private String promoCode;
     @SerializedName("_android_promo_type") private PromoCode.Type promoType;
+
+    transient private String mTimeZone;
 
     public int getServiceId() {
         return serviceId;
@@ -101,6 +104,16 @@ public class BookingRequest extends Observable {
         triggerObservers();
     }
 
+    public String getTimeZone()
+    {
+        return mTimeZone;
+    }
+
+    public void setTimeZone(final String timeZone)
+    {
+        mTimeZone = timeZone;
+    }
+
     public PromoCode.Type getPromoType() {
         return promoType;
     }
@@ -155,7 +168,7 @@ public class BookingRequest extends Observable {
             jsonObj.add("service_attributes", context.serialize(value.getOptions()));
 
             jsonObj.add("date_start", context.serialize(TextUtils.formatDate(value.getStartDate(),
-                    "yyyy-MM-dd'T'HH:mm")));
+                    DateTimeUtils.UNIVERSAL_DATE_FORMAT)));
 
             if (value.getPromoCode() != null) {
                 jsonObj.add("entered_code", context.serialize(value.getPromoCode()));

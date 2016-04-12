@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,13 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
 
@@ -41,6 +43,9 @@ public final class BookingLocationFragment extends BookingFlowFragment
     ZipCodeInputTextView mZipCodeInputTextView;
     @Bind(R.id.next_button)
     Button mNextButton;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     public static BookingLocationFragment newInstance()
     {
@@ -66,6 +71,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_location, container, false);
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.location));
         final User user = userManager.getCurrentUser();
         final User.Address address;
         if (user != null && (address = user.getAddress()) != null)
@@ -147,13 +153,14 @@ public final class BookingLocationFragment extends BookingFlowFragment
                         userId,
                         authToken,
                         request.getPromoCode(),
-                        new DataManager.Callback<Void>()
+                        new DataManager.Callback<ZipValidationResponse>()
                         {
                             @Override
-                            public void onSuccess(Void v)
+                            public void onSuccess(ZipValidationResponse response)
                             {
                                 final BookingRequest request = bookingManager.getCurrentRequest();
                                 request.setZipCode(mZipCodeInputTextView.getZipCode());
+                                request.setTimeZone(response.timeZone);
                                 mixpanel.trackEventWhenPage(request);
                                 if (!allowCallbacks) { return; }
                                 enableInputs();

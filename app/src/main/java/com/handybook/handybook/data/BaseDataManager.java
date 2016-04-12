@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
@@ -31,6 +32,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
@@ -62,6 +64,8 @@ import retrofit.mime.TypedInput;
 
 public final class BaseDataManager extends DataManager
 {
+    private static final String TAG = BaseDataManager.class.getName();
+
     private final HandyRetrofitService mService;
     private final HandyRetrofitEndpoint mEndpoint;
     private final PrefsManager mPrefsManager;
@@ -217,6 +221,7 @@ public final class BaseDataManager extends DataManager
         });
     }
 
+    @Nullable
     @Override
     public List<Service> getCachedServices()
     {
@@ -224,11 +229,21 @@ public final class BaseDataManager extends DataManager
         List<Service> cachedServices = null;
         if (cachedServicesJson != null)
         {
-            cachedServices = new Gson().fromJson(
-                    mPrefsManager.getString(PrefsKey.CACHED_SERVICES),
-                    new TypeToken<List<Service>>()
-                    {
-                    }.getType());
+            try
+            {
+                cachedServices = new Gson().fromJson(
+                        cachedServicesJson,
+                        new TypeToken<List<Service>>()
+                        {
+                        }.getType());
+            }
+            catch (Exception e)
+            {
+                //if there is ever an error parsing this, fall out and let it create a new set
+                Crashlytics.log(TAG + " error when deserializing JSON:" + cachedServicesJson);
+                Crashlytics.logException(e);
+            }
+
         }
 
         return cachedServices;
@@ -418,18 +433,11 @@ public final class BaseDataManager extends DataManager
     public final void validateBookingZip(
             final int serviceId, final String zipCode, final String userId,
             final String authToken, final String promoCode,
-            final Callback<Void> cb
+            final Callback<ZipValidationResponse> cb
     )
     {
         mService.validateBookingZip(serviceId, zipCode, userId, authToken, promoCode,
-                new HandyRetrofitCallback(cb)
-                {
-                    @Override
-                    void success(final JSONObject response)
-                    {
-                        cb.onSuccess(null);
-                    }
-                });
+                new ZipValidationRetroFitCallback(cb));
     }
 
     @Override

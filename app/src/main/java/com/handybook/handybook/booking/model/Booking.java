@@ -34,6 +34,8 @@ public class Booking implements Parcelable
     private String mId;
     @SerializedName("booking_status")
     private int mIsPast;
+    @SerializedName("booking_timezone")
+    private String mBookingTimezone;
     @SerializedName("service_name")
     private String mServiceName;
     @SerializedName("service_machine")
@@ -111,6 +113,16 @@ public class Booking implements Parcelable
         {
             mIsPast = 0;
         }
+    }
+
+    public String getBookingTimezone()
+    {
+        return mBookingTimezone;
+    }
+
+    public void setBookingTimezone(final String bookingTimezone)
+    {
+        mBookingTimezone = bookingTimezone;
     }
 
     public final boolean hasAssignedProvider()
@@ -349,7 +361,7 @@ public class Booking implements Parcelable
 
     private Booking(final Parcel in)
     {
-        final String[] stringData = new String[10];
+        final String[] stringData = new String[11];
         in.readStringArray(stringData);
         mId = stringData[0];
         mServiceName = stringData[1];
@@ -370,6 +382,7 @@ public class Booking implements Parcelable
         mProNote = stringData[7];
         mBilledStatus = stringData[8];
         mRecurringId = stringData[9];
+        mBookingTimezone = stringData[10];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -423,6 +436,7 @@ public class Booking implements Parcelable
                                 mProNote,
                                 mBilledStatus,
                                 mRecurringId,
+                                mBookingTimezone
                         }
         );
 

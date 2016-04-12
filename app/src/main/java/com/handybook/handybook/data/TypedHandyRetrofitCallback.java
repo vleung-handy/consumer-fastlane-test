@@ -14,6 +14,7 @@ import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.response.UserExistsResponse;
@@ -67,6 +68,14 @@ class BookingHandyRetroFitCallback extends TypedHandyRetrofitCallback<Booking>
     }
 }
 
+
+class ZipValidationRetroFitCallback extends TypedHandyRetrofitCallback<ZipValidationResponse>
+{
+    ZipValidationRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
 
 class BookingOptionsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingOptionsWrapper>
 {

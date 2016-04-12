@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,11 @@ import android.widget.EditText;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
 import com.squareup.otto.Subscribe;
@@ -30,6 +31,9 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     EditText mStreetAddressInputTextView2;
     @Bind(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     private Booking mBooking;
 
@@ -56,6 +60,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
         final View view = inflater
                 .inflate(R.layout.fragment_edit_booking_address, container, false);
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.booking_edit_address_title));
 
         if (mBooking.getAddress() != null)
         {

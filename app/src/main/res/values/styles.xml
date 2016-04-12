@@ -9,17 +9,37 @@
         <item name="colorPrimary">@color/handy_blue</item>
         <item name="colorPrimaryDark">@color/handy_darkened_blue</item>
         <item name="colorAccent">@color/handy_service_painter</item>
-        <item name="android:windowContentTransitions">true</item>
         <item name="android:colorBackground">@color/handy_white</item>
         <item name="android:textViewStyle">@style/TextView</item>
+        <item name="android:listDivider">@color/handy_divider_line</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-    <style name="Theme.Base.AppBarOverlay">
+    <style name="Theme.Handy"
+           parent="Theme.Base"></style>
 
+    <style name="Theme.Handy.AppBarOverlay">
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:textColorPrimary">@color/handy_white</item>
     </style>
 
+    <style name="Toolbar.TitleText"
+           parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
 
-    <style name="Theme.Base.PopupOverlay">
+    <!-- This style allows us to keep the Light.NoActionBar theme while having a white hamburger menu-->
+    <style name="DrawerArrowStyle"
+           parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/handy_white</item>
+    </style>
+
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="Theme.Handy.PopupOverlay">
 
     </style>
 
@@ -277,7 +297,7 @@
     </style>
 
     <style name="EditText.Last.PromoCode">
-        <item name="android:inputType">textCapCharacters</item>
+        <item name="android:inputType">textCapCharacters|textNoSuggestions|</item>
         <item name="android:singleLine">true</item>
         <item name="android:hint">@string/promo_code</item>
         <item name="android:maxLength">100</item>
@@ -567,6 +587,7 @@
     <style name="RelativeLayout.NavBar.Blue">
         <item name="android:textColor">@color/handy_white</item>
         <item name="android:background">@color/handy_blue</item>
+        <item name="android:elevation">@dimen/med_elevation</item>
     </style>
 
     <style name="BookingDetailSectionView">
@@ -693,6 +714,15 @@
         <item name="android:textColor">@color/handy_text_gray</item>
         <item name="android:layout_marginTop">@dimen/default_margin</item>
         <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="checkbox">
+    </style>
+
+    <style name="checkbox.round">
+        <item name="android:layout_width">@dimen/checkbox_round_square</item>
+        <item name="android:layout_height">@dimen/checkbox_round_square</item>
+        <item name="android:button">@drawable/round_checkbox</item>
     </style>
 
     <string name="name">Name</string>

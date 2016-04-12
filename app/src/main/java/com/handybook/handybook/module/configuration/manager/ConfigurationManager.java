@@ -1,5 +1,8 @@
 package com.handybook.handybook.module.configuration.manager;
 
+import android.support.annotation.Nullable;
+
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.manager.PrefsManager;
@@ -12,9 +15,11 @@ import javax.inject.Inject;
 
 public class ConfigurationManager
 {
+
     private final Bus mBus;
     private PrefsManager mPrefsManager;
     private final DataManager mDataManager;
+    private final String TAG = ConfigurationManager.class.getName();
 
     @Inject
     public ConfigurationManager(
@@ -81,16 +86,27 @@ public class ConfigurationManager
     }
 
     // Do NOT make this public. I know what you're trying to do.
+    @Nullable
     private Configuration getCachedConfiguration()
     {
         final String configurationJson = mPrefsManager.getString(PrefsKey.CONFIGURATION);
+        Configuration config = null;
+
         if (configurationJson != null)
         {
-            return Configuration.fromJson(configurationJson);
+            try
+            {
+                config = Configuration.fromJson(configurationJson);
+            }
+            catch (Exception e)
+            {
+                //if there is ever an error parsing this, fall out and let it create a new set
+                Crashlytics.log(TAG + " error when deserializing JSON:" + configurationJson);
+                Crashlytics.logException(e);
+            }
+
         }
-        else
-        {
-            return null;
-        }
+
+        return config;
     }
 }

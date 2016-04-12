@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
+import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public final class BookingsActivity extends MenuDrawerActivity
@@ -18,6 +19,22 @@ public final class BookingsActivity extends MenuDrawerActivity
     @Override
     protected final Fragment createFragment() {
         return BookingsFragment.newInstance();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        //if the over lay fragment is showing, dismiss it and swallow the back press
+        ServiceCategoriesOverlayFragment frag = (ServiceCategoriesOverlayFragment) getSupportFragmentManager()
+                .findFragmentByTag(BookingsFragment.mOverlayFragmentTag);
+        if (frag != null)
+        {
+            frag.animateAndDismissFragment();
+        }
+        else
+        {
+            super.onBackPressed();
+        }
     }
 
     @Override

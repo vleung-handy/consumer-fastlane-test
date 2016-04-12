@@ -19,7 +19,6 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +59,37 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
         getActivity().onBackPressed();
     }
 
+    public void animateAndDismissFragment()
+    {
+        if (isRemoving())
+        {
+            //this fragment is already being removed, exit and do nothing. This typically
+            //happens if someone is frantically tapping the back button to remove this fragment
+            return;
+        }
+        mCloseButton.setClickable(false);
+        for (ServiceCategorySimpleView view : mServiceCategorySimpleViews)
+        {
+            float toYDelta = mCloseButtonWrapper.getY() - view.getY();
+            TranslateAnimation animation =
+                    new TranslateAnimation(0, 0, 0, toYDelta);
+            animation.setDuration(SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS);
+            view.startAnimation(animation);
+            view.getTitle().setVisibility(View.INVISIBLE);
+            view.setVisibility(View.INVISIBLE);
+        }
+
+        mServicesWrapper.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        }, FRAGMENT_DISMISSAL_DELAY_MILLIS);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(
@@ -71,7 +101,6 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                 container, false);
         ButterKnife.bind(this, view);
         initServices();
-        initBackPressedListener();
         bus.post(new MixpanelEvent.TrackAddBookingFabMenuShown());
         return view;
     }
@@ -135,38 +164,6 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                 }
             };
 
-    private void initBackPressedListener()
-    {
-        final BaseActivity activity = (BaseActivity) getActivity();
-        activity.setOnBackPressedListener(
-                new BaseActivity.OnBackPressedListener()
-                {
-                    @Override
-                    public void onBack()
-                    {
-                        mCloseButton.setClickable(false);
-                        for (ServiceCategorySimpleView view : mServiceCategorySimpleViews)
-                        {
-                            float toYDelta = mCloseButtonWrapper.getY() - view.getY();
-                            TranslateAnimation animation =
-                                    new TranslateAnimation(0, 0, 0, toYDelta);
-                            animation.setDuration(SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS);
-                            view.startAnimation(animation);
-                            view.getTitle().setVisibility(View.INVISIBLE);
-                            view.setVisibility(View.INVISIBLE);
-                        }
-                        activity.setOnBackPressedListener(null);
-                        mServicesWrapper.postDelayed(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                activity.onBackPressed();
-                            }
-                        }, FRAGMENT_DISMISSAL_DELAY_MILLIS);
-                    }
-                });
-    }
 
     private void handleServiceCategoryClicked(
             final ServiceCategorySimpleView serviceCategorySimpleView,

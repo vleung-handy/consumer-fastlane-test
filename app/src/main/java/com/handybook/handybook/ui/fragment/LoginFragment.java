@@ -1,9 +1,11 @@
 package com.handybook.handybook.ui.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
@@ -33,21 +36,15 @@ import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
-import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
-import java.util.HashMap;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class LoginFragment extends BookingFlowFragment
-        implements MenuDrawerActivity.OnDrawerStateChangeListener
 {
     static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
     static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
@@ -62,6 +59,7 @@ public final class LoginFragment extends BookingFlowFragment
     private String mBookingUserName, mBookingUserEmail;
     private BookingRequest mBookingRequest;
 
+    Class<? extends Activity> mDestinationClass;
 
     @Bind(R.id.nav_text)
     TextView mNavText;
@@ -120,6 +118,19 @@ public final class LoginFragment extends BookingFlowFragment
         if (!mFindUser && mBookingUserName == null)
         {
             mixpanel.trackPageLogin();
+        }
+
+        String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
+        if (!TextUtils.isEmpty(mDestinationActivity))
+        {
+            try
+            {
+                mDestinationClass = (Class<? extends Activity>) Class.forName(mDestinationActivity);
+            }
+            catch (ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -366,6 +377,7 @@ public final class LoginFragment extends BookingFlowFragment
         @Override
         public void onClick(final View view)
         {
+            mEmailText.unHighlight();
             mPasswordText.unHighlight();
             if (mEmailText.validate())
             {
@@ -490,29 +502,21 @@ public final class LoginFragment extends BookingFlowFragment
         enableInputs();
 
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        activity.setOnDrawerStateChangedListener(LoginFragment.this);
 
-        final MenuDrawer menuDrawer = activity.getMenuDrawer();
-        menuDrawer.openMenu(true);
+        if (mDestinationClass != null)
+        {
+            activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras());
+        }
+        else
+        {
+            activity.navigateToActivity(ServiceCategoriesActivity.class);
+        }
     }
 
     @Subscribe
     public void onReceiveUserError(final HandyEvent.ReceiveUserError event)
     {
         handleUserCallbackError(event.error, event.getAuthType());
-    }
-
-    @Override
-    public void onDrawerStateChange(
-            final MenuDrawer menuDrawer, final int oldState,
-            final int newState
-    )
-    {
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        if (newState == MenuDrawer.STATE_OPEN)
-        {
-            activity.navigateToActivity(ServiceCategoriesActivity.class);
-        }
     }
 
     private void handleUserCallbackError(
@@ -534,9 +538,6 @@ public final class LoginFragment extends BookingFlowFragment
         if (session != null) session.closeAndClearTokenInformation();
 */
 
-        final HashMap<String, InputTextField> inputMap = new HashMap<>();
-        inputMap.put("password", mPasswordText);
-        inputMap.put("email", mEmailText);
-        dataManagerErrorHandler.handleError(getActivity(), error, inputMap);
+        dataManagerErrorHandler.handleError(getActivity(), error, null);
     }
 }

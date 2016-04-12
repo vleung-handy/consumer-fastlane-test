@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
 
 import java.util.ArrayList;
@@ -41,13 +42,21 @@ public class BookingCardRowViewModel
 
     public String getSubtitle(@NonNull Context context)
     {
-        final String start = TextUtils.formatDate(mBooking.getStartDate(), SUBTITLE_DATE_FORMAT);
+        //make sure this date is in the timezone of the booking location. This will be shown to the user
+        final String start = DateTimeUtils.formatDate(mBooking.getStartDate(),
+                SUBTITLE_DATE_FORMAT, mBooking.getBookingTimezone());
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(mBooking.getStartDate());
         cal.add(Calendar.MINUTE, Math.round(mBooking.getHours() * MINUTES_PER_HOUR)); // adds booking duration
         final Date endDate = cal.getTime();
-        final String end = TextUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT);
+
+        //make sure this date is in the timezone of the booking location. This will be shown to the user
+        final String end = DateTimeUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT,
+                mBooking.getBookingTimezone());
+
         final String duration = TextUtils.formatDecimal(mBooking.getHours(), DURATION_FORMAT);
+
         final String subtitle = context.getString(
                 R.string.booking_card_row_time_and_duration,
                 start,

@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
@@ -19,6 +19,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.constant.BundleKeys;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,12 +47,13 @@ public class BookingOptionsFragment extends BookingFlowFragment
 
     @Bind(R.id.options_layout)
     protected LinearLayout optionsLayout;
-    @Bind(R.id.nav_text)
-    protected TextView navText;
     @Bind(R.id.header_text)
     protected TextView headerText;
     @Bind(R.id.next_button)
     protected Button nextButton;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     public static BookingOptionsFragment newInstance(final ArrayList<BookingOption> options,
                                                      final int page,
@@ -96,6 +98,7 @@ public class BookingOptionsFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_options, container, false);
 
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.details));
 
         if (page != 0)
         {
@@ -308,7 +311,7 @@ public class BookingOptionsFragment extends BookingFlowFragment
 
             if (pageOptions.size() == 1 && option.getType().equals("text"))
             {
-                navText.setText(getString(R.string.comments));
+                setToolbarTitle(getString(R.string.comments));
                 optionsLayout.setBackgroundColor(0);
                 ((BookingOptionsTextView)optionsView).enableSingleMode();
                 mixpanel.trackEventAppTrackComments();
@@ -318,7 +321,7 @@ public class BookingOptionsFragment extends BookingFlowFragment
             {
                 headerText.setText(option.getTitle());
                 headerText.setVisibility(View.VISIBLE);
-                navText.setText(getString(R.string.request_pro));
+                setToolbarTitle(getString(R.string.request_pro));
                 ((BookingOptionsIndexView)optionsView).hideTitle();
                 mixpanel.trackEventAppTrackRequestPro();
             }
@@ -362,12 +365,8 @@ public class BookingOptionsFragment extends BookingFlowFragment
 
         if (view instanceof BookingOptionsIndexView)
         {
-            requestOptions.put(option.getUniq(),
-                    Integer.toString(((BookingOptionsIndexView) view).getCurrentIndex()));
-
-            optionIndexMap.put(option.getUniq(),
-                    ((BookingOptionsIndexView) view).getCurrentIndex());
-
+            requestOptions.put(option.getUniq(), ((BookingOptionsIndexView) view).getCurrentValue());
+            optionIndexMap.put(option.getUniq(), ((BookingOptionsIndexView) view).getCurrentIndex());
         }
         else
         {

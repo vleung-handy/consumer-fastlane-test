@@ -41,7 +41,7 @@
         android:name=".core.BaseApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Base"
+        android:theme="@style/Theme.Handy"
         >
         <activity
             android:name=".booking.ui.activity.ServiceCategoriesActivity"
@@ -50,6 +50,7 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
@@ -84,11 +85,6 @@
                     />
                 <data
                     android:host="profile"
-                    android:path="/"
-                    android:scheme="handy"
-                    />
-                <data
-                    android:host="bookings"
                     android:path="/"
                     android:scheme="handy"
                     />
@@ -153,6 +149,7 @@
         <activity
             android:name=".booking.ui.activity.BookingDetailActivity"
             android:screenOrientation="portrait"
+            android:parentActivityName=".booking.ui.activity.BookingsActivity"
             />
         <activity
             android:name=".booking.ui.activity.BookingFinalizeActivity"
@@ -213,7 +210,7 @@
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
             />
-        <!--Required by the DeepLinkDispatch library-->
+        <!-- Required by the DeepLinkDispatch library -->
         <activity
             android:name="com.airbnb.deeplinkdispatch.DeepLinkActivity"
             android:theme="@android:style/Theme.NoDisplay"
@@ -225,7 +222,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data android:scheme="handybook"/>
-                <!--TODO: parameterize the scheme?-->
+                <data android:scheme="handy"/>
+                <!-- TODO: parameterize the scheme? -->
             </intent-filter>
         </activity>
         <activity
@@ -235,7 +233,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
 
-        <!-- Used for install referrer tracking by Yozio-->
+        <!-- Used for install referrer tracking by Yozio -->
         <receiver
             android:name=".receiver.InstallReferrerReceiver"
             android:exported="true"
@@ -278,6 +276,7 @@
 
         <!-- URBAN AIRSHIP -->
 
+
         <!-- REQUIRED for Action.startActivityForResult -->
         <activity android:name="com.urbanairship.actions.ActionActivity"/>
 
@@ -294,9 +293,9 @@
             android:name="com.urbanairship.CoreReceiver"
             android:exported="false"
             >
-
             <intent-filter android:priority="-999">
                 <action android:name="com.urbanairship.push.OPENED"/>
+
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </receiver>
@@ -322,7 +321,6 @@
             android:name="com.urbanairship.actions.LandingPageActivity"
             android:exported="false"
             >
-
             <intent-filter>
                 <action android:name="com.urbanairship.actions.SHOW_LANDING_PAGE_INTENT_ACTION"/>
 
@@ -377,7 +375,6 @@
             android:name=".module.push.receiver.PushReceiver"
             android:exported="false"
             >
-
             <intent-filter>
                 <action android:name="com.urbanairship.push.CHANNEL_UPDATED"/>
                 <action android:name="com.urbanairship.push.OPENED"/>
@@ -393,7 +390,6 @@
             android:name="com.urbanairship.push.GCMPushReceiver"
             android:permission="com.google.android.c2dm.permission.SEND"
             >
-
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>

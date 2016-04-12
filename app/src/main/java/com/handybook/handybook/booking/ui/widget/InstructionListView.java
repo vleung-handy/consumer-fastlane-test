@@ -43,7 +43,7 @@ public class InstructionListView extends FrameLayout
             @Override
             public void onStateChanged(final BookingInstruction bookingInstruction)
             {
-                notifyObserver();
+                notifyObserver(ChangeType.STATE_CHANGE);
             }
         };
         mOnChildMovedListener = new DragAndDropVerticalLinearLayout.OnChildMovedListener()
@@ -52,7 +52,7 @@ public class InstructionListView extends FrameLayout
             public void onChildMoved(final View child, final int fromPosition, final int toPosition)
             {
                 //TODO: Move the BookingInstruction too!
-                notifyObserver();
+                notifyObserver(ChangeType.POSITION_CHANGE);
             }
         };
         mOnChildrenSwappedListener = new DragAndDropVerticalLinearLayout.OnChildrenSwappedListener()
@@ -84,7 +84,7 @@ public class InstructionListView extends FrameLayout
                     bookingInstructions.add(realPosB, biA);
                     bookingInstructions.add(realPosA, biB);
                 }
-                notifyObserver();
+                notifyObserver(ChangeType.POSITION_CHANGE);
             }
         };
     }
@@ -167,7 +167,7 @@ public class InstructionListView extends FrameLayout
     }
 
 
-    private void notifyObserver()
+    private void notifyObserver(ChangeType changeType)
     {
         if (mOnInstructionsChangedListener == null)
         {
@@ -175,7 +175,7 @@ public class InstructionListView extends FrameLayout
         }
         else
         {
-            mOnInstructionsChangedListener.onInstructionsChanged(mInstructions);
+            mOnInstructionsChangedListener.onInstructionsChanged(mInstructions, changeType);
         }
     }
 
@@ -187,6 +187,14 @@ public class InstructionListView extends FrameLayout
 
     public interface OnInstructionsChangedListener
     {
-        void onInstructionsChanged(Instructions instructions);
+        void onInstructionsChanged(Instructions instructions, ChangeType changeType);
+    }
+
+
+    public enum ChangeType
+    {
+        STATE_CHANGE,
+        POSITION_CHANGE,
+        UNKNOWN
     }
 }

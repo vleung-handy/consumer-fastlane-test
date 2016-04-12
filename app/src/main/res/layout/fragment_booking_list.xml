@@ -24,6 +24,7 @@
             android:paddingRight="@dimen/default_padding_quarter"
             android:paddingTop="@dimen/default_padding_quarter"
             tools:listitem="@layout/layout_card_booking"
+            android:clipToPadding="false"
             >
         </com.handybook.handybook.ui.view.EmptiableRecyclerView>
 

@@ -1,69 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/handy_bg"
+              android:orientation="vertical"
+    >
 
-    <!--TODO: make the nav layout more reusable-->
-    <RelativeLayout
-        android:id="@+id/nav_layout"
-        style="@style/RelativeLayout.NavBar.Blue"
-        >
+    <include layout="@layout/toolbar"
+        />
 
-        <RelativeLayout
-            android:id="@+id/menu_button_layout"
-            style="@style/MenuButtonLayout"
-            />
-
-        <TextView
-            android:id="@+id/nav_text"
-            style="@style/TextView.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/menu_button_layout"
-            android:text="@string/promotions"
-            android:textColor="@color/handy_white"
-            android:textSize="@dimen/text_size_large"
-            />
-
-    </RelativeLayout>
-
-
-    <Button
-        android:id="@+id/apply_button"
-        android:text="@string/apply"
-        style="@style/Button.Green" />
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nav_layout"
-        android:layout_above="@id/apply_button">
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/default_padding"
+        >
 
-        <RelativeLayout
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:paddingTop="@dimen/default_padding">
+            android:layout_marginBottom="16dp"
+            android:padding="16dp"
+            android:src="@drawable/ic_price_tag"
+            />
 
-            <ImageView
-                android:id="@+id/tag_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/ic_price_tag"
-                android:contentDescription="promotions" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
             <EditText
-                android:id="@+id/promo_text"
-                android:layout_below="@id/tag_img"
-                android:layout_marginBottom="16dp"
-                style="@style/EditText.Last.PromoCode" />
+                android:id="@+id/promotions_coupon_text"
+                style="@style/EditText.Last.PromoCode"
+                />
 
-        </RelativeLayout>
+            <!--This is a hacky way to get the imageView visually behave like a button-->
+            <FrameLayout
+                android:id="@+id/promotions_coupon_text_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginRight="@dimen/default_margin_half"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="@dimen/default_padding_half"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
 
-    </ScrollView>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_x_dark"
+                    />
 
-</RelativeLayout>
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/promotions_apply_button"
+        style="@style/Button.Green"
+        android:text="@string/apply"
+        />
+
+</LinearLayout>

@@ -2,13 +2,14 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
@@ -46,8 +47,10 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     @Bind(R.id.instructions_layout)
     InstructionListView mInstructionListView;
 
-    @Bind(R.id.nav_text)
-    TextView mNavText;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
+    private boolean mIsPreferenceDragged, mIsPreferenceToggled;
 
     {
 
@@ -66,6 +69,16 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                     );
                 }
                 mFinalizeBookingRequestPayload.setNoteToPro(mNoteToProTextView.getInput());
+                bus.post(new MixpanelEvent.TrackChecklist(
+                        bookingManager.getCurrentTransaction().getBookingId(),
+                        true,
+                        mIsPreferenceDragged,
+                        mIsPreferenceToggled
+                ));
+                mFinalizeBookingRequestPayload.setShouldApplyToAll(
+                        // Yeah I don't like this either, but see BookingRecurrenceFragment...
+                        bookingManager.getCurrentTransaction().getRecurringFrequency() > 0
+                );
                 if (mIsNewUser) // Prompt the user to create a pasword
                 {
                     final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
@@ -126,6 +139,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_preferences, container, false);
 
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.job_details));
         return view;
     }
 
@@ -151,14 +165,27 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 !mInstructions.getBookingInstructions().isEmpty())
         {
 
-            mNavText.setText(getString(R.string.cleaning_routine));
+            setToolbarTitle(getString(R.string.cleaning_routine));
             mInstructionListView.reflect(mInstructions);
             mInstructionListView.setOnInstructionsChangedListener(
                     new InstructionListView.OnInstructionsChangedListener()
                     {
                         @Override
-                        public void onInstructionsChanged(final Instructions instructions)
+                        public void onInstructionsChanged(
+                                final Instructions instructions,
+                                InstructionListView.ChangeType changeType
+                        )
                         {
+                            switch (changeType)
+                            {
+                                case UNKNOWN:
+                                    break;
+                                case POSITION_CHANGE:
+                                    mIsPreferenceDragged = true;
+                                    break;
+                                case STATE_CHANGE:
+                                    mIsPreferenceToggled = true;
+                            }
                             mFinalizeBookingRequestPayload.setBookingInstructions(
                                     instructions.getBookingInstructions()
                             );

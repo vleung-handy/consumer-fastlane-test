@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,8 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
@@ -39,6 +40,9 @@ public final class BookingAddressFragment extends BookingFlowFragment {
     @Bind(R.id.phone_text)
     PhoneInputTextView phoneText;
 
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     public static BookingAddressFragment newInstance() {
         final BookingAddressFragment fragment = new BookingAddressFragment();
         return fragment;
@@ -58,7 +62,7 @@ public final class BookingAddressFragment extends BookingFlowFragment {
                 .inflate(R.layout.fragment_booking_address,container, false);
 
         ButterKnife.bind(this, view);
-
+        setupToolbar(mToolbar, getString(R.string.address));
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();

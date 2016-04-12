@@ -29,6 +29,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
@@ -147,7 +148,8 @@ public abstract class DataManager
                                             String userId,
                                             String authToken,
                                             String promoCode,
-                                            Callback<Void> cb);
+                                            Callback<ZipValidationResponse> cb
+    );
 
     public abstract void getBookings(
             User user,
