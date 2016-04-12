@@ -37,8 +37,6 @@
         android:id="@+id/tv_rating_anonymous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextView.Medium"
-        android:textColor="@color/dark_grey_pressed"
         android:gravity="center"
         android:text="@string/rating_improvement_anonymous"
         />
@@ -47,8 +45,6 @@
         android:id="@+id/tv_rating_all_apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextView.Medium"
-        android:textColor="@color/dark_grey_pressed"
         android:gravity="center"
         android:text="@string/rating_improvement_all_that_apply"
         />

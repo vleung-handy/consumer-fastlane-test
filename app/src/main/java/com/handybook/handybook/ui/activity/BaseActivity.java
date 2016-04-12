@@ -238,7 +238,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 user.getDefaultTipAmounts();
 
         RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
-                .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
+                .newInstance(bookingId, proName, -1, localizedMonetaryAmounts, user.getCurrencyChar());
 
         boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
                 rateServiceDialogFragment,

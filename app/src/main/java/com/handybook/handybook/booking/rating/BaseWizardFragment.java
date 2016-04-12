@@ -50,6 +50,4 @@ public abstract class BaseWizardFragment extends InjectedFragment implements Ser
     }
 
     abstract HashMap<String, ArrayList<String>> getSelectedItemsMap();
-
-    abstract void syncSubmitButtonState();
 }

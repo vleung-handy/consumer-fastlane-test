@@ -1,11 +1,11 @@
 package com.handybook.handybook.booking.rating;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +36,15 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
 
     @Bind(R.id.skip_button)
     Button mSkipButton;
+
+    @Bind(R.id.service_icon)
+    ImageView mServiceIcon;
+
+    @Bind(R.id.service_icon_img)
+    ImageView mServiceIconImg;
+
+    @Bind(R.id.img_icon_success)
+    ImageView mSuccessIcon;
 
     int mBookingId;
 
@@ -78,6 +87,10 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
         titleText.setText(getResources().getString(R.string.thanks_for_feedback));
         messageText.setText(getResources().getString(R.string.were_sorry_feedback));
 
+        mServiceIcon.setVisibility(View.GONE);
+        mServiceIconImg.setVisibility(View.GONE);
+        mSuccessIcon.setVisibility(View.VISIBLE);
+
         allowDialogDismissable();
 
         return view;
@@ -87,8 +100,7 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
     public void needHelp()
     {
         mixpanel.trackEventLowRatingHelp(Mixpanel.ProRateEventType.SHOW, mBookingId);
-        final Intent intent = new Intent(getActivity(), HelpActivity.class);
-        startActivity(intent);
+        startActivity(HelpActivity.DeepLink.PRO_ISSUES.getIntent(getActivity()));
         dismiss();
     }
 

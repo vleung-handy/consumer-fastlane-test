@@ -68,7 +68,7 @@ public class TipDialogFragment extends BaseDialogFragment
 
         final User currentUser = mUserManager.getCurrentUser();
         final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = currentUser.getDefaultTipAmounts();
-        final TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts);
+        final TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts, currentUser.getCurrencyChar());
 
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.tip_layout_container, tipFragment)

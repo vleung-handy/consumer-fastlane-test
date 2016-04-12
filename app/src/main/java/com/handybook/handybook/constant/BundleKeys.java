@@ -12,7 +12,8 @@ public class BundleKeys
     public static final String DATE_EPOCH_TIME = "date_epoch_time";
     public static final String HELP_NODE = "help_node";
     public static final String HELP_NODE_ID = "help_node_id";
-    public static final String HELP_ARTICLE_ID = "help_article_id";
+    public static final String HELP_LINK_TYPE = "help_link_type";
+    public static final String HELP_ID = "help_article_id";
     public static final String HELP_NODE_IS_BOOKING = "help_node_is_booking";
     public static final String PATH = "path";
     public static final String TAB = "tab";

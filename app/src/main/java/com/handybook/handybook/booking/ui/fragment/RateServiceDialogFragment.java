@@ -75,7 +75,9 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             final int bookingId,
             final String proName,
             final int rating,
-            final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts)
+            final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts,
+            final String currency
+    )
     {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
         final Bundle bundle = new Bundle();
@@ -84,6 +86,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         bundle.putString(EXTRA_PRO_NAME, proName);
         bundle.putInt(EXTRA_RATING, rating);
         bundle.putParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS, defaultTipAmounts);
+        bundle.putString(TipFragment.EXTRA_CURRENCY_CHAR, currency);
 
         rateServiceDialogFragment.setArguments(bundle);
         return rateServiceDialogFragment;
@@ -132,7 +135,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
                 getArguments().getParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS);
-        TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts);
+        String currency = getArguments().getString(TipFragment.EXTRA_CURRENCY_CHAR);
+        TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts, currency);
 
         if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
         {

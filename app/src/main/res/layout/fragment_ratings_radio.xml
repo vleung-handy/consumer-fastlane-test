@@ -39,7 +39,7 @@
             android:id="@+id/ratings_late_submit_button"
             style="@style/Button.Green"
             android:layout_marginTop="@dimen/default_margin"
-            android:text="@string/submit"
+            android:text="@string/next"
             />
     </LinearLayout>
 </FrameLayout>

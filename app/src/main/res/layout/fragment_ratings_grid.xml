@@ -43,7 +43,7 @@
         <Button
             android:id="@+id/ratings_improvement_submit_button"
             style="@style/Button.Green"
-            android:text="@string/submit"
+            android:text="@string/next"
             android:layout_marginTop="@dimen/default_margin"
             />
     </LinearLayout>
