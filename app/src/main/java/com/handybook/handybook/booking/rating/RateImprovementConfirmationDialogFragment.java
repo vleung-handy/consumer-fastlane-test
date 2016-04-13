@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 
@@ -99,7 +100,7 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
     @OnClick(R.id.skip_button)
     public void needHelp()
     {
-        mixpanel.trackEventLowRatingHelp(Mixpanel.ProRateEventType.SHOW, mBookingId);
+        mBus.post(new MixpanelEvent.AppProRateHelp(Mixpanel.ProRateEventType.SHOW, mBookingId));
         startActivity(HelpActivity.DeepLink.PRO_ISSUES.getIntent(getActivity()));
         dismiss();
     }

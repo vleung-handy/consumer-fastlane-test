@@ -254,15 +254,11 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         if (finalRating < 4)
         {
-            boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
+            FragmentUtils.safeLaunchDialogFragment(
                     RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)),
                     getActivity(),
                     RateImprovementDialogFragment.class.getSimpleName()
             );
-            if (successfullyLaunched)
-            {
-                mixpanel.trackEventLowRatingWizard(Mixpanel.ProRateEventType.SHOW, mBookingId);
-            }
         } else {
             FragmentUtils.safeLaunchDialogFragment(
                     RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),

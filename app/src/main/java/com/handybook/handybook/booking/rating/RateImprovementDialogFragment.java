@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
@@ -24,7 +25,9 @@ import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -135,6 +138,9 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         mFragmentList.add(mMainFragment);
         mAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
+
+        mBus.post(new MixpanelEvent.AppProRateReason(Mixpanel.ProRateEventType.SHOW,
+                Integer.parseInt(mBookingId), null, mPrerateProInfo.isCleaning()));
     }
 
     @Subscribe
@@ -267,15 +273,27 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         progressDialog.dismiss();
 
         int bookingId = Integer.parseInt(mBookingId);
-        mixpanel.trackEventLowRatingWizard(Mixpanel.ProRateEventType.SUBMIT, bookingId);
+        mBus.post(new MixpanelEvent.AppProRateReason(Mixpanel.ProRateEventType.SUBMIT, bookingId,
+                mFeedback.getSelectedOptions().keySet(), mPrerateProInfo.isCleaning()));
 
+        Set<String> subReasons = new HashSet<>();
         for (String key : mFeedback.getSelectedOptions().keySet())
         {
             if (!mFeedback.getSelectedOptions().get(key).isEmpty())
             {
-                //this key has subreasons, track it.
-                mixpanel.trackEventLowRatingSubReason(Mixpanel.ProRateEventType.SUBMIT, bookingId, key);
+                for (String s : mFeedback.getSelectedOptions().get(key))
+                {
+                    subReasons.add(s);
+                }
             }
+        }
+
+        if (!subReasons.isEmpty())
+        {
+            //this key has subreasons, track it.
+
+            mBus.post(new MixpanelEvent.AppProRateSubreason(Mixpanel.ProRateEventType.SUBMIT,
+                    bookingId, subReasons, mPrerateProInfo.isCleaning()));
         }
 
         FragmentUtils.safeLaunchDialogFragment(

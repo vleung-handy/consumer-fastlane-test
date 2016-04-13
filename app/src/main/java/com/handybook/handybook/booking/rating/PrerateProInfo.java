@@ -48,7 +48,7 @@ public class PrerateProInfo implements Serializable
     private String placeHolderText;
 
     @SerializedName("home_cleaning")
-    private boolean isCleaning;
+    private boolean cleaning;
 
     /**
      * This is tricky as hell. Do a request on a browser to prerate_pro_info to see how the response looks like.
@@ -70,10 +70,14 @@ public class PrerateProInfo implements Serializable
         if (mReasons == null)
         {
             //build it.
-            mReasons = new Reasons(mRawReasons, isCleaning, null);
+            mReasons = new Reasons(mRawReasons, cleaning, null);
         }
 
         return mReasons;
     }
 
+    public boolean isCleaning()
+    {
+        return cleaning;
+    }
 }
