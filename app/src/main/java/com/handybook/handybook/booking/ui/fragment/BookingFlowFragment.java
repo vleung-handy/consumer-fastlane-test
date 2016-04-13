@@ -100,23 +100,23 @@ public class BookingFlowFragment extends InjectedFragment
           don't reload quote after recurrence selection, after extras selection,
           or if user skipped peak pricing
         */
-        if (BookingFlowFragment.this instanceof BookingRecurrenceFragment
-                || BookingFlowFragment.this instanceof PeakPricingFragment
-                || BookingFlowFragment.this instanceof BookingExtrasFragment)
+        if (this instanceof BookingRecurrenceFragment
+                || this instanceof PeakPricingFragment
+                || this instanceof BookingExtrasFragment)
         {
             continueFlow();
             return;
         }
 
         // if user skipped, don't reload quote
-        if (BookingFlowFragment.this instanceof PeakPricingFragment)
+        if (this instanceof PeakPricingFragment)
         {
             continueFlow();
             return;
         }
 
         // user selected new time, reload quote
-        if (BookingFlowFragment.this instanceof PeakPricingTableFragment)
+        if (this instanceof PeakPricingTableFragment)
         {
             disableInputs();
             progressDialog.show();
@@ -135,7 +135,7 @@ public class BookingFlowFragment extends InjectedFragment
             request.setUserId(user.getId());
             request.setEmail(user.getEmail());
         }
-        else if (!(BookingFlowFragment.this instanceof LoginFragment))
+        else if (!(this instanceof LoginFragment))
         {
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra(LoginActivity.EXTRA_FIND_USER, true);
@@ -273,21 +273,21 @@ public class BookingFlowFragment extends InjectedFragment
         boolean isVoucherFlow = request.getPromoType() == PromoCode.Type.VOUCHER;
 
         // show recurrence options if available (show first if regular flow)
-        if (!isVoucherFlow && shouldShowRecurrenceOptions(request, isVoucherFlow))
+        if (!isVoucherFlow && shouldShowRecurrenceOptions(request, false))
         {
             final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             startActivity(intent);
         }
 
         // show surge pricing options if necessary (show second if regular flow)
-        else if (!isVoucherFlow && shouldShowSurgePricingOptions(peakTable, isVoucherFlow))
+        else if (!isVoucherFlow && shouldShowSurgePricingOptions(peakTable, false))
         {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
             startActivity(intent);
         }
 
         // show surge pricing options if necessary (show first if voucher flow)
-        else if (isVoucherFlow && shouldShowSurgePricingOptions(peakTable, isVoucherFlow))
+        else if (isVoucherFlow && shouldShowSurgePricingOptions(peakTable, true))
         {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
             intent.putExtra(BundleKeys.FOR_VOUCHER, true);
@@ -295,7 +295,7 @@ public class BookingFlowFragment extends InjectedFragment
         }
 
         // show recurrence options if available (show second if voucher flow)
-        else if (isVoucherFlow && shouldShowRecurrenceOptions(request, isVoucherFlow))
+        else if (isVoucherFlow && shouldShowRecurrenceOptions(request, true))
         {
             final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             startActivity(intent);
@@ -359,23 +359,36 @@ public class BookingFlowFragment extends InjectedFragment
         }
     };
 
-    private boolean shouldShowRecurrenceOptions(final BookingRequest request,
-                                                final boolean isVoucherFlow)
+    private boolean shouldShowRecurrenceOptions(
+            final BookingRequest request,
+            final boolean isVoucherFlow
+    )
     {
-        return !((BookingFlowFragment.this instanceof BookingRecurrenceFragment)
+        return !(
+                (BookingFlowFragment.this instanceof BookingRecurrenceFragment)
                 || (BookingFlowFragment.this instanceof BookingExtrasFragment)
-                || !request.getUniq().equals("home_cleaning")) && (isVoucherFlow
-                || (!(BookingFlowFragment.this instanceof PeakPricingFragment)
-                && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)));
+                        || !request.getUniq().equals("home_cleaning")
+        ) && (
+                isVoucherFlow || (
+                        !(BookingFlowFragment.this instanceof PeakPricingFragment)
+                                && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
+                )
+        );
     }
 
-    private boolean shouldShowSurgePricingOptions(final ArrayList<ArrayList<PeakPriceInfo>> peakTable,
-                                                  final boolean isVoucherFlow)
+    private boolean shouldShowSurgePricingOptions(
+            final ArrayList<ArrayList<PeakPriceInfo>> peakTable,
+            final boolean isVoucherFlow
+    )
     {
-        return !((BookingFlowFragment.this instanceof PeakPricingFragment)
+        return !(
+                (BookingFlowFragment.this instanceof PeakPricingFragment)
                 || (BookingFlowFragment.this instanceof PeakPricingTableFragment)
                 || (BookingFlowFragment.this instanceof BookingExtrasFragment)
-                || peakTable == null || peakTable.isEmpty()) && (!isVoucherFlow
+                        || peakTable == null
+                        || peakTable.isEmpty()
+        ) && (
+                !isVoucherFlow
                 || (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)));
     }
 
@@ -433,7 +446,7 @@ public class BookingFlowFragment extends InjectedFragment
         final BookingQuote oldQuote = bookingManager.getCurrentQuote();
         if (isUpdate && oldQuote != null)
         {
-            quote.setExtrasOptions(oldQuote.getExtrasOptions());
+            quote.setBookingOption(oldQuote.getBookingOption());
             quote.setSurgePriceTable(oldQuote.getSurgePriceTable());
         }
 
