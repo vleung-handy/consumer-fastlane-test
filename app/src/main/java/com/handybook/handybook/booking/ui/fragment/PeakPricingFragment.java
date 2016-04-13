@@ -44,17 +44,17 @@ public final class PeakPricingFragment extends BookingFlowFragment
     private boolean rescheduleAll;
 
     @Bind(R.id.skip_button)
-    Button skipButton;
+    Button mSkipButton;
     @Bind(R.id.date_text)
-    TextView dateText;
+    TextView mDateText;
     @Bind(R.id.header_text)
-    TextView headerText;
+    TextView mHeaderText;
     @Bind(R.id.pager)
-    ViewPager datePager;
+    ViewPager mDatePager;
     @Bind(R.id.arrow_left)
-    ImageView arrowLeft;
+    ImageView mArrowLeft;
     @Bind(R.id.arrow_right)
-    ImageView arrowRight;
+    ImageView mArrowRight;
 
     public static PeakPricingFragment newInstance(final boolean forVoucher)
     {
@@ -62,8 +62,8 @@ public final class PeakPricingFragment extends BookingFlowFragment
     }
 
     public static PeakPricingFragment newInstance(
-            final ArrayList<ArrayList<PeakPriceInfo>>
-                    reschedulePriceTable, final Booking rescheduleBooking,
+            final ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable,
+            final Booking rescheduleBooking,
             final boolean rescheduleAll
     )
     {
@@ -71,8 +71,8 @@ public final class PeakPricingFragment extends BookingFlowFragment
     }
 
     public static PeakPricingFragment newInstance(
-            final ArrayList<ArrayList<PeakPriceInfo>>
-                    reschedulePriceTable, final Booking rescheduleBooking,
+            final ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable,
+            final Booking rescheduleBooking,
             final boolean rescheduleAll, final boolean forVoucher
     )
     {
@@ -110,7 +110,10 @@ public final class PeakPricingFragment extends BookingFlowFragment
             rescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
             rescheduleAll = getArguments().getBoolean(EXTRA_RESCHEDULE_ALL);
         }
-        else { peakPriceTable = bookingManager.getCurrentQuote().getPeakPriceTable(); }
+        else
+        {
+            peakPriceTable = bookingManager.getCurrentQuote().getPeakPriceTable();
+        }
 
         if (savedInstanceState != null)
         {
@@ -133,12 +136,12 @@ public final class PeakPricingFragment extends BookingFlowFragment
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         if (forVoucher || forReschedule || (transaction != null && transaction.getRecurringFrequency() > 0))
         {
-            skipButton.setVisibility(View.GONE);
-            headerText.setText(R.string.peak_price_info_recur);
+            mSkipButton.setVisibility(View.GONE);
+            mHeaderText.setText(R.string.peak_price_info_recur);
         }
         else
         {
-            skipButton.setOnClickListener(new View.OnClickListener()
+            mSkipButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(final View v)
@@ -148,11 +151,11 @@ public final class PeakPricingFragment extends BookingFlowFragment
             });
         }
 
-        datePager.setOnPageChangeListener(pageListener);
+        mDatePager.setOnPageChangeListener(pageListener);
         currentIndex = getStartIndex();
 
-        arrowLeft.setOnTouchListener(arrowTouched);
-        arrowRight.setOnTouchListener(arrowTouched);
+        mArrowLeft.setOnTouchListener(arrowTouched);
+        mArrowRight.setOnTouchListener(arrowTouched);
 
         return view;
     }
@@ -161,8 +164,8 @@ public final class PeakPricingFragment extends BookingFlowFragment
     public void onActivityCreated(final Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        datePager.setAdapter(new PeakPriceTablePagerAdapter(getActivity().getSupportFragmentManager()));
-        datePager.setCurrentItem(currentIndex);
+        mDatePager.setAdapter(new PeakPriceTablePagerAdapter(getActivity().getSupportFragmentManager()));
+        mDatePager.setCurrentItem(currentIndex);
         updateDateHeader();
     }
 
@@ -197,7 +200,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
         //we want to display the time using the booking location's time zone
         final BookingRequest currentRequest = bookingManager.getCurrentRequest();
         String timezone = currentRequest != null ? currentRequest.getTimeZone() : null;
-        dateText.setText(
+        mDateText.setText(
                 DateTimeUtils.formatDate(
                         peakPriceTable.get(currentIndex).get(0).getDate(),
                         "EEEE',' MMMM d",
@@ -205,14 +208,14 @@ public final class PeakPricingFragment extends BookingFlowFragment
                 )
         );
 
-        arrowRight.setVisibility(View.VISIBLE);
-        arrowLeft.setVisibility(View.VISIBLE);
+        mArrowRight.setVisibility(View.VISIBLE);
+        mArrowLeft.setVisibility(View.VISIBLE);
 
-        if (currentIndex == datePager.getAdapter().getCount() - 1)
+        if (currentIndex == mDatePager.getAdapter().getCount() - 1)
         {
-            arrowRight.setVisibility(View.INVISIBLE);
+            mArrowRight.setVisibility(View.INVISIBLE);
         }
-        else if (currentIndex == 0) { arrowLeft.setVisibility(View.INVISIBLE); }
+        else if (currentIndex == 0) { mArrowLeft.setVisibility(View.INVISIBLE); }
     }
 
     private View.OnTouchListener arrowTouched = new View.OnTouchListener()
@@ -231,16 +234,16 @@ public final class PeakPricingFragment extends BookingFlowFragment
                     view.invalidate();
                     break;
                 case MotionEvent.ACTION_UP:
-                    int currentItem = datePager.getCurrentItem();
-                    final int count = datePager.getAdapter().getCount();
+                    int currentItem = mDatePager.getCurrentItem();
+                    final int count = mDatePager.getAdapter().getCount();
 
-                    if (v == arrowLeft)
+                    if (v == mArrowLeft)
                     {
-                        datePager.setCurrentItem(Math.max(--currentItem, 0), true);
+                        mDatePager.setCurrentItem(Math.max(--currentItem, 0), true);
                     }
-                    else if (v == arrowRight)
+                    else if (v == mArrowRight)
                     {
-                        datePager.setCurrentItem(Math.min(++currentItem, count), true);
+                        mDatePager.setCurrentItem(Math.min(++currentItem, count), true);
                     }
                 case MotionEvent.ACTION_CANCEL:
                     view.clearColorFilter();
