@@ -16,7 +16,7 @@ import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
-import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
@@ -164,14 +164,14 @@ public class BaseApplication extends MultiDexApplication
             )
             {
                 trackScreen(activity);
-                bus.post(new ActivityEvent.Created(activity, savedInstanceState));
+                bus.post(new ActivityLifecycleEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
             }
 
             @Override
             public void onActivityStarted(final Activity activity)
             {
-                bus.post(new ActivityEvent.Started(activity));
+                bus.post(new ActivityLifecycleEvent.Started(activity));
                 ++started;
                 if (started == 1)
                 {
@@ -190,19 +190,19 @@ public class BaseApplication extends MultiDexApplication
             @Override
             public void onActivityResumed(final Activity activity)
             {
-                bus.post(new ActivityEvent.Resumed(activity));
+                bus.post(new ActivityLifecycleEvent.Resumed(activity));
             }
 
             @Override
             public void onActivityPaused(final Activity activity)
             {
-                bus.post(new ActivityEvent.Paused(activity));
+                bus.post(new ActivityLifecycleEvent.Paused(activity));
             }
 
             @Override
             public void onActivityStopped(final Activity activity)
             {
-                bus.post(new ActivityEvent.Stopped(activity));
+                bus.post(new ActivityLifecycleEvent.Stopped(activity));
             }
 
             @Override
@@ -211,13 +211,13 @@ public class BaseApplication extends MultiDexApplication
                     final Bundle outState
             )
             {
-                bus.post(new ActivityEvent.SavedInstanceState(activity, outState));
+                bus.post(new ActivityLifecycleEvent.SavedInstanceState(activity, outState));
             }
 
             @Override
             public void onActivityDestroyed(final Activity activity)
             {
-                bus.post(new ActivityEvent.Destroyed(activity));
+                bus.post(new ActivityLifecycleEvent.Destroyed(activity));
             }
         });
     }

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.analytics.MixpanelEvent;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,7 +41,7 @@ public class BlockingUpdateFragment extends InjectedFragment
     public void onResume()
     {
         super.onResume();
-        bus.post(new HandyEvent.BlockingScreenDisplayed());
+        bus.post(new MixpanelEvent.BlockingScreenDisplayed());
     }
 
 
@@ -69,7 +69,7 @@ public class BlockingUpdateFragment extends InjectedFragment
             );
         } finally
         {
-            bus.post(new HandyEvent.BlockingScreenButtonPressed());
+            bus.post(new MixpanelEvent.BlockingScreenButtonPressed());
         }
     }
 
