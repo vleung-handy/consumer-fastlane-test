@@ -3,7 +3,6 @@ package com.handybook.handybook.event;
 import android.support.annotation.NonNull;
 
 import com.facebook.AccessToken;
-import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.core.User;
@@ -164,18 +163,6 @@ public abstract class HandyEvent
     public abstract static class ReceiveErrorEvent extends HandyEvent
     {
         public DataManager.DataManagerError error;
-    }
-
-
-    @Track("consumer app blocking screen displayed")
-    public static class BlockingScreenDisplayed extends HandyEvent
-    {
-    }
-
-
-    @Track("consumer app blocking screen button clicked")
-    public static class BlockingScreenButtonPressed extends HandyEvent
-    {
     }
 
 
