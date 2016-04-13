@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
 
@@ -36,7 +36,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
     static final String EXTRA_FOR_VOUCHER = "com.handy.handy.EXTRA_FOR_VOUCHER";
     private static final String STATE_PRICE_TABLE = "PRICE_TABLE";
 
-    private ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakPriceTable;
+    private ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable;
     private int currentIndex;
     private boolean forReschedule;
     private boolean forVoucher;
@@ -62,7 +62,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
     }
 
     public static PeakPricingFragment newInstance(
-            final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>
+            final ArrayList<ArrayList<PeakPriceInfo>>
                     reschedulePriceTable, final Booking rescheduleBooking,
             final boolean rescheduleAll
     )
@@ -71,7 +71,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
     }
 
     public static PeakPricingFragment newInstance(
-            final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>
+            final ArrayList<ArrayList<PeakPriceInfo>>
                     reschedulePriceTable, final Booking rescheduleBooking,
             final boolean rescheduleAll, final boolean forVoucher
     )
@@ -94,11 +94,11 @@ public final class PeakPricingFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
-        ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> reschedulePriceTable = null;
+        ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable = null;
 
         if (args != null)
         {
-            reschedulePriceTable = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
+            reschedulePriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
                     args.getSerializable(EXTRA_RESCHEDULE_PRICE_TABLE);
             forVoucher = args.getBoolean(EXTRA_FOR_VOUCHER);
         }
@@ -114,7 +114,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
 
         if (savedInstanceState != null)
         {
-            peakPriceTable = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
+            peakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
                     savedInstanceState.getSerializable(STATE_PRICE_TABLE);
         }
     }
@@ -180,7 +180,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
 
         for (int i = 0; i < peakPriceTable.size(); i++)
         {
-            for (final BookingQuote.PeakPriceInfo info : peakPriceTable.get(i))
+            for (final PeakPriceInfo info : peakPriceTable.get(i))
             {
                 if (Utils.equalDates(startDate, info.getDate()))
                 {

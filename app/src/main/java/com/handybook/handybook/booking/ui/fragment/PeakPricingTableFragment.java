@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
@@ -29,7 +30,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
     static final String EXTRA_FOR_VOUCHER = "com.handy.handy.EXTRA_FOR_VOUCHER";
 
     private int index;
-    private ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakPriceTable;
+    private ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable;
     private Booking rescheduleBooking;
     private boolean forReschedule;
     private boolean rescheduleAll;
@@ -39,8 +40,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
     LinearLayout tableLayout;
 
     public static PeakPricingTableFragment newInstance(final int index,
-                                                final ArrayList<ArrayList<BookingQuote
-                                                        .PeakPriceInfo>> peakPriceTable,
+                                                final ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable,
                                                 final Booking rescheduleBooking,
                                                 final boolean rescheduleAll, final boolean forVoucher) {
         final PeakPricingTableFragment fragment = new PeakPricingTableFragment();
@@ -65,7 +65,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         index = args.getInt(EXTRA_PEAK_PRICE_INDEX, 0);
         forVoucher = args.getBoolean(EXTRA_FOR_VOUCHER, false);
 
-        peakPriceTable = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>)
+        peakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
                 args.getSerializable(EXTRA_PEAK_PRICE_TABLE);
 
         rescheduleBooking = args.getParcelable(EXTRA_RESCHEDULE_BOOKING);
@@ -85,7 +85,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
 
         final BookingQuote quote = bookingManager.getCurrentQuote();
         final User user = userManager.getCurrentUser();
-        final ArrayList<BookingQuote.PeakPriceInfo> priceList
+        final ArrayList<PeakPriceInfo> priceList
                 = peakPriceTable.get(index);
 
         final String currChar = forReschedule ? user.getCurrencyChar()
@@ -98,7 +98,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         layoutParams.setMargins(0, 0, 0, Utils.toDP(1, getActivity()));
 
         int i = 0;
-        for (final BookingQuote.PeakPriceInfo info : priceList) {
+        for (final PeakPriceInfo info : priceList) {
             final View row = layoutInflater.inflate(R.layout.table_item_price, container, false);
             final TextView timeText = (TextView) row.findViewById(R.id.time_text);
             final TextView priceText = (TextView) row.findViewById(R.id.price_text);

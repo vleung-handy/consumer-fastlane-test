@@ -11,6 +11,7 @@ import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
@@ -176,7 +177,7 @@ public class BookingFlowFragment extends InjectedFragment
                         }
 
                         final BookingQuote quote = response.second;
-                        final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
+                        final ArrayList<ArrayList<PeakPriceInfo>> peakTable
                                 = quote != null ? quote.getPeakPriceTable() : null;
 
                         if (peakTable != null && !peakTable.isEmpty())
@@ -266,7 +267,7 @@ public class BookingFlowFragment extends InjectedFragment
 
         bookingManager.setCurrentTransaction(transaction);
 
-        final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable
+        final ArrayList<ArrayList<PeakPriceInfo>> peakTable
                 = quote.getPeakPriceTable();
 
         boolean isVoucherFlow = request.getPromoType() == PromoCode.Type.VOUCHER;
@@ -368,7 +369,7 @@ public class BookingFlowFragment extends InjectedFragment
                 && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)));
     }
 
-    private boolean shouldShowSurgePricingOptions(final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> peakTable,
+    private boolean shouldShowSurgePricingOptions(final ArrayList<ArrayList<PeakPriceInfo>> peakTable,
                                                   final boolean isVoucherFlow)
     {
         return !((BookingFlowFragment.this instanceof PeakPricingFragment)
