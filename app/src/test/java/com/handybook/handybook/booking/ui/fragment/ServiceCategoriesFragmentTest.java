@@ -67,8 +67,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
 
         mFragment.onReceiveServicesSuccess(
                 new BookingEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
-        mFragment.mCategoryLayout.getChildAt(0).performClick();
-
+        mFragment.mRecyclerView.getChildAt(0).performClick();
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName(),
                 equalTo(BookingLocationActivity.class.getName()));
@@ -81,7 +80,8 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
 
         mFragment.onReceiveServicesSuccess(
                 new BookingEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
-        mFragment.mCategoryLayout.getChildAt(0).performClick();
+
+        mFragment.mRecyclerView.getChildAt(0).performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName(),
