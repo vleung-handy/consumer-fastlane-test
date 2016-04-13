@@ -79,7 +79,7 @@ public class PeakPriceInfo implements Serializable
         @SerializedName("price")
         private Integer mPrice;
         @SerializedName("type")
-        private Type mtype;
+        private Type mType;
 
         public Integer getPrice()
         {
@@ -88,7 +88,7 @@ public class PeakPriceInfo implements Serializable
 
         public Type getType()
         {
-            return mtype;
+            return mType;
         }
     }
 
