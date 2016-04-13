@@ -7,7 +7,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.squareup.otto.Bus;
@@ -35,7 +35,7 @@ public class AppBlockManager
     }
 
     @Subscribe
-    public void onEachActivityFragmentsResumed(final ActivityEvent.FragmentsResumed e)
+    public void onEachActivityFragmentsResumed(final ActivityLifecycleEvent.FragmentsResumed e)
     {
         if (appContext == null)
         {

@@ -7,11 +7,11 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
-import com.handybook.handybook.structures.SerializableHashSet;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.structures.SerializableHashSet;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -51,7 +51,7 @@ public class SplashNotificationManager
     }
 
     @Subscribe
-    public void onEachActivityFragmentsResumed(final ActivityEvent.FragmentsResumed e)
+    public void onEachActivityFragmentsResumed(final ActivityLifecycleEvent.FragmentsResumed e)
     {
         String userId = null;
         if(mUserManager.getCurrentUser() != null)
