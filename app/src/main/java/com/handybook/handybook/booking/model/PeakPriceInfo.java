@@ -16,7 +16,7 @@ public class PeakPriceInfo implements Serializable
     @SerializedName("price")
     private float mPrice;
     @SerializedName("type")
-    private String mType;
+    private Type mType;
     @SerializedName("price_breakdown")
     private QuotePriceBreakdown mQuotePriceBreakdown;
 
@@ -25,7 +25,7 @@ public class PeakPriceInfo implements Serializable
         return mDate;
     }
 
-    public String getType()
+    public Type getType()
     {
         return mType;
     }
@@ -77,11 +77,11 @@ public class PeakPriceInfo implements Serializable
     private static class QuotePriceBreakdownRecurrenceOption implements Serializable
     {
         @SerializedName("price")
-        private Integer mPrice;
+        private float mPrice;
         @SerializedName("type")
         private Type mType;
 
-        public Integer getPrice()
+        public float getPrice()
         {
             return mPrice;
         }

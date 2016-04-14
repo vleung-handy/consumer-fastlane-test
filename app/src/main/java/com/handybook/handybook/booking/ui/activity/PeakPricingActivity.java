@@ -25,8 +25,11 @@ public final class PeakPricingActivity extends MenuDrawerActivity
                 .getSerializableExtra(BundleKeys.RESCHEDULE_PRICE_TABLE);
 
         if (reschedulePriceTable != null) {
-            return PeakPricingFragment.newInstance(reschedulePriceTable, rescheduleBooking,
-                    rescheduleAll);
+            return PeakPricingFragment.newInstance(
+                    reschedulePriceTable,
+                    rescheduleBooking,
+                    rescheduleAll
+            );
         }
         else return PeakPricingFragment.newInstance(forVoucher);
     }
