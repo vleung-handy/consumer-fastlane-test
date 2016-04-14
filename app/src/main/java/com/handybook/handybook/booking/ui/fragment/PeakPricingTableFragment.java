@@ -79,9 +79,16 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         mUser = userManager.getCurrentUser();
         mCurrencyCharacter = mIsForReschedule ? mUser.getCurrencyChar() : mQuote.getCurrencyChar();
         mPriceTablePage = mPeakPriceTable.get(mPageIndex);
-        mRecurrence = PeakPriceInfo.recurrenceFrom(
-                mIsForVoucher || mIsForReschedule ? -1
-                        : bookingManager.getCurrentTransaction().getRecurringFrequency());
+        if (mIsForVoucher || mIsForReschedule)
+        {
+            mRecurrence = PeakPriceInfo.RECURRENCE_INVALID;
+        }
+        else
+        {
+            mRecurrence = PeakPriceInfo.recurrenceFrom(
+                    bookingManager.getCurrentTransaction().getRecurringFrequency()
+            );
+        }
     }
 
     @Override
