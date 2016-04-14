@@ -137,7 +137,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
         if (mIsForVoucher || mIsForReschedule || (transaction != null && transaction.getRecurringFrequency() > 0))
         {
             mSkipButton.setVisibility(View.GONE);
-            mHeaderText.setText(R.string.peak_price_info_recur);
+            mHeaderText.setText(R.string.peak_price_info_unavailable);
         }
         else
         {
