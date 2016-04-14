@@ -14,9 +14,9 @@ import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,20 +29,21 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
     static final String EXTRA_RESCHEDULE_ALL = "com.handy.handy.EXTRA_RESCHEDULE_ALL";
     static final String EXTRA_FOR_VOUCHER = "com.handy.handy.EXTRA_FOR_VOUCHER";
 
+    @PeakPriceInfo.Recurrence
+    private String mRecurrence;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
     private int mPageIndex;
     private boolean mIsForReschedule;
     private boolean mIsForVoucher;
     private boolean mIsForRescheduleAll;
-    private Booking mBookingToReschedule;
 
+    private Booking mBookingToReschedule;
     @Bind(R.id.peak_pricing_table_container)
     LinearLayout mTimeSlotContainer;
     private String mCurrencyCharacter;
     private User mUser;
     private BookingQuote mQuote;
     private ArrayList<PeakPriceInfo> mPriceTablePage;
-    private int mRecurrence;
 
     public static PeakPricingTableFragment newInstance(
             final int index,
@@ -78,8 +79,9 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         mUser = userManager.getCurrentUser();
         mCurrencyCharacter = mIsForReschedule ? mUser.getCurrencyChar() : mQuote.getCurrencyChar();
         mPriceTablePage = mPeakPriceTable.get(mPageIndex);
-        mRecurrence = mIsForVoucher || mIsForReschedule ? -1
-                : bookingManager.getCurrentTransaction().getRecurringFrequency();
+        mRecurrence = PeakPriceInfo.recurrenceFrom(
+                mIsForVoucher || mIsForReschedule ? -1
+                        : bookingManager.getCurrentTransaction().getRecurringFrequency());
     }
 
     @Override
@@ -94,38 +96,28 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
                 false
         );
         ButterKnife.bind(this, view);
-        final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        layoutParams.setMargins(0, 0, 0, Utils.toDP(1, getActivity()));
-
-        int i = 0;
         for (final PeakPriceInfo eachInfo : mPriceTablePage)
         {
             final View eachRow = createRowView(eachInfo);
-            mTimeSlotContainer.addView(eachRow, i++, layoutParams);
+            mTimeSlotContainer.addView(eachRow, mTimeSlotContainer.getChildCount());
         }
-
         return view;
     }
 
     private View createRowView(final PeakPriceInfo peakPriceInfo)
     {
+        final Date date = peakPriceInfo.getDate();
+        final PeakPriceInfo.Type type = peakPriceInfo.getType(mRecurrence);
+        final float price = peakPriceInfo.getPrice(mRecurrence);
+
         final View row = getActivity().getLayoutInflater().inflate(R.layout.table_item_price, null, false);
         final TextView timeText = (TextView) row.findViewById(R.id.time_text);
         final TextView priceText = (TextView) row.findViewById(R.id.price_text);
 
         //we want to display the time using the booking location's time zone
-        timeText.setText(DateTimeUtils.formatDate(
-                peakPriceInfo.getDate(),
-                "h:mm aaa",
-                bookingManager.getCurrentRequest().getTimeZone()
+        timeText.setText(DateTimeUtils.formatDate(date, "h:mm aaa", bookingManager.getCurrentRequest().getTimeZone()
         ));
-        priceText.setText(TextUtils.formatPrice(peakPriceInfo.getPrice(), mCurrencyCharacter, null));
-
-        final PeakPriceInfo.Type type = peakPriceInfo.getType();
+        priceText.setText(TextUtils.formatPrice(price, mCurrencyCharacter, null));
 
         switch (type)
         {
@@ -151,7 +143,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
             default:
         }
 
-        if (mRecurrence == 0
+        if (mRecurrence.equals(PeakPriceInfo.RECURRENCE_NONRECURRING)
                 && (type.equals(PeakPriceInfo.Type.PEAK_PRICE) || type.equals(PeakPriceInfo.Type.REG_PRICE))
                 )
         {
@@ -162,11 +154,11 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
                 {
                     if (mIsForReschedule)
                     {
-                        rescheduleBooking(mBookingToReschedule, peakPriceInfo.getDate(), mIsForRescheduleAll);
+                        rescheduleBooking(mBookingToReschedule, date, mIsForRescheduleAll);
                     }
                     else
                     {
-                        mQuote.setStartDate(peakPriceInfo.getDate());
+                        mQuote.setStartDate(date);
                         continueBookingFlow();
                     }
                 }
