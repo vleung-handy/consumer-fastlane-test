@@ -38,6 +38,11 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
 
     @Bind(R.id.peak_pricing_table_container)
     LinearLayout mTimeSlotContainer;
+    private String mCurrencyCharacter;
+    private User mUser;
+    private BookingQuote mQuote;
+    private ArrayList<PeakPriceInfo> mPriceTablePage;
+    private int mRecurrence;
 
     public static PeakPricingTableFragment newInstance(
             final int index,
@@ -69,6 +74,12 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         mBookingToReschedule = args.getParcelable(EXTRA_RESCHEDULE_BOOKING);
         mIsForRescheduleAll = args.getBoolean(EXTRA_RESCHEDULE_ALL);
         mIsForReschedule = mBookingToReschedule != null;
+        mQuote = bookingManager.getCurrentQuote();
+        mUser = userManager.getCurrentUser();
+        mCurrencyCharacter = mIsForReschedule ? mUser.getCurrencyChar() : mQuote.getCurrencyChar();
+        mPriceTablePage = mPeakPriceTable.get(mPageIndex);
+        mRecurrence = mIsForVoucher || mIsForReschedule ? -1
+                : bookingManager.getCurrentTransaction().getRecurringFrequency();
     }
 
     @Override
@@ -77,22 +88,12 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
             final Bundle savedInstanceState
     )
     {
-        final LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-
-        final View view = layoutInflater.inflate(
+        final View view = inflater.inflate(
                 R.layout.fragment_peak_pricing_table,
                 container,
                 false
         );
-
         ButterKnife.bind(this, view);
-
-        final BookingQuote quote = bookingManager.getCurrentQuote();
-        final User user = userManager.getCurrentUser();
-        final ArrayList<PeakPriceInfo> priceList = mPeakPriceTable.get(mPageIndex);
-
-        final String currChar = mIsForReschedule ? user.getCurrencyChar() : quote.getCurrencyChar();
-
         final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -101,67 +102,77 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         layoutParams.setMargins(0, 0, 0, Utils.toDP(1, getActivity()));
 
         int i = 0;
-        for (final PeakPriceInfo info : priceList)
+        for (final PeakPriceInfo eachInfo : mPriceTablePage)
         {
-            final View row = layoutInflater.inflate(R.layout.table_item_price, container, false);
-            final TextView timeText = (TextView) row.findViewById(R.id.time_text);
-            final TextView priceText = (TextView) row.findViewById(R.id.price_text);
-
-            //we want to display the time using the booking location's time zone
-            timeText.setText(DateTimeUtils.formatDate(
-                    info.getDate(),
-                    "h:mm aaa",
-                    bookingManager.getCurrentRequest().getTimeZone()
-            ));
-
-            priceText.setText(TextUtils.formatPrice(info.getPrice(), currChar, null));
-
-            final int freq = mIsForVoucher || mIsForReschedule ? -1
-                    : bookingManager.getCurrentTransaction().getRecurringFrequency();
-
-            final String type = info.getType();
-
-            switch (type)
-            {
-                case "peak-price":
-                    if (freq > 0 || mIsForReschedule || mIsForVoucher) { disableRow(row); }
-                    else { priceText.setTextColor(getResources().getColor(R.color.error_red)); }
-                    break;
-
-                case "reg-price":
-                    priceText.setTextColor(getResources().getColor(R.color.price_green));
-                    if (freq > 0 || mIsForReschedule || mIsForVoucher)
-                    { priceText.setText(getString(R.string.available)); }
-                    break;
-
-                default:
-                    disableRow(row);
-                    break;
-            }
-
-            if ((freq == 0 && type.equals("peak-price")) || type.equals("reg-price"))
-            {
-                row.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final View v)
-                    {
-                        if (mIsForReschedule)
-                        {
-                            rescheduleBooking(mBookingToReschedule, info.getDate(), mIsForRescheduleAll);
-                        }
-                        else
-                        {
-                            quote.setStartDate(info.getDate());
-                            continueBookingFlow();
-                        }
-                    }
-                });
-            }
-            mTimeSlotContainer.addView(row, i++, layoutParams);
+            final View eachRow = createRowView(eachInfo);
+            mTimeSlotContainer.addView(eachRow, i++, layoutParams);
         }
 
         return view;
+    }
+
+    private View createRowView(final PeakPriceInfo peakPriceInfo)
+    {
+        final View row = getActivity().getLayoutInflater().inflate(R.layout.table_item_price, null, false);
+        final TextView timeText = (TextView) row.findViewById(R.id.time_text);
+        final TextView priceText = (TextView) row.findViewById(R.id.price_text);
+
+        //we want to display the time using the booking location's time zone
+        timeText.setText(DateTimeUtils.formatDate(
+                peakPriceInfo.getDate(),
+                "h:mm aaa",
+                bookingManager.getCurrentRequest().getTimeZone()
+        ));
+        priceText.setText(TextUtils.formatPrice(peakPriceInfo.getPrice(), mCurrencyCharacter, null));
+
+        final PeakPriceInfo.Type type = peakPriceInfo.getType();
+
+        switch (type)
+        {
+            case PEAK_PRICE:
+                if (mIsForReschedule || mIsForVoucher)
+                {
+                    disableRow(row);
+                }
+                else
+                {
+                    priceText.setTextColor(getResources().getColor(R.color.error_red));
+                }
+                break;
+            case REG_PRICE:
+                priceText.setTextColor(getResources().getColor(R.color.price_green));
+                if (mIsForReschedule || mIsForVoucher)
+                {
+                    priceText.setText(getString(R.string.available));
+                }
+                break;
+            case DISABLED_PRICE:
+                disableRow(row);
+            default:
+        }
+
+        if (mRecurrence == 0
+                && (type.equals(PeakPriceInfo.Type.PEAK_PRICE) || type.equals(PeakPriceInfo.Type.REG_PRICE))
+                )
+        {
+            row.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(final View v)
+                {
+                    if (mIsForReschedule)
+                    {
+                        rescheduleBooking(mBookingToReschedule, peakPriceInfo.getDate(), mIsForRescheduleAll);
+                    }
+                    else
+                    {
+                        mQuote.setStartDate(peakPriceInfo.getDate());
+                        continueBookingFlow();
+                    }
+                }
+            });
+        }
+        return row;
     }
 
     private void disableRow(final View row)
