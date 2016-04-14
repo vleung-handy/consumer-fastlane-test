@@ -129,9 +129,14 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         switch (type)
         {
             case PEAK_PRICE:
-                if (mIsForReschedule || mIsForVoucher)
+                if (mIsForVoucher)
                 {
                     disableRow(row);
+                }
+                else if (mIsForReschedule)
+                {
+                    priceText.setTextColor(getResources().getColor(R.color.price_green));
+                    priceText.setText(getString(R.string.available));
                 }
                 else
                 {
@@ -150,9 +155,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
             default:
         }
 
-        if (mRecurrence.equals(PeakPriceInfo.RECURRENCE_NONRECURRING)
-                && (type.equals(PeakPriceInfo.Type.PEAK_PRICE) || type.equals(PeakPriceInfo.Type.REG_PRICE))
-                )
+        if (type.equals(PeakPriceInfo.Type.PEAK_PRICE) || type.equals(PeakPriceInfo.Type.REG_PRICE))
         {
             row.setOnClickListener(new View.OnClickListener()
             {
