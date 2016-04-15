@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -121,7 +122,15 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
 
         mTitleText.setText(getResources().getString(R.string.how_was_last_service));
-        mMessageText.setText(getResources().getString(R.string.please_rate_pro));
+
+        if (TextUtils.isEmpty(mProName))
+        {
+            mMessageText.setText(getResources().getString(R.string.please_rate_pro_default));
+        }
+        else
+        {
+            mMessageText.setText(String.format(getString(R.string.please_rate_pro), mProName));
+        }
 
         mSubmitButton.setOnClickListener(mSubmitListener);
         mSkipButton.setOnClickListener(new View.OnClickListener()

@@ -4,5 +4,7 @@
              android:layout_height="match_parent"
              android:theme="@style/RadioButtonStyle"
              android:textColor="@color/radio_button_color"
+             android:layout_marginTop="@dimen/default_margin_quarter"
+             android:layout_marginBottom="@dimen/default_margin_quarter"
     >
 </RadioButton>

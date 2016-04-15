@@ -84,6 +84,10 @@
         <item name="android:paddingLeft">@dimen/default_padding</item>
         <item name="android:paddingRight">@dimen/default_padding</item>
         <item name="android:stateListAnimator">@null</item>
+
+        <!--The default for button is all caps = false for API below 21. Explicitly declaring it
+        so that it doesn't accidentally change to allCaps for API above 21. -->
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="Button.BookingAction">
