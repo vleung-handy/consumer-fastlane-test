@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
@@ -133,8 +132,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
 
-        final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-        if (mIsForVoucher || mIsForReschedule || (transaction != null && transaction.getRecurringFrequency() > 0))
+        if (mIsForVoucher || mIsForReschedule)
         {
             mSkipButton.setVisibility(View.GONE);
             mHeaderText.setText(R.string.peak_price_info_unavailable);
