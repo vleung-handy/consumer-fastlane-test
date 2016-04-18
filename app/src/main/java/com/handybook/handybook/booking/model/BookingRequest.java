@@ -18,89 +18,128 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BookingRequest extends Observable {
-    @SerializedName("service_id") private int serviceId;
-    @SerializedName("uniq") private String uniq;
-    @SerializedName("zipcode") private String zipCode;
-    @SerializedName("email") private String email;
-    @SerializedName("user_id") private String userId;
-    @SerializedName("service_attributes") private HashMap<String, String> options;
-    @SerializedName("date_start") private Date startDate;
-    @SerializedName("entered_code") private String promoCode;
-    @SerializedName("_android_promo_type") private PromoCode.Type promoType;
+public class BookingRequest extends Observable
+{
+    public static final String KEY_UNIQ = "uniq";
+    public static final String KEY_SERVICE_ID = "service_id";
+    public static final String KEY_ZIPCODE = "zipcode";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_SERVICE_ATTRIBUTES = "service_attributes";
+    public static final String KEY_DATE_START = "date_start";
+    public static final String KEY_ENTERED_CODE = "entered_code";
+    public static final String KEY_ANDROID_PROMO_TYPE = "_android_promo_type";
+    public static final String KEY_COUPON = "coupon";
+
+    @SerializedName(KEY_SERVICE_ID)
+    private int mServiceId;
+    @SerializedName(KEY_UNIQ)
+    private String mUniq;
+    @SerializedName(KEY_ZIPCODE)
+    private String mZipCode;
+    @SerializedName(KEY_EMAIL)
+    private String mEmail;
+    @SerializedName(KEY_USER_ID)
+    private String mUserId;
+    @SerializedName(KEY_SERVICE_ATTRIBUTES)
+    private HashMap<String, String> mOptions;
+    @SerializedName(KEY_DATE_START)
+    private Date mStartDate;
+    @SerializedName(KEY_ENTERED_CODE)
+    private String mPromoCode;
+    @SerializedName(KEY_ANDROID_PROMO_TYPE)
+    private PromoCode.Type mPromoType;
+    @SerializedName(KEY_COUPON)
+    private PromoCode.Type mCoupon;
 
     transient private String mTimeZone;
 
-    public int getServiceId() {
-        return serviceId;
+    public int getServiceId()
+    {
+        return mServiceId;
     }
 
-    public void setServiceId(final int serviceId) {
-        this.serviceId = serviceId;
+    public void setServiceId(final int serviceId)
+    {
+        mServiceId = serviceId;
         triggerObservers();
     }
 
-    public String getUniq() {
-        return uniq;
+    public String getUniq()
+    {
+        return mUniq;
     }
 
-    public void setUniq(final String uniq) {
-        this.uniq = uniq;
+    public void setUniq(final String uniq)
+    {
+        mUniq = uniq;
         triggerObservers();
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getZipCode()
+    {
+        return mZipCode;
     }
 
-    public void setZipCode(final String zipCode) {
-        this.zipCode = zipCode;
+    public void setZipCode(final String zipCode)
+    {
+        mZipCode = zipCode;
         triggerObservers();
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmail()
+    {
+        return mEmail;
     }
 
-    public void setEmail(final String email) {
-        this.email = email;
+    public void setEmail(final String email)
+    {
+        mEmail = email;
         triggerObservers();
     }
 
-    final String getUserId() {
-        return userId;
+    final String getUserId()
+    {
+        return mUserId;
     }
 
-    public void setUserId(final String userId) {
-        this.userId = userId;
+    public void setUserId(final String userId)
+    {
+        mUserId = userId;
         triggerObservers();
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStartDate()
+    {
+        return mStartDate;
     }
 
-    public void setStartDate(final Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(final Date startDate)
+    {
+        mStartDate = startDate;
         triggerObservers();
     }
 
-    public HashMap<String, String> getOptions() {
-        if (options == null) options = new HashMap<>();
-        return options;
+    public HashMap<String, String> getOptions()
+    {
+        if (mOptions == null) { mOptions = new HashMap<>(); }
+        return mOptions;
     }
 
-    public void setOptions(final HashMap<String, String> options) {
-        this.options = options;
+    public void setOptions(final HashMap<String, String> options)
+    {
+        mOptions = options;
         triggerObservers();
     }
 
-    public String getPromoCode() {
-        return promoCode;
+    public String getPromoCode()
+    {
+        return mPromoCode;
     }
 
-    public void setPromoCode(final String promoCode) {
-        this.promoCode = promoCode;
+    public void setPromoCode(final String promoCode)
+    {
+        mPromoCode = promoCode;
         triggerObservers();
     }
 
@@ -112,70 +151,96 @@ public class BookingRequest extends Observable {
     public void setTimeZone(final String timeZone)
     {
         mTimeZone = timeZone;
-    }
-
-    public PromoCode.Type getPromoType() {
-        return promoType;
-    }
-
-    public void setPromoType(final PromoCode.Type promoType) {
-        this.promoType = promoType;
         triggerObservers();
     }
 
-    private void triggerObservers() {
+    public PromoCode.Type getPromoType()
+    {
+        return mPromoType;
+    }
+
+    public void setPromoType(final PromoCode.Type promoType)
+    {
+        mPromoType = promoType;
+        triggerObservers();
+    }
+
+    public PromoCode.Type getCoupon()
+    {
+        return mCoupon;
+    }
+
+    public void setCoupon(final PromoCode.Type coupon)
+    {
+        mCoupon = coupon;
+        triggerObservers();
+    }
+
+    private void triggerObservers()
+    {
         setChanged();
         notifyObservers();
     }
 
-    public final String toJson() {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm")
+    public final String toJson()
+    {
+        final Gson gson = new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                 .setExclusionStrategies(getExclusionStrategy())
                 .registerTypeAdapter(BookingRequest.class, new BookingRequestSerializer()).create();
 
         return gson.toJson(this);
     }
 
-    public static BookingRequest fromJson(final String json) {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm").create()
+    public static BookingRequest fromJson(final String json)
+    {
+        return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
                 .fromJson(json, BookingRequest.class);
     }
 
-    public static ExclusionStrategy getExclusionStrategy() {
-        return new ExclusionStrategy() {
+    public static ExclusionStrategy getExclusionStrategy()
+    {
+        return new ExclusionStrategy()
+        {
             @Override
-            public boolean shouldSkipField(final FieldAttributes f) {
+            public boolean shouldSkipField(final FieldAttributes f)
+            {
                 return false;
             }
 
             @Override
-            public boolean shouldSkipClass(final Class<?> clazz) {
+            public boolean shouldSkipClass(final Class<?> clazz)
+            {
                 return clazz.equals(Observer.class);
             }
         };
     }
 
-    public static final class BookingRequestSerializer implements JsonSerializer<BookingRequest> {
+    public static final class BookingRequestSerializer implements JsonSerializer<BookingRequest>
+    {
         @Override
-        public JsonElement serialize(final BookingRequest value, final Type type,
-                                           final JsonSerializationContext context) {
+        public JsonElement serialize(
+                final BookingRequest value, final Type type,
+                final JsonSerializationContext context
+        )
+        {
             final JsonObject jsonObj = new JsonObject();
-            jsonObj.add("service_id", context.serialize(value.getServiceId()));
-            jsonObj.add("uniq", context.serialize(value.getUniq()));
-            jsonObj.add("zipcode", context.serialize(value.getZipCode()));
-            jsonObj.add("email", context.serialize(value.getEmail()));
-            jsonObj.add("user_id", context.serialize(value.getUserId()));
-            jsonObj.add("service_attributes", context.serialize(value.getOptions()));
-
-            jsonObj.add("date_start", context.serialize(TextUtils.formatDate(value.getStartDate(),
-                    DateTimeUtils.UNIVERSAL_DATE_FORMAT)));
-
-            if (value.getPromoCode() != null) {
-                jsonObj.add("entered_code", context.serialize(value.getPromoCode()));
-                jsonObj.add("_android_promo_type", context.serialize(value.getPromoType()));
-            }
-
-            jsonObj.add("mobile", context.serialize(1));
+            jsonObj.add(KEY_SERVICE_ID, context.serialize(value.getServiceId()));
+            jsonObj.add(KEY_UNIQ, context.serialize(value.getUniq()));
+            jsonObj.add(KEY_ZIPCODE, context.serialize(value.getZipCode()));
+            jsonObj.add(KEY_EMAIL, context.serialize(value.getEmail()));
+            jsonObj.add(KEY_USER_ID, context.serialize(value.getUserId()));
+            jsonObj.add(KEY_SERVICE_ATTRIBUTES, context.serialize(value.getOptions()));
+            jsonObj.add(KEY_DATE_START, context.serialize(
+                    TextUtils.formatDate(
+                            value.getStartDate(),
+                            DateTimeUtils.UNIVERSAL_DATE_FORMAT
+                    )
+            ));
+            jsonObj.add(KEY_ENTERED_CODE, context.serialize(value.getPromoCode()));
+            jsonObj.add(KEY_ANDROID_PROMO_TYPE, context.serialize(value.getPromoType()));
+            jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));
+            // jsonObj.add("mobile", context.serialize(1)); //If this doesn't break things delete it.
+            // Doesn't seem to be used fo anything useful on the backend and it is defaulted to true
             return jsonObj;
         }
     }
