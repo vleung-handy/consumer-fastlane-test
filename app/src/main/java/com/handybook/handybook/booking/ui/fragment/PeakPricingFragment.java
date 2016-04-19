@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
@@ -48,12 +50,15 @@ public final class PeakPricingFragment extends BookingFlowFragment
     TextView mDateText;
     @Bind(R.id.header_text)
     TextView mHeaderText;
+    @Bind(R.id.footer_text)
+    TextView mFooterText;
     @Bind(R.id.pager)
     ViewPager mDatePager;
     @Bind(R.id.arrow_left)
     ImageView mArrowLeft;
     @Bind(R.id.arrow_right)
     ImageView mArrowRight;
+    private BookingTransaction mTransaction;
 
     public static PeakPricingFragment newInstance(final boolean forVoucher)
     {
@@ -76,14 +81,12 @@ public final class PeakPricingFragment extends BookingFlowFragment
     )
     {
         final PeakPricingFragment fragment = new PeakPricingFragment();
-
         final Bundle args = new Bundle();
         args.putSerializable(EXTRA_RESCHEDULE_PRICE_TABLE, reschedulePriceTable);
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
         args.putBoolean(EXTRA_RESCHEDULE_ALL, rescheduleAll);
         args.putBoolean(EXTRA_FOR_VOUCHER, forVoucher);
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -91,21 +94,17 @@ public final class PeakPricingFragment extends BookingFlowFragment
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
+        mTransaction = bookingManager.getCurrentTransaction();
         final Bundle args = getArguments();
-        ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable = null;
-
         if (args != null)
         {
-            reschedulePriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
+            mPeakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
                     args.getSerializable(EXTRA_RESCHEDULE_PRICE_TABLE);
             mIsForVoucher = args.getBoolean(EXTRA_FOR_VOUCHER);
         }
-
-        if (reschedulePriceTable != null)
+        if (mPeakPriceTable != null)
         {
             mIsForReschedule = true;
-            mPeakPriceTable = reschedulePriceTable;
             mBookingToReschedule = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
             mIsForRescheduleAll = getArguments().getBoolean(EXTRA_RESCHEDULE_ALL);
         }
@@ -113,7 +112,6 @@ public final class PeakPricingFragment extends BookingFlowFragment
         {
             mPeakPriceTable = bookingManager.getCurrentQuote().getPeakPriceTable();
         }
-
         if (savedInstanceState != null)
         {
             mPeakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
@@ -131,14 +129,32 @@ public final class PeakPricingFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_peak_pricing, container, false);
 
         ButterKnife.bind(this, view);
+        displayFooterWarningIfApplicable();
+        displaySkipButtonIfApplicable();
 
-        if (mIsForVoucher || mIsForReschedule)
+        mDatePager.addOnPageChangeListener(pageListener);
+        mPageIndex = getStartIndex();
+
+        mArrowLeft.setOnTouchListener(arrowTouched);
+        mArrowRight.setOnTouchListener(arrowTouched);
+
+        return view;
+    }
+
+    private boolean isSkipAllowed()
+    {
+        return !(mIsForVoucher
+                || mIsForReschedule
+                || (mTransaction != null && mTransaction.getRecurringFrequency() > 0)
+        );
+    }
+
+    private void displaySkipButtonIfApplicable()
+    {
+        if (isSkipAllowed())
         {
-            mSkipButton.setVisibility(View.GONE);
-            mHeaderText.setText(R.string.peak_price_info_unavailable);
-        }
-        else
-        {
+            mHeaderText.setText(R.string.peak_price_info);
+            mSkipButton.setVisibility(View.VISIBLE);
             mSkipButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -148,14 +164,26 @@ public final class PeakPricingFragment extends BookingFlowFragment
                 }
             });
         }
+        else
+        {
+            mHeaderText.setText(R.string.peak_price_info_unavailable);
+            mSkipButton.setVisibility(View.GONE);
+        }
 
-        mDatePager.setOnPageChangeListener(pageListener);
-        mPageIndex = getStartIndex();
+    }
 
-        mArrowLeft.setOnTouchListener(arrowTouched);
-        mArrowRight.setOnTouchListener(arrowTouched);
-
-        return view;
+    private void displayFooterWarningIfApplicable()
+    {
+        BookingQuote.QuoteCoupon coupon = bookingManager.getCurrentQuote().getCoupon();
+        if (coupon != null && coupon.getWarning() != null)
+        {
+            mFooterText.setVisibility(View.VISIBLE);
+            mFooterText.setText(coupon.getWarning());
+        }
+        else
+        {
+            mFooterText.setVisibility(View.GONE);
+        }
     }
 
     @Override
