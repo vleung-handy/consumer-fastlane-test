@@ -113,6 +113,7 @@
     <string name="phone_help">1–888–847-6036</string>
     <string name="using_promo">USING PROMO CODE %s</string>
     <string name="how_was_last_service">How was your last service?</string>
+    <string name="how_was_last_service_with">How was your booking with %s?</string>
     <string name="please_rate_pro">Please rate %s</string>
     <string name="please_rate_pro_default">Please rate your professional.</string>
     <string name="rate_later">Rate later</string>
