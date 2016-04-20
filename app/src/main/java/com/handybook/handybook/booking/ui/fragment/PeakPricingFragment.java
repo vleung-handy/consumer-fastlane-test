@@ -174,15 +174,19 @@ public final class PeakPricingFragment extends BookingFlowFragment
 
     private void displayFooterWarningIfApplicable()
     {
-        BookingQuote.QuoteCoupon coupon = bookingManager.getCurrentQuote().getCoupon();
-        if (coupon != null && coupon.getWarning() != null)
+        final BookingQuote currentQuote = bookingManager.getCurrentQuote();
+        if (currentQuote == null
+                || currentQuote.getCoupon() == null
+                || currentQuote.getCoupon().getWarning() == null
+                )
         {
-            mFooterText.setVisibility(View.VISIBLE);
-            mFooterText.setText(coupon.getWarning());
+            mFooterText.setVisibility(View.GONE);
         }
         else
         {
-            mFooterText.setVisibility(View.GONE);
+            BookingQuote.QuoteCoupon coupon = currentQuote.getCoupon();
+            mFooterText.setVisibility(View.VISIBLE);
+            mFooterText.setText(coupon.getWarning());
         }
     }
 
