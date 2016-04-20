@@ -206,7 +206,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
                 break;
             case AVAILABLE:
                 vTime.setTextColor(getResources().getColor(R.color.black_pressed));
-                vPrice.setTextColor(getResources().getColor(R.color.handy_text_black));
+                vPrice.setTextColor(getResources().getColor(R.color.price_green));
                 vPrice.setText(getString(R.string.available));
                 break;
             default: // Default to unavailable
