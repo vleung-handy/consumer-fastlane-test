@@ -97,6 +97,11 @@ public class BookingQuote extends Observable
         return mAndroidPayCouponCode;
     }
 
+    public void setCoupon(final QuoteCoupon coupon)
+    {
+        mCoupon = coupon;
+    }
+
     public QuoteCoupon getCoupon()
     {
         return mCoupon;

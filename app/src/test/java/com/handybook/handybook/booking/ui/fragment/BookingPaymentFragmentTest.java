@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.wallet.MaskedWallet;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
@@ -35,10 +34,8 @@ import javax.inject.Inject;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -120,6 +117,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
         verify(fragmentSpy).showSelectPaymentLayout();
     }
 
+/*
     @Test
     public void shouldAutoApplyAndroidPayCouponWhenAndroidPayShown()
     {
@@ -133,6 +131,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
         verify(mDataManager).applyPromo(eq(mMockQuote.getAndroidPayCouponCode()), anyInt(), anyString(),
                 anyString(), anyString(), any(DataManager.Callback.class));
     }
+*/
 
     @Test
     public void shouldCompleteBookingAfterGettingStripeToken() throws Exception
