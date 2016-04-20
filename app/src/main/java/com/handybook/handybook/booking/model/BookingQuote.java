@@ -402,6 +402,11 @@ public class BookingQuote extends Observable
         };
     }
 
+    public boolean hasCouponWarning()
+    {
+        return getCoupon() != null && getCoupon().getWarning() != null;
+    }
+
     public static class BookingQuoteSerializer implements JsonSerializer<BookingQuote>
     {
         @Override
