@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,15 +33,10 @@ import butterknife.OnClick;
  */
 public class RatingsGridFragment extends BaseWizardFragment
 {
-    private static final String TAG = RatingsGridFragment.class.getName();
-
-    public static final String EXTRA_SELECTED_ITEMS = "selected_items";
+    private static final String EXTRA_SELECTED_ITEMS = "selected_items";
 
     @Bind(R.id.grid_view)
     GridView mGridView;
-
-    @Bind(R.id.ratings_improvement_submit_button)
-    Button mSubmitButton;
 
     private List<GridDisplayItem> mDisplayedItems;
     private GridAdapter mAdapter;

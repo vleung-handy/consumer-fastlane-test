@@ -13,8 +13,6 @@ import com.handybook.handybook.R;
  */
 public class SwipeableViewPager extends ViewPager
 {
-
-    private static final String TAG = SwipeableViewPager.class.getName();
     private boolean mSwipeable;
 
     public SwipeableViewPager(Context context)

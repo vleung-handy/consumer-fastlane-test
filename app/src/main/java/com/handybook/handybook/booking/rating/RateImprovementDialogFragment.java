@@ -154,7 +154,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         dismiss();
     }
 
-    public void loadData()
+    private void loadData()
     {
         mBus.post(new BookingEvent.RequestPrerateProInfo(mBookingId));
     }
@@ -224,24 +224,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         else
         {
             submitResponse();
-        }
-    }
-
-    public boolean haveMorePages(Fragment requester)
-    {
-
-        //do not use the pager.current item because this call may be made in between page changes
-        int position = mFragmentList.indexOf(requester);
-
-        //if we're on the first page, that is the main page, and the decision of whether there are
-        //more pages should be left to the child.
-        if (position == 0 || mFragmentList.size() - position <= 1)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
         }
     }
 

@@ -52,32 +52,32 @@ public class Reason implements Serializable
     }
 
     /**
-     * The value as represented by the server
+     * The mValue as represented by the server
      */
-    private String key;
+    private String mKey;
 
     /**
-     * The value as represented to the user
+     * The mValue as represented to the user
      */
-    private String value;
+    private String mValue;
 
-    private boolean isCleaning;
+    private boolean mIsCleaning;
 
-    private Reasons subReasons;
+    private Reasons mSubReasons;
 
     public Reason(final String key, final String value, Reasons subReasons, boolean isCleaning)
     {
-        this.key = key;
-        this.value = value;
-        this.isCleaning = isCleaning;
-        this.subReasons = subReasons;
+        mKey = key;
+        mValue = value;
+        mIsCleaning = isCleaning;
+        mSubReasons = subReasons;
     }
 
     @DrawableRes
     public int getDrawableRes()
     {
         String prefix;
-        if (isCleaning)
+        if (mIsCleaning)
         {
             prefix = CLEAN_PREFIX;
         }
@@ -86,14 +86,14 @@ public class Reason implements Serializable
             prefix = HANDYMAN_PREFIX;
         }
 
-        Integer temp = ICONS.get(key);
+        Integer temp = ICONS.get(mKey);
         if (temp != null)
         {
             return temp;
         }
         else
         {
-            temp = ICONS.get(prefix + key);
+            temp = ICONS.get(prefix + mKey);
             if (temp == null)
             {
                 return ICONS.get(DEFAULT);
@@ -107,21 +107,21 @@ public class Reason implements Serializable
 
     public String getKey()
     {
-        return key;
+        return mKey;
     }
 
     public String getValue()
     {
-        return value;
+        return mValue;
     }
 
     public boolean isCleaning()
     {
-        return isCleaning;
+        return mIsCleaning;
     }
 
     public Reasons getSubReasons()
     {
-        return subReasons;
+        return mSubReasons;
     }
 }

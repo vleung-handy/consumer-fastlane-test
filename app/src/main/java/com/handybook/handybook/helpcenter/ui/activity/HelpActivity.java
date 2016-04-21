@@ -11,8 +11,8 @@ import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 public class HelpActivity extends MenuDrawerActivity
 {
 
-    public static final String LINK_TYPE_ARTICLES = "/articles/";
-    public static final String LINK_TYPE_SECTIONS = "/sections/";
+    private static final String LINK_TYPE_ARTICLES = "/articles/";
+    private static final String LINK_TYPE_SECTIONS = "/sections/";
 
     public enum DeepLink
     {

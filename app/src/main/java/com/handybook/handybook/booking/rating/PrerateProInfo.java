@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.util.DateTimeUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -44,7 +45,6 @@ import java.util.Map;
 public class PrerateProInfo implements Serializable
 {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     @SerializedName("placeholder_text")
     private String mPlaceHolderText;
@@ -62,7 +62,7 @@ public class PrerateProInfo implements Serializable
 
     public static PrerateProInfo fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat(DATE_FORMAT).create()
+        return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
                 .fromJson(json, PrerateProInfo.class);
     }
 
