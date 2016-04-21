@@ -84,6 +84,10 @@
         <item name="android:paddingLeft">@dimen/default_padding</item>
         <item name="android:paddingRight">@dimen/default_padding</item>
         <item name="android:stateListAnimator">@null</item>
+
+        <!--The default for button is all caps = false for API below 21. Explicitly declaring it
+        so that it doesn't accidentally change to allCaps for API above 21. -->
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="Button.BookingAction">
@@ -168,7 +172,7 @@
     </style>
 
     <style name="RoundedButton">
-        <item name="android:layout_width">64dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -193,6 +197,12 @@
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
+    <!-- This is to override the selected color of a radio button -->
+    <style name="RadioButtonStyle"
+           parent="Theme.Handy">
+        <item name="colorAccent">@color/handy_darkened_blue</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+    </style>
 
     <style name="EditText">
         <item name="android:layout_width">match_parent</item>

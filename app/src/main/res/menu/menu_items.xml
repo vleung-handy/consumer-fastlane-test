@@ -70,5 +70,4 @@
             android:icon="@drawable/menu_login"
             />
     </group>
-
 </menu>

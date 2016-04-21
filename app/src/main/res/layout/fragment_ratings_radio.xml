@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/transparent"
+             android:clipChildren="false"
+             android:clipToPadding="false"
+             android:paddingTop="@dimen/service_circle_half"
+    >
+
+    <!-- Relative layout is a container to help the service icon go above the white margin-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/handy_white"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/rate_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginTop="@dimen/service_circle_top_margin"
+            />
+
+        <RadioGroup
+            android:id="@+id/rating_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_padding"
+            >
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/ratings_late_submit_button"
+            style="@style/Button.Green"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/next"
+            />
+    </LinearLayout>
+</FrameLayout>

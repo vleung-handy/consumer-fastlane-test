@@ -10,24 +10,39 @@ import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public class HelpActivity extends MenuDrawerActivity
 {
+
+    private static final String LINK_TYPE_ARTICLES = "/articles/";
+    private static final String LINK_TYPE_SECTIONS = "/sections/";
+
     public enum DeepLink
     {
-        CANCEL(296, 217659877), PRO_LATE(450, 214917058), ADJUST_HOURS(498, 215563597);
+        CANCEL(296, 217659877), PRO_LATE(450, 214917058), ADJUST_HOURS(498, 215563597),
+        PRO_ISSUES(0, 203531628, LINK_TYPE_SECTIONS);
 
         private final int mNodeId;
-        private final int mArticleId;
+        private final int mId;
+        private String mLinkType;
 
         DeepLink(final int nodeId, final int articleId)
         {
             mNodeId = nodeId;
-            mArticleId = articleId;
+            mId = articleId;
+            mLinkType = LINK_TYPE_ARTICLES;     //this is the default, since most things use that.
+        }
+
+        DeepLink(final int nodeId, final int articleId, final String linkType)
+        {
+            mNodeId = nodeId;
+            mId = articleId;
+            mLinkType = linkType;
         }
 
         public Intent getIntent(final Context context)
         {
             final Intent intent = new Intent(context, HelpActivity.class);
-            intent.putExtra(BundleKeys.HELP_ARTICLE_ID, Integer.toString(mArticleId));
+            intent.putExtra(BundleKeys.HELP_ID, Integer.toString(mId));
             intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(mNodeId));
+            intent.putExtra(BundleKeys.HELP_LINK_TYPE, mLinkType);
             return intent;
         }
     }

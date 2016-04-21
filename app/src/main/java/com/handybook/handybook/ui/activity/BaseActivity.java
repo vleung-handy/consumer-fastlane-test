@@ -19,6 +19,8 @@ import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.rating.RateImprovementConfirmationDialogFragment;
+import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -53,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
 {
     private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
     private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
+    private static final String TAG = BaseActivity.class.getName();
     protected boolean allowCallbacks;
     protected ProgressDialog mProgressDialog;
     protected Toast mToast;
@@ -171,6 +174,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 || fm.findFragmentByTag(RateServiceDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) != null
                 || !(
                 BaseActivity.this instanceof ServiceCategoriesActivity
                         || BaseActivity.this instanceof BookingDetailActivity
@@ -233,7 +238,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 user.getDefaultTipAmounts();
 
         RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
-                .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
+                .newInstance(bookingId, proName, -1, localizedMonetaryAmounts, user.getCurrencyChar());
 
         boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
                 rateServiceDialogFragment,

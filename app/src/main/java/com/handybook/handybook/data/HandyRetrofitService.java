@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
+import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 
@@ -118,6 +119,14 @@ public interface HandyRetrofitService
 
     @GET("/bookings/promo_prebooking")
     void getPreBookingPromo(@Query("code") String promoCode, HandyRetrofitCallback cb);
+
+    //Request a specific pro for a specific booking.
+    @GET("/bookings/prerate_pro_info")
+    void requestPrerateProInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
+
+    //sends the customer's response to prerate_pro_info
+    @POST("/bookings/{id}/rating_flow")
+    void postLowRatingFeedback(@Path("id") String bookingId, @Body RateImprovementFeedback feedback, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/rate_pro")
