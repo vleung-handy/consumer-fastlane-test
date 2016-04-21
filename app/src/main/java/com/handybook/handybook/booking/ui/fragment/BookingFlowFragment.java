@@ -7,7 +7,6 @@ import android.support.v4.util.Pair;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
@@ -74,22 +73,19 @@ public class BookingFlowFragment extends InjectedFragment
         final BookingRequest request = new BookingRequest();
         request.setServiceId(serviceId);
         request.setUniq(uniq);
-
         if (promoCode != null)
         {
             request.setPromoCode(promoCode.getCode());
             request.setPromoType(promoCode.getType());
         }
-
+        request.setCoupon(bookingManager.getPromoTabCoupon());
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
             request.setEmail(user.getEmail());
         }
-
         bookingManager.clear();
         bookingManager.setCurrentRequest(request);
-
         final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
         startActivity(intent);
     }
@@ -460,12 +456,13 @@ public class BookingFlowFragment extends InjectedFragment
 
         bookingManager.setCurrentQuote(quote);
 
+/*
         final User user = userManager.getCurrentUser();
+        // This can go, once confirmed that the coupon application on POST /quotes works.
         final String userId = user != null ? user.getId() : null;
         final String email = user != null ? user.getEmail() : null;
         final String authToken = user != null ? user.getAuthToken() : null;
         final String coupon = bookingManager.getPromoTabCoupon();
-
         if (coupon != null && !coupon.isEmpty() && mUseCoupon)
         {
             dataManager.applyPromo(coupon, quote.getBookingId(), userId, email, authToken,
@@ -497,6 +494,8 @@ public class BookingFlowFragment extends InjectedFragment
         {
             continueFlow();
         }
+*/
+        continueFlow();
     }
 
     protected void onReceiveErrorEvent(HandyEvent.ReceiveErrorEvent event)

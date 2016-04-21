@@ -45,6 +45,15 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
     private BookingQuote mQuote;
     private ArrayList<PeakPriceInfo> mPriceTablePage;
 
+
+    private enum RowState
+    {
+        PRICE_REGULAR,
+        PRICE_PEAK,
+        AVAILABLE,
+        UNAVAILABLE
+    }
+
     public static PeakPricingTableFragment newInstance(
             final int index,
             final ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable,
@@ -97,61 +106,65 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = inflater.inflate(
+        final View root = inflater.inflate(
                 R.layout.fragment_peak_pricing_table,
                 container,
                 false
         );
-        ButterKnife.bind(this, view);
+        ButterKnife.bind(this, root);
         for (final PeakPriceInfo eachInfo : mPriceTablePage)
         {
-            final View eachRow = createRowView(eachInfo);
+            final View eachRow = addTimeSlotRow(mTimeSlotContainer, eachInfo);
             mTimeSlotContainer.addView(eachRow, mTimeSlotContainer.getChildCount());
         }
-        return view;
+        return root;
     }
 
-    private View createRowView(final PeakPriceInfo peakPriceInfo)
+    private View addTimeSlotRow(final ViewGroup parent, final PeakPriceInfo peakPriceInfo)
     {
         final Date date = peakPriceInfo.getDate();
         final PeakPriceInfo.Type type = peakPriceInfo.getType(mRecurrence);
         final float price = peakPriceInfo.getPrice(mRecurrence);
 
-        final View row = getActivity().getLayoutInflater().inflate(R.layout.table_item_price, null, false);
+        final View row = getActivity().getLayoutInflater()
+                .inflate(R.layout.table_item_price, parent, false);
         final TextView timeText = (TextView) row.findViewById(R.id.time_text);
         final TextView priceText = (TextView) row.findViewById(R.id.price_text);
 
         //we want to display the time using the booking location's time zone
-        timeText.setText(DateTimeUtils.formatDate(date, "h:mm aaa", bookingManager.getCurrentRequest().getTimeZone()
+        timeText.setText(DateTimeUtils.formatDate(
+                date,
+                "h:mm aaa",
+                bookingManager.getCurrentRequest().getTimeZone()
         ));
-        priceText.setText(TextUtils.formatPrice(price, mCurrencyCharacter, null));
+        final String priceString = TextUtils.formatPrice(price, mCurrencyCharacter, null);
+        priceText.setText(priceString);
 
         switch (type)
         {
             case PEAK_PRICE:
-                if (mIsForVoucher)
+                priceText.setTextColor(getResources().getColor(R.color.price_green));
+                if (mIsForVoucher || mIsForReschedule || mIsForRescheduleAll)
                 {
-                    disableRow(row);
-                }
-                else if (mIsForReschedule)
-                {
-                    priceText.setTextColor(getResources().getColor(R.color.price_green));
-                    priceText.setText(getString(R.string.available));
+                    formatRow(row, RowState.AVAILABLE);
                 }
                 else
                 {
-                    priceText.setTextColor(getResources().getColor(R.color.error_red));
+                    formatRow(row, RowState.PRICE_PEAK);
                 }
                 break;
             case REG_PRICE:
-                priceText.setTextColor(getResources().getColor(R.color.price_green));
-                if (mIsForReschedule || mIsForVoucher)
+                if (mIsForVoucher || mIsForReschedule || mIsForRescheduleAll)
                 {
-                    priceText.setText(getString(R.string.available));
+                    formatRow(row, RowState.AVAILABLE);
+                }
+                else
+                {
+                    formatRow(row, RowState.PRICE_REGULAR);
                 }
                 break;
             case DISABLED_PRICE:
-                disableRow(row);
+                formatRow(row, RowState.UNAVAILABLE);
             default:
         }
 
@@ -177,12 +190,30 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         return row;
     }
 
-    private void disableRow(final View row)
+    private void formatRow(final View row, final RowState rowState)
     {
-        final TextView timeText = (TextView) row.findViewById(R.id.time_text);
-        final TextView priceText = (TextView) row.findViewById(R.id.price_text);
-        priceText.setTextColor(getResources().getColor(R.color.black_pressed));
-        priceText.setText(getString(R.string.unavailable));
-        timeText.setTextColor(getResources().getColor(R.color.black_pressed));
+        final TextView vTime = (TextView) row.findViewById(R.id.time_text);
+        final TextView vPrice = (TextView) row.findViewById(R.id.price_text);
+        switch (rowState)
+        {
+            case PRICE_REGULAR:
+                vTime.setTextColor(getResources().getColor(R.color.handy_text_black));
+                vPrice.setTextColor(getResources().getColor(R.color.price_green));
+                break;
+            case PRICE_PEAK:
+                vTime.setTextColor(getResources().getColor(R.color.handy_text_black));
+                vPrice.setTextColor(getResources().getColor(R.color.error_red));
+                break;
+            case AVAILABLE:
+                vTime.setTextColor(getResources().getColor(R.color.black_pressed));
+                vPrice.setTextColor(getResources().getColor(R.color.price_green));
+                vPrice.setText(getString(R.string.available));
+                break;
+            default: // Default to unavailable
+                vTime.setTextColor(getResources().getColor(R.color.black_pressed));
+                vPrice.setTextColor(getResources().getColor(R.color.black_pressed));
+                vPrice.setText(getString(R.string.unavailable));
+                break;
+        }
     }
 }

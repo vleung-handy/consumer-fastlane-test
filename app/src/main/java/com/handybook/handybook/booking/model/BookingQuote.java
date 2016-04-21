@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,38 +21,63 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BookingQuote extends Observable {
-    @SerializedName("id")
+public class BookingQuote extends Observable
+{
+    public static final String KEY_ID = "id";
+    public static final String KEY_SERVICE_ID = "service_id";
+    public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_HRS = "hrs";
+    public static final String KEY_DATE_START = "date_start";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_CURRENCY_CHAR = "currency_char";
+    public static final String KEY_CURRENCY_SUFFIX = "currency_suffix";
+    public static final String KEY_HOURLY_AMOUNT = "hourly_amount";
+    public static final String KEY_PRICE_TABLE = "price_table";
+    public static final String KEY_DYNAMIC_OPTIONS = "dynamic_options";
+    public static final String KEY_STRIPE_KEY = "stripe_key";
+    public static final String KEY_PHONE_COUNTRY_PREFIX = "phone_country_prefix";
+    public static final String KEY_SPECIAL_EXTRAS_OPTIONS = "special_extras_options";
+    public static final String KEY_IS_ANDROID_PAY_ENABLED = "is_android_pay_enabled";
+    public static final String KEY_ANDROID_PAY_COUPON = "android_pay_coupon";
+    public static final String KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED = "android_pay_coupon_value_formatted";
+    public static final String KEY_COUPON = "coupon";
+
+    @SerializedName(KEY_ID)
     private int mBookingId;
-    @SerializedName("service_id")
+    @SerializedName(KEY_SERVICE_ID)
     private int mServiceId;
-    @SerializedName("user_id")
+    @SerializedName(KEY_USER_ID)
     private String mUserId;
-    @SerializedName("hrs")
+    @SerializedName(KEY_HRS)
     private float mHours;
-    @SerializedName("date_start")
+    @SerializedName(KEY_DATE_START)
     private Date mStartDate;
-    @SerializedName("address")
+    @SerializedName(KEY_ADDRESS)
     private Address mAddress;
-    @SerializedName("currency_char")
+    @SerializedName(KEY_CURRENCY_CHAR)
     private String mCurrencyChar;
-    @SerializedName("currency_suffix")
+    @SerializedName(KEY_CURRENCY_SUFFIX)
     private String mCurrencySuffix;
-    @SerializedName("hourly_amount")
+    @SerializedName(KEY_HOURLY_AMOUNT)
     private float mHourlyAmount;
-    @SerializedName("price_table")
+    @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
-    @SerializedName("dynamic_options")
+    @SerializedName(KEY_DYNAMIC_OPTIONS)
     private ArrayList<PeakPriceInfo> mSurgePriceTable;
-    @SerializedName("stripe_key")
+    @SerializedName(KEY_STRIPE_KEY)
     private String mStripeKey;
-    @SerializedName("phone_country_prefix")
+    @SerializedName(KEY_PHONE_COUNTRY_PREFIX)
     private String mPhonePrefix;
-    @SerializedName("special_extras_options")
+    @SerializedName(KEY_SPECIAL_EXTRAS_OPTIONS)
     private BookingOption mBookingOption;
-    @SerializedName("is_android_pay_enabled") private boolean mIsAndroidPayEnabled;
-    @SerializedName("android_pay_coupon") private String mAndroidPayCouponCode;
-    @SerializedName("android_pay_coupon_value_formatted") private String mAndroidPayCouponValueFormatted;
+    @SerializedName(KEY_IS_ANDROID_PAY_ENABLED)
+    private boolean mIsAndroidPayEnabled;
+    @SerializedName(KEY_ANDROID_PAY_COUPON)
+    private String mAndroidPayCouponCode;
+    @SerializedName(KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED)
+    private String mAndroidPayCouponValueFormatted;
+    @SerializedName(KEY_COUPON)
+    private QuoteCoupon mCoupon;
 
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
@@ -69,6 +95,16 @@ public class BookingQuote extends Observable {
     public String getAndroidPayCouponCode()
     {
         return mAndroidPayCouponCode;
+    }
+
+    public void setCoupon(final QuoteCoupon coupon)
+    {
+        mCoupon = coupon;
+    }
+
+    public QuoteCoupon getCoupon()
+    {
+        return mCoupon;
     }
 
     public int getBookingId()
@@ -371,33 +407,44 @@ public class BookingQuote extends Observable {
         };
     }
 
+    public boolean hasCouponWarning()
+    {
+        return getCoupon() != null && getCoupon().getWarning() != null;
+    }
+
     public static class BookingQuoteSerializer implements JsonSerializer<BookingQuote>
     {
         @Override
-        public JsonElement serialize(final BookingQuote value, final Type type,
-                                     final JsonSerializationContext context)
+        public JsonElement serialize(
+                final BookingQuote value, final Type type,
+                final JsonSerializationContext context
+        )
         {
             final JsonObject jsonObj = new JsonObject();
-            jsonObj.add("id", context.serialize(value.getBookingId()));
-            jsonObj.add("service_id", context.serialize(value.getServiceId()));
-            jsonObj.add("user_id", context.serialize(value.getUserId()));
-            jsonObj.add("hrs", context.serialize(value.getHours()));
-            jsonObj.add("date_start", context.serialize(value.getStartDate()));
-            jsonObj.add("address", context.serialize(value.getAddress()));
-            jsonObj.add("currency_char", context.serialize(value.getCurrencyChar()));
-            jsonObj.add("currency_suffix", context.serialize(value.getCurrencySuffix()));
-            jsonObj.add("phone_country_prefix", context.serialize(value.getPhonePrefix()));
-            jsonObj.add("hourly_amount", context.serialize(value.getHourlyAmount()));
-            jsonObj.add("price_table", context.serialize(value.getPriceTable()));
-            jsonObj.add("dynamic_options", context.serialize(value.getSurgePriceTable()));
-            jsonObj.add("stripe_key", context.serialize(value.getStripeKey()));
-            jsonObj.add("special_extras_options", context.serialize(value.getBookingOption()));
+            jsonObj.add(KEY_ID, context.serialize(value.getBookingId()));
+            jsonObj.add(KEY_SERVICE_ID, context.serialize(value.getServiceId()));
+            jsonObj.add(KEY_USER_ID, context.serialize(value.getUserId()));
+            jsonObj.add(KEY_HRS, context.serialize(value.getHours()));
+            jsonObj.add(KEY_DATE_START, context.serialize(value.getStartDate()));
+            jsonObj.add(KEY_ADDRESS, context.serialize(value.getAddress()));
+            jsonObj.add(KEY_CURRENCY_CHAR, context.serialize(value.getCurrencyChar()));
+            jsonObj.add(KEY_CURRENCY_SUFFIX, context.serialize(value.getCurrencySuffix()));
+            jsonObj.add(KEY_PHONE_COUNTRY_PREFIX, context.serialize(value.getPhonePrefix()));
+            jsonObj.add(KEY_HOURLY_AMOUNT, context.serialize(value.getHourlyAmount()));
+            jsonObj.add(KEY_PRICE_TABLE, context.serialize(value.getPriceTable()));
+            jsonObj.add(KEY_DYNAMIC_OPTIONS, context.serialize(value.getSurgePriceTable()));
+            jsonObj.add(KEY_STRIPE_KEY, context.serialize(value.getStripeKey()));
+            jsonObj.add(KEY_SPECIAL_EXTRAS_OPTIONS, context.serialize(value.getBookingOption()));
+            jsonObj.add(KEY_IS_ANDROID_PAY_ENABLED, context.serialize(value.isAndroidPayEnabled()));
+            jsonObj.add(KEY_ANDROID_PAY_COUPON, context.serialize(value.getAndroidPayCouponCode()));
+            jsonObj.add(KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED, context.serialize(value.getAndroidPayCouponValueFormatted()));
+            jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));
             return jsonObj;
         }
     }
 
 
-    public static class Address
+    public static class Address implements Serializable
     {
         @SerializedName("zipcode")
         private String zip;
@@ -405,6 +452,26 @@ public class BookingQuote extends Observable {
         public String getZip()
         {
             return zip;
+        }
+    }
+
+
+    public static class QuoteCoupon implements Serializable
+    {
+
+        @SerializedName("code")
+        private String mCode;
+        @SerializedName("warning")
+        private String mWarning;
+
+        public String getCode()
+        {
+            return mCode;
+        }
+
+        public String getWarning()
+        {
+            return mWarning;
         }
     }
 }
