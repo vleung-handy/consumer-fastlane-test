@@ -45,7 +45,7 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_BLOCKING_SCREEN_BUTTON_PRESSED = "consumer app blocking screen button clicked";
         public static final String APP_TRACK_BLOCKING_SCREEN_DISPLAYED = "consumer app blocking screen displayed";
 
-        //this is done to match iOS eventes
+        //this is done to match iOS events
         public static final String APP_PRO_RATE_REASON = "app pro rate reason event";
         public static final String APP_PRO_RATE_SUBREASON = "app pro rate subreason event";
         public static final String APP_PRO_RATE_HELP = "app pro rate help event";

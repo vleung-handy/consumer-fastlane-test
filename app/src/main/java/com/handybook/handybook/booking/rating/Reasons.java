@@ -36,15 +36,15 @@ import java.util.Map;
  */
 public class Reasons implements Serializable
 {
-    public String mTitle;
-    public List<Reason> mReasons;
+    private String mTitle;
+    private List<Reason> mReasons;
 
 
     /**
      * key is used as the parent key of the list. For example, quality_of_service is the
      * key for the list [kitchen, bathroom, bedroom, etc.]
      */
-    public String mKey;
+    private String mKey;
 
 
     /**
@@ -92,5 +92,20 @@ public class Reasons implements Serializable
                 mReasons.add(new Reason(s, StringUtils.capitalizeFirstCharacter(s).replace("_", " "), subReasons, isCleaning));
             }
         }
+    }
+
+    public String getTitle()
+    {
+        return mTitle;
+    }
+
+    public List<Reason> getReasons()
+    {
+        return mReasons;
+    }
+
+    public String getKey()
+    {
+        return mKey;
     }
 }

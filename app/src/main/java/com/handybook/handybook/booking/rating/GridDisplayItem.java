@@ -11,17 +11,37 @@ import java.io.Serializable;
  */
 public class GridDisplayItem implements Serializable
 {
-    public Reason reason;
+    private Reason reason;
 
     @DrawableRes
-    public int drawableId;
+    private int drawableId;
 
-    public boolean selected = false;
+    private boolean selected = false;
 
     public GridDisplayItem(final Reason reason, final int drawableId, final boolean isSelected)
     {
         this.reason = reason;
         this.drawableId = drawableId;
         this.selected = isSelected;
+    }
+
+    public Reason getReason()
+    {
+        return reason;
+    }
+
+    public int getDrawableId()
+    {
+        return drawableId;
+    }
+
+    public boolean isSelected()
+    {
+        return selected;
+    }
+
+    public void setSelected(final boolean selected)
+    {
+        this.selected = selected;
     }
 }

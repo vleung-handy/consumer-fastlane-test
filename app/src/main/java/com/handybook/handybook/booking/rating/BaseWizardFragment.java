@@ -16,6 +16,11 @@ import java.util.HashMap;
 import butterknife.Bind;
 
 /**
+ *
+ * This is the base fragment for a fragment that wants to be part of a wizard. It provides
+ * a wizard call back, so that it can notify its parent that the current fragment is done and
+ * ready to move on.
+ *
  * Created by jtse on 3/30/16.
  */
 public abstract class BaseWizardFragment extends InjectedFragment implements Serializable

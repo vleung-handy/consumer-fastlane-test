@@ -44,11 +44,13 @@ import java.util.Map;
 public class PrerateProInfo implements Serializable
 {
 
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+
     @SerializedName("placeholder_text")
-    private String placeHolderText;
+    private String mPlaceHolderText;
 
     @SerializedName("home_cleaning")
-    private boolean cleaning;
+    private boolean mIsCleaning;
 
     /**
      * This is tricky as hell. Do a request on a browser to prerate_pro_info to see how the response looks like.
@@ -60,7 +62,7 @@ public class PrerateProInfo implements Serializable
 
     public static PrerateProInfo fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+        return new GsonBuilder().setDateFormat(DATE_FORMAT).create()
                 .fromJson(json, PrerateProInfo.class);
     }
 
@@ -70,7 +72,7 @@ public class PrerateProInfo implements Serializable
         if (mReasons == null)
         {
             //build it.
-            mReasons = new Reasons(mRawReasons, cleaning, null);
+            mReasons = new Reasons(mRawReasons, mIsCleaning, null);
         }
 
         return mReasons;
@@ -78,6 +80,6 @@ public class PrerateProInfo implements Serializable
 
     public boolean isCleaning()
     {
-        return cleaning;
+        return mIsCleaning;
     }
 }

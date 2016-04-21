@@ -93,7 +93,7 @@ public class RatingsGridFragment extends BaseWizardFragment
 
         convertToDisplayItems(mReasons, mSelectedItems);
 
-        mTvTitle.setText(mReasons.mTitle);
+        mTvTitle.setText(mReasons.getTitle());
         mTvAllApply.setVisibility(View.VISIBLE);
 
         if (mIsFirstFragment)
@@ -114,7 +114,7 @@ public class RatingsGridFragment extends BaseWizardFragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 GridDisplayItem item = mDisplayedItems.get(position);
-                item.selected = !item.selected;
+                item.setSelected(!item.isSelected());
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -128,12 +128,12 @@ public class RatingsGridFragment extends BaseWizardFragment
     private void convertToDisplayItems(@NonNull Reasons reasons, @NonNull List<Reason> selectedReasons)
     {
         mDisplayedItems = new ArrayList<>();
-        for (Reason reason : reasons.mReasons)
+        for (Reason reason : reasons.getReasons())
         {
             boolean mSelected = false;
             for (Reason r : selectedReasons)
             {
-                if (reason.key.equals(r.key))
+                if (reason.getKey().equals(r.getKey()))
                 {
                     mSelected = true;
                     break;
@@ -149,9 +149,9 @@ public class RatingsGridFragment extends BaseWizardFragment
         mSelectedItems.clear();
         for (GridDisplayItem item : mDisplayedItems)
         {
-            if (item.selected)
+            if (item.isSelected())
             {
-                mSelectedItems.add(item.reason);
+                mSelectedItems.add(item.getReason());
             }
         }
 
@@ -170,7 +170,7 @@ public class RatingsGridFragment extends BaseWizardFragment
     {
         HashMap<String, ArrayList<String>> rval = new HashMap<>();
 
-        if (TextUtils.isEmpty(mReasons.mKey))
+        if (TextUtils.isEmpty(mReasons.getKey()))
         {
             /**
              * If there is no key, we build the map like so:
@@ -180,9 +180,9 @@ public class RatingsGridFragment extends BaseWizardFragment
 
             for (GridDisplayItem item : mDisplayedItems)
             {
-                if (item.selected)
+                if (item.isSelected())
                 {
-                    rval.put(item.reason.key, new ArrayList<String>());
+                    rval.put(item.getReason().getKey(), new ArrayList<String>());
                 }
             }
         }
@@ -196,12 +196,12 @@ public class RatingsGridFragment extends BaseWizardFragment
             ArrayList<String> values = new ArrayList<>();
             for (GridDisplayItem item : mDisplayedItems)
             {
-                if (item.selected)
+                if (item.isSelected())
                 {
-                    values.add(item.reason.key);
+                    values.add(item.getReason().getKey());
                 }
             }
-            rval.put(mReasons.mKey, values);
+            rval.put(mReasons.getKey(), values);
         }
 
         return rval;
@@ -262,18 +262,18 @@ public class RatingsGridFragment extends BaseWizardFragment
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image_view);
 
             TextView mTitle = (TextView) convertView.findViewById(R.id.tv_label);
-            mTitle.setText(item.reason.value);
+            mTitle.setText(item.getReason().getValue());
 
-            if (item.selected)
+            if (item.isSelected())
             {
                 mTitle.setTextColor(mSelectedFGColor);
-                imageView.setImageDrawable(getTintedDrawable(item.drawableId, mSelectedFGColor));
+                imageView.setImageDrawable(getTintedDrawable(item.getDrawableId(), mSelectedFGColor));
                 convertView.setBackgroundColor(mSelectedBGColor);
             }
             else
             {
                 mTitle.setTextColor(mDefaultFGColor);
-                imageView.setImageDrawable(getTintedDrawable(item.drawableId, mDefaultFGColor));
+                imageView.setImageDrawable(getTintedDrawable(item.getDrawableId(), mDefaultFGColor));
                 convertView.setBackgroundColor(mDefaultBGColor);
             }
             return convertView;

@@ -27,7 +27,7 @@ import butterknife.OnClick;
 public class RatingsRadioFragment extends BaseWizardFragment
 {
     private static final String TAG = RatingsRadioFragment.class.getName();
-    public static final String SELECTED_KEY = "selected_key";
+    public static final String KEY_SELECTED = "key_selected";
 
     @Bind(R.id.rating_radio_group)
     RadioGroup mRadioGroup;
@@ -36,9 +36,9 @@ public class RatingsRadioFragment extends BaseWizardFragment
     Button mSubmitButton;
 
     Map<String, String> mValuesToKeys;
-    Reasons mReasons;
+    private Reasons mReasons;
 
-    String mSelectedKey;
+    private String mSelectedKey;
 
     public static RatingsRadioFragment newInstance(Reasons displayItems)
     {
@@ -60,7 +60,7 @@ public class RatingsRadioFragment extends BaseWizardFragment
         mReasons = (Reasons) getArguments().getSerializable(RateImprovementDialogFragment.EXTRA_REASONS);
         mValuesToKeys = new HashMap<>();
 
-        mTvTitle.setText(mReasons.mTitle);
+        mTvTitle.setText(mReasons.getTitle());
         mTvAllApply.setVisibility(View.GONE);
         mTvAnonymous.setVisibility(View.GONE);
 
@@ -75,17 +75,17 @@ public class RatingsRadioFragment extends BaseWizardFragment
             }
         });
 
-        for (int i = 0; i < mReasons.mReasons.size(); i++)
+        for (int i = 0; i < mReasons.getReasons().size(); i++)
         {
-            Reason r = mReasons.mReasons.get(i);
+            Reason r = mReasons.getReasons().get(i);
             RadioButton rb = (RadioButton) inflater.inflate(R.layout.rating_radio_button, mRadioGroup, false);
-            rb.setText(r.value);
+            rb.setText(r.getValue());
 
-            mValuesToKeys.put(r.value, r.key);
+            mValuesToKeys.put(r.getValue(), r.getKey());
             mRadioGroup.addView(rb);
 
             //defaults to the first element as selected
-            if ((i == 0 && TextUtils.isEmpty(mSelectedKey)) || mSelectedKey.equals(r.key))
+            if ((i == 0 && TextUtils.isEmpty(mSelectedKey)) || mSelectedKey.equals(r.getKey()))
             {
                 mRadioGroup.check(rb.getId());
             }
@@ -112,7 +112,7 @@ public class RatingsRadioFragment extends BaseWizardFragment
         ArrayList<String> values = new ArrayList<>();
         String radiovalue = ((RadioButton) mRadioGroup.findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
         values.add(mValuesToKeys.get(radiovalue));
-        rval.put(mReasons.mKey, values);
+        rval.put(mReasons.getKey(), values);
         return rval;
     }
 
@@ -120,7 +120,7 @@ public class RatingsRadioFragment extends BaseWizardFragment
     public void onSaveInstanceState(final Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putString(SELECTED_KEY, mSelectedKey);
+        outState.putString(KEY_SELECTED, mSelectedKey);
     }
 }
 

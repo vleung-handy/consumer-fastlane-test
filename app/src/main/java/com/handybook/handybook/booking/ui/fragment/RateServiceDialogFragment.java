@@ -38,6 +38,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
 
+    //threshold for what is considered a good rating.
+    private static final int GOOD_RATING = 4;
+    private static final String RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT = "RateServiceConfirmDialogFragment";
+
     private ArrayList<ImageView> mStars = new ArrayList<>();
     private int mBookingId;
     private String mProName;
@@ -77,7 +81,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             final String proName,
             final int rating,
             final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts,
-            final String currency
+            final String currencyPrefixSymbol
     )
     {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
@@ -87,7 +91,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         bundle.putString(EXTRA_PRO_NAME, proName);
         bundle.putInt(EXTRA_RATING, rating);
         bundle.putParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS, defaultTipAmounts);
-        bundle.putString(TipFragment.EXTRA_CURRENCY_CHAR, currency);
+        bundle.putString(TipFragment.EXTRA_CURRENCY_CHAR, currencyPrefixSymbol);
 
         rateServiceDialogFragment.setArguments(bundle);
         return rateServiceDialogFragment;
@@ -262,7 +266,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, mBookingId, mProName, finalRating);
 
-        if (finalRating < 4)
+        if (finalRating < GOOD_RATING)
         {
             FragmentUtils.safeLaunchDialogFragment(
                     RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)),
@@ -273,7 +277,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             FragmentUtils.safeLaunchDialogFragment(
                     RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),
                     getActivity(),
-                    "RateServiceConfirmDialogFragment");
+                    RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT);
         }
     }
 

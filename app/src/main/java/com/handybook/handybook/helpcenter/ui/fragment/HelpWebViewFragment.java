@@ -21,6 +21,8 @@ import butterknife.ButterKnife;
 
 public class HelpWebViewFragment extends InjectedFragment
 {
+    private static final String REDIRECT_TO = "redirect_to";
+
     @Bind(R.id.menu_button_layout)
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.web_view)
@@ -79,7 +81,7 @@ public class HelpWebViewFragment extends InjectedFragment
         if (id != null)
         {
             helpCenterUrl = Uri.parse(helpCenterUrl).buildUpon()
-                    .appendQueryParameter("redirect_to", linkType + id)
+                    .appendQueryParameter(REDIRECT_TO, linkType + id)
                     .build().toString();
         }
         mWebView.loadUrl(helpCenterUrl);

@@ -54,16 +54,16 @@ public class Reason implements Serializable
     /**
      * The value as represented by the server
      */
-    public String key;
+    private String key;
 
     /**
      * The value as represented to the user
      */
-    public String value;
+    private String value;
 
-    public boolean isCleaning;
+    private boolean isCleaning;
 
-    public Reasons subReasons;
+    private Reasons subReasons;
 
     public Reason(final String key, final String value, Reasons subReasons, boolean isCleaning)
     {
@@ -103,5 +103,25 @@ public class Reason implements Serializable
                 return temp;
             }
         }
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public boolean isCleaning()
+    {
+        return isCleaning;
+    }
+
+    public Reasons getSubReasons()
+    {
+        return subReasons;
     }
 }

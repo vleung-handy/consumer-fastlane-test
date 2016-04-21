@@ -28,9 +28,9 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
     public static final String EXTRA_BOOKING_ID = "booking_id";
 
     @Bind(R.id.title_text)
-    TextView titleText;
+    TextView mTitleText;
     @Bind(R.id.message_text)
-    TextView messageText;
+    TextView mMessageText;
 
     @Bind(R.id.submit_button)
     Button mSubmitButton;
@@ -47,7 +47,7 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
     @Bind(R.id.img_icon_success)
     ImageView mSuccessIcon;
 
-    int mBookingId;
+    private int mBookingId;
 
     public static RateImprovementConfirmationDialogFragment newInstance(final int bookingId)
     {
@@ -85,8 +85,8 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
         mSkipButton.setLayoutParams(param);
         mSkipButton.setText(getString(R.string.need_help_question));
         mSubmitButton.setText(getString(R.string.close));
-        titleText.setText(getResources().getString(R.string.thanks_for_feedback));
-        messageText.setText(getResources().getString(R.string.were_sorry_feedback));
+        mTitleText.setText(getResources().getString(R.string.thanks_for_feedback));
+        mMessageText.setText(getResources().getString(R.string.were_sorry_feedback));
 
         mServiceIcon.setVisibility(View.GONE);
         mServiceIconImg.setVisibility(View.GONE);

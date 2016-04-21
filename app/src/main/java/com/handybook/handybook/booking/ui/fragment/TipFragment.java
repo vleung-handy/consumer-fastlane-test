@@ -65,8 +65,8 @@ public class TipFragment extends Fragment
         ButterKnife.bind(this, view);
 
         ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = getArguments().getParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS);
-        String currenctyChar = getArguments().getString(EXTRA_CURRENCY_CHAR);
-        updateTipAmountDisplay(defaultTipAmounts, currenctyChar);
+        String currencyChar = getArguments().getString(EXTRA_CURRENCY_CHAR);
+        updateTipAmountDisplay(defaultTipAmounts, currencyChar);
 
         initTipListeners();
 

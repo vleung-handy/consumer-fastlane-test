@@ -182,14 +182,14 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
             {
                 Reason r = selectedReasons.get(i);
 
-                if (r.subReasons != null)
+                if (r.getSubReasons() != null)
                 {
-                    switch (r.key)
+                    switch (r.getKey())
                     {
                         case Reason.QUALITY_OF_SERVICE:
                             if (mQualityFragment == null)
                             {
-                                mQualityFragment = RatingsGridFragment.newInstance(r.subReasons, false);
+                                mQualityFragment = RatingsGridFragment.newInstance(r.getSubReasons(), false);
                             }
 
                             //Grids are added to the end of the list.
@@ -199,7 +199,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
                         case Reason.ARRIVED_LATE:
                             if (mRatingsRadioFragment == null)
                             {
-                                mRatingsRadioFragment = RatingsRadioFragment.newInstance(r.subReasons);
+                                mRatingsRadioFragment = RatingsRadioFragment.newInstance(r.getSubReasons());
                             }
 
                             //radios are added to the front of the list
@@ -235,17 +235,13 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
 
         //if we're on the first page, that is the main page, and the decision of whether there are
         //more pages should be left to the child.
-        if (position == 0)
+        if (position == 0 || mFragmentList.size() - position <= 1)
         {
             return false;
-        }
-        if (mFragmentList.size() - position > 1)
-        {
-            return true;
         }
         else
         {
-            return false;
+            return true;
         }
     }
 
