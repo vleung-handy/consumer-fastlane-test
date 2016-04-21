@@ -45,6 +45,7 @@ import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
@@ -124,6 +125,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    private BookingRequest mCurrentRequest;
+    private BookingQuote mCurrentQuote;
+    private BookingTransaction mCurrentTransaction;
 
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed()
@@ -192,8 +196,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         else
         {
             final MaskedWalletRequest maskedWalletRequest = WalletUtils.createMaskedWalletRequest(
-                    bookingManager.getCurrentQuote(),
-                    bookingManager.getCurrentTransaction()
+                    mCurrentQuote,
+                    mCurrentTransaction
             );
             Wallet.Payments.loadMaskedWallet(mGoogleApiClient,
                     maskedWalletRequest,
@@ -228,7 +232,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             mUseExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
         }
         mixpanel.trackEventAppTrackPayment();
-
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -237,6 +240,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         .setTheme(WalletConstants.THEME_LIGHT)
                         .build())
                 .build();
+        mCurrentRequest = bookingManager.getCurrentRequest();
+        mCurrentQuote = bookingManager.getCurrentQuote();
+        mCurrentTransaction = bookingManager.getCurrentTransaction();
     }
 
     @Override
@@ -263,15 +269,21 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             final Bundle savedInstanceState
     )
     {
-        mixpanel.trackEventPaymentPage(bookingManager.getCurrentRequest(),
-                bookingManager.getCurrentQuote(),
-                bookingManager.getCurrentTransaction());
+        mixpanel.trackEventPaymentPage(
+                mCurrentRequest,
+                mCurrentQuote,
+                mCurrentTransaction
+        );
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_payment, container, false);
 
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.payment));
-
+        showBookingWarningIfApplicable(mCurrentQuote);
+        if (mCurrentQuote.hasCouponWarning())
+        {
+            showToast(mCurrentQuote.getCoupon().getWarning());
+        }
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();
@@ -295,8 +307,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mLockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
 
-        //show the apply promo code views
-        mPromoButton.setOnClickListener(promoClicked);
         showViewForPromoCodeApplied();
 
         mGoogleApiClient.connect();
@@ -371,7 +381,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
      */
     private void showViewForPromoCodeApplied()
     {
-        String appliedPromoCode = bookingManager.getCurrentTransaction().promoApplied();
+        String appliedPromoCode = mCurrentTransaction.promoApplied();
 
         if (ValidationUtils.isNullOrEmpty(appliedPromoCode))
         {
@@ -560,8 +570,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     private boolean isAndroidPayPromoApplied()
     {
-        String androidPayPromoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
-        String promoApplied = bookingManager.getCurrentTransaction().promoApplied();
+        String androidPayPromoCode = mCurrentQuote.getAndroidPayCouponCode();
+        String promoApplied = mCurrentTransaction.promoApplied();
         return (!ValidationUtils.isNullOrEmpty(androidPayPromoCode)
                 && androidPayPromoCode.equalsIgnoreCase(promoApplied));
     }
@@ -597,7 +607,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     private boolean hasAndroidPayPromoSavings()
     {
-        BookingQuote bookingQuote = bookingManager.getCurrentQuote();
+        BookingQuote bookingQuote = mCurrentQuote;
         String androidPayCoupon = bookingQuote.getAndroidPayCouponCode();
         String androidPayCouponValueFormatted = bookingQuote.getAndroidPayCouponValueFormatted();
 
@@ -622,7 +632,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         if (hasAndroidPayPromoSavings())
         {
             String androidPayCouponValueFormatted =
-                    bookingManager.getCurrentQuote().getAndroidPayCouponValueFormatted();
+                    mCurrentQuote.getAndroidPayCouponValueFormatted();
 
             mSelectPaymentPromoText.setText(getString(
                     R.string.booking_payment_android_pay_promo_savings_formatted,
@@ -685,7 +695,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     {
         /* TODO: Add condition US only */
         if (result != null && result.getStatus().isSuccess() && result.getValue()
-                && bookingManager.getCurrentQuote().isAndroidPayEnabled())
+                && mCurrentQuote.isAndroidPayEnabled())
         {
             final User currentUser = userManager.getCurrentUser();
             return currentUser == null || currentUser.isUsingAndroidPay();
@@ -699,7 +709,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     /**
      * User is using Android Pay. Show the relevant info
      *
-     * @param maskedWallet
+     * @param maskedWallet masked wallet
      */
     @VisibleForTesting
     protected void showMaskedWalletInfo(MaskedWallet maskedWallet)
@@ -724,7 +734,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     private void applyAndroidPayCoupon()
     {
         //apply android pay coupon
-        String promoCode = bookingManager.getCurrentQuote().getAndroidPayCouponCode();
+        String promoCode = mCurrentQuote.getAndroidPayCouponCode();
         applyPromo(promoCode);
     }
 
@@ -733,9 +743,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         if (!allowCallbacks) { return; }
         String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
         com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(tokenJSON, com.stripe.model.Token.class);
-        final BookingTransaction currentTransaction = bookingManager.getCurrentTransaction();
-        currentTransaction.setStripeToken(token.getId());
-        currentTransaction.setPaymentMethod(User.PAYMENT_METHOD_ANDROID_PAY);
+        mCurrentTransaction.setStripeToken(token.getId());
+        mCurrentTransaction.setPaymentMethod(User.PAYMENT_METHOD_ANDROID_PAY);
         completeBooking();
     }
 
@@ -752,8 +761,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                 if (mUseAndroidPay)
                 {
                     final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
-                            bookingManager.getCurrentQuote(),
-                            bookingManager.getCurrentTransaction(),
+                            mCurrentQuote,
+                            mCurrentTransaction,
                             mMaskedWallet
                     );
                     Wallet.Payments.loadFullWallet(mGoogleApiClient, fullWalletRequest,
@@ -763,7 +772,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                 {
                     final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                             mExpText.getExpYear(), mCvcText.getCVC());
-                    final String stripeKey = bookingManager.getCurrentQuote().getStripeKey();
+                    final String stripeKey = mCurrentQuote.getStripeKey();
                     bus.post(new StripeEvent.RequestCreateToken(card, stripeKey));
                 }
                 else { completeBooking(); }
@@ -774,7 +783,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     @Subscribe
     public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
     {
-        bookingManager.getCurrentTransaction().setStripeToken(event.getToken().getId());
+        mCurrentTransaction.setStripeToken(event.getToken().getId());
         completeBooking();
     }
 
@@ -792,44 +801,38 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         toast.show();
     }
 
-    private final View.OnClickListener promoClicked = new View.OnClickListener()
+    @OnClick(R.id.promo_button)
+    public void onPromobButtonClicked()
     {
-        @Override
-        public void onClick(final View v)
+        final String promoCode = mPromoText.getText().toString();
+        final boolean hasPromo = (mCurrentTransaction.promoApplied() != null);
+
+        if (hasPromo || promoCode.length() > 0)
         {
-            final String promoCode = mPromoText.getText().toString();
-            final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-            final boolean hasPromo = (bookingTransaction.promoApplied() != null);
+            mPromoProgress.setVisibility(View.VISIBLE);
+            mPromoButton.setText(null);
 
-            if (hasPromo || promoCode.length() > 0)
+            if (hasPromo)
             {
-                mPromoProgress.setVisibility(View.VISIBLE);
-                mPromoButton.setText(null);
-
-                if (hasPromo)
-                {
-                    removePromo();
-                }
-                else
-                {
-                    applyPromo(promoCode);
-                }
+                removePromo();
+            }
+            else
+            {
+                applyPromo(promoCode);
             }
         }
-    };
+    }
 
     //TODO: this was stripped out of promoClicked and may need to be refactored
     private void removePromo()
     {
-        final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-        final int bookingId = bookingTransaction.getBookingId();
-        final BookingQuote quote = bookingManager.getCurrentQuote();
+        final int bookingId = mCurrentTransaction.getBookingId();
         dataManager.removePromo(bookingId, new DataManager.Callback<BookingCoupon>()
         {
             @Override
             public void onSuccess(final BookingCoupon coupon)
             {
-                handlePromoSuccess(coupon, quote, bookingTransaction, null);
+                handlePromoSuccess(coupon, mCurrentQuote, mCurrentTransaction, null);
                 bookingManager.setPromoTabCoupon(null);
             }
 
@@ -846,22 +849,19 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     {
         if (ValidationUtils.isNullOrEmpty(promoCode)) { return; }
 
-        final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-        final int bookingId = bookingTransaction.getBookingId();
-        final BookingQuote quote = bookingManager.getCurrentQuote();
-
+        final int bookingId = mCurrentTransaction.getBookingId();
         final User user = userManager.getCurrentUser();
         final String userId = user != null ? user.getId() : null;
         final String email = user != null ? user.getEmail() : null;
         final String authToken = user != null ? user.getAuthToken() : null;
 
         dataManager.applyPromo(promoCode, bookingId, userId, email, authToken,
-                new DataManager.Callback<BookingCoupon>()
+                new DataManager.Callback<BookingQuote>()
                 {
                     @Override
-                    public void onSuccess(final BookingCoupon coupon)
+                    public void onSuccess(final BookingQuote bookingQuote)
                     {
-                        handlePromoSuccess(coupon, quote, bookingTransaction, promoCode);
+                        handlePromoSuccess(bookingQuote, mCurrentTransaction, promoCode);
                     }
 
                     @Override
@@ -874,7 +874,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     private void completeBooking()
     {
-        dataManager.createBooking(bookingManager.getCurrentTransaction(),
+        dataManager.createBooking(mCurrentTransaction,
                 new DataManager.Callback<BookingCompleteTransaction>()
                 {
                     @Override
@@ -887,12 +887,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         {
                             bus.post(new MixpanelEvent.TrackBookingCompletedWithPaymentMethodEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
                         }
-                        mixpanel.trackEventSubmitPayment(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
-                        mixpanel.trackEventBookingMade(bookingManager.getCurrentRequest(), bookingManager.getCurrentQuote(), bookingManager.getCurrentTransaction());
+                        mixpanel.trackEventSubmitPayment(mCurrentRequest, mCurrentQuote, mCurrentTransaction);
+                        mixpanel.trackEventBookingMade(mCurrentRequest, mCurrentQuote, mCurrentTransaction);
 
                         if (!allowCallbacks) { return; }
 
-                        bookingManager.getCurrentTransaction().setBookingId(trans.getId());
+                        mCurrentTransaction.setBookingId(trans.getId());
 
                         boolean isNewUser = false;
 
@@ -909,8 +909,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         }
 
                         final User user = userManager.getCurrentUser();
-                        bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(),
-                                null));
+                        if (user != null)
+                        {
+                            bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(),
+                                    null));
+                        }
 
                         bookingManager.setCurrentPostInfo(
                                 new BookingPostInfo()
@@ -968,6 +971,36 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         }
     };
 
+    /**
+     * This is a new method that handles the updated API that returns the whole quote not subset
+     *
+     * @param newQuote    the updated quote
+     * @param transaction
+     * @param promo
+     */
+    private void handlePromoSuccess(
+            final BookingQuote newQuote,
+            final BookingTransaction transaction,
+            final String promo
+    )//.. on /v3/quotes/{1245}/set_coupon
+    {
+        if (!allowCallbacks) { return; }
+        mCurrentQuote = newQuote;
+        showBookingWarningIfApplicable(mCurrentQuote);
+        transaction.setPromoApplied(promo);
+        updatePromoUI();
+        mPromoText.setText(null);
+    }
+
+    private void showBookingWarningIfApplicable(BookingQuote quote)
+    {
+        if (quote.hasCouponWarning())
+        {
+            showToast(quote.getCoupon().getWarning());
+        }
+
+    }
+
     private void handlePromoSuccess(
             final BookingCoupon coupon, final BookingQuote quote,
             final BookingTransaction transaction, final String promo
@@ -990,8 +1023,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     private void updatePromoUI()
     {
-        final BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-        final String promo = bookingTransaction.promoApplied();
+        final String promo = mCurrentTransaction.promoApplied();
         final boolean applied = (promo != null);
 
         mPromoProgress.setVisibility(View.INVISIBLE);
