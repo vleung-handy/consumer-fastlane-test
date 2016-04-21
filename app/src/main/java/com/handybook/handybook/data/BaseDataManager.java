@@ -407,7 +407,7 @@ public final class BaseDataManager extends DataManager
     @Override
     public void applyPromo(
             final String promoCode, final int quoteId, final String userId,
-            final String email, final String authToken, final Callback<BookingCoupon> cb
+            final String email, final String authToken, final Callback<BookingQuote> cb
     )
     {
         mService.applyPromo(promoCode, quoteId, userId, email, authToken,
@@ -416,7 +416,7 @@ public final class BaseDataManager extends DataManager
                     @Override
                     void success(final JSONObject response)
                     {
-                        cb.onSuccess(BookingCoupon.fromJson(response.toString()));
+                        cb.onSuccess(BookingQuote.fromJson(response.toString()));
                     }
                 });
     }

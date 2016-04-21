@@ -135,7 +135,8 @@ public abstract class DataManager
                                     String userId,
                                     String email,
                                     String authToken,
-                                    Callback<BookingCoupon> cb);
+                                    Callback<BookingQuote> cb
+    );
 
     public abstract void removePromo(int quoteId,
                                      Callback<BookingCoupon> cb);

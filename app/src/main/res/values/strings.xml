@@ -71,8 +71,8 @@
     <string name="welcome_back"
             formatted="false">Welcome back, %s!</string>
     <string name="skip">Skip</string>
-    <string name="peak_price_info">Due to high demand, peak pricing is in \neffect at this time. If you’d like, you can \npick a different time.</string>
-    <string name="peak_price_info_recur">Due to high demand, \nwe don’t have availability at that time. \nPlease select a different time.</string>
+    <string name="peak_price_info">Due to high demand, peak pricing is in effect. Scroll through the calendar to find alternate times without peak pricing.</string>
+    <string name="peak_price_info_unavailable">Due to high demand, certain times are unavailable. Scroll through the calendar to find alternate times.</string>
     <string name="unavailable">Unavailable</string>
     <string name="confirmation">Confirmation</string>
     <string name="payment_confirmed">Your payment has been confirmed.\nHow will your professional get in?</string>
