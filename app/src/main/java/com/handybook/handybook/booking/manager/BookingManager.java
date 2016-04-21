@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
@@ -48,6 +49,7 @@ public class BookingManager implements Observer
     private BookingTransaction mBookingTransaction;
     private BookingPostInfo mBookingPostInfo;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
+    private PrerateProInfo mPrerateProInfo;
 
     @Inject
     public BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
@@ -104,6 +106,44 @@ public class BookingManager implements Observer
             public void onError(DataManager.DataManagerError error)
             {
                 mBus.post(new BookingEvent.ReceivePreRescheduleInfoError(error));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onRequestPrerateProInfo(BookingEvent.RequestPrerateProInfo event)
+    {
+        mDataManager.requestPrerateProInfo(event.bookingId, new DataManager.Callback<PrerateProInfo>()
+        {
+            @Override
+            public void onSuccess(PrerateProInfo object)
+            {
+                mBus.post(new BookingEvent.RequestPrerateProInfoSuccess(object));
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                mBus.post(new BookingEvent.RequestPrerateProInfoError(error));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onPostLowRatingFeedback(BookingEvent.PostLowRatingFeedback event)
+    {
+        mDataManager.postLowRatingFeedback(event.mFeedback, new DataManager.Callback<Void>()
+        {
+            @Override
+            public void onSuccess(final Void response)
+            {
+                mBus.post(new BookingEvent.PostLowRatingFeedbackSuccess());
+            }
+
+            @Override
+            public void onError(DataManager.DataManagerError error)
+            {
+                mBus.post(new BookingEvent.PostLowRatingFeedbackError(error));
             }
         });
     }
@@ -387,6 +427,7 @@ public class BookingManager implements Observer
 
         if (newTransaction == null)
         {
+            Crashlytics.log("BookingManager: Setting current transaction to null!");
             mBookingTransaction = null;
             mPrefsManager.removeValue(PrefsKey.BOOKING_TRANSACTION);
             return;

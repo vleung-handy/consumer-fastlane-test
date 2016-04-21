@@ -35,6 +35,7 @@
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/tv_tip_amount"
             android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/default_margin_half"

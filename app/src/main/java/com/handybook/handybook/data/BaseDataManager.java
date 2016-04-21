@@ -33,6 +33,8 @@ import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
+import com.handybook.handybook.booking.rating.PrerateProInfo;
+import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
@@ -84,16 +86,27 @@ public final class BaseDataManager extends DataManager
         return mEndpoint.getBaseUrl();
     }
 
+    /**
+     * If there is a cached version, return the cache, and updates the cache in the background.
+     * If there was a cached version, then cache update success will not be broadcasted.
+     * This is to prevent a client from having to deal with multiple broadcasts (cache, updates, etc).
+     *
+     * @param cache
+     * @param cb
+     */
     @Override
     public final void getServices(
             final CacheResponse<List<Service>> cache,
             final Callback<List<Service>> cb
     )
     {
+        final List<Service> cachedServices = getCachedServices();
 
-        List<Service> cachedServices = getCachedServices();
-
-        cache.onResponse(cachedServices != null ? cachedServices : new ArrayList<Service>());
+        if (cachedServices != null && cache != null)
+        {
+            //if there is a cached version, we notify right away.
+            cache.onResponse(cachedServices);
+        }
 
         final ArrayList<Service> servicesMenu = new ArrayList<>();
         final HashMap<String, Service> menuMap = new HashMap<>();
@@ -105,8 +118,9 @@ public final class BaseDataManager extends DataManager
             {
                 final JSONArray array = response.optJSONArray("menu_structure");
 
-                if (array == null)
+                if (array == null && cachedServices == null)
                 {
+                    //we only notify of error if there is not already a cached version returned.
                     cb.onError(new DataManagerError(Type.SERVER));
                     return;
                 }
@@ -143,8 +157,9 @@ public final class BaseDataManager extends DataManager
                     {
                         final JSONArray array = response.optJSONArray("services_list");
 
-                        if (array == null)
+                        if (array == null && cachedServices == null)
                         {
+                            //we only notify of error if there is not already a cached version returned.
                             cb.onError(new DataManagerError(Type.SERVER));
                             return;
                         }
@@ -212,9 +227,15 @@ public final class BaseDataManager extends DataManager
                             }
                         });
 
+                        //updates the cache with fresh version of services
                         mPrefsManager.setString(PrefsKey.CACHED_SERVICES, new Gson()
                                 .toJsonTree(servicesMenu).getAsJsonArray().toString());
-                        cb.onSuccess(servicesMenu);
+
+                        //we only notify of error if there is not already a cached version returned.
+                        if (cachedServices == null)
+                        {
+                            cb.onSuccess(servicesMenu);
+                        }
                     }
                 });
             }
@@ -386,7 +407,7 @@ public final class BaseDataManager extends DataManager
     @Override
     public void applyPromo(
             final String promoCode, final int quoteId, final String userId,
-            final String email, final String authToken, final Callback<BookingCoupon> cb
+            final String email, final String authToken, final Callback<BookingQuote> cb
     )
     {
         mService.applyPromo(promoCode, quoteId, userId, email, authToken,
@@ -395,7 +416,7 @@ public final class BaseDataManager extends DataManager
                     @Override
                     void success(final JSONObject response)
                     {
-                        cb.onSuccess(BookingCoupon.fromJson(response.toString()));
+                        cb.onSuccess(BookingQuote.fromJson(response.toString()));
                     }
                 });
     }
@@ -523,6 +544,38 @@ public final class BaseDataManager extends DataManager
                 {
                     cb.onError(new DataManagerError(Type.SERVER));
                 }
+            }
+        });
+    }
+
+    @Override
+    public void requestPrerateProInfo(
+            final String bookingId,
+            final Callback<PrerateProInfo> cb
+    )
+    {
+        mService.requestPrerateProInfo(bookingId, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(PrerateProInfo.fromJson(response.toString()));
+            }
+        });
+    }
+
+    @Override
+    public void postLowRatingFeedback(
+            RateImprovementFeedback feedback,
+            final Callback<Void> cb
+    )
+    {
+        mService.postLowRatingFeedback(feedback.getBookingId(), feedback, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
             }
         });
     }

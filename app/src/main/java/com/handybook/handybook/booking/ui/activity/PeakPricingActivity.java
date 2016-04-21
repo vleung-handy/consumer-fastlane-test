@@ -3,10 +3,10 @@ package com.handybook.handybook.booking.ui.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingFragment;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
@@ -20,13 +20,16 @@ public final class PeakPricingActivity extends MenuDrawerActivity
         final boolean rescheduleAll = getIntent().getBooleanExtra(BundleKeys.RESCHEDULE_ALL, false);
         final boolean forVoucher = getIntent().getBooleanExtra(BundleKeys.FOR_VOUCHER, false);
 
-        final ArrayList<ArrayList<BookingQuote.PeakPriceInfo>> reschedulePriceTable
-                = (ArrayList<ArrayList<BookingQuote.PeakPriceInfo>>) getIntent()
+        final ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable
+                = (ArrayList<ArrayList<PeakPriceInfo>>) getIntent()
                 .getSerializableExtra(BundleKeys.RESCHEDULE_PRICE_TABLE);
 
         if (reschedulePriceTable != null) {
-            return PeakPricingFragment.newInstance(reschedulePriceTable, rescheduleBooking,
-                    rescheduleAll);
+            return PeakPricingFragment.newInstance(
+                    reschedulePriceTable,
+                    rescheduleBooking,
+                    rescheduleAll
+            );
         }
         else return PeakPricingFragment.newInstance(forVoucher);
     }

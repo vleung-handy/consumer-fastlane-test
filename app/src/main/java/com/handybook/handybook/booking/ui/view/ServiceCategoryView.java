@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.view;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.ui.descriptor.ServiceCategoryListDescriptor;
-import com.handybook.handybook.ui.transformation.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -32,22 +30,12 @@ public final class ServiceCategoryView extends FrameLayout
     public ServiceCategoryView(final Context context)
     {
         super(context);
-    }
-
-    ServiceCategoryView(final Context context, final AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
-
-    ServiceCategoryView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
-        super(context, attrs, defStyle);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_service_category, this);
+        ButterKnife.bind(this);
     }
 
     public void init(final Service service)
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_service_category, this);
-        ButterKnife.bind(this);
 
         try
         {
@@ -66,17 +54,6 @@ public final class ServiceCategoryView extends FrameLayout
             {
                 Picasso.with(getContext())
                         .load(descriptor.getImageDrawable())
-                        .transform(
-                                new RoundedTransformation(
-                                        getContext().getResources()
-                                                .getDimension(R.dimen.default_corner_radius),
-                                        0,
-                                        true,
-                                        true,
-                                        false,
-                                        false
-                                )
-                        )
                         .fit()
                         .into(mImage);
             }

@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,12 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.analytics.MixpanelEvent;
+import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
+import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -34,6 +37,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
+
+    //threshold for what is considered a good rating.
+    private static final int GOOD_RATING = 4;
+    private static final String RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT = "RateServiceConfirmDialogFragment";
 
     private ArrayList<ImageView> mStars = new ArrayList<>();
     private int mBookingId;
@@ -73,7 +80,9 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             final int bookingId,
             final String proName,
             final int rating,
-            final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts)
+            final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts,
+            final String currencyPrefixSymbol
+    )
     {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
         final Bundle bundle = new Bundle();
@@ -82,6 +91,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         bundle.putString(EXTRA_PRO_NAME, proName);
         bundle.putInt(EXTRA_RATING, rating);
         bundle.putParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS, defaultTipAmounts);
+        bundle.putString(TipFragment.EXTRA_CURRENCY_CHAR, currencyPrefixSymbol);
 
         rateServiceDialogFragment.setArguments(bundle);
         return rateServiceDialogFragment;
@@ -115,8 +125,17 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
 
-        mTitleText.setText(getResources().getString(R.string.how_was_last_service));
-        mMessageText.setText(getResources().getString(R.string.please_rate_pro));
+        //we want to keep the spacing that is there.
+        mMessageText.setVisibility(View.INVISIBLE);
+
+        if (TextUtils.isEmpty(mProName))
+        {
+            mTitleText.setText(getResources().getString(R.string.how_was_last_service));
+        }
+        else
+        {
+            mTitleText.setText(String.format(getString(R.string.how_was_last_service_with), mProName));
+        }
 
         mSubmitButton.setOnClickListener(mSubmitListener);
         mSkipButton.setOnClickListener(new View.OnClickListener()
@@ -130,7 +149,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
                 getArguments().getParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS);
-        TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts);
+        String currency = getArguments().getString(TipFragment.EXTRA_CURRENCY_CHAR);
+        TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts, currency);
 
         if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
         {
@@ -246,8 +266,19 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
         mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, mBookingId, mProName, finalRating);
 
-        RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating).show(getActivity()
-                .getSupportFragmentManager(), "RateServiceConfirmDialogFragment");
+        if (finalRating < GOOD_RATING)
+        {
+            FragmentUtils.safeLaunchDialogFragment(
+                    RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)),
+                    getActivity(),
+                    RateImprovementDialogFragment.class.getSimpleName()
+            );
+        } else {
+            FragmentUtils.safeLaunchDialogFragment(
+                    RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),
+                    getActivity(),
+                    RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT);
+        }
     }
 
     @Subscribe

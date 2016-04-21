@@ -4,9 +4,14 @@ import android.support.annotation.NonNull;
 
 import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.analytics.annotation.TrackField;
+import com.handybook.handybook.event.HandyEvent;
+
+import java.util.Set;
 
 public abstract class MixpanelEvent
 {
+
+
     //TODO: move event trackers from Mixpanel.java here
     private static class EventKey
     {
@@ -23,10 +28,8 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_ADDRESS = "App Track Address";
         public static final String APP_TRACK_PAYMENT = "App Track Payment";
         public static final String APP_TRACK_CHECKLIST = "App Track Checklist";
-        //TODO: ^this event key already exists in Mixpanel.java, need to move it out
         public static final String APP_TRACK_CONFIRMATION = "App Track Confirmation";
         public static final String APP_TRACK_BOOKING_MADE = "booking made";
-        //TODO: ^this event key already exists in Mixpanel.java, need to move it out
         public static final String APP_TRACK_PAYMENT_METHOD_PROVIDED = "App Track Payment Method Provided";
         public static final String APP_TRACK_SHOW_RATING_PROMPT = "app rate prompt";
         public static final String APP_TRACK_SHOW_TIP_PROMPT = "present tips";
@@ -39,8 +42,14 @@ public abstract class MixpanelEvent
         public static final String APP_TRACK_SPLASH_PROMO_ACTION = "app splash promo action";
         public static final String APP_TRACK_SCAN_CREDIT_CARD_CLICKED = "scan credit card clicked";
         public static final String APP_TRACK_SCAN_CREDIT_CARD_RESULT = "scan credit card result";
-    }
+        public static final String APP_TRACK_BLOCKING_SCREEN_BUTTON_PRESSED = "consumer app blocking screen button clicked";
+        public static final String APP_TRACK_BLOCKING_SCREEN_DISPLAYED = "consumer app blocking screen displayed";
 
+        //this is done to match iOS events
+        public static final String APP_PRO_RATE_REASON = "app pro rate reason event";
+        public static final String APP_PRO_RATE_SUBREASON = "app pro rate subreason event";
+        public static final String APP_PRO_RATE_HELP = "app pro rate help event";
+    }
 
     public enum PaymentMethod
     {
@@ -84,6 +93,7 @@ public abstract class MixpanelEvent
         }
     }
 
+
     /**
      * tracks when the scan credit card button is clicked
      */
@@ -92,12 +102,12 @@ public abstract class MixpanelEvent
     {
     }
 
+
     /**
      * tracks whether the credit card scanner successfully scans a card or not
-     *
+     * <p/>
      * success=true: card data is extracted
      * success=false: user cancelled the scan (maybe out of frustration) or an error occurred
-     *
      */
     @Track(EventKey.APP_TRACK_SCAN_CREDIT_CARD_RESULT)
     public static class TrackScanCreditCardResult extends MixpanelEvent
@@ -110,6 +120,7 @@ public abstract class MixpanelEvent
             this.success = success;
         }
     }
+
 
     /**
      * tracks when the splash promo is shown
@@ -126,6 +137,7 @@ public abstract class MixpanelEvent
         }
     }
 
+
     /**
      * tracks when the splash promo action button is pressed
      */
@@ -140,6 +152,7 @@ public abstract class MixpanelEvent
             this.promoId = promoId;
         }
     }
+
 
     /**
      * tracks when the rating dialog is shown
@@ -228,11 +241,13 @@ public abstract class MixpanelEvent
         }
     }
 
+
     @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_CLICKED)
-    public static class TrackAddBookingFabClicked {}
+    public static class TrackAddBookingFabClicked extends MixpanelEvent {}
+
 
     @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_SERVICE_SELECTED)
-    public static class TrackAddBookingFabServiceSelected
+    public static class TrackAddBookingFabServiceSelected extends MixpanelEvent
     {
         @TrackField("service id")
         private final int mId;
@@ -246,16 +261,17 @@ public abstract class MixpanelEvent
         }
     }
 
+
     @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_MENU_SHOWN)
-    public static class TrackAddBookingFabMenuShown {}
+    public static class TrackAddBookingFabMenuShown extends MixpanelEvent {}
 
 
     @Track(EventKey.APP_TRACK_ADD_BOOKING_FAB_MENU_DISMISSED)
-    public static class TrackAddBookingFabMenuDismissed {}
+    public static class TrackAddBookingFabMenuDismissed extends MixpanelEvent {}
 
 
     @Track(EventKey.APP_TRACK_CHECKLIST)
-    public static class TrackChecklist
+    public static class TrackChecklist extends MixpanelEvent
     {
         @TrackField("booking_id")
         private final int mBookingId;
@@ -280,4 +296,92 @@ public abstract class MixpanelEvent
         }
     }
 
+
+    @Track(MixpanelEvent.EventKey.APP_PRO_RATE_REASON)
+    public static class AppProRateReason extends MixpanelEvent
+    {
+        @TrackField("dialog_event")
+        private final String mType;      //{show, submitted}
+
+        @TrackField("booking_id")
+        private final int mBookingId;
+
+        @TrackField("reasons")
+        private final Set<String> mReasons;
+
+        @TrackField("is_home_cleaning")
+        private final boolean mIsHomeCleaning;
+
+        public AppProRateReason(
+                final Mixpanel.ProRateEventType type,
+                final int bookingId,
+                Set<String> reasons,
+                boolean isHomeCleaning
+        )
+        {
+            mBookingId = bookingId;
+            mType = type.getValue();
+            mReasons = reasons;
+            mIsHomeCleaning = isHomeCleaning;
+        }
+    }
+
+
+    @Track(MixpanelEvent.EventKey.APP_PRO_RATE_SUBREASON)
+    public static class AppProRateSubreason extends MixpanelEvent
+    {
+
+        @TrackField("dialog_event")
+        private final String mType;      //{show, submitted}
+
+        @TrackField("booking_id")
+        private final int mBookingId;
+
+        @TrackField("reasons")
+        private final Set<String> mReasons;
+
+        @TrackField("is_home_cleaning")
+        private final boolean mIsHomeCleaning;
+
+        public AppProRateSubreason(
+                final Mixpanel.ProRateEventType type,
+                final int bookingId,
+                Set<String> reasons,
+                boolean isHomeCleaning
+        )
+        {
+            mBookingId = bookingId;
+            mType = type.getValue();
+            mReasons = reasons;
+            mIsHomeCleaning = isHomeCleaning;
+        }
+    }
+
+
+    @Track(EventKey.APP_PRO_RATE_HELP)
+    public static class AppProRateHelp extends MixpanelEvent
+    {
+        @TrackField("dialog_event")
+        private final String mType;      //{show, submitted}
+
+        @TrackField("booking_id")
+        private final int mBookingId;
+
+        public AppProRateHelp(final Mixpanel.ProRateEventType type, final int bookingId)
+        {
+            mType = type.getValue();
+            mBookingId = bookingId;
+        }
+    }
+
+    @Track(EventKey.APP_TRACK_BLOCKING_SCREEN_DISPLAYED)
+    public static class BlockingScreenDisplayed extends HandyEvent
+    {
+    }
+
+
+    @Track(EventKey.APP_TRACK_BLOCKING_SCREEN_BUTTON_PRESSED)
+    public static class BlockingScreenButtonPressed extends HandyEvent
+    {
+    }
 }

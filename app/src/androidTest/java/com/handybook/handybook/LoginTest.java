@@ -2,9 +2,9 @@ package com.handybook.handybook;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.testdata.TestUser;
 import com.handybook.handybook.testutil.AppInteractionUtils;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -66,18 +66,12 @@ public class LoginTest extends ActivityInstrumentationTestCase2
         //wait for progress dialog
         AppInteractionUtils.waitForProgressDialog();
 
-        AppInteractionUtils.waitForNavMenuDanceAndHomeScreen();
-
         AppInteractionUtils.clickOpenNavigationMenuButton();
 
         //click the log out button
         onView(withId(R.id.nav_menu_log_out)).perform(click());
 
         onView(withId(R.id.button_positive_label)).perform(click());
-
-        //check that home screen is displayed
-        //TODO: the nav bar doesn't pop in and out this time. investigate the behavior
-        onView(withId(R.id.category_layout)).check(matches(isDisplayed()));
 
         AppInteractionUtils.clickOpenNavigationMenuButton();
 

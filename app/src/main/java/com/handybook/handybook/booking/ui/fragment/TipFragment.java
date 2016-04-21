@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
@@ -26,6 +27,7 @@ import butterknife.ButterKnife;
 public class TipFragment extends Fragment
 {
     static final String EXTRA_DEFAULT_TIP_AMOUNTS = "com.handy.handy.EXTRA_DEFAULT_TIP_AMOUNTS";
+    static final String EXTRA_CURRENCY_CHAR = "com.handy.handy.EXTRA_CURRENCY_CHAR";
 
     @Bind(R.id.tip_amount_radio_group)
     RadioGroup mTipAmountRadioGroup;
@@ -34,16 +36,23 @@ public class TipFragment extends Fragment
     @Bind(R.id.custom_tip_amount)
     EditText mCustomTipAmountText;
 
+    @Bind(R.id.tv_tip_amount)
+    TextView mTvTipAmount;
+
     private int mTipAmount;
     private Map<RadioButton, Integer> mRadioButtonToTipAmount = new HashMap<>();
     private boolean mSendTipAmount = false;
     private boolean mCustomTipSelected = false;
 
-    public static TipFragment newInstance(final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts)
+    public static TipFragment newInstance(
+            final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts,
+            String mCurrencyChar
+    )
     {
         TipFragment tipFragment = new TipFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS, defaultTipAmounts);
+        bundle.putString(EXTRA_CURRENCY_CHAR, mCurrencyChar);
         tipFragment.setArguments(bundle);
         return tipFragment;
     }
@@ -56,7 +65,8 @@ public class TipFragment extends Fragment
         ButterKnife.bind(this, view);
 
         ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = getArguments().getParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS);
-        updateTipAmountDisplay(defaultTipAmounts);
+        String currencyChar = getArguments().getString(EXTRA_CURRENCY_CHAR);
+        updateTipAmountDisplay(defaultTipAmounts, currencyChar);
 
         initTipListeners();
 
@@ -107,8 +117,12 @@ public class TipFragment extends Fragment
         mCustomTipSelected = customTipSelected;
     }
 
-    private void updateTipAmountDisplay(final List<LocalizedMonetaryAmount> defaultTipAmounts)
+    private void updateTipAmountDisplay(
+            final List<LocalizedMonetaryAmount> defaultTipAmounts,
+            String currencyChar
+    )
     {
+        mTvTipAmount.setText(getString(R.string.tip_amount) + " " + currencyChar);
         if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
         {
             for (LocalizedMonetaryAmount amount : defaultTipAmounts)

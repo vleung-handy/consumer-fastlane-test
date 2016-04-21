@@ -30,6 +30,8 @@ import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
+import com.handybook.handybook.booking.rating.PrerateProInfo;
+import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
@@ -133,7 +135,8 @@ public abstract class DataManager
                                     String userId,
                                     String email,
                                     String authToken,
-                                    Callback<BookingCoupon> cb);
+                                    Callback<BookingQuote> cb
+    );
 
     public abstract void removePromo(int quoteId,
                                      Callback<BookingCoupon> cb);
@@ -170,6 +173,16 @@ public abstract class DataManager
     public abstract void getPreBookingPromo(
             String promoCode,
             Callback<PromoCode> cb
+    );
+
+    public abstract void requestPrerateProInfo(
+            String bookingId,
+            Callback<PrerateProInfo> cb
+    );
+
+    public abstract void postLowRatingFeedback(
+            RateImprovementFeedback feedback,
+            Callback<Void> cb
     );
 
     public abstract void getPreRescheduleInfo(

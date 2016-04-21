@@ -73,7 +73,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment
 
         final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
                 getActivity(),
-                mBookingQuote.getExtrasOptions(),
+                mBookingQuote.getBookingOption(),
                 optionUpdated
         );
 
@@ -119,7 +119,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment
         public void onUpdate(final BookingOptionsView view)
         {
             final Integer[] indexes = ((BookingOptionsSelectView) view).getCheckedIndexes();
-            final BookingOption option = mBookingQuote.getExtrasOptions();
+            final BookingOption option = mBookingQuote.getBookingOption();
             final float[] hoursMap = option.getHoursInfo();
             final String[] options = option.getOptions();
 

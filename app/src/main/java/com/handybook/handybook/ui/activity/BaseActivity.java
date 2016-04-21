@@ -19,6 +19,8 @@ import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.rating.RateImprovementConfirmationDialogFragment;
+import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -34,7 +36,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.event.ActivityEvent;
+import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
@@ -53,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
 {
     private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
     private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
+    private static final String TAG = BaseActivity.class.getName();
     protected boolean allowCallbacks;
     protected ProgressDialog mProgressDialog;
     protected Toast mToast;
@@ -116,7 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     {
         super.onResumeFragments();
         mBus.register(mRequiredModalsEventListener);
-        mBus.post(new ActivityEvent.FragmentsResumed(this));
+        mBus.post(new ActivityLifecycleEvent.FragmentsResumed(this));
         //can't put this in BaseApplication where activity lifecycle callbacks are registered
         //because this is only for FragmentActivity
     }
@@ -171,6 +174,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 || fm.findFragmentByTag(RateServiceDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) != null
                 || !(
                 BaseActivity.this instanceof ServiceCategoriesActivity
                         || BaseActivity.this instanceof BookingDetailActivity
@@ -233,7 +238,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 user.getDefaultTipAmounts();
 
         RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
-                .newInstance(bookingId, proName, -1, localizedMonetaryAmounts);
+                .newInstance(bookingId, proName, -1, localizedMonetaryAmounts, user.getCurrencyChar());
 
         boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
                 rateServiceDialogFragment,

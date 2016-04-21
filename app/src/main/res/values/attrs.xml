@@ -20,4 +20,8 @@
     <declare-styleable name="DragAndDropVerticalLinearLayout">
         <attr name="dragAndDropEnabled" format="boolean"/>
     </declare-styleable>
+    <declare-styleable name="SwipeableViewPager">
+        <attr name="swipeable"
+              format="boolean"/>
+    </declare-styleable>
 </resources>

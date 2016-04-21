@@ -119,6 +119,7 @@ public class FinalizeBookingRequestPayload extends Observable
         BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
                 null,
                 BookingInstruction.MachineName.ENTRY_METHOD,
+                null,
                 entryMethodInstructionType,
                 null,
                 null
@@ -126,6 +127,7 @@ public class FinalizeBookingRequestPayload extends Observable
         BookingInstruction entryInfoMessageInstruction = new BookingInstruction(
                 null,
                 BookingInstruction.MachineName.KEY_LOCATION,
+                null,
                 null,
                 getInText,
                 null
@@ -182,6 +184,7 @@ public class FinalizeBookingRequestPayload extends Observable
         BookingInstruction noteToProInstruction = new BookingInstruction(
                 null,
                 BookingInstruction.MachineName.NOTE_TO_PRO,
+                null,
                 null,
                 noteToPro,
                 null);

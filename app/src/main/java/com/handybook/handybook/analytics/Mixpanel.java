@@ -17,10 +17,12 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Subscribe;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -30,6 +32,7 @@ public class Mixpanel
     private MixpanelAPI mixpanelAPI;
     private PrefsManager prefsManager;
     private HashMap<String, Boolean> calledMap;
+
 
     @Inject
     public Mixpanel(final Context context,
@@ -467,7 +470,15 @@ public class Mixpanel
     {
         try
         {
-            object.put(key, value);
+            if (value instanceof Collection)
+            {
+                JSONArray array = new JSONArray((Collection) value);
+                object.put(key, array);
+            }
+            else
+            {
+                object.put(key, value);
+            }
         }
         catch (final JSONException e)
         {

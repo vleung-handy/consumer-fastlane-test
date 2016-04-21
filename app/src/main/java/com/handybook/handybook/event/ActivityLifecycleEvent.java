@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 /**
  * Collection of events launched for each of all activities lifecycle methods
  */
-public interface ActivityEvent
+public interface ActivityLifecycleEvent
 {
     interface ActivityHolder
     {
@@ -21,7 +21,7 @@ public interface ActivityEvent
     }
 
 
-    class DefaultActivityHolder implements ActivityEvent, ActivityHolder
+    class DefaultActivityHolder implements ActivityLifecycleEvent, ActivityHolder
     {
         private Activity mActivity;
 
@@ -39,7 +39,7 @@ public interface ActivityEvent
 
 
     class DefaultActivityAndBundleHolder implements
-            ActivityEvent,
+            ActivityLifecycleEvent,
             ActivityHolder,
             BundleHolder
     {

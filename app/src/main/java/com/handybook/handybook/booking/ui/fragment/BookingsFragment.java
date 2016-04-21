@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -106,8 +107,6 @@ public class BookingsFragment extends InjectedFragment
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
 
-        bus.post(new BookingEvent.RequestServices());
-
         getActivity().getSupportFragmentManager()
                 .addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
                 {
@@ -135,17 +134,14 @@ public class BookingsFragment extends InjectedFragment
         mServices = event.getServices();
         if (mServices != null)
         {
-            UiUtils.revealView(mAddBookingButton);
-        }
-    }
-
-    @Subscribe
-    public void onReceiveCachedServicesSuccess(final BookingEvent.ReceiveCachedServicesSuccess event)
-    {
-        mServices = event.getServices();
-        if (mServices != null)
-        {
-            UiUtils.revealView(mAddBookingButton);
+            if (ViewCompat.isAttachedToWindow(mAddBookingButton))
+            {
+                UiUtils.revealView(mAddBookingButton);
+            }
+            else
+            {
+                mAddBookingButton.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -165,6 +161,16 @@ public class BookingsFragment extends InjectedFragment
                     .addToBackStack(null)
                     .commit();
         }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        //do not post this before onResume, because this fragment registers the bus onResume. If
+        //post prior to onResume, this fragment won't be listening to the bus for results.
+        bus.post(new BookingEvent.RequestServices());
     }
 
     private static class TabAdapter extends FragmentPagerAdapter
