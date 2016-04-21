@@ -804,13 +804,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     @OnClick(R.id.promo_button)
     public void onPromobButtonClicked()
     {
-/*
-        if(mCurrentQuote.hasCouponWarning()){
-            mPromoText.setText("");
-            mPromoButton.setText(R.string.apply);
-            return;
-        }
-*/
         final String promoCode = mPromoText.getText().toString();
         final boolean hasPromo = (mCurrentTransaction.promoApplied() != null);
 
@@ -868,7 +861,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     @Override
                     public void onSuccess(final BookingQuote bookingQuote)
                     {
-                        handlePromoSuccess(bookingQuote, mCurrentQuote, mCurrentTransaction, promoCode);
+                        handlePromoSuccess(bookingQuote, mCurrentTransaction, promoCode);
                     }
 
                     @Override
@@ -978,17 +971,22 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         }
     };
 
-    private void handlePromoSuccess( // New method since API now returns the full quote
-                                     final BookingQuote bookingQuote, final BookingQuote quote,
-                                     final BookingTransaction transaction, final String promo
+    /**
+     * This is a new method that handles the updated API that returns the whole quote not subset
+     *
+     * @param newQuote    the updated quote
+     * @param transaction
+     * @param promo
+     */
+    private void handlePromoSuccess(
+            final BookingQuote newQuote,
+            final BookingTransaction transaction,
+            final String promo
     )//.. on /v3/quotes/{1245}/set_coupon
     {
         if (!allowCallbacks) { return; }
-        // TODO: Check if we can just replace the quote here instead of editing it
-        quote.setPriceTable(bookingQuote.getPriceTable());
-        quote.setSurgePriceTable(bookingQuote.getSurgePriceTable());
-        quote.setCoupon(bookingQuote.getCoupon());
-        showBookingWarningIfApplicable(bookingQuote);
+        mCurrentQuote = newQuote;
+        showBookingWarningIfApplicable(mCurrentQuote);
         transaction.setPromoApplied(promo);
         updatePromoUI();
         mPromoText.setText(null);
