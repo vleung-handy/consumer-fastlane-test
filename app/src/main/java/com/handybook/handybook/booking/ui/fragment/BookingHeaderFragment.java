@@ -23,6 +23,10 @@ import butterknife.ButterKnife;
 
 public final class BookingHeaderFragment extends BookingFlowFragment implements Observer {
 
+    private static final String TIME_FORMAT = "h:mm aaa";
+    private static final String DATE_FORMAT = "EEEE',' MMMM d";
+    private static final String DECIMAL_FORMAT = "#.#";
+
     private BookingTransaction transaction;
     private BookingQuote quote;
 
@@ -34,6 +38,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     TextView priceText;
     @Bind(R.id.discount_text)
     TextView discountText;
+
 
     static BookingHeaderFragment newInstance() {
         return new BookingHeaderFragment();
@@ -94,10 +99,10 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         }
 
         //we want to display the time using the booking location's time zone
-        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMMM d", timeZone));
+        dateText.setText(DateTimeUtils.formatDate(startDate, DATE_FORMAT, timeZone));
 
-        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa", timeZone) + " - "
-                + TextUtils.formatDecimal(hours, "#.#")
+        timeText.setText(DateTimeUtils.formatDate(startDate, TIME_FORMAT, timeZone) + " - "
+                + TextUtils.formatDecimal(hours, DECIMAL_FORMAT)
                 + " " + getString(R.string.hours));
 
         final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
