@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
@@ -82,12 +83,20 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         final float hours = transaction.getHours() + transaction.getExtraHours();
         final Date startDate = transaction.getStartDate();
 
-        //we want to display the time using the booking location's time zone
-        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMMM d",
-                bookingManager.getCurrentRequest().getTimeZone()));
+        String timeZone = null;
+        if (bookingManager.getCurrentRequest() != null)
+        {
+            timeZone = bookingManager.getCurrentRequest().getTimeZone();
+        }
+        else
+        {
+            Crashlytics.logException(new RuntimeException("refreshInfo: bookingManager.getCurrentRequest() IS NULL!!!!"));
+        }
 
-        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa",
-                bookingManager.getCurrentRequest().getTimeZone()) + " - "
+        //we want to display the time using the booking location's time zone
+        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMMM d", timeZone));
+
+        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa", timeZone) + " - "
                 + TextUtils.formatDecimal(hours, "#.#")
                 + " " + getString(R.string.hours));
 
