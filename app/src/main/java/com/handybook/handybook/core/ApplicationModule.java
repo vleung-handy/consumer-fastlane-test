@@ -96,27 +96,14 @@ import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
-import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
-import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
-import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
-import com.handybook.handybook.helpcenter.manager.HelpManager;
-import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpWebViewActivity;
-import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
-import com.handybook.handybook.helpcenter.ui.fragment.HelpNativeFragment;
-import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
+import com.handybook.handybook.helpcenter.HelpModule;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
-import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
-import com.handybook.handybook.module.notifications.feed.ui.fragment.NotificationFeedFragment;
-import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
-import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.module.notifications.NotificationsModule;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -205,19 +192,11 @@ import retrofit.converter.GsonConverter;
         OnboardActivity.class,
         OnboardFragment.class,
         OnboardPageFragment.class,
-        HelpActivity.class,
-        HelpFragment.class,
-        HelpWebViewActivity.class,
-        HelpWebViewFragment.class,
-        HelpNativeActivity.class,
-        HelpNativeFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class,
         LaundryInfoDialogFragment.class,
         AddLaundryDialogFragment.class,
-        HelpContactFragment.class,
-        HelpContactActivity.class,
         SplashActivity.class,
         BookingDetailSectionFragment.class,
         BookingDetailSectionFragmentAddress.class,
@@ -241,10 +220,8 @@ import retrofit.converter.GsonConverter;
         BookingEditAddressActivity.class,
         BookingEditAddressFragment.class,
         BlockingActivity.class,
-        NotificationsActivity.class,
         BlockingUpdateFragment.class,
         TipDialogFragment.class,
-        NotificationFeedFragment.class,
         CancelRecurringBookingActivity.class,
         CancelRecurringBookingSelectionFragment.class,
         CancelRecurringBookingFragment.class,
@@ -253,7 +230,6 @@ import retrofit.converter.GsonConverter;
         UpdatePaymentFragment.class,
         NavbarWebViewDialogFragment.class,
         ServiceCategoriesOverlayFragment.class,
-        SplashPromoDialogFragment.class,
         PushReceiver.class,
         ReferralActivity.class,
         ReferralFragment.class,
@@ -266,7 +242,13 @@ import retrofit.converter.GsonConverter;
         RatingsRadioFragment.class,
         RateImprovementConfirmationDialogFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
-})
+},
+        includes = {
+                HelpModule.class,
+                NotificationsModule.class,
+                //TODO add more
+        }
+)
 public final class ApplicationModule
 {
     private final Context mContext;
@@ -455,17 +437,6 @@ public final class ApplicationModule
         return new ServicesManager(dataManager, bus);
     }
 
-
-    @Provides
-    @Singleton
-    final SplashNotificationManager provideSplashNotificationManager(final UserManager userManager,
-                                                                     final DataManager dataManager,
-                                                                     final PrefsManager prefsManager,
-                                                                     final Bus bus)
-    {
-        return new SplashNotificationManager(userManager, dataManager, prefsManager, bus);
-    }
-
     @Provides
     @Singleton
     final DeepLinkIntentProvider provideDeepLinkNavigationManager(final UserManager userManager)
@@ -487,25 +458,6 @@ public final class ApplicationModule
                                                      final DataManagerErrorHandler dataManagerErrorHandler)
     {
         return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
-    }
-
-    @Provides
-    @Singleton
-    final HelpManager provideHelpManager(final Bus bus,
-                                         final DataManager dataManager,
-                                         final UserManager userManager
-    )
-    {
-        return new HelpManager(bus, dataManager, userManager);
-    }
-
-    @Provides
-    @Singleton
-    final HelpContactManager provideHelpContactManager(final Bus bus,
-                                                       final DataManager dataManager
-    )
-    {
-        return new HelpContactManager(bus, dataManager);
     }
 
     @Provides
@@ -571,15 +523,4 @@ public final class ApplicationModule
             return manufacturer + " " + model;
         }
     }
-
-    @Provides
-    @Singleton
-    final NotificationManager provideNotificationManager(
-            final Bus bus,
-            final DataManager dataManager
-    )
-    {
-        return new NotificationManager(bus, dataManager);
-    }
-
 }
