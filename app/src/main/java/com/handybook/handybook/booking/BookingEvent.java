@@ -95,20 +95,25 @@ public abstract class BookingEvent
     }
 
 
-    public static class RequestPrerateProInfoSuccess extends HandyEvent.ReceiveSuccessEvent
+    public static class ReceivePrerateProInfoSuccess extends HandyEvent.ReceiveSuccessEvent
     {
-        public PrerateProInfo mPrerateProInfo;
+        private PrerateProInfo mPrerateProInfo;
 
-        public RequestPrerateProInfoSuccess(PrerateProInfo prerateProInfo)
+        public ReceivePrerateProInfoSuccess(PrerateProInfo prerateProInfo)
         {
             this.mPrerateProInfo = prerateProInfo;
+        }
+
+        public PrerateProInfo getPrerateProInfo()
+        {
+            return mPrerateProInfo;
         }
     }
 
 
-    public static class RequestPrerateProInfoError extends HandyEvent.ReceiveErrorEvent
+    public static class ReceivePrerateProInfoError extends HandyEvent.ReceiveErrorEvent
     {
-        public RequestPrerateProInfoError(DataManager.DataManagerError error)
+        public ReceivePrerateProInfoError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
