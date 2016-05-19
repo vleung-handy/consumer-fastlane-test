@@ -1,9 +1,11 @@
 package com.handybook.handybook.booking.rating;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.proteam.ProviderMatchPreference;
 import com.handybook.handybook.util.DateTimeUtils;
 
 import java.io.Serializable;
@@ -52,6 +54,9 @@ public class PrerateProInfo implements Serializable
     @SerializedName("home_cleaning")
     private boolean mIsCleaning;
 
+    @SerializedName("match_preference")
+    private ProviderMatchPreference mProviderMatchPreference;
+
     /**
      * This is tricky as hell. Do a request on a browser to prerate_pro_info to see how the response looks like.
      */
@@ -81,5 +86,11 @@ public class PrerateProInfo implements Serializable
     public boolean isCleaning()
     {
         return mIsCleaning;
+    }
+
+    @Nullable
+    public ProviderMatchPreference getProviderMatchPreference()
+    {
+        return mProviderMatchPreference;
     }
 }
