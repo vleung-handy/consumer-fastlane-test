@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
@@ -33,9 +36,9 @@ import butterknife.ButterKnife;
 
 public class RateServiceDialogFragment extends BaseDialogFragment
 {
-    static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
-    static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
-    static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
+    private static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
+    private static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
+    private static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
 
     //threshold for what is considered a good rating.
@@ -47,34 +50,50 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private String mProName;
     private int mRating;
 
-    @Bind(R.id.service_icon)
+    @Bind(R.id.rate_dialog_service_icon)
     ImageView mServiceIcon;
-    @Bind(R.id.title_text)
+    @Bind(R.id.rate_dialog_title_text)
     TextView mTitleText;
-    @Bind(R.id.message_text)
+    @Bind(R.id.rate_dialog_message_text)
     TextView mMessageText;
-    @Bind(R.id.submit_button)
+    @Bind(R.id.rate_dialog_submit_button)
     Button mSubmitButton;
-    @Bind(R.id.skip_button)
+    @Bind(R.id.rate_dialog_skip_button)
     Button mSkipButton;
-    @Bind(R.id.submit_progress)
+    @Bind(R.id.rate_dialog_submit_progress)
     ProgressBar mSubmitProgress;
-    @Bind(R.id.ratings_layout)
+    @Bind(R.id.rate_dialog_ratings_layout)
     LinearLayout mRatingsLayout;
-    @Bind(R.id.submit_button_layout)
+    @Bind(R.id.rate_dialog_submit_button_layout)
     View mSubmitButtonLayout;
-    @Bind(R.id.star_1)
+    @Bind(R.id.rate_dialog_star_1)
     ImageView mStar1;
-    @Bind(R.id.star_2)
+    @Bind(R.id.rate_dialog_star_2)
     ImageView mStar2;
-    @Bind(R.id.star_3)
+    @Bind(R.id.rate_dialog_star_3)
     ImageView mStar3;
-    @Bind(R.id.star_4)
+    @Bind(R.id.rate_dialog_star_4)
     ImageView mStar4;
-    @Bind(R.id.star_5)
+    @Bind(R.id.rate_dialog_star_5)
     ImageView mStar5;
-    @Bind(R.id.tip_section)
+    @Bind(R.id.rate_dialog_tip_section)
     View mTipSection;
+    //Pro Match Section
+    @Bind(R.id.rate_dialog_pro_match_container)
+    ViewGroup mProMatchContainer;
+    @Bind(R.id.rate_dialog_pro_match_radiogroup)
+    RadioGroup mProMatchPreferences;
+    @Bind(R.id.rate_dialog_pro_match_header_txt)
+    TextView mProMatchHeaderText;
+    @Bind(R.id.rate_dialog_pro_match_footer_txt)
+    TextView mProMatchFooterText;
+    @Bind(R.id.rate_dialog_pro_match_preference_never)
+    RadioButton mProMatchRadioNever;
+    @Bind(R.id.rate_dialog_pro_match_preference_indifferent)
+    RadioButton mProMatchRadioIndifferent;
+    @Bind(R.id.rate_dialog_pro_match_preference_preferred)
+    RadioButton mProMatchRadioPreferred;
+    private PrerateProInfo mPrerateProInfo;
 
     public static RateServiceDialogFragment newInstance(
             final int bookingId,
@@ -96,6 +115,34 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         rateServiceDialogFragment.setArguments(bundle);
         return rateServiceDialogFragment;
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (mPrerateProInfo == null)
+        {
+            mBus.post(new BookingEvent.RequestPrerateProInfo(String.valueOf(mBookingId)));
+        }
+    }
+
+    @Subscribe
+    public void onReceivePrerateInfoSuccess(
+            BookingEvent.ReceivePrerateProInfoSuccess receivePrerateProInfoSuccess
+    )
+    {
+        mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
+
+    }
+
+    @Subscribe
+    public void onReceivePrerateInfoSuccess(
+            BookingEvent.ReceivePrerateProInfoError receivePrerateProInfoSuccess
+    )
+    {
+        mBus.post(new BookingEvent.RequestPrerateProInfo(String.valueOf(mBookingId)));
+    }
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -123,7 +170,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         initStars();
         setRating(mRating);
 
-        mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
+        //mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
 
         //we want to keep the spacing that is there.
         mMessageText.setVisibility(View.INVISIBLE);
@@ -156,7 +203,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         {
             mTipSection.setVisibility(View.VISIBLE);
             getChildFragmentManager().beginTransaction()
-                    .replace(R.id.tip_layout_container, tipFragment)
+                    .replace(R.id.rate_dialog_tip_layout_container, tipFragment)
                     .commit();
             mBus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.RATING_FLOW));
         }
@@ -269,7 +316,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         if (finalRating < GOOD_RATING)
         {
             FragmentUtils.safeLaunchDialogFragment(
-                    RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)),
+                    RateImprovementDialogFragment.newInstance(
+                            String.valueOf(mBookingId),
+                            mPrerateProInfo
+                    ),
                     getActivity(),
                     RateImprovementDialogFragment.class.getSimpleName()
             );
@@ -314,7 +364,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private Integer getTipAmount()
     {
         final TipFragment tipFragment = (TipFragment) getChildFragmentManager()
-                .findFragmentById(R.id.tip_layout_container);
+                .findFragmentById(R.id.rate_dialog_tip_layout_container);
         return tipFragment != null ? tipFragment.getTipAmount() : null;
     }
 }

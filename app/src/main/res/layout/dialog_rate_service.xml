@@ -1,285 +1,387 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:background="@android:color/transparent"
-                android:gravity="center"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@android:color/transparent"
+             android:gravity="center_horizontal"
+    >
 
     <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="46dp"
         android:animateLayoutChanges="true"
         android:background="@color/white"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
-        android:layout_width="300dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
-        <TextView
-            style="@style/TextView.XLarge.Bold"
-            android:gravity="center"
-            android:id="@+id/title_text"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginTop="64dp"
+        <ScrollView
             android:layout_width="match_parent"
-            android:text="Title"/>
-
-        <TextView
-            style="@style/TextView.Medium"
-            android:gravity="center"
-            android:id="@+id/message_text"
-            android:layout_below="@id/title_text"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:text="Message"
-            />
-
-        <LinearLayout
-            android:gravity="center_horizontal"
-            android:id="@+id/ratings_layout"
-            android:layout_below="@id/message_text"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_width="match_parent"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
-
-                <ImageView
-                    android:contentDescription="star"
-                    android:id="@+id/star_1"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="36dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_width="36dp"
-                    android:src="@drawable/ic_star"/>
-
-                <TextView
-                    style="@style/TextView.XSmall"
-                    android:layout_below="@id/star_1"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/awful"
-                    android:textColor="@color/dark_grey_pressed"/>
-
-                <TextView
-                    style="@style/TextView.XSmall"
-                    android:layout_below="@id/star_1"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/amazing"
-                    android:textColor="@color/dark_grey_pressed"
-                    android:visibility="invisible"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
-
-                <ImageView
-                    android:contentDescription="star"
-                    android:id="@+id/star_2"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="36dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_width="36dp"
-                    android:src="@drawable/ic_star"/>
-
-                <TextView
-                    style="@style/TextView.XSmall"
-                    android:layout_below="@id/star_2"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/amazing"
-                    android:textColor="@color/dark_grey_pressed"
-                    android:visibility="invisible"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
-
-                <ImageView
-                    android:contentDescription="star"
-                    android:id="@+id/star_3"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="36dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_width="36dp"
-                    android:src="@drawable/ic_star"/>
-
-                <TextView
-                    style="@style/TextView.XSmall"
-                    android:layout_below="@id/star_3"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/amazing"
-                    android:textColor="@color/dark_grey_pressed"
-                    android:visibility="invisible"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
-
-                <ImageView
-                    android:contentDescription="star"
-                    android:id="@+id/star_4"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="36dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_width="36dp"
-                    android:src="@drawable/ic_star"/>
-
-                <TextView
-                    style="@style/TextView.XSmall"
-                    android:layout_below="@id/star_4"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/amazing"
-                    android:textColor="@color/dark_grey_pressed"
-                    android:visibility="invisible"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
-
-                <ImageView
-                    android:contentDescription="star"
-                    android:id="@+id/star_5"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="36dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_width="36dp"
-                    android:src="@drawable/ic_star"/>
-
-                <TextView
-                    style="@style/TextView.XSmall"
-                    android:layout_below="@id/star_5"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="@string/amazing"
-                    android:textColor="@color/dark_grey_pressed"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <!--Used to fix margin on older devices-->
-        <View
-            android:layout_below="@id/ratings_layout"
-            android:layout_height="0dp"
-            android:layout_width="0dp"/>
-
-        <LinearLayout
-            android:id="@+id/submit_button_layout"
-            android:layout_below="@+id/ratings_layout"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_height="match_parent"
+            >
 
             <LinearLayout
-                android:id="@+id/tip_section"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
-
-                <View
-                    android:background="@color/handy_divider_line"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="25dp"
-                    android:layout_width="match_parent"/>
+                >
 
                 <TextView
-                    android:gravity="center"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/default_margin"
+                    android:id="@+id/rate_dialog_title_text"
+                    style="@style/TextView.XLarge.Bold"
                     android:layout_width="match_parent"
-                    android:text="@string/rating_tip_prompt"/>
-
-                <FrameLayout
-                    android:id="@+id/tip_layout_container"
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent"/>
-            </LinearLayout>
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginTop="64dp"
+                    android:gravity="center"
+                    tools:text="Title"
+                    />
 
-            <LinearLayout
+                <TextView
+                    android:id="@+id/rate_dialog_message_text"
+                    style="@style/TextView.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    tools:text="Message"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/rate_dialog_ratings_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <ImageView
+                            android:id="@+id/rate_dialog_star_1"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="4dp"
+                            android:contentDescription="@string/cd_star_icon"
+                            android:src="@drawable/ic_star"
+                            />
+
+                        <TextView
+                            style="@style/TextView.XSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/rate_dialog_star_1"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/awful"
+                            android:textColor="@color/dark_grey_pressed"
+                            />
+
+                        <TextView
+                            style="@style/TextView.XSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/rate_dialog_star_1"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/amazing"
+                            android:textColor="@color/dark_grey_pressed"
+                            android:visibility="invisible"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <ImageView
+                            android:id="@+id/rate_dialog_star_2"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="4dp"
+                            android:contentDescription="@string/cd_star_icon"
+                            android:src="@drawable/ic_star"
+                            />
+
+                        <TextView
+                            style="@style/TextView.XSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/rate_dialog_star_2"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/amazing"
+                            android:textColor="@color/dark_grey_pressed"
+                            android:visibility="invisible"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <ImageView
+                            android:id="@+id/rate_dialog_star_3"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:contentDescription="@string/cd_star_icon"
+                            android:src="@drawable/ic_star"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            />
+
+                        <TextView
+                            style="@style/TextView.XSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/rate_dialog_star_3"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/amazing"
+                            android:textColor="@color/dark_grey_pressed"
+                            android:visibility="invisible"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <ImageView
+                            android:id="@+id/rate_dialog_star_4"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="4dp"
+                            android:contentDescription="@string/cd_star_icon"
+                            android:src="@drawable/ic_star"
+                            />
+
+                        <TextView
+                            style="@style/TextView.XSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/rate_dialog_star_4"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/amazing"
+                            android:textColor="@color/dark_grey_pressed"
+                            android:visibility="invisible"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <ImageView
+                            android:id="@+id/rate_dialog_star_5"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="4dp"
+                            android:contentDescription="@string/cd_star_icon"
+                            android:src="@drawable/ic_star"
+                            />
+
+                        <TextView
+                            style="@style/TextView.XSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/rate_dialog_star_5"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/amazing"
+                            android:textColor="@color/dark_grey_pressed"
+                            />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <!--Used to fix margin on older devices-->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/rate_dialog_submit_button_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="25dp"
+                        android:background="@color/handy_divider_line"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/rate_dialog_pro_match_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:id="@+id/rate_dialog_pro_match_header_txt"
+                            style="@style/TextView.Large"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/default_margin"
+                            android:gravity="center_horizontal"
+                            android:text="@string/rate_dialog_pro_match_header_template"
+                            tools:text="Would you like to work \nwith Jennifer L. again?"
+                            />
+
+                        <RadioGroup
+                            android:id="@+id/rate_dialog_pro_match_radiogroup"
+                            style="@style/ToggleGroupStyle"
+                            android:layout_marginLeft="@dimen/default_margin"
+                            android:layout_marginRight="@dimen/default_margin"
+                            android:layout_marginBottom="@dimen/default_margin_half"
+                            android:checkedButton="@+id/tip_none"
+                            >
+
+                            <RadioButton
+                                android:id="@+id/rate_dialog_pro_match_preference_never"
+                                style="@style/TipToggle.First"
+                                android:text="@string/pro_match_preference_never"
+                                />
+
+                            <RadioButton
+                                android:id="@+id/rate_dialog_pro_match_preference_indifferent"
+                                style="@style/TipToggle"
+                                android:text="@string/pro_match_preference_indifferent"
+                                tools:checked="true"
+                                />
+
+                            <RadioButton
+                                android:id="@+id/rate_dialog_pro_match_preference_preferred"
+                                style="@style/TipToggle.Last"
+                                android:text="@string/pro_match_preference_preferred"
+                                />
+
+                        </RadioGroup>
+
+                        <TextView
+                            android:id="@+id/rate_dialog_pro_match_footer_txt"
+                            style="@style/TextView.Medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/default_margin"
+                            android:layout_marginTop="@dimen/default_margin_half"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/handy_text_gray"
+                            android:visibility="gone"
+                            tools:text="@string/rate_dialog_pro_match_preference_footer_preferred"
+                            tools:visibility="visible"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rate_dialog_tip_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        >
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/default_margin"
+                            android:gravity="center"
+                            android:text="@string/rating_tip_prompt"
+                            />
+
+                        <FrameLayout
+                            android:id="@+id/rate_dialog_tip_layout_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_quarter"
+            >
+
+            <Button
+                android:id="@+id/rate_dialog_skip_button"
+                style="@style/Button.Grey"
+                android:layout_weight="2"
+                android:text="@string/skip"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent">
+                android:layout_weight="1"
+                >
 
                 <Button
-                    style="@style/Button.Grey"
-                    android:id="@+id/skip_button"
-                    android:layout_weight="2"
-                    android:text="@string/skip"
-                    android:visibility="gone"/>
+                    android:id="@+id/rate_dialog_submit_button"
+                    style="@style/Button.Green"
+                    android:text="@string/submit"
+                    />
 
-                <FrameLayout
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent">
+                <ProgressBar
+                    android:id="@+id/rate_dialog_submit_progress"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    />
 
-                    <Button
-                        style="@style/Button.Green"
-                        android:id="@+id/submit_button"
-                        android:text="@string/submit"/>
-
-                    <ProgressBar
-                        android:id="@+id/submit_progress"
-                        android:layout_gravity="center"
-                        android:layout_height="32dp"
-                        android:layout_width="32dp"
-                        android:visibility="invisible"/>
-
-                </FrameLayout>
-
-            </LinearLayout>
+            </FrameLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="-24dp"
-        android:layout_width="300dp">
 
-        <ImageView
-            android:contentDescription="rate"
-            android:id="@+id/service_icon"
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/circle_green"/>
+    <ImageView
+        android:id="@+id/rate_dialog_service_icon"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/circle_green"
+        android:padding="22dp"
+        android:src="@drawable/ic_clean"
+        android:contentDescription="@string/cd_service_logo"
+        />
 
-        <ImageView
-            android:contentDescription="rate"
-            android:layout_centerInParent="true"
-            android:layout_height="48dp"
-            android:layout_width="48dp"
-            android:src="@drawable/ic_clean"/>
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</FrameLayout>
