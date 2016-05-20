@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment;
 
+import android.accounts.NetworkErrorException;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.analytics.MixpanelEvent;
@@ -93,6 +95,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     RadioButton mProMatchRadioIndifferent;
     @Bind(R.id.rate_dialog_pro_match_preference_preferred)
     RadioButton mProMatchRadioPreferred;
+
     private PrerateProInfo mPrerateProInfo;
 
     public static RateServiceDialogFragment newInstance(
@@ -123,6 +126,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         if (mPrerateProInfo == null)
         {
             mBus.post(new BookingEvent.RequestPrerateProInfo(String.valueOf(mBookingId)));
+            disableInputs();
+            showProgress();
         }
     }
 
@@ -132,6 +137,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     )
     {
         mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
+        hideProgress();
+        enableInputs();
 
     }
 
@@ -140,13 +147,15 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             BookingEvent.ReceivePrerateProInfoError receivePrerateProInfoSuccess
     )
     {
-        mBus.post(new BookingEvent.RequestPrerateProInfo(String.valueOf(mBookingId)));
+        Crashlytics.logException(new NetworkErrorException("Could not get prerate_pro_info"));
+        dismiss();
     }
 
-
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         super.onCreateView(inflater, container, savedInstanceState);
 
@@ -213,6 +222,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         return view;
     }
 
+
     @Override
     public void onSaveInstanceState(final Bundle outState)
     {
@@ -234,6 +244,16 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         super.disableInputs();
         mSubmitButton.setClickable(false);
         mSkipButton.setClickable(false);
+    }
+
+    private void showProgress()
+    {
+        mSubmitProgress.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgress()
+    {
+        mSubmitProgress.setVisibility(View.GONE);
     }
 
     private void initStars()
@@ -323,7 +343,9 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                     getActivity(),
                     RateImprovementDialogFragment.class.getSimpleName()
             );
-        } else {
+        }
+        else
+        {
             FragmentUtils.safeLaunchDialogFragment(
                     RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),
                     getActivity(),
@@ -334,7 +356,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     @Subscribe
     public void onReceiveRateBookingError(BookingEvent.ReceiveRateBookingError event)
     {
-        mSubmitProgress.setVisibility(View.GONE);
+        hideProgress();
         mSubmitButton.setText(R.string.submit);
         mSkipButton.setVisibility(View.VISIBLE);
         enableInputs();
@@ -347,7 +369,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         public void onClick(final View v)
         {
             disableInputs();
-            mSubmitProgress.setVisibility(View.VISIBLE);
+            showProgress();
             mSubmitButton.setText(null);
 
             final int finalRating = mRating + 1;
