@@ -33,6 +33,7 @@ import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
+import com.handybook.handybook.booking.proteam.ProviderMatchPreference;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.constant.PrefsKey;
@@ -753,16 +754,27 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
-    public void ratePro(final int bookingId, final int rating, final Integer tipAmount, final Callback<Void> cb)
+    public void ratePro(
+            final int bookingId,
+            final int rating,
+            final Integer tipAmount,
+            final ProviderMatchPreference providerMatchPreference,
+            final Callback<Void> cb
+    )
     {
-        mService.ratePro(bookingId, rating, tipAmount, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            void success(final JSONObject response)
-            {
-                cb.onSuccess(null);
-            }
-        });
+        mService.ratePro(
+                bookingId,
+                rating,
+                tipAmount,
+                ProviderMatchPreference.asString(providerMatchPreference),
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    void success(final JSONObject response)
+                    {
+                        cb.onSuccess(null);
+                    }
+                });
     }
 
     @Override

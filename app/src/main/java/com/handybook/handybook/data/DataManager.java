@@ -30,6 +30,7 @@ import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
+import com.handybook.handybook.booking.proteam.ProviderMatchPreference;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.BlockedWrapper;
@@ -273,6 +274,7 @@ public abstract class DataManager
             int bookingId,
             int rating,
             Integer tipAmount,
+            ProviderMatchPreference providerMatchPreference,
             Callback<Void> cb
     );
 

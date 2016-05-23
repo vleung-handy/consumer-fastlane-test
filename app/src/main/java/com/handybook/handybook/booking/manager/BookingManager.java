@@ -280,6 +280,7 @@ public class BookingManager implements Observer
                 event.getBookingId(),
                 event.getFinalRating(),
                 event.getTipAmountCents(),
+                event.getProviderMatchPreference(),
                 new DataManager.Callback<Void>()
                 {
                     @Override
