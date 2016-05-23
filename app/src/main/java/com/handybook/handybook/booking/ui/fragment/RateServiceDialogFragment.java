@@ -23,6 +23,7 @@ import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.proteam.ProviderMatchPreference;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
@@ -94,6 +95,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private PrerateProInfo mPrerateProInfo;
     private ArrayList<ImageView> mStars = new ArrayList<>();
     private View.OnClickListener mSubmitListener;
+    private ProviderMatchPreference mMatchPreference;
 
     {
         mSubmitListener = new View.OnClickListener()
@@ -106,7 +108,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 mSubmitButton.setText(null);
                 final int finalRating = mRating + 1;
                 final Integer tipAmountCents = getTipAmount();
-                mBus.post(new BookingEvent.RateBookingEvent(mBookingId, finalRating, tipAmountCents));
+                mBus.post(new BookingEvent.RateBookingEvent(
+                        mBookingId,
+                        finalRating,
+                        tipAmountCents,
+                        mMatchPreference
+                ));
                 if (tipAmountCents != null)
                 {
                     mBus.post(new MixpanelEvent.TrackSubmitTip(tipAmountCents, MixpanelEvent.TipParentFlow.RATING_FLOW));
@@ -235,6 +242,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     )
     {
         mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
+        initProTeamSection(mPrerateProInfo);
         hideProgress();
         enableInputs();
 
@@ -293,7 +301,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     /**
      * Sets the rating field and fills the stars yellow in the layout, also shows the submit button
      *
-     * @param rating
+     * @param rating Zero indexed rating
      */
     private void setRating(final int rating)
     {
@@ -362,6 +370,53 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                     }
                 }
                 return true;
+            }
+        });
+    }
+
+    private void initProTeamSection(final PrerateProInfo prerateProInfo)
+    {
+        ProviderMatchPreference preference = prerateProInfo.getProviderMatchPreference();
+        mMatchPreference = preference == null ? ProviderMatchPreference.INDIFFERENT : preference;
+        switch (mMatchPreference)
+        {
+            case NEVER:
+                mProMatchRadioNever.setChecked(true);
+                break;
+            case PREFERRED:
+                mProMatchRadioPreferred.setChecked(true);
+                break;
+            case INDIFFERENT:
+            default:
+                mProMatchRadioIndifferent.setChecked(true);
+                break;
+        }
+        mProMatchPreferences.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(final RadioGroup group, final int checkedId)
+            {
+                switch (checkedId)
+                {
+                    case R.id.rate_dialog_pro_match_preference_never:
+                        mMatchPreference = ProviderMatchPreference.NEVER;
+                        mProMatchFooterText.setText(
+                                R.string.rate_dialog_pro_match_preference_footer_never
+                        );
+                        mProMatchFooterText.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.rate_dialog_pro_match_preference_indifferent:
+                        mMatchPreference = ProviderMatchPreference.INDIFFERENT;
+                        mProMatchFooterText.setVisibility(View.GONE);
+                        break;
+                    case R.id.rate_dialog_pro_match_preference_preferred:
+                        mMatchPreference = ProviderMatchPreference.PREFERRED;
+                        mProMatchFooterText.setText(
+                                R.string.rate_dialog_pro_match_preference_footer_preferred
+                        );
+                        mProMatchFooterText.setVisibility(View.VISIBLE);
+                        break;
+                }
             }
         });
     }
