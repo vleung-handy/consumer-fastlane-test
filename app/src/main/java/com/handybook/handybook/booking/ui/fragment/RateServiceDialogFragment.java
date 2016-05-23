@@ -41,10 +41,9 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
     private static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
-
-    //threshold for what is considered a good rating.
-    private static final int GOOD_RATING = 4;
+    private static final int GOOD_RATING = 4; //threshold for what is considered a good rating.
     private static final String RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT = "RateServiceConfirmDialogFragment";
+
     @Bind(R.id.rate_dialog_service_icon)
     ImageView mServiceIcon;
     @Bind(R.id.rate_dialog_title_text)
@@ -88,11 +87,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     RadioButton mProMatchRadioIndifferent;
     @Bind(R.id.rate_dialog_pro_match_preference_preferred)
     RadioButton mProMatchRadioPreferred;
-    private ArrayList<ImageView> mStars = new ArrayList<>();
+
     private int mBookingId;
-    private String mProName;
     private int mRating;
+    private String mProName;
     private PrerateProInfo mPrerateProInfo;
+    private ArrayList<ImageView> mStars = new ArrayList<>();
     private View.OnClickListener mSubmitListener;
 
     {
