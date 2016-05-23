@@ -250,9 +250,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/default_margin"
+                            android:layout_marginLeft="@dimen/default_margin"
+                            android:layout_marginRight="@dimen/default_margin"
                             android:gravity="center_horizontal"
-                            android:text="@string/rate_dialog_pro_match_header_template"
-                            tools:text="Would you like to work \nwith Jennifer L. again?"
+                            android:text="@string/rate_dialog_pro_match_header"
+                            tools:text="Add them to your Pro Team?"
                             />
 
                         <RadioGroup
@@ -290,7 +292,7 @@
                             style="@style/TextView.Medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/default_margin"
+                            android:layout_margin="@dimen/default_margin"
                             android:layout_marginTop="@dimen/default_margin_half"
                             android:gravity="center_horizontal"
                             android:textColor="@color/handy_text_gray"
