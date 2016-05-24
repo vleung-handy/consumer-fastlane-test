@@ -117,6 +117,8 @@ import com.handybook.handybook.module.notifications.feed.ui.activity.Notificatio
 import com.handybook.handybook.module.notifications.feed.ui.fragment.NotificationFeedFragment;
 import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -264,7 +266,9 @@ import retrofit.converter.GsonConverter;
         RateImprovementDialogFragment.class,
         RatingsGridFragment.class,
         RatingsRadioFragment.class,
-        RateImprovementConfirmationDialogFragment.class
+        RateImprovementConfirmationDialogFragment.class,
+        ProTeamActivity.class,
+        ProTeamFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule

@@ -41,13 +41,9 @@ import butterknife.ButterKnife;
 
 public abstract class MenuDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-    protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
-    protected static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
+    private static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
+    private static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
 
-    private static final String TAG = MenuDrawerActivity.class.getName();
-
-
-    private boolean showNavForTransition;
     protected boolean disableDrawer;
 
     @Bind(R.id.drawer_layout)
@@ -56,58 +52,46 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     @Bind(R.id.navigation)
     NavigationView mNavigationView;
 
-    Button mEnvButton;
+    @Inject
+    EnvironmentModifier mEnvironmentModifier;
+
+    private static final String TAG = MenuDrawerActivity.class.getName();
+    private boolean showNavForTransition;
+    private Object busEventListener;
 
     protected abstract Fragment createFragment();
 
     protected abstract String getNavItemTitle();
-
-    @Inject
-    EnvironmentModifier mEnvironmentModifier;
-
-    protected Object busEventListener;
-
-    private int mSelectedMenuId;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_drawer);
-
         ButterKnife.bind(this);
-
         if (requiresUser() && !mUserManager.isUserLoggedIn())
         {
             navigateToActivity(ServiceCategoriesActivity.class);
             finish();
             return;
         }
-
         FacebookSdk.sdkInitialize(getApplicationContext());
-
         setupEnvButton();
-
-        mSelectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
-
-        mNavigationView.setCheckedItem(mSelectedMenuId);
+        int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
+        mNavigationView.setCheckedItem(selectedMenuId);
         mNavigationView.setNavigationItemSelectedListener(this);
-
         final FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
         if (fragment == null)
         {
             fragment = createFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
-
         if (savedInstanceState == null && (showNavForTransition
                 = getIntent().getBooleanExtra(EXTRA_SHOW_NAV_FOR_TRANSITION, false)))
         {
             mDrawerLayout.closeDrawers();
         }
-
         //this is to work around the subscriber inheritance issue that Otto has.
         //https://github.com/square/otto/issues/26
         busEventListener = new Object()
@@ -140,17 +124,11 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     protected final void onStart()
     {
         super.onStart();
-
         if (showNavForTransition)
         {
             mDrawerLayout.closeDrawers();
             showNavForTransition = false;
         }
-    }
-
-    public final DrawerLayout getDrawer()
-    {
-        return mDrawerLayout;
     }
 
     public final void navigateToActivity(final Class<? extends Activity> clazz)
@@ -198,16 +176,18 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
 
     private void setupEnvButton()
     {
-        mEnvButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
-        mEnvButton.setText(String.format(getString(R.string.env_format), mEnvironmentModifier.getEnvironment(),
-                BuildConfig.VERSION_NAME, Integer.valueOf(BuildConfig.VERSION_CODE).toString()));
-
+        Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
+        envButton.setText(String.format(
+                getString(R.string.env_format),
+                mEnvironmentModifier.getEnvironment(),
+                BuildConfig.VERSION_NAME,
+                Integer.valueOf(BuildConfig.VERSION_CODE).toString())
+        );
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
-            mEnvButton.setVisibility(View.GONE);
+            envButton.setVisibility(View.GONE);
         }
-
-        mEnvButton.setOnClickListener(new View.OnClickListener()
+        envButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
