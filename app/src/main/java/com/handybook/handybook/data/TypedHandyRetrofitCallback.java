@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
@@ -86,7 +87,7 @@ class BookingOptionsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallb
 }
 
 
-class ProviderResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<Booking.Provider>
+class ProviderResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<Provider>
 {
     ProviderResponseHandyRetroFitCallback(DataManager.Callback callback)
     {

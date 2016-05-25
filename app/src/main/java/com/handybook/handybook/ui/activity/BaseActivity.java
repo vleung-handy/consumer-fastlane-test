@@ -246,8 +246,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 RateServiceDialogFragment.class.getSimpleName());
         if (successfullyLaunched)
         {
-            mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId,
-                    proName, 0);
+            mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId, proName, 0);
         }
     }
 

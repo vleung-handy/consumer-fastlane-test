@@ -355,4 +355,12 @@
     <string name="toast_error_booking_flow_coupon_invalid">Sorry, that coupon is invalid for this booking. It will not be applied to your total.</string>
     <string name="snackbar_promo_code_restored">Promo code restored!</string>
     <string name="edit_preferences_apply_to_all_text">Apply to all subsequent\nbookings in the series</string>
+    <string name="rate_dialog_pro_match_header">Add them to your Pro Team?</string>
+    <string name="rate_dialog_pro_match_preference_footer_never">We\'ll never match you with this pro again.</string>
+    <string name="rate_dialog_pro_match_preference_footer_preferred">Pro Team members are requested first.</string>
+    <string name="pro_match_preference_never">No</string>
+    <string name="pro_match_preference_indifferent">Not now</string>
+    <string name="pro_match_preference_preferred">Yes</string>
+    <string name="cd_service_logo">Service Logo</string>
+    <string name="cd_star_icon">star</string>
 </resources>

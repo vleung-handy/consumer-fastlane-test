@@ -8,6 +8,7 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.proteam.ProviderMatchPreference;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.data.DataManager;
@@ -95,20 +96,25 @@ public abstract class BookingEvent
     }
 
 
-    public static class RequestPrerateProInfoSuccess extends HandyEvent.ReceiveSuccessEvent
+    public static class ReceivePrerateProInfoSuccess extends HandyEvent.ReceiveSuccessEvent
     {
-        public PrerateProInfo mPrerateProInfo;
+        private PrerateProInfo mPrerateProInfo;
 
-        public RequestPrerateProInfoSuccess(PrerateProInfo prerateProInfo)
+        public ReceivePrerateProInfoSuccess(PrerateProInfo prerateProInfo)
         {
             this.mPrerateProInfo = prerateProInfo;
+        }
+
+        public PrerateProInfo getPrerateProInfo()
+        {
+            return mPrerateProInfo;
         }
     }
 
 
-    public static class RequestPrerateProInfoError extends HandyEvent.ReceiveErrorEvent
+    public static class ReceivePrerateProInfoError extends HandyEvent.ReceiveErrorEvent
     {
-        public RequestPrerateProInfoError(DataManager.DataManagerError error)
+        public ReceivePrerateProInfoError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
@@ -194,12 +200,19 @@ public abstract class BookingEvent
         private final int mBookingId;
         private final int mFinalRating;
         private final Integer mTipAmountCents;
+        private ProviderMatchPreference mProviderMatchPreference;
 
-        public RateBookingEvent(int bookingId, int finalRating, Integer tipAmountCents)
+        public RateBookingEvent(
+                int bookingId,
+                int finalRating,
+                Integer tipAmountCents,
+                ProviderMatchPreference providerMatchPreference
+        )
         {
             mBookingId = bookingId;
             mFinalRating = finalRating;
             mTipAmountCents = tipAmountCents;
+            mProviderMatchPreference = providerMatchPreference;
         }
 
         public int getBookingId()
@@ -215,6 +228,11 @@ public abstract class BookingEvent
         public Integer getTipAmountCents()
         {
             return mTipAmountCents;
+        }
+
+        public ProviderMatchPreference getProviderMatchPreference()
+        {
+            return mProviderMatchPreference;
         }
     }
 

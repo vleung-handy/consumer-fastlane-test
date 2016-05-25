@@ -8,14 +8,15 @@ import android.view.ViewGroup;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.analytics.MixpanelEvent;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
 
@@ -54,7 +55,7 @@ public class BookingDetailSectionFragmentProInformation extends
     {
         super.updateDisplay(booking, user);
 
-        final Booking.Provider pro = booking.getProvider();
+        final Provider pro = booking.getProvider();
 
         if (userCanLeaveTip(booking))
         {

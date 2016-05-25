@@ -20,6 +20,7 @@ import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
@@ -41,41 +42,52 @@ import butterknife.ButterKnife;
  */
 public class RateImprovementDialogFragment extends BaseDialogFragment implements WizardCallback, ViewPager.OnPageChangeListener
 {
-    public static final String EXTRA_BOOKING_ID = "booking_id";
-    public static final String EXTRA_REASONS = "reasons";
-    public static final String EXTRA_FIRST_FRAGMENT = "first_fragment";
+    static final String EXTRA_REASONS = "reasons";
+    static final String EXTRA_FIRST_FRAGMENT = "first_fragment";
     private static final String TAG = RateImprovementDialogFragment.class.getName();
 
     @Bind(R.id.pager)
     SwipeableViewPager mPager;
 
-    WizardPagerAdapter mAdapter;
+    private WizardPagerAdapter mAdapter;
 
-    RatingsGridFragment mMainFragment;
-    RatingsRadioFragment mRatingsRadioFragment;
-    RatingsGridFragment mQualityFragment;
+    private RatingsRadioFragment mRatingsRadioFragment;
+    private RatingsGridFragment mQualityFragment;
 
-    String mBookingId;
-    PrerateProInfo mPrerateProInfo;
+    private String mBookingId;
+    private PrerateProInfo mPrerateProInfo;
 
     /**
      * This holds the user's response
      */
-    RateImprovementFeedback mFeedback;
+    private RateImprovementFeedback mFeedback;
 
     /**
      * This is a dynamically generated list of fragments depending on the user's selection.
      * The first fragment will always be the main fragment with list of options.
      * The next series of fragments will be determined depending on the user's selections,
      */
-    List<BaseWizardFragment> mFragmentList;
+    private List<BaseWizardFragment> mFragmentList;
 
     public static RateImprovementDialogFragment newInstance(String bookingId)
     {
         final RateImprovementDialogFragment fragment = new RateImprovementDialogFragment();
 
         final Bundle args = new Bundle();
-        args.putString(RateImprovementDialogFragment.EXTRA_BOOKING_ID, bookingId);
+        args.putString(BundleKeys.BOOKING_ID, bookingId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static RateImprovementDialogFragment newInstance(
+            String bookingId,
+            PrerateProInfo prerateProInfo
+    )
+    {
+        final RateImprovementDialogFragment fragment = new RateImprovementDialogFragment();
+        final Bundle args = new Bundle();
+        args.putString(BundleKeys.BOOKING_ID, bookingId);
+        args.putSerializable(BundleKeys.PRERATE_PRO_INFO, prerateProInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -98,17 +110,20 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
 
         final Bundle args = getArguments();
 
-        mBookingId = args.getString(EXTRA_BOOKING_ID);
+        mBookingId = args.getString(BundleKeys.BOOKING_ID);
+        mPrerateProInfo = (PrerateProInfo) args.getSerializable(BundleKeys.PRERATE_PRO_INFO);
 
         if (TextUtils.isEmpty(mBookingId))
         {
             Crashlytics.logException(new RuntimeException("No booking ID was passed to " + TAG));
             dismiss();
         }
+        if (mPrerateProInfo != null)
+        {
+            initialize();
+        }
         mPager.setVisibility(View.VISIBLE);
-
         mFeedback = new RateImprovementFeedback(mBookingId);
-
         return view;
     }
 
@@ -116,13 +131,22 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
     public void onResume()
     {
         super.onResume();
-
         //must request after calling onResume, because that guarantees that we are registered onto the bus
         if (mPrerateProInfo == null && !TextUtils.isEmpty(mBookingId))
         {
             progressDialog.show();
-            loadData();
+            mBus.post(new BookingEvent.RequestPrerateProInfo(mBookingId));
         }
+    }
+
+    private void initialize()
+    {
+        RatingsGridFragment mainFragment = RatingsGridFragment.newInstance(mPrerateProInfo.getReasons(), true);
+        mFragmentList.add(mainFragment);
+        mAdapter.notifyDataSetChanged();
+        progressDialog.dismiss();
+        mBus.post(new MixpanelEvent.AppProRateReason(Mixpanel.ProRateEventType.SHOW,
+                Integer.parseInt(mBookingId), null, mPrerateProInfo.isCleaning()));
     }
 
     /**
@@ -131,20 +155,14 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
      * @param event
      */
     @Subscribe
-    public void onRequestPrerateProInfoSuccess(BookingEvent.RequestPrerateProInfoSuccess event)
+    public void onRequestPrerateProInfoSuccess(BookingEvent.ReceivePrerateProInfoSuccess event)
     {
-        mPrerateProInfo = event.mPrerateProInfo;
-        mMainFragment = RatingsGridFragment.newInstance(mPrerateProInfo.getReasons(), true);
-        mFragmentList.add(mMainFragment);
-        mAdapter.notifyDataSetChanged();
-        progressDialog.dismiss();
-
-        mBus.post(new MixpanelEvent.AppProRateReason(Mixpanel.ProRateEventType.SHOW,
-                Integer.parseInt(mBookingId), null, mPrerateProInfo.isCleaning()));
+        mPrerateProInfo = event.getPrerateProInfo();
+        initialize();
     }
 
     @Subscribe
-    public void onRequestPrerateProInfoError(BookingEvent.RequestPrerateProInfoError error)
+    public void onRequestPrerateProInfoError(BookingEvent.ReceivePrerateProInfoError error)
     {
         handleRequestError(error);
 
@@ -152,11 +170,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         //Don't worry, the next time an activity is launched, this ratings dialog will automatically re-appear.
         progressDialog.dismiss();
         dismiss();
-    }
-
-    private void loadData()
-    {
-        mBus.post(new BookingEvent.RequestPrerateProInfo(mBookingId));
     }
 
     @Override
