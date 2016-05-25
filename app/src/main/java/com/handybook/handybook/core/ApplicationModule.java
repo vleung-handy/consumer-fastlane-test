@@ -246,7 +246,7 @@ import retrofit.converter.GsonConverter;
         includes = {
                 HelpModule.class,
                 NotificationsModule.class,
-                //TODO add more
+                //FIXME add more
         }
 )
 public final class ApplicationModule

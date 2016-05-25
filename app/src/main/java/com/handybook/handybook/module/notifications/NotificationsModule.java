@@ -27,10 +27,12 @@ public final class NotificationsModule
 {
     @Provides
     @Singleton
-    final SplashNotificationManager provideSplashNotificationManager(final UserManager userManager,
-                                                                     final DataManager dataManager,
-                                                                     final PrefsManager prefsManager,
-                                                                     final Bus bus)
+    final SplashNotificationManager provideSplashNotificationManager(
+            final UserManager userManager,
+            final DataManager dataManager,
+            final PrefsManager prefsManager,
+            final Bus bus
+    )
     {
         return new SplashNotificationManager(userManager, dataManager, prefsManager, bus);
     }
