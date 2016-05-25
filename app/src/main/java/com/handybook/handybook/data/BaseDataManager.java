@@ -784,22 +784,24 @@ public final class BaseDataManager extends DataManager
             final Callback<Void> cb
     )
     {
-        mService.submitProRatingDetails(bookingId, new HandyRetrofitService
-                .RateProRequest(positiveFeedback), new HandyRetrofitCallback(cb)
-        {
-            @Override
-            void success(final JSONObject response)
-            {
-                if (response.optBoolean("success", false))
+        mService.submitProRatingDetails(
+                bookingId,
+                new HandyRetrofitService.RateProRequest(positiveFeedback),
+                new HandyRetrofitCallback(cb)
                 {
-                    cb.onSuccess(null);
-                }
-                else
-                {
-                    cb.onError(new DataManagerError(Type.SERVER));
-                }
-            }
-        });
+                    @Override
+                    void success(final JSONObject response)
+                    {
+                        if (response.optBoolean("success", false))
+                        {
+                            cb.onSuccess(null);
+                        }
+                        else
+                        {
+                            cb.onError(new DataManagerError(Type.SERVER));
+                        }
+                    }
+                });
     }
 
     @Override
