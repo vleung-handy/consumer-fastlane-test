@@ -51,7 +51,7 @@ public interface HandyRetrofitService
     /**
      * @param bookingRecurringId Booking.recurringId, which is the id
      *                           associated with a recurring series
-     * @param cb
+     * @param cb callback
      */
     @POST("/bookings/{id}/recurring_cancel_send_cancel_email")
     void sendCancelRecurringBookingEmail(
@@ -163,8 +163,10 @@ public interface HandyRetrofitService
     @FormUrlEncoded
     @POST("/bookings/{booking}/rate_pro")
     void ratePro(
-            @Path("booking") int bookingId, @Field("rating_int") int rating,
+            @Path("booking") int bookingId,
+            @Field("rating_int") int rating,
             @Field("tip_amount") Integer tipAmount,
+            @Field("match_preference") String proMatchPreference,
             HandyRetrofitCallback cb
     );
 
