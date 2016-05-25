@@ -41,7 +41,6 @@ public class ProTeamFragment extends InjectedFragment
             Bundle savedInstanceState
     )
     {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_pro_team, container, false);
     }
 
