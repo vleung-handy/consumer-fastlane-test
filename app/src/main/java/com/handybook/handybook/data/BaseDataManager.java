@@ -33,7 +33,6 @@ import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
-import com.handybook.handybook.booking.proteam.ProviderMatchPreference;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.constant.PrefsKey;
@@ -48,6 +47,7 @@ import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 
