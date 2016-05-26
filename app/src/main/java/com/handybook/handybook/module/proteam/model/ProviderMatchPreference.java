@@ -21,7 +21,7 @@ public enum ProviderMatchPreference
         mValue = value;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public String toString()
     {
@@ -40,7 +40,7 @@ public enum ProviderMatchPreference
     }
 
 
-    private static class Constants
+    public static class Constants
     {
         static final String STRING_VALUE_NEVER = "never";
         static final String STRING_VALUE_PREFERRED = "preferred";

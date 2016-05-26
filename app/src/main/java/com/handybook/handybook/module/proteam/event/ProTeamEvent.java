@@ -1,11 +1,13 @@
 package com.handybook.handybook.module.proteam.event;
 
+import android.support.annotation.Nullable;
+
 import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.analytics.annotation.TrackField;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.module.proteam.model.ProTeamEdit;
+import com.handybook.handybook.module.proteam.model.ProTeamEditWrapper;
 
 public abstract class ProTeamEvent
 {
@@ -23,6 +25,7 @@ public abstract class ProTeamEvent
             mProTeam = proTeam;
         }
 
+        @Nullable
         public ProTeam getProTeam()
         {
             return mProTeam;
@@ -41,16 +44,17 @@ public abstract class ProTeamEvent
 
     public static class RequestProTeamEdit
     {
-        private ProTeamEdit mProTeamEdit;
+        private ProTeamEditWrapper mProTeamEditWrapper;
 
-        public RequestProTeamEdit(ProTeamEdit proTeamEdit)
+        public RequestProTeamEdit(ProTeamEditWrapper proTeamEditWrapper)
         {
-            mProTeamEdit = proTeamEdit;
+            mProTeamEditWrapper = proTeamEditWrapper;
         }
 
-        public ProTeamEdit getProTeamEdit()
+        @Nullable
+        public ProTeamEditWrapper getProTeamEditWrapper()
         {
-            return mProTeamEdit;
+            return mProTeamEditWrapper;
         }
     }
 
@@ -64,6 +68,7 @@ public abstract class ProTeamEvent
             mProTeam = proTeam;
         }
 
+        @Nullable
         public ProTeam getProTeam()
         {
             return mProTeam;
