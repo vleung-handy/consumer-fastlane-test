@@ -46,4 +46,66 @@
 
     </LinearLayout>
 
+    <!--This view should only be visible if there are no pros assigned. -->
+    <!--NOTE: The marginTop should be the same as the one used in layout_section_entry_text-->
+    <RelativeLayout
+        android:id="@+id/no_pro_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_input"
+        android:layout_below="@id/action_buttons_layout"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/entry_text_top_margin"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+
+        <ImageView
+            android:id="@+id/image_pro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_empty_state"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/default_margin"
+            />
+
+        <TextView
+            android:id="@+id/text_pro_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/image_pro"
+            android:layout_marginTop="@dimen/default_margin"
+            style="@style/TextView.Headline"
+            android:text="@string/pro_searching_title"
+            android:textAllCaps="false"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/text_pro_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/text_pro_title"
+            android:layout_marginTop="@dimen/default_margin_half"
+            android:text="@string/pro_searching_description"
+            android:textAllCaps="false"
+            android:gravity="center"
+            />
+
+        <Button
+            android:id="@+id/button_pro_team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/text_pro_description"
+            android:text="@string/manage_pro_team"
+            style="@style/Button.Link"
+            />
+    </RelativeLayout>
+
 </com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView>
