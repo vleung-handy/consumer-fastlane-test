@@ -171,6 +171,12 @@
         <item name="android:background">@drawable/button_white_round</item>
     </style>
 
+    <style name="Button.Link"
+           parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/handy_blue</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="RoundedButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

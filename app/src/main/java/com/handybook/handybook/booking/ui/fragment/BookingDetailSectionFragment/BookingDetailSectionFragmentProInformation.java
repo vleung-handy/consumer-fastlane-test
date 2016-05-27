@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
 
@@ -56,7 +57,6 @@ public class BookingDetailSectionFragmentProInformation extends
         super.updateDisplay(booking, user);
 
         final Provider pro = booking.getProvider();
-
         if (userCanLeaveTip(booking))
         {
             getSectionView().getEntryActionText().setVisibility(View.VISIBLE);
@@ -65,11 +65,13 @@ public class BookingDetailSectionFragmentProInformation extends
         if (booking.hasAssignedProvider())
         {
             getSectionView().getEntryText().setText(pro.getFullName());
+            getSectionView().getEntryText().setVisibility(View.VISIBLE);
+            getSectionView().noProView.setVisibility(View.GONE);
         }
         else
         {
-            //if no pro has been assigned indicate the ability to request a pro
-            getSectionView().getEntryText().setText(R.string.pro_assignment_pending);
+            getSectionView().getEntryText().setVisibility(View.GONE);
+            getSectionView().noProView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -77,6 +79,14 @@ public class BookingDetailSectionFragmentProInformation extends
     protected void setupClickListeners(final Booking booking)
     {
         view.getEntryActionText().setOnClickListener(actionClicked);
+        getSectionView().buttonProTeam.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                startActivity(new Intent(getActivity(), ProTeamActivity.class));
+            }
+        });
     }
 
     @Override

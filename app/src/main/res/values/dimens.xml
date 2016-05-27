@@ -57,5 +57,6 @@
     <dimen name="grid_image_width">80dp</dimen>
     <!-- This is (8 + 80 + 8) * 3 to account for the padding on the gird item layout-->
     <dimen name="grid_width">288dp</dimen>
+    <dimen name="entry_text_top_margin">40dp</dimen>
 
 </resources>
