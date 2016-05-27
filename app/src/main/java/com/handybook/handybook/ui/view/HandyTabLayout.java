@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.util.TextUtils;
 
+/**
+ * Customized TabLayout from support library that sets the typeface
+ */
 public class HandyTabLayout extends TabLayout
 {
     public HandyTabLayout(Context context)
