@@ -47,23 +47,23 @@ public final class ProfileFragment extends InjectedFragment {
     private boolean loadedUserInfo;
     private boolean updatingInfo;
 
-    @Bind(R.id.credits_text)
+    @Bind(R.id.profile_credits_text)
     TextView creditsText;
-    @Bind(R.id.update_button)
+    @Bind(R.id.profile_update_button)
     Button updateButton;
-    @Bind(R.id.fullname_text)
+    @Bind(R.id.profile_fullname_text)
     FullNameInputTextView fullNameText;
-    @Bind(R.id.email_text)
+    @Bind(R.id.profile_email_text)
     EmailInputTextView emailText;
-    @Bind(R.id.phone_prefix_text)
+    @Bind(R.id.profile_phone_prefix_text)
     TextView phonePrefixText;
-    @Bind(R.id.phone_text)
+    @Bind(R.id.profile_phone_text)
     PhoneInputTextView phoneText;
-    @Bind(R.id.old_password_text)
+    @Bind(R.id.profile_old_password_text)
     PasswordInputTextView oldPasswordtext;
-    @Bind(R.id.new_password_text)
+    @Bind(R.id.profile_new_password_text)
     PasswordInputTextView newPasswordtext;
-    @Bind(R.id.cancel_cleaning_plan_button)
+    @Bind(R.id.profile_cancel_cleaning_plan_button)
     ThinIconButton mCancelCleaningPlanButton;
     @Bind(R.id.profile_pro_team_button)
     ThinIconButton mProTeamButton;

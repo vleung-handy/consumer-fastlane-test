@@ -7,7 +7,7 @@
     >
 
     <Button
-        android:id="@+id/update_button"
+        android:id="@+id/profile_update_button"
         style="@style/Button.Green"
         android:text="@string/update"
         />
@@ -16,10 +16,10 @@
         />
 
     <ScrollView
-        android:id="@+id/scroll_view"
+        android:id="@+id/profile_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/update_button"
+        android:layout_above="@id/profile_update_button"
         android:layout_below="@id/toolbar"
         >
 
@@ -29,7 +29,7 @@
             >
 
             <TextView
-                android:id="@+id/credits_text"
+                android:id="@+id/profile_credits_text"
                 style="@style/TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,26 +43,26 @@
                 />
 
             <com.handybook.handybook.ui.widget.FullNameInputTextView
-                android:id="@+id/fullname_text"
+                android:id="@+id/profile_fullname_text"
                 style="@style/EditText.FullName"
-                android:layout_below="@id/credits_text"
+                android:layout_below="@id/profile_credits_text"
                 />
 
             <com.handybook.handybook.ui.widget.EmailInputTextView
-                android:id="@+id/email_text"
+                android:id="@+id/profile_email_text"
                 style="@style/EditText.Email"
-                android:layout_below="@id/fullname_text"
+                android:layout_below="@id/profile_fullname_text"
                 />
 
             <LinearLayout
-                android:id="@+id/phone_layout"
+                android:id="@+id/profile_phone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/email_text"
+                android:layout_below="@id/profile_email_text"
                 >
 
                 <TextView
-                    android:id="@+id/phone_prefix_text"
+                    android:id="@+id/profile_phone_prefix_text"
                     style="@style/EditText.Last"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,18 +75,18 @@
                     />
 
                 <com.handybook.handybook.ui.widget.PhoneInputTextView
-                    android:id="@+id/phone_text"
+                    android:id="@+id/profile_phone_text"
                     style="@style/EditText.Last.Phone"
                     />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/change_password_text"
+                android:id="@+id/profile_change_password_text"
                 style="@style/TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/phone_layout"
+                android:layout_below="@id/profile_phone_layout"
                 android:gravity="center"
                 android:padding="@dimen/default_padding"
                 android:text="@string/change_password"
@@ -94,25 +94,25 @@
                 />
 
             <com.handybook.handybook.ui.widget.PasswordInputTextView
-                android:id="@+id/old_password_text"
+                android:id="@+id/profile_old_password_text"
                 style="@style/EditText.Password"
-                android:layout_below="@id/change_password_text"
+                android:layout_below="@id/profile_change_password_text"
                 android:hint="@string/old_password"
                 />
 
             <com.handybook.handybook.ui.widget.PasswordInputTextView
-                android:id="@+id/new_password_text"
+                android:id="@+id/profile_new_password_text"
                 style="@style/EditText.Last.Password"
-                android:layout_below="@id/old_password_text"
+                android:layout_below="@id/profile_old_password_text"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:hint="@string/new_password"
                 />
 
             <com.handybook.handybook.ui.widget.ThinIconButton
-                android:id="@+id/cancel_cleaning_plan_button"
+                android:id="@+id/profile_cancel_cleaning_plan_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/new_password_text"
+                android:layout_below="@id/profile_new_password_text"
                 android:text="@string/cancel_recurring_booking_title"
                 android:visibility="gone"
                 custom:iconResourceId="@drawable/ic_calendar_dark"
@@ -122,10 +122,10 @@
                 android:id="@+id/profile_pro_team_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cancel_cleaning_plan_button"
+                android:layout_below="@id/profile_cancel_cleaning_plan_button"
                 android:text="@string/title_activity_pro_team"
                 android:visibility="visible"
-                custom:iconResourceId="@drawable/ic_heart"
+                custom:iconResourceId="@drawable/ic_pro_team_form_icon_heart"
                 />
 
         </RelativeLayout>
