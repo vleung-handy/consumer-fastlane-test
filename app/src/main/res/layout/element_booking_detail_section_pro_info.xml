@@ -67,33 +67,36 @@
             android:id="@+id/image_pro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_empty_state"
+            android:src="@drawable/ic_pro_team_professional_smiling"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/default_margin"
             />
 
         <TextView
-            android:id="@+id/text_pro_title"
+            android:id="@+id/booking_detail_pro_assignment_pending_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/image_pro"
             android:layout_marginTop="@dimen/default_margin"
-            style="@style/TextView.Headline"
-            android:text="@string/pro_searching_title"
+            style="@style/TextView.Large"
+            android:textColor="@color/handy_text_black"
+            android:text="@string/booking_detail_pro_assignment_pending_title"
             android:textAllCaps="false"
             android:gravity="center"
             />
 
         <TextView
             android:id="@+id/text_pro_description"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/text_pro_title"
+            android:layout_below="@id/booking_detail_pro_assignment_pending_text"
+            android:layout_marginLeft="@dimen/default_margin_double"
+            android:layout_marginRight="@dimen/default_margin_double"
             android:layout_marginTop="@dimen/default_margin_half"
-            android:text="@string/pro_searching_description"
-            android:textAllCaps="false"
+            android:textColor="@color/handy_tertiary_gray"
+            android:text="@string/booking_detail_pro_assignment_pending_text"
             android:gravity="center"
             />
 
