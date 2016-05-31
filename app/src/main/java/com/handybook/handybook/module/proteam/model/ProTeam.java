@@ -1,12 +1,15 @@
 package com.handybook.handybook.module.proteam.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ProTeam
+public class ProTeam implements Parcelable
 {
 
     @SerializedName(ProTeamCategory.CLEANING)
@@ -14,8 +17,42 @@ public class ProTeam
     @SerializedName(ProTeamCategory.HANDYMEN)
     private ProTeamCategory mHandymen;
 
+    protected ProTeam(Parcel in)
+    {
+        mCleaning = in.readParcelable(ProTeamCategory.class.getClassLoader());
+        mHandymen = in.readParcelable(ProTeamCategory.class.getClassLoader());
+    }
 
-    public static class ProTeamCategory
+    public static final Creator<ProTeam> CREATOR = new Creator<ProTeam>()
+    {
+        @Override
+        public ProTeam createFromParcel(Parcel in)
+        {
+            return new ProTeam(in);
+        }
+
+        @Override
+        public ProTeam[] newArray(int size)
+        {
+            return new ProTeam[size];
+        }
+    };
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(final Parcel dest, final int flags)
+    {
+        dest.writeParcelable(mCleaning, flags);
+        dest.writeParcelable(mHandymen, flags);
+    }
+
+
+    public static class ProTeamCategory implements Parcelable
     {
         static final String CLEANING = "cleaning";
         static final String HANDYMEN = "handymen";
@@ -26,6 +63,31 @@ public class ProTeam
         private List<ProTeamPro> mIndifferent;
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_NEVER)
         private List<ProTeamPro> mNever;
+
+        protected ProTeamCategory(Parcel in)
+        {
+            mPreferred = new ArrayList<ProTeamPro>();
+            in.readList(mPreferred, ProTeamPro.class.getClassLoader());
+            mIndifferent = new ArrayList<ProTeamPro>();
+            in.readList(mIndifferent, ProTeamPro.class.getClassLoader());
+            mNever = new ArrayList<ProTeamPro>();
+            in.readList(mNever, ProTeamPro.class.getClassLoader());
+        }
+
+        public static final Creator<ProTeamCategory> CREATOR = new Creator<ProTeamCategory>()
+        {
+            @Override
+            public ProTeamCategory createFromParcel(Parcel in)
+            {
+                return new ProTeamCategory(in);
+            }
+
+            @Override
+            public ProTeamCategory[] newArray(int size)
+            {
+                return new ProTeamCategory[size];
+            }
+        };
 
         @Nullable
         public List<ProTeamPro> getPreferred()
@@ -43,6 +105,20 @@ public class ProTeam
         List<ProTeamPro> getNever()
         {
             return mNever;
+        }
+
+        @Override
+        public int describeContents()
+        {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(final Parcel dest, final int flags)
+        {
+            dest.writeList(mPreferred);
+            dest.writeList(mIndifferent);
+            dest.writeList(mNever);
         }
     }
 
