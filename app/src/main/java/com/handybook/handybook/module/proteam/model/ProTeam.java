@@ -3,21 +3,18 @@ package com.handybook.handybook.module.proteam.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProTeam implements Parcelable
 {
 
-    @SerializedName(ProTeamCategory.CLEANING)
+    @SerializedName(ProTeamCategoryType.Constants.CLEANING)
     private ProTeamCategory mCleaning;
-    @SerializedName(ProTeamCategory.HANDYMEN)
+    @SerializedName(ProTeamCategoryType.Constants.HANDYMEN)
     private ProTeamCategory mHandymen;
 
     protected ProTeam(Parcel in)
@@ -57,16 +54,6 @@ public class ProTeam implements Parcelable
 
     public static class ProTeamCategory implements Parcelable
     {
-        @Retention(RetentionPolicy.SOURCE)
-        @StringDef({
-                CLEANING,
-                HANDYMEN
-        })
-        public @interface ProTeamCategoryType {}
-
-
-        public static final String CLEANING = "cleaning";
-        public static final String HANDYMEN = "handymen";
 
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_PREFERRED)
         private List<ProTeamPro> mPreferred;
@@ -139,9 +126,9 @@ public class ProTeam implements Parcelable
      */
     static class ProTeamEdit
     {
-        @SerializedName(ProTeamCategory.CLEANING)
+        @SerializedName(ProTeamCategoryType.Constants.CLEANING)
         private List<Integer> mCleaningIds;
-        @SerializedName(ProTeamCategory.HANDYMEN)
+        @SerializedName(ProTeamCategoryType.Constants.HANDYMEN)
         private List<Integer> mHandymenIds;
         @SerializedName("match_preference")
         private ProviderMatchPreference mMatchPreference;
