@@ -19,7 +19,7 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_gravity="center_horizontal"
-        android:contentDescription="@string/c_pro_team_empty_view_empty_heart_icon"
+        android:contentDescription="@string/cd_pro_team_empty_view_empty_heart_icon"
         android:src="@drawable/ic_pro_team_empty_list_heart"
         />
 

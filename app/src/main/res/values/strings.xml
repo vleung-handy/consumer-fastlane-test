@@ -367,5 +367,9 @@
     <string name="cd_service_logo">Service Logo</string>
     <string name="cd_star_icon">star</string>
     <string name="cd_pro_team_pro_card_remove_pro_icon">Remove Pro Icon</string>
-    <string name="c_pro_team_empty_view_empty_heart_icon">No Pros Empty heart icon</string>
+    <string name="cd_pro_team_empty_view_empty_heart_icon">No Pros Empty heart icon</string>
+    <string name="pro_team_empty_card_title_has_available">No pros on your team yet</string>
+    <string name="pro_team_empty_card_title_no_available">No pros on your team yet</string>
+    <string name="pro_team_empty_card_text_has_available">Once you add someone to your Pro Team, we\'ll always request them first.</string>
+    <string name="pro_team_empty_card_text_no_available">As you meet pros, you\'ll be able to build your Pro Team. We\'ll always request these pros for future bookings.</string>
 </resources>
