@@ -40,6 +40,9 @@ public enum ProviderMatchPreference
     }
 
 
+    /**
+     * String constants that represent/can be converted to/from the ProviderMatchPreference
+     */
     public static class Constants
     {
         static final String STRING_VALUE_NEVER = "never";
