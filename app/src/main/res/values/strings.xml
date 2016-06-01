@@ -366,4 +366,5 @@
     <string name="title_activity_pro_team">My Pro Team</string>
     <string name="cd_service_logo">Service Logo</string>
     <string name="cd_star_icon">star</string>
+    <string name="cd_pro_team_pro_card_remove_pro_icon">Remove Pro Icon</string>
 </resources>

@@ -67,6 +67,7 @@
                 android:clickable="true"
                 android:padding="@dimen/default_padding"
                 android:src="@drawable/ic_pro_team_x_small"
+                android:contentDescription="@string/cd_pro_team_pro_card_remove_pro_icon"
                 />
         </FrameLayout>
     </LinearLayout>
