@@ -2,18 +2,20 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.module.proteam.adapter.ProTeamCategoryAdapter;
 import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.ui.view.EmptiableRecyclerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,17 +30,18 @@ public class ProTeamProListFragment extends InjectedFragment
     private static final String KEY_PROTEAM_PROTEAM = "ProTeam:ProTeam";
     private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeam:CategoryType";
 
-    @Bind(R.id.pro_team_toolbar)
-    Toolbar mToolbar;
-    @Bind(R.id.pro_team_tab_layout)
-    TabLayout mTabLayout;
-    @Bind(R.id.pro_team_add_pros)
-    FloatingActionButton mFab;
+    @Bind(R.id.pro_team_pro_list_recycler_view)
+    EmptiableRecyclerView mRecyclerView;
+    @Bind(R.id.pro_team_empty_view)
+    View mEmptyView;
+    @Bind(R.id.pro_team_empty_view_title)
+    TextView mEmptyViewTitle;
+    @Bind(R.id.pro_team_empty_view_text)
+    TextView mEmptyViewText;
 
     private ProTeam mProteam;
-    private
-    @ProTeam.ProTeamCategory.ProTeamCategoryType
-    String mProTeamCategoryType;
+    private ProTeamCategoryType mProTeamCategoryType;
+    private RecyclerView.Adapter mProCardCardAdapter;
 
 
     public ProTeamProListFragment()
@@ -48,13 +51,13 @@ public class ProTeamProListFragment extends InjectedFragment
 
     public static ProTeamProListFragment newInstance(
             ProTeam proTeam,
-            @ProTeam.ProTeamCategory.ProTeamCategoryType String proTeamCategoryType
+            ProTeamCategoryType proTeamCategoryType
     )
     {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_PROTEAM_PROTEAM, proTeam);
-        bundle.putString(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
+        bundle.putParcelable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -62,19 +65,34 @@ public class ProTeamProListFragment extends InjectedFragment
     private void initialize(final Bundle arguments)
     {
         mProteam = arguments.getParcelable(KEY_PROTEAM_PROTEAM);
-        final String tempProTeamCategoryType = arguments.getString(KEY_PROTEAM_CATEGORY_TYPE);
-        if (tempProTeamCategoryType != null)
+        mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+        initEmptyView();
+        initRecyclerView();
+    }
+
+    private void initEmptyView()
+    {
+        if (mProteam.hasAvailableProsInCategory(mProTeamCategoryType))
         {
-            switch (tempProTeamCategoryType)
-            {
-                case ProTeam.ProTeamCategory.HANDYMEN:
-                    mProTeamCategoryType = ProTeam.ProTeamCategory.HANDYMEN;
-                    break;
-                case ProTeam.ProTeamCategory.CLEANING:
-                    mProTeamCategoryType = ProTeam.ProTeamCategory.CLEANING;
-                    break;
-            }
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_has_available);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text_has_available);
         }
+        else
+        {
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_no_available);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text_no_available);
+        }
+    }
+
+    private void initRecyclerView()
+    {
+        mProCardCardAdapter = new ProTeamCategoryAdapter(
+                getContext(),
+                mProteam.getCategory(mProTeamCategoryType).getPreferred()
+        );
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mProCardCardAdapter);
+        mRecyclerView.setEmptyView(mEmptyView);
     }
 
     @Override
@@ -86,10 +104,6 @@ public class ProTeamProListFragment extends InjectedFragment
     {
         final View view = inflater.inflate(R.layout.fragment_pro_team_pro_list, container, false);
         ButterKnife.bind(this, view);
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
-        activity.setupHamburgerMenu(mToolbar);
-
         final Bundle arguments = getArguments();
         if (arguments != null)
         {
