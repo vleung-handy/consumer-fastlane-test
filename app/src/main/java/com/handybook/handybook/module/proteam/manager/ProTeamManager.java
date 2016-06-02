@@ -1,11 +1,14 @@
 package com.handybook.handybook.module.proteam.manager;
 
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.HandyRetrofitCallback;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -28,7 +31,7 @@ public class ProTeamManager
     @Subscribe
     public void onRequestProTeam(final ProTeamEvent.RequestProTeam event)
     {
-        mService.requestProTeam(new DataManager.Callback<ProTeamWrapper>()
+        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>()
         {
             @Override
             public void onSuccess(final ProTeamWrapper proTeamWrapper)
@@ -41,18 +44,27 @@ public class ProTeamManager
             {
                 mBus.post(new ProTeamEvent.ReceiveProTeamError(error));
             }
+        };
+        mService.requestProTeam(new HandyRetrofitCallback(cb)
+        {
+            @Override
+            protected void success(final JSONObject response)
+            {
+                cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
+            }
         });
     }
 
     @Subscribe
     public void onRequestEditProTeam(final ProTeamEvent.RequestProTeamEdit event)
     {
-        mService.editProTeam(event.getProTeamEditWrapper(), new DataManager.Callback<ProTeamWrapper>()
+        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>()
         {
             @Override
-            public void onSuccess(final ProTeamWrapper proTeamWrapper)
+            public void onSuccess(final ProTeamWrapper response)
             {
-                mBus.post(new ProTeamEvent.ReceiveProTeamEditSuccess(proTeamWrapper.getProTeam()));
+                mBus.post(new ProTeamEvent.ReceiveProTeamEditSuccess(response.getProTeam()));
+
             }
 
             @Override
@@ -60,7 +72,18 @@ public class ProTeamManager
             {
                 mBus.post(new ProTeamEvent.ReceiveProTeamEditError(error));
             }
-        });
+        };
+        mService.editProTeam(
+                event.getProTeamEditWrapper(),
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
+                    }
+                });
+
     }
 
 }

@@ -17,7 +17,6 @@ import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.module.proteam.model.ProTeamEditWrapper;
-import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
 
 import java.util.Date;
 
@@ -391,10 +390,10 @@ public interface HandyRetrofitService
     void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);
 
     @GET("/provider_preferences")
-    void requestProTeam(DataManager.Callback<ProTeamWrapper> cb);
+    void requestProTeam(HandyRetrofitCallback cb);
 
     @POST("/provider_preferences")
-    void editProTeam(@Body ProTeamEditWrapper proTeamEditWrapper, DataManager.Callback<ProTeamWrapper> cb);
+    void editProTeam(@Body ProTeamEditWrapper proTeamEditWrapper, HandyRetrofitCallback cb);
 
     final class RateProRequest
     {
