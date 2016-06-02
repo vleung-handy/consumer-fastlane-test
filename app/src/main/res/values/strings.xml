@@ -372,4 +372,7 @@
     <string name="pro_team_empty_card_title_no_available">No pros on your team yet</string>
     <string name="pro_team_empty_card_text_has_available">Once you add someone to your Pro Team, we\'ll always request them first.</string>
     <string name="pro_team_empty_card_text_no_available">As you meet pros, you\'ll be able to build your Pro Team. We\'ll always request these pros for future bookings.</string>
+    <string name="pro_team_remove_not_permanent">Yes, but not permanently</string>
+    <string name="pro_team_remove_permanent">Yes, and never match us again</string>
+    <string name="pro_team_remove_nevermind">Nevermind</string>
 </resources>
