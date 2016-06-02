@@ -2,6 +2,7 @@ package com.handybook.handybook.module.proteam.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
@@ -49,6 +50,44 @@ public class ProTeam implements Parcelable
     {
         dest.writeParcelable(mCleaning, flags);
         dest.writeParcelable(mHandymen, flags);
+    }
+
+    public boolean hasAvailableProsInCategory(final ProTeamCategoryType proTeamCategoryType)
+    {
+        final ProTeamCategory category;
+        switch (proTeamCategoryType) // Which category are we dealing with?
+        {
+            case CLEANING:
+                category = mCleaning;
+                break;
+            case HANDYMEN:
+                category = mHandymen;
+                break;
+            default:
+                category = null;
+        }
+        if (category == null)
+        {
+            return false;
+        }
+        if (category.getIndifferent() == null)
+        {
+            return false;
+        }
+        return !category.getIndifferent().isEmpty();
+    }
+
+    @Nullable
+    public ProTeamCategory getCategory(@NonNull final ProTeamCategoryType proTeamCategoryType)
+    {
+        switch (proTeamCategoryType)
+        {
+            case CLEANING:
+                return mCleaning;
+            case HANDYMEN:
+                return mHandymen;
+        }
+        return null;
     }
 
 
