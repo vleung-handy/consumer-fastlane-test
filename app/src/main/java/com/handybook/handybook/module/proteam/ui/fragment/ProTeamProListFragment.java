@@ -2,6 +2,8 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,8 +52,8 @@ public class ProTeamProListFragment extends InjectedFragment
     }
 
     public static ProTeamProListFragment newInstance(
-            ProTeam proTeam,
-            ProTeamCategoryType proTeamCategoryType
+            @Nullable ProTeam proTeam,
+            @NonNull ProTeamCategoryType proTeamCategoryType
     )
     {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
@@ -72,6 +74,10 @@ public class ProTeamProListFragment extends InjectedFragment
 
     private void initEmptyView()
     {
+        if (mProteam == null)
+        {
+            return;
+        }
         if (mProteam.hasAvailableProsInCategory(mProTeamCategoryType))
         {
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_has_available);
@@ -86,6 +92,10 @@ public class ProTeamProListFragment extends InjectedFragment
 
     private void initRecyclerView()
     {
+        if (mProteam == null)
+        {
+            return;
+        }
         mProCardCardAdapter = new ProTeamCategoryAdapter(
                 getContext(),
                 mProteam.getCategory(mProTeamCategoryType).getPreferred()
