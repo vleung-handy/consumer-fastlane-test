@@ -120,6 +120,7 @@ import com.handybook.handybook.module.notifications.splash.view.fragment.SplashP
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
+import com.handybook.handybook.module.proteam.ui.fragment.ProTeamProListFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -269,7 +270,8 @@ import retrofit.converter.GsonConverter;
         RatingsRadioFragment.class,
         RateImprovementConfirmationDialogFragment.class,
         ProTeamActivity.class,
-        ProTeamFragment.class
+        ProTeamFragment.class,
+        ProTeamProListFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 })
 public final class ApplicationModule
@@ -581,10 +583,10 @@ public final class ApplicationModule
     final ProTeamManager provideProTeamManager(
             final Bus bus,
             final HandyRetrofitService service,
-            final DataManager dataManager
+            final UserManager userDataManager
     )
     {
-        return new ProTeamManager(bus, service);
+        return new ProTeamManager(bus, service, userDataManager);
     }
 
 
