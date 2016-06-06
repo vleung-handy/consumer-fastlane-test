@@ -376,21 +376,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
     private void initProTeamSection(final PrerateProInfo prerateProInfo)
     {
-        ProviderMatchPreference preference = prerateProInfo.getProviderMatchPreference();
-        mMatchPreference = preference == null ? ProviderMatchPreference.INDIFFERENT : preference;
-        switch (mMatchPreference)
-        {
-            case NEVER:
-                mProMatchRadioNever.setChecked(true);
-                break;
-            case PREFERRED:
-                mProMatchRadioPreferred.setChecked(true);
-                break;
-            case INDIFFERENT:
-            default:
-                mProMatchRadioIndifferent.setChecked(true);
-                break;
-        }
         mProMatchPreferences.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
@@ -419,6 +404,23 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 }
             }
         });
+
+        ProviderMatchPreference preference = prerateProInfo.getProviderMatchPreference();
+        mMatchPreference = preference == null ? ProviderMatchPreference.INDIFFERENT : preference;
+        switch (mMatchPreference)
+        {
+            case NEVER:
+                mProMatchRadioNever.setChecked(true);
+                break;
+            case PREFERRED:
+                mProMatchRadioPreferred.setChecked(true);
+                break;
+            case INDIFFERENT:
+            default:
+                mProMatchRadioIndifferent.setChecked(true);
+                break;
+        }
+
     }
 
     private void showProgress()
