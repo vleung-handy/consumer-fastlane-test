@@ -76,9 +76,11 @@ public class ProTeamProListFragment extends InjectedFragment
     {
         if (mProteam == null)
         {
-            return;
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
+
         }
-        if (mProteam.hasAvailableProsInCategory(mProTeamCategoryType))
+        else if (mProteam.hasAvailableProsInCategory(mProTeamCategoryType))
         {
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_has_available);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_has_available);
