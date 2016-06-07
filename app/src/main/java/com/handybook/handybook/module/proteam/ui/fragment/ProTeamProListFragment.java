@@ -64,10 +64,27 @@ public class ProTeamProListFragment extends InjectedFragment
         return fragment;
     }
 
-    private void initialize(final Bundle arguments)
+    @Override
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    )
     {
-        mProteam = arguments.getParcelable(KEY_PROTEAM_PROTEAM);
-        mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+        final View view = inflater.inflate(R.layout.fragment_pro_team_pro_list, container, false);
+        ButterKnife.bind(this, view);
+        final Bundle arguments = getArguments();
+        if (arguments != null)
+        {
+            mProteam = arguments.getParcelable(KEY_PROTEAM_PROTEAM);
+            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+            initialize();
+        }
+        return view;
+    }
+
+    private void initialize()
+    {
         initEmptyView();
         initRecyclerView();
     }
@@ -94,6 +111,8 @@ public class ProTeamProListFragment extends InjectedFragment
 
     private void initRecyclerView()
     {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setEmptyView(mEmptyView);
         if (mProteam == null)
         {
             return;
@@ -102,27 +121,14 @@ public class ProTeamProListFragment extends InjectedFragment
                 getContext(),
                 mProteam.getCategory(mProTeamCategoryType).getPreferred()
         );
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mProCardCardAdapter);
-        mRecyclerView.setEmptyView(mEmptyView);
+        mProCardCardAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public View onCreateView(
-            LayoutInflater inflater,
-            ViewGroup container,
-            Bundle savedInstanceState
-    )
+
+    public void update(final ProTeam proTeam)
     {
-        final View view = inflater.inflate(R.layout.fragment_pro_team_pro_list, container, false);
-        ButterKnife.bind(this, view);
-        final Bundle arguments = getArguments();
-        if (arguments != null)
-        {
-            initialize(arguments);
-        }
-        return view;
+        mProteam = proTeam;
+        initRecyclerView();
     }
-
-
 }

@@ -154,7 +154,9 @@ public class ProTeamFragment extends InjectedFragment
 
         public void setProTeam(final ProTeam proTeam)
         {
-            initialize(proTeam);
+            mProTeam = proTeam;
+            getItem(0).update(proTeam);
+            getItem(1).update(proTeam);
         }
     }
 
