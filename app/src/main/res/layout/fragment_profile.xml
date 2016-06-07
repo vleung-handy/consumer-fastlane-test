@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/profile_cancel_cleaning_plan_button"
                 android:text="@string/title_activity_pro_team"
-                android:visibility="visible"
+                android:visibility="gone"
                 custom:iconResourceId="@drawable/ic_pro_team_form_icon_heart"
                 />
 
