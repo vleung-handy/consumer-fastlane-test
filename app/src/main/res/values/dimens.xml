@@ -59,4 +59,5 @@
     <dimen name="grid_width">288dp</dimen>
     <dimen name="entry_text_top_margin">40dp</dimen>
 
+    <dimen name="remove_pro_dialog_text_view_height">48dp</dimen>
 </resources>
