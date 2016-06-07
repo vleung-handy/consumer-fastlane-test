@@ -2,6 +2,8 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,8 +52,8 @@ public class ProTeamProListFragment extends InjectedFragment
     }
 
     public static ProTeamProListFragment newInstance(
-            ProTeam proTeam,
-            ProTeamCategoryType proTeamCategoryType
+            @Nullable ProTeam proTeam,
+            @NonNull ProTeamCategoryType proTeamCategoryType
     )
     {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
@@ -60,39 +62,6 @@ public class ProTeamProListFragment extends InjectedFragment
         bundle.putParcelable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
         fragment.setArguments(bundle);
         return fragment;
-    }
-
-    private void initialize(final Bundle arguments)
-    {
-        mProteam = arguments.getParcelable(KEY_PROTEAM_PROTEAM);
-        mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
-        initEmptyView();
-        initRecyclerView();
-    }
-
-    private void initEmptyView()
-    {
-        if (mProteam.hasAvailableProsInCategory(mProTeamCategoryType))
-        {
-            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_has_available);
-            mEmptyViewText.setText(R.string.pro_team_empty_card_text_has_available);
-        }
-        else
-        {
-            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_no_available);
-            mEmptyViewText.setText(R.string.pro_team_empty_card_text_no_available);
-        }
-    }
-
-    private void initRecyclerView()
-    {
-        mProCardCardAdapter = new ProTeamCategoryAdapter(
-                getContext(),
-                mProteam.getCategory(mProTeamCategoryType).getPreferred()
-        );
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(mProCardCardAdapter);
-        mRecyclerView.setEmptyView(mEmptyView);
     }
 
     @Override
@@ -107,10 +76,59 @@ public class ProTeamProListFragment extends InjectedFragment
         final Bundle arguments = getArguments();
         if (arguments != null)
         {
-            initialize(arguments);
+            mProteam = arguments.getParcelable(KEY_PROTEAM_PROTEAM);
+            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+            initialize();
         }
         return view;
     }
 
+    private void initialize()
+    {
+        initEmptyView();
+        initRecyclerView();
+    }
 
+    private void initEmptyView()
+    {
+        if (mProteam == null)
+        {
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
+
+        }
+        else if (mProteam.hasAvailableProsInCategory(mProTeamCategoryType))
+        {
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_has_available);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text_has_available);
+        }
+        else
+        {
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_no_available);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text_no_available);
+        }
+    }
+
+    private void initRecyclerView()
+    {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setEmptyView(mEmptyView);
+        if (mProteam == null)
+        {
+            return;
+        }
+        mProCardCardAdapter = new ProTeamCategoryAdapter(
+                getContext(),
+                mProteam.getCategory(mProTeamCategoryType).getPreferred()
+        );
+        mRecyclerView.setAdapter(mProCardCardAdapter);
+        mProCardCardAdapter.notifyDataSetChanged();
+    }
+
+
+    public void update(final ProTeam proTeam)
+    {
+        mProteam = proTeam;
+        initRecyclerView();
+    }
 }

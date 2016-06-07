@@ -12,16 +12,16 @@ import java.util.ArrayList;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-abstract class HandyRetrofitCallback implements retrofit.Callback<Response>
+public abstract class HandyRetrofitCallback implements retrofit.Callback<Response>
 {
     protected final DataManager.Callback callback;
 
-    HandyRetrofitCallback(DataManager.Callback callback)
+    protected HandyRetrofitCallback(DataManager.Callback callback)
     {
         this.callback = callback;
     }
 
-    abstract void success(JSONObject response);
+    protected abstract void success(JSONObject response);
 
     @Override
     public final void success(final Response response, final Response raw)

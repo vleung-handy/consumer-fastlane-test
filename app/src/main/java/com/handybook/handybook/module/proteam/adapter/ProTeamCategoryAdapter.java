@@ -33,7 +33,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     {
         final View itemView = LayoutInflater
                 .from(mContext)
-                .inflate(R.layout.layout_pro_team_pro_card, parent);
+                .inflate(R.layout.layout_pro_team_pro_card, parent, false);
         return new ProTeamProHolder(itemView);
     }
 

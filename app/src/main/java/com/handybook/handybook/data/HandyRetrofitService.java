@@ -17,7 +17,6 @@ import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.module.proteam.model.ProTeamEditWrapper;
-import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
 
 import java.util.Date;
 
@@ -51,7 +50,7 @@ public interface HandyRetrofitService
     /**
      * @param bookingRecurringId Booking.recurringId, which is the id
      *                           associated with a recurring series
-     * @param cb callback
+     * @param cb                 callback
      */
     @POST("/bookings/{id}/recurring_cancel_send_cancel_email")
     void sendCancelRecurringBookingEmail(
@@ -390,11 +389,18 @@ public interface HandyRetrofitService
     @GET("/referrals/claim_details")
     void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);
 
-    @GET("/provider_preferences")
-    void requestProTeam(DataManager.Callback<ProTeamWrapper> cb);
+    @GET("/users/{user}/provider_preferences")
+    void requestProTeam(
+            @Path("user") String userId,
+            HandyRetrofitCallback cb
+    );
 
-    @POST("/provider_preferences")
-    void editProTeam(@Body ProTeamEditWrapper proTeamEditWrapper, DataManager.Callback<ProTeamWrapper> cb);
+    @POST("/users/{user}/provider_preferences")
+    void editProTeam(
+            @Path("user") String userId,
+            @Body ProTeamEditWrapper proTeamEditWrapper,
+            HandyRetrofitCallback cb
+    );
 
     final class RateProRequest
     {
