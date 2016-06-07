@@ -3,6 +3,7 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -105,30 +106,30 @@ public class ProTeamFragment extends InjectedFragment implements
     }
 
     /**
-     * Implementataion of RemoveProDialogFragment listener
+     * Implementation of RemoveProDialogFragment listener
      */
     @Override
-    public void onYesNotPermanent()
+    public void onYesNotPermanent(@Nullable ProTeamPro proTeamPro)
     {
-        showToast("Yes - not permanent");
+        showToast("Yes - NOT permanently! " + proTeamPro.getName());
     }
 
     /**
-     * Implementataion of RemoveProDialogFragment listener
+     * Implementation of RemoveProDialogFragment listener
      */
     @Override
-    public void onYesPermanent()
+    public void onYesPermanent(@Nullable ProTeamPro proTeamPro)
     {
-        showToast("Yes - permanent");
+        showToast("Yes - permanently " + proTeamPro.getName());
     }
 
     /**
-     * Implementataion of RemoveProDialogFragment listener
+     * Implementation of RemoveProDialogFragment listener
      */
     @Override
-    public void onCancel()
+    public void onCancel(@Nullable ProTeamPro proTeamPro)
     {
-        showToast("cancelled");
+        showToast("Action cancelled " + proTeamPro.getName());
     }
 
     @Override
@@ -138,9 +139,9 @@ public class ProTeamFragment extends InjectedFragment implements
         RemoveProDialogFragment fragment = new RemoveProDialogFragment();
         final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
         fragment.setTitle(title);
+        fragment.setProTeamPro(proTeamPro);
         fragment.setListener(this);
         fragment.show(fm, RemoveProDialogFragment.TAG);
-
     }
 
     private static class TabAdapter extends FragmentPagerAdapter

@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.module.proteam.model.ProTeamPro;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +47,7 @@ public class RemoveProDialogFragment extends DialogFragment
 
     private String mTitle;
     private RemoveProListener mListener;
+    private ProTeamPro mProTeamPro;
 
 
     @NonNull
@@ -128,6 +131,11 @@ public class RemoveProDialogFragment extends DialogFragment
         }
     }
 
+    public void setProTeamPro(@NonNull final ProTeamPro proTeamPro)
+    {
+        mProTeamPro = proTeamPro;
+    }
+
     @Override
     public void onStart()
     {
@@ -145,7 +153,7 @@ public class RemoveProDialogFragment extends DialogFragment
     {
         if (mListener != null)
         {
-            mListener.onYesNotPermanent();
+            mListener.onYesNotPermanent(mProTeamPro);
         }
         dismiss();
     }
@@ -155,7 +163,7 @@ public class RemoveProDialogFragment extends DialogFragment
     {
         if (mListener != null)
         {
-            mListener.onYesPermanent();
+            mListener.onYesPermanent(mProTeamPro);
         }
         dismiss();
     }
@@ -171,7 +179,7 @@ public class RemoveProDialogFragment extends DialogFragment
     {
         if (mListener != null)
         {
-            mListener.onCancel();
+            mListener.onCancel(mProTeamPro);
         }
 
         dismiss();
@@ -186,10 +194,10 @@ public class RemoveProDialogFragment extends DialogFragment
 
     public interface RemoveProListener
     {
-        void onYesNotPermanent();
+        void onYesNotPermanent(@Nullable ProTeamPro proTeamPro);
 
-        void onYesPermanent();
+        void onYesPermanent(@Nullable ProTeamPro proTeamPro);
 
-        void onCancel();
+        void onCancel(@Nullable ProTeamPro proTeamPro);
     }
 }
