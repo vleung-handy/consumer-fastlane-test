@@ -32,6 +32,8 @@ import butterknife.OnClick;
 
 public class RemoveProDialogFragment extends DialogFragment
 {
+    public static final String TAG = RemoveProDialogFragment.class.getSimpleName();
+
     @Bind(R.id.remove_pro_title)
     TextView mTextTitle;
 

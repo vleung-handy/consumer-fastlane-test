@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.holder.ProTeamProHolder;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
+import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 
 import java.util.List;
 
@@ -18,14 +19,17 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
 
     private Context mContext;
     private List<ProTeamPro> mProTeamPros;
+    private final ProTeamProViewModel.OnClickXListener mOnXClickedListener;
 
     public ProTeamCategoryAdapter(
             @NonNull final Context context,
-            @NonNull final List<ProTeamPro> proTeamPros
+            @NonNull final List<ProTeamPro> proTeamPros,
+            @NonNull final ProTeamProViewModel.OnClickXListener onXClickedListener
     )
     {
         mContext = context;
         mProTeamPros = proTeamPros;
+        mOnXClickedListener = onXClickedListener;
     }
 
     @Override
@@ -34,7 +38,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
         final View itemView = LayoutInflater
                 .from(mContext)
                 .inflate(R.layout.layout_pro_team_pro_card, parent, false);
-        return new ProTeamProHolder(itemView);
+        return new ProTeamProHolder(itemView, mOnXClickedListener);
     }
 
     @Override

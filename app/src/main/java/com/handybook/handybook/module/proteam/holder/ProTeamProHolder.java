@@ -1,11 +1,9 @@
 package com.handybook.handybook.module.proteam.holder;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
@@ -17,9 +15,8 @@ import butterknife.OnClick;
 
 public class ProTeamProHolder extends RecyclerView.ViewHolder
 {
-    private Context mContext;
     private ProTeamProViewModel mProTeamProViewModel;
-
+    private ProTeamProViewModel.OnClickXListener mOnXClickedListener;
     @Bind(R.id.pro_team_pro_card_pro_title)
     TextView mTitle;
     @Bind(R.id.pro_team_pro_card_pro_subtitle)
@@ -28,10 +25,10 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     TextView mFooter;
 
 
-    public ProTeamProHolder(View itemView)
+    public ProTeamProHolder(View itemView, ProTeamProViewModel.OnClickXListener onXClickedListener)
     {
         super(itemView);
-        mContext = itemView.getContext();
+        mOnXClickedListener = onXClickedListener;
         ButterKnife.bind(this, itemView);
     }
 
@@ -44,9 +41,10 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     }
 
     @OnClick(R.id.pro_team_pro_card_x)
-    void onXClicked()
+    void onXClicked(View view)
     {
-        Toast.makeText(mContext, "X clicked", Toast.LENGTH_SHORT).show();
+        mOnXClickedListener.onXClicked(mProTeamProViewModel.getProTeamPro());
     }
+
 
 }
