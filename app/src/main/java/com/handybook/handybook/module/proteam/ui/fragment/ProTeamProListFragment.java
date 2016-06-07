@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ import butterknife.ButterKnife;
  * Use the {@link ProTeamProListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProTeamProListFragment extends InjectedFragment implements RemoveProDialogFragment.RemoveProListener
+public class ProTeamProListFragment extends InjectedFragment
 {
     private static final String KEY_PROTEAM_PROTEAM = "ProTeam:ProTeam";
     private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeam:CategoryType";
@@ -46,7 +45,7 @@ public class ProTeamProListFragment extends InjectedFragment implements RemovePr
 
     private ProTeam mProteam;
     private ProTeamCategoryType mProTeamCategoryType;
-    private RecyclerView.Adapter mProCardCardAdapter;
+    private OnRemoveProTeamProListener mOnRemoveProTeamProListener;
     private ProTeamProViewModel.OnClickXListener mRemoveProListener;
 
 
@@ -101,11 +100,11 @@ public class ProTeamProListFragment extends InjectedFragment implements RemovePr
             @Override
             public void onXClicked(final ProTeamPro proTeamPro)
             {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                RemoveProDialogFragment fragment = new RemoveProDialogFragment();
-                fragment.setTitle("Remove " + proTeamPro.getName());
-                fragment.setListener(ProTeamProListFragment.this);
-                fragment.show(fm, RemoveProDialogFragment.TAG);
+                if (mOnRemoveProTeamProListener == null)
+                {
+                    return;
+                }
+                mOnRemoveProTeamProListener.onRemoveProTeamProRequested(proTeamPro);
             }
         };
     }
@@ -138,14 +137,14 @@ public class ProTeamProListFragment extends InjectedFragment implements RemovePr
         {
             return;
         }
-        mProCardCardAdapter = new ProTeamCategoryAdapter(
+        RecyclerView.Adapter proCardCardAdapter = new ProTeamCategoryAdapter(
                 getContext(),
                 mProteam.getCategory(mProTeamCategoryType).getPreferred(),
                 mRemoveProListener
 
         );
-        mRecyclerView.setAdapter(mProCardCardAdapter);
-        mProCardCardAdapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(proCardCardAdapter);
+        proCardCardAdapter.notifyDataSetChanged();
     }
 
 
@@ -155,30 +154,16 @@ public class ProTeamProListFragment extends InjectedFragment implements RemovePr
         initRecyclerView();
     }
 
-    /**
-     * Implementataion of RemoveProDialogFragment listener
-     */
-    @Override
-    public void onYesNotPermanent()
+    void setOnRemoveProTeamProListener(final OnRemoveProTeamProListener onRemoveProTeamProListener)
     {
-        showToast("Yes - not permanent");
+        mOnRemoveProTeamProListener = onRemoveProTeamProListener;
     }
 
     /**
-     * Implementataion of RemoveProDialogFragment listener
+     * Implement this interface to be notified when user clicks on one of the pro cards.
      */
-    @Override
-    public void onYesPermanent()
+    interface OnRemoveProTeamProListener
     {
-        showToast("Yes - permanent");
-    }
-
-    /**
-     * Implementataion of RemoveProDialogFragment listener
-     */
-    @Override
-    public void onCancel()
-    {
-        showToast("cancelled");
+        void onRemoveProTeamProRequested(ProTeamPro proTeamPro);
     }
 }

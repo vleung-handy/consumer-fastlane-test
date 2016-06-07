@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolder>
 {
-
+    private Mode mMode;
     private Context mContext;
     private List<ProTeamPro> mProTeamPros;
     private final ProTeamProViewModel.OnClickXListener mOnXClickedListener;
@@ -52,5 +52,11 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     public int getItemCount()
     {
         return mProTeamPros.size();
+    }
+
+    enum Mode
+    {
+        PRO_TEAM_MANAGE,
+        PRO_TEAM_ADD
     }
 }

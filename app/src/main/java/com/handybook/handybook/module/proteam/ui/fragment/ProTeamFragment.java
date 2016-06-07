@@ -3,7 +3,6 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
@@ -35,7 +35,9 @@ import butterknife.ButterKnife;
  * Use the {@link ProTeamFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProTeamFragment extends InjectedFragment
+public class ProTeamFragment extends InjectedFragment implements
+        ProTeamProListFragment.OnRemoveProTeamProListener,
+        RemoveProDialogFragment.RemoveProListener
 {
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
@@ -47,8 +49,6 @@ public class ProTeamFragment extends InjectedFragment
     FloatingActionButton mFab;
 
     private TabAdapter mTabAdapter;
-    private ProTeam mProTeam;
-
 
     public ProTeamFragment()
     {
@@ -64,7 +64,7 @@ public class ProTeamFragment extends InjectedFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mTabAdapter = new TabAdapter(getChildFragmentManager(), mProTeam);
+        mTabAdapter = new TabAdapter(getChildFragmentManager(), this);
     }
 
     @Override
@@ -104,34 +104,68 @@ public class ProTeamFragment extends InjectedFragment
         showToast("Error receiving ProTeam");
     }
 
+    /**
+     * Implementataion of RemoveProDialogFragment listener
+     */
+    @Override
+    public void onYesNotPermanent()
+    {
+        showToast("Yes - not permanent");
+    }
+
+    /**
+     * Implementataion of RemoveProDialogFragment listener
+     */
+    @Override
+    public void onYesPermanent()
+    {
+        showToast("Yes - permanent");
+    }
+
+    /**
+     * Implementataion of RemoveProDialogFragment listener
+     */
+    @Override
+    public void onCancel()
+    {
+        showToast("cancelled");
+    }
+
+    @Override
+    public void onRemoveProTeamProRequested(final ProTeamPro proTeamPro)
+    {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        RemoveProDialogFragment fragment = new RemoveProDialogFragment();
+        final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
+        fragment.setTitle(title);
+        fragment.setListener(this);
+        fragment.show(fm, RemoveProDialogFragment.TAG);
+
+    }
+
     private static class TabAdapter extends FragmentPagerAdapter
     {
-        private ProTeam mProTeam;
         private ArrayList<ProTeamProListFragment> mFragments = new ArrayList<>();
         private ArrayList<String> mTitles = new ArrayList<>();
 
         TabAdapter(
                 @NonNull final FragmentManager fm,
-                @Nullable final ProTeam proTeam
+                ProTeamProListFragment.OnRemoveProTeamProListener listener
         )
         {
             super(fm);
-            initialize(proTeam);
-        }
-
-        private void initialize(final @Nullable ProTeam proTeam)
-        {
-            mProTeam = proTeam;
             mTitles.clear();
             mFragments.clear();
             mTitles.add(ProTeamCategoryType.CLEANING.toString());
-            mFragments.add(
-                    ProTeamProListFragment.newInstance(proTeam, ProTeamCategoryType.CLEANING)
-            );
+            final ProTeamProListFragment cleaning = ProTeamProListFragment
+                    .newInstance(null, ProTeamCategoryType.CLEANING);
             mTitles.add(ProTeamCategoryType.HANDYMEN.toString());
-            mFragments.add(
-                    ProTeamProListFragment.newInstance(proTeam, ProTeamCategoryType.HANDYMEN)
-            );
+            final ProTeamProListFragment handymen = ProTeamProListFragment
+                    .newInstance(null, ProTeamCategoryType.HANDYMEN);
+            cleaning.setOnRemoveProTeamProListener(listener);
+            handymen.setOnRemoveProTeamProListener(listener);
+            mFragments.add(cleaning);
+            mFragments.add(handymen);
         }
 
         @Override
@@ -152,9 +186,8 @@ public class ProTeamFragment extends InjectedFragment
             return mFragments.get(position);
         }
 
-        public void setProTeam(final ProTeam proTeam)
+        void setProTeam(final ProTeam proTeam)
         {
-            mProTeam = proTeam;
             getItem(0).update(proTeam);
             getItem(1).update(proTeam);
         }
