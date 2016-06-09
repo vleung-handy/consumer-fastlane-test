@@ -13,12 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
+import com.handybook.handybook.module.proteam.ui.activity.ProTeamAddActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -40,31 +43,54 @@ public class ProTeamFragment extends InjectedFragment implements
         ProTeamProListFragment.OnRemoveProTeamProListener,
         RemoveProDialogFragment.RemoveProListener
 {
+    private static final String KEY_MODE = "ProTeamFragment:Mode";
+    private static final String KEY_PRO_TEAM = "ProTeamFragment:ProTeam";
+
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_tab_layout)
     HandyTabLayout mTabLayout;
     @Bind(R.id.pro_team_pager)
     ViewPager mViewPager;
-    @Bind(R.id.pro_team_add_pros)
+    @Bind(R.id.pro_team_fab_button)
     FloatingActionButton mFab;
+    @Bind(R.id.pro_team_bottom_button)
+    Button mBottomButton;
 
+    private Mode mMode = Mode.PRO_MANAGE;
     private TabAdapter mTabAdapter;
+    private ProTeam mProTeam;
 
     public ProTeamFragment()
     {
         // Required empty public constructor
     }
 
-    public static ProTeamFragment newInstance()
+    public static ProTeamFragment newInstance(@NonNull Mode mode)
     {
         ProTeamFragment fragment = new ProTeamFragment();
+        return newInstance(null, mode);
+    }
+
+    public static ProTeamFragment newInstance(@Nullable ProTeam proTeam, @NonNull Mode mode)
+    {
+        ProTeamFragment fragment = new ProTeamFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putParcelable(KEY_PRO_TEAM, proTeam);
+        bundle.putInt(KEY_MODE, mode.ordinal());
         return fragment;
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        final Bundle bundle = getArguments();
+        if (bundle != null)
+        {
+            mMode = Mode.values()[bundle.getInt(KEY_MODE, Mode.PRO_MANAGE.ordinal())];
+            mProTeam = bundle.getParcelable(KEY_PRO_TEAM);
+        }
         mTabAdapter = new TabAdapter(getChildFragmentManager(), this);
     }
 
@@ -83,26 +109,62 @@ public class ProTeamFragment extends InjectedFragment implements
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
+        setMode(mMode);
         return view;
+    }
+
+    private void setMode(final Mode mode)
+    {
+        mMode = mode;
+        switch (mMode)
+        {
+            case PRO_MANAGE:
+                mFab.setVisibility(View.VISIBLE);
+                mBottomButton.setVisibility(View.GONE);
+                break;
+            case PRO_ADD:
+                mFab.setVisibility(View.GONE);
+                mBottomButton.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
-        bus.post(new ProTeamEvent.RequestProTeam());
+        if (mProTeam == null)
+        {
+            bus.post(new ProTeamEvent.RequestProTeam());
+        }
+        else
+        {
+            initialize();
+        }
+    }
+
+    private void initialize()
+    {
+        mTabAdapter.setProTeam(mProTeam);
     }
 
     @Subscribe
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
-        mTabAdapter.setProTeam(event.getProTeam());
+        mProTeam = event.getProTeam();
+        initialize();
     }
 
     @Subscribe
     public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
     {
         showToast("Error receiving ProTeam");
+    }
+
+    @OnClick(R.id.pro_team_fab_button)
+    void onFabClicked()
+    {
+        startActivity(ProTeamAddActivity.newIntent(getContext(), mProTeam));
     }
 
     /**
@@ -194,4 +256,10 @@ public class ProTeamFragment extends InjectedFragment implements
         }
     }
 
+
+    public enum Mode
+    {
+        PRO_MANAGE,
+        PRO_ADD
+    }
 }

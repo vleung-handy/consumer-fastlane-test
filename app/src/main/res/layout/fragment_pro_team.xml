@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".module.proteam.ui.activity.ProTeamActivity"
     >
 
@@ -42,25 +43,43 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.handybook.handybook.ui.widget.ViewPager
-        android:id="@+id/pro_team_pager"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
         >
-    </com.handybook.handybook.ui.widget.ViewPager>
+
+        <com.handybook.handybook.ui.widget.ViewPager
+            android:id="@+id/pro_team_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+        </com.handybook.handybook.ui.widget.ViewPager>
+
+        <Button
+            android:id="@+id/pro_team_bottom_button"
+            style="@style/Button.Green"
+            tools:text="Add 13 pros"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/pro_team_add_pros"
+        android:id="@+id/pro_team_fab_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/default_margin"
         android:src="@drawable/ic_plus_white"
         android:tag="fab"
-        android:visibility="visible"
+        android:visibility="gone"
         app:backgroundTint="@color/handy_blue"
         app:fabSize="normal"
+        tools:visibility="visible"
         />
+
 </android.support.design.widget.CoordinatorLayout>

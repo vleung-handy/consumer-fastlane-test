@@ -378,4 +378,5 @@
     <string name="pro_team_empty_card_title_loading">Loading ProTeam</string>
     <string name="pro_team_empty_card_text_loading">Looking up your ProTeam…</string>
     <string name="pro_team_remove_dialog_title">Remove %1$s?</string>
+    <string name="title_activity_pro_team_add">Add to ProTeam</string>
 </resources>

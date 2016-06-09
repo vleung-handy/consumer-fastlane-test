@@ -13,7 +13,7 @@ public class ProTeamActivity extends MenuDrawerActivity
     @Override
     protected Fragment createFragment()
     {
-        return ProTeamFragment.newInstance();
+        return ProTeamFragment.newInstance(ProTeamFragment.Mode.PRO_MANAGE);
     }
 
     @Override
