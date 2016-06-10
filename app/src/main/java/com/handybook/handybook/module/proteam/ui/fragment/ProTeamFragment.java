@@ -20,6 +20,7 @@ import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamAddActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
@@ -91,7 +92,6 @@ public class ProTeamFragment extends InjectedFragment implements
             mMode = Mode.values()[bundle.getInt(KEY_MODE, Mode.PRO_MANAGE.ordinal())];
             mProTeam = bundle.getParcelable(KEY_PRO_TEAM);
         }
-        mTabAdapter = new TabAdapter(getChildFragmentManager(), this);
     }
 
     @Override
@@ -105,6 +105,7 @@ public class ProTeamFragment extends InjectedFragment implements
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.setupHamburgerMenu(mToolbar);
+        mTabAdapter = new TabAdapter(getChildFragmentManager(), this, ProviderMatchPreference.PREFERRED);
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
@@ -213,18 +214,25 @@ public class ProTeamFragment extends InjectedFragment implements
 
         TabAdapter(
                 @NonNull final FragmentManager fm,
-                ProTeamProListFragment.OnRemoveProTeamProListener listener
+                ProTeamProListFragment.OnRemoveProTeamProListener listener,
+                final ProviderMatchPreference preferred
         )
         {
             super(fm);
             mTitles.clear();
             mFragments.clear();
             mTitles.add(ProTeamCategoryType.CLEANING.toString());
-            final ProTeamProListFragment cleaning = ProTeamProListFragment
-                    .newInstance(null, ProTeamCategoryType.CLEANING);
+            final ProTeamProListFragment cleaning = ProTeamProListFragment.newInstance(
+                    null,
+                    ProTeamCategoryType.CLEANING,
+                    preferred
+            );
             mTitles.add(ProTeamCategoryType.HANDYMEN.toString());
-            final ProTeamProListFragment handymen = ProTeamProListFragment
-                    .newInstance(null, ProTeamCategoryType.HANDYMEN);
+            final ProTeamProListFragment handymen = ProTeamProListFragment.newInstance(
+                    null,
+                    ProTeamCategoryType.HANDYMEN,
+                    preferred
+            );
             cleaning.setOnRemoveProTeamProListener(listener);
             handymen.setOnRemoveProTeamProListener(listener);
             mFragments.add(cleaning);

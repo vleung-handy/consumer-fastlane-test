@@ -52,8 +52,10 @@ public class ProTeamProViewModel
         return mFooter;
     }
 
-    public interface OnClickXListener
+    public interface OnInteractionListener
     {
         void onXClicked(ProTeamPro proTeamPro);
+
+        void onCheckedChanged(ProTeamPro proTeamPro, boolean checked);
     }
 }

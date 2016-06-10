@@ -62,8 +62,8 @@
         <Button
             android:id="@+id/pro_team_bottom_button"
             style="@style/Button.Green"
-            tools:text="Add 13 pros"
             android:visibility="gone"
+            tools:text="Add 13 pros"
             tools:visibility="visible"
             />
     </LinearLayout>

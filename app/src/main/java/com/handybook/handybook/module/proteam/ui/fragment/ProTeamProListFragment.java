@@ -17,9 +17,13 @@ import com.handybook.handybook.module.proteam.adapter.ProTeamCategoryAdapter;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,8 +35,9 @@ import butterknife.ButterKnife;
  */
 public class ProTeamProListFragment extends InjectedFragment
 {
-    private static final String KEY_PROTEAM_PROTEAM = "ProTeam:ProTeam";
-    private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeam:CategoryType";
+    private static final String KEY_PROTEAM = "ProTeamProList:ProTeam";
+    private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeamProList:CategoryType";
+    public static final String KEY_PROVIDER_MATCH_PREFERENCE = "ProTeamProList:DisplayMode";
 
     @Bind(R.id.pro_team_pro_list_recycler_view)
     EmptiableRecyclerView mRecyclerView;
@@ -46,7 +51,9 @@ public class ProTeamProListFragment extends InjectedFragment
     private ProTeam mProteam;
     private ProTeamCategoryType mProTeamCategoryType;
     private OnRemoveProTeamProListener mOnRemoveProTeamProListener;
-    private ProTeamProViewModel.OnClickXListener mRemoveProListener;
+    private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
+    private ProviderMatchPreference mProviderMatchPreference;
+    private List<ProTeamPro> mProsToAdd = new ArrayList<>();
 
 
     public ProTeamProListFragment()
@@ -56,13 +63,15 @@ public class ProTeamProListFragment extends InjectedFragment
 
     public static ProTeamProListFragment newInstance(
             @Nullable ProTeam proTeam,
-            @NonNull ProTeamCategoryType proTeamCategoryType
+            @NonNull ProTeamCategoryType proTeamCategoryType,
+            @NonNull ProviderMatchPreference providerMatchPreference
     )
     {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
         final Bundle bundle = new Bundle();
-        bundle.putParcelable(KEY_PROTEAM_PROTEAM, proTeam);
+        bundle.putParcelable(KEY_PROTEAM, proTeam);
         bundle.putParcelable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
+        bundle.putInt(KEY_PROVIDER_MATCH_PREFERENCE, providerMatchPreference.ordinal());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -79,8 +88,10 @@ public class ProTeamProListFragment extends InjectedFragment
         final Bundle arguments = getArguments();
         if (arguments != null)
         {
-            mProteam = arguments.getParcelable(KEY_PROTEAM_PROTEAM);
+            mProteam = arguments.getParcelable(KEY_PROTEAM);
             mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+            mProviderMatchPreference = ProviderMatchPreference
+                    .values()[arguments.getInt(KEY_PROVIDER_MATCH_PREFERENCE)];
             initialize();
         }
         return view;
@@ -95,7 +106,7 @@ public class ProTeamProListFragment extends InjectedFragment
 
     private void initRemoveProListenerListener()
     {
-        mRemoveProListener = new ProTeamProViewModel.OnClickXListener()
+        mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
         {
             @Override
             public void onXClicked(final ProTeamPro proTeamPro)
@@ -105,6 +116,19 @@ public class ProTeamProListFragment extends InjectedFragment
                     return;
                 }
                 mOnRemoveProTeamProListener.onRemoveProTeamProRequested(proTeamPro);
+            }
+
+            @Override
+            public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked)
+            {
+                if (checked)
+                {
+                    mProsToAdd.add(proTeamPro);
+                }
+                else
+                {
+                    mProsToAdd.remove(proTeamPro);
+                }
             }
         };
     }
@@ -138,10 +162,10 @@ public class ProTeamProListFragment extends InjectedFragment
             return;
         }
         RecyclerView.Adapter proCardCardAdapter = new ProTeamCategoryAdapter(
-                getContext(),
-                mProteam.getCategory(mProTeamCategoryType).getPreferred(),
-                mRemoveProListener
-
+                mProteam,
+                mProTeamCategoryType,
+                mProviderMatchPreference,
+                mOnInteractionListener
         );
         mRecyclerView.setAdapter(proCardCardAdapter);
         proCardCardAdapter.notifyDataSetChanged();
@@ -151,6 +175,12 @@ public class ProTeamProListFragment extends InjectedFragment
     public void update(final ProTeam proTeam)
     {
         mProteam = proTeam;
+        initRecyclerView();
+    }
+
+    public void update(final ProviderMatchPreference providerMatchPreference)
+    {
+        mProviderMatchPreference = providerMatchPreference;
         initRecyclerView();
     }
 
