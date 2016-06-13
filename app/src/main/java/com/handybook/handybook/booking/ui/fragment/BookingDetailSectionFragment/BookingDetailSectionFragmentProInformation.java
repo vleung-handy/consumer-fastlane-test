@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamOpenTapped;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
@@ -84,6 +85,9 @@ public class BookingDetailSectionFragmentProInformation extends
             @Override
             public void onClick(final View v)
             {
+                bus.post(new ProTeamOpenTapped(
+                        getString(R.string.log_booking_details)
+                ));
                 startActivity(new Intent(getActivity(), ProTeamActivity.class));
             }
         });
