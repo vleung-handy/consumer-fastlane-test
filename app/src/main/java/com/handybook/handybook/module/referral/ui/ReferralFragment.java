@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.model.LogEvent;
+import com.handybook.handybook.model.ReferralLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
@@ -24,7 +26,10 @@ import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.Utils;
 import com.handybook.handybook.util.ValidationUtils;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,6 +37,9 @@ import butterknife.OnClick;
 
 public class ReferralFragment extends InjectedFragment
 {
+    @Inject
+    Bus mBus;
+
     @Bind(R.id.referral_content)
     View mReferralContent;
     @Bind(R.id.title)
@@ -80,6 +88,7 @@ public class ReferralFragment extends InjectedFragment
     public void onResume()
     {
         super.onResume();
+        mBus.post(new LogEvent.AddLogEvent(new ReferralLog.ReferralOpenLog()));
         if (!mIsReferralInfoFresh)
         {
             requestPrepareReferrals();

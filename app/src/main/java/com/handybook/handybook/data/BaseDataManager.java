@@ -6,6 +6,7 @@ import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
@@ -41,6 +42,7 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.EventLogResponse;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
@@ -1105,6 +1107,19 @@ public final class BaseDataManager extends DataManager
                     }
                 }
         );
+    }
+
+    @Override
+    public void postLogs(final JsonObject eventLogBundle, final Callback<EventLogResponse> cb)
+    {
+        mService.postLogs(eventLogBundle, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+            }
+        });
     }
 
     private void handleCreateSessionResponse(final JSONObject response, final Callback<User> cb)

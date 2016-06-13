@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import com.google.gson.JsonObject;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
@@ -36,6 +37,7 @@ import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.model.EventLogResponse;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
@@ -54,12 +56,15 @@ import retrofit.mime.TypedInput;
 //TODO: Don't need to manually pass auth tokens for any endpoint, auth token is now auto added as
 // part of the intercept
 
+
 public abstract class DataManager
 {
-    public abstract void getAvailableSplashPromo(String userId,
-                                                 String[] displayedPromos,
-                                                 String[] acceptedPromos,
-                                                 Callback<SplashPromo> cb);
+    public abstract void getAvailableSplashPromo(
+            String userId,
+            String[] displayedPromos,
+            String[] acceptedPromos,
+            Callback<SplashPromo> cb
+    );
 
     public abstract void getServices(
             CacheResponse<List<Service>> cache,
@@ -68,29 +73,43 @@ public abstract class DataManager
 
     public abstract List<Service> getCachedServices();
 
-    public abstract void editBookingAddress(int bookingId,
-                                            BookingEditAddressRequest bookingEditAddressRequest,
-                                            Callback<SuccessWrapper> cb);
+    public abstract void editBookingAddress(
+            int bookingId,
+            BookingEditAddressRequest bookingEditAddressRequest,
+            Callback<SuccessWrapper> cb
+    );
 
-    public abstract void sendCancelRecurringBookingEmail(int bookingRecurringId,
-                                     Callback<SuccessWrapper> cb);
+    public abstract void sendCancelRecurringBookingEmail(
+            int bookingRecurringId,
+            Callback<SuccessWrapper> cb
+    );
 
-    public abstract void getEditBookingExtrasInfo(int bookingId,
-                                                  Callback<BookingEditExtrasInfoResponse> cb);
+    public abstract void getEditBookingExtrasInfo(
+            int bookingId,
+            Callback<BookingEditExtrasInfoResponse> cb
+    );
 
-    public abstract void editBookingExtras(int bookingId,
-                                           BookingEditExtrasRequest bookingEditExtrasRequest,
-                                           Callback<SuccessWrapper> cb);
+    public abstract void editBookingExtras(
+            int bookingId,
+            BookingEditExtrasRequest bookingEditExtrasRequest,
+            Callback<SuccessWrapper> cb
+    );
 
-    public abstract void getEditHoursInfo(int bookingId,
-                                           Callback<BookingEditHoursInfoResponse> cb);
+    public abstract void getEditHoursInfo(
+            int bookingId,
+            Callback<BookingEditHoursInfoResponse> cb
+    );
 
-    public abstract void editBookingHours(int bookingId,
-                                           BookingEditHoursRequest bookingEditHoursRequest,
-                                           Callback<SuccessWrapper> cb);
+    public abstract void editBookingHours(
+            int bookingId,
+            BookingEditHoursRequest bookingEditHoursRequest,
+            Callback<SuccessWrapper> cb
+    );
+
     /**
      * Requests a ShouldBlockObject defining if the app is recent enough to be used
-     * @param versionCode Android version code (Not version name!)
+     *
+     * @param versionCode                    Android version code (Not version name!)
      * @param shouldBlockObjectCacheResponse ..
      * @param shouldBlockObjectCallback      ..
      */
@@ -120,39 +139,55 @@ public abstract class DataManager
             @NonNull final Callback<HandyNotification.ResultSet> cb
     );
 
-    public abstract void getQuoteOptions(int serviceId,
-                                         String userId,
-                                         Callback<BookingOptionsWrapper> cb);
-
-    public abstract void createQuote(BookingRequest bookingRequest,
-                                     Callback<BookingQuote> cb);
-
-    public abstract void updateQuoteDate(int quoteId,
-                                         Date date,
-                                         Callback<BookingQuote> cb);
-
-    public abstract void applyPromo(String promoCode,
-                                    int quoteId,
-                                    String userId,
-                                    String email,
-                                    String authToken,
-                                    Callback<BookingQuote> cb
+    public abstract void getQuoteOptions(
+            int serviceId,
+            String userId,
+            Callback<BookingOptionsWrapper> cb
     );
 
-    public abstract void removePromo(int quoteId,
-                                     Callback<BookingCoupon> cb);
+    public abstract void createQuote(
+            BookingRequest bookingRequest,
+            Callback<BookingQuote> cb
+    );
+
+    public abstract void updateQuoteDate(
+            int quoteId,
+            Date date,
+            Callback<BookingQuote> cb
+    );
+
+    public abstract void applyPromo(
+            String promoCode,
+            int quoteId,
+            String userId,
+            String email,
+            String authToken,
+            Callback<BookingQuote> cb
+    );
+
+    //Log Events
+    public abstract void postLogs(
+            final JsonObject eventLogBundle,
+            final Callback<EventLogResponse> cb
+    );
+
+    public abstract void removePromo(
+            int quoteId,
+            Callback<BookingCoupon> cb
+    );
 
     public abstract void createBooking(
             BookingTransaction bookingTransaction,
             Callback<BookingCompleteTransaction> cb
     );
 
-    public abstract void validateBookingZip(int serviceId,
-                                            String zipCode,
-                                            String userId,
-                                            String authToken,
-                                            String promoCode,
-                                            Callback<ZipValidationResponse> cb
+    public abstract void validateBookingZip(
+            int serviceId,
+            String zipCode,
+            String userId,
+            String authToken,
+            String promoCode,
+            Callback<ZipValidationResponse> cb
     );
 
     public abstract void getBookings(
@@ -410,6 +445,7 @@ public abstract class DataManager
     {
         OTHER, SERVER, CLIENT, NETWORK
     }
+
 
     public static class DataManagerError
     {
