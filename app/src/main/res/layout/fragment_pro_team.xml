@@ -43,7 +43,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,13 +50,22 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
-        <com.handybook.handybook.ui.widget.ViewPager
-            android:id="@+id/pro_team_pager"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pro_team_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             >
-        </com.handybook.handybook.ui.widget.ViewPager>
+
+
+            <com.handybook.handybook.ui.widget.ViewPager
+                android:id="@+id/pro_team_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                >
+            </com.handybook.handybook.ui.widget.ViewPager>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <Button
             android:id="@+id/pro_team_bottom_button"
@@ -67,6 +75,7 @@
             tools:visibility="visible"
             />
     </LinearLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/pro_team_fab_button"
