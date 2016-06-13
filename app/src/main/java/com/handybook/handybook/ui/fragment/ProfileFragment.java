@@ -21,7 +21,6 @@ import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivit
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
@@ -32,7 +31,6 @@ import com.handybook.handybook.util.TextUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class ProfileFragment extends InjectedFragment {
@@ -65,8 +63,6 @@ public final class ProfileFragment extends InjectedFragment {
     PasswordInputTextView newPasswordtext;
     @Bind(R.id.profile_cancel_cleaning_plan_button)
     ThinIconButton mCancelCleaningPlanButton;
-    @Bind(R.id.profile_pro_team_button)
-    ThinIconButton mProTeamButton;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -359,12 +355,4 @@ public final class ProfileFragment extends InjectedFragment {
             }
         }
     };
-
-
-    @OnClick(R.id.profile_pro_team_button)
-    void onProTeamClicked()
-    {
-        final Intent intent = new Intent(getContext(), ProTeamActivity.class);
-        getContext().startActivity(intent);
-    }
 }

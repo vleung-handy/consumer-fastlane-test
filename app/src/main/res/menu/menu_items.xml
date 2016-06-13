@@ -18,12 +18,12 @@
             android:title="@string/my_bookings"
             android:icon="@drawable/menu_my_bookings"
             />
-        <!--TODO: JIA: put in the correct ICON when I get it from ANN-->
+
         <item
             android:id="@id/nav_menu_my_pro_team"
             android:checked="false"
             android:title="@string/my_pro_team"
-            android:icon="@drawable/menu_my_bookings"
+            android:icon="@drawable/menu_pro_team"
             />
 
         <item
