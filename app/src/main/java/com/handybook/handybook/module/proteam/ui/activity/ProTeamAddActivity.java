@@ -25,7 +25,7 @@ public class ProTeamAddActivity extends MenuDrawerActivity
         }
         else
         {
-            return ProTeamFragment.newInstance(proTeam, ProTeamFragment.Mode.PRO_ADD);
+            return ProTeamFragment.newInstance(ProTeamFragment.Mode.PRO_ADD, proTeam);
         }
     }
 

@@ -6,6 +6,7 @@ import com.handybook.handybook.module.proteam.model.ProTeamPro;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class ProTeamProViewModel
@@ -17,14 +18,23 @@ public class ProTeamProViewModel
     private final String mTitle;
     private final String mSubtitle;
     private final String mFooter;
+    private boolean mIsChecked;
 
     private ProTeamProViewModel(@NonNull final ProTeamPro proTeamPro)
     {
         mProTeamPro = proTeamPro;
         mTitle = proTeamPro.getName();
         mSubtitle = String.format(TEMPLATE_SPECIALTIES, proTeamPro.getDescription());
-        final DateFormat df = new SimpleDateFormat("EEE, MMM d", Locale.US);
-        mFooter = String.format(TEMPLATE_FOOTER, df.format(proTeamPro.getLastSeenAt()));
+        final Date lastSeenAt = proTeamPro.getLastSeenAt();
+        if (lastSeenAt == null)
+        {
+            mFooter = null;
+        }
+        else
+        {
+            final DateFormat df = new SimpleDateFormat("EEE, MMM d", Locale.US);
+            mFooter = String.format(TEMPLATE_FOOTER, df.format(lastSeenAt));
+        }
     }
 
     public static ProTeamProViewModel from(@NonNull final ProTeamPro proTeamPro)
@@ -50,6 +60,16 @@ public class ProTeamProViewModel
     public String getFooter()
     {
         return mFooter;
+    }
+
+    public boolean isChecked()
+    {
+        return mIsChecked;
+    }
+
+    public void setChecked(final boolean checked)
+    {
+        mIsChecked = checked;
     }
 
     public interface OnInteractionListener

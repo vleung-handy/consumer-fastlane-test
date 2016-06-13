@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ import butterknife.OnClick;
  * create an instance of this fragment.
  */
 public class ProTeamFragment extends InjectedFragment implements
-        ProTeamProListFragment.OnRemoveProTeamProListener,
+        ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
     private static final String KEY_MODE = "ProTeamFragment:Mode";
@@ -51,6 +52,8 @@ public class ProTeamFragment extends InjectedFragment implements
     Toolbar mToolbar;
     @Bind(R.id.pro_team_tab_layout)
     HandyTabLayout mTabLayout;
+    @Bind(R.id.pro_team_swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.pro_team_pager)
     ViewPager mViewPager;
     @Bind(R.id.pro_team_fab_button)
@@ -58,7 +61,7 @@ public class ProTeamFragment extends InjectedFragment implements
     @Bind(R.id.pro_team_bottom_button)
     Button mBottomButton;
 
-    private Mode mMode = Mode.PRO_MANAGE;
+    private Mode mMode;
     private TabAdapter mTabAdapter;
     private ProTeam mProTeam;
 
@@ -69,16 +72,16 @@ public class ProTeamFragment extends InjectedFragment implements
 
     public static ProTeamFragment newInstance(@NonNull Mode mode)
     {
-        ProTeamFragment fragment = new ProTeamFragment();
-        return newInstance(null, mode);
+        return newInstance(mode, null);
     }
 
-    public static ProTeamFragment newInstance(@Nullable ProTeam proTeam, @NonNull Mode mode)
+    public static ProTeamFragment newInstance(@NonNull Mode mode, @Nullable ProTeam proTeam)
     {
         ProTeamFragment fragment = new ProTeamFragment();
-        final Bundle bundle = new Bundle();
-        bundle.putParcelable(KEY_PRO_TEAM, proTeam);
-        bundle.putInt(KEY_MODE, mode.ordinal());
+        final Bundle arguments = new Bundle();
+        arguments.putInt(KEY_MODE, mode.ordinal());
+        arguments.putParcelable(KEY_PRO_TEAM, proTeam);
+        fragment.setArguments(arguments);
         return fragment;
     }
 
@@ -86,11 +89,11 @@ public class ProTeamFragment extends InjectedFragment implements
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        final Bundle bundle = getArguments();
-        if (bundle != null)
+        final Bundle arguments = getArguments();
+        if (arguments != null)
         {
-            mMode = Mode.values()[bundle.getInt(KEY_MODE, Mode.PRO_MANAGE.ordinal())];
-            mProTeam = bundle.getParcelable(KEY_PRO_TEAM);
+            mMode = Mode.values()[arguments.getInt(KEY_MODE)];
+            mProTeam = arguments.getParcelable(KEY_PRO_TEAM);
         }
     }
 
@@ -105,12 +108,19 @@ public class ProTeamFragment extends InjectedFragment implements
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.setupHamburgerMenu(mToolbar);
-        mTabAdapter = new TabAdapter(getChildFragmentManager(), this, ProviderMatchPreference.PREFERRED);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            @Override
+            public void onRefresh()
+            {
+                requestProTeam();
+            }
+        });
+        setMode(mMode);
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
-        setMode(mMode);
         return view;
     }
 
@@ -120,10 +130,22 @@ public class ProTeamFragment extends InjectedFragment implements
         switch (mMode)
         {
             case PRO_MANAGE:
+                mTabAdapter = new TabAdapter(
+                        getChildFragmentManager(),
+                        mProTeam,
+                        this,
+                        ProviderMatchPreference.PREFERRED
+                );
                 mFab.setVisibility(View.VISIBLE);
                 mBottomButton.setVisibility(View.GONE);
                 break;
             case PRO_ADD:
+                mTabAdapter = new TabAdapter(
+                        getChildFragmentManager(),
+                        mProTeam,
+                        this,
+                        ProviderMatchPreference.INDIFFERENT
+                );
                 mFab.setVisibility(View.GONE);
                 mBottomButton.setVisibility(View.VISIBLE);
                 break;
@@ -136,24 +158,18 @@ public class ProTeamFragment extends InjectedFragment implements
         super.onResume();
         if (mProTeam == null)
         {
-            bus.post(new ProTeamEvent.RequestProTeam());
-        }
-        else
-        {
-            initialize();
+            requestProTeam();
         }
     }
 
-    private void initialize()
-    {
-        mTabAdapter.setProTeam(mProTeam);
-    }
+    private void requestProTeam() {bus.post(new ProTeamEvent.RequestProTeam());}
+
 
     @Subscribe
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
         mProTeam = event.getProTeam();
-        initialize();
+        mTabAdapter.setProTeam(mProTeam);
     }
 
     @Subscribe
@@ -196,8 +212,9 @@ public class ProTeamFragment extends InjectedFragment implements
     }
 
     @Override
-    public void onRemoveProTeamProRequested(final ProTeamPro proTeamPro)
+    public void onProRemovalRequested(final ProTeamPro proTeamPro)
     {
+        showToast("Pro X clicked" + proTeamPro.getName());
         FragmentManager fm = getActivity().getSupportFragmentManager();
         RemoveProDialogFragment fragment = new RemoveProDialogFragment();
         final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
@@ -207,6 +224,12 @@ public class ProTeamFragment extends InjectedFragment implements
         fragment.show(fm, RemoveProDialogFragment.TAG);
     }
 
+    @Override
+    public void onProCheckboxStateChanged(final ProTeamPro proTeamPro, final boolean state)
+    {
+        showToast("Pro checkbox state changed" + proTeamPro.getName() + (state ? "true" : "false"));
+    }
+
     private static class TabAdapter extends FragmentPagerAdapter
     {
         private ArrayList<ProTeamProListFragment> mFragments = new ArrayList<>();
@@ -214,27 +237,26 @@ public class ProTeamFragment extends InjectedFragment implements
 
         TabAdapter(
                 @NonNull final FragmentManager fm,
-                ProTeamProListFragment.OnRemoveProTeamProListener listener,
-                final ProviderMatchPreference preferred
+                @Nullable ProTeam proTeam,
+                @Nullable ProTeamProListFragment.OnProInteraction listener,
+                @NonNull final ProviderMatchPreference providerMatchPreference
         )
         {
             super(fm);
-            mTitles.clear();
-            mFragments.clear();
             mTitles.add(ProTeamCategoryType.CLEANING.toString());
             final ProTeamProListFragment cleaning = ProTeamProListFragment.newInstance(
-                    null,
+                    proTeam,
                     ProTeamCategoryType.CLEANING,
-                    preferred
+                    providerMatchPreference
             );
             mTitles.add(ProTeamCategoryType.HANDYMEN.toString());
             final ProTeamProListFragment handymen = ProTeamProListFragment.newInstance(
-                    null,
+                    proTeam,
                     ProTeamCategoryType.HANDYMEN,
-                    preferred
+                    providerMatchPreference
             );
-            cleaning.setOnRemoveProTeamProListener(listener);
-            handymen.setOnRemoveProTeamProListener(listener);
+            cleaning.setOnProInteraction(listener);
+            handymen.setOnProInteraction(listener);
             mFragments.add(cleaning);
             mFragments.add(handymen);
         }
@@ -259,8 +281,14 @@ public class ProTeamFragment extends InjectedFragment implements
 
         void setProTeam(final ProTeam proTeam)
         {
-            getItem(0).update(proTeam);
-            getItem(1).update(proTeam);
+            getItem(0).setProTeam(proTeam);
+            getItem(1).setProTeam(proTeam);
+        }
+
+        void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference)
+        {
+            getItem(0).setProviderMatchPreference(providerMatchPreference);
+            getItem(1).setProviderMatchPreference(providerMatchPreference);
         }
     }
 
