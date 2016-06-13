@@ -17,15 +17,18 @@
         >
 
 
-        <android.support.v7.widget.AppCompatCheckBox
+        <CheckBox
             android:id="@+id/pro_team_pro_card_checkbox"
-            style="@style/checkbox.round"
-            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin_half"
+            android:layout_gravity="center"
+            android:background="@drawable/option_checkbox"
+            android:button="@null"
+            android:saveEnabled="true"
             android:visibility="gone"
             tools:checked="true"
             tools:visibility="visible"
-
             />
 
         <LinearLayout
