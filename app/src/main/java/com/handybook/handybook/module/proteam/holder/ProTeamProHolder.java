@@ -65,14 +65,20 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     @OnClick(R.id.pro_team_pro_card_x)
     void onXClicked(View view)
     {
-        mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro());
+        if (mOnInteractionListener != null)
+        {
+            mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro());
+        }
     }
 
     @OnCheckedChanged(R.id.pro_team_pro_card_checkbox)
     void onCheckedChanged(boolean checked)
     {
-
-        mOnInteractionListener.onCheckedChanged(mProTeamProViewModel.getProTeamPro(), checked);
+        mProTeamProViewModel.setChecked(checked);
+        if (mOnInteractionListener != null)
+        {
+            mOnInteractionListener.onCheckedChanged(mProTeamProViewModel.getProTeamPro(), checked);
+        }
 
     }
 }
