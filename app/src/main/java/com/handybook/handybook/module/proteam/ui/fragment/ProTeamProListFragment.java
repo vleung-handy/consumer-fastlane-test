@@ -22,9 +22,6 @@ import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -37,7 +34,7 @@ public class ProTeamProListFragment extends InjectedFragment
 {
     private static final String KEY_PROTEAM = "ProTeamProList:ProTeam";
     private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeamProList:CategoryType";
-    public static final String KEY_PROVIDER_MATCH_PREFERENCE = "ProTeamProList:DisplayMode";
+    private static final String KEY_PROVIDER_MATCH_PREFERENCE = "ProTeamProList:DisplayMode";
 
     @Bind(R.id.pro_team_pro_list_recycler_view)
     EmptiableRecyclerView mRecyclerView;
@@ -50,10 +47,9 @@ public class ProTeamProListFragment extends InjectedFragment
 
     private ProTeam mProteam;
     private ProTeamCategoryType mProTeamCategoryType;
-    private OnRemoveProTeamProListener mOnRemoveProTeamProListener;
+    private OnProInteraction mOnProInteraction;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
     private ProviderMatchPreference mProviderMatchPreference;
-    private List<ProTeamPro> mProsToAdd = new ArrayList<>();
 
 
     public ProTeamProListFragment()
@@ -92,8 +88,8 @@ public class ProTeamProListFragment extends InjectedFragment
             mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
             mProviderMatchPreference = ProviderMatchPreference
                     .values()[arguments.getInt(KEY_PROVIDER_MATCH_PREFERENCE)];
-            initialize();
         }
+        initialize();
         return view;
     }
 
@@ -104,42 +100,16 @@ public class ProTeamProListFragment extends InjectedFragment
         initRemoveProListenerListener();
     }
 
-    private void initRemoveProListenerListener()
-    {
-        mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
-        {
-            @Override
-            public void onXClicked(final ProTeamPro proTeamPro)
-            {
-                if (mOnRemoveProTeamProListener == null)
-                {
-                    return;
-                }
-                mOnRemoveProTeamProListener.onRemoveProTeamProRequested(proTeamPro);
-            }
-
-            @Override
-            public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked)
-            {
-                if (checked)
-                {
-                    mProsToAdd.add(proTeamPro);
-                }
-                else
-                {
-                    mProsToAdd.remove(proTeamPro);
-                }
-            }
-        };
-    }
-
     private void initEmptyView()
     {
+        if (mEmptyViewTitle == null || mEmptyViewText == null)
+        {
+            return;
+        }
         if (mProteam == null)
         {
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
-
         }
         else if (mProteam.hasAvailableProsInCategory(mProTeamCategoryType))
         {
@@ -155,6 +125,10 @@ public class ProTeamProListFragment extends InjectedFragment
 
     private void initRecyclerView()
     {
+        if (mRecyclerView == null)
+        {
+            return;
+        }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setEmptyView(mEmptyView);
         if (mProteam == null)
@@ -171,29 +145,53 @@ public class ProTeamProListFragment extends InjectedFragment
         proCardCardAdapter.notifyDataSetChanged();
     }
 
+    private void initRemoveProListenerListener()
+    {
+        mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
+        {
+            @Override
+            public void onXClicked(final ProTeamPro proTeamPro)
+            {
+                if (mOnProInteraction == null)
+                {
+                    return;
+                }
+                mOnProInteraction.onProRemovalRequested(proTeamPro);
+            }
 
-    public void update(final ProTeam proTeam)
+            @Override
+            public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked)
+            {
+                mOnProInteraction.onProCheckboxStateChanged(proTeamPro, checked);
+            }
+        };
+    }
+
+
+    public void setProTeam(final ProTeam proTeam)
     {
         mProteam = proTeam;
-        initRecyclerView();
+        initialize();
     }
 
-    public void update(final ProviderMatchPreference providerMatchPreference)
+    public void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference)
     {
         mProviderMatchPreference = providerMatchPreference;
-        initRecyclerView();
+        initialize();
     }
 
-    void setOnRemoveProTeamProListener(final OnRemoveProTeamProListener onRemoveProTeamProListener)
+    void setOnProInteraction(final OnProInteraction onProInteraction)
     {
-        mOnRemoveProTeamProListener = onRemoveProTeamProListener;
+        mOnProInteraction = onProInteraction;
     }
 
     /**
      * Implement this interface to be notified when user clicks on one of the pro cards.
      */
-    interface OnRemoveProTeamProListener
+    interface OnProInteraction
     {
-        void onRemoveProTeamProRequested(ProTeamPro proTeamPro);
+        void onProRemovalRequested(ProTeamPro proTeamPro);
+
+        void onProCheckboxStateChanged(ProTeamPro proTeamPro, boolean state);
     }
 }
