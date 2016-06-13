@@ -51,6 +51,26 @@ public class ProTeamProListFragment extends InjectedFragment
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
     private ProviderMatchPreference mProviderMatchPreference;
 
+    {
+        mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
+        {
+            @Override
+            public void onXClicked(final ProTeamPro proTeamPro)
+            {
+                if (mOnProInteraction == null)
+                {
+                    return;
+                }
+                mOnProInteraction.onProRemovalRequested(proTeamPro);
+            }
+
+            @Override
+            public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked)
+            {
+                mOnProInteraction.onProCheckboxStateChanged(proTeamPro, checked);
+            }
+        };
+    }
 
     public ProTeamProListFragment()
     {
@@ -96,7 +116,6 @@ public class ProTeamProListFragment extends InjectedFragment
     private void initialize()
     {
         initEmptyView();
-        initRemoveProListenerListener();
         initRecyclerView();
     }
 
@@ -121,28 +140,6 @@ public class ProTeamProListFragment extends InjectedFragment
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_no_available);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_no_available);
         }
-    }
-
-    private void initRemoveProListenerListener()
-    {
-        mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
-        {
-            @Override
-            public void onXClicked(final ProTeamPro proTeamPro)
-            {
-                if (mOnProInteraction == null)
-                {
-                    return;
-                }
-                mOnProInteraction.onProRemovalRequested(proTeamPro);
-            }
-
-            @Override
-            public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked)
-            {
-                mOnProInteraction.onProCheckboxStateChanged(proTeamPro, checked);
-            }
-        };
     }
 
     private void initRecyclerView()
