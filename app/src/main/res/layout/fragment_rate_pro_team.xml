@@ -10,46 +10,16 @@
     android:padding="@dimen/default_padding"
     >
 
-    <LinearLayout
-        android:id="@+id/simple_container"
+    <include layout="@layout/rate_pro_team_item"
+             android:id="@+id/simple_container"
+        />
+
+    <com.handybook.handybook.booking.ui.view.SwipeableViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-        <TextView
-            android:id="@+id/rate_dialog_pro_match_header_txt"
-            style="@style/TextView.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            tools:text="@string/rate_dialog_pro_match_title_add"
-            />
-
-        <com.handybook.handybook.booking.ui.view.ImageToggleButton
-            android:id="@+id/toggle_button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/image_toggle_button_height"
-            app:ripple_drawable="?android:attr/selectableItemBackground"
-            app:checked_bg="@drawable/border_button_fill"
-            app:unchecked_bg="@drawable/border_button_transparent"
-            android:layout_marginTop="@dimen/default_margin_half"
-            android:clipToPadding="false"
-            android:clipChildren="false"
-            />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/complex_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ></android.support.v4.view.ViewPager>
-    </FrameLayout>
+        app:swipeable="false"
+        app:wrap_content_enabled="true"
+        />
 
 </LinearLayout>

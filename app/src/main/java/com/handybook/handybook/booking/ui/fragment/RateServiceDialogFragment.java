@@ -47,6 +47,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ImageView mServiceIcon;
     @Bind(R.id.rate_dialog_title_text)
     TextView mTitleText;
+    @Bind(R.id.rate_dialog_pro_team_member)
+    TextView mTextProTeamMember;
     @Bind(R.id.rate_dialog_message_text)
     TextView mMessageText;
     @Bind(R.id.rate_dialog_submit_button)
@@ -232,8 +234,13 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     )
     {
         mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
-        //TODO: JIA: remove this hard code
-        mPrerateProInfo.mProviderMatchPreference = ProviderMatchPreference.NEVER;
+
+        if (mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED) {
+            mTextProTeamMember.setVisibility(View.VISIBLE);
+        } else {
+            mTextProTeamMember.setVisibility(View.GONE);
+        }
+
         initProTeamSection();
         hideProgress();
         enableInputs();
@@ -327,11 +334,13 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             else
             {
                 mProTeamSection.setVisibility(View.VISIBLE);
-                if (mRateProTeamFragment != null)
-                {
-                    mRateProTeamFragment.setRating(mRating);
-                    mRateProTeamFragment.resetLayout();
-                }
+            }
+
+            //must make this call to update with new rating, even if the above sets the layout to
+            //GONE. This is needed for tracking previous rating.
+            if (mRateProTeamFragment != null)
+            {
+                mRateProTeamFragment.updateWithNewRating(mRating);
             }
         }
     }

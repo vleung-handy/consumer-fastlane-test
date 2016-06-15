@@ -365,6 +365,7 @@
     <string name="rate_dialog_pro_match_block">Block %s</string>
     <string name="rate_dialog_pro_match_preference_footer_never">We\'ll never match you with this pro again.</string>
     <string name="rate_dialog_pro_match_preference_footer_preferred">Pro Team members are requested first.</string>
+    <string name="rate_dialog_pro_team_member">Pro Team member</string>
     <string name="pro_match_preference_never">No</string>
     <string name="pro_match_preference_indifferent">Not now</string>
     <string name="pro_match_preference_preferred">Yes</string>

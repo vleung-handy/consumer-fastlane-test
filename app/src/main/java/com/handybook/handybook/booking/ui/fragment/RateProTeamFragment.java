@@ -2,16 +2,20 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.view.ImageToggleButton;
+import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 
 import butterknife.Bind;
@@ -26,6 +30,9 @@ public class RateProTeamFragment extends Fragment
     private static final String RATING_VALUE = "rating-value";
     private static final String MATCH_PREFERENCE = "match-preference";
     private static final String PRO_NAME = "pro-name";
+    private static final String TAG_BLOCK_PRO = "block-pro";
+    private static final String TAG_ADD_PRO = "add-pro";
+    private static final int ANIMATION_WAIT_TIME_MS = 1000;
 
     @Bind(R.id.toggle_button)
     ImageToggleButton mToggleButton;
@@ -38,6 +45,14 @@ public class RateProTeamFragment extends Fragment
 
     @Bind(R.id.rate_dialog_pro_match_header_txt)
     TextView mTextTitle;
+
+    @Bind(R.id.rate_dialog_pro_match_container)
+    ViewGroup mRootContainer;
+
+    @Bind(R.id.pager)
+    SwipeableViewPager mPager;
+
+    private ProTeamPagerAdapter mAdapter;
 
     private String mTitleAddPro;
     private String mButtonTextAddPro;
@@ -57,15 +72,15 @@ public class RateProTeamFragment extends Fragment
     private Drawable mActiveRemoveDrawable;
     private Drawable mInactiveRemoveDrawable;
 
-    /**
-     * complex container shows a view pager which contains 2 pages of (title & button)
-     */
-    @Bind(R.id.complex_container)
-    ViewGroup mComplexContainer;
-
-    private ProviderMatchPreference mInitialPreference;
+    private ProviderMatchPreference mInitialMatchPreference;
     private int mRating;
     private String mProName;
+    private Handler mHandler = new Handler();
+
+    /**
+     * This points to the ImageToggleButton that is clicked from within the view pager
+     */
+    private ImageToggleButton mCurrentClickedToggleButton;
 
     public static RateProTeamFragment newInstance(int rating, String proName, ProviderMatchPreference matchPreference)
     {
@@ -85,7 +100,7 @@ public class RateProTeamFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_rate_pro_team, container, false);
         ButterKnife.bind(this, v);
 
-        mInitialPreference = (ProviderMatchPreference) getArguments().getSerializable(MATCH_PREFERENCE);
+        mInitialMatchPreference = (ProviderMatchPreference) getArguments().getSerializable(MATCH_PREFERENCE);
         mRating = getArguments().getInt(RATING_VALUE);
         mProName = getArguments().getString(PRO_NAME);
 
@@ -111,9 +126,37 @@ public class RateProTeamFragment extends Fragment
         return v;
     }
 
-    public void setRating(final int rating)
+    /**
+     * This updates the layout with a new rating, and then sets up the layouts accordingly
+     * @param rating
+     */
+    public void updateWithNewRating(final int rating)
     {
+        int previousRating = mRating;
         mRating = rating;
+
+        if (previousRating >= 0) {
+            //check to see if we need to do a change. If there is a change from low to high
+            //or high to low, then we need to reset the layout. Otherwise we don't do anything.
+            if (hasRatingLevelChanged(mRating, previousRating)) {
+                resetLayout();
+            }
+        } else {
+            //there was no previous rating, so reset the layout
+            resetLayout();
+        }
+    }
+
+    /**
+     * If a rating is 3 stars or lower, then it's considered low
+     * If a rating is 4 stars or higher, it's considered high.
+     *
+     * Remember ratings are 0-indexed
+     *
+     * @return true if the rating changed from high to low, or vice versa
+     */
+    private boolean hasRatingLevelChanged(int newRating, int oldRating) {
+        return (newRating >= 3 && oldRating < 3) || (newRating < 3 && oldRating >= 3);
     }
 
     /**
@@ -124,34 +167,33 @@ public class RateProTeamFragment extends Fragment
         if (mRating < 0)
         {
             //this view is not ready to initialize. Not enough data. Hide everything
-            mComplexContainer.setVisibility(View.GONE);
+            mPager.setVisibility(View.GONE);
             mSimpleContainer.setVisibility(View.GONE);
             return;
         }
 
         if (isProAlreadyOnTeam())
         {
-            if (mRating <= 3)
+            if (mRating <= 2)   //remember this is 0 indexed. This is <= 3 stars
             {
-                //TODO: JIA: show the complex layout block where it allows user to remove and then block pro
+                resetForViewPager();
             }
             else
             {
                 //HIDE EVERYTHING!!
-                mComplexContainer.setVisibility(View.GONE);
-                mSimpleContainer.setVisibility(View.GONE);
+                mRootContainer.setVisibility(View.GONE);
             }
         }
         else
         {    //pro is not yet on team
-            if (mRating <= 3)
+            if (mRating <= 2)   //remember this is 0 indexed. This is <= 3 stars
             {
-                resetViewForBlockPro();
+                resetSimpleViewForBlockPro();
             }
             else
             {
                 //show the flow to add to pro team
-                resetViewForAddPro();
+                resetSimpleViewForAddPro();
             }
 
         }
@@ -161,26 +203,48 @@ public class RateProTeamFragment extends Fragment
      * This updates the layout to say the things specifically for the case where we want to block this
      * pro.
      */
-    private void resetViewForBlockPro()
+    private void resetSimpleViewForBlockPro()
     {
-        mComplexContainer.setVisibility(View.GONE);
+        mPager.setVisibility(View.GONE);
         mSimpleContainer.setVisibility(View.VISIBLE);
-        mToggleButton.setChecked(false);
-        mTextTitle.setText(mTitleBlockPro);
-        mToggleButton.setCheckedText(mButtonTextBlockPro);
-        mToggleButton.setUncheckedText(mButtonTextBlockPro);
-        mToggleButton.setCheckedDrawable(mActiveBlockDrawable);
-        mToggleButton.setUncheckedDrawable(mInactiveBlockDrawable);
-        mToggleButton.updateState();
+        resetViewForBlockPro(mToggleButton, mTextTitle);
     }
+
+    /**
+     * Takes in views that are associated with the block pro layout, and sets it up accordingly
+     */
+    private void resetViewForBlockPro(ImageToggleButton button, TextView textView) {
+        button.setChecked(false);
+        textView.setText(mTitleBlockPro);
+        button.setCheckedText(mButtonTextBlockPro);
+        button.setUncheckedText(mButtonTextBlockPro);
+        button.setCheckedDrawable(mActiveBlockDrawable);
+        button.setUncheckedDrawable(mInactiveBlockDrawable);
+        button.setTag(TAG_BLOCK_PRO);
+        button.updateState();
+    }
+
+    /**
+     * Takes in views that are associated with the block pro layout, and sets it up accordingly
+     */
+    private void resetViewForRemovePro(ImageToggleButton button, TextView textView) {
+        button.setChecked(false);
+        textView.setText(mTitleRemovePro);
+        button.setCheckedText(mButtonTextRemovePro);
+        button.setUncheckedText(mButtonTextRemovePro);
+        button.setCheckedDrawable(mActiveRemoveDrawable);
+        button.setUncheckedDrawable(mInactiveRemoveDrawable);
+        button.updateState();
+    }
+
 
     /**
      * This updates the layout to say the things specifically for the case where we want to add this
      * pro to the pro team.
      */
-    private void resetViewForAddPro()
+    private void resetSimpleViewForAddPro()
     {
-        mComplexContainer.setVisibility(View.GONE);
+        mPager.setVisibility(View.GONE);
         mSimpleContainer.setVisibility(View.VISIBLE);
         mTextTitle.setText(mTitleAddPro);
         mToggleButton.setChecked(false);
@@ -188,7 +252,57 @@ public class RateProTeamFragment extends Fragment
         mToggleButton.setUncheckedText(mButtonTextAddPro);
         mToggleButton.setCheckedDrawable(mActiveAddDrawable);
         mToggleButton.setUncheckedDrawable(mInactiveAddDrawable);
+        mToggleButton.setTag(TAG_ADD_PRO);
         mToggleButton.updateState();
+    }
+
+    private void resetForViewPager() {
+        mRootContainer.setVisibility(View.VISIBLE);
+        mPager.setVisibility(View.VISIBLE);
+        mSimpleContainer.setVisibility(View.GONE);
+        mCurrentClickedToggleButton = null;
+        mAdapter = new ProTeamPagerAdapter();
+        mPager.setAdapter(mAdapter);
+    }
+
+    /**
+     * This is the method that should be called to retrieve the user's final decision on what
+     * he's selected through the possible combinations of buttons
+     * @return
+     */
+    public ProviderMatchPreference getNewProviderMatchPreference() {
+        if (mPager.getVisibility() == View.VISIBLE) {
+            /*
+                this is the case where the user can remove pro, and then subsequently block the pro.
+                There is a trick here, so be very very careful. If the pager is on the first page,
+                then the user hasn't clicked anything. If the user is on the second page, that
+                IMPLIES the user clicked YES to the first page. If the user is on the second page,
+                AND the button is active, then the user has also clicked YES on the second page.
+             */
+            if (mPager.getCurrentItem() > 0) {  //on the second page
+                if (mCurrentClickedToggleButton != null && mCurrentClickedToggleButton.isChecked()) {
+                    return ProviderMatchPreference.NEVER;
+                } else {
+                    //this means to remove the pro.
+                    return ProviderMatchPreference.INDIFFERENT;
+                }
+            }
+        } else {
+            //this is the straight forward case where use can either add or block a pro
+            if (mToggleButton.isChecked()) {
+                if (mToggleButton.getTag().equals(TAG_ADD_PRO)) {
+                    return ProviderMatchPreference.PREFERRED;
+                } else if (mToggleButton.getTag().equals(TAG_BLOCK_PRO)){
+                    return ProviderMatchPreference.NEVER;
+                } else {
+                    Crashlytics.logException(new RuntimeException("This is not supposed to " +
+                            "happen, no tag set for toggle button"));
+                }
+            }
+        }
+
+        //defaults to the user not making a selection
+        return ProviderMatchPreference.INDIFFERENT;
     }
 
     /**
@@ -198,6 +312,73 @@ public class RateProTeamFragment extends Fragment
      */
     private boolean isProAlreadyOnTeam()
     {
-        return mInitialPreference == ProviderMatchPreference.PREFERRED;
+        return mInitialMatchPreference == ProviderMatchPreference.PREFERRED;
     }
+
+    private void animateToPage(final int page) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run()
+            {
+                mPager.setCurrentItem(page);
+            }
+        }, ANIMATION_WAIT_TIME_MS);
+    }
+
+    /**
+     * The adapter that powers the view pager. Page one will show "remove" pro functionality.
+     * Page 2 is for "block" pro
+     */
+    public class ProTeamPagerAdapter extends PagerAdapter
+    {
+        @Override
+        public Object instantiateItem(ViewGroup parent, int position) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.rate_pro_team_item, parent, false);
+
+            TextView textView = (TextView) layout.findViewById(R.id.rate_dialog_pro_match_header_txt);
+            ImageToggleButton button = (ImageToggleButton) layout.findViewById(R.id.toggle_button);
+
+            if (position == 0) {
+                //on the 1st page, we show option for removing pro
+                button.setListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v)
+                    {
+                        animateToPage(1);
+                    }
+                });
+                resetViewForRemovePro(button, textView);
+            } else {
+                //on the 2nd page, we show option for removing pro
+                button.setListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v)
+                    {
+                        mCurrentClickedToggleButton = (ImageToggleButton) v;
+                    }
+                });
+                resetViewForBlockPro(button, textView);
+            }
+
+            parent.addView(layout);
+            return layout;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup collection, int position, Object view) {
+            collection.removeView((View) view);
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+    }
+
 }

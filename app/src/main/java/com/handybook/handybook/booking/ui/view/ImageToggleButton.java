@@ -40,6 +40,9 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
 
     private boolean mChecked;
 
+    private OnClickListener mListener;
+    private String mTag;
+
     public ImageToggleButton(Context context)
     {
         super(context);
@@ -90,6 +93,10 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
         }
     }
 
+    public void setListener(final OnClickListener listener)
+    {
+        mListener = listener;
+    }
 
     public void setCheckedDrawable(final Drawable checkedDrawable)
     {
@@ -137,6 +144,22 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     {
         toggle();
         updateState();
+
+        if (mListener != null)
+        {
+            mListener.onClick(this);
+        }
+    }
+
+    @Override
+    public String getTag()
+    {
+        return mTag;
+    }
+
+    public void setTag(final String tag)
+    {
+        mTag = tag;
     }
 
     /**
