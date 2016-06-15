@@ -12,8 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:animateLayoutChanges="true"
+        android:orientation="vertical"
         >
 
         <android.support.design.widget.AppBarLayout
@@ -32,8 +32,25 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:navigationIcon="@drawable/ic_menu"
                 app:titleTextAppearance="@style/Toolbar.TitleText"
-                />
+                >
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <ImageButton
+                        android:id="@+id/pro_team_toolbar_questionmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/cd_pro_team_toolbar_questionmark"
+                        android:padding="@dimen/default_padding"
+                        android:src="@drawable/ic_pro_team_toolbar_questionmark"
+                        />
+                </FrameLayout>
+            </android.support.v7.widget.Toolbar>
 
             <com.handybook.handybook.ui.view.HandyTabLayout
                 android:id="@+id/pro_team_tab_layout"
@@ -68,12 +85,13 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
+
         <Button
             android:id="@+id/pro_team_bottom_button"
             style="@style/Button.Green"
+            android:clickable="false"
             android:visibility="gone"
             tools:text="Add 13 pros"
-            android:clickable="false"
             tools:visibility="visible"
             />
 

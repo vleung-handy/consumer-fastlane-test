@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
@@ -354,6 +355,13 @@ public class ProTeamFragment extends InjectedFragment implements
         mBottomButton.setText(text);
         mBottomButton.setVisibility(haveProsToAdd ? View.GONE : View.VISIBLE);
     }
+
+    @OnClick(R.id.pro_team_toolbar_questionmark)
+    public void onMenuItemClick()
+    {
+        startActivity(HelpActivity.DeepLink.PRO_TEAM.getIntent(getActivity()));
+    }
+
 
     private static class TabAdapter extends FragmentPagerAdapter
     {
