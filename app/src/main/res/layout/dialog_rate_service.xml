@@ -233,72 +233,27 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginBottom="25dp"
                         android:background="@color/handy_divider_line"
                         />
 
+                    <!--This will hold the fragment that allows the user to add/remove/block a pro-->
                     <LinearLayout
-                        android:id="@+id/rate_dialog_pro_match_container"
+                        android:id="@+id/rate_dialog_pro_team_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         >
 
-                        <TextView
-                            android:id="@+id/rate_dialog_pro_match_header_txt"
-                            style="@style/TextView.Large"
+                        <FrameLayout
+                            android:id="@+id/rate_pro_team_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/default_margin"
-                            android:layout_marginLeft="@dimen/default_margin"
-                            android:layout_marginRight="@dimen/default_margin"
-                            android:gravity="center_horizontal"
-                            android:text="@string/rate_dialog_pro_match_header"
-                            tools:text="Add them to your Pro Team?"
                             />
 
-                        <RadioGroup
-                            android:id="@+id/rate_dialog_pro_match_radiogroup"
-                            style="@style/ToggleGroupStyle"
-                            android:layout_marginLeft="@dimen/default_margin"
-                            android:layout_marginRight="@dimen/default_margin"
-                            android:layout_marginBottom="@dimen/default_margin_half"
-                            android:checkedButton="@+id/tip_none"
-                            >
-
-                            <RadioButton
-                                android:id="@+id/rate_dialog_pro_match_preference_never"
-                                style="@style/TipToggle.First"
-                                android:text="@string/pro_match_preference_never"
-                                />
-
-                            <RadioButton
-                                android:id="@+id/rate_dialog_pro_match_preference_indifferent"
-                                style="@style/TipToggle"
-                                android:text="@string/pro_match_preference_indifferent"
-                                tools:checked="true"
-                                />
-
-                            <RadioButton
-                                android:id="@+id/rate_dialog_pro_match_preference_preferred"
-                                style="@style/TipToggle.Last"
-                                android:text="@string/pro_match_preference_preferred"
-                                />
-
-                        </RadioGroup>
-
-                        <TextView
-                            android:id="@+id/rate_dialog_pro_match_footer_txt"
-                            style="@style/TextView.Medium"
+                        <View
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/default_margin"
-                            android:layout_marginTop="@dimen/default_margin_half"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/handy_text_gray"
-                            android:visibility="gone"
-                            tools:text="@string/rate_dialog_pro_match_preference_footer_preferred"
-                            tools:visibility="visible"
+                            android:layout_height="1dp"
+                            android:background="@color/handy_divider_line"
                             />
                     </LinearLayout>
 
@@ -309,19 +264,20 @@
                         android:orientation="vertical"
                         android:visibility="gone"
                         tools:visibility="visible"
+                        android:layout_marginTop="@dimen/default_margin"
                         >
 
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/default_margin"
                             android:gravity="center"
                             android:text="@string/rating_tip_prompt"
                             />
 
                         <FrameLayout
                             android:id="@+id/rate_dialog_tip_layout_container"
+                            android:layout_marginTop="@dimen/default_margin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             />

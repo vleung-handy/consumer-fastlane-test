@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -59,6 +57,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ProgressBar mSubmitProgress;
     @Bind(R.id.rate_dialog_ratings_layout)
     LinearLayout mRatingsLayout;
+
+    /**
+     * This layout also contains the pro team layout
+     */
     @Bind(R.id.rate_dialog_submit_button_layout)
     View mSubmitButtonLayout;
     @Bind(R.id.rate_dialog_star_1)
@@ -73,29 +75,17 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ImageView mStar5;
     @Bind(R.id.rate_dialog_tip_section)
     View mTipSection;
-    //Pro Match Section
-    @Bind(R.id.rate_dialog_pro_match_container)
-    ViewGroup mProMatchContainer;
-    @Bind(R.id.rate_dialog_pro_match_radiogroup)
-    RadioGroup mProMatchPreferences;
-    @Bind(R.id.rate_dialog_pro_match_header_txt)
-    TextView mProMatchHeaderText;
-    @Bind(R.id.rate_dialog_pro_match_footer_txt)
-    TextView mProMatchFooterText;
-    @Bind(R.id.rate_dialog_pro_match_preference_never)
-    RadioButton mProMatchRadioNever;
-    @Bind(R.id.rate_dialog_pro_match_preference_indifferent)
-    RadioButton mProMatchRadioIndifferent;
-    @Bind(R.id.rate_dialog_pro_match_preference_preferred)
-    RadioButton mProMatchRadioPreferred;
+    @Bind(R.id.rate_dialog_pro_team_section)
+    ViewGroup mProTeamSection;
 
+    private RateProTeamFragment mRateProTeamFragment;
     private int mBookingId;
     private int mRating;
     private String mProName;
     private PrerateProInfo mPrerateProInfo;
     private ArrayList<ImageView> mStars = new ArrayList<>();
     private View.OnClickListener mSubmitListener;
-    private ProviderMatchPreference mMatchPreference;
+    private ProviderMatchPreference mSelectedMatchPreference;
 
     {
         mSubmitListener = new View.OnClickListener()
@@ -112,7 +102,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                         mBookingId,
                         finalRating,
                         tipAmountCents,
-                        mMatchPreference
+                        mSelectedMatchPreference
                 ));
                 if (tipAmountCents != null)
                 {
@@ -242,7 +232,9 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     )
     {
         mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
-        initProTeamSection(mPrerateProInfo);
+        //TODO: JIA: remove this hard code
+        mPrerateProInfo.mProviderMatchPreference = ProviderMatchPreference.NEVER;
+        initProTeamSection();
         hideProgress();
         enableInputs();
 
@@ -325,6 +317,22 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         if (mRating >= 0)
         {
             mSubmitButtonLayout.setVisibility(View.VISIBLE);
+
+            //this is zero indexed, so this means 4 stars or higher
+            if (rating >= 3 && mPrerateProInfo != null &&
+                    mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED)
+            {
+                mProTeamSection.setVisibility(View.GONE);
+            }
+            else
+            {
+                mProTeamSection.setVisibility(View.VISIBLE);
+                if (mRateProTeamFragment != null)
+                {
+                    mRateProTeamFragment.setRating(mRating);
+                    mRateProTeamFragment.resetLayout();
+                }
+            }
         }
     }
 
@@ -374,53 +382,17 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         });
     }
 
-    private void initProTeamSection(final PrerateProInfo prerateProInfo)
+    private void initProTeamSection()
     {
-        mProMatchPreferences.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        mRateProTeamFragment = (RateProTeamFragment) getChildFragmentManager().findFragmentByTag(RateProTeamFragment.class.getSimpleName());
+        if (mRateProTeamFragment == null)
         {
-            @Override
-            public void onCheckedChanged(final RadioGroup group, final int checkedId)
-            {
-                switch (checkedId)
-                {
-                    case R.id.rate_dialog_pro_match_preference_never:
-                        mMatchPreference = ProviderMatchPreference.NEVER;
-                        mProMatchFooterText.setText(
-                                R.string.rate_dialog_pro_match_preference_footer_never
-                        );
-                        mProMatchFooterText.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.rate_dialog_pro_match_preference_indifferent:
-                        mMatchPreference = ProviderMatchPreference.INDIFFERENT;
-                        mProMatchFooterText.setVisibility(View.GONE);
-                        break;
-                    case R.id.rate_dialog_pro_match_preference_preferred:
-                        mMatchPreference = ProviderMatchPreference.PREFERRED;
-                        mProMatchFooterText.setText(
-                                R.string.rate_dialog_pro_match_preference_footer_preferred
-                        );
-                        mProMatchFooterText.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
-        });
-
-        ProviderMatchPreference preference = prerateProInfo.getProviderMatchPreference();
-        mMatchPreference = preference == null ? ProviderMatchPreference.INDIFFERENT : preference;
-        switch (mMatchPreference)
-        {
-            case NEVER:
-                mProMatchRadioNever.setChecked(true);
-                break;
-            case PREFERRED:
-                mProMatchRadioPreferred.setChecked(true);
-                break;
-            case INDIFFERENT:
-            default:
-                mProMatchRadioIndifferent.setChecked(true);
-                break;
+            mRateProTeamFragment = RateProTeamFragment.newInstance(mRating, mProName, mPrerateProInfo.getProviderMatchPreference());
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.rate_pro_team_container, mRateProTeamFragment)
+                    .commit();
         }
-
     }
 
     private void showProgress()
