@@ -2,6 +2,7 @@ package com.handybook.handybook.module.proteam.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
@@ -18,14 +19,18 @@ public class ProTeamAddActivity extends MenuDrawerActivity
     @Override
     protected Fragment createFragment()
     {
-        ProTeam proTeam = getIntent().getExtras().getParcelable(KEY_PRO_TEAM);
-        if (proTeam == null)
+
+        final Bundle extras = getIntent().getExtras();
+        if (extras == null)
         {
             return ProTeamFragment.newInstance(ProTeamFragment.Mode.PRO_ADD);
         }
         else
         {
-            return ProTeamFragment.newInstance(ProTeamFragment.Mode.PRO_ADD, proTeam);
+            return ProTeamFragment.newInstance(
+                    ProTeamFragment.Mode.PRO_ADD,
+                    (ProTeam) extras.getParcelable(KEY_PRO_TEAM)
+            );
         }
     }
 
