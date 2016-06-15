@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
@@ -29,7 +30,9 @@ import com.handybook.handybook.ui.view.HandyTabLayout;
 import com.handybook.handybook.ui.widget.ViewPager;
 import com.squareup.otto.Subscribe;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -64,6 +67,9 @@ public class ProTeamFragment extends InjectedFragment implements
     private Mode mMode;
     private TabAdapter mTabAdapter;
     private ProTeam mProTeam;
+    private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
+    private HashSet<ProTeamPro> mHandymenToAdd = new HashSet<>();
+
 
     public ProTeamFragment()
     {
@@ -92,7 +98,7 @@ public class ProTeamFragment extends InjectedFragment implements
         final Bundle arguments = getArguments();
         if (arguments != null)
         {
-            mMode = Mode.values()[arguments.getInt(KEY_MODE)];
+            mMode = Mode.values()[arguments.getInt(KEY_MODE, Mode.PRO_MANAGE.ordinal())];
             mProTeam = arguments.getParcelable(KEY_PRO_TEAM);
         }
     }
@@ -114,6 +120,7 @@ public class ProTeamFragment extends InjectedFragment implements
             public void onRefresh()
             {
                 requestProTeam();
+                showUiBlockers();
             }
         });
         setMode(mMode);
@@ -121,10 +128,11 @@ public class ProTeamFragment extends InjectedFragment implements
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
+        initBottomButton();
         return view;
     }
 
-    private void setMode(final Mode mode)
+    private void setMode(@NonNull final Mode mode)
     {
         mMode = mode;
         switch (mMode)
@@ -168,51 +176,125 @@ public class ProTeamFragment extends InjectedFragment implements
     @Subscribe
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
+        mSwipeRefreshLayout.setRefreshing(false);
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
+        showToast("Success receiving ProTeam");
+        removeUiBlockers();
+
     }
 
     @Subscribe
     public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
     {
+        mSwipeRefreshLayout.setRefreshing(false);
         showToast("Error receiving ProTeam");
+        removeUiBlockers();
+    }
+
+    @Subscribe
+    public void onReceiveProTeamEditSuccess(final ProTeamEvent.ReceiveProTeamEditSuccess event)
+    {
+        mSwipeRefreshLayout.setRefreshing(false);
+        mProTeam = event.getProTeam();
+        mTabAdapter.setProTeam(mProTeam);
+        showToast("ProTeam edited successfully");
+        removeUiBlockers();
+    }
+
+    @Subscribe
+    public void onReceiveProTeamEditError(final ProTeamEvent.ReceiveProTeamEditError event)
+    {
+        mSwipeRefreshLayout.setRefreshing(false);
+        showToast("Error editing ProTeam");
+        removeUiBlockers();
     }
 
     @OnClick(R.id.pro_team_fab_button)
     void onFabClicked()
     {
+        //setMode(Mode.PRO_ADD);
         startActivity(ProTeamAddActivity.newIntent(getContext(), mProTeam));
     }
 
+    @OnClick(R.id.pro_team_bottom_button)
+    void onBottomButtomClicked()
+    {
+        showToast("Adding pros");
+        bus.post(
+                new ProTeamEvent.RequestProTeamEdit(
+                        ProviderMatchPreference.PREFERRED,
+                        mCleanersToAdd,
+                        mHandymenToAdd
+                )
+        );
+        showUiBlockers();
+    }
+
+
     /**
      * Implementation of RemoveProDialogFragment listener
      */
     @Override
-    public void onYesNotPermanent(@Nullable ProTeamPro proTeamPro)
+    public void onYesNotPermanent(
+            @Nullable ProTeamCategoryType proTeamCategoryType,
+            @Nullable ProTeamPro proTeamPro
+    )
     {
+        if (proTeamCategoryType == null || proTeamPro == null)
+        {
+            Crashlytics.logException(new InvalidParameterException("PTF.onYesNotPermanent invalid"));
+            return;
+        }
         showToast("Yes - NOT permanently! " + proTeamPro.getName());
+        bus.post(new ProTeamEvent.RequestProTeamEdit(
+                ProviderMatchPreference.INDIFFERENT,
+                proTeamPro,
+                proTeamCategoryType
+        ));
+        showUiBlockers();
     }
 
     /**
      * Implementation of RemoveProDialogFragment listener
      */
     @Override
-    public void onYesPermanent(@Nullable ProTeamPro proTeamPro)
+    public void onYesPermanent(
+            @Nullable ProTeamCategoryType proTeamCategoryType,
+            @Nullable ProTeamPro proTeamPro
+    )
     {
+        if (proTeamCategoryType == null || proTeamPro == null)
+        {
+            Crashlytics.logException(new InvalidParameterException("PTF.onYesPermanent invalid"));
+            return;
+        }
         showToast("Yes - permanently " + proTeamPro.getName());
+        bus.post(new ProTeamEvent.RequestProTeamEdit(
+                ProviderMatchPreference.INDIFFERENT,
+                proTeamPro,
+                proTeamCategoryType
+        ));
+        showUiBlockers();
     }
 
     /**
      * Implementation of RemoveProDialogFragment listener
      */
     @Override
-    public void onCancel(@Nullable ProTeamPro proTeamPro)
+    public void onCancel(
+            @Nullable ProTeamCategoryType proTeamCategoryType,
+            @Nullable ProTeamPro proTeamPro
+    )
     {
         showToast("Action cancelled " + proTeamPro.getName());
     }
 
     @Override
-    public void onProRemovalRequested(final ProTeamPro proTeamPro)
+    public void onProRemovalRequested(
+            final ProTeamCategoryType proTeamCategoryType,
+            final ProTeamPro proTeamPro
+    )
     {
         showToast("Pro X clicked" + proTeamPro.getName());
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -220,14 +302,57 @@ public class ProTeamFragment extends InjectedFragment implements
         final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
         fragment.setTitle(title);
         fragment.setProTeamPro(proTeamPro);
+        fragment.setProTeamCategoryType(proTeamCategoryType);
         fragment.setListener(this);
         fragment.show(fm, RemoveProDialogFragment.TAG);
     }
 
     @Override
-    public void onProCheckboxStateChanged(final ProTeamPro proTeamPro, final boolean state)
+    public void onProCheckboxStateChanged(
+            @NonNull final ProTeamCategoryType proTeamCategoryType,
+            @NonNull final ProTeamPro proTeamPro,
+            @NonNull final boolean isChecked
+    )
     {
-        showToast("Pro checkbox state changed" + proTeamPro.getName() + (state ? "true" : "false"));
+        showToast("Pro checkbox state changed" + proTeamPro.getName() + (isChecked ? "true" : "false"));
+        if (isChecked)
+        {
+            switch (proTeamCategoryType)
+            {
+                case CLEANING:
+                    mCleanersToAdd.add(proTeamPro);
+                    break;
+                case HANDYMEN:
+                    mHandymenToAdd.add(proTeamPro);
+                    break;
+            }
+            initBottomButton();
+        }
+        else
+        {
+            switch (proTeamCategoryType)
+            {
+                case CLEANING:
+                    mCleanersToAdd.remove(proTeamPro);
+                    break;
+                case HANDYMEN:
+                    mHandymenToAdd.remove(proTeamPro);
+                    break;
+            }
+            initBottomButton();
+            initBottomButton();
+        }
+    }
+
+    private void initBottomButton()
+    {
+        final boolean haveProsToAdd = mCleanersToAdd.isEmpty() && mHandymenToAdd.isEmpty();
+        final String countString = haveProsToAdd ?
+                ""
+                : Integer.toString(mCleanersToAdd.size() + mHandymenToAdd.size()).concat(" ");
+        final String text = getString(R.string.pro_team_button_add_pros_template, countString);
+        mBottomButton.setText(text);
+        mBottomButton.setVisibility(haveProsToAdd ? View.GONE : View.VISIBLE);
     }
 
     private static class TabAdapter extends FragmentPagerAdapter

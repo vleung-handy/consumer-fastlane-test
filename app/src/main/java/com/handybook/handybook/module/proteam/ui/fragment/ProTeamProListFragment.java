@@ -61,13 +61,17 @@ public class ProTeamProListFragment extends InjectedFragment
                 {
                     return;
                 }
-                mOnProInteraction.onProRemovalRequested(proTeamPro);
+                mOnProInteraction.onProRemovalRequested(mProTeamCategoryType, proTeamPro);
             }
 
             @Override
             public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked)
             {
-                mOnProInteraction.onProCheckboxStateChanged(proTeamPro, checked);
+                if (mOnProInteraction == null)
+                {
+                    return;
+                }
+                mOnProInteraction.onProCheckboxStateChanged(mProTeamCategoryType, proTeamPro, checked);
             }
         };
     }
@@ -187,8 +191,12 @@ public class ProTeamProListFragment extends InjectedFragment
      */
     interface OnProInteraction
     {
-        void onProRemovalRequested(ProTeamPro proTeamPro);
+        void onProRemovalRequested(ProTeamCategoryType proTeamCategoryType, ProTeamPro proTeamPro);
 
-        void onProCheckboxStateChanged(ProTeamPro proTeamPro, boolean state);
+        void onProCheckboxStateChanged(
+                ProTeamCategoryType proTeamCategoryType,
+                ProTeamPro proTeamPro,
+                boolean state
+        );
     }
 }
