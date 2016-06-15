@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,8 +55,6 @@ public class ProTeamFragment extends InjectedFragment implements
     Toolbar mToolbar;
     @Bind(R.id.pro_team_tab_layout)
     HandyTabLayout mTabLayout;
-    @Bind(R.id.pro_team_swipe_refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.pro_team_pager)
     ViewPager mViewPager;
     @Bind(R.id.pro_team_fab_button)
@@ -115,15 +112,6 @@ public class ProTeamFragment extends InjectedFragment implements
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.setupHamburgerMenu(mToolbar);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
-            @Override
-            public void onRefresh()
-            {
-                requestProTeam();
-                showUiBlockers();
-            }
-        });
         setMode(mMode);
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -177,7 +165,6 @@ public class ProTeamFragment extends InjectedFragment implements
     @Subscribe
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
-        mSwipeRefreshLayout.setRefreshing(false);
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
         showToast("Success receiving ProTeam");
@@ -188,7 +175,6 @@ public class ProTeamFragment extends InjectedFragment implements
     @Subscribe
     public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
     {
-        mSwipeRefreshLayout.setRefreshing(false);
         showToast("Error receiving ProTeam");
         removeUiBlockers();
     }
@@ -196,7 +182,6 @@ public class ProTeamFragment extends InjectedFragment implements
     @Subscribe
     public void onReceiveProTeamEditSuccess(final ProTeamEvent.ReceiveProTeamEditSuccess event)
     {
-        mSwipeRefreshLayout.setRefreshing(false);
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
         showToast("ProTeam edited successfully");
@@ -206,7 +191,6 @@ public class ProTeamFragment extends InjectedFragment implements
     @Subscribe
     public void onReceiveProTeamEditError(final ProTeamEvent.ReceiveProTeamEditError event)
     {
-        mSwipeRefreshLayout.setRefreshing(false);
         showToast("Error editing ProTeam");
         removeUiBlockers();
     }

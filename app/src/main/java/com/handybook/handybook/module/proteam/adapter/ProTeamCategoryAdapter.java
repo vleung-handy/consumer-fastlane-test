@@ -51,6 +51,14 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
                 .get(mProviderMatchPreference)
                 .get(position);
         holder.bindBookingCardViewModel(proTeamPro, mProviderMatchPreference);
+        if (position == 0)
+        {
+            holder.showPretext();
+        }
+        else
+        {
+            holder.hidePretext();
+        }
     }
 
     @Override

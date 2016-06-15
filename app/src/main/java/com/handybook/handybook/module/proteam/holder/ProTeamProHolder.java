@@ -21,6 +21,8 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
 {
     private ProTeamProViewModel mProTeamProViewModel;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
+    @Bind(R.id.pro_team_pro_card_pretext)
+    TextView mPretext;
     @Bind(R.id.pro_team_pro_card_pro_title)
     TextView mTitle;
     @Bind(R.id.pro_team_pro_card_pro_subtitle)
@@ -48,18 +50,31 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         mProTeamProViewModel = ProTeamProViewModel.from(proTeamPro);
         mTitle.setText(mProTeamProViewModel.getTitle());
         mSubtitle.setText(mProTeamProViewModel.getSubtitle());
-        mFooter.setText(mProTeamProViewModel.getFooter());
+        final String footer = mProTeamProViewModel.getFooter();
+        mFooter.setText(footer);
         switch (providerMatchPreference)
         {
             case PREFERRED:
                 mXButton.setVisibility(View.VISIBLE);
                 mCheckbox.setVisibility(View.GONE);
+                mPretext.setText(R.string.pro_team_pro_card_pretext_preferred);
                 break;
             case INDIFFERENT:
                 mXButton.setVisibility(View.GONE);
                 mCheckbox.setVisibility(View.VISIBLE);
+                mPretext.setText(R.string.pro_team_pro_card_pretext_indifferent);
                 break;
         }
+    }
+
+    public void showPretext()
+    {
+        mPretext.setVisibility(View.VISIBLE);
+    }
+
+    public void hidePretext()
+    {
+        mPretext.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.pro_team_pro_card_x)

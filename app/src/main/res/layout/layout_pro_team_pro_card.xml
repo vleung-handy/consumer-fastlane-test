@@ -1,86 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/default_margin_quarter"
-    android:layout_marginLeft="@dimen/default_margin_half"
-    android:layout_marginRight="@dimen/default_margin_half"
-    android:layout_marginTop="@dimen/default_margin_quarter"
+    android:orientation="vertical"
     >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/pro_team_pro_card_pretext"
+        style="@style/TextView.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_margin="@dimen/default_margin"
+        android:gravity="center"
+        android:text="@string/pro_team_pro_card_pretext_preferred"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin_quarter"
+        android:layout_marginLeft="@dimen/default_margin_half"
+        android:layout_marginRight="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_quarter"
         >
 
-
-        <CheckBox
-            android:id="@+id/pro_team_pro_card_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin_half"
-            android:layout_gravity="center"
-            android:background="@drawable/option_checkbox"
-            android:button="@null"
-            android:saveEnabled="true"
-            android:visibility="gone"
-            tools:checked="true"
-            tools:visibility="visible"
-            />
-
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginTop="12dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             >
 
-            <TextView
-                android:id="@+id/pro_team_pro_card_pro_title"
-                style="@style/TextView.Large"
-                android:layout_width="match_parent"
+
+            <CheckBox
+                android:id="@+id/pro_team_pro_card_checkbox"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Jonathan P."
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:background="@drawable/option_checkbox"
+                android:button="@null"
+                android:saveEnabled="true"
+                android:visibility="gone"
+                tools:checked="true"
+                tools:visibility="visible"
                 />
 
-            <TextView
-                android:id="@+id/pro_team_pro_card_pro_subtitle"
-                style="@style/TextView.Medium"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/handy_text_black"
-                tools:text="Specialitites: Handyman, Plumbing"
-                />
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
 
-            <TextView
-                android:id="@+id/pro_team_pro_card_pro_footer"
-                style="@style/TextView.Medium"
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/pro_team_pro_card_pro_title"
+                    style="@style/TextView.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Jonathan P."
+                    />
+
+                <TextView
+                    android:id="@+id/pro_team_pro_card_pro_subtitle"
+                    style="@style/TextView.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/handy_text_black"
+                    tools:text="Specialitites: Handyman, Plumbing"
+                    />
+
+                <TextView
+                    android:id="@+id/pro_team_pro_card_pro_footer"
+                    style="@style/TextView.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/handy_text_gray"
+                    tools:text="Last service on Tues, May 19"
+                    />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/pro_team_pro_card_x"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/handy_text_gray"
-                tools:text="Last service on Tues, May 19"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/cd_pro_team_pro_card_remove_pro_icon"
+                android:padding="@dimen/default_padding"
+                android:src="@drawable/ic_pro_team_x_small"
+                android:visibility="gone"
+                tools:visibility="visible"
                 />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/pro_team_pro_card_x"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/cd_pro_team_pro_card_remove_pro_icon"
-            android:padding="@dimen/default_padding"
-            android:src="@drawable/ic_pro_team_x_small"
-            android:visibility="gone"
-            tools:visibility="visible"
-            />
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-</android.support.v7.widget.CardView>
+</LinearLayout>
