@@ -12,10 +12,20 @@ public class ProTeamEditWrapper
     @SerializedName("pro_team")
     private ProTeamEdit mProTeamEdit;
 
+    public ProTeamEditWrapper(final ProTeamEdit proTeamEdit)
+    {
+        mProTeamEdit = proTeamEdit;
+    }
+
     @Nullable
     public ProTeamEdit getProTeamEdit()
     {
         return mProTeamEdit;
+    }
+
+    public void setProTeamEdit(final ProTeamEdit proTeamEdit)
+    {
+        mProTeamEdit = proTeamEdit;
     }
 
     @Nullable
