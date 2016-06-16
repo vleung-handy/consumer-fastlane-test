@@ -25,6 +25,8 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
@@ -89,6 +91,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     @Bind(R.id.rate_dialog_pro_match_preference_preferred)
     RadioButton mProMatchRadioPreferred;
 
+    private Configuration mConfiguration;
     private int mBookingId;
     private int mRating;
     private String mProName;
@@ -153,6 +156,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             disableInputs();
             showProgress();
         }
+
+        if (mConfiguration == null)
+        {
+            mBus.post(new ConfigurationEvent.RequestConfiguration());
+        }
+
     }
 
     @Override
@@ -285,6 +294,21 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                     RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),
                     getActivity(),
                     RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT);
+        }
+    }
+
+    @Subscribe
+    public void onReceiveConfigurationSuccess(
+            final ConfigurationEvent.ReceiveConfigurationSuccess event
+    )
+    {
+        if (event != null)
+        {
+            mConfiguration = event.getConfiguration();
+            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
+            {
+                mProMatchContainer.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -194,6 +194,7 @@
     <string name="updated_preferences">Preferences updated</string>
     <string name="updated_entry_information">Entry information updated</string>
     <string name="pro_entry_information">How will your professional get in?</string>
+    <string name="pro_assignment_pending">Assignment pending</string>
     <string name="booking_detail_pro_assignment_pending_title">Working on a match</string>
     <string name="booking_detail_pro_assignment_pending_text">Check back later to see your pro!\nYou\'ll be able to add them to your Pro\u00a0Team after the booking.</string>
     <string name="manage_pro_team">Manage Pro Team</string>
