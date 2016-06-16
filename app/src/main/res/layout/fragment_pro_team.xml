@@ -68,12 +68,13 @@
 
         </android.support.design.widget.AppBarLayout>
 
-            <com.handybook.handybook.ui.widget.ViewPager
-                android:id="@+id/pro_team_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pro_team_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
                 >
-            </com.handybook.handybook.ui.widget.ViewPager>
+        </android.support.v4.view.ViewPager>
         <Button
             android:id="@+id/pro_team_bottom_button"
             style="@style/Button.Green"
