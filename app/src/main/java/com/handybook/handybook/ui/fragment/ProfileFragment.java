@@ -21,6 +21,8 @@ import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivit
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
@@ -29,6 +31,7 @@ import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.ThinIconButton;
 import com.handybook.handybook.util.TextUtils;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,6 +49,7 @@ public final class ProfileFragment extends InjectedFragment {
     private User user;
     private boolean loadedUserInfo;
     private boolean updatingInfo;
+    private Configuration mConfiguration;
 
     @Bind(R.id.profile_credits_text)
     TextView creditsText;
@@ -123,6 +127,16 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         updateButton.setOnClickListener(updateClicked);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (mConfiguration == null)
+        {
+            bus.post(new ConfigurationEvent.RequestConfiguration());
+        }
     }
 
     @Override
@@ -360,6 +374,20 @@ public final class ProfileFragment extends InjectedFragment {
         }
     };
 
+    @Subscribe
+    public void onReceiveConfigurationSuccess(
+            final ConfigurationEvent.ReceiveConfigurationSuccess event
+    )
+    {
+        if (event != null)
+        {
+            mConfiguration = event.getConfiguration();
+            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
+            {
+                mProTeamButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
     @OnClick(R.id.profile_pro_team_button)
     void onProTeamClicked()
