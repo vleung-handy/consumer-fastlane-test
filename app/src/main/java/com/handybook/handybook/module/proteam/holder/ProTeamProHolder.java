@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
@@ -35,7 +36,10 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     ImageButton mXButton;
 
 
-    public ProTeamProHolder(View itemView, ProTeamProViewModel.OnInteractionListener onInteractionListener)
+    public ProTeamProHolder(
+            View itemView,
+            ProTeamProViewModel.OnInteractionListener onInteractionListener
+    )
     {
         super(itemView);
         mOnInteractionListener = onInteractionListener;
@@ -44,14 +48,16 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
 
     public void bindBookingCardViewModel(
             @NonNull final ProTeamPro proTeamPro,
+            @NonNull final ProTeamCategoryType proTeamCategoryType,
             @NonNull ProviderMatchPreference providerMatchPreference
     )
     {
-        mProTeamProViewModel = ProTeamProViewModel.from(proTeamPro);
+        mProTeamProViewModel = ProTeamProViewModel.from(proTeamPro, proTeamCategoryType);
         mTitle.setText(mProTeamProViewModel.getTitle());
         mSubtitle.setText(mProTeamProViewModel.getSubtitle());
-        final String footer = mProTeamProViewModel.getFooter();
-        mFooter.setText(footer);
+        mSubtitle.setVisibility(mProTeamProViewModel.isSubtitleVisible() ? View.VISIBLE : View.GONE);
+        mFooter.setText(mProTeamProViewModel.getFooter());
+        mFooter.setVisibility(mProTeamProViewModel.isFooterVisible() ? View.VISIBLE : View.GONE);
         switch (providerMatchPreference)
         {
             case PREFERRED:

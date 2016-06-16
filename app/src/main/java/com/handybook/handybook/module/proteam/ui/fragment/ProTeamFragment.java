@@ -113,53 +113,71 @@ public class ProTeamFragment extends InjectedFragment implements
         activity.setSupportActionBar(mToolbar);
         activity.setupHamburgerMenu(mToolbar);
         setMode(mMode);
-        mViewPager.setAdapter(mTabAdapter);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
-        initBottomButton();
+        initialize();
         return view;
     }
 
     private void setMode(@NonNull final Mode mode)
     {
         mMode = mode;
-        switch (mMode)
+        if (mTabAdapter == null)
         {
-            case PRO_MANAGE:
-                mTabAdapter = new TabAdapter(
-                        getChildFragmentManager(),
-                        mProTeam,
-                        this,
-                        ProviderMatchPreference.PREFERRED
-                );
-                mFab.setVisibility(View.VISIBLE);
-                mBottomButton.setVisibility(View.GONE);
-                break;
-            case PRO_ADD:
-                mTabAdapter = new TabAdapter(
-                        getChildFragmentManager(),
-                        mProTeam,
-                        this,
-                        ProviderMatchPreference.INDIFFERENT
-                );
-                mFab.setVisibility(View.GONE);
-                mBottomButton.setVisibility(View.VISIBLE);
-                break;
+            initialize();
         }
+        else
+        {
+            mTabAdapter.setProviderMatchPreference(mMode.getProviderMatchPreference());
+            initButtons();
+        }
+
+    }
+
+    private void initialize()
+    {
+        mTabAdapter = new TabAdapter(
+                getChildFragmentManager(),
+                mProTeam,
+                this,
+                mMode.getProviderMatchPreference()
+        );
+        mViewPager.setAdapter(mTabAdapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
+        initButtons();
+    }
+
+    private void initButtons()
+    {
+        mFab.setVisibility(mMode == Mode.PRO_MANAGE ? View.VISIBLE : View.GONE);
+        final boolean haveProsToAdd = !mCleanersToAdd.isEmpty() || !mHandymenToAdd.isEmpty();
+        final String countString = !haveProsToAdd ?
+                ""
+                : Integer.toString(mCleanersToAdd.size() + mHandymenToAdd.size()).concat(" ");
+        final String text = getString(R.string.pro_team_button_add_pros_template, countString);
+        mBottomButton.setText(text);
+        mBottomButton.setVisibility(mMode == Mode.PRO_ADD && haveProsToAdd ?
+                View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
+/*
         if (mProTeam == null)
         {
             requestProTeam();
         }
+*/
+        requestProTeam();
     }
 
-    private void requestProTeam() {bus.post(new ProTeamEvent.RequestProTeam());}
+    private void requestProTeam()
+    {
+        showUiBlockers();
+        bus.post(new ProTeamEvent.RequestProTeam());
+    }
 
 
     @Subscribe
@@ -311,7 +329,7 @@ public class ProTeamFragment extends InjectedFragment implements
                     mHandymenToAdd.add(proTeamPro);
                     break;
             }
-            initBottomButton();
+            initButtons();
         }
         else
         {
@@ -324,21 +342,10 @@ public class ProTeamFragment extends InjectedFragment implements
                     mHandymenToAdd.remove(proTeamPro);
                     break;
             }
-            initBottomButton();
-            initBottomButton();
+            initButtons();
         }
     }
 
-    private void initBottomButton()
-    {
-        final boolean haveProsToAdd = mCleanersToAdd.isEmpty() && mHandymenToAdd.isEmpty();
-        final String countString = haveProsToAdd ?
-                ""
-                : Integer.toString(mCleanersToAdd.size() + mHandymenToAdd.size()).concat(" ");
-        final String text = getString(R.string.pro_team_button_add_pros_template, countString);
-        mBottomButton.setText(text);
-        mBottomButton.setVisibility(haveProsToAdd ? View.GONE : View.VISIBLE);
-    }
 
     @OnClick(R.id.pro_team_toolbar_questionmark)
     public void onMenuItemClick()
@@ -412,7 +419,19 @@ public class ProTeamFragment extends InjectedFragment implements
 
     public enum Mode
     {
-        PRO_MANAGE,
-        PRO_ADD
+        PRO_MANAGE(ProviderMatchPreference.PREFERRED),
+        PRO_ADD(ProviderMatchPreference.INDIFFERENT);
+
+        private final ProviderMatchPreference mProviderMatchPreference;
+
+        Mode(final ProviderMatchPreference providerMatchPreference)
+        {
+            mProviderMatchPreference = providerMatchPreference;
+        }
+
+        public ProviderMatchPreference getProviderMatchPreference()
+        {
+            return mProviderMatchPreference;
+        }
     }
 }
