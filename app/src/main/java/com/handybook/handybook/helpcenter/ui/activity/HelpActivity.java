@@ -16,8 +16,11 @@ public class HelpActivity extends MenuDrawerActivity
 
     public enum DeepLink
     {
-        CANCEL(296, 217659877), PRO_LATE(450, 214917058), ADJUST_HOURS(498, 215563597),
-        PRO_ISSUES(0, 203531628, LINK_TYPE_SECTIONS);
+        CANCEL(296, 217659877),
+        PRO_LATE(450, 214917058),
+        ADJUST_HOURS(498, 215563597),
+        PRO_ISSUES(0, 203531628, LINK_TYPE_SECTIONS),
+        PRO_TEAM(0, 220258807);
 
         private final int mNodeId;
         private final int mId;

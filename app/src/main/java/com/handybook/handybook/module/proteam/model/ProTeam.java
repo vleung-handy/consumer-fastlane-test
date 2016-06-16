@@ -52,8 +52,12 @@ public class ProTeam implements Parcelable
         dest.writeParcelable(mHandymen, flags);
     }
 
-    public boolean hasAvailableProsInCategory(final ProTeamCategoryType proTeamCategoryType)
+    public boolean hasAvailableProsInCategory(@Nullable final ProTeamCategoryType proTeamCategoryType)
     {
+        if (proTeamCategoryType == null)
+        {
+            return false;
+        }
         final ProTeamCategory category;
         switch (proTeamCategoryType) // Which category are we dealing with?
         {
