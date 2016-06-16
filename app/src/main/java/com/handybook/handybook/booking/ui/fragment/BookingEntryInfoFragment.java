@@ -23,6 +23,8 @@ import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.model.logging.LogEvent;
+import com.handybook.handybook.model.logging.booking.BookingConfirmationLog;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
@@ -81,6 +83,8 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         mIsNewUser = getArguments().getBoolean(EXTRA_NEW_USER, false);
         mInstructions = getArguments().getParcelable(EXTRA_INSTRUCTIONS);
         mixpanel.trackEventAppTrackEntryInfo();
+
+        bus.post(new LogEvent.AddLogEvent(new BookingConfirmationLog.BookingConfirmationShownLog()));
     }
 
     @Override
@@ -108,7 +112,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         final SpannableString spanText = new SpannableString(text);
 
         spanText.setSpan(new CalligraphyTypefaceSpan(TextUtils.get(getActivity(),
-                        "CircularStd-Medium.otf")), 0, text.indexOf("\n"),
+                "CircularStd-Medium.otf")), 0, text.indexOf("\n"),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         mHeaderText.setText(spanText, TextView.BufferType.SPANNABLE);
         final BookingOption option = new BookingOption();

@@ -18,6 +18,8 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.model.logging.LogEvent;
+import com.handybook.handybook.model.logging.booking.BookingExtrasLog;
 
 import java.util.ArrayList;
 
@@ -53,13 +55,16 @@ public final class BookingExtrasFragment extends BookingFlowFragment
         mBookingTransaction = bookingManager.getCurrentTransaction();
         mBookingQuote = bookingManager.getCurrentQuote();
         mixpanel.trackEventAppTrackExtras();
+
+        bus.post(new LogEvent.AddLogEvent(new BookingExtrasLog.BookingExtrasShownLog()));
     }
 
     @Override
     public final View onCreateView(
             final LayoutInflater inflater,
             final ViewGroup container,
-            final Bundle savedInstanceState)
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_extras, container, false);

@@ -55,6 +55,8 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
+import com.handybook.handybook.model.logging.LogEvent;
+import com.handybook.handybook.model.logging.booking.BookingPaymentLog;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
@@ -243,6 +245,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCurrentRequest = bookingManager.getCurrentRequest();
         mCurrentQuote = bookingManager.getCurrentQuote();
         mCurrentTransaction = bookingManager.getCurrentTransaction();
+
+        bus.post(new LogEvent.AddLogEvent(new BookingPaymentLog.BookingPaymentShownLog()));
     }
 
     @Override

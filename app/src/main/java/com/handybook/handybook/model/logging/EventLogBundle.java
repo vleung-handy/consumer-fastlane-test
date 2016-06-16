@@ -1,4 +1,4 @@
-package com.handybook.handybook.model;
+package com.handybook.handybook.model.logging;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.core.BaseApplication;
@@ -14,11 +14,11 @@ public class EventLogBundle
     @SerializedName("super_properties")
     private EventSuperProperties mEventSuperProperties;
 
-    public EventLogBundle(final int providerId, final List<Event> events)
+    public EventLogBundle(final int userId, final List<Event> events)
     {
         mEventBundleId = createBundleId();
         mEvents = events;
-        mEventSuperProperties = new EventSuperProperties(providerId);
+        mEventSuperProperties = new EventSuperProperties(userId);
     }
 
     private String createBundleId()

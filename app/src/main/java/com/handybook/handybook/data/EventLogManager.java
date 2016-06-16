@@ -10,10 +10,10 @@ import com.google.gson.JsonObject;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.model.Event;
-import com.handybook.handybook.model.EventLogBundle;
-import com.handybook.handybook.model.EventLogResponse;
-import com.handybook.handybook.model.LogEvent;
+import com.handybook.handybook.model.logging.Event;
+import com.handybook.handybook.model.logging.EventLogBundle;
+import com.handybook.handybook.model.logging.EventLogResponse;
+import com.handybook.handybook.model.logging.LogEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -102,7 +102,7 @@ public class EventLogManager
         if (sLogs.size() > 0)
         {
             List<String> eventLogBundles = loadSavedEventBundles();
-            eventLogBundles.add(GSON.toJson(new EventLogBundle(getProviderId(), sLogs)));
+            eventLogBundles.add(GSON.toJson(new EventLogBundle(getUserId(), sLogs)));
             saveToPreference(eventLogBundles);
             sLogs = new ArrayList<>();
         }
@@ -128,7 +128,7 @@ public class EventLogManager
         mPrefsManager.setString(PrefsKey.EVENT_LOG_BUNDLES, json);
     }
 
-    private int getProviderId()
+    private int getUserId()
     {
         User user;
         if ((user = User.fromJson(mPrefsManager.getString(PrefsKey.USER))) != null)

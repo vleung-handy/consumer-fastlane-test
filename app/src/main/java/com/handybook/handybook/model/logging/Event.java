@@ -1,4 +1,4 @@
-package com.handybook.handybook.model;
+package com.handybook.handybook.model.logging;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -16,6 +16,8 @@ import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.model.logging.LogEvent;
+import com.handybook.handybook.model.logging.booking.BookingPasswordLog;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.squareup.otto.Subscribe;
@@ -52,6 +54,8 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackPasswordPrompt();
+
+        bus.post(new LogEvent.AddLogEvent(new BookingPasswordLog.BookingPasswordShownLog()));
     }
 
     @Override

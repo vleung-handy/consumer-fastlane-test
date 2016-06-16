@@ -32,6 +32,9 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.model.logging.LogEvent;
+import com.handybook.handybook.model.logging.user.UserLoginLog;
+import com.handybook.handybook.model.logging.user.UserContactLog;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -132,6 +135,8 @@ public final class LoginFragment extends BookingFlowFragment
                 e.printStackTrace();
             }
         }
+
+        bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
     }
 
     @Override
@@ -490,6 +495,7 @@ public final class LoginFragment extends BookingFlowFragment
         {
             mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
         }
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.LoginLog()));
 
         if (mBookingUserName != null ||
                 authType == UserDataManager.AuthType.FACEBOOK && mFindUser)

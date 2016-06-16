@@ -42,7 +42,7 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.model.EventLogResponse;
+import com.handybook.handybook.model.logging.EventLogResponse;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.UserExistsResponse;
@@ -1115,7 +1115,7 @@ public final class BaseDataManager extends DataManager
         mService.postLogs(eventLogBundle, new HandyRetrofitCallback(cb)
         {
             @Override
-            void success(final JSONObject response)
+            protected void success(final JSONObject response)
             {
                 cb.onSuccess(null);
             }

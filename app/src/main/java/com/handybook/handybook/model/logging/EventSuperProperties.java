@@ -1,4 +1,4 @@
-package com.handybook.handybook.model;
+package com.handybook.handybook.model.logging;
 
 import android.os.Build;
 
@@ -8,8 +8,7 @@ import com.handybook.handybook.core.BaseApplication;
 
 public class EventSuperProperties
 {
-    private static final String ANDROID = "Android";
-    private static final String PROVIDER = "pro";
+    private static final String ANDROID = "android";
 
     @SerializedName("product_type")
     private String mProduct;
@@ -23,17 +22,17 @@ public class EventSuperProperties
     private String mDeviceId;
     @SerializedName("device_model")
     private String mDeviceModel;
-    @SerializedName("provider_id")
-    private int mProviderId;
+    @SerializedName("user_id")
+    private int mUserid;
 
-    public EventSuperProperties(final int providerId)
+    public EventSuperProperties(final int userId)
     {
-        mProduct = PROVIDER;
+        mProduct = "consumer";
         mPlatform = ANDROID;
         mOsVersion = Build.VERSION.RELEASE;
         mAppVersion = BuildConfig.VERSION_NAME;
         mDeviceId = BaseApplication.getDeviceId();
         mDeviceModel = BaseApplication.getDeviceModel();
-        mProviderId = providerId;
+        mUserid = userId;
     }
 }
