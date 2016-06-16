@@ -185,7 +185,6 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
-        showToast("Success receiving ProTeam");
         removeUiBlockers();
 
     }
@@ -193,7 +192,6 @@ public class ProTeamFragment extends InjectedFragment implements
     @Subscribe
     public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
     {
-        showToast("Error receiving ProTeam");
         removeUiBlockers();
     }
 
@@ -202,14 +200,12 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
-        showToast("ProTeam edited successfully");
         removeUiBlockers();
     }
 
     @Subscribe
     public void onReceiveProTeamEditError(final ProTeamEvent.ReceiveProTeamEditError event)
     {
-        showToast("Error editing ProTeam");
         removeUiBlockers();
     }
 
@@ -223,7 +219,6 @@ public class ProTeamFragment extends InjectedFragment implements
     @OnClick(R.id.pro_team_bottom_button)
     void onBottomButtomClicked()
     {
-        showToast("Adding pros");
         bus.post(
                 new ProTeamEvent.RequestProTeamEdit(
                         ProviderMatchPreference.PREFERRED,
@@ -249,7 +244,6 @@ public class ProTeamFragment extends InjectedFragment implements
             Crashlytics.logException(new InvalidParameterException("PTF.onYesNotPermanent invalid"));
             return;
         }
-        showToast("Yes - NOT permanently! " + proTeamPro.getName());
         bus.post(new ProTeamEvent.RequestProTeamEdit(
                 ProviderMatchPreference.INDIFFERENT,
                 proTeamPro,
@@ -272,7 +266,6 @@ public class ProTeamFragment extends InjectedFragment implements
             Crashlytics.logException(new InvalidParameterException("PTF.onYesPermanent invalid"));
             return;
         }
-        showToast("Yes - permanently " + proTeamPro.getName());
         bus.post(new ProTeamEvent.RequestProTeamEdit(
                 ProviderMatchPreference.INDIFFERENT,
                 proTeamPro,
@@ -290,7 +283,6 @@ public class ProTeamFragment extends InjectedFragment implements
             @Nullable ProTeamPro proTeamPro
     )
     {
-        showToast("Action cancelled " + proTeamPro.getName());
     }
 
     @Override
@@ -299,7 +291,6 @@ public class ProTeamFragment extends InjectedFragment implements
             final ProTeamPro proTeamPro
     )
     {
-        showToast("Pro X clicked" + proTeamPro.getName());
         FragmentManager fm = getActivity().getSupportFragmentManager();
         RemoveProDialogFragment fragment = new RemoveProDialogFragment();
         final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
@@ -317,7 +308,6 @@ public class ProTeamFragment extends InjectedFragment implements
             @NonNull final boolean isChecked
     )
     {
-        showToast("Pro checkbox state changed" + proTeamPro.getName() + (isChecked ? "true" : "false"));
         if (isChecked)
         {
             switch (proTeamCategoryType)
