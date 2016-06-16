@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
@@ -87,7 +88,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private PrerateProInfo mPrerateProInfo;
     private ArrayList<ImageView> mStars = new ArrayList<>();
     private View.OnClickListener mSubmitListener;
-    private ProviderMatchPreference mSelectedMatchPreference;
 
     {
         mSubmitListener = new View.OnClickListener()
@@ -100,11 +100,24 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 mSubmitButton.setText(null);
                 final int finalRating = mRating + 1;
                 final Integer tipAmountCents = getTipAmount();
+
+                ProviderMatchPreference matchPreference;
+
+                if (mRateProTeamFragment != null)
+                {
+                    matchPreference = mRateProTeamFragment.getNewProviderMatchPreference();
+                }
+                else
+                {
+                    matchPreference = mPrerateProInfo.getProviderMatchPreference();
+                }
+
+                Toast.makeText(v.getContext(), matchPreference.toString(), Toast.LENGTH_LONG).show();
                 mBus.post(new BookingEvent.RateBookingEvent(
                         mBookingId,
                         finalRating,
                         tipAmountCents,
-                        mSelectedMatchPreference
+                        matchPreference
                 ));
                 if (tipAmountCents != null)
                 {

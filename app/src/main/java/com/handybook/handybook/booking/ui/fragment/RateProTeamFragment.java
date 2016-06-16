@@ -302,7 +302,7 @@ public class RateProTeamFragment extends Fragment
         }
 
         //defaults to the user not making a selection
-        return ProviderMatchPreference.INDIFFERENT;
+        return mInitialMatchPreference;
     }
 
     /**
