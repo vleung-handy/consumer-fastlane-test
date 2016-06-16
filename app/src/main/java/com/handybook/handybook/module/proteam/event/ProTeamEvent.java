@@ -47,7 +47,7 @@ public abstract class ProTeamEvent
     }
 
 
-    public static class RequestProTeamEdit
+    public static class RequestProTeamEdit extends HandyEvent.RequestEvent
     {
         private ProTeamEditWrapper mProTeamEditWrapper;
 
