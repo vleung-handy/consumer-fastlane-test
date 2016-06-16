@@ -52,8 +52,12 @@ public class ProTeam implements Parcelable
         dest.writeParcelable(mHandymen, flags);
     }
 
-    public boolean hasAvailableProsInCategory(final ProTeamCategoryType proTeamCategoryType)
+    public boolean hasAvailableProsInCategory(@Nullable final ProTeamCategoryType proTeamCategoryType)
     {
+        if (proTeamCategoryType == null)
+        {
+            return false;
+        }
         final ProTeamCategory category;
         switch (proTeamCategoryType) // Which category are we dealing with?
         {
@@ -101,13 +105,13 @@ public class ProTeam implements Parcelable
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_NEVER)
         private List<ProTeamPro> mNever;
 
-        protected ProTeamCategory(Parcel in)
+        ProTeamCategory(Parcel in)
         {
-            mPreferred = new ArrayList<ProTeamPro>();
+            mPreferred = new ArrayList<>();
             in.readList(mPreferred, ProTeamPro.class.getClassLoader());
-            mIndifferent = new ArrayList<ProTeamPro>();
+            mIndifferent = new ArrayList<>();
             in.readList(mIndifferent, ProTeamPro.class.getClassLoader());
-            mNever = new ArrayList<ProTeamPro>();
+            mNever = new ArrayList<>();
             in.readList(mNever, ProTeamPro.class.getClassLoader());
         }
 
@@ -133,15 +137,30 @@ public class ProTeam implements Parcelable
         }
 
         @Nullable
-        List<ProTeamPro> getIndifferent()
+        public List<ProTeamPro> getIndifferent()
         {
             return mIndifferent;
         }
 
         @Nullable
-        List<ProTeamPro> getNever()
+        public List<ProTeamPro> getNever()
         {
             return mNever;
+        }
+
+        @Nullable
+        public List<ProTeamPro> get(@NonNull ProviderMatchPreference providerMatchPreference)
+        {
+            switch (providerMatchPreference)
+            {
+                case INDIFFERENT:
+                    return getIndifferent();
+                case PREFERRED:
+                    return getPreferred();
+                case NEVER:
+                    return getNever();
+            }
+            return null;
         }
 
         @Override

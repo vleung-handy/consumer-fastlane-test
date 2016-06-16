@@ -373,6 +373,15 @@
     <string name="pro_team_empty_card_title_no_available">No pros on your team yet</string>
     <string name="pro_team_empty_card_text_has_available">Once you add someone to your Pro Team, we\'ll always request them first.</string>
     <string name="pro_team_empty_card_text_no_available">As you meet pros, you\'ll be able to build your Pro Team. We\'ll always request these pros for future bookings.</string>
+    <string name="pro_team_remove_not_permanent">Yes, but not permanently</string>
+    <string name="pro_team_remove_permanent">Yes, and never match us again</string>
+    <string name="pro_team_remove_nevermind">Nevermind</string>
     <string name="pro_team_empty_card_title_loading">Loading ProTeam</string>
     <string name="pro_team_empty_card_text_loading">Looking up your ProTeam…</string>
+    <string name="pro_team_remove_dialog_title">Remove %1$s?</string>
+    <string name="title_activity_pro_team_add">Add to ProTeam</string>
+    <string name="pro_team_button_add_pros_template">Add %1$sPros</string>
+    <string name="cd_pro_team_toolbar_questionmark">Open ProTeam help article icon</string>
+    <string name="pro_team_pro_card_pretext_preferred">We’ll reach out to your Pro Team first. If we can’t match you, we’ll open your booking to the wider network.</string>
+    <string name="pro_team_pro_card_pretext_indifferent">Choose pros you\'ve worked with before to add to your Pro Team.</string>
 </resources>
