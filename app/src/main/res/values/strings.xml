@@ -380,6 +380,7 @@
     <string name="pro_team_empty_card_text_loading">Looking up your ProTeam…</string>
     <string name="pro_team_remove_dialog_title">Remove %1$s?</string>
     <string name="title_activity_pro_team_add">Add to ProTeam</string>
+
     <string name="pro_team_button_add_pros_template">Add %1$sPros</string>
     <string name="cd_pro_team_toolbar_questionmark">Open ProTeam help article icon</string>
     <string name="pro_team_pro_card_pretext_preferred">We’ll reach out to your Pro Team first. If we can’t match you, we’ll open your booking to the wider network.</string>

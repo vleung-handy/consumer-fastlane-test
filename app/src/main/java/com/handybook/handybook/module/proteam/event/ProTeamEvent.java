@@ -3,8 +3,6 @@ package com.handybook.handybook.module.proteam.event;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.handybook.handybook.analytics.annotation.Track;
-import com.handybook.handybook.analytics.annotation.TrackField;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
@@ -131,31 +129,5 @@ public abstract class ProTeamEvent
         }
     }
 
-
-    @Track("proteam screen shown")
-    public static class ProTeamScreenShown {}
-
-
-    @Track("proteam add_pro clicked")
-    public static class ProTeamAddProClicked {}
-
-
-    @Track("proteam remove_pro clicked")
-    public static class ProTeamRemoveProClicked
-    {
-        @TrackField("pro")
-        private int mProId;
-
-        public ProTeamRemoveProClicked(final int proId)
-        {
-            mProId = proId;
-        }
-    }
-
-
-    @Track("proteam_add screen shown")
-    public static class ProTeamAddScreenShown
-    {
-    }
 
 }

@@ -23,6 +23,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamOpenTapped;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
@@ -392,6 +393,7 @@ public final class ProfileFragment extends InjectedFragment {
     @OnClick(R.id.profile_pro_team_button)
     void onProTeamClicked()
     {
+        bus.post(new ProTeamOpenTapped("account"));
         final Intent intent = new Intent(getContext(), ProTeamActivity.class);
         getContext().startActivity(intent);
     }

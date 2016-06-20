@@ -27,6 +27,9 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferenceChanged;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferencePresented;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferenceSubmitted;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
@@ -111,6 +114,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 mSubmitButton.setText(null);
                 final int finalRating = mRating + 1;
                 final Integer tipAmountCents = getTipAmount();
+                mBus.post(new RatingDialogMatchPreferenceSubmitted(mMatchPreference.toString()));
                 mBus.post(new BookingEvent.RateBookingEvent(
                         mBookingId,
                         finalRating,
@@ -426,6 +430,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                         mProMatchFooterText.setVisibility(View.VISIBLE);
                         break;
                 }
+
+                mBus.post(new RatingDialogMatchPreferenceChanged(mMatchPreference.toString()));
             }
         });
 
@@ -445,6 +451,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 break;
         }
 
+        mBus.post(new RatingDialogMatchPreferencePresented(mMatchPreference.toString()));
     }
 
     private void showProgress()
