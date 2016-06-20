@@ -248,6 +248,9 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
+        mCleanersToAdd.clear();
+        mHandymenToAdd.clear();
+        initButtons();
         removeUiBlockers();
     }
 
