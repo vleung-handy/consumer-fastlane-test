@@ -195,6 +195,9 @@
     <string name="updated_entry_information">Entry information updated</string>
     <string name="pro_entry_information">How will your professional get in?</string>
     <string name="pro_assignment_pending">Assignment pending</string>
+    <string name="booking_detail_pro_assignment_pending_title">Working on a match</string>
+    <string name="booking_detail_pro_assignment_pending_text">Check back later to see your pro!\nYou\'ll be able to add them to your Pro\u00a0Team after the booking.</string>
+    <string name="manage_pro_team">Manage Pro Team</string>
     <string name="blank_string"></string>
     <string name="call">Call</string>
     <string name="text">Text</string>
@@ -361,6 +364,25 @@
     <string name="pro_match_preference_never">No</string>
     <string name="pro_match_preference_indifferent">Not now</string>
     <string name="pro_match_preference_preferred">Yes</string>
+    <string name="title_activity_pro_team">My Pro Team</string>
     <string name="cd_service_logo">Service Logo</string>
     <string name="cd_star_icon">star</string>
+    <string name="cd_pro_team_pro_card_remove_pro_icon">Remove Pro Icon</string>
+    <string name="cd_pro_team_empty_view_empty_heart_icon">No Pros Empty heart icon</string>
+    <string name="pro_team_empty_card_title_has_available">No pros on your team yet</string>
+    <string name="pro_team_empty_card_title_no_available">No pros on your team yet</string>
+    <string name="pro_team_empty_card_text_has_available">Once you add someone to your Pro Team, we\'ll always request them first.</string>
+    <string name="pro_team_empty_card_text_no_available">As you meet pros, you\'ll be able to build your Pro Team. We\'ll always request these pros for future bookings.</string>
+    <string name="pro_team_remove_not_permanent">Yes, but not permanently</string>
+    <string name="pro_team_remove_permanent">Yes, and never match us again</string>
+    <string name="pro_team_remove_nevermind">Nevermind</string>
+    <string name="pro_team_empty_card_title_loading">Loading ProTeam</string>
+    <string name="pro_team_empty_card_text_loading">Looking up your ProTeam…</string>
+    <string name="pro_team_remove_dialog_title">Remove %1$s?</string>
+    <string name="title_activity_pro_team_add">Add to ProTeam</string>
+
+    <string name="pro_team_button_add_pros_template">Add %1$sPros</string>
+    <string name="cd_pro_team_toolbar_questionmark">Open ProTeam help article icon</string>
+    <string name="pro_team_pro_card_pretext_preferred">We’ll reach out to your Pro Team first. If we can’t match you, we’ll open your booking to the wider network.</string>
+    <string name="pro_team_pro_card_pretext_indifferent">Choose pros you\'ve worked with before to add to your Pro Team.</string>
 </resources>

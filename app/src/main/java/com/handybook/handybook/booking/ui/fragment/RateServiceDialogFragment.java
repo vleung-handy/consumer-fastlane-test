@@ -23,9 +23,14 @@ import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
-import com.handybook.handybook.booking.proteam.ProviderMatchPreference;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferenceChanged;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferencePresented;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferenceSubmitted;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.handybook.handybook.util.FragmentUtils;
@@ -89,6 +94,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     @Bind(R.id.rate_dialog_pro_match_preference_preferred)
     RadioButton mProMatchRadioPreferred;
 
+    private Configuration mConfiguration;
     private int mBookingId;
     private int mRating;
     private String mProName;
@@ -108,6 +114,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 mSubmitButton.setText(null);
                 final int finalRating = mRating + 1;
                 final Integer tipAmountCents = getTipAmount();
+                mBus.post(new RatingDialogMatchPreferenceSubmitted(mMatchPreference.toString()));
                 mBus.post(new BookingEvent.RateBookingEvent(
                         mBookingId,
                         finalRating,
@@ -153,6 +160,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             disableInputs();
             showProgress();
         }
+
+        if (mConfiguration == null)
+        {
+            mBus.post(new ConfigurationEvent.RequestConfiguration());
+        }
+
     }
 
     @Override
@@ -289,6 +302,21 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     }
 
     @Subscribe
+    public void onReceiveConfigurationSuccess(
+            final ConfigurationEvent.ReceiveConfigurationSuccess event
+    )
+    {
+        if (event != null)
+        {
+            mConfiguration = event.getConfiguration();
+            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
+            {
+                mProMatchContainer.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Subscribe
     public void onReceiveRateBookingError(BookingEvent.ReceiveRateBookingError event)
     {
         hideProgress();
@@ -376,21 +404,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
     private void initProTeamSection(final PrerateProInfo prerateProInfo)
     {
-        ProviderMatchPreference preference = prerateProInfo.getProviderMatchPreference();
-        mMatchPreference = preference == null ? ProviderMatchPreference.INDIFFERENT : preference;
-        switch (mMatchPreference)
-        {
-            case NEVER:
-                mProMatchRadioNever.setChecked(true);
-                break;
-            case PREFERRED:
-                mProMatchRadioPreferred.setChecked(true);
-                break;
-            case INDIFFERENT:
-            default:
-                mProMatchRadioIndifferent.setChecked(true);
-                break;
-        }
         mProMatchPreferences.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
@@ -417,8 +430,28 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                         mProMatchFooterText.setVisibility(View.VISIBLE);
                         break;
                 }
+
+                mBus.post(new RatingDialogMatchPreferenceChanged(mMatchPreference.toString()));
             }
         });
+
+        ProviderMatchPreference preference = prerateProInfo.getProviderMatchPreference();
+        mMatchPreference = preference == null ? ProviderMatchPreference.INDIFFERENT : preference;
+        switch (mMatchPreference)
+        {
+            case NEVER:
+                mProMatchRadioNever.setChecked(true);
+                break;
+            case PREFERRED:
+                mProMatchRadioPreferred.setChecked(true);
+                break;
+            case INDIFFERENT:
+            default:
+                mProMatchRadioIndifferent.setChecked(true);
+                break;
+        }
+
+        mBus.post(new RatingDialogMatchPreferencePresented(mMatchPreference.toString()));
     }
 
     private void showProgress()

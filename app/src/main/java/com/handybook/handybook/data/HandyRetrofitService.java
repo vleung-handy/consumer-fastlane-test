@@ -16,6 +16,7 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.module.proteam.model.ProTeamEditWrapper;
 
 import java.util.Date;
 
@@ -49,7 +50,7 @@ public interface HandyRetrofitService
     /**
      * @param bookingRecurringId Booking.recurringId, which is the id
      *                           associated with a recurring series
-     * @param cb callback
+     * @param cb                 callback
      */
     @POST("/bookings/{id}/recurring_cancel_send_cancel_email")
     void sendCancelRecurringBookingEmail(
@@ -104,7 +105,11 @@ public interface HandyRetrofitService
     void removePromo(@Path("quote") int quoteId, HandyRetrofitCallback cb);
 
     @POST("/quotes/{quote}/create_booking")
-    void createBooking(@Path("quote") int quoteId, @Body BookingTransaction req, HandyRetrofitCallback cb);
+    void createBooking(
+            @Path("quote") int quoteId,
+            @Body BookingTransaction req,
+            HandyRetrofitCallback cb
+    );
 
     @GET("/bookings/zipcode_validation")
     void validateBookingZip(
@@ -148,7 +153,11 @@ public interface HandyRetrofitService
 
     //sends the customer's response to prerate_pro_info
     @POST("/bookings/{id}/rating_flow")
-    void postLowRatingFeedback(@Path("id") String bookingId, @Body RateImprovementFeedback feedback, HandyRetrofitCallback cb);
+    void postLowRatingFeedback(
+            @Path("id") String bookingId,
+            @Body RateImprovementFeedback feedback,
+            HandyRetrofitCallback cb
+    );
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/rate_pro")
@@ -333,7 +342,8 @@ public interface HandyRetrofitService
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
 
-    //Request a list of requestable pros for this booking. Example response : {requestable_jobs: [{:name=>"Jason Jones", :id=>2462}, {:name=>"FakeJake Eubank", :id=>2746}]}
+    //Request a list of requestable pros for this booking. Example response :
+    //{requestable_jobs: [{:name=>"Jason Jones", :id=>2462}, {:name=>"FakeJake Eubank", :id=>2746}]}
     @GET("/bookings/{booking}/request_pro_info")
     void getRequestProInfo(
             @Path("booking") int bookingId,
@@ -378,6 +388,19 @@ public interface HandyRetrofitService
 
     @GET("/referrals/claim_details")
     void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);
+
+    @GET("/users/{user}/provider_preferences")
+    void requestProTeam(
+            @Path("user") String userId,
+            HandyRetrofitCallback cb
+    );
+
+    @POST("/users/{user}/provider_preferences")
+    void editProTeam(
+            @Path("user") String userId,
+            @Body ProTeamEditWrapper proTeamEditWrapper,
+            HandyRetrofitCallback cb
+    );
 
     final class RateProRequest
     {

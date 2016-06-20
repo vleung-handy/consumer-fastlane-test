@@ -1,0 +1,104 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    app:orientation="vertical"
+    tools:context=".module.proteam.ui.activity.ProTeamActivity"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        >
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.Handy.AppBarOverlay"
+            >
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/pro_team_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/Theme.Handy.AppBarOverlay"
+                android:title="@string/title_activity_pro_team"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:navigationIcon="@drawable/ic_menu"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                >
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <ImageButton
+                        android:id="@+id/pro_team_toolbar_questionmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/cd_pro_team_toolbar_questionmark"
+                        android:padding="@dimen/default_padding"
+                        android:src="@drawable/ic_pro_team_toolbar_questionmark"
+                        />
+                </FrameLayout>
+            </android.support.v7.widget.Toolbar>
+
+            <com.handybook.handybook.ui.view.HandyTabLayout
+                android:id="@+id/pro_team_tab_layout"
+                style="@style/TextView.Large"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorHeight="2dp"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextAppearance="@style/TextAppearance.TabText"
+                app:tabTextColor="@color/handy_white_semitransparent"
+                >
+            </com.handybook.handybook.ui.view.HandyTabLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pro_team_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+                >
+        </android.support.v4.view.ViewPager>
+        <Button
+            android:id="@+id/pro_team_bottom_button"
+            style="@style/Button.Green"
+            android:clickable="false"
+            android:visibility="gone"
+            tools:text="Add 13 pros"
+            tools:visibility="visible"
+            />
+
+    </LinearLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/pro_team_fab_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/default_margin"
+        android:src="@drawable/ic_plus_white"
+        android:tag="fab"
+        android:visibility="gone"
+        app:backgroundTint="@color/handy_blue"
+        app:fabSize="normal"
+        tools:visibility="visible"
+        />
+
+</android.support.design.widget.CoordinatorLayout>
