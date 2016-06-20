@@ -219,6 +219,9 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
+        mCleanersToAdd.clear();
+        mHandymenToAdd.clear();
+        initButtons();
         removeUiBlockers();
 
         if (mMode == Mode.PRO_ADD)
@@ -248,6 +251,9 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
+        mCleanersToAdd.clear();
+        mHandymenToAdd.clear();
+        initButtons();
         removeUiBlockers();
     }
 
