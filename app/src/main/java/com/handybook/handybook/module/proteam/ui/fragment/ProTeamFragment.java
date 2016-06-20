@@ -20,6 +20,14 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamAddProDisplayedServiceChanged;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamAddProOpenTapped;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamAddProSubmitted;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamDisplayedServiceChanged;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamHelpOpenTapped;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamPageOpened;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamRemoveProviderSubmitted;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamRemoveProviderTapped;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
@@ -142,6 +150,32 @@ public class ProTeamFragment extends InjectedFragment implements
         );
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
+        {
+            @Override
+            public void onPageSelected(final int position)
+            {
+                String selectedService;
+                if (position == 0)
+                {
+                    selectedService = ProTeamCategoryType.Constants.CLEANING;
+                }
+                else
+                {
+                    selectedService = ProTeamCategoryType.Constants.CLEANING;
+                }
+
+                if (mMode == Mode.PRO_ADD)
+                {
+                    bus.post(new ProTeamAddProDisplayedServiceChanged(selectedService));
+                }
+                else
+                {
+                    bus.post(new ProTeamDisplayedServiceChanged(selectedService));
+                }
+            }
+        });
+
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
         initButtons();
@@ -187,6 +221,20 @@ public class ProTeamFragment extends InjectedFragment implements
         mTabAdapter.setProTeam(mProTeam);
         removeUiBlockers();
 
+        if (mMode == Mode.PRO_ADD)
+        {
+            bus.post(new ProTeamPageOpened(
+                    mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT),
+                    mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.INDIFFERENT)
+            ));
+        }
+        else
+        {
+            bus.post(new ProTeamPageOpened(
+                    mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
+                    mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.PREFERRED)
+            ));
+        }
     }
 
     @Subscribe
@@ -213,12 +261,15 @@ public class ProTeamFragment extends InjectedFragment implements
     void onFabClicked()
     {
         //setMode(Mode.PRO_ADD);
+        bus.post(new ProTeamAddProOpenTapped());
         startActivity(ProTeamAddActivity.newIntent(getContext(), mProTeam));
     }
 
     @OnClick(R.id.pro_team_bottom_button)
     void onBottomButtomClicked()
     {
+        bus.post(new ProTeamAddProSubmitted(mCleanersToAdd.size(), mHandymenToAdd.size()));
+
         bus.post(
                 new ProTeamEvent.RequestProTeamEdit(
                         ProviderMatchPreference.PREFERRED,
@@ -244,6 +295,12 @@ public class ProTeamFragment extends InjectedFragment implements
             Crashlytics.logException(new InvalidParameterException("PTF.onYesNotPermanent invalid"));
             return;
         }
+
+        bus.post(new ProTeamRemoveProviderSubmitted(
+                proTeamPro.getId(),
+                ProviderMatchPreference.INDIFFERENT.toString()
+        ));
+
         bus.post(new ProTeamEvent.RequestProTeamEdit(
                 ProviderMatchPreference.INDIFFERENT,
                 proTeamPro,
@@ -266,8 +323,14 @@ public class ProTeamFragment extends InjectedFragment implements
             Crashlytics.logException(new InvalidParameterException("PTF.onYesPermanent invalid"));
             return;
         }
+
+        bus.post(new ProTeamRemoveProviderSubmitted(
+                proTeamPro.getId(),
+                ProviderMatchPreference.NEVER.toString()
+        ));
+
         bus.post(new ProTeamEvent.RequestProTeamEdit(
-                ProviderMatchPreference.INDIFFERENT,
+                ProviderMatchPreference.NEVER,
                 proTeamPro,
                 proTeamCategoryType
         ));
@@ -291,6 +354,9 @@ public class ProTeamFragment extends InjectedFragment implements
             final ProTeamPro proTeamPro
     )
     {
+
+        bus.post(new ProTeamRemoveProviderTapped(proTeamPro.getId()));
+
         FragmentManager fm = getActivity().getSupportFragmentManager();
         RemoveProDialogFragment fragment = new RemoveProDialogFragment();
         final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
@@ -340,6 +406,7 @@ public class ProTeamFragment extends InjectedFragment implements
     @OnClick(R.id.pro_team_toolbar_questionmark)
     public void onMenuItemClick()
     {
+        bus.post(new ProTeamHelpOpenTapped());
         startActivity(HelpActivity.DeepLink.PRO_TEAM.getIntent(getActivity()));
     }
 

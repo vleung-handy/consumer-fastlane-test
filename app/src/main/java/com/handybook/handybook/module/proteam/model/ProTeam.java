@@ -81,6 +81,46 @@ public class ProTeam implements Parcelable
         return !category.getIndifferent().isEmpty();
     }
 
+    public int getCount(
+            @NonNull final ProTeamCategoryType proTeamCategoryType,
+            ProviderMatchPreference preference
+    )
+    {
+        final ProTeamCategory category;
+        switch (proTeamCategoryType) // Which category are we dealing with?
+        {
+            case CLEANING:
+                category = mCleaning;
+                break;
+            case HANDYMEN:
+                category = mHandymen;
+                break;
+            default:
+                category = null;
+        }
+
+        if (category != null)
+        {
+            if (preference == ProviderMatchPreference.PREFERRED)
+            {
+                if (category.getPreferred() != null)
+                {
+                    return category.getPreferred().size();
+                }
+            }
+            else if (preference == ProviderMatchPreference.INDIFFERENT)
+            {
+                if (category.getIndifferent() != null)
+                {
+                    return category.getIndifferent().size();
+                }
+            }
+        }
+        return 0;
+    }
+
+
+
     @Nullable
     public ProTeamCategory getCategory(@NonNull final ProTeamCategoryType proTeamCategoryType)
     {
