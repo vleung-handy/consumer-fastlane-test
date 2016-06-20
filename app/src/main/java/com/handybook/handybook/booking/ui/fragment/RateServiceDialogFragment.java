@@ -50,8 +50,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     TextView mTitleText;
     @Bind(R.id.rate_dialog_pro_team_member)
     TextView mTextProTeamMember;
-    @Bind(R.id.rate_dialog_message_text)
-    TextView mMessageText;
     @Bind(R.id.rate_dialog_submit_button)
     Button mSubmitButton;
     @Bind(R.id.rate_dialog_skip_button)
@@ -198,9 +196,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         mProName = args.getString(EXTRA_PRO_NAME);
         initStars();
         setRating(mRating);
-        //mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
-        //we want to keep the spacing that is there.
-        mMessageText.setVisibility(View.INVISIBLE);
+
         if (TextUtils.isEmpty(mProName))
         {
             mTitleText.setText(getResources().getString(R.string.how_was_last_service));
@@ -385,16 +381,16 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             {
                 for (int i = 0; i < mRatingsLayout.getChildCount(); i++)
                 {
-                    final ViewGroup starWrapperLayout = (ViewGroup) mRatingsLayout.getChildAt(i);
+                    final ImageView imageView = (ImageView) mRatingsLayout.getChildAt(i);
                     final Rect outRect = new Rect(
-                            starWrapperLayout.getLeft(),
-                            starWrapperLayout.getTop(),
-                            starWrapperLayout.getRight(),
-                            starWrapperLayout.getBottom()
+                            imageView.getLeft(),
+                            imageView.getTop(),
+                            imageView.getRight(),
+                            imageView.getBottom()
                     );
                     if (outRect.contains((int) event.getX(), (int) event.getY()))
                     {
-                        final int starsIndex = mStars.indexOf(starWrapperLayout.getChildAt(0));
+                        final int starsIndex = mStars.indexOf(imageView);
                         setRating(starsIndex);
                         break;
                     }
