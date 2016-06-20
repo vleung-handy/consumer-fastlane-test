@@ -91,10 +91,10 @@ public enum ProTeamCategoryType implements Parcelable
         /**
          * "cleaning"
          */
-        public static final String CLEANING = "cleaning";
+        static final String CLEANING = "cleaning";
         /**
          * "handymen"
          */
-        public static final String HANDYMEN = "handymen";
+        static final String HANDYMEN = "handymen";
     }
 }

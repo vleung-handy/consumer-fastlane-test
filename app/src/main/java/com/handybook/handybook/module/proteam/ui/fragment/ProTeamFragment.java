@@ -158,11 +158,11 @@ public class ProTeamFragment extends InjectedFragment implements
                 String selectedService;
                 if (position == 0)
                 {
-                    selectedService = ProTeamCategoryType.Constants.CLEANING;
+                    selectedService = ProTeamCategoryType.CLEANING.toString();
                 }
                 else
                 {
-                    selectedService = ProTeamCategoryType.Constants.CLEANING;
+                    selectedService = ProTeamCategoryType.HANDYMEN.toString();
                 }
 
                 if (mMode == Mode.PRO_ADD)

@@ -12,14 +12,14 @@ public class ProTeamPageOpened
 {
 
     @TrackField("number_of_cleaning_pros")
-    private final int cleaner;
+    private final int mCleaner;
 
     @TrackField("number_of_handymen_pros")
-    private final int handyMen;
+    private final int mHandyMen;
 
     public ProTeamPageOpened(final int cleaner, final int handyMen)
     {
-        this.cleaner = cleaner;
-        this.handyMen = handyMen;
+        mCleaner = cleaner;
+        mHandyMen = handyMen;
     }
 }

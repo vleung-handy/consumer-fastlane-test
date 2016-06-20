@@ -86,34 +86,13 @@ public class ProTeam implements Parcelable
             ProviderMatchPreference preference
     )
     {
-        final ProTeamCategory category;
-        switch (proTeamCategoryType) // Which category are we dealing with?
-        {
-            case CLEANING:
-                category = mCleaning;
-                break;
-            case HANDYMEN:
-                category = mHandymen;
-                break;
-            default:
-                category = null;
-        }
-
+        final ProTeamCategory category = getCategory(proTeamCategoryType);
         if (category != null)
         {
-            if (preference == ProviderMatchPreference.PREFERRED)
+            List<ProTeamPro> proTeamPros = category.get(preference);
+            if (proTeamPros != null)
             {
-                if (category.getPreferred() != null)
-                {
-                    return category.getPreferred().size();
-                }
-            }
-            else if (preference == ProviderMatchPreference.INDIFFERENT)
-            {
-                if (category.getIndifferent() != null)
-                {
-                    return category.getIndifferent().size();
-                }
+                return proTeamPros.size();
             }
         }
         return 0;
