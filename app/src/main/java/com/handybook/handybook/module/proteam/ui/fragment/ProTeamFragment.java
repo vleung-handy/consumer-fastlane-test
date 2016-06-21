@@ -269,6 +269,10 @@ public class ProTeamFragment extends InjectedFragment implements
         mHandymenToAdd.clear();
         initButtons();
         removeUiBlockers();
+        if (mMode == Mode.PRO_ADD)
+        {
+            getActivity().finish();
+        }
     }
 
     @Subscribe

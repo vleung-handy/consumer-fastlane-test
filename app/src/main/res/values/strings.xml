@@ -379,7 +379,7 @@
     <string name="pro_team_empty_card_title_loading">Loading ProTeam</string>
     <string name="pro_team_empty_card_text_loading">Looking up your ProTeam…</string>
     <string name="pro_team_remove_dialog_title">Remove %1$s?</string>
-    <string name="title_activity_pro_team_add">Add to ProTeam</string>
+    <string name="title_activity_pro_team_add">Add Pros</string>
 
     <string name="pro_team_button_add_pros_template">Add %1$sPros</string>
     <string name="cd_pro_team_toolbar_questionmark">Open ProTeam help article icon</string>

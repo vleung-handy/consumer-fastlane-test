@@ -134,7 +134,7 @@ public class ProTeamProListFragment extends InjectedFragment
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
         }
-        else if (mProteam.hasAvailableProsInCategory(mProTeamCategoryType))
+        else if (mProviderMatchPreference == ProviderMatchPreference.PREFERRED)
         {
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_has_available);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_has_available);
