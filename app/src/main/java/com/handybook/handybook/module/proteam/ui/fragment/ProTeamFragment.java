@@ -136,6 +136,7 @@ public class ProTeamFragment extends InjectedFragment implements
         {
             mTabAdapter.setProviderMatchPreference(mMode.getProviderMatchPreference());
             initButtons();
+            initTitle();
         }
 
     }
@@ -175,10 +176,23 @@ public class ProTeamFragment extends InjectedFragment implements
                 }
             }
         });
-
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
+        initTitle();
         initButtons();
+    }
+
+    private void initTitle()
+    {
+        switch (mMode)
+        {
+            case PRO_MANAGE:
+                setToolbarTitle(getString(R.string.title_activity_pro_team));
+                break;
+            case PRO_ADD:
+                setToolbarTitle(getString(R.string.title_activity_pro_team_add));
+                break;
+        }
     }
 
     private void initButtons()

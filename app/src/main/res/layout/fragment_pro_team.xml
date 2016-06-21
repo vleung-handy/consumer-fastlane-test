@@ -34,11 +34,6 @@
                 app:titleTextAppearance="@style/Toolbar.TitleText"
                 >
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
                     <ImageButton
                         android:id="@+id/pro_team_toolbar_questionmark"
                         android:layout_width="wrap_content"
@@ -49,7 +44,6 @@
                         android:padding="@dimen/default_padding"
                         android:src="@drawable/ic_pro_team_toolbar_questionmark"
                         />
-                </FrameLayout>
             </android.support.v7.widget.Toolbar>
 
             <com.handybook.handybook.ui.view.HandyTabLayout
