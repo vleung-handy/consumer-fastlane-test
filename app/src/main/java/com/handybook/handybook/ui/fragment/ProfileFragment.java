@@ -21,10 +21,7 @@ import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivit
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.event.logging.ProTeamOpenTapped;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
@@ -32,11 +29,9 @@ import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.ThinIconButton;
 import com.handybook.handybook.util.TextUtils;
-import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class ProfileFragment extends InjectedFragment {
@@ -70,8 +65,6 @@ public final class ProfileFragment extends InjectedFragment {
     PasswordInputTextView newPasswordtext;
     @Bind(R.id.profile_cancel_cleaning_plan_button)
     ThinIconButton mCancelCleaningPlanButton;
-    @Bind(R.id.profile_pro_team_button)
-    ThinIconButton mProTeamButton;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -128,16 +121,6 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         updateButton.setOnClickListener(updateClicked);
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if (mConfiguration == null)
-        {
-            bus.post(new ConfigurationEvent.RequestConfiguration());
-        }
     }
 
     @Override
@@ -375,26 +358,4 @@ public final class ProfileFragment extends InjectedFragment {
         }
     };
 
-    @Subscribe
-    public void onReceiveConfigurationSuccess(
-            final ConfigurationEvent.ReceiveConfigurationSuccess event
-    )
-    {
-        if (event != null)
-        {
-            mConfiguration = event.getConfiguration();
-            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
-            {
-                mProTeamButton.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    @OnClick(R.id.profile_pro_team_button)
-    void onProTeamClicked()
-    {
-        bus.post(new ProTeamOpenTapped("account"));
-        final Intent intent = new Intent(getContext(), ProTeamActivity.class);
-        getContext().startActivity(intent);
-    }
 }
