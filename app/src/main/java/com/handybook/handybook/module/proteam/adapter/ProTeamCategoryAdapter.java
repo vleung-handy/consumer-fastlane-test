@@ -14,11 +14,15 @@ import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolder>
 {
     private ProTeamCategoryType mProTeamCategoryType;
     private ProviderMatchPreference mProviderMatchPreference;
     private ProTeam mProTeam;
+    private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeamProViewModel.OnInteractionListener mOnXClickedListener;
 
     public ProTeamCategoryAdapter(
@@ -32,6 +36,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
         mProviderMatchPreference = providerMatchPreference;
         mProTeam = proTeam;
         mOnXClickedListener = onInteractionListener;
+        initProTeamProViewModels();
     }
 
     @Override
@@ -46,11 +51,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     @Override
     public void onBindViewHolder(final ProTeamProHolder holder, int position)
     {
-        final ProTeamPro proTeamPro = mProTeam
-                .getCategory(mProTeamCategoryType)
-                .get(mProviderMatchPreference)
-                .get(position);
-        holder.bindBookingCardViewModel(proTeamPro, mProTeamCategoryType, mProviderMatchPreference);
+        holder.bindProTeamProViewModel(getItem(position), mProviderMatchPreference);
         if (position == 0)
         {
             holder.showPretext();
@@ -64,7 +65,35 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     @Override
     public int getItemCount()
     {
-        return mProTeam.getCategory(mProTeamCategoryType).get(mProviderMatchPreference).size();
+        return mProTeamProViewModels.size();
+    }
+
+    private void initProTeamProViewModels()
+    {
+        mProTeamProViewModels = new ArrayList<>();
+        final ProTeam.ProTeamCategory proTeamCategory = mProTeam.getCategory(mProTeamCategoryType);
+        final List<ProTeamPro> proTeamPros;
+        if (proTeamCategory == null)
+        {
+            return;
+        }
+        else
+        {
+            proTeamPros = proTeamCategory.get(mProviderMatchPreference);
+        }
+        if (proTeamPros == null)
+        {
+            return;
+        }
+        for (ProTeamPro ePro : proTeamPros)
+        {
+            mProTeamProViewModels.add(ProTeamProViewModel.from(ePro, mProTeamCategoryType));
+        }
+    }
+
+    private ProTeamProViewModel getItem(final int position)
+    {
+        return mProTeamProViewModels.get(position);
     }
 
 }

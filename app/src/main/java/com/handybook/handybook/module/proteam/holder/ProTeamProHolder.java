@@ -8,8 +8,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 
@@ -46,18 +44,18 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindBookingCardViewModel(
-            @NonNull final ProTeamPro proTeamPro,
-            @NonNull final ProTeamCategoryType proTeamCategoryType,
+    public void bindProTeamProViewModel(
+            @NonNull final ProTeamProViewModel proTeamProViewModel,
             @NonNull ProviderMatchPreference providerMatchPreference
     )
     {
-        mProTeamProViewModel = ProTeamProViewModel.from(proTeamPro, proTeamCategoryType);
+        mProTeamProViewModel = proTeamProViewModel;
         mTitle.setText(mProTeamProViewModel.getTitle());
         mSubtitle.setText(mProTeamProViewModel.getSubtitle());
         mSubtitle.setVisibility(mProTeamProViewModel.isSubtitleVisible() ? View.VISIBLE : View.GONE);
         mFooter.setText(mProTeamProViewModel.getFooter());
         mFooter.setVisibility(mProTeamProViewModel.isFooterVisible() ? View.VISIBLE : View.GONE);
+        mCheckbox.setChecked(mProTeamProViewModel.isChecked());
         switch (providerMatchPreference)
         {
             case PREFERRED:
