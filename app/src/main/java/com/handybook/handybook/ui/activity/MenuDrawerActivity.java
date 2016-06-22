@@ -31,7 +31,6 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.squareup.otto.Subscribe;
 
@@ -279,9 +278,6 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 return true;
             case R.id.nav_menu_my_bookings:
                 navigateToActivity(BookingsActivity.class, menuItem.getItemId());
-                return true;
-            case R.id.nav_menu_pro_team:
-                navigateToActivity(ProTeamActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_payment:
                 navigateToActivity(UpdatePaymentActivity.class, menuItem.getItemId());
