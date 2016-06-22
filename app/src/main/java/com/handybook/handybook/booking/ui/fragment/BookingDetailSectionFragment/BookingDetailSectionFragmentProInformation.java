@@ -109,11 +109,13 @@ public class BookingDetailSectionFragmentProInformation extends
             if (mConfiguration != null && mConfiguration.isMyProTeamEnabled())
             {
                 getSectionView().getEntryText().setVisibility(View.GONE);
+                getSectionView().getEntryTitle().setVisibility(View.GONE);
                 getSectionView().noProView.setVisibility(View.VISIBLE);
             }
             else
             {
                 getSectionView().getEntryText().setVisibility(View.VISIBLE);
+                getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
                 getSectionView().getEntryText().setText(R.string.pro_assignment_pending);
             }
         }
