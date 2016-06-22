@@ -59,7 +59,7 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         onView(withId(R.id.nav_menu_log_in)).perform(click());
 
         //input credentials
-        onView(withId(R.id.email_text)).
+        onView(withId(R.id.profile_email_text)).
                 perform(click(), typeText(mTestUser.getEmail()), closeSoftKeyboard());
         onView(withId(R.id.password_text)).
                 perform(click(), typeText(mTestUser.getPassword()), closeSoftKeyboard());
@@ -81,16 +81,16 @@ public class UpdateProfileTest extends ActivityInstrumentationTestCase2
         AppInteractionUtils.waitForProgressDialog();
 
         //replace the phone number text
-        onView(withId(R.id.phone_text)).
+        onView(withId(R.id.profile_phone_text)).
                 perform(replaceText("9876543210"), closeSoftKeyboard());
 
-        onView(withId(R.id.old_password_text)).
+        onView(withId(R.id.profile_old_password_text)).
                 perform(click(), typeText(mTestUser.getPassword()), closeSoftKeyboard());
-        onView(withId(R.id.new_password_text)).
+        onView(withId(R.id.profile_new_password_text)).
                 perform(click(), typeText("newpassword"), closeSoftKeyboard());
 
         //press the update button
-        onView(withId(R.id.update_button)).perform(click());
+        onView(withId(R.id.profile_update_button)).perform(click());
 
         //wait for progress dialog
         AppInteractionUtils.waitForProgressDialog();

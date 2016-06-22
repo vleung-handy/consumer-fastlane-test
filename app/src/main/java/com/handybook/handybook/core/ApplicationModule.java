@@ -104,6 +104,11 @@ import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.NotificationsModule;
+import com.handybook.handybook.module.proteam.manager.ProTeamManager;
+import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.module.proteam.ui.activity.ProTeamAddActivity;
+import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
+import com.handybook.handybook.module.proteam.ui.fragment.ProTeamProListFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -240,7 +245,11 @@ import retrofit.converter.GsonConverter;
         RateImprovementDialogFragment.class,
         RatingsGridFragment.class,
         RatingsRadioFragment.class,
-        RateImprovementConfirmationDialogFragment.class
+        RateImprovementConfirmationDialogFragment.class,
+        ProTeamActivity.class,
+        ProTeamAddActivity.class,
+        ProTeamFragment.class,
+        ProTeamProListFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
@@ -257,13 +266,12 @@ public final class ApplicationModule
     public ApplicationModule(final Context context)
     {
         mContext = context.getApplicationContext();
-        mConfigs = PropertiesReader
-                .getProperties(context, "config.properties");
+        mConfigs = PropertiesReader.getProperties(context, "config.properties");
     }
 
     @Provides
     @Singleton
-    public Properties provideProperties()
+    Properties provideProperties()
     {
         return mConfigs;
     }
@@ -289,23 +297,20 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HandyRetrofitService provideHandyService(final HandyRetrofitEndpoint endpoint,
-                                                   final UserManager userManager)
+    final HandyRetrofitService provideHandyService(
+            final HandyRetrofitEndpoint endpoint,
+            final UserManager userManager
+    )
     {
-
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
-
         final String username = mConfigs.getProperty("api_username");
         String password = mConfigs.getProperty("api_password_internal");
-
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
             password = mConfigs.getProperty("api_password");
         }
-
         final String pwd = password;
-
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint)
                 .setRequestInterceptor(new RequestInterceptor()
                 {
@@ -327,7 +332,6 @@ public final class ApplicationModule
                         request.addQueryParam("app_device_id", getDeviceId());
                         request.addQueryParam("app_device_model", getDeviceName());
                         request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
-
                         final User user = userManager.getCurrentUser();
                         if (user != null)
                         {
@@ -335,7 +339,8 @@ public final class ApplicationModule
                             request.addQueryParam("auth_token", user.getAuthToken());
                         }
                     }
-                }).setConverter(new GsonConverter(new GsonBuilder()
+                })
+                .setConverter(new GsonConverter(new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                         .setExclusionStrategies(BookingRequest.getExclusionStrategy())
                         .registerTypeAdapter(BookingRequest.class,
@@ -352,24 +357,23 @@ public final class ApplicationModule
                         .setExclusionStrategies(User.getExclusionStrategy())
                         .registerTypeAdapter(User.class, new User.UserSerializer())
                         .create())).setClient(new OkClient(okHttpClient)).build();
-
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
         {
             restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
         }
-
         return restAdapter.create(HandyRetrofitService.class);
     }
 
     @Provides
     @Singleton
-    final DataManager provideDataManager(final HandyRetrofitService service,
-                                         final HandyRetrofitEndpoint endpoint,
-                                         final PrefsManager prefsManager)
+    final DataManager provideDataManager(
+            final HandyRetrofitService service,
+            final HandyRetrofitEndpoint endpoint,
+            final PrefsManager prefsManager
+    )
     {
         final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
-
         return dataManager;
     }
 
@@ -396,9 +400,10 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final BookingManager provideBookingManager(final Bus bus,
-                                               final PrefsManager prefsManager,
-                                               final DataManager dataManager
+    final BookingManager provideBookingManager(
+            final Bus bus,
+            final PrefsManager prefsManager,
+            final DataManager dataManager
     )
     {
         return new BookingManager(bus, prefsManager, dataManager);
@@ -406,8 +411,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final BookingEditManager provideBookingEditManager(final Bus bus,
-                                                       final DataManager dataManager
+    final BookingEditManager provideBookingEditManager(
+            final Bus bus,
+            final DataManager dataManager
     )
     {
         return new BookingEditManager(bus, dataManager);
@@ -415,31 +421,40 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final UserManager provideUserManager(final Bus bus,
-                                         final PrefsManager prefsManager)
+    final UserManager provideUserManager(
+            final Bus bus,
+            final PrefsManager prefsManager
+    )
     {
         return new UserManager(bus, prefsManager);
     }
 
     @Provides
     @Singleton
-    final UserDataManager provideUserDataManager(final UserManager userManager,
-                                                 final DataManager dataManager,
-                                                 final Bus bus)
+    final UserDataManager provideUserDataManager(
+            final UserManager userManager,
+            final DataManager dataManager,
+            final Bus bus
+    )
     {
         return new UserDataManager(userManager, dataManager, bus);
     }
 
     @Provides
     @Singleton
-    final ServicesManager provideServicesManager(final DataManager dataManager, final Bus bus)
+    final ServicesManager provideServicesManager(
+            final DataManager dataManager,
+            final Bus bus
+    )
     {
         return new ServicesManager(dataManager, bus);
     }
 
     @Provides
     @Singleton
-    final DeepLinkIntentProvider provideDeepLinkNavigationManager(final UserManager userManager)
+    final DeepLinkIntentProvider provideDeepLinkNavigationManager(
+            final UserManager userManager
+    )
     {
         return new DeepLinkIntentProvider(userManager);
     }
@@ -453,9 +468,11 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final NavigationManager provideNavigationManager(final UserManager userManager,
-                                                     final DataManager dataManager,
-                                                     final DataManagerErrorHandler dataManagerErrorHandler)
+    final NavigationManager provideNavigationManager(
+            final UserManager userManager,
+            final DataManager dataManager,
+            final DataManagerErrorHandler dataManagerErrorHandler
+    )
     {
         return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
     }
@@ -473,15 +490,18 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final StripeManager provideStripeManager(final Bus bus)
+    final StripeManager provideStripeManager(
+            final Bus bus
+    )
     {
         return new StripeManager(bus, mConfigs);
     }
 
     @Provides
     @Singleton
-    final UrbanAirshipManager provideUrbanAirshipManager(final Bus bus,
-                                                         final UserManager userManager
+    final UrbanAirshipManager provideUrbanAirshipManager(
+            final Bus bus,
+            final UserManager userManager
     )
     {
         return new UrbanAirshipManager(mContext, bus, userManager);
@@ -489,18 +509,34 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final ReferralsManager provideReferralsManager(final Bus bus, final DataManager dataManager)
+    final ReferralsManager provideReferralsManager(
+            final Bus bus,
+            final DataManager dataManager
+    )
     {
         return new ReferralsManager(bus, dataManager);
     }
 
     @Provides
     @Singleton
-    final ConfigurationManager provideConfigurationManager(final Bus bus,
-                                                           final PrefsManager prefsManager,
-                                                           final DataManager dataManager)
+    final ConfigurationManager provideConfigurationManager(
+            final Bus bus,
+            final PrefsManager prefsManager,
+            final DataManager dataManager
+    )
     {
         return new ConfigurationManager(bus, prefsManager, dataManager);
+    }
+
+    @Provides
+    @Singleton
+    final ProTeamManager provideProTeamManager(
+            final Bus bus,
+            final HandyRetrofitService service,
+            final UserManager userDataManager
+    )
+    {
+        return new ProTeamManager(bus, service, userDataManager);
     }
 
 

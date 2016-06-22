@@ -2,6 +2,8 @@ package com.handybook.handybook.booking.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.handybook.handybook.R;
@@ -19,6 +21,12 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView
 
     @Bind(R.id.action_buttons_layout_slot_2)
     public LinearLayout actionButtonsLayoutSlot2;
+
+    @Bind(R.id.no_pro_view)
+    public View noProView;
+
+    @Bind(R.id.button_pro_team)
+    public Button buttonProTeam;
 
     public BookingDetailSectionProInfoView(final Context context)
     {

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/remove_pro_main_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/handy_white"
+    >
+
+    <TextView
+        android:id="@+id/remove_pro_title"
+        style="@style/TextView.XLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/remove_pro_dialog_text_view_height"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAllCaps="false"
+        android:textColor="@color/handy_tertiary_gray"
+        tools:text="Remove Caterine F.?"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/default_padding"
+        />
+
+    <ImageButton
+        android:id="@+id/remove_pro_cancel"
+        android:layout_width="@dimen/default_icon_size_half"
+        android:layout_height="@dimen/default_icon_size_half"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/default_margin"
+        android:src="@drawable/ic_pro_team_x_small"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        />
+
+    <View
+        android:id="@+id/remove_pro_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/remove_pro_title"
+        android:background="@color/handy_divider_line"
+        />
+
+    <TextView
+        android:id="@+id/remove_pro_not_permanent_text"
+        style="@style/TextView.Large"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/remove_pro_dialog_text_view_height"
+        android:layout_below="@id/remove_pro_divider"
+        android:drawableLeft="@drawable/ic_pro_team_menu_remove"
+        android:drawablePadding="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:layout_marginTop="@dimen/default_margin"
+        android:text="@string/pro_team_remove_not_permanent"
+        android:gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/remove_pro_permanent_text"
+        style="@style/TextView.Large"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/remove_pro_dialog_text_view_height"
+        android:layout_below="@id/remove_pro_not_permanent_text"
+        android:drawableLeft="@drawable/ic_pro_team_menu_ban"
+        android:drawablePadding="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:text="@string/pro_team_remove_permanent"
+        android:gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/remove_pro_nevermind_text"
+        style="@style/TextView.Large"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/remove_pro_dialog_text_view_height"
+        android:layout_below="@id/remove_pro_permanent_text"
+        android:drawableLeft="@drawable/ic_pro_team_menu_nevermind"
+        android:drawablePadding="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:gravity="center_vertical"
+        android:text="@string/pro_team_remove_nevermind"
+        />
+
+</RelativeLayout>

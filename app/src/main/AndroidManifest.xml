@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.handybook.handybook"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<manifest package="com.handybook.handybook"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
     >
 
     <uses-feature
@@ -151,8 +150,8 @@
             />
         <activity
             android:name=".booking.ui.activity.BookingDetailActivity"
-            android:screenOrientation="portrait"
             android:parentActivityName=".booking.ui.activity.BookingsActivity"
+            android:screenOrientation="portrait"
             />
         <activity
             android:name=".booking.ui.activity.BookingFinalizeActivity"
@@ -209,6 +208,31 @@
             android:name=".booking.ui.activity.CancelRecurringBookingActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".module.proteam.ui.activity.ProTeamActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_pro_team"
+            android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
+            android:theme="@style/Theme.Handy"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity"
+                />
+        </activity>
+        <activity
+            android:name=".module.proteam.ui.activity.ProTeamAddActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_pro_team_add"
+            android:parentActivityName=".module.proteam.ui.activity.ProTeamActivity"
+            android:theme="@style/Theme.Handy"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity"
+                />
+        </activity>
+
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
@@ -400,7 +424,6 @@
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

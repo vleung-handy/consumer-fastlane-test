@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment;
 
+import android.accounts.NetworkErrorException;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -12,15 +13,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferenceChanged;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferencePresented;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferenceSubmitted;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.handybook.handybook.util.FragmentUtils;
@@ -33,48 +43,91 @@ import butterknife.ButterKnife;
 
 public class RateServiceDialogFragment extends BaseDialogFragment
 {
-    static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
-    static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
-    static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
+    private static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
+    private static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
+    private static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
-
-    //threshold for what is considered a good rating.
-    private static final int GOOD_RATING = 4;
+    private static final int GOOD_RATING = 4; //threshold for what is considered a good rating.
     private static final String RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT = "RateServiceConfirmDialogFragment";
 
-    private ArrayList<ImageView> mStars = new ArrayList<>();
-    private int mBookingId;
-    private String mProName;
-    private int mRating;
-
-    @Bind(R.id.service_icon)
+    @Bind(R.id.rate_dialog_service_icon)
     ImageView mServiceIcon;
-    @Bind(R.id.title_text)
+    @Bind(R.id.rate_dialog_title_text)
     TextView mTitleText;
-    @Bind(R.id.message_text)
+    @Bind(R.id.rate_dialog_message_text)
     TextView mMessageText;
-    @Bind(R.id.submit_button)
+    @Bind(R.id.rate_dialog_submit_button)
     Button mSubmitButton;
-    @Bind(R.id.skip_button)
+    @Bind(R.id.rate_dialog_skip_button)
     Button mSkipButton;
-    @Bind(R.id.submit_progress)
+    @Bind(R.id.rate_dialog_submit_progress)
     ProgressBar mSubmitProgress;
-    @Bind(R.id.ratings_layout)
+    @Bind(R.id.rate_dialog_ratings_layout)
     LinearLayout mRatingsLayout;
-    @Bind(R.id.submit_button_layout)
+    @Bind(R.id.rate_dialog_submit_button_layout)
     View mSubmitButtonLayout;
-    @Bind(R.id.star_1)
+    @Bind(R.id.rate_dialog_star_1)
     ImageView mStar1;
-    @Bind(R.id.star_2)
+    @Bind(R.id.rate_dialog_star_2)
     ImageView mStar2;
-    @Bind(R.id.star_3)
+    @Bind(R.id.rate_dialog_star_3)
     ImageView mStar3;
-    @Bind(R.id.star_4)
+    @Bind(R.id.rate_dialog_star_4)
     ImageView mStar4;
-    @Bind(R.id.star_5)
+    @Bind(R.id.rate_dialog_star_5)
     ImageView mStar5;
-    @Bind(R.id.tip_section)
+    @Bind(R.id.rate_dialog_tip_section)
     View mTipSection;
+    //Pro Match Section
+    @Bind(R.id.rate_dialog_pro_match_container)
+    ViewGroup mProMatchContainer;
+    @Bind(R.id.rate_dialog_pro_match_radiogroup)
+    RadioGroup mProMatchPreferences;
+    @Bind(R.id.rate_dialog_pro_match_header_txt)
+    TextView mProMatchHeaderText;
+    @Bind(R.id.rate_dialog_pro_match_footer_txt)
+    TextView mProMatchFooterText;
+    @Bind(R.id.rate_dialog_pro_match_preference_never)
+    RadioButton mProMatchRadioNever;
+    @Bind(R.id.rate_dialog_pro_match_preference_indifferent)
+    RadioButton mProMatchRadioIndifferent;
+    @Bind(R.id.rate_dialog_pro_match_preference_preferred)
+    RadioButton mProMatchRadioPreferred;
+
+    private Configuration mConfiguration;
+    private int mBookingId;
+    private int mRating;
+    private String mProName;
+    private PrerateProInfo mPrerateProInfo;
+    private ArrayList<ImageView> mStars = new ArrayList<>();
+    private View.OnClickListener mSubmitListener;
+    private ProviderMatchPreference mMatchPreference;
+
+    {
+        mSubmitListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                disableInputs();
+                showProgress();
+                mSubmitButton.setText(null);
+                final int finalRating = mRating + 1;
+                final Integer tipAmountCents = getTipAmount();
+                mBus.post(new RatingDialogMatchPreferenceSubmitted(mMatchPreference.toString()));
+                mBus.post(new BookingEvent.RateBookingEvent(
+                        mBookingId,
+                        finalRating,
+                        tipAmountCents,
+                        mMatchPreference
+                ));
+                if (tipAmountCents != null)
+                {
+                    mBus.post(new MixpanelEvent.TrackSubmitTip(tipAmountCents, MixpanelEvent.TipParentFlow.RATING_FLOW));
+                }
+            }
+        };
+    }
 
     public static RateServiceDialogFragment newInstance(
             final int bookingId,
@@ -98,79 +151,29 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState)
+    public void onResume()
     {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        final View view = inflater.inflate(R.layout.dialog_rate_service, container, true);
-        ButterKnife.bind(this, view);
-
-        final Bundle args = getArguments();
-
-        if (savedInstanceState != null)
+        super.onResume();
+        if (mPrerateProInfo == null)
         {
-            mRating = savedInstanceState.getInt(STATE_RATING, -1);
-        }
-        else
-        {
-            mRating = args.getInt(EXTRA_RATING, -1);
+            mBus.post(new BookingEvent.RequestPrerateProInfo(String.valueOf(mBookingId)));
+            disableInputs();
+            showProgress();
         }
 
-        mBookingId = args.getInt(EXTRA_BOOKING);
-        mProName = args.getString(EXTRA_PRO_NAME);
-
-        initStars();
-        setRating(mRating);
-
-        mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
-
-        //we want to keep the spacing that is there.
-        mMessageText.setVisibility(View.INVISIBLE);
-
-        if (TextUtils.isEmpty(mProName))
+        if (mConfiguration == null)
         {
-            mTitleText.setText(getResources().getString(R.string.how_was_last_service));
-        }
-        else
-        {
-            mTitleText.setText(String.format(getString(R.string.how_was_last_service_with), mProName));
+            mBus.post(new ConfigurationEvent.RequestConfiguration());
         }
 
-        mSubmitButton.setOnClickListener(mSubmitListener);
-        mSkipButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(final View v)
-            {
-                dismiss();
-            }
-        });
-
-        ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
-                getArguments().getParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS);
-        String currency = getArguments().getString(TipFragment.EXTRA_CURRENCY_CHAR);
-        TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts, currency);
-
-        if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
-        {
-            mTipSection.setVisibility(View.VISIBLE);
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.tip_layout_container, tipFragment)
-                    .commit();
-            mBus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.RATING_FLOW));
-        }
-
-        mBus.post(new MixpanelEvent.TrackShowRatingPrompt());
-
-        return view;
     }
 
     @Override
-    public void onSaveInstanceState(final Bundle outState)
+    protected void disableInputs()
     {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_RATING, mRating);
+        super.disableInputs();
+        mSubmitButton.setClickable(false);
+        mSkipButton.setClickable(false);
     }
 
     @Override
@@ -182,74 +185,89 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    protected void disableInputs()
+    public View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
-        super.disableInputs();
-        mSubmitButton.setClickable(false);
-        mSkipButton.setClickable(false);
-    }
-
-    private void initStars()
-    {
-        mStars.add(mStar1);
-        mStars.add(mStar2);
-        mStars.add(mStar3);
-        mStars.add(mStar4);
-        mStars.add(mStar5);
-
-        // init all stars to empty
-        for (final ImageView star : mStars)
+        super.onCreateView(inflater, container, savedInstanceState);
+        final View view = inflater.inflate(R.layout.dialog_rate_service, container, true);
+        ButterKnife.bind(this, view);
+        final Bundle args = getArguments();
+        if (savedInstanceState != null)
         {
-            star.setColorFilter(getResources().getColor(R.color.light_grey), PorterDuff.Mode.SRC_ATOP);
+            mRating = savedInstanceState.getInt(STATE_RATING, -1);
         }
-
-        // fill mStars when dragging across them
-        mRatingsLayout.setOnTouchListener(new View.OnTouchListener()
+        else
+        {
+            mRating = args.getInt(EXTRA_RATING, -1);
+        }
+        mBookingId = args.getInt(EXTRA_BOOKING);
+        mProName = args.getString(EXTRA_PRO_NAME);
+        initStars();
+        setRating(mRating);
+        //mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
+        //we want to keep the spacing that is there.
+        mMessageText.setVisibility(View.INVISIBLE);
+        if (TextUtils.isEmpty(mProName))
+        {
+            mTitleText.setText(getResources().getString(R.string.how_was_last_service));
+        }
+        else
+        {
+            mTitleText.setText(String.format(getString(R.string.how_was_last_service_with), mProName));
+        }
+        mSubmitButton.setOnClickListener(mSubmitListener);
+        mSkipButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public boolean onTouch(final View v, final MotionEvent event)
+            public void onClick(final View v)
             {
-                for (int i = 0; i < mRatingsLayout.getChildCount(); i++)
-                {
-                    final RelativeLayout starWrapperLayout = (RelativeLayout) mRatingsLayout.getChildAt(i);
-                    final Rect outRect = new Rect(starWrapperLayout.getLeft(), starWrapperLayout.getTop(),
-                            starWrapperLayout.getRight(), starWrapperLayout.getBottom());
-
-                    if (outRect.contains((int) event.getX(), (int) event.getY()))
-                    {
-                        final int starsIndex = mStars.indexOf((ImageView) starWrapperLayout.getChildAt(0));
-                        setRating(starsIndex);
-                        break;
-                    }
-                }
-                return true;
+                dismiss();
             }
         });
+        ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
+                getArguments().getParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS);
+        String currency = getArguments().getString(TipFragment.EXTRA_CURRENCY_CHAR);
+        TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts, currency);
+        if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
+        {
+            mTipSection.setVisibility(View.VISIBLE);
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.rate_dialog_tip_layout_container, tipFragment)
+                    .commit();
+            mBus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.RATING_FLOW));
+        }
+        mBus.post(new MixpanelEvent.TrackShowRatingPrompt());
+        return view;
     }
 
-    private void setRating(final int rating)
+    @Override
+    public void onSaveInstanceState(final Bundle outState)
     {
-        mRating = rating;
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_RATING, mRating);
+    }
 
-        for (int j = 0; j < mStars.size(); j++)
-        {
-            final ImageView star = mStars.get(j);
+    @Subscribe
+    public void onReceivePrerateInfoSuccess(
+            BookingEvent.ReceivePrerateProInfoSuccess receivePrerateProInfoSuccess
+    )
+    {
+        mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
+        initProTeamSection(mPrerateProInfo);
+        hideProgress();
+        enableInputs();
 
-            if (j <= mRating)
-            {
-                star.clearColorFilter();
-            }
-            else
-            {
-                star.setColorFilter(getResources().getColor(R.color.light_grey),
-                        PorterDuff.Mode.SRC_ATOP);
-            }
-        }
+    }
 
-        if (mRating >= 0)
-        {
-            mSubmitButtonLayout.setVisibility(View.VISIBLE);
-        }
+    @Subscribe
+    public void onReceivePrerateInfoSuccess(
+            BookingEvent.ReceivePrerateProInfoError receivePrerateProInfoSuccess
+    )
+    {
+        Crashlytics.logException(new NetworkErrorException("Could not get prerate_pro_info"));
+        dismiss();
     }
 
     @Subscribe
@@ -261,19 +279,21 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             HandySnackbar.show(getActivity(), message, HandySnackbar.TYPE_SUCCESS);
         }
         dismiss();
-
         final int finalRating = mRating + 1;
-
         mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, mBookingId, mProName, finalRating);
-
         if (finalRating < GOOD_RATING)
         {
             FragmentUtils.safeLaunchDialogFragment(
-                    RateImprovementDialogFragment.newInstance(String.valueOf(mBookingId)),
+                    RateImprovementDialogFragment.newInstance(
+                            String.valueOf(mBookingId),
+                            mPrerateProInfo
+                    ),
                     getActivity(),
                     RateImprovementDialogFragment.class.getSimpleName()
             );
-        } else {
+        }
+        else
+        {
             FragmentUtils.safeLaunchDialogFragment(
                     RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),
                     getActivity(),
@@ -282,39 +302,165 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     }
 
     @Subscribe
+    public void onReceiveConfigurationSuccess(
+            final ConfigurationEvent.ReceiveConfigurationSuccess event
+    )
+    {
+        if (event != null)
+        {
+            mConfiguration = event.getConfiguration();
+            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
+            {
+                mProMatchContainer.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Subscribe
     public void onReceiveRateBookingError(BookingEvent.ReceiveRateBookingError event)
     {
-        mSubmitProgress.setVisibility(View.GONE);
+        hideProgress();
         mSubmitButton.setText(R.string.submit);
         mSkipButton.setVisibility(View.VISIBLE);
         enableInputs();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private View.OnClickListener mSubmitListener = new View.OnClickListener()
+    /**
+     * Sets the rating field and fills the stars yellow in the layout, also shows the submit button
+     *
+     * @param rating Zero indexed rating
+     */
+    private void setRating(final int rating)
     {
-        @Override
-        public void onClick(final View v)
+        mRating = rating;
+        for (int starIndex = 0; starIndex < mStars.size(); starIndex++)
         {
-            disableInputs();
-            mSubmitProgress.setVisibility(View.VISIBLE);
-            mSubmitButton.setText(null);
+            final ImageView star = mStars.get(starIndex);
 
-            final int finalRating = mRating + 1;
-            final Integer tipAmountCents = getTipAmount();
-
-            mBus.post(new BookingEvent.RateBookingEvent(mBookingId, finalRating, tipAmountCents));
-            if (tipAmountCents != null)
+            if (starIndex <= mRating)
             {
-                mBus.post(new MixpanelEvent.TrackSubmitTip(tipAmountCents, MixpanelEvent.TipParentFlow.RATING_FLOW));
+                star.clearColorFilter();
+            }
+            else
+            {
+                star.setColorFilter(
+                        getResources().getColor(R.color.light_grey),
+                        PorterDuff.Mode.SRC_ATOP
+                );
             }
         }
-    };
+        if (mRating >= 0)
+        {
+            mSubmitButtonLayout.setVisibility(View.VISIBLE);
+        }
+    }
 
     private Integer getTipAmount()
     {
         final TipFragment tipFragment = (TipFragment) getChildFragmentManager()
-                .findFragmentById(R.id.tip_layout_container);
+                .findFragmentById(R.id.rate_dialog_tip_layout_container);
         return tipFragment != null ? tipFragment.getTipAmount() : null;
+    }
+
+    private void initStars()
+    {
+        mStars.add(mStar1);
+        mStars.add(mStar2);
+        mStars.add(mStar3);
+        mStars.add(mStar4);
+        mStars.add(mStar5);
+        // init all stars to empty
+        for (final ImageView star : mStars)
+        {
+            star.setColorFilter(getResources().getColor(R.color.light_grey), PorterDuff.Mode.SRC_ATOP);
+        }
+        // fill mStars when dragging across them
+        mRatingsLayout.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event)
+            {
+                for (int i = 0; i < mRatingsLayout.getChildCount(); i++)
+                {
+                    final ViewGroup starWrapperLayout = (ViewGroup) mRatingsLayout.getChildAt(i);
+                    final Rect outRect = new Rect(
+                            starWrapperLayout.getLeft(),
+                            starWrapperLayout.getTop(),
+                            starWrapperLayout.getRight(),
+                            starWrapperLayout.getBottom()
+                    );
+                    if (outRect.contains((int) event.getX(), (int) event.getY()))
+                    {
+                        final int starsIndex = mStars.indexOf(starWrapperLayout.getChildAt(0));
+                        setRating(starsIndex);
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+    }
+
+    private void initProTeamSection(final PrerateProInfo prerateProInfo)
+    {
+        mProMatchPreferences.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(final RadioGroup group, final int checkedId)
+            {
+                switch (checkedId)
+                {
+                    case R.id.rate_dialog_pro_match_preference_never:
+                        mMatchPreference = ProviderMatchPreference.NEVER;
+                        mProMatchFooterText.setText(
+                                R.string.rate_dialog_pro_match_preference_footer_never
+                        );
+                        mProMatchFooterText.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.rate_dialog_pro_match_preference_indifferent:
+                        mMatchPreference = ProviderMatchPreference.INDIFFERENT;
+                        mProMatchFooterText.setVisibility(View.GONE);
+                        break;
+                    case R.id.rate_dialog_pro_match_preference_preferred:
+                        mMatchPreference = ProviderMatchPreference.PREFERRED;
+                        mProMatchFooterText.setText(
+                                R.string.rate_dialog_pro_match_preference_footer_preferred
+                        );
+                        mProMatchFooterText.setVisibility(View.VISIBLE);
+                        break;
+                }
+
+                mBus.post(new RatingDialogMatchPreferenceChanged(mMatchPreference.toString()));
+            }
+        });
+
+        ProviderMatchPreference preference = prerateProInfo.getProviderMatchPreference();
+        mMatchPreference = preference == null ? ProviderMatchPreference.INDIFFERENT : preference;
+        switch (mMatchPreference)
+        {
+            case NEVER:
+                mProMatchRadioNever.setChecked(true);
+                break;
+            case PREFERRED:
+                mProMatchRadioPreferred.setChecked(true);
+                break;
+            case INDIFFERENT:
+            default:
+                mProMatchRadioIndifferent.setChecked(true);
+                break;
+        }
+
+        mBus.post(new RatingDialogMatchPreferencePresented(mMatchPreference.toString()));
+    }
+
+    private void showProgress()
+    {
+        mSubmitProgress.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgress()
+    {
+        mSubmitProgress.setVisibility(View.GONE);
     }
 }

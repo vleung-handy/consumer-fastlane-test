@@ -28,6 +28,7 @@ import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
+import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.newrelic.agent.android.NewRelic;
@@ -94,6 +95,8 @@ public class BaseApplication extends MultiDexApplication
     ReferralsManager referralsManager;
     @Inject
     ConfigurationManager configurationManager;
+    @Inject
+    ProTeamManager proTeamManager;
     private int started;
     private boolean savedInstance;
 

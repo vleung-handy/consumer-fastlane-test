@@ -43,4 +43,5 @@ public class BundleKeys
 
     public static final String HELP_CENTER_URL = "help_center_url";
     public static final String ACTIVITY = "activity";
+    public static final String PRERATE_PRO_INFO = "prerate_pro_info";
 }
