@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.manager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
+import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -327,8 +328,12 @@ public class BookingManager implements Observer
         }
         else
         {
-            if ((mBookingRequest = BookingRequest
-                    .fromJson(mPrefsManager.getString(PrefsKey.BOOKING_REQUEST))) != null)
+            String json = mPrefsManager.getString(PrefsKey.BOOKING_REQUEST);
+            if (TextUtils.isEmpty(json))
+            {
+                Crashlytics.log("getCurrentRequest: booking request JSON is :" + json);
+            }
+            if ((mBookingRequest = BookingRequest.fromJson(json)) != null)
             {
                 mBookingRequest.addObserver(this);
             }
@@ -345,6 +350,7 @@ public class BookingManager implements Observer
 
         if (newRequest == null)
         {
+            Crashlytics.log("setCurrentRequest: setting booking request = null");
             mBookingRequest = null;
             mPrefsManager.removeValue(PrefsKey.BOOKING_REQUEST);
             return;
@@ -553,6 +559,8 @@ public class BookingManager implements Observer
 
     public void clear()
     {
+        Crashlytics.log("clear: Clearing booking request, quote, transaction, and everything else");
+
         setCurrentRequest(null);
         setCurrentQuote(null);
         setCurrentTransaction(null);
@@ -573,6 +581,7 @@ public class BookingManager implements Observer
     {
         if (!event.getEnvironment().equals(event.getPrevEnvironment()))
         {
+            Crashlytics.logException(new RuntimeException("environmentUpdated: environmentUpdated from: " + event.getPrevEnvironment() + "  to:" + event.getEnvironment()));
             clearAll();
         }
     }
