@@ -92,6 +92,7 @@
 -keepclassmembers class com.handybook.handybook.** {
     <fields>;
 }
+-keep class com.google.gson.** { *; }
 
 #Urban Airship
 -dontwarn com.urbanairship.**

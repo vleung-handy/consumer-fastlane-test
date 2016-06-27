@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
@@ -22,6 +23,10 @@ import butterknife.ButterKnife;
 
 public final class BookingHeaderFragment extends BookingFlowFragment implements Observer {
 
+    private static final String TIME_FORMAT = "h:mm aaa";
+    private static final String DATE_FORMAT = "EEEE',' MMMM d";
+    private static final String DECIMAL_FORMAT = "#.#";
+
     private BookingTransaction transaction;
     private BookingQuote quote;
 
@@ -33,6 +38,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     TextView priceText;
     @Bind(R.id.discount_text)
     TextView discountText;
+
 
     static BookingHeaderFragment newInstance() {
         return new BookingHeaderFragment();
@@ -82,13 +88,21 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         final float hours = transaction.getHours() + transaction.getExtraHours();
         final Date startDate = transaction.getStartDate();
 
-        //we want to display the time using the booking location's time zone
-        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMMM d",
-                bookingManager.getCurrentRequest().getTimeZone()));
+        String timeZone = null;
+        if (bookingManager.getCurrentRequest() != null)
+        {
+            timeZone = bookingManager.getCurrentRequest().getTimeZone();
+        }
+        else
+        {
+            Crashlytics.logException(new RuntimeException("refreshInfo: bookingManager.getCurrentRequest() IS NULL!!!!"));
+        }
 
-        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa",
-                bookingManager.getCurrentRequest().getTimeZone()) + " - "
-                + TextUtils.formatDecimal(hours, "#.#")
+        //we want to display the time using the booking location's time zone
+        dateText.setText(DateTimeUtils.formatDate(startDate, DATE_FORMAT, timeZone));
+
+        timeText.setText(DateTimeUtils.formatDate(startDate, TIME_FORMAT, timeZone) + " - "
+                + TextUtils.formatDecimal(hours, DECIMAL_FORMAT)
                 + " " + getString(R.string.hours));
 
         final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());

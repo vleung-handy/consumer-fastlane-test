@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -132,10 +133,19 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         final TextView priceText = (TextView) row.findViewById(R.id.price_text);
 
         //we want to display the time using the booking location's time zone
+        String timeZone = null;
+        if (bookingManager.getCurrentRequest() != null)
+        {
+            timeZone = bookingManager.getCurrentRequest().getTimeZone();
+        }
+        else
+        {
+            Crashlytics.logException(new RuntimeException("addTimeSlotRow: bookingManager.getCurrentRequest() IS NULL!!!!"));
+        }
         timeText.setText(DateTimeUtils.formatDate(
                 date,
                 "h:mm aaa",
-                bookingManager.getCurrentRequest().getTimeZone()
+                timeZone
         ));
         final String priceString = TextUtils.formatPrice(price, mCurrencyCharacter, null);
         priceText.setText(priceString);
