@@ -280,9 +280,6 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
             case R.id.nav_menu_my_bookings:
                 navigateToActivity(BookingsActivity.class, menuItem.getItemId());
                 return true;
-            case R.id.nav_menu_my_pro_team:
-                navigateToActivity(ProTeamActivity.class, menuItem.getItemId());
-                return true;
             case R.id.nav_menu_payment:
                 navigateToActivity(UpdatePaymentActivity.class, menuItem.getItemId());
                 return true;
