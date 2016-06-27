@@ -5,19 +5,14 @@
              android:layout_height="match_parent"
     >
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/pro_team_pro_list_swipe_refresh"
+    <com.handybook.handybook.ui.view.EmptiableRecyclerView
+        android:id="@+id/pro_team_pro_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-
-        <com.handybook.handybook.ui.view.EmptiableRecyclerView
-            android:id="@+id/pro_team_pro_list_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/layout_pro_team_pro_card"
-            />
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:paddingBottom="64dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/layout_pro_team_pro_card"
+        />
 
     <include layout="@layout/layout_pro_team_empty"/>
 

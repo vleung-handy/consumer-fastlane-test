@@ -42,23 +42,22 @@ import butterknife.ButterKnife;
 
 public abstract class MenuDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener
 {
+    private static final String TAG = MenuDrawerActivity.class.getName();
     private static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
     private static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
-
-    protected boolean disableDrawer;
 
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
     @Bind(R.id.navigation)
     NavigationView mNavigationView;
-
     @Inject
     EnvironmentModifier mEnvironmentModifier;
 
-    private static final String TAG = MenuDrawerActivity.class.getName();
-    private boolean showNavForTransition;
-    private Object busEventListener;
+    protected boolean disableDrawer;
+
+    private boolean mShouldShowNavForTransition;
+    private Object mBusEventListener;
 
     protected abstract Fragment createFragment();
 
@@ -88,14 +87,14 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
             fragment = createFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
-        if (savedInstanceState == null && (showNavForTransition
+        if (savedInstanceState == null && (mShouldShowNavForTransition
                 = getIntent().getBooleanExtra(EXTRA_SHOW_NAV_FOR_TRANSITION, false)))
         {
             mDrawerLayout.closeDrawers();
         }
         //this is to work around the subscriber inheritance issue that Otto has.
         //https://github.com/square/otto/issues/26
-        busEventListener = new Object()
+        mBusEventListener = new Object()
         {
             @Subscribe
             public void userAuthUpdated(final UserLoggedInEvent event)
@@ -125,10 +124,10 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     protected final void onStart()
     {
         super.onStart();
-        if (showNavForTransition)
+        if (mShouldShowNavForTransition)
         {
             mDrawerLayout.closeDrawers();
-            showNavForTransition = false;
+            mShouldShowNavForTransition = false;
         }
     }
 
@@ -226,7 +225,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     protected void onResume()
     {
         super.onResume();
-        mBus.register(busEventListener);
+        mBus.register(mBusEventListener);
         refreshMenu();
     }
 
@@ -234,7 +233,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     protected void onPause()
     {
         super.onPause();
-        mBus.unregister(busEventListener);
+        mBus.unregister(mBusEventListener);
     }
 
     /**

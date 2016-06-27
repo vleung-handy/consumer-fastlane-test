@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 
 import butterknife.Bind;
@@ -48,6 +49,7 @@ public class RemoveProDialogFragment extends DialogFragment
     private String mTitle;
     private RemoveProListener mListener;
     private ProTeamPro mProTeamPro;
+    private ProTeamCategoryType mProTeamCategoryType;
 
 
     @NonNull
@@ -131,6 +133,11 @@ public class RemoveProDialogFragment extends DialogFragment
         }
     }
 
+    public void setProTeamCategoryType(final ProTeamCategoryType proTeamCategoryType)
+    {
+        mProTeamCategoryType = proTeamCategoryType;
+    }
+
     public void setProTeamPro(@NonNull final ProTeamPro proTeamPro)
     {
         mProTeamPro = proTeamPro;
@@ -153,7 +160,7 @@ public class RemoveProDialogFragment extends DialogFragment
     {
         if (mListener != null)
         {
-            mListener.onYesNotPermanent(mProTeamPro);
+            mListener.onYesNotPermanent(mProTeamCategoryType, mProTeamPro);
         }
         dismiss();
     }
@@ -163,7 +170,7 @@ public class RemoveProDialogFragment extends DialogFragment
     {
         if (mListener != null)
         {
-            mListener.onYesPermanent(mProTeamPro);
+            mListener.onYesPermanent(mProTeamCategoryType, mProTeamPro);
         }
         dismiss();
     }
@@ -179,7 +186,7 @@ public class RemoveProDialogFragment extends DialogFragment
     {
         if (mListener != null)
         {
-            mListener.onCancel(mProTeamPro);
+            mListener.onCancel(mProTeamCategoryType, mProTeamPro);
         }
 
         dismiss();
@@ -194,10 +201,19 @@ public class RemoveProDialogFragment extends DialogFragment
 
     public interface RemoveProListener
     {
-        void onYesNotPermanent(@Nullable ProTeamPro proTeamPro);
+        void onYesNotPermanent(
+                @Nullable ProTeamCategoryType proTeamCategoryType,
+                @Nullable ProTeamPro proTeamPro
+        );
 
-        void onYesPermanent(@Nullable ProTeamPro proTeamPro);
+        void onYesPermanent(
+                @Nullable ProTeamCategoryType proTeamCategoryType,
+                @Nullable ProTeamPro proTeamPro
+        );
 
-        void onCancel(@Nullable ProTeamPro proTeamPro);
+        void onCancel(
+                @Nullable ProTeamCategoryType proTeamCategoryType,
+                @Nullable ProTeamPro proTeamPro
+        );
     }
 }

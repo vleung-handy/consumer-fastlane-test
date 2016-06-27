@@ -70,7 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Inject
     NavigationManager mNavigationManager;
     @Inject
-    Bus mBus;
+    protected Bus mBus;
     private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
 

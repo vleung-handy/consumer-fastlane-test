@@ -8,7 +8,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 
@@ -21,6 +20,8 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
 {
     private ProTeamProViewModel mProTeamProViewModel;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
+    @Bind(R.id.pro_team_pro_card_pretext)
+    TextView mPretext;
     @Bind(R.id.pro_team_pro_card_pro_title)
     TextView mTitle;
     @Bind(R.id.pro_team_pro_card_pro_subtitle)
@@ -33,46 +34,70 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     ImageButton mXButton;
 
 
-    public ProTeamProHolder(View itemView, ProTeamProViewModel.OnInteractionListener onInteractionListener)
+    public ProTeamProHolder(
+            View itemView,
+            ProTeamProViewModel.OnInteractionListener onInteractionListener
+    )
     {
         super(itemView);
         mOnInteractionListener = onInteractionListener;
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindBookingCardViewModel(
-            @NonNull final ProTeamPro proTeamPro,
+    public void bindProTeamProViewModel(
+            @NonNull final ProTeamProViewModel proTeamProViewModel,
             @NonNull ProviderMatchPreference providerMatchPreference
     )
     {
-        mProTeamProViewModel = ProTeamProViewModel.from(proTeamPro);
+        mProTeamProViewModel = proTeamProViewModel;
         mTitle.setText(mProTeamProViewModel.getTitle());
         mSubtitle.setText(mProTeamProViewModel.getSubtitle());
+        mSubtitle.setVisibility(mProTeamProViewModel.isSubtitleVisible() ? View.VISIBLE : View.GONE);
         mFooter.setText(mProTeamProViewModel.getFooter());
+        mFooter.setVisibility(mProTeamProViewModel.isFooterVisible() ? View.VISIBLE : View.GONE);
+        mCheckbox.setChecked(mProTeamProViewModel.isChecked());
         switch (providerMatchPreference)
         {
             case PREFERRED:
                 mXButton.setVisibility(View.VISIBLE);
                 mCheckbox.setVisibility(View.GONE);
+                mPretext.setText(R.string.pro_team_pro_card_pretext_preferred);
                 break;
             case INDIFFERENT:
                 mXButton.setVisibility(View.GONE);
                 mCheckbox.setVisibility(View.VISIBLE);
+                mPretext.setText(R.string.pro_team_pro_card_pretext_indifferent);
                 break;
         }
+    }
+
+    public void showPretext()
+    {
+        mPretext.setVisibility(View.VISIBLE);
+    }
+
+    public void hidePretext()
+    {
+        mPretext.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.pro_team_pro_card_x)
     void onXClicked(View view)
     {
-        mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro());
+        if (mOnInteractionListener != null)
+        {
+            mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro());
+        }
     }
 
     @OnCheckedChanged(R.id.pro_team_pro_card_checkbox)
     void onCheckedChanged(boolean checked)
     {
-
-        mOnInteractionListener.onCheckedChanged(mProTeamProViewModel.getProTeamPro(), checked);
+        mProTeamProViewModel.setChecked(checked);
+        if (mOnInteractionListener != null)
+        {
+            mOnInteractionListener.onCheckedChanged(mProTeamProViewModel.getProTeamPro(), checked);
+        }
 
     }
 }

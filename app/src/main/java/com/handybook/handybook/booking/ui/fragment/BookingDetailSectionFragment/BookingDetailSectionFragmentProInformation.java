@@ -17,6 +17,9 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.proteam.event.logging.ProTeamOpenTapped;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
@@ -27,6 +30,8 @@ import java.util.List;
 public class BookingDetailSectionFragmentProInformation extends
         BookingDetailSectionFragment<BookingDetailSectionProInfoView>
 {
+    private Configuration mConfiguration;
+
     @Override
     protected int getFragmentResourceId()
     {
@@ -52,6 +57,35 @@ public class BookingDetailSectionFragmentProInformation extends
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (mConfiguration == null)
+        {
+            bus.post(new ConfigurationEvent.RequestConfiguration());
+        }
+    }
+
+    @Subscribe
+    public void onReceiveConfigurationSuccess(
+            final ConfigurationEvent.ReceiveConfigurationSuccess event
+    )
+    {
+        if (event != null)
+        {
+            mConfiguration = event.getConfiguration();
+            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
+            {
+                if (booking != null && userManager.getCurrentUser() != null)
+                {
+                    updateDisplay(booking, userManager.getCurrentUser());
+                }
+            }
+        }
+    }
+
+
+    @Override
     public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
@@ -70,8 +104,20 @@ public class BookingDetailSectionFragmentProInformation extends
         }
         else
         {
-            getSectionView().getEntryText().setVisibility(View.GONE);
-            getSectionView().noProView.setVisibility(View.VISIBLE);
+            //If the pro team stuff is enabled, show that, otherwise, fall back to showing
+            //just the text
+            if (mConfiguration != null && mConfiguration.isMyProTeamEnabled())
+            {
+                getSectionView().getEntryText().setVisibility(View.GONE);
+                getSectionView().getEntryTitle().setVisibility(View.GONE);
+                getSectionView().noProView.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                getSectionView().getEntryText().setVisibility(View.VISIBLE);
+                getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
+                getSectionView().getEntryText().setText(R.string.pro_assignment_pending);
+            }
         }
     }
 
@@ -84,6 +130,7 @@ public class BookingDetailSectionFragmentProInformation extends
             @Override
             public void onClick(final View v)
             {
+                bus.post(new ProTeamOpenTapped("booking_details"));
                 startActivity(new Intent(getActivity(), ProTeamActivity.class));
             }
         });

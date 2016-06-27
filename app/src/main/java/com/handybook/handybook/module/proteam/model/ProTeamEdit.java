@@ -2,6 +2,7 @@ package com.handybook.handybook.module.proteam.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,9 +11,9 @@ import java.util.List;
 public class ProTeamEdit
 {
     @SerializedName(ProTeamCategoryType.Constants.CLEANING)
-    private List<Integer> mCleaningIds;
+    private List<Integer> mCleaningIds = null;
     @SerializedName(ProTeamCategoryType.Constants.HANDYMEN)
-    private List<Integer> mHandymenIds;
+    private List<Integer> mHandymenIds = null;
     @SerializedName("match_preference")
     private ProviderMatchPreference mMatchPreference;
 
@@ -21,6 +22,27 @@ public class ProTeamEdit
         mMatchPreference = matchPreference;
     }
 
-    //FIXME: Add accessors memthods as needed while keeping this as closed as possible
 
+    public ProviderMatchPreference getMatchPreference()
+    {
+        return mMatchPreference;
+    }
+
+    public void addCleaningId(final int id)
+    {
+        if (mCleaningIds == null)
+        {
+            mCleaningIds = new ArrayList<>();
+        }
+        mCleaningIds.add(id);
+    }
+
+    public void addHandymenId(final int id)
+    {
+        if (mHandymenIds == null)
+        {
+            mHandymenIds = new ArrayList<>();
+        }
+        mHandymenIds.add(id);
+    }
 }
