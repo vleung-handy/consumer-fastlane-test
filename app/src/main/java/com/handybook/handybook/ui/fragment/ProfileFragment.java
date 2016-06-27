@@ -36,7 +36,6 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public final class ProfileFragment extends InjectedFragment {
@@ -50,7 +49,6 @@ public final class ProfileFragment extends InjectedFragment {
     private User user;
     private boolean loadedUserInfo;
     private boolean updatingInfo;
-    private Configuration mConfiguration;
 
     @Bind(R.id.profile_credits_text)
     TextView creditsText;
@@ -70,8 +68,6 @@ public final class ProfileFragment extends InjectedFragment {
     PasswordInputTextView newPasswordtext;
     @Bind(R.id.profile_cancel_cleaning_plan_button)
     ThinIconButton mCancelCleaningPlanButton;
-    @Bind(R.id.profile_pro_team_button)
-    ThinIconButton mProTeamButton;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -128,16 +124,6 @@ public final class ProfileFragment extends InjectedFragment {
     public final void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         updateButton.setOnClickListener(updateClicked);
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if (mConfiguration == null)
-        {
-            bus.post(new ConfigurationEvent.RequestConfiguration());
-        }
     }
 
     @Override
@@ -374,27 +360,4 @@ public final class ProfileFragment extends InjectedFragment {
             }
         }
     };
-
-    @Subscribe
-    public void onReceiveConfigurationSuccess(
-            final ConfigurationEvent.ReceiveConfigurationSuccess event
-    )
-    {
-        if (event != null)
-        {
-            mConfiguration = event.getConfiguration();
-            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
-            {
-                mProTeamButton.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    @OnClick(R.id.profile_pro_team_button)
-    void onProTeamClicked()
-    {
-        bus.post(new ProTeamOpenTapped("account"));
-        final Intent intent = new Intent(getContext(), ProTeamActivity.class);
-        getContext().startActivity(intent);
-    }
 }
