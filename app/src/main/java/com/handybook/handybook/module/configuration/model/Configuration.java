@@ -14,6 +14,9 @@ public class Configuration
     @SerializedName("use_cancel_recurring_web_view")
     private boolean mShouldUseCancelRecurringWebview;
 
+    @SerializedName("my_pro_team_enabled")
+    private boolean mMyProTeamEnabled;
+
     public boolean shouldUseHelpCenterWebView()
     {
         return mShouldUseHelpCenterWebView;
@@ -27,6 +30,11 @@ public class Configuration
     public boolean shouldUseCancelRecurringWebview()
     {
         return mShouldUseCancelRecurringWebview;
+    }
+
+    public boolean isMyProTeamEnabled()
+    {
+        return mMyProTeamEnabled;
     }
 
     public String toJson()

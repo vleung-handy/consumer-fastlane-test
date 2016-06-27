@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
 
@@ -24,6 +25,7 @@ public class DeepLinkIntentProvider
     //TODO: can split this out so that each module has a routes file
     //TODO: put in properties?
     private static final String DEEP_LINK_BASE_URL = "handybook://deep_link/";
+    //FIXME: If the handy:// is not used anywhere, let's remove it from here
     private static final String DEEP_LINK_NEW_BASE_URL = "handy://";
     private static final String DEEP_LINK_SIDE_MENU_URL = DEEP_LINK_BASE_URL + "side_menu/";
     private static UserManager mUserManager;
@@ -111,5 +113,12 @@ public class DeepLinkIntentProvider
     public static Intent getHelpIntent(Context context)
     {
         return new Intent(context, HelpActivity.class);
+    }
+
+    @DeepLink({DEEP_LINK_BASE_URL + "pro_team",
+            DEEP_LINK_NEW_BASE_URL + "pro_team"})
+    public static Intent getProTeamIntent(Context context)
+    {
+        return new Intent(context, ProTeamActivity.class);
     }
 }

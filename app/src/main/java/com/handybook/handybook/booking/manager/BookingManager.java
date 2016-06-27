@@ -119,13 +119,13 @@ public class BookingManager implements Observer
             @Override
             public void onSuccess(PrerateProInfo object)
             {
-                mBus.post(new BookingEvent.RequestPrerateProInfoSuccess(object));
+                mBus.post(new BookingEvent.ReceivePrerateProInfoSuccess(object));
             }
 
             @Override
             public void onError(DataManager.DataManagerError error)
             {
-                mBus.post(new BookingEvent.RequestPrerateProInfoError(error));
+                mBus.post(new BookingEvent.ReceivePrerateProInfoError(error));
             }
         });
     }
@@ -281,6 +281,7 @@ public class BookingManager implements Observer
                 event.getBookingId(),
                 event.getFinalRating(),
                 event.getTipAmountCents(),
+                event.getProviderMatchPreference(),
                 new DataManager.Callback<Void>()
                 {
                     @Override

@@ -16,7 +16,7 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/entry_text_top_margin"
         tools:text="XXXX this is where the entry text goes, it can be multiple lines XXX"
         />
 

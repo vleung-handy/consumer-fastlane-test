@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/pro_team_empty_view"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="@dimen/default_padding_double"
+    >
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <ImageView
+        android:id="@+id/pro_team_empty_view_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/cd_pro_team_empty_view_empty_heart_icon"
+        android:src="@drawable/ic_pro_team_empty_list_heart"
+        />
+
+    <TextView
+        android:id="@+id/pro_team_empty_view_title"
+        style="@style/TextView.Large.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:gravity="center_horizontal"
+        android:textColor="@color/handy_tertiary_gray"
+        tools:text="No pros on your team yet"
+        />
+
+    <TextView
+        style="@style/TextView"
+        android:id="@+id/pro_team_empty_view_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:gravity="center_horizontal"
+        android:textColor="@color/handy_tertiary_gray"
+        tools:text="As you meet pros, you'll be able to build your Pro Team. We'll always request these pros for future bookings."
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        />
+
+</LinearLayout>

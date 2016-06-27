@@ -42,6 +42,7 @@ import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 
@@ -273,6 +274,7 @@ public abstract class DataManager
             int bookingId,
             int rating,
             Integer tipAmount,
+            ProviderMatchPreference providerMatchPreference,
             Callback<Void> cb
     );
 
