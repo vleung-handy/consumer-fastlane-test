@@ -46,17 +46,14 @@ import java.util.Map;
  */
 public class PrerateProInfo implements Serializable
 {
-
-
     @SerializedName("placeholder_text")
     private String mPlaceHolderText;
 
     @SerializedName("home_cleaning")
     private boolean mIsCleaning;
 
-    //    TODO: JIA: make this private again
     @SerializedName("match_preference")
-    public ProviderMatchPreference mProviderMatchPreference;
+    private ProviderMatchPreference mProviderMatchPreference;
 
     /**
      * This is tricky as hell. Do a request on a browser to prerate_pro_info to see how the response looks like.
