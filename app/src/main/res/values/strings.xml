@@ -181,7 +181,7 @@
     <string name="edit">Edit</string>
     <string name="add">Add</string>
     <string name="opt">(optional)</string>
-    <string name="rating_tip_prompt">Leave a tip? (optional)</string>
+    <string name="rating_tip_prompt">Leave a tip?</string>
     <string name="leave_tip_prompt_formatted">Would you like to leave a tip for %1$s?</string>
     <string name="leave_a_tip">Leave a Tip</string>
     <string name="other_tip_amount">Other</string>
@@ -358,9 +358,15 @@
     <string name="toast_error_booking_flow_coupon_invalid">Sorry, that coupon is invalid for this booking. It will not be applied to your total.</string>
     <string name="snackbar_promo_code_restored">Promo code restored!</string>
     <string name="edit_preferences_apply_to_all_text">Apply to all subsequent\nbookings in the series</string>
-    <string name="rate_dialog_pro_match_header">Add them to your Pro Team?</string>
+    <string name="rate_dialog_pro_match_title_add">Would you like this pro again?</string>
+    <string name="rate_dialog_pro_match_title_remove">Take a break from this pro?</string>
+    <string name="rate_dialog_pro_match_title_block">Never match with this pro again?</string>
+    <string name="rate_dialog_pro_match_remove">Remove from Pro Team</string>
+    <string name="rate_dialog_pro_match_add">Add to My Pro Team</string>
+    <string name="rate_dialog_pro_match_block">Block %s</string>
     <string name="rate_dialog_pro_match_preference_footer_never">We\'ll never match you with this pro again.</string>
     <string name="rate_dialog_pro_match_preference_footer_preferred">Pro Team members are requested first.</string>
+    <string name="rate_dialog_pro_team_member">Pro Team member</string>
     <string name="pro_match_preference_never">No</string>
     <string name="pro_match_preference_indifferent">Not now</string>
     <string name="pro_match_preference_preferred">Yes</string>

@@ -13,9 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
@@ -54,8 +53,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ImageView mServiceIcon;
     @Bind(R.id.rate_dialog_title_text)
     TextView mTitleText;
-    @Bind(R.id.rate_dialog_message_text)
-    TextView mMessageText;
+    @Bind(R.id.rate_dialog_pro_team_member)
+    TextView mTextProTeamMember;
     @Bind(R.id.rate_dialog_submit_button)
     Button mSubmitButton;
     @Bind(R.id.rate_dialog_skip_button)
@@ -64,6 +63,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ProgressBar mSubmitProgress;
     @Bind(R.id.rate_dialog_ratings_layout)
     LinearLayout mRatingsLayout;
+
+    /**
+     * This layout also contains the pro team layout
+     */
     @Bind(R.id.rate_dialog_submit_button_layout)
     View mSubmitButtonLayout;
     @Bind(R.id.rate_dialog_star_1)
@@ -78,30 +81,18 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ImageView mStar5;
     @Bind(R.id.rate_dialog_tip_section)
     View mTipSection;
-    //Pro Match Section
-    @Bind(R.id.rate_dialog_pro_match_container)
-    ViewGroup mProMatchContainer;
-    @Bind(R.id.rate_dialog_pro_match_radiogroup)
-    RadioGroup mProMatchPreferences;
-    @Bind(R.id.rate_dialog_pro_match_header_txt)
-    TextView mProMatchHeaderText;
-    @Bind(R.id.rate_dialog_pro_match_footer_txt)
-    TextView mProMatchFooterText;
-    @Bind(R.id.rate_dialog_pro_match_preference_never)
-    RadioButton mProMatchRadioNever;
-    @Bind(R.id.rate_dialog_pro_match_preference_indifferent)
-    RadioButton mProMatchRadioIndifferent;
-    @Bind(R.id.rate_dialog_pro_match_preference_preferred)
-    RadioButton mProMatchRadioPreferred;
+    @Bind(R.id.rate_dialog_pro_team_section)
+    ViewGroup mProTeamSection;
 
     private Configuration mConfiguration;
+    private RateProTeamFragment mRateProTeamFragment;
+
     private int mBookingId;
     private int mRating;
     private String mProName;
     private PrerateProInfo mPrerateProInfo;
     private ArrayList<ImageView> mStars = new ArrayList<>();
     private View.OnClickListener mSubmitListener;
-    private ProviderMatchPreference mMatchPreference;
 
     {
         mSubmitListener = new View.OnClickListener()
@@ -114,12 +105,25 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 mSubmitButton.setText(null);
                 final int finalRating = mRating + 1;
                 final Integer tipAmountCents = getTipAmount();
-                mBus.post(new RatingDialogMatchPreferenceSubmitted(mMatchPreference.toString()));
+
+
+                ProviderMatchPreference matchPreference;
+
+                if (mRateProTeamFragment != null)
+                {
+                    matchPreference = mRateProTeamFragment.getNewProviderMatchPreference();
+                }
+                else
+                {
+                    matchPreference = mPrerateProInfo.getProviderMatchPreference();
+                }
+
+                mBus.post(new RatingDialogMatchPreferenceSubmitted(matchPreference.toString()));
                 mBus.post(new BookingEvent.RateBookingEvent(
                         mBookingId,
                         finalRating,
                         tipAmountCents,
-                        mMatchPreference
+                        matchPreference
                 ));
                 if (tipAmountCents != null)
                 {
@@ -206,9 +210,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         mProName = args.getString(EXTRA_PRO_NAME);
         initStars();
         setRating(mRating);
-        //mServiceIcon.setColorFilter(getResources().getColor(R.color.handy_green), PorterDuff.Mode.SRC_ATOP);
-        //we want to keep the spacing that is there.
-        mMessageText.setVisibility(View.INVISIBLE);
+
         if (TextUtils.isEmpty(mProName))
         {
             mTitleText.setText(getResources().getString(R.string.how_was_last_service));
@@ -255,7 +257,14 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     )
     {
         mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
-        initProTeamSection(mPrerateProInfo);
+
+        if (mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED) {
+            mTextProTeamMember.setVisibility(View.VISIBLE);
+        } else {
+            mTextProTeamMember.setVisibility(View.GONE);
+        }
+
+        initProTeamSection();
         hideProgress();
         enableInputs();
 
@@ -309,11 +318,15 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         if (event != null)
         {
             mConfiguration = event.getConfiguration();
-            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
+            if (isProTeamEnabled())
             {
-                mProMatchContainer.setVisibility(View.VISIBLE);
+                initProTeamSection();
             }
         }
+    }
+
+    private boolean isProTeamEnabled() {
+        return mConfiguration != null && mConfiguration.isMyProTeamEnabled();
     }
 
     @Subscribe
@@ -353,6 +366,24 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         if (mRating >= 0)
         {
             mSubmitButtonLayout.setVisibility(View.VISIBLE);
+
+            //this is zero indexed, so this means 4 stars or higher
+            if (!isProTeamEnabled() || (rating >= 3 && mPrerateProInfo != null &&
+                    mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED))
+            {
+                mProTeamSection.setVisibility(View.GONE);
+            }
+            else
+            {
+                mProTeamSection.setVisibility(View.VISIBLE);
+            }
+
+            //must make this call to update with new rating, even if the above sets the layout to
+            //GONE. This is needed for tracking previous rating.
+            if (mRateProTeamFragment != null)
+            {
+                mRateProTeamFragment.updateWithNewRating(mRating);
+            }
         }
     }
 
@@ -383,16 +414,16 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             {
                 for (int i = 0; i < mRatingsLayout.getChildCount(); i++)
                 {
-                    final ViewGroup starWrapperLayout = (ViewGroup) mRatingsLayout.getChildAt(i);
+                    final ImageView imageView = (ImageView) mRatingsLayout.getChildAt(i);
                     final Rect outRect = new Rect(
-                            starWrapperLayout.getLeft(),
-                            starWrapperLayout.getTop(),
-                            starWrapperLayout.getRight(),
-                            starWrapperLayout.getBottom()
+                            imageView.getLeft(),
+                            imageView.getTop(),
+                            imageView.getRight(),
+                            imageView.getBottom()
                     );
                     if (outRect.contains((int) event.getX(), (int) event.getY()))
                     {
-                        final int starsIndex = mStars.indexOf(starWrapperLayout.getChildAt(0));
+                        final int starsIndex = mStars.indexOf(imageView);
                         setRating(starsIndex);
                         break;
                     }
@@ -402,56 +433,19 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         });
     }
 
-    private void initProTeamSection(final PrerateProInfo prerateProInfo)
+    private void initProTeamSection()
     {
-        mProMatchPreferences.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(final RadioGroup group, final int checkedId)
+        if (isProTeamEnabled() && mPrerateProInfo != null) {
+            mRateProTeamFragment = (RateProTeamFragment) getChildFragmentManager().findFragmentByTag(RateProTeamFragment.class.getSimpleName());
+            if (mRateProTeamFragment == null)
             {
-                switch (checkedId)
-                {
-                    case R.id.rate_dialog_pro_match_preference_never:
-                        mMatchPreference = ProviderMatchPreference.NEVER;
-                        mProMatchFooterText.setText(
-                                R.string.rate_dialog_pro_match_preference_footer_never
-                        );
-                        mProMatchFooterText.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.rate_dialog_pro_match_preference_indifferent:
-                        mMatchPreference = ProviderMatchPreference.INDIFFERENT;
-                        mProMatchFooterText.setVisibility(View.GONE);
-                        break;
-                    case R.id.rate_dialog_pro_match_preference_preferred:
-                        mMatchPreference = ProviderMatchPreference.PREFERRED;
-                        mProMatchFooterText.setText(
-                                R.string.rate_dialog_pro_match_preference_footer_preferred
-                        );
-                        mProMatchFooterText.setVisibility(View.VISIBLE);
-                        break;
-                }
-
-                mBus.post(new RatingDialogMatchPreferenceChanged(mMatchPreference.toString()));
+                mRateProTeamFragment = RateProTeamFragment.newInstance(mRating, mProName, mPrerateProInfo.getProviderMatchPreference());
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.rate_pro_team_container, mRateProTeamFragment)
+                        .commit();
             }
-        });
-
-        ProviderMatchPreference preference = prerateProInfo.getProviderMatchPreference();
-        mMatchPreference = preference == null ? ProviderMatchPreference.INDIFFERENT : preference;
-        switch (mMatchPreference)
-        {
-            case NEVER:
-                mProMatchRadioNever.setChecked(true);
-                break;
-            case PREFERRED:
-                mProMatchRadioPreferred.setChecked(true);
-                break;
-            case INDIFFERENT:
-            default:
-                mProMatchRadioIndifferent.setChecked(true);
-                break;
         }
-
-        mBus.post(new RatingDialogMatchPreferencePresented(mMatchPreference.toString()));
     }
 
     private void showProgress()
