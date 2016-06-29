@@ -17,7 +17,9 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.view.ImageToggleButton;
 import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferencePresented;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOption;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOptionPresented;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOptionTapped;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.squareup.otto.Bus;
 
@@ -137,7 +139,28 @@ public class RateProTeamFragment extends Fragment
         mActiveRemoveDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rating_pro_remove_active);
         mInactiveRemoveDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rating_pro_remove_inactive);
 
-        mBus.post(new RatingDialogMatchPreferencePresented(mInitialMatchPreference.toString()));
+        mToggleButton.setListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                //Since this button is not part of the view pager, this can be either blocking a pro or adding a pro
+                String tag = mToggleButton.getTag();
+                RatingDialogProTeamOption.OptionType optionType;
+
+                if (tag.equals(TAG_ADD_PRO))
+                {
+                    optionType = RatingDialogProTeamOption.OptionType.ADD;
+                }
+                else
+                {
+                    optionType = RatingDialogProTeamOption.OptionType.REMOVE;
+                }
+
+                mBus.post(new RatingDialogProTeamOptionTapped(mToggleButton.isChecked(), optionType));
+            }
+        });
+
 
         resetLayout();
         return v;
@@ -222,6 +245,9 @@ public class RateProTeamFragment extends Fragment
      */
     private void resetSimpleViewForBlockPro()
     {
+        mBus.post(new RatingDialogProTeamOptionPresented(false,
+                RatingDialogProTeamOptionPresented.OptionType.BLOCK));
+
         mPager.setVisibility(View.GONE);
         mSimpleContainer.setVisibility(View.VISIBLE);
         resetViewForBlockPro(mToggleButton, mTextTitle);
@@ -245,6 +271,9 @@ public class RateProTeamFragment extends Fragment
      * Takes in views that are associated with the block pro layout, and sets it up accordingly
      */
     private void resetViewForRemovePro(ImageToggleButton button, TextView textView) {
+        mBus.post(new RatingDialogProTeamOptionPresented(false,
+                RatingDialogProTeamOptionPresented.OptionType.REMOVE));
+
         button.setChecked(false);
         textView.setText(mTitleRemovePro);
         button.setCheckedText(mButtonTextRemovePro);
@@ -261,6 +290,9 @@ public class RateProTeamFragment extends Fragment
      */
     private void resetSimpleViewForAddPro()
     {
+        mBus.post(new RatingDialogProTeamOptionPresented(false,
+                RatingDialogProTeamOptionPresented.OptionType.ADD));
+
         mPager.setVisibility(View.GONE);
         mSimpleContainer.setVisibility(View.VISIBLE);
         mTextTitle.setText(mTitleAddPro);
@@ -363,6 +395,15 @@ public class RateProTeamFragment extends Fragment
                     public void onClick(final View v)
                     {
                         animateToPage(1);
+
+                        //the user just clicked on the "remove" button
+                        mBus.post(new RatingDialogProTeamOptionTapped(true,
+                                RatingDialogProTeamOptionPresented.OptionType.REMOVE));
+
+                        //this sends the user to hte page that will show BLOCK
+                        mBus.post(new RatingDialogProTeamOptionPresented(false,
+                                RatingDialogProTeamOptionPresented.OptionType.BLOCK));
+
                     }
                 });
                 resetViewForRemovePro(button, textView);
@@ -373,6 +414,10 @@ public class RateProTeamFragment extends Fragment
                     public void onClick(final View v)
                     {
                         mCurrentClickedToggleButton = (ImageToggleButton) v;
+
+                        //the user just clicked on the "block" button. Record the click
+                        mBus.post(new RatingDialogProTeamOptionTapped(mCurrentClickedToggleButton.isChecked(),
+                                RatingDialogProTeamOptionPresented.OptionType.REMOVE));
                     }
                 });
                 resetViewForBlockPro(button, textView);

@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
@@ -26,9 +25,7 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferenceChanged;
-import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferencePresented;
-import com.handybook.handybook.module.proteam.event.logging.RatingDialogMatchPreferenceSubmitted;
+import com.handybook.handybook.module.proteam.event.logging.RatingDialogSubmitted;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
@@ -118,7 +115,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                     matchPreference = mPrerateProInfo.getProviderMatchPreference();
                 }
 
-                mBus.post(new RatingDialogMatchPreferenceSubmitted(matchPreference.toString()));
+                mBus.post(new RatingDialogSubmitted(finalRating, matchPreference.toString(), tipAmountCents));
                 mBus.post(new BookingEvent.RateBookingEvent(
                         mBookingId,
                         finalRating,
