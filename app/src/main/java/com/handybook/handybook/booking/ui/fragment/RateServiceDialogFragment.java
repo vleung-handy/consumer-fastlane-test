@@ -4,6 +4,7 @@ import android.accounts.NetworkErrorException;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -93,6 +95,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     RadioButton mProMatchRadioIndifferent;
     @Bind(R.id.rate_dialog_pro_match_preference_preferred)
     RadioButton mProMatchRadioPreferred;
+    @Bind(R.id.rate_dialog_scrollview)
+    ScrollView mScroll;
 
     private Configuration mConfiguration;
     private int mBookingId;
@@ -397,6 +401,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                         break;
                     }
                 }
+                scrollToBottom();
                 return true;
             }
         });
@@ -430,7 +435,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                         mProMatchFooterText.setVisibility(View.VISIBLE);
                         break;
                 }
-
+                scrollToBottom();
                 mBus.post(new RatingDialogMatchPreferenceChanged(mMatchPreference.toString()));
             }
         });
@@ -452,6 +457,18 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         }
 
         mBus.post(new RatingDialogMatchPreferencePresented(mMatchPreference.toString()));
+    }
+
+    private void scrollToBottom()
+    {
+        new Handler().postDelayed(new Runnable()
+        { // Scroll to the bottom
+            @Override
+            public void run()
+            {
+                mScroll.fullScroll(View.FOCUS_DOWN);
+            }
+        }, 100);
     }
 
     private void showProgress()
