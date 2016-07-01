@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,8 @@ import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.BindDrawable;
+import butterknife.BindString;
 import butterknife.ButterKnife;
 
 /**
@@ -34,12 +35,15 @@ import butterknife.ButterKnife;
 public class RateProTeamFragment extends Fragment
 {
 
-    private static final String RATING_VALUE = "rating-value";
-    private static final String MATCH_PREFERENCE = "match-preference";
-    private static final String PRO_NAME = "pro-name";
+    private static final String KEY_RATING_VALUE = "rating-value";
+    private static final String KEY_MATCH_PREFERENCE = "match-preference";
+    private static final String KEY_PRO_NAME = "pro-name";
+
     private static final String TAG_BLOCK_PRO = "block-pro";
     private static final String TAG_ADD_PRO = "add-pro";
+
     private static final int ANIMATION_WAIT_TIME_MS = 1000;
+    private static final int RATING_THRESHOLD = 3;
 
     @Bind(R.id.toggle_button)
     ImageToggleButton mToggleButton;
@@ -59,26 +63,42 @@ public class RateProTeamFragment extends Fragment
     @Bind(R.id.pager)
     SwipeableViewPager mPager;
 
-    private ProTeamPagerAdapter mAdapter;
+    @BindString(R.string.rate_dialog_pro_match_title_add)
+    String mTitleAddPro;
 
-    private String mTitleAddPro;
-    private String mButtonTextAddPro;
+    @BindString(R.string.rate_dialog_pro_match_add)
+    String mButtonTextAddPro;
 
-    private String mTitleBlockPro;
+    @BindString(R.string.rate_dialog_pro_match_title_block)
+    String mTitleBlockPro;
+
     private String mButtonTextBlockPro;
 
-    private String mTitleRemovePro;
-    private String mButtonTextRemovePro;
+    @BindString(R.string.rate_dialog_pro_match_title_remove)
+    String mTitleRemovePro;
 
-    private Drawable mActiveAddDrawable;
-    private Drawable mInactiveAddDrawable;
+    @BindString(R.string.rate_dialog_pro_match_remove)
+    String mButtonTextRemovePro;
 
-    private Drawable mActiveBlockDrawable;
-    private Drawable mInactiveBlockDrawable;
+    @BindDrawable(R.drawable.ic_rating_pro_heart_active)
+    Drawable mActiveAddDrawable;
 
-    private Drawable mActiveRemoveDrawable;
-    private Drawable mInactiveRemoveDrawable;
+    @BindDrawable(R.drawable.ic_rating_pro_heart_inactive)
+    Drawable mInactiveAddDrawable;
 
+    @BindDrawable(R.drawable.ic_rating_pro_ban_active)
+    Drawable mActiveBlockDrawable;
+
+    @BindDrawable(R.drawable.ic_rating_pro_ban_inactive)
+    Drawable mInactiveBlockDrawable;
+
+    @BindDrawable(R.drawable.ic_rating_pro_remove_active)
+    Drawable mActiveRemoveDrawable;
+
+    @BindDrawable(R.drawable.ic_rating_pro_remove_inactive)
+    Drawable mInactiveRemoveDrawable;
+
+    private ProTeamPagerAdapter mAdapter;
     private ProviderMatchPreference mInitialMatchPreference;
     private int mRating;
     private String mProName;
@@ -96,9 +116,9 @@ public class RateProTeamFragment extends Fragment
     {
         final RateProTeamFragment fragment = new RateProTeamFragment();
         final Bundle args = new Bundle();
-        args.putInt(RATING_VALUE, rating);
-        args.putString(PRO_NAME, proName);
-        args.putSerializable(MATCH_PREFERENCE, matchPreference);
+        args.putInt(KEY_RATING_VALUE, rating);
+        args.putString(KEY_PRO_NAME, proName);
+        args.putSerializable(KEY_MATCH_PREFERENCE, matchPreference);
         fragment.setArguments(args);
         return fragment;
     }
@@ -117,27 +137,15 @@ public class RateProTeamFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_rate_pro_team, container, false);
         ButterKnife.bind(this, v);
 
-        mInitialMatchPreference = (ProviderMatchPreference) getArguments().getSerializable(MATCH_PREFERENCE);
-        mRating = getArguments().getInt(RATING_VALUE);
-        mProName = getArguments().getString(PRO_NAME);
+        if (getArguments() != null)
+        {
+            mInitialMatchPreference = (ProviderMatchPreference) getArguments().getSerializable(KEY_MATCH_PREFERENCE);
+        }
 
-        mTitleAddPro = getResources().getString(R.string.rate_dialog_pro_match_title_add);
-        mButtonTextAddPro = getResources().getString(R.string.rate_dialog_pro_match_add);
+        mRating = getArguments().getInt(KEY_RATING_VALUE);
+        mProName = getArguments().getString(KEY_PRO_NAME);
 
-        mTitleBlockPro = getResources().getString(R.string.rate_dialog_pro_match_title_block);
         mButtonTextBlockPro = getResources().getString(R.string.rate_dialog_pro_match_block, mProName);
-
-        mTitleRemovePro = getResources().getString(R.string.rate_dialog_pro_match_title_remove);
-        mButtonTextRemovePro = getResources().getString(R.string.rate_dialog_pro_match_remove);
-
-        mActiveAddDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rating_pro_heart_active);
-        mInactiveAddDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rating_pro_heart_inactive);
-
-        mActiveBlockDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rating_pro_ban_active);
-        mInactiveBlockDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rating_pro_ban_inactive);
-
-        mActiveRemoveDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rating_pro_remove_active);
-        mInactiveRemoveDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rating_pro_remove_inactive);
 
         mToggleButton.setListener(new View.OnClickListener()
         {
@@ -167,7 +175,10 @@ public class RateProTeamFragment extends Fragment
     }
 
     /**
-     * This updates the layout with a new rating, and then sets up the layouts accordingly
+     * This updates the layout with a new rating, and then sets up the layouts accordingly.
+     * AFAIK, mRating is initialized to -1. Don't trust this comment verbatim, as the initialization
+     * code can be changed without ever updating these comments.
+     *
      * @param rating
      */
     public void updateWithNewRating(final int rating)
@@ -196,7 +207,8 @@ public class RateProTeamFragment extends Fragment
      * @return true if the rating changed from high to low, or vice versa
      */
     private boolean hasRatingLevelChanged(int newRating, int oldRating) {
-        return (newRating >= 3 && oldRating < 3) || (newRating < 3 && oldRating >= 3);
+        return (newRating >= RATING_THRESHOLD && oldRating < RATING_THRESHOLD)
+                || (newRating < RATING_THRESHOLD && oldRating >= RATING_THRESHOLD);
     }
 
     /**

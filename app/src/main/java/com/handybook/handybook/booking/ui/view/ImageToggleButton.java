@@ -58,9 +58,6 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
         mCheckedDrawable = a.getDrawable(R.styleable.ImageToggleButton_checked_icon);
         mUncheckedDrawable = a.getDrawable(R.styleable.ImageToggleButton_unchecked_icon);
 
-        setClipChildren(false);
-        setClipToPadding(false);
-
         mCheckedText = a.getString(R.styleable.ImageToggleButton_checked_text);
         mUncheckedText = a.getString(R.styleable.ImageToggleButton_unchecked_text);
 
@@ -78,6 +75,9 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     {
         inflate(getContext(), R.layout.image_toggle_button, this);
         ButterKnife.bind(this);
+
+        setClipChildren(false);
+        setClipToPadding(false);
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
@@ -106,16 +106,6 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     public void setUncheckedDrawable(final Drawable uncheckedDrawable)
     {
         mUncheckedDrawable = uncheckedDrawable;
-    }
-
-    public void setCheckedBgDrawable(final Drawable checkedBgDrawable)
-    {
-        mCheckedBgDrawable = checkedBgDrawable;
-    }
-
-    public void setUncheckedBgDrawable(final Drawable uncheckedBgDrawable)
-    {
-        mUncheckedBgDrawable = uncheckedBgDrawable;
     }
 
     public void setCheckedText(final String checkedText)
