@@ -79,6 +79,7 @@ public class ProTeamProListFragment extends InjectedFragment
     public ProTeamProListFragment()
     {
         // Required empty public constructor
+
     }
 
     public static ProTeamProListFragment newInstance(
