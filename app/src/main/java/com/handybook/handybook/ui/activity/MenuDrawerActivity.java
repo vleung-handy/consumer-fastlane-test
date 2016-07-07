@@ -240,11 +240,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     {
         super.onResume();
         mBus.register(mBusEventListener);
-
-        if (mConfiguration == null)
-        {
-            mBus.post(new ConfigurationEvent.RequestConfiguration());
-        }
+        mBus.post(new ConfigurationEvent.RequestConfiguration());
 
         refreshMenu();
     }
