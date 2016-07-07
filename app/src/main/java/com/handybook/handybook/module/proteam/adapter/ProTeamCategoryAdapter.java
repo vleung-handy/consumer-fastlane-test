@@ -19,6 +19,7 @@ import java.util.List;
 
 public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolder>
 {
+    
     private ProTeamCategoryType mProTeamCategoryType;
     private ProviderMatchPreference mProviderMatchPreference;
     private ProTeam mProTeam;
