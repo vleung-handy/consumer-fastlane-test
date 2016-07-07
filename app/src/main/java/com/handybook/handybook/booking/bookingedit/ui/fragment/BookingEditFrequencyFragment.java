@@ -18,8 +18,8 @@ import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.model.logging.LogEvent;
-import com.handybook.handybook.model.logging.booking.BookingQuoteShown;
+import com.handybook.handybook.logger.LogEvent;
+import com.handybook.handybook.logger.booking.BookingQuoteShown;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

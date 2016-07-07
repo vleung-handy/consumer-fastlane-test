@@ -15,8 +15,8 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.model.logging.LogEvent;
-import com.handybook.handybook.model.logging.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.LogEvent;
+import com.handybook.handybook.logger.booking.BookingDetailsLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

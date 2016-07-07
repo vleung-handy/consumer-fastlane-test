@@ -1,4 +1,4 @@
-package com.handybook.handybook.model.logging;
+package com.handybook.handybook.logger;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.core.BaseApplication;

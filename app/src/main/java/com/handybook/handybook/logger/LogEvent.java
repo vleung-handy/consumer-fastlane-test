@@ -1,4 +1,4 @@
-package com.handybook.handybook.model.logging;
+package com.handybook.handybook.logger;
 
 import com.handybook.handybook.event.HandyEvent;
 

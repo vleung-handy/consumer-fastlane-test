@@ -1,6 +1,6 @@
-package com.handybook.handybook.model.logging.user;
+package com.handybook.handybook.logger.user;
 
-import com.handybook.handybook.model.logging.EventLog;
+import com.handybook.handybook.logger.EventLog;
 
 public abstract class ReferralLog extends EventLog
 {

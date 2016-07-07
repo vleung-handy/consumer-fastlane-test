@@ -20,8 +20,8 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
-import com.handybook.handybook.model.logging.LogEvent;
-import com.handybook.handybook.model.logging.booking.BookingHighDemandLog;
+import com.handybook.handybook.logger.LogEvent;
+import com.handybook.handybook.logger.booking.BookingHighDemandLog;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
 

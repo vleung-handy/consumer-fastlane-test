@@ -1,7 +1,7 @@
-package com.handybook.handybook.model.logging.booking;
+package com.handybook.handybook.logger.booking;
 
 
-import com.handybook.handybook.model.logging.EventLog;
+import com.handybook.handybook.logger.EventLog;
 
 public class BookingExtrasLog extends EventLog
 {

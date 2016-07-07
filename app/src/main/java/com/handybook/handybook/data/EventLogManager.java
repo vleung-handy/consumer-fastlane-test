@@ -10,10 +10,10 @@ import com.google.gson.JsonObject;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.model.logging.Event;
-import com.handybook.handybook.model.logging.EventLogBundle;
-import com.handybook.handybook.model.logging.EventLogResponse;
-import com.handybook.handybook.model.logging.LogEvent;
+import com.handybook.handybook.logger.Event;
+import com.handybook.handybook.logger.EventLogBundle;
+import com.handybook.handybook.logger.EventLogResponse;
+import com.handybook.handybook.logger.LogEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

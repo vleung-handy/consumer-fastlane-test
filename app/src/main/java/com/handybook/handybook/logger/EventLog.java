@@ -1,4 +1,4 @@
-package com.handybook.handybook.model.logging;
+package com.handybook.handybook.logger;
 
 public abstract class EventLog
 {

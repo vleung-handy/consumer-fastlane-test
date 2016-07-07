@@ -20,10 +20,10 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.model.logging.LogEvent;
-import com.handybook.handybook.model.logging.booking.BookingCommentsLog;
-import com.handybook.handybook.model.logging.booking.BookingDetailsLog;
-import com.handybook.handybook.model.logging.booking.BookingRequestProLog;
+import com.handybook.handybook.logger.LogEvent;
+import com.handybook.handybook.logger.booking.BookingCommentsLog;
+import com.handybook.handybook.logger.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.booking.BookingRequestProLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
