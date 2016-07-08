@@ -10,14 +10,16 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
-import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.logger.LogEvent;
+import com.handybook.handybook.logger.booking.BookingQuoteShown;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -52,6 +54,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackFrequency();
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+
+        bus.post(new LogEvent.AddLogEvent(new BookingQuoteShown.BookingQuoteShownLog()));
     }
 
     @Override
@@ -63,8 +67,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = inflater
                 .inflate(R.layout.fragment_booking_edit_frequency, container, false);
@@ -83,7 +89,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         //get the current selected index of the options view
         final int selectedIndex = mOptionsView.getCurrentIndex();
-        if(selectedIndex < 0) return;
+        if (selectedIndex < 0) { return; }
 
         showUiBlockers();
 
@@ -149,7 +155,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditFrequencyViewModelSuccess(
-            BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess event)
+            BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess event
+    )
     {
         mBookingEditFrequencyViewModel = event.bookingEditFrequencyViewModel;
         createOptionsView();
@@ -158,7 +165,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditFrequencyViewModelError(
-            BookingEditEvent.ReceiveGetEditFrequencyViewModelError event)
+            BookingEditEvent.ReceiveGetEditFrequencyViewModelError event
+    )
     {
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid

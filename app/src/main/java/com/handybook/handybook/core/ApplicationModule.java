@@ -91,6 +91,7 @@ import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
+import com.handybook.handybook.data.EventLogManager;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.PropertiesReader;
@@ -526,6 +527,17 @@ public final class ApplicationModule
     )
     {
         return new ConfigurationManager(bus, prefsManager, dataManager);
+    }
+
+    @Provides
+    @Singleton
+    final EventLogManager provideLogEventsManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final PrefsManager prefsManager
+    )
+    {
+        return new EventLogManager(bus, dataManager, prefsManager);
     }
 
     @Provides

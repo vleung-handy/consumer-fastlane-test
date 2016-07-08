@@ -28,6 +28,7 @@ import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.RequiredModalsEventListener;
@@ -37,6 +38,9 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
+import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.logger.AppLog;
+import com.handybook.handybook.logger.LogEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
@@ -59,6 +63,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     protected boolean allowCallbacks;
     protected ProgressDialog mProgressDialog;
     protected Toast mToast;
+
+    @Inject
+    PrefsManager mPrefsManager;
     @Inject
     Mixpanel mMixpanel;
     @Inject
@@ -71,8 +78,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     NavigationManager mNavigationManager;
     @Inject
     protected Bus mBus;
+
     private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
+    private static final long APP_OPEN_TIMEOUT = 1800000; // 30 mins
+    private static long timeSinceLastLogSent = 0;
 
     //Public Properties
     public boolean getAllowCallbacks()
@@ -105,6 +115,26 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         mProgressDialog.setDelay(400);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(getString(R.string.loading));
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        if (timeSinceLastLogSent == 0 || (System.currentTimeMillis() - timeSinceLastLogSent >= APP_OPEN_TIMEOUT))
+        {
+            timeSinceLastLogSent = System.currentTimeMillis();
+            if (mPrefsManager.getBoolean(PrefsKey.APP_FIRST_LAUNCH, true))
+            {
+                mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(true)));
+                mPrefsManager.setBoolean(PrefsKey.APP_FIRST_LAUNCH, false);
+            }
+            else
+            {
+                mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(false)));
+            }
+        }
     }
 
     @Override

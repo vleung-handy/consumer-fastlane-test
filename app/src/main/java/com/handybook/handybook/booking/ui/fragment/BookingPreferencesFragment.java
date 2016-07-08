@@ -21,6 +21,8 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.logger.LogEvent;
+import com.handybook.handybook.logger.booking.BookingNoteToProLog;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
@@ -126,6 +128,8 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         mIsNewUser = getArguments().getBoolean(EXTRA_NEW_USER, false);
         mInstructions = getArguments().getParcelable(EXTRA_INSTRUCTIONS);
         mixpanel.trackEventAppTrackPreferences();
+
+        bus.post(new LogEvent.AddLogEvent(new BookingNoteToProLog.BookingNoteToProShownLog()));
     }
 
     @Override

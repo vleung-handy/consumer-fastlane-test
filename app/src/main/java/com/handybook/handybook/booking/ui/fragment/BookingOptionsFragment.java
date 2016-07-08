@@ -20,6 +20,10 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.logger.LogEvent;
+import com.handybook.handybook.logger.booking.BookingCommentsLog;
+import com.handybook.handybook.logger.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.booking.BookingRequestProLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,11 +59,13 @@ public class BookingOptionsFragment extends BookingFlowFragment
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    public static BookingOptionsFragment newInstance(final ArrayList<BookingOption> options,
-                                                     final int page,
-                                                     final HashMap<String, Boolean> childDisplayMap,
-                                                     final ArrayList<BookingOption> postOptions,
-                                                     final boolean isPost)
+    public static BookingOptionsFragment newInstance(
+            final ArrayList<BookingOption> options,
+            final int page,
+            final HashMap<String, Boolean> childDisplayMap,
+            final ArrayList<BookingOption> postOptions,
+            final boolean isPost
+    )
     {
         final BookingOptionsFragment fragment = new BookingOptionsFragment();
         final Bundle args = new Bundle();
@@ -88,11 +94,15 @@ public class BookingOptionsFragment extends BookingFlowFragment
         {
             optionIndexMap = new HashMap<>();
         }
+
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.BookingDetailsShownLog()));
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_options, container, false);
@@ -207,15 +217,19 @@ public class BookingOptionsFragment extends BookingFlowFragment
                                 }
 
                                 @Override
-                                public void onShowChildren(final BookingOptionsView view,
-                                                           final String[] items)
+                                public void onShowChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                )
                                 {
                                     handleChildViews(items, true);
                                 }
 
                                 @Override
-                                public void onHideChildren(final BookingOptionsView view,
-                                                           final String[] items)
+                                public void onHideChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                )
                                 {
                                     handleChildViews(items, false);
                                 }
@@ -234,15 +248,19 @@ public class BookingOptionsFragment extends BookingFlowFragment
                                 }
 
                                 @Override
-                                public void onShowChildren(final BookingOptionsView view,
-                                                           final String[] items)
+                                public void onShowChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                )
                                 {
                                     handleChildViews(items, true);
                                 }
 
                                 @Override
-                                public void onHideChildren(final BookingOptionsView view,
-                                                           final String[] items)
+                                public void onHideChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                )
                                 {
                                     handleChildViews(items, false);
                                 }
@@ -262,15 +280,19 @@ public class BookingOptionsFragment extends BookingFlowFragment
                                 }
 
                                 @Override
-                                public void onShowChildren(final BookingOptionsView view,
-                                                           final String[] items)
+                                public void onShowChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                )
                                 {
                                     handleChildViews(items, true);
                                 }
 
                                 @Override
-                                public void onHideChildren(final BookingOptionsView view,
-                                                           final String[] items)
+                                public void onHideChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                )
                                 {
                                     handleChildViews(items, false);
                                 }
@@ -313,8 +335,10 @@ public class BookingOptionsFragment extends BookingFlowFragment
             {
                 setToolbarTitle(getString(R.string.comments));
                 optionsLayout.setBackgroundColor(0);
-                ((BookingOptionsTextView)optionsView).enableSingleMode();
+                ((BookingOptionsTextView) optionsView).enableSingleMode();
                 mixpanel.trackEventAppTrackComments();
+
+                bus.post(new LogEvent.AddLogEvent(new BookingCommentsLog.BookingCommentsShownLog()));
             }
             else if (pageOptions.size() == 1 && option.getType().equals("option")
                     && option.getTitle().contains("professional"))
@@ -322,8 +346,10 @@ public class BookingOptionsFragment extends BookingFlowFragment
                 headerText.setText(option.getTitle());
                 headerText.setVisibility(View.VISIBLE);
                 setToolbarTitle(getString(R.string.request_pro));
-                ((BookingOptionsIndexView)optionsView).hideTitle();
+                ((BookingOptionsIndexView) optionsView).hideTitle();
                 mixpanel.trackEventAppTrackRequestPro();
+
+                bus.post(new LogEvent.AddLogEvent(new BookingRequestProLog.BookingRequestProShownLog()));
             }
 
             optionsLayout.addView(optionsView, pos++);
@@ -357,8 +383,10 @@ public class BookingOptionsFragment extends BookingFlowFragment
         }
     }
 
-    protected void handleOptionUpdate(final BookingOptionsView view,
-                                    final BookingOption option)
+    protected void handleOptionUpdate(
+            final BookingOptionsView view,
+            final BookingOption option
+    )
     {
         final HashMap<String, String> requestOptions
                 = bookingManager.getCurrentRequest().getOptions();

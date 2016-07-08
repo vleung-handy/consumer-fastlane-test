@@ -20,6 +20,8 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
+import com.handybook.handybook.logger.LogEvent;
+import com.handybook.handybook.logger.booking.BookingHighDemandLog;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
 
@@ -117,6 +119,8 @@ public final class PeakPricingFragment extends BookingFlowFragment
             mPeakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
                     savedInstanceState.getSerializable(STATE_PRICE_TABLE);
         }
+
+        bus.post(new LogEvent.AddLogEvent(new BookingHighDemandLog.BookingHighDemandShownLog()));
     }
 
     @Override
