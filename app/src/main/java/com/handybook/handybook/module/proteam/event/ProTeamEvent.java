@@ -12,6 +12,8 @@ import com.handybook.handybook.module.proteam.model.ProTeamEditWrapper;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 
+import java.util.ArrayList;
+
 public abstract class ProTeamEvent
 {
     public static class RequestProTeam extends HandyEvent.RequestEvent
@@ -56,7 +58,8 @@ public abstract class ProTeamEvent
         public RequestProTeamEdit(
                 @NonNull final ProviderMatchPreference providerMatchPreference,
                 @NonNull final ProTeamPro proTeamPro,
-                @NonNull final ProTeamCategoryType proTeamCategoryType
+                @NonNull final ProTeamCategoryType proTeamCategoryType,
+                @NonNull final Source source
         )
         {
             final ProTeamEdit proTeamEdit = new ProTeamEdit(providerMatchPreference);
@@ -69,13 +72,16 @@ public abstract class ProTeamEvent
                     proTeamEdit.addHandymenId(proTeamPro.getId());
                     break;
             }
-            mProTeamEditWrapper = new ProTeamEditWrapper(proTeamEdit);
+            final ArrayList<ProTeamEdit> proTeamEdits = new ArrayList<>();
+            proTeamEdits.add(proTeamEdit);
+            mProTeamEditWrapper = new ProTeamEditWrapper(proTeamEdits, source.toString());
         }
 
         public RequestProTeamEdit(
                 @NonNull final ProviderMatchPreference providerMatchPreference,
                 @Nullable final Iterable<ProTeamPro> cleaningPros,
-                @Nullable final Iterable<ProTeamPro> handymenPros
+                @Nullable final Iterable<ProTeamPro> handymenPros,
+                @NonNull final Source source
         )
         {
             final ProTeamEdit proTeamEdit = new ProTeamEdit(providerMatchPreference);
@@ -93,7 +99,9 @@ public abstract class ProTeamEvent
                     proTeamEdit.addHandymenId(ePro.getId());
                 }
             }
-            mProTeamEditWrapper = new ProTeamEditWrapper(proTeamEdit);
+            final ArrayList<ProTeamEdit> proTeamEdits = new ArrayList<>();
+            proTeamEdits.add(proTeamEdit);
+            mProTeamEditWrapper = new ProTeamEditWrapper(proTeamEdits, source.toString());
         }
 
         @Nullable
@@ -130,4 +138,22 @@ public abstract class ProTeamEvent
     }
 
 
+    public enum Source
+    {
+        PRO_MANAGEMENT("pro_management"),
+        BOOKING_FLOW("booking_flow");
+
+        private final String mSource;
+
+        Source(final String source)
+        {
+            mSource = source;
+        }
+
+        @Override
+        public String toString()
+        {
+            return mSource;
+        }
+    }
 }

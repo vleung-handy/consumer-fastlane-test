@@ -298,7 +298,8 @@ public class ProTeamFragment extends InjectedFragment implements
                 new ProTeamEvent.RequestProTeamEdit(
                         ProviderMatchPreference.PREFERRED,
                         mCleanersToAdd,
-                        mHandymenToAdd
+                        mHandymenToAdd,
+                        ProTeamEvent.Source.PRO_MANAGEMENT
                 )
         );
         showUiBlockers();
@@ -328,7 +329,8 @@ public class ProTeamFragment extends InjectedFragment implements
         bus.post(new ProTeamEvent.RequestProTeamEdit(
                 ProviderMatchPreference.INDIFFERENT,
                 proTeamPro,
-                proTeamCategoryType
+                proTeamCategoryType,
+                ProTeamEvent.Source.PRO_MANAGEMENT
         ));
         showUiBlockers();
     }
@@ -356,7 +358,8 @@ public class ProTeamFragment extends InjectedFragment implements
         bus.post(new ProTeamEvent.RequestProTeamEdit(
                 ProviderMatchPreference.NEVER,
                 proTeamPro,
-                proTeamCategoryType
+                proTeamCategoryType,
+                ProTeamEvent.Source.PRO_MANAGEMENT
         ));
         showUiBlockers();
     }
