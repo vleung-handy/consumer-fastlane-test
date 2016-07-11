@@ -64,8 +64,8 @@ public class ProTeamFragment extends InjectedFragment implements
     private TabAdapter mTabAdapter;
     private ProTeam mProTeam;
     private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
-    private HashSet<ProTeamPro> mHandymenToAdd = new HashSet<>();
     private HashSet<ProTeamPro> mCleanersToRemove = new HashSet<>();
+    private HashSet<ProTeamPro> mHandymenToAdd = new HashSet<>();
     private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
 
 
@@ -315,16 +315,17 @@ public class ProTeamFragment extends InjectedFragment implements
             @NonNull final boolean isChecked
     )
     {
-        showToast("check changed");
         if (isChecked)
         {
             switch (proTeamCategoryType)
             {
                 case CLEANING:
                     mCleanersToAdd.add(proTeamPro);
+                    mCleanersToRemove.remove(proTeamPro);
                     break;
                 case HANDYMEN:
                     mHandymenToAdd.add(proTeamPro);
+                    mHandymenToRemove.remove(proTeamPro);
                     break;
             }
             initButtons();
@@ -334,14 +335,23 @@ public class ProTeamFragment extends InjectedFragment implements
             switch (proTeamCategoryType)
             {
                 case CLEANING:
+                    mCleanersToRemove.add(proTeamPro);
                     mCleanersToAdd.remove(proTeamPro);
                     break;
                 case HANDYMEN:
+                    mHandymenToRemove.add(proTeamPro);
                     mHandymenToAdd.remove(proTeamPro);
                     break;
             }
             initButtons();
         }
+        showToast("check changed\n"
+                + mCleanersToAdd.toString() + "\n"
+                + mCleanersToRemove.toString() + "\n"
+                + mHandymenToAdd.toString() + "\n"
+                + mHandymenToRemove.toString() + "\n"
+        );
+
     }
 
 
