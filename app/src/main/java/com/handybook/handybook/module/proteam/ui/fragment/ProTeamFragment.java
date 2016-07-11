@@ -221,35 +221,6 @@ public class ProTeamFragment extends InjectedFragment implements
      * Implementation of RemoveProDialogFragment listener
      */
     @Override
-    public void onYesNotPermanent(
-            @Nullable ProTeamCategoryType proTeamCategoryType,
-            @Nullable ProTeamPro proTeamPro
-    )
-    {
-        if (proTeamCategoryType == null || proTeamPro == null)
-        {
-            Crashlytics.logException(new InvalidParameterException("PTF.onYesNotPermanent invalid"));
-            return;
-        }
-
-        bus.post(new ProTeamRemoveProviderSubmitted(
-                proTeamPro.getId(),
-                ProviderMatchPreference.INDIFFERENT.toString()
-        ));
-
-        bus.post(new ProTeamEvent.RequestProTeamEdit(
-                proTeamPro,
-                proTeamCategoryType,
-                ProviderMatchPreference.INDIFFERENT,
-                ProTeamEvent.Source.PRO_MANAGEMENT
-        ));
-        showUiBlockers();
-    }
-
-    /**
-     * Implementation of RemoveProDialogFragment listener
-     */
-    @Override
     public void onYesPermanent(
             @Nullable ProTeamCategoryType proTeamCategoryType,
             @Nullable ProTeamPro proTeamPro
@@ -345,13 +316,6 @@ public class ProTeamFragment extends InjectedFragment implements
             }
             initButtons();
         }
-        showToast("check changed\n"
-                + mCleanersToAdd.toString() + "\n"
-                + mCleanersToRemove.toString() + "\n"
-                + mHandymenToAdd.toString() + "\n"
-                + mHandymenToRemove.toString() + "\n"
-        );
-
     }
 
 
