@@ -4,7 +4,6 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,19 +19,14 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
-import com.handybook.handybook.module.proteam.event.logging.ProTeamAddProDisplayedServiceChanged;
-import com.handybook.handybook.module.proteam.event.logging.ProTeamAddProOpenTapped;
 import com.handybook.handybook.module.proteam.event.logging.ProTeamAddProSubmitted;
-import com.handybook.handybook.module.proteam.event.logging.ProTeamDisplayedServiceChanged;
 import com.handybook.handybook.module.proteam.event.logging.ProTeamHelpOpenTapped;
-import com.handybook.handybook.module.proteam.event.logging.ProTeamPageOpened;
 import com.handybook.handybook.module.proteam.event.logging.ProTeamRemoveProviderSubmitted;
 import com.handybook.handybook.module.proteam.event.logging.ProTeamRemoveProviderTapped;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamAddActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
@@ -56,7 +50,6 @@ public class ProTeamFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
-    private static final String KEY_MODE = "ProTeamFragment:Mode";
     private static final String KEY_PRO_TEAM = "ProTeamFragment:ProTeam";
 
     @Bind(R.id.pro_team_toolbar)
@@ -65,16 +58,15 @@ public class ProTeamFragment extends InjectedFragment implements
     HandyTabLayout mTabLayout;
     @Bind(R.id.pro_team_pager)
     ViewPager mViewPager;
-    @Bind(R.id.pro_team_fab_button)
-    FloatingActionButton mFab;
     @Bind(R.id.pro_team_bottom_button)
     Button mBottomButton;
 
-    private Mode mMode;
     private TabAdapter mTabAdapter;
     private ProTeam mProTeam;
     private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
     private HashSet<ProTeamPro> mHandymenToAdd = new HashSet<>();
+    private HashSet<ProTeamPro> mCleanersToRemove = new HashSet<>();
+    private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
 
 
     public ProTeamFragment()
@@ -82,16 +74,10 @@ public class ProTeamFragment extends InjectedFragment implements
         // Required empty public constructor
     }
 
-    public static ProTeamFragment newInstance(@NonNull Mode mode)
-    {
-        return newInstance(mode, null);
-    }
-
-    public static ProTeamFragment newInstance(@NonNull Mode mode, @Nullable ProTeam proTeam)
+    public static ProTeamFragment newInstance(@Nullable ProTeam proTeam)
     {
         ProTeamFragment fragment = new ProTeamFragment();
         final Bundle arguments = new Bundle();
-        arguments.putInt(KEY_MODE, mode.ordinal());
         arguments.putParcelable(KEY_PRO_TEAM, proTeam);
         fragment.setArguments(arguments);
         return fragment;
@@ -104,7 +90,6 @@ public class ProTeamFragment extends InjectedFragment implements
         final Bundle arguments = getArguments();
         if (arguments != null)
         {
-            mMode = Mode.values()[arguments.getInt(KEY_MODE, Mode.PRO_MANAGE.ordinal())];
             mProTeam = arguments.getParcelable(KEY_PRO_TEAM);
         }
     }
@@ -120,25 +105,8 @@ public class ProTeamFragment extends InjectedFragment implements
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.setupHamburgerMenu(mToolbar);
-        setMode(mMode);
         initialize();
         return view;
-    }
-
-    private void setMode(@NonNull final Mode mode)
-    {
-        mMode = mode;
-        if (mTabAdapter == null)
-        {
-            initialize();
-        }
-        else
-        {
-            mTabAdapter.setProviderMatchPreference(mMode.getProviderMatchPreference());
-            initButtons();
-            initTitle();
-        }
-
     }
 
     private void initialize()
@@ -146,66 +114,29 @@ public class ProTeamFragment extends InjectedFragment implements
         mTabAdapter = new TabAdapter(
                 getChildFragmentManager(),
                 mProTeam,
-                this,
-                mMode.getProviderMatchPreference()
+                this
+
         );
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
-        {
-            @Override
-            public void onPageSelected(final int position)
-            {
-                String selectedService;
-                if (position == 0)
-                {
-                    selectedService = ProTeamCategoryType.CLEANING.toString();
-                }
-                else
-                {
-                    selectedService = ProTeamCategoryType.HANDYMEN.toString();
-                }
-
-                if (mMode == Mode.PRO_ADD)
-                {
-                    bus.post(new ProTeamAddProDisplayedServiceChanged(selectedService));
-                }
-                else
-                {
-                    bus.post(new ProTeamDisplayedServiceChanged(selectedService));
-                }
-            }
-        });
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
-        initTitle();
+        setToolbarTitle(getString(R.string.title_activity_pro_team));
         initButtons();
     }
 
-    private void initTitle()
-    {
-        switch (mMode)
-        {
-            case PRO_MANAGE:
-                setToolbarTitle(getString(R.string.title_activity_pro_team));
-                break;
-            case PRO_ADD:
-                setToolbarTitle(getString(R.string.title_activity_pro_team_add));
-                break;
-        }
-    }
 
     private void initButtons()
     {
-        mFab.setVisibility(mMode == Mode.PRO_MANAGE ? View.VISIBLE : View.GONE);
-        final boolean haveProsToAdd = !mCleanersToAdd.isEmpty() || !mHandymenToAdd.isEmpty();
-        final String countString = !haveProsToAdd ?
-                ""
-                : Integer.toString(mCleanersToAdd.size() + mHandymenToAdd.size()).concat(" ");
-        final String text = getString(R.string.pro_team_button_add_pros_template, countString);
-        mBottomButton.setText(text);
-        mBottomButton.setVisibility(mMode == Mode.PRO_ADD && haveProsToAdd ?
-                View.VISIBLE : View.GONE);
+        mBottomButton.setVisibility(
+                !mCleanersToAdd.isEmpty()
+                        || !mCleanersToRemove.isEmpty()
+                        || !mHandymenToAdd.isEmpty()
+                        || !mHandymenToRemove.isEmpty() ?
+                        View.VISIBLE
+                        : View.INVISIBLE
+
+        );
     }
 
     @Override
@@ -233,25 +164,9 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
-        mCleanersToAdd.clear();
-        mHandymenToAdd.clear();
+        clearEditHolders();
         initButtons();
         removeUiBlockers();
-
-        if (mMode == Mode.PRO_ADD)
-        {
-            bus.post(new ProTeamPageOpened(
-                    mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT),
-                    mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.INDIFFERENT)
-            ));
-        }
-        else
-        {
-            bus.post(new ProTeamPageOpened(
-                    mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
-                    mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.PREFERRED)
-            ));
-        }
     }
 
     @Subscribe
@@ -265,28 +180,23 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         mProTeam = event.getProTeam();
         mTabAdapter.setProTeam(mProTeam);
-        mCleanersToAdd.clear();
-        mHandymenToAdd.clear();
+        clearEditHolders();
         initButtons();
         removeUiBlockers();
-        if (mMode == Mode.PRO_ADD)
-        {
-            getActivity().finish();
-        }
+    }
+
+    private void clearEditHolders()
+    {
+        mCleanersToAdd.clear();
+        mCleanersToRemove.clear();
+        mHandymenToAdd.clear();
+        mHandymenToRemove.clear();
     }
 
     @Subscribe
     public void onReceiveProTeamEditError(final ProTeamEvent.ReceiveProTeamEditError event)
     {
         removeUiBlockers();
-    }
-
-    @OnClick(R.id.pro_team_fab_button)
-    void onFabClicked()
-    {
-        //setMode(Mode.PRO_ADD);
-        bus.post(new ProTeamAddProOpenTapped());
-        startActivity(ProTeamAddActivity.newIntent(getContext(), mProTeam));
     }
 
     @OnClick(R.id.pro_team_bottom_button)
@@ -296,9 +206,10 @@ public class ProTeamFragment extends InjectedFragment implements
 
         bus.post(
                 new ProTeamEvent.RequestProTeamEdit(
-                        ProviderMatchPreference.PREFERRED,
                         mCleanersToAdd,
                         mHandymenToAdd,
+                        mCleanersToRemove,
+                        mHandymenToRemove,
                         ProTeamEvent.Source.PRO_MANAGEMENT
                 )
         );
@@ -327,9 +238,9 @@ public class ProTeamFragment extends InjectedFragment implements
         ));
 
         bus.post(new ProTeamEvent.RequestProTeamEdit(
-                ProviderMatchPreference.INDIFFERENT,
                 proTeamPro,
                 proTeamCategoryType,
+                ProviderMatchPreference.INDIFFERENT,
                 ProTeamEvent.Source.PRO_MANAGEMENT
         ));
         showUiBlockers();
@@ -356,9 +267,9 @@ public class ProTeamFragment extends InjectedFragment implements
         ));
 
         bus.post(new ProTeamEvent.RequestProTeamEdit(
-                ProviderMatchPreference.NEVER,
                 proTeamPro,
                 proTeamCategoryType,
+                ProviderMatchPreference.NEVER,
                 ProTeamEvent.Source.PRO_MANAGEMENT
         ));
         showUiBlockers();
@@ -375,6 +286,9 @@ public class ProTeamFragment extends InjectedFragment implements
     {
     }
 
+    /**
+     * Implementation of ProTeamProListFragment.OnProInteraction listener
+     */
     @Override
     public void onProRemovalRequested(
             final ProTeamCategoryType proTeamCategoryType,
@@ -401,6 +315,7 @@ public class ProTeamFragment extends InjectedFragment implements
             @NonNull final boolean isChecked
     )
     {
+        showToast("check changed");
         if (isChecked)
         {
             switch (proTeamCategoryType)
@@ -446,22 +361,19 @@ public class ProTeamFragment extends InjectedFragment implements
         TabAdapter(
                 @NonNull final FragmentManager fm,
                 @Nullable ProTeam proTeam,
-                @Nullable ProTeamProListFragment.OnProInteraction listener,
-                @NonNull final ProviderMatchPreference providerMatchPreference
+                @Nullable ProTeamProListFragment.OnProInteraction listener
         )
         {
             super(fm);
             mTitles.add(ProTeamCategoryType.CLEANING.toString());
             final ProTeamProListFragment cleaning = ProTeamProListFragment.newInstance(
                     proTeam,
-                    ProTeamCategoryType.CLEANING,
-                    providerMatchPreference
+                    ProTeamCategoryType.CLEANING
             );
             mTitles.add(ProTeamCategoryType.HANDYMEN.toString());
             final ProTeamProListFragment handymen = ProTeamProListFragment.newInstance(
                     proTeam,
-                    ProTeamCategoryType.HANDYMEN,
-                    providerMatchPreference
+                    ProTeamCategoryType.HANDYMEN
             );
             cleaning.setOnProInteraction(listener);
             handymen.setOnProInteraction(listener);
@@ -493,29 +405,5 @@ public class ProTeamFragment extends InjectedFragment implements
             getItem(1).setProTeam(proTeam);
         }
 
-        void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference)
-        {
-            getItem(0).setProviderMatchPreference(providerMatchPreference);
-            getItem(1).setProviderMatchPreference(providerMatchPreference);
-        }
-    }
-
-
-    public enum Mode
-    {
-        PRO_MANAGE(ProviderMatchPreference.PREFERRED),
-        PRO_ADD(ProviderMatchPreference.INDIFFERENT);
-
-        private final ProviderMatchPreference mProviderMatchPreference;
-
-        Mode(final ProviderMatchPreference providerMatchPreference)
-        {
-            mProviderMatchPreference = providerMatchPreference;
-        }
-
-        public ProviderMatchPreference getProviderMatchPreference()
-        {
-            return mProviderMatchPreference;
-        }
     }
 }

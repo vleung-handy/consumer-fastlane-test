@@ -42,9 +42,7 @@
             android:background="@drawable/bg_checkbox_heart_red"
             android:button="@null"
             android:saveEnabled="true"
-            android:visibility="gone"
             tools:checked="true"
-            tools:visibility="visible"
             />
 
         <LinearLayout
@@ -94,8 +92,6 @@
             android:contentDescription="@string/cd_pro_team_pro_card_remove_pro_icon"
             android:padding="@dimen/default_padding"
             android:src="@drawable/ic_pro_team_x_small"
-            android:visibility="gone"
-            tools:visibility="visible"
             />
     </LinearLayout>
 

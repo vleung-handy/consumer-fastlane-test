@@ -113,6 +113,11 @@ public class ProTeam implements Parcelable
         return null;
     }
 
+    public boolean isEmpty()
+    {
+        return mCleaning.isEmpty() && mHandymen.isEmpty();
+    }
+
 
     public static class ProTeamCategory implements Parcelable
     {
@@ -194,6 +199,19 @@ public class ProTeam implements Parcelable
             dest.writeList(mPreferred);
             dest.writeList(mIndifferent);
             dest.writeList(mNever);
+        }
+
+        public boolean isEmpty()
+        {
+            if (mIndifferent != null && !mIndifferent.isEmpty())
+            {
+                return false;
+            }
+            if (mPreferred != null && !mPreferred.isEmpty())
+            {
+                return false;
+            }
+            return true;
         }
     }
 

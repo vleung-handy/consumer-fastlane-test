@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.proteam.holder;
 
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
@@ -8,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 
 import butterknife.Bind;
@@ -45,8 +45,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     }
 
     public void bindProTeamProViewModel(
-            @NonNull final ProTeamProViewModel proTeamProViewModel,
-            @NonNull ProviderMatchPreference providerMatchPreference
+            @NonNull final ProTeamProViewModel proTeamProViewModel
     )
     {
         mProTeamProViewModel = proTeamProViewModel;
@@ -56,19 +55,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         mFooter.setText(mProTeamProViewModel.getFooter());
         mFooter.setVisibility(mProTeamProViewModel.isFooterVisible() ? View.VISIBLE : View.GONE);
         mCheckbox.setChecked(mProTeamProViewModel.isChecked());
-        switch (providerMatchPreference)
-        {
-            case PREFERRED:
-                mXButton.setVisibility(View.VISIBLE);
-                mCheckbox.setVisibility(View.GONE);
-                mPretext.setText(R.string.pro_team_pro_card_pretext_preferred);
-                break;
-            case INDIFFERENT:
-                mXButton.setVisibility(View.GONE);
-                mCheckbox.setVisibility(View.VISIBLE);
-                mPretext.setText(R.string.pro_team_pro_card_pretext_indifferent);
-                break;
-        }
+        initTextColors();
     }
 
     public void showPretext()
@@ -82,7 +69,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     }
 
     @OnClick(R.id.pro_team_pro_card_x)
-    void onXClicked(View view)
+    void onXClicked()
     {
         if (mOnInteractionListener != null)
         {
@@ -94,10 +81,33 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     void onCheckedChanged(boolean checked)
     {
         mProTeamProViewModel.setChecked(checked);
+        initTextColors();
         if (mOnInteractionListener != null)
         {
             mOnInteractionListener.onCheckedChanged(mProTeamProViewModel.getProTeamPro(), checked);
         }
 
+    }
+
+    private void initTextColors()
+    {
+        if (mProTeamProViewModel.isChecked())
+        {
+            final int blackColor = ContextCompat.getColor(
+                    mTitle.getContext(),
+                    R.color.handy_text_black
+            );
+            mTitle.setTextColor(blackColor);
+            mSubtitle.setTextColor(blackColor);
+        }
+        else
+        {
+            final int greyColor = ContextCompat.getColor(
+                    mTitle.getContext(),
+                    R.color.handy_text_gray
+            );
+            mTitle.setTextColor(greyColor);
+            mSubtitle.setTextColor(greyColor);
+        }
     }
 }

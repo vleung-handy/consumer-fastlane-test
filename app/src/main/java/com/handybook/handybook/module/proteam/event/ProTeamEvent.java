@@ -49,65 +49,80 @@ public abstract class ProTeamEvent
 
     public static class RequestProTeamEdit extends HandyEvent.RequestEvent
     {
-        private ProTeamEditWrapper mProTeamEditWrapper;
+        private ArrayList<ProTeamEdit> mProTeamEdits;
+        private Source mSource;
 
         private RequestProTeamEdit()
         {
         }
 
         public RequestProTeamEdit(
-                @NonNull final ProviderMatchPreference providerMatchPreference,
                 @NonNull final ProTeamPro proTeamPro,
                 @NonNull final ProTeamCategoryType proTeamCategoryType,
+                @NonNull final ProviderMatchPreference providerMatchPreference,
                 @NonNull final Source source
         )
         {
+            mProTeamEdits = new ArrayList<>();
+            mSource = source;
             final ProTeamEdit proTeamEdit = new ProTeamEdit(providerMatchPreference);
-            switch (proTeamCategoryType)
-            {
-                case CLEANING:
-                    proTeamEdit.addCleaningId(proTeamPro.getId());
-                    break;
-                case HANDYMEN:
-                    proTeamEdit.addHandymenId(proTeamPro.getId());
-                    break;
-            }
-            final ArrayList<ProTeamEdit> proTeamEdits = new ArrayList<>();
-            proTeamEdits.add(proTeamEdit);
-            mProTeamEditWrapper = new ProTeamEditWrapper(proTeamEdits, source.toString());
+            proTeamEdit.addId(proTeamPro.getId(), proTeamCategoryType);
+            mProTeamEdits.add(proTeamEdit);
         }
 
         public RequestProTeamEdit(
-                @NonNull final ProviderMatchPreference providerMatchPreference,
-                @Nullable final Iterable<ProTeamPro> cleaningPros,
-                @Nullable final Iterable<ProTeamPro> handymenPros,
+                @Nullable final Iterable<ProTeamPro> cleaningProsToAdd,
+                @Nullable final Iterable<ProTeamPro> handymenProsToAdd,
+                @Nullable final Iterable<ProTeamPro> cleaningProsToRemove,
+                @Nullable final Iterable<ProTeamPro> handymenProsToRemove,
                 @NonNull final Source source
         )
         {
-            final ProTeamEdit proTeamEdit = new ProTeamEdit(providerMatchPreference);
-            if (cleaningPros != null)
-            {
-                for (ProTeamPro ePro : cleaningPros)
-                {
-                    proTeamEdit.addCleaningId(ePro.getId());
-                }
-            }
-            if (handymenPros != null)
-            {
-                for (ProTeamPro ePro : handymenPros)
-                {
-                    proTeamEdit.addHandymenId(ePro.getId());
-                }
-            }
-            final ArrayList<ProTeamEdit> proTeamEdits = new ArrayList<>();
-            proTeamEdits.add(proTeamEdit);
-            mProTeamEditWrapper = new ProTeamEditWrapper(proTeamEdits, source.toString());
+            mProTeamEdits = new ArrayList<>();
+            mSource = source;
+            addProTeamEdit(
+                    cleaningProsToAdd,
+                    ProTeamCategoryType.CLEANING,
+                    ProviderMatchPreference.PREFERRED
+            );
+            addProTeamEdit(
+                    cleaningProsToRemove,
+                    ProTeamCategoryType.CLEANING,
+                    ProviderMatchPreference.INDIFFERENT
+            );
+            addProTeamEdit(
+                    handymenProsToAdd,
+                    ProTeamCategoryType.HANDYMEN,
+                    ProviderMatchPreference.PREFERRED
+            );
+            addProTeamEdit(
+                    handymenProsToRemove,
+                    ProTeamCategoryType.HANDYMEN,
+                    ProviderMatchPreference.INDIFFERENT
+            );
         }
 
         @Nullable
         public ProTeamEditWrapper getProTeamEditWrapper()
         {
-            return mProTeamEditWrapper;
+            return new ProTeamEditWrapper(mProTeamEdits, mSource.toString());
+        }
+
+        private void addProTeamEdit(
+                @Nullable final Iterable<ProTeamPro> proTeamPros,
+                @NonNull final ProTeamCategoryType proTeamCategoryType,
+                @NonNull final ProviderMatchPreference providerMatchPreference
+        )
+        {
+            final ProTeamEdit proTeamEdit = new ProTeamEdit(providerMatchPreference);
+            if (proTeamPros != null)
+            {
+                for (ProTeamPro ePro : proTeamPros)
+                {
+                    proTeamEdit.addId(ePro.getId(), proTeamCategoryType);
+                }
+                mProTeamEdits.add(proTeamEdit);
+            }
         }
     }
 

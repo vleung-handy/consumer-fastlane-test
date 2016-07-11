@@ -220,18 +220,6 @@
                 android:value="com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity"
                 />
         </activity>
-        <activity
-            android:name=".module.proteam.ui.activity.ProTeamAddActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_pro_team_add"
-            android:parentActivityName=".module.proteam.ui.activity.ProTeamActivity"
-            android:theme="@style/Theme.Handy"
-            >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity"
-                />
-        </activity>
 
         <activity
             android:name=".ui.activity.BlockingActivity"

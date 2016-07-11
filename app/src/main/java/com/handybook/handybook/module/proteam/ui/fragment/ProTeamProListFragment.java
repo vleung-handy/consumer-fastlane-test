@@ -17,7 +17,6 @@ import com.handybook.handybook.module.proteam.adapter.ProTeamCategoryAdapter;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
@@ -34,7 +33,6 @@ public class ProTeamProListFragment extends InjectedFragment
 {
     private static final String KEY_PROTEAM = "ProTeamProList:ProTeam";
     private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeamProList:CategoryType";
-    private static final String KEY_PROVIDER_MATCH_PREFERENCE = "ProTeamProList:DisplayMode";
 
     @Bind(R.id.pro_team_pro_list_recycler_view)
     EmptiableRecyclerView mRecyclerView;
@@ -49,7 +47,6 @@ public class ProTeamProListFragment extends InjectedFragment
     private ProTeamCategoryType mProTeamCategoryType;
     private OnProInteraction mOnProInteraction;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
-    private ProviderMatchPreference mProviderMatchPreference;
 
     {
         mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
@@ -84,15 +81,13 @@ public class ProTeamProListFragment extends InjectedFragment
 
     public static ProTeamProListFragment newInstance(
             @Nullable ProTeam proTeam,
-            @NonNull ProTeamCategoryType proTeamCategoryType,
-            @NonNull ProviderMatchPreference providerMatchPreference
+            @NonNull ProTeamCategoryType proTeamCategoryType
     )
     {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_PROTEAM, proTeam);
         bundle.putParcelable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
-        bundle.putInt(KEY_PROVIDER_MATCH_PREFERENCE, providerMatchPreference.ordinal());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -111,8 +106,6 @@ public class ProTeamProListFragment extends InjectedFragment
         {
             mProteam = arguments.getParcelable(KEY_PROTEAM);
             mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
-            mProviderMatchPreference = ProviderMatchPreference
-                    .values()[arguments.getInt(KEY_PROVIDER_MATCH_PREFERENCE)];
         }
         initialize();
         return view;
@@ -135,15 +128,10 @@ public class ProTeamProListFragment extends InjectedFragment
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
         }
-        else if (mProviderMatchPreference == ProviderMatchPreference.PREFERRED)
-        {
-            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_has_available);
-            mEmptyViewText.setText(R.string.pro_team_empty_card_text_has_available);
-        }
         else
         {
-            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_no_available);
-            mEmptyViewText.setText(R.string.pro_team_empty_card_text_no_available);
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text);
         }
     }
 
@@ -162,7 +150,6 @@ public class ProTeamProListFragment extends InjectedFragment
         RecyclerView.Adapter proCardCardAdapter = new ProTeamCategoryAdapter(
                 mProteam,
                 mProTeamCategoryType,
-                mProviderMatchPreference,
                 mOnInteractionListener
         );
         mRecyclerView.setAdapter(proCardCardAdapter);
@@ -173,12 +160,6 @@ public class ProTeamProListFragment extends InjectedFragment
     public void setProTeam(final ProTeam proTeam)
     {
         mProteam = proTeam;
-        initialize();
-    }
-
-    public void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference)
-    {
-        mProviderMatchPreference = providerMatchPreference;
         initialize();
     }
 

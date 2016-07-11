@@ -34,16 +34,16 @@
                 app:titleTextAppearance="@style/Toolbar.TitleText"
                 >
 
-                    <ImageButton
-                        android:id="@+id/pro_team_toolbar_questionmark"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/cd_pro_team_toolbar_questionmark"
-                        android:padding="@dimen/default_padding"
-                        android:src="@drawable/ic_pro_team_toolbar_questionmark"
-                        />
+                <ImageButton
+                    android:id="@+id/pro_team_toolbar_questionmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/cd_pro_team_toolbar_questionmark"
+                    android:padding="@dimen/default_padding"
+                    android:src="@drawable/ic_pro_team_toolbar_questionmark"
+                    />
             </android.support.v7.widget.Toolbar>
 
             <com.handybook.handybook.ui.view.HandyTabLayout
@@ -67,32 +67,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-                >
+            >
         </android.support.v4.view.ViewPager>
+
         <Button
             android:id="@+id/pro_team_bottom_button"
             style="@style/Button.Green"
             android:clickable="false"
-            android:visibility="gone"
-            tools:text="Add 13 pros"
-            tools:visibility="visible"
+            android:text="@string/save"
             />
 
     </LinearLayout>
 
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/pro_team_fab_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/default_margin"
-        android:src="@drawable/ic_plus_white"
-        android:tag="fab"
-        android:visibility="gone"
-        app:backgroundTint="@color/handy_blue"
-        app:fabSize="normal"
-        tools:visibility="visible"
-        />
 
 </android.support.design.widget.CoordinatorLayout>
