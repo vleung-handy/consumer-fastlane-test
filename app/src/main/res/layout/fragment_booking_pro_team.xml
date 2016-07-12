@@ -1,58 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/handy_bg"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    app:orientation="vertical"
+    tools:context=".module.proteam.ui.activity.ProTeamActivity"
     >
 
-    <Button
-        android:id="@+id/next_button"
-        android:text="@string/next"
-        style="@style/Button.Green"
-        />
-
-    <include layout="@layout/toolbar"
-        />
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_above="@id/next_button"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
         >
 
-        <RelativeLayout
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:theme="@style/Theme.Handy.AppBarOverlay"
             >
 
-            <FrameLayout
-                android:id="@+id/info_header_layout"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/booking_pro_team_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                style="@style/ContentLayout"
-                />
-
-            <LinearLayout
-                android:id="@+id/options_layout"
-                android:layout_below="@id/info_header_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="vertical"
-                android:background="@color/white"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="@dimen/med_elevation"
+                android:theme="@style/Theme.Handy.AppBarOverlay"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:navigationIcon="@drawable/ic_back"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
                 >
 
-                <TextView
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/booking_pro_team_toolbar_questionmark"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ProTeam"
+                    android:layout_gravity="end"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/cd_pro_team_toolbar_questionmark"
+                    android:padding="@dimen/default_padding"
+                    android:src="@drawable/ic_pro_team_toolbar_questionmark"
                     />
-            </LinearLayout>
+            </android.support.v7.widget.Toolbar>
 
-        </RelativeLayout>
+        </android.support.design.widget.AppBarLayout>
 
-    </ScrollView>
+        <FrameLayout
+            android:id="@+id/booking_pro_team_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/booking_pro_team_bottom_button"
+            style="@style/Button.Green"
+            android:clickable="false"
+            android:text="@string/next"
+            />
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

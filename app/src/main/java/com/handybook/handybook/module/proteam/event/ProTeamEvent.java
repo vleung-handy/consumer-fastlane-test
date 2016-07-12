@@ -13,6 +13,7 @@ import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public abstract class ProTeamEvent
 {
@@ -71,10 +72,10 @@ public abstract class ProTeamEvent
         }
 
         public RequestProTeamEdit(
-                @Nullable final Iterable<ProTeamPro> cleaningProsToAdd,
-                @Nullable final Iterable<ProTeamPro> handymenProsToAdd,
-                @Nullable final Iterable<ProTeamPro> cleaningProsToRemove,
-                @Nullable final Iterable<ProTeamPro> handymenProsToRemove,
+                @Nullable final Set<ProTeamPro> cleaningProsToAdd,
+                @Nullable final Set<ProTeamPro> handymenProsToAdd,
+                @Nullable final Set<ProTeamPro> cleaningProsToRemove,
+                @Nullable final Set<ProTeamPro> handymenProsToRemove,
                 @NonNull final Source source
         )
         {
@@ -109,13 +110,13 @@ public abstract class ProTeamEvent
         }
 
         private void addProTeamEdit(
-                @Nullable final Iterable<ProTeamPro> proTeamPros,
+                @Nullable final Set<ProTeamPro> proTeamPros,
                 @NonNull final ProTeamCategoryType proTeamCategoryType,
                 @NonNull final ProviderMatchPreference providerMatchPreference
         )
         {
             final ProTeamEdit proTeamEdit = new ProTeamEdit(providerMatchPreference);
-            if (proTeamPros != null)
+            if (proTeamPros != null && !proTeamPros.isEmpty())
             {
                 for (ProTeamPro ePro : proTeamPros)
                 {

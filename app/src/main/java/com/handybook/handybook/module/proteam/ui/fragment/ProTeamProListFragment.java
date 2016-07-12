@@ -163,7 +163,7 @@ public class ProTeamProListFragment extends InjectedFragment
         initialize();
     }
 
-    void setOnProInteraction(final OnProInteraction onProInteraction)
+    public void setOnProInteraction(final OnProInteraction onProInteraction)
     {
         mOnProInteraction = onProInteraction;
     }
@@ -171,7 +171,7 @@ public class ProTeamProListFragment extends InjectedFragment
     /**
      * Implement this interface to be notified when user clicks on one of the pro cards.
      */
-    interface OnProInteraction
+    public interface OnProInteraction
     {
         void onProRemovalRequested(ProTeamCategoryType proTeamCategoryType, ProTeamPro proTeamPro);
 
