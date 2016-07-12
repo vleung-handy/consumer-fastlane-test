@@ -98,14 +98,8 @@ public class BookingFlowFragment extends InjectedFragment
         */
         if (this instanceof BookingRecurrenceFragment
                 || this instanceof PeakPricingFragment
-                || this instanceof BookingExtrasFragment)
-        {
-            continueFlow();
-            return;
-        }
-
-        // if user skipped, don't reload quote
-        if (this instanceof PeakPricingFragment)
+                || this instanceof BookingExtrasFragment
+                || this instanceof PeakPricingFragment)
         {
             continueFlow();
             return;
