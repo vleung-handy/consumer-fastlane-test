@@ -5,7 +5,9 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.util.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,31 @@ public class ProTeam implements Parcelable
         dest.writeParcelable(mHandymen, flags);
     }
 
+    @Nullable
+    public static String toJson(@Nullable final ProTeam proTeam)
+    {
+        final String json = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create()
+                .toJson(proTeam, ProTeam.class);
+        return json;
+    }
+
+    @Nullable
+    public static ProTeam fromJson(@Nullable final String json)
+    {
+        if (json == null)
+        {
+            return null;
+        }
+        final ProTeam proTeam = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create()
+                .fromJson(json, ProTeam.class);
+        return proTeam;
+    }
+
+
     public boolean hasAvailableProsInCategory(@Nullable final ProTeamCategoryType proTeamCategoryType)
     {
         if (proTeamCategoryType == null)
@@ -97,7 +124,6 @@ public class ProTeam implements Parcelable
         }
         return 0;
     }
-
 
 
     @Nullable

@@ -29,6 +29,7 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -50,7 +51,7 @@ public class BookingManager implements Observer
     private BookingTransaction mBookingTransaction;
     private BookingPostInfo mBookingPostInfo;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
-    private PrerateProInfo mPrerateProInfo;
+    private ProTeam mCurrentProTeam;
 
     @Inject
     public BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
@@ -529,6 +530,28 @@ public class BookingManager implements Observer
         return mPrefsManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
     }
 
+    @Nullable
+    public ProTeam getCurrentProTeam()
+    {
+        if (mCurrentProTeam != null)
+        {
+            return mCurrentProTeam;
+        }
+        mCurrentProTeam = ProTeam.fromJson(mPrefsManager.getString(PrefsKey.BOOKING_PRO_TEAM));
+        return mCurrentProTeam;
+    }
+
+    public void setCurrentProTeam(@Nullable final ProTeam proTeam)
+    {
+        if (proTeam == null)
+        {
+            mCurrentProTeam = null;
+            mPrefsManager.removeValue(PrefsKey.BOOKING_PRO_TEAM);
+            return;
+        }
+        mPrefsManager.setString(PrefsKey.BOOKING_PRO_TEAM, ProTeam.toJson(proTeam));
+    }
+
     @Override
     public void update(final Observable observable, final Object data)
     {
@@ -566,6 +589,7 @@ public class BookingManager implements Observer
         setCurrentTransaction(null);
         setCurrentPostInfo(null);
         setCurrentFinalizeBookingRequestPayload(null);
+        setCurrentProTeam(null);
         mPrefsManager.removeValue(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION);
         mBus.post(new BookingFlowClearedEvent());
     }
@@ -637,7 +661,7 @@ public class BookingManager implements Observer
             public void onSuccess(final RecurringBookingsResponse response)
             {
                 mBus.post(new BookingEvent.ReceiveRecurringBookingsSuccess(
-                                response.getRecurringBookings())
+                        response.getRecurringBookings())
                 );
             }
 

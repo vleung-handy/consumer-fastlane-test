@@ -20,6 +20,7 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
@@ -209,6 +210,8 @@ public final class BookingLocationFragment extends BookingFlowFragment
                     {
                         if (!allowCallbacks) { return; }
                         List<BookingOption> bookingOptions = options.getBookingOptions();
+                        final ProTeam proTeam = options.getProTeam();
+                        bookingManager.setCurrentProTeam(proTeam);
                         final Intent intent = new Intent(
                                 getActivity(),
                                 BookingOptionsActivity.class

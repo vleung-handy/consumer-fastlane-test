@@ -15,6 +15,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
+import com.handybook.handybook.booking.ui.activity.BookingProTeamActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.constant.ActivityResult;
@@ -22,6 +23,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
@@ -101,7 +103,8 @@ public class BookingFlowFragment extends InjectedFragment
         if (this instanceof BookingRecurrenceFragment
                 || this instanceof PeakPricingFragment
                 || this instanceof BookingExtrasFragment
-                || this instanceof PeakPricingFragment)
+                || this instanceof PeakPricingFragment
+                || this instanceof BookingProTeamFragment)
         {
             continueFlow();
             return;
@@ -256,7 +259,16 @@ public class BookingFlowFragment extends InjectedFragment
         // show recurrence options if available (show first if regular flow)
         if (!isVoucherFlow && shouldShowRecurrenceOptions(request, false))
         {
-            final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
+            final ProTeam proTeam = bookingManager.getCurrentProTeam();
+            final Intent intent;
+            if (this instanceof BookingProTeamFragment || proTeam == null || proTeam.isEmpty())
+            {
+                intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
+            }
+            else
+            {
+                intent = new Intent(getActivity(), BookingProTeamActivity.class);
+            }
             startActivity(intent);
         }
         // show surge pricing options if necessary (show second if regular flow)
