@@ -1,7 +1,7 @@
 package com.handybook.handybook.core;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.squareup.otto.Subscribe;
 

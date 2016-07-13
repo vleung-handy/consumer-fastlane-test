@@ -1,6 +1,6 @@
 package com.handybook.handybook.module.proteam.event.logging;
 
-import com.handybook.handybook.analytics.annotation.TrackField;
+import com.handybook.handybook.logger.mixpanel.annotation.TrackField;
 
 public class ProTeamAddProDisplayedServiceChanged
 {
