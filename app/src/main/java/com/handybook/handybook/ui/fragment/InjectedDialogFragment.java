@@ -11,7 +11,7 @@ import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
 

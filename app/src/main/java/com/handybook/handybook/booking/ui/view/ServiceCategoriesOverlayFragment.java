@@ -14,7 +14,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.analytics.MixpanelEvent;
+import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;

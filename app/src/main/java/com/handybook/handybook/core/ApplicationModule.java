@@ -7,7 +7,7 @@ import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -91,7 +91,7 @@ import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.EventLogManager;
+import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.PropertiesReader;
