@@ -3,10 +3,11 @@ package com.handybook.handybook.booking.ui.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
@@ -20,7 +21,11 @@ public final class BookingDateActivity extends MenuDrawerActivity
         Booking rescheduleBooking = getIntent().getParcelableExtra(BundleKeys.RESCHEDULE_BOOKING);
         if (rescheduleBooking != null) {
             final String notice = getIntent().getStringExtra(BundleKeys.RESCHEDULE_NOTICE);
-            return BookingDateFragment.newInstance(rescheduleBooking, notice);
+
+            final BookingDetailFragment.RescheduleType type = (BookingDetailFragment.RescheduleType)
+                    getIntent().getSerializableExtra(BundleKeys.RESCHEDULE_TYPE);
+
+            return BookingDateFragment.newInstance(rescheduleBooking, notice, type);
         }
 
         final ArrayList<BookingOption> postOptions

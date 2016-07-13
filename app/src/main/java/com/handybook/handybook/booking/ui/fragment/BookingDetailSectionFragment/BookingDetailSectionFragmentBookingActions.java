@@ -5,13 +5,15 @@ import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.booking.constant.BookingAction;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
+import com.handybook.handybook.booking.constant.BookingAction;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.module.configuration.model.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +42,10 @@ public class BookingDetailSectionFragmentBookingActions
     protected List<String> getActionButtonTypeList(Booking booking)
     {
         List<String> actionButtonTypes = new ArrayList<>();
-        if(!booking.isPast())
+        if (!booking.isPast())
         {
             actionButtonTypes.add(BookingAction.ACTION_RESCHEDULE);
-            if(booking.canEditHours())
+            if (booking.canEditHours())
             {
                 actionButtonTypes.add(BookingAction.ACTION_EDIT_HOURS);
             }
@@ -72,9 +74,20 @@ public class BookingDetailSectionFragmentBookingActions
         @Override
         public void onClick(final View v)
         {
-            //TODO: Need to work out a system for enabling/disabling at proper times, listening to events from parent fragment is flakey b/c of on resume timing
-            //disableInputs();
-            //TODO: investigate, do not activate the progress dialog here, causes issues when returning from activity
+            BookingDetailFragment parentFragment = (BookingDetailFragment) getParentFragment();
+            if (parentFragment != null)
+            {
+                Configuration configuration = parentFragment.getConfiguration();
+                if (configuration != null && configuration.shouldReschedule)
+                {
+                    //interrupt the cancelation process by asking whether the user wants to reschedule instead.
+                    parentFragment.setRescheduleType(BookingDetailFragment.RescheduleType.FROM_CANCELATION);
+                    bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
+                    return;
+                }
+            }
+
+            //if there were no configuration suggesting rescheduling, then proceed with normal cancelation
             bus.post(new BookingEvent.RequestPreCancelationInfo(booking.getId()));
         }
     };
@@ -84,9 +97,10 @@ public class BookingDetailSectionFragmentBookingActions
         @Override
         public void onClick(final View v)
         {
-            //TODO: Need to work out a system for enabling/disabling at proper times, listening to events from parent fragment is flakey b/c of on resume timing
-            //disableInputs();
-            //TODO: investigate, do not activate the progress dialog here, causes issues when returning from activity
+            if (getParentFragment() != null)
+            {
+                ((BookingDetailFragment) getParentFragment()).setRescheduleType(BookingDetailFragment.RescheduleType.NORMAL);
+            }
             bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
         }
     };
@@ -102,7 +116,6 @@ public class BookingDetailSectionFragmentBookingActions
 
         }
     };
-
 
 
 }

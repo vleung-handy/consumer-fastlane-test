@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,10 +15,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.constant.ActivityResult;
@@ -25,21 +28,25 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.LogEvent;
 import com.handybook.handybook.logger.booking.BookingTimeLog;
 import com.handybook.handybook.ui.view.GroovedTimePicker;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingDateFragment extends BookingFlowFragment
 {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
+    static final String EXTRA_RESCHEDULE_TYPE = "com.handy.handy.EXTRA_RESCHEDULE_TYPE";
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
     private final int MINUTE_INTERVAL = 30;
     @Bind(R.id.next_button)
@@ -51,6 +58,12 @@ public final class BookingDateFragment extends BookingFlowFragment
 
     @Bind(R.id.notice_text)
     TextView mNoticeTextView;
+
+    @Bind(R.id.location_text)
+    TextView mLocationText;
+
+    @Bind(R.id.reschedule_cancel_text)
+    TextView mRescheduleCancelText;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -108,6 +121,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     };
     private Date mRescheduleDate;
     private String mNotice;
+    private BookingDetailFragment.RescheduleType mRescheduleType;
 
     public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions)
     {
@@ -118,12 +132,18 @@ public final class BookingDateFragment extends BookingFlowFragment
         return fragment;
     }
 
-    public static BookingDateFragment newInstance(final Booking rescheduleBooking, final String notice)
+    public static BookingDateFragment newInstance(
+            final Booking rescheduleBooking,
+            final String notice,
+            BookingDetailFragment.RescheduleType type
+    )
     {
         final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
         args.putString(EXTRA_RESCHEDULE_NOTICE, notice);
+        args.putSerializable(EXTRA_RESCHEDULE_TYPE, type);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -145,6 +165,10 @@ public final class BookingDateFragment extends BookingFlowFragment
                 mRescheduleDate = mRescheduleBooking.getStartDate();
             }
             mNotice = getArguments().getString(EXTRA_RESCHEDULE_NOTICE);
+
+            mRescheduleType = (BookingDetailFragment.RescheduleType)
+                    getArguments().getSerializable(EXTRA_RESCHEDULE_TYPE);
+
             // flash notice since it may not initially appear in view
             if (savedInstanceState == null && mNotice != null)
             {
@@ -190,7 +214,6 @@ public final class BookingDateFragment extends BookingFlowFragment
         mNextButton.setClickable(true);
     }
 
-
     @Override
     public final void onActivityResult(
             final int requestCode, final int resultCode,
@@ -204,6 +227,11 @@ public final class BookingDateFragment extends BookingFlowFragment
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
+            getActivity().finish();
+        }
+        else if (resultCode == ActivityResult.BOOKING_CANCELED)
+        {
+            getActivity().setResult(ActivityResult.BOOKING_CANCELED, new Intent());
             getActivity().finish();
         }
     }
@@ -223,7 +251,18 @@ public final class BookingDateFragment extends BookingFlowFragment
         mGroovedTimePicker.setInterval(MINUTE_INTERVAL);
         if (mRescheduleBooking != null)
         {
-            setToolbarTitle(getString(R.string.reschedule));
+            if (mRescheduleType != null && mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CANCELATION)
+            {
+                setToolbarTitle(getString(R.string.reschedule_instead));
+                mLocationText.setText(getString(R.string.reschedule_instead_of_canceling));
+                mRescheduleCancelText.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                setToolbarTitle(getString(R.string.reschedule));
+                mLocationText.setText(getString(R.string.when_come));
+                mRescheduleCancelText.setVisibility(View.GONE);
+            }
             mNextButton.setText(getString(R.string.reschedule));
             if (mNotice != null)
             {
@@ -398,5 +437,40 @@ public final class BookingDateFragment extends BookingFlowFragment
                 transaction.setStartDate(newDate);
             }
         }
+    }
+
+    /**
+     * Request to process cancelation success.
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
+    {
+        removeUiBlockers();
+        Pair<String, List<String>> result = event.result;
+
+        final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
+        intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
+        intent.putExtra(BundleKeys.NOTICE, result.first);
+        intent.putExtra(BundleKeys.BOOKING, mRescheduleBooking);
+        startActivityForResult(intent, ActivityResult.BOOKING_CANCELED);
+    }
+
+    @Subscribe
+    public void onReceivePreCancelationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
+    {
+        removeUiBlockers();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
+
+    /**
+     * User clicks on the option to cancel booking anyways.
+     */
+    @OnClick(R.id.reschedule_cancel_text)
+    public void cancelClicked()
+    {
+        showUiBlockers();
+        bus.post(new BookingEvent.RequestPreCancelationInfo(mRescheduleBooking.getId()));
     }
 }

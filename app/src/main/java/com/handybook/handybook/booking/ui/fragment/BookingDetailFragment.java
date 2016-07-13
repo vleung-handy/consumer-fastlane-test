@@ -34,6 +34,8 @@ import com.handybook.handybook.booking.ui.view.BookingDetailView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
@@ -53,8 +55,11 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     private static final String STATE_SERVICES = "STATE_SERVICES";
 
     private Booking mBooking;
+    private Configuration mConfiguration;
     private String mBookingId;
     private boolean mBookingUpdated;
+
+    private RescheduleType mRescheduleType;
 
     @Bind(R.id.booking_detail_view)
     BookingDetailView mBookingDetailView;
@@ -130,6 +135,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         {
             bus.post(new BookingEvent.RequestCachedServices());
         }
+
+        bus.post(new ConfigurationEvent.RequestConfiguration());
     }
 
     @Override
@@ -307,15 +314,38 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
         intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, event.notice);
+        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, mRescheduleType);
+
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }
 
     @Subscribe
     public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event)
     {
-        removeUiBlockers();
+        if (mRescheduleType != null && mRescheduleType == RescheduleType.FROM_CANCELATION)
+        {
+            //if this reschedule event was originated from a cancelation, and it fails, then we
+            //should just go forward with the cancelation
+            bus.post(new BookingEvent.RequestPreCancelationInfo(mBooking.getId()));
+        }
+        else
+        {
+            removeUiBlockers();
+            dataManagerErrorHandler.handleError(getActivity(), event.error);
+        }
 
-        dataManagerErrorHandler.handleError(getActivity(), event.error);
+
+    }
+
+    @Subscribe
+    public void onReceiveConfigurationSuccess(
+            final ConfigurationEvent.ReceiveConfigurationSuccess event
+    )
+    {
+        if (event != null)
+        {
+            mConfiguration = event.getConfiguration();
+        }
     }
 
     @Subscribe
@@ -410,5 +440,20 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                 return false;
         }
         return true;
+    }
+
+    public Configuration getConfiguration()
+    {
+        return mConfiguration;
+    }
+
+    public void setRescheduleType(final RescheduleType rescheduleType)
+    {
+        mRescheduleType = rescheduleType;
+    }
+
+    public enum RescheduleType
+    {
+        NORMAL, FROM_CANCELATION;
     }
 }
