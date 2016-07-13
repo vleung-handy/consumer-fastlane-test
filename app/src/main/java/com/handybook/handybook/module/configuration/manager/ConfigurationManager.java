@@ -41,7 +41,7 @@ public class ConfigurationManager
 
         mConfigurationCache = CacheBuilder.newBuilder()
                 .maximumSize(1)
-                .expireAfterWrite(30, TimeUnit.SECONDS)
+                .expireAfterWrite(3, TimeUnit.MINUTES)
                 .build();
     }
 
