@@ -6,13 +6,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
+        classpath 'com.android.tools.build:gradle:2.1.2'
     }
 }
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '24'
+    buildToolsVersion '23.0.3'
 }
 
 dependencies {

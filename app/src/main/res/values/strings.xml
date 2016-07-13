@@ -363,7 +363,7 @@
     <string name="rate_dialog_pro_match_title_block">Never match with this pro again?</string>
     <string name="rate_dialog_pro_match_remove">Remove from Pro Team</string>
     <string name="rate_dialog_pro_match_add">Add to My Pro Team</string>
-    <string name="rate_dialog_pro_match_block">Block %s</string>
+    <string name="rate_dialog_pro_match_block_formatted">Block %s</string>
     <string name="rate_dialog_pro_match_preference_footer_never">We\'ll never match you with this pro again.</string>
     <string name="rate_dialog_pro_match_preference_footer_preferred">Pro Team members are requested first.</string>
     <string name="rate_dialog_pro_team_member">Pro Team member</string>

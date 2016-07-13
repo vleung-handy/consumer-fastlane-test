@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.view.ImageToggleButton;
 import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOption;
 import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOptionPresented;
 import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOptionTapped;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.ui.view.ImageToggleButton;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
@@ -44,6 +44,7 @@ public class RateProTeamFragment extends Fragment
 
     private static final int ANIMATION_WAIT_TIME_MS = 1000;
     private static final int RATING_THRESHOLD = 3;
+    private static final int RAW_RATING_THRESHOLD = 2;
 
     @Bind(R.id.toggle_button)
     ImageToggleButton mToggleButton;
@@ -145,7 +146,7 @@ public class RateProTeamFragment extends Fragment
         mRating = getArguments().getInt(KEY_RATING_VALUE);
         mProName = getArguments().getString(KEY_PRO_NAME);
 
-        mButtonTextBlockPro = getResources().getString(R.string.rate_dialog_pro_match_block, mProName);
+        mButtonTextBlockPro = getResources().getString(R.string.rate_dialog_pro_match_block_formatted, mProName);
 
         mToggleButton.setListener(new View.OnClickListener()
         {
@@ -226,7 +227,7 @@ public class RateProTeamFragment extends Fragment
 
         if (isProAlreadyOnTeam())
         {
-            if (mRating <= 2)   //remember this is 0 indexed. This is <= 3 stars
+            if (mRating <= RAW_RATING_THRESHOLD)   //remember this is 0 indexed. This is <= 3 stars
             {
                 resetForViewPager();
             }
@@ -238,7 +239,7 @@ public class RateProTeamFragment extends Fragment
         }
         else
         {    //pro is not yet on team
-            if (mRating <= 2)   //remember this is 0 indexed. This is <= 3 stars
+            if (mRating <= RAW_RATING_THRESHOLD)   //remember this is 0 indexed. This is <= 3 stars
             {
                 resetSimpleViewForBlockPro();
             }

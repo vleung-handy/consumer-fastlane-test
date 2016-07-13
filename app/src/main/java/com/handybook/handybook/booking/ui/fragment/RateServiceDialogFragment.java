@@ -44,6 +44,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
     private static final int GOOD_RATING = 4; //threshold for what is considered a good rating.
+    private static final int RAW_RATING_THRESHOLD = 3; //threshold for what
     private static final String RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT = "RateServiceConfirmDialogFragment";
 
     @Bind(R.id.rate_dialog_service_icon)
@@ -365,7 +366,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             mSubmitButtonLayout.setVisibility(View.VISIBLE);
 
             //this is zero indexed, so this means 4 stars or higher
-            if (!isProTeamEnabled() || (rating >= 3 && mPrerateProInfo != null &&
+            if (!isProTeamEnabled() || (rating >= RAW_RATING_THRESHOLD && mPrerateProInfo != null &&
                     mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED))
             {
                 mProTeamSection.setVisibility(View.GONE);

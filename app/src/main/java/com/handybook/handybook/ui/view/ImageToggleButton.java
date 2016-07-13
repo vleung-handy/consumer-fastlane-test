@@ -1,4 +1,4 @@
-package com.handybook.handybook.booking.ui.view;
+package com.handybook.handybook.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -39,7 +39,7 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     style="@style/TextView.Bold"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textColor="@color/handy_green"
                     android:text="@string/rate_dialog_pro_team_member"
                     />
