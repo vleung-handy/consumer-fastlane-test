@@ -81,6 +81,7 @@ import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingTableFragment;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
+import com.handybook.handybook.booking.ui.fragment.RateProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
@@ -244,6 +245,7 @@ import retrofit.converter.GsonConverter;
         RedemptionEmailSignUpFragment.class,
         RateImprovementDialogFragment.class,
         RatingsGridFragment.class,
+        RateProTeamFragment.class,
         RatingsRadioFragment.class,
         RateImprovementConfirmationDialogFragment.class,
         ProTeamActivity.class,
