@@ -43,8 +43,13 @@ public class RateProTeamFragment extends Fragment
     private static final String TAG_ADD_PRO = "add-pro";
 
     private static final int ANIMATION_WAIT_TIME_MS = 1000;
+
+    //this determines the threshold for if a rating is good/bad. 1-5
     private static final int RATING_THRESHOLD = 3;
+
+    //this determines the threshold for if a rating is good/bad. 0-4
     private static final int RAW_RATING_THRESHOLD = 2;
+    private static final int PAGER_SIZE = 2;
 
     @Bind(R.id.toggle_button)
     ImageToggleButton mToggleButton;
@@ -157,7 +162,7 @@ public class RateProTeamFragment extends Fragment
                 String tag = mToggleButton.getTag();
                 RatingDialogProTeamOption.OptionType optionType;
 
-                if (tag.equals(TAG_ADD_PRO))
+                if (TAG_ADD_PRO.equals(tag))
                 {
                     optionType = RatingDialogProTeamOption.OptionType.ADD;
                 }
@@ -447,7 +452,7 @@ public class RateProTeamFragment extends Fragment
 
         @Override
         public int getCount() {
-            return 2;
+            return PAGER_SIZE;
         }
 
         @Override
