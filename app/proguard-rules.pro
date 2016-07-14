@@ -43,9 +43,15 @@
 -dontwarn com.google.android.gms.**
 
 #Butterknife
+-keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
--keep class **$$ViewInjector { *; }
--keepnames class * { @butterknife.Bind *; }
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
 
 #Dagger
 -dontwarn dagger.internal.codegen.**
