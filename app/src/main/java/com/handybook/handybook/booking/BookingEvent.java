@@ -2,7 +2,6 @@ package com.handybook.handybook.booking;
 
 import android.support.v4.util.Pair;
 
-import com.handybook.handybook.analytics.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
@@ -12,6 +11,7 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.logger.mixpanel.annotation.Track;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 
 import java.util.List;

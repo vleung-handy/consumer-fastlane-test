@@ -40,7 +40,6 @@ import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
-import com.handybook.handybook.analytics.MixpanelEvent;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingPostInfo;
@@ -55,6 +54,9 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingPaymentLog;
+import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
@@ -243,6 +245,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCurrentRequest = bookingManager.getCurrentRequest();
         mCurrentQuote = bookingManager.getCurrentQuote();
         mCurrentTransaction = bookingManager.getCurrentTransaction();
+
+        bus.post(new LogEvent.AddLogEvent(new BookingPaymentLog.BookingPaymentShownLog()));
     }
 
     @Override

@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@android:color/transparent"
-             android:gravity="center_horizontal"
+<ScrollView
+    android:id="@+id/rate_dialog_scrollview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/default_margin_double"
+    android:paddingTop="@dimen/default_margin_double"
     >
 
-    <LinearLayout
-        android:layout_width="@dimen/rating_dialog_max_width"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="46dp"
-        android:animateLayoutChanges="true"
-        android:background="@color/white"
-        android:orientation="vertical"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_horizontal"
         >
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="@dimen/rating_dialog_max_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="46dp"
+            android:animateLayoutChanges="true"
+            android:background="@color/white"
+            android:orientation="vertical"
             >
-
             <!--The padding needs to be 46(the margin on the linear layout above) + 8 -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,16 +36,16 @@
 
                 <TextView
                     android:id="@+id/rate_dialog_pro_team_member"
+                    style="@style/TextView.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textAllCaps="true"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    style="@style/TextView.Bold"
-                    android:textSize="@dimen/text_size_small"
-                    android:textColor="@color/handy_green"
+                    android:gravity="center"
                     android:text="@string/rate_dialog_pro_team_member"
+                    android:textAllCaps="true"
+                    android:textColor="@color/handy_green"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="gone"
                     />
 
                 <TextView
@@ -51,9 +55,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/default_margin"
                     android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin_half"
                     android:gravity="center"
                     tools:text="Title"
-                    android:layout_marginTop="@dimen/default_margin_half"
                     />
 
                 <LinearLayout
@@ -61,9 +65,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin"
-                    android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginLeft="@dimen/default_margin"
                     android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
                     >
@@ -80,54 +84,54 @@
                         android:src="@drawable/ic_star"
                         />
 
-                        <ImageView
-                            android:id="@+id/rate_dialog_star_2"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="4dp"
-                            android:contentDescription="@string/cd_star_icon"
-                            android:src="@drawable/ic_star"
-                            android:layout_marginLeft="@dimen/rating_star_margin"
-                            android:layout_marginRight="@dimen/rating_star_margin"
-                            />
+                    <ImageView
+                        android:id="@+id/rate_dialog_star_2"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="@dimen/rating_star_margin"
+                        android:layout_marginRight="@dimen/rating_star_margin"
+                        android:contentDescription="@string/cd_star_icon"
+                        android:src="@drawable/ic_star"
+                        />
 
-                        <ImageView
-                            android:id="@+id/rate_dialog_star_3"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:contentDescription="@string/cd_star_icon"
-                            android:src="@drawable/ic_star"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="@dimen/rating_star_margin"
-                            android:layout_marginRight="@dimen/rating_star_margin"
-                            />
+                    <ImageView
+                        android:id="@+id/rate_dialog_star_3"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/rating_star_margin"
+                        android:layout_marginRight="@dimen/rating_star_margin"
+                        android:contentDescription="@string/cd_star_icon"
+                        android:src="@drawable/ic_star"
+                        />
 
-                        <ImageView
-                            android:id="@+id/rate_dialog_star_4"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="4dp"
-                            android:contentDescription="@string/cd_star_icon"
-                            android:src="@drawable/ic_star"
-                            android:layout_marginLeft="@dimen/rating_star_margin"
-                            android:layout_marginRight="@dimen/rating_star_margin"
-                            />
+                    <ImageView
+                        android:id="@+id/rate_dialog_star_4"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="@dimen/rating_star_margin"
+                        android:layout_marginRight="@dimen/rating_star_margin"
+                        android:contentDescription="@string/cd_star_icon"
+                        android:src="@drawable/ic_star"
+                        />
 
 
-                        <ImageView
-                            android:id="@+id/rate_dialog_star_5"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="4dp"
-                            android:contentDescription="@string/cd_star_icon"
-                            android:src="@drawable/ic_star"
-                            android:layout_marginLeft="@dimen/rating_star_margin"
-                            android:layout_marginRight="@dimen/rating_star_margin"
-                            />
+                    <ImageView
+                        android:id="@+id/rate_dialog_star_5"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="@dimen/rating_star_margin"
+                        android:layout_marginRight="@dimen/rating_star_margin"
+                        android:contentDescription="@string/cd_star_icon"
+                        android:src="@drawable/ic_star"
+                        />
 
                 </LinearLayout>
 
@@ -159,8 +163,8 @@
                         <View
                             android:layout_width="@dimen/one_third_width"
                             android:layout_height="1dp"
-                            android:background="@color/handy_divider_line"
                             android:layout_gravity="center"
+                            android:background="@color/handy_divider_line"
                             />
 
                         <FrameLayout
@@ -173,19 +177,22 @@
 
 
                     <View
+                        android:id="@+id/rate_pro_team_tip_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/handy_divider_line"
+                        android:visibility="gone"
+                        tools:visibility="gone"
                         />
 
                     <LinearLayout
                         android:id="@+id/rate_dialog_tip_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin"
                         android:orientation="vertical"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginTop="@dimen/default_margin"
                         >
 
 
@@ -198,69 +205,66 @@
 
                         <FrameLayout
                             android:id="@+id/rate_dialog_tip_layout_container"
-                            android:layout_marginTop="@dimen/default_margin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin"
                             />
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin_quarter"
+                    >
+
+                    <Button
+                        android:id="@+id/rate_dialog_skip_button"
+                        style="@style/Button.Grey"
+                        android:layout_weight="2"
+                        android:text="@string/skip"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        >
+
+                        <Button
+                            android:id="@+id/rate_dialog_submit_button"
+                            style="@style/Button.Green"
+                            android:text="@string/submit"
+                            />
+
+                        <ProgressBar
+                            android:id="@+id/rate_dialog_submit_progress"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible"
+                            tools:visibility="visible"
+                            />
+
+                    </FrameLayout>
+
+                </LinearLayout>
             </LinearLayout>
-        </ScrollView>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin_quarter"
-            >
-
-            <Button
-                android:id="@+id/rate_dialog_skip_button"
-                style="@style/Button.Grey"
-                android:layout_weight="2"
-                android:text="@string/skip"
-                android:visibility="gone"
-                tools:visibility="visible"
-                />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                >
-
-                <Button
-                    android:id="@+id/rate_dialog_submit_button"
-                    style="@style/Button.Green"
-                    android:text="@string/submit"
-                    />
-
-                <ProgressBar
-                    android:id="@+id/rate_dialog_submit_progress"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:visibility="invisible"
-                    tools:visibility="visible"
-                    />
-
-            </FrameLayout>
-
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/rate_dialog_service_icon"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/circle_green"
+            android:contentDescription="@string/cd_service_logo"
+            android:padding="22dp"
+            android:src="@drawable/ic_clean"
+            />
 
-
-    <ImageView
-        android:id="@+id/rate_dialog_service_icon"
-        android:layout_width="92dp"
-        android:layout_height="92dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/circle_green"
-        android:padding="22dp"
-        android:src="@drawable/ic_clean"
-        android:contentDescription="@string/cd_service_logo"
-        />
-
-</FrameLayout>
+    </FrameLayout>
+</ScrollView>

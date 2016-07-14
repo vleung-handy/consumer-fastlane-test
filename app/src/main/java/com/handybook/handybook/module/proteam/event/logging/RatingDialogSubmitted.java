@@ -1,7 +1,7 @@
 package com.handybook.handybook.module.proteam.event.logging;
 
-import com.handybook.handybook.analytics.annotation.Track;
-import com.handybook.handybook.analytics.annotation.TrackField;
+import com.handybook.handybook.logger.mixpanel.annotation.Track;
+import com.handybook.handybook.logger.mixpanel.annotation.TrackField;
 
 /**
  * triggers when user submits rating (with pro team option and tip if applicable)
