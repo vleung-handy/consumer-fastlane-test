@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
@@ -17,6 +16,7 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.event.logging.ProTeamOpenTapped;

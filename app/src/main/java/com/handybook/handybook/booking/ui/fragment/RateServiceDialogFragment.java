@@ -19,12 +19,12 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
+import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.event.logging.RatingDialogSubmitted;
