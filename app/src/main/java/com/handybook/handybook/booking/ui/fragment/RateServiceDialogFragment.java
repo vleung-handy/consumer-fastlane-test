@@ -85,6 +85,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     ViewGroup mProTeamSection;
     @Bind(R.id.rate_dialog_scrollview)
     ScrollView mScroll;
+    @Bind(R.id.rate_pro_team_tip_divider)
+    View mTipDivider;
 
     private Configuration mConfiguration;
     private RateProTeamFragment mRateProTeamFragment;
@@ -236,6 +238,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts, currency);
         if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
         {
+            mTipDivider.setVisibility(View.VISIBLE);
             mTipSection.setVisibility(View.VISIBLE);
             getChildFragmentManager().beginTransaction()
                     .replace(R.id.rate_dialog_tip_layout_container, tipFragment)
