@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingAction
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.module.configuration.model.Configuration;
 
 import java.util.ArrayList;
@@ -74,6 +75,9 @@ public class BookingDetailSectionFragmentBookingActions
         @Override
         public void onClick(final View v)
         {
+            //log that this was clicked.
+            bus.post(new BookingDetailsLog.SkipBooking(BookingDetailsLog.EventType.SELECTED, booking.getId()));
+
             BookingDetailFragment parentFragment = (BookingDetailFragment) getParentFragment();
             if (parentFragment != null)
             {
@@ -101,6 +105,15 @@ public class BookingDetailSectionFragmentBookingActions
             {
                 ((BookingDetailFragment) getParentFragment()).setRescheduleType(BookingDetailFragment.RescheduleType.NORMAL);
             }
+
+            //log that this was clicked.
+            bus.post(new BookingDetailsLog.RescheduleBooking(
+                    BookingDetailsLog.EventType.SELECTED,
+                    booking.getId(),
+                    booking.getStartDate(),
+                    null)
+            );
+
             bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
         }
     };

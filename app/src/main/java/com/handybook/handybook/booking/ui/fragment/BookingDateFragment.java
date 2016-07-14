@@ -26,6 +26,7 @@ import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActiv
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingTimeLog;
 import com.handybook.handybook.ui.view.GroovedTimePicker;
 import com.squareup.otto.Subscribe;
@@ -253,6 +254,10 @@ public final class BookingDateFragment extends BookingFlowFragment
         {
             if (mRescheduleType != null && mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CANCELATION)
             {
+                //this is the reschedule flow from cancelation
+                //log that we are here.
+                bus.post(new BookingDetailsLog.RescheduleInsteadShown(mRescheduleBooking.getId()));
+
                 setToolbarTitle(getString(R.string.reschedule_instead));
                 mLocationText.setText(getString(R.string.reschedule_instead_of_canceling));
                 mRescheduleCancelText.setVisibility(View.VISIBLE);
@@ -471,6 +476,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     public void cancelClicked()
     {
         showUiBlockers();
+        bus.post(new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId()));
         bus.post(new BookingEvent.RequestPreCancelationInfo(mRescheduleBooking.getId()));
     }
 }
