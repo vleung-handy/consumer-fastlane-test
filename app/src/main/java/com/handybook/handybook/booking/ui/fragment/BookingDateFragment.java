@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingTimeLog;
 import com.handybook.handybook.ui.view.GroovedTimePicker;
 
 import java.util.ArrayList;
@@ -80,11 +83,13 @@ public final class BookingDateFragment extends BookingFlowFragment
                     intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
                     intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTimeInMillis());
                     startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
-                } else
+                }
+                else
                 {
                     rescheduleBooking(mRescheduleBooking, date.getTime(), false);
                 }
-            } else if (mBookingOptions != null && mBookingOptions.size() > 0)
+            }
+            else if (mBookingOptions != null && mBookingOptions.size() > 0)
             {
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
                 intent.putParcelableArrayListExtra(
@@ -94,7 +99,8 @@ public final class BookingDateFragment extends BookingFlowFragment
                 intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, mBookingOptions.get(0).getPage());
                 intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
                 startActivity(intent);
-            } else
+            }
+            else
             {
                 continueBookingFlow();
             }
@@ -133,7 +139,8 @@ public final class BookingDateFragment extends BookingFlowFragment
             if (savedInstanceState != null)
             {
                 mRescheduleDate = new Date(savedInstanceState.getLong(STATE_RESCHEDULE_DATE, 0));
-            } else
+            }
+            else
             {
                 mRescheduleDate = mRescheduleBooking.getStartDate();
             }
@@ -144,10 +151,19 @@ public final class BookingDateFragment extends BookingFlowFragment
                 toast.setText(mNotice);
                 toast.show();
             }
-        } else
+        }
+        else
         {
             mBookingOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
         }
+
+        bus.post(new LogEvent.AddLogEvent(new BookingTimeLog.BookingTimeShownLog()));
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -176,8 +192,10 @@ public final class BookingDateFragment extends BookingFlowFragment
 
 
     @Override
-    public final void onActivityResult(final int requestCode, final int resultCode,
-            final Intent data)
+    public final void onActivityResult(
+            final int requestCode, final int resultCode,
+            final Intent data
+    )
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
@@ -191,8 +209,10 @@ public final class BookingDateFragment extends BookingFlowFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-            final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_date, container, false);
@@ -235,8 +255,10 @@ public final class BookingDateFragment extends BookingFlowFragment
                 new TimePicker.OnTimeChangedListener()
                 {
                     @Override
-                    public void onTimeChanged(final TimePicker view, final int hourOfDay,
-                            final int minute)
+                    public void onTimeChanged(
+                            final TimePicker view, final int hourOfDay,
+                            final int minute
+                    )
                     {
                         updateRequestDate(mDatePicker);
                     }
@@ -308,7 +330,8 @@ public final class BookingDateFragment extends BookingFlowFragment
         if (startDate != null)
         {
             cal.setTime(startDate);
-        } else
+        }
+        else
         {
             // initialize date 3 days ahead with random time between 10a - 5p
             final Random random = new Random();
@@ -334,7 +357,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         //this function can be called after butterknife unbinds the views
         //TODO: need to prevent listener from being called when view is unbound
         //below line is needed to prevent NPE caused by above issue
-        if (datePicker == null || mGroovedTimePicker == null) return;
+        if (datePicker == null || mGroovedTimePicker == null) { return; }
 
         final Calendar date = Calendar.getInstance();
         date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());

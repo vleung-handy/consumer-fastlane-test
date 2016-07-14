@@ -1,6 +1,6 @@
 package com.handybook.handybook.module.proteam.event.logging;
 
-import com.handybook.handybook.analytics.annotation.Track;
+import com.handybook.handybook.logger.mixpanel.annotation.Track;
 
 /**
  * Triggered when pro team option is presented in the rating dialog

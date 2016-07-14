@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.analytics.MixpanelEvent;
+import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
