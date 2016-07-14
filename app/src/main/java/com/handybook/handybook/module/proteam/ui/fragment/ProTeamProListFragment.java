@@ -156,6 +156,14 @@ public class ProTeamProListFragment extends InjectedFragment
         proCardCardAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * for logging purposes
+     * @return
+     */
+    public ProTeamCategoryType getProTeamCategoryType()
+    {
+        return mProTeamCategoryType;
+    }
 
     public void setProTeam(final ProTeam proTeam)
     {

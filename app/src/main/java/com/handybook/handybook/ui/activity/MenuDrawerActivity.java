@@ -31,6 +31,9 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.constants.SourcePage;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
@@ -302,6 +305,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 navigateToActivity(BookingsActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_my_pro_team:
+                mBus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.OpenTapped(SourcePage.SIDE_MENU)));
                 navigateToActivity(ProTeamActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_payment:

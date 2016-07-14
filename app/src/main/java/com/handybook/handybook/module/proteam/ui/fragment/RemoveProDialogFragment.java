@@ -22,8 +22,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.module.proteam.constants.BundleKey;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.squareup.otto.Bus;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,6 +59,30 @@ public class RemoveProDialogFragment extends DialogFragment
     private ProTeamPro mProTeamPro;
     private ProTeamCategoryType mProTeamCategoryType;
 
+    private String mProviderTeamContext;
+
+    @Inject
+    Bus mBus;
+
+    public static RemoveProDialogFragment newInstance(@ProTeamPageLog.ProviderTeamContext String providerTeamContext)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString(BundleKey.PRO_TEAM_CONTEXT, providerTeamContext);
+        RemoveProDialogFragment fragment = new RemoveProDialogFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        ((BaseApplication)getActivity().getApplication()).inject(this);
+        if(getArguments() != null)
+        {
+            mProviderTeamContext = getArguments().getString(BundleKey.PRO_TEAM_CONTEXT);
+        }
+    }
 
     @NonNull
     @Override
@@ -61,6 +93,13 @@ public class RemoveProDialogFragment extends DialogFragment
 
         mTextTitle.setText(mTitle);
         extendCancelButtonClickArea();
+
+        //pro team should already be set here
+        mBus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.WarningDisplayed(
+                mProTeamPro == null ? null : String.valueOf(mProTeamPro.getId()),
+                ProviderMatchPreference.PREFERRED, //TODO assuming, because this pro is in this fragment
+                mProviderTeamContext
+        )));
         return view;
     }
 
@@ -177,6 +216,11 @@ public class RemoveProDialogFragment extends DialogFragment
         if (mListener != null)
         {
             mListener.onCancel(mProTeamCategoryType, mProTeamPro);
+            mBus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Cancelled(
+                    mProTeamPro == null ? null : String.valueOf(mProTeamPro.getId()),
+                    ProviderMatchPreference.PREFERRED, //TODO assuming, because this pro is in this fragment
+                    mProviderTeamContext
+            )));
         }
 
         dismiss();

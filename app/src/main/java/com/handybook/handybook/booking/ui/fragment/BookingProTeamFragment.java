@@ -15,6 +15,8 @@ import android.widget.FrameLayout;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
@@ -140,6 +142,11 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                     )
             );
         }
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.UpdateSubmitted(
+                mCleanersToAdd.size() + mHandymenToAdd.size(), //added count
+                mHandymenToRemove.size() + mHandymenToRemove.size(), //removed count
+                ProTeamPageLog.Context.BOOKING_FLOW
+        )));
         showUiBlockers();
         continueBookingFlow();
     }
@@ -190,6 +197,11 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                 ProviderMatchPreference.NEVER,
                 ProTeamEvent.Source.PRO_MANAGEMENT
         ));
+        bus.post(new ProTeamPageLog.BlockProvider.Submitted(
+                String.valueOf(proTeamPro.getId()),
+                ProviderMatchPreference.PREFERRED, //TODO assuming, because this pro is in this fragment
+                ProTeamPageLog.Context.BOOKING_FLOW
+        ));
         showUiBlockers();
     }
 
@@ -214,13 +226,19 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
     )
     {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        RemoveProDialogFragment fragment = new RemoveProDialogFragment();
+        RemoveProDialogFragment fragment = RemoveProDialogFragment.newInstance(ProTeamPageLog.Context.BOOKING_FLOW);
         final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
         fragment.setTitle(title);
         fragment.setProTeamPro(proTeamPro);
         fragment.setProTeamCategoryType(proTeamCategoryType);
         fragment.setListener(this);
         fragment.show(fm, RemoveProDialogFragment.TAG);
+
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Tapped(
+                String.valueOf(proTeamPro.getId()),
+                ProviderMatchPreference.PREFERRED, //TODO assuming, because this pro is in this fragment
+                ProTeamPageLog.Context.BOOKING_FLOW
+        )));
     }
 
 
@@ -259,6 +277,11 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                     break;
             }
         }
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.EnableButtonTapped(
+                String.valueOf(proTeamPro.getId()),
+                isChecked,
+                ProTeamPageLog.Context.BOOKING_FLOW
+        )));
     }
 
 
