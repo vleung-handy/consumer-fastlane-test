@@ -3,7 +3,7 @@ package com.handybook.handybook.yozio;
 import android.content.Context;
 
 import com.handybook.handybook.core.ApplicationModule;
-import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.yozio.android.Yozio;
 import com.yozio.android.interfaces.YozioMetaDataCallbackable;
 

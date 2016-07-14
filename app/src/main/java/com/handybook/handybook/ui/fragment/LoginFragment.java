@@ -22,7 +22,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.handybook.handybook.R;
-import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
@@ -31,6 +30,10 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
+import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
@@ -132,6 +135,8 @@ public final class LoginFragment extends BookingFlowFragment
                 e.printStackTrace();
             }
         }
+
+        bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
     }
 
     @Override
@@ -490,6 +495,7 @@ public final class LoginFragment extends BookingFlowFragment
         {
             mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
         }
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.LoginLog()));
 
         if (mBookingUserName != null ||
                 authType == UserDataManager.AuthType.FACEBOOK && mFindUser)

@@ -16,7 +16,6 @@ import com.squareup.otto.Subscribe;
 public class ProTeamActivity extends MenuDrawerActivity
 {
 
-    private Configuration mConfiguration;
     private Object mBusListener;
 
     @Override
@@ -70,11 +69,6 @@ public class ProTeamActivity extends MenuDrawerActivity
     {
         super.onResume();
         mBus.register(mBusListener);
-
-        if (mConfiguration == null)
-        {
-            mBus.post(new ConfigurationEvent.RequestConfiguration());
-        }
     }
 
     @Override

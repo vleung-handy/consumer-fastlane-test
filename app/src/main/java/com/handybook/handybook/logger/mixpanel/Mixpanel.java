@@ -1,10 +1,8 @@
-package com.handybook.handybook.analytics;
+package com.handybook.handybook.logger.mixpanel;
 
 import android.content.Context;
 
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.analytics.annotation.Track;
-import com.handybook.handybook.analytics.annotation.TrackField;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
@@ -13,6 +11,8 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
+import com.handybook.handybook.logger.mixpanel.annotation.Track;
+import com.handybook.handybook.logger.mixpanel.annotation.TrackField;
 import com.handybook.handybook.manager.PrefsManager;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Subscribe;

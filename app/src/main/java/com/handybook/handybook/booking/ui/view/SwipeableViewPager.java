@@ -5,15 +5,20 @@ import android.content.res.TypedArray;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.handybook.handybook.R;
 
 /**
+ *
+ * This view pager offers the ability to enable/disable swiping
+ *
  * Created by jtse on 3/30/16.
  */
 public class SwipeableViewPager extends ViewPager
 {
     private boolean mSwipeable;
+    private boolean mWrapContentEnabled;
 
     public SwipeableViewPager(Context context)
     {
@@ -32,12 +37,32 @@ public class SwipeableViewPager extends ViewPager
         try
         {
             mSwipeable = a.getBoolean(R.styleable.SwipeableViewPager_swipeable, true);
+            mWrapContentEnabled = a.getBoolean(R.styleable.SwipeableViewPager_wrap_content_enabled, false);
         }
         finally
         {
             a.recycle();
         }
+    }
 
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        //if we want the view pager to work with wrapped content, then we need to do this.
+        if (mWrapContentEnabled) {
+            int height = 0;
+            for(int i = 0; i < getChildCount(); i++) {
+                View child = getChildAt(i);
+                child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                int h = child.getMeasuredHeight();
+                if(h > height) height = h;
+            }
+
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+        }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override

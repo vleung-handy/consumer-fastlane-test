@@ -2,6 +2,12 @@ package com.handybook.handybook.testutil;
 
 import android.app.Activity;
 import android.support.test.espresso.PerformException;
+import android.support.test.espresso.matcher.BoundedMatcher;
+import android.view.View;
+import android.view.ViewGroup;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 
 import java.util.concurrent.TimeoutException;
 
@@ -102,4 +108,29 @@ public class ViewUtils
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * Matches that the view group has the designated children count
+     *
+     * @param count
+     * @return
+     */
+    public static Matcher<View> withChildCount(final int count)
+    {
+        return new BoundedMatcher<View, ViewGroup>(ViewGroup.class)
+        {
+            @Override
+            public boolean matchesSafely(ViewGroup group)
+            {
+                return group.getChildCount() == count;
+            }
+
+            public void describeTo(Description description)
+            {
+                description.appendText("View does not have " + count + " children");
+            }
+        };
+    }
+
 }
