@@ -80,10 +80,10 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
             final List<ProTeamPro> preferredPros = proTeamCategory.getPreferred();
             if (preferredPros != null)
             {
-                for (ProTeamPro ePro : preferredPros)
+                for (ProTeamPro eachPro : preferredPros)
                 {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
-                            ePro,
+                            eachPro,
                             mProTeamCategoryType,
                             ProviderMatchPreference.PREFERRED
                     ));
@@ -92,10 +92,10 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
             final List<ProTeamPro> indifferentPros = proTeamCategory.getIndifferent();
             if (indifferentPros != null)
             {
-                for (ProTeamPro ePro : indifferentPros)
+                for (ProTeamPro eachPro : indifferentPros)
                 {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
-                            ePro,
+                            eachPro,
                             mProTeamCategoryType,
                             ProviderMatchPreference.INDIFFERENT
                     ));
