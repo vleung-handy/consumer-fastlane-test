@@ -2,7 +2,7 @@ package com.handybook.handybook.booking;
 
 import android.support.v4.util.Pair;
 
-import com.handybook.handybook.analytics.annotation.Track;
+import com.handybook.handybook.logger.mixpanel.annotation.Track;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;

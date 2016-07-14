@@ -25,8 +25,8 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.logger.LogEvent;
-import com.handybook.handybook.logger.booking.BookingTimeLog;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingTimeLog;
 import com.handybook.handybook.ui.view.GroovedTimePicker;
 import com.squareup.otto.Subscribe;
 
