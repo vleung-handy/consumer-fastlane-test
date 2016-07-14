@@ -155,16 +155,6 @@ public class RemoveProDialogFragment extends DialogFragment
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    @OnClick(R.id.remove_pro_not_permanent_text)
-    public void notPermanentClicked()
-    {
-        if (mListener != null)
-        {
-            mListener.onYesNotPermanent(mProTeamCategoryType, mProTeamPro);
-        }
-        dismiss();
-    }
-
     @OnClick(R.id.remove_pro_permanent_text)
     public void permanentClicked()
     {
@@ -201,11 +191,6 @@ public class RemoveProDialogFragment extends DialogFragment
 
     public interface RemoveProListener
     {
-        void onYesNotPermanent(
-                @Nullable ProTeamCategoryType proTeamCategoryType,
-                @Nullable ProTeamPro proTeamPro
-        );
-
         void onYesPermanent(
                 @Nullable ProTeamCategoryType proTeamCategoryType,
                 @Nullable ProTeamPro proTeamPro

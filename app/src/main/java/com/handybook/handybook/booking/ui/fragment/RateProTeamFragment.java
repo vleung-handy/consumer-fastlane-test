@@ -133,7 +133,7 @@ public class RateProTeamFragment extends Fragment
     public void onCreate(@Nullable final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        ((BaseApplication)getActivity().getApplication()).inject(this);
+        ((BaseApplication) getActivity().getApplication()).inject(this);
     }
 
     @Nullable
@@ -175,7 +175,6 @@ public class RateProTeamFragment extends Fragment
             }
         });
 
-
         resetLayout();
         return v;
     }
@@ -192,13 +191,17 @@ public class RateProTeamFragment extends Fragment
         int previousRating = mRating;
         mRating = rating;
 
-        if (previousRating >= 0) {
+        if (previousRating >= 0)
+        {
             //check to see if we need to do a change. If there is a change from low to high
             //or high to low, then we need to reset the layout. Otherwise we don't do anything.
-            if (hasRatingLevelChanged(mRating, previousRating)) {
+            if (hasRatingLevelChanged(mRating, previousRating))
+            {
                 resetLayout();
             }
-        } else {
+        }
+        else
+        {
             //there was no previous rating, so reset the layout
             resetLayout();
         }
@@ -207,12 +210,13 @@ public class RateProTeamFragment extends Fragment
     /**
      * If a rating is 3 stars or lower, then it's considered low
      * If a rating is 4 stars or higher, it's considered high.
-     *
+     * <p/>
      * Remember ratings are 0-indexed
      *
      * @return true if the rating changed from high to low, or vice versa
      */
-    private boolean hasRatingLevelChanged(int newRating, int oldRating) {
+    private boolean hasRatingLevelChanged(int newRating, int oldRating)
+    {
         return (newRating >= RATING_THRESHOLD && oldRating < RATING_THRESHOLD)
                 || (newRating < RATING_THRESHOLD && oldRating >= RATING_THRESHOLD);
     }
@@ -274,7 +278,8 @@ public class RateProTeamFragment extends Fragment
     /**
      * Takes in views that are associated with the block pro layout, and sets it up accordingly
      */
-    private void resetViewForBlockPro(ImageToggleButton button, TextView textView) {
+    private void resetViewForBlockPro(ImageToggleButton button, TextView textView)
+    {
         button.setChecked(false);
         textView.setText(mTitleBlockPro);
         button.setCheckedText(mButtonTextBlockPro);
@@ -288,7 +293,8 @@ public class RateProTeamFragment extends Fragment
     /**
      * Takes in views that are associated with the block pro layout, and sets it up accordingly
      */
-    private void resetViewForRemovePro(ImageToggleButton button, TextView textView) {
+    private void resetViewForRemovePro(ImageToggleButton button, TextView textView)
+    {
         mBus.post(new RatingDialogProTeamOptionPresented(false,
                 RatingDialogProTeamOptionPresented.OptionType.REMOVE));
 
@@ -323,7 +329,8 @@ public class RateProTeamFragment extends Fragment
         mToggleButton.updateState();
     }
 
-    private void resetForViewPager() {
+    private void resetForViewPager()
+    {
         mRootContainer.setVisibility(View.VISIBLE);
         mPager.setVisibility(View.VISIBLE);
         mSimpleContainer.setVisibility(View.GONE);
@@ -335,10 +342,13 @@ public class RateProTeamFragment extends Fragment
     /**
      * This is the method that should be called to retrieve the user's final decision on what
      * he's selected through the possible combinations of buttons
+     *
      * @return
      */
-    public ProviderMatchPreference getNewProviderMatchPreference() {
-        if (mPager.getVisibility() == View.VISIBLE) {
+    public ProviderMatchPreference getNewProviderMatchPreference()
+    {
+        if (mPager.getVisibility() == View.VISIBLE)
+        {
             /*
                 this is the case where the user can remove pro, and then subsequently block the pro.
                 There is a trick here, so be very very careful. If the pager is on the first page,
@@ -346,22 +356,34 @@ public class RateProTeamFragment extends Fragment
                 IMPLIES the user clicked YES to the first page. If the user is on the second page,
                 AND the button is active, then the user has also clicked YES on the second page.
              */
-            if (mPager.getCurrentItem() > 0) {  //on the second page
-                if (mCurrentClickedToggleButton != null && mCurrentClickedToggleButton.isChecked()) {
+            if (mPager.getCurrentItem() > 0)
+            {  //on the second page
+                if (mCurrentClickedToggleButton != null && mCurrentClickedToggleButton.isChecked())
+                {
                     return ProviderMatchPreference.NEVER;
-                } else {
+                }
+                else
+                {
                     //this means to remove the pro.
                     return ProviderMatchPreference.INDIFFERENT;
                 }
             }
-        } else {
+        }
+        else
+        {
             //this is the straight forward case where use can either add or block a pro
-            if (mToggleButton.isChecked()) {
-                if (mToggleButton.getTag().equals(TAG_ADD_PRO)) {
+            if (mToggleButton.isChecked())
+            {
+                if (mToggleButton.getTag().equals(TAG_ADD_PRO))
+                {
                     return ProviderMatchPreference.PREFERRED;
-                } else if (mToggleButton.getTag().equals(TAG_BLOCK_PRO)){
+                }
+                else if (mToggleButton.getTag().equals(TAG_BLOCK_PRO))
+                {
                     return ProviderMatchPreference.NEVER;
-                } else {
+                }
+                else
+                {
                     Crashlytics.logException(new RuntimeException("This is not supposed to " +
                             "happen, no tag set for toggle button"));
                 }
@@ -382,8 +404,10 @@ public class RateProTeamFragment extends Fragment
         return mInitialMatchPreference == ProviderMatchPreference.PREFERRED;
     }
 
-    private void animateToPage(final int page) {
-        mHandler.postDelayed(new Runnable() {
+    private void animateToPage(final int page)
+    {
+        mHandler.postDelayed(new Runnable()
+        {
             @Override
             public void run()
             {
@@ -399,16 +423,19 @@ public class RateProTeamFragment extends Fragment
     public class ProTeamPagerAdapter extends PagerAdapter
     {
         @Override
-        public Object instantiateItem(ViewGroup parent, int position) {
+        public Object instantiateItem(ViewGroup parent, int position)
+        {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.rate_pro_team_item, parent, false);
 
             TextView textView = (TextView) layout.findViewById(R.id.rate_dialog_pro_match_header_txt);
             ImageToggleButton button = (ImageToggleButton) layout.findViewById(R.id.toggle_button);
 
-            if (position == 0) {
+            if (position == 0)
+            {
                 //on the 1st page, we show option for removing pro
-                button.setListener(new View.OnClickListener() {
+                button.setListener(new View.OnClickListener()
+                {
                     @Override
                     public void onClick(final View v)
                     {
@@ -425,9 +452,12 @@ public class RateProTeamFragment extends Fragment
                     }
                 });
                 resetViewForRemovePro(button, textView);
-            } else {
+            }
+            else
+            {
                 //on the 2nd page, we show option for removing pro
-                button.setListener(new View.OnClickListener() {
+                button.setListener(new View.OnClickListener()
+                {
                     @Override
                     public void onClick(final View v)
                     {
@@ -446,17 +476,20 @@ public class RateProTeamFragment extends Fragment
         }
 
         @Override
-        public void destroyItem(ViewGroup collection, int position, Object view) {
+        public void destroyItem(ViewGroup collection, int position, Object view)
+        {
             collection.removeView((View) view);
         }
 
         @Override
-        public int getCount() {
+        public int getCount()
+        {
             return PAGER_SIZE;
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(View view, Object object)
+        {
             return view == object;
         }
     }

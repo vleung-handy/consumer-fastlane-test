@@ -7,25 +7,20 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.util.DateTimeUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProTeamEditWrapper
 {
-    @SerializedName("pro_team")
-    private ProTeamEdit mProTeamEdit;
+    @SerializedName("pro_team_edits")
+    private List<ProTeamEdit> mProTeamEdits = new ArrayList<>();
+    @SerializedName("source")
+    private String mSource;
 
-    public ProTeamEditWrapper(final ProTeamEdit proTeamEdit)
+    public ProTeamEditWrapper(final List<ProTeamEdit> proTeamEdits, final String source)
     {
-        mProTeamEdit = proTeamEdit;
-    }
-
-    @Nullable
-    public ProTeamEdit getProTeamEdit()
-    {
-        return mProTeamEdit;
-    }
-
-    public void setProTeamEdit(final ProTeamEdit proTeamEdit)
-    {
-        mProTeamEdit = proTeamEdit;
+        mProTeamEdits = proTeamEdits;
+        mSource = source;
     }
 
     @Nullable

@@ -83,7 +83,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
         transitive = true;
     }
     compile files('../libs/yozio-android-sdk.jar')
@@ -166,6 +166,5 @@ def computeVersionCode(versionName) {
         throw new InvalidUserDataException("Illegal version name ${versionName}")
     }
 }
-
 
 apply plugin: 'com.google.gms.google-services'

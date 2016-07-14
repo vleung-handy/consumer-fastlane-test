@@ -47,16 +47,19 @@ public class SwipeableViewPager extends ViewPager
 
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
 
         //if we want the view pager to work with wrapped content, then we need to do this.
-        if (mWrapContentEnabled) {
+        if (mWrapContentEnabled)
+        {
             int height = 0;
-            for(int i = 0; i < getChildCount(); i++) {
+            for (int i = 0; i < getChildCount(); i++)
+            {
                 View child = getChildAt(i);
                 child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
                 int h = child.getMeasuredHeight();
-                if(h > height) height = h;
+                if (h > height) { height = h; }
             }
 
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);

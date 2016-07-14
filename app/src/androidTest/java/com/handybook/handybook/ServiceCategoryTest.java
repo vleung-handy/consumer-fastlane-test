@@ -27,7 +27,7 @@ public class ServiceCategoryTest
 
     /**
      * Tests that the 5 categories have the correct names.
-     * <p>
+     * <p/>
      * Will only work if there isn't a ratings dialog overlay
      */
     @Test

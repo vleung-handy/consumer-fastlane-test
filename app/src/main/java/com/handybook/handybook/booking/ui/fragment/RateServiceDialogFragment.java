@@ -110,7 +110,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 final int finalRating = mRating + 1;
                 final Integer tipAmountCents = getTipAmount();
 
-
                 ProviderMatchPreference matchPreference;
 
                 if (mRateProTeamFragment != null)
@@ -263,9 +262,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     {
         mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
 
-        if (mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED) {
+        if (mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED)
+        {
             mTextProTeamMember.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else
+        {
             mTextProTeamMember.setVisibility(View.GONE);
         }
 
@@ -330,7 +332,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         }
     }
 
-    private boolean isProTeamEnabled() {
+    private boolean isProTeamEnabled()
+    {
         return mConfiguration != null && mConfiguration.isMyProTeamEnabled();
     }
 
@@ -441,7 +444,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
     private void initProTeamSection()
     {
-        if (isProTeamEnabled() && mPrerateProInfo != null) {
+        if (isProTeamEnabled() && mPrerateProInfo != null)
+        {
             mRateProTeamFragment = (RateProTeamFragment) getChildFragmentManager().findFragmentByTag(RateProTeamFragment.class.getSimpleName());
             if (mRateProTeamFragment == null)
             {
