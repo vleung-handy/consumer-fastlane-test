@@ -18,7 +18,8 @@ public class Configuration
     private boolean mMyProTeamEnabled;
 
     //    FIXME: JIA: put stuff here for sending users to reschedule when they try to cancel
-    public boolean shouldReschedule = true;
+    @SerializedName("show_reschedule_flow_on_cancel")
+    private boolean mShowRescheduleFlowOnCancel;
 
     public boolean shouldUseHelpCenterWebView()
     {
@@ -33,6 +34,11 @@ public class Configuration
     public boolean shouldUseCancelRecurringWebview()
     {
         return mShouldUseCancelRecurringWebview;
+    }
+
+    public boolean isShowRescheduleFlowOnCancel()
+    {
+        return mShowRescheduleFlowOnCancel;
     }
 
     public boolean isMyProTeamEnabled()

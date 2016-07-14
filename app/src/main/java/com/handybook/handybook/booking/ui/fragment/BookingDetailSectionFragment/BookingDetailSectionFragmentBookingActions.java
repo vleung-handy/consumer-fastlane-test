@@ -82,7 +82,7 @@ public class BookingDetailSectionFragmentBookingActions
             if (parentFragment != null)
             {
                 Configuration configuration = parentFragment.getConfiguration();
-                if (configuration != null && configuration.shouldReschedule)
+                if (configuration != null && configuration.isShowRescheduleFlowOnCancel())
                 {
                     //interrupt the cancelation process by asking whether the user wants to reschedule instead.
                     parentFragment.setRescheduleType(BookingDetailFragment.RescheduleType.FROM_CANCELATION);
