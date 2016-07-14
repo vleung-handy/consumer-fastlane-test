@@ -7,7 +7,6 @@ import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -83,6 +82,7 @@ import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingTableFragment;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
+import com.handybook.handybook.booking.ui.fragment.RateProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
@@ -99,6 +99,8 @@ import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.helpcenter.HelpModule;
+import com.handybook.handybook.logger.handylogger.EventLogManager;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
@@ -245,6 +247,7 @@ import retrofit.converter.GsonConverter;
         RedemptionEmailSignUpFragment.class,
         RateImprovementDialogFragment.class,
         RatingsGridFragment.class,
+        RateProTeamFragment.class,
         RatingsRadioFragment.class,
         RateImprovementConfirmationDialogFragment.class,
         ProTeamActivity.class,
@@ -528,6 +531,17 @@ public final class ApplicationModule
     )
     {
         return new ConfigurationManager(bus, prefsManager, dataManager);
+    }
+
+    @Provides
+    @Singleton
+    final EventLogManager provideLogEventsManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final PrefsManager prefsManager
+    )
+    {
+        return new EventLogManager(bus, dataManager, prefsManager);
     }
 
     @Provides

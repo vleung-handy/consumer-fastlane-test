@@ -2,6 +2,7 @@ package com.handybook.handybook.data;
 
 import android.support.annotation.Nullable;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
@@ -401,6 +402,9 @@ public interface HandyRetrofitService
             @Body ProTeamEditWrapper proTeamEditWrapper,
             HandyRetrofitCallback cb
     );
+
+    @POST("/events")
+    void postLogs(@Body JsonObject eventLogBundle, HandyRetrofitCallback cb);
 
     final class RateProRequest
     {

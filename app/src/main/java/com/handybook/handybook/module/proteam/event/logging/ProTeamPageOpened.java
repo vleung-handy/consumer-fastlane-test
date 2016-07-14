@@ -1,7 +1,7 @@
 package com.handybook.handybook.module.proteam.event.logging;
 
-import com.handybook.handybook.analytics.annotation.Track;
-import com.handybook.handybook.analytics.annotation.TrackField;
+import com.handybook.handybook.logger.mixpanel.annotation.Track;
+import com.handybook.handybook.logger.mixpanel.annotation.TrackField;
 
 /**
  * I want to be able to filter out views based on if they were able to add a pro or

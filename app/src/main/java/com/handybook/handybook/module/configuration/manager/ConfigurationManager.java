@@ -2,14 +2,16 @@ package com.handybook.handybook.module.configuration.manager;
 
 import android.support.annotation.Nullable;
 
-import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.constant.PrefsKey;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -19,7 +21,11 @@ public class ConfigurationManager
     private final Bus mBus;
     private PrefsManager mPrefsManager;
     private final DataManager mDataManager;
+    private static final String KEY_CONFIGURATION_CACHE = "configuration";
+
     private final String TAG = ConfigurationManager.class.getName();
+
+    private Cache<String, Configuration> mConfigurationCache;
 
     @Inject
     public ConfigurationManager(
@@ -32,6 +38,11 @@ public class ConfigurationManager
         mPrefsManager = prefsManager;
         mDataManager = dataManager;
         mBus.register(this);
+
+        mConfigurationCache = CacheBuilder.newBuilder()
+                .maximumSize(1)
+                .expireAfterWrite(3, TimeUnit.MINUTES)
+                .build();
     }
 
     @Subscribe
@@ -82,31 +93,13 @@ public class ConfigurationManager
 
     private void setCachedConfiguration(final Configuration configuration)
     {
-        mPrefsManager.setString(PrefsKey.CONFIGURATION, configuration.toJson());
+        mConfigurationCache.put(KEY_CONFIGURATION_CACHE, configuration);
     }
 
     // Do NOT make this public. I know what you're trying to do.
     @Nullable
     private Configuration getCachedConfiguration()
     {
-        final String configurationJson = mPrefsManager.getString(PrefsKey.CONFIGURATION);
-        Configuration config = null;
-
-        if (configurationJson != null)
-        {
-            try
-            {
-                config = Configuration.fromJson(configurationJson);
-            }
-            catch (Exception e)
-            {
-                //if there is ever an error parsing this, fall out and let it create a new set
-                Crashlytics.log(TAG + " error when deserializing JSON:" + configurationJson);
-                Crashlytics.logException(e);
-            }
-
-        }
-
-        return config;
+        return mConfigurationCache.getIfPresent(KEY_CONFIGURATION_CACHE);
     }
 }

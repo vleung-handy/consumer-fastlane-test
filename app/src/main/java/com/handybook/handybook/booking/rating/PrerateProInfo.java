@@ -46,8 +46,6 @@ import java.util.Map;
  */
 public class PrerateProInfo implements Serializable
 {
-
-
     @SerializedName("placeholder_text")
     private String mPlaceHolderText;
 
