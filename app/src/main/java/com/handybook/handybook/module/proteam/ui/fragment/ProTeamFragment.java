@@ -50,7 +50,6 @@ public class ProTeamFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
-    private static final String KEY_PRO_TEAM = "ProTeamFragment:ProTeam";
 
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
@@ -74,24 +73,10 @@ public class ProTeamFragment extends InjectedFragment implements
         // Required empty public constructor
     }
 
-    public static ProTeamFragment newInstance(@Nullable ProTeam proTeam)
+    public static ProTeamFragment newInstance()
     {
         ProTeamFragment fragment = new ProTeamFragment();
-        final Bundle arguments = new Bundle();
-        arguments.putParcelable(KEY_PRO_TEAM, proTeam);
-        fragment.setArguments(arguments);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        final Bundle arguments = getArguments();
-        if (arguments != null)
-        {
-            mProTeam = arguments.getParcelable(KEY_PRO_TEAM);
-        }
     }
 
     @Override
@@ -115,7 +100,6 @@ public class ProTeamFragment extends InjectedFragment implements
                 getChildFragmentManager(),
                 mProTeam,
                 this
-
         );
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -143,12 +127,6 @@ public class ProTeamFragment extends InjectedFragment implements
     public void onResume()
     {
         super.onResume();
-/*
-        if (mProTeam == null)
-        {
-            requestProTeam();
-        }
-*/
         requestProTeam();
     }
 
@@ -203,7 +181,6 @@ public class ProTeamFragment extends InjectedFragment implements
     void onBottomButtomClicked()
     {
         bus.post(new ProTeamAddProSubmitted(mCleanersToAdd.size(), mHandymenToAdd.size()));
-
         bus.post(
                 new ProTeamEvent.RequestProTeamEdit(
                         mCleanersToAdd,
@@ -231,12 +208,10 @@ public class ProTeamFragment extends InjectedFragment implements
             Crashlytics.logException(new InvalidParameterException("PTF.onYesPermanent invalid"));
             return;
         }
-
         bus.post(new ProTeamRemoveProviderSubmitted(
                 proTeamPro.getId(),
                 ProviderMatchPreference.NEVER.toString()
         ));
-
         bus.post(new ProTeamEvent.RequestProTeamEdit(
                 proTeamPro,
                 proTeamCategoryType,

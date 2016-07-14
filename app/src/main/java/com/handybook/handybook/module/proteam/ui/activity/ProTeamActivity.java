@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.squareup.otto.Subscribe;
@@ -48,7 +47,7 @@ public class ProTeamActivity extends MenuDrawerActivity
     @Override
     protected Fragment createFragment()
     {
-        return ProTeamFragment.newInstance(null);
+        return ProTeamFragment.newInstance();
     }
 
     @Override
