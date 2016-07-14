@@ -533,11 +533,10 @@ public class BookingManager implements Observer
     @Nullable
     public ProTeam getCurrentProTeam()
     {
-        if (mCurrentProTeam != null)
+        if (mCurrentProTeam == null)
         {
-            return mCurrentProTeam;
+            mCurrentProTeam = ProTeam.fromJson(mPrefsManager.getString(PrefsKey.BOOKING_PRO_TEAM));
         }
-        mCurrentProTeam = ProTeam.fromJson(mPrefsManager.getString(PrefsKey.BOOKING_PRO_TEAM));
         return mCurrentProTeam;
     }
 
