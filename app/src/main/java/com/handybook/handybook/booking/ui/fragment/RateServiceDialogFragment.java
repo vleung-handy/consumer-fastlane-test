@@ -4,6 +4,7 @@ import android.accounts.NetworkErrorException;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,12 +14,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.analytics.Mixpanel;
-import com.handybook.handybook.analytics.MixpanelEvent;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
+import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
@@ -81,6 +83,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     View mTipSection;
     @Bind(R.id.rate_dialog_pro_team_section)
     ViewGroup mProTeamSection;
+    @Bind(R.id.rate_dialog_scrollview)
+    ScrollView mScroll;
 
     private Configuration mConfiguration;
     private RateProTeamFragment mRateProTeamFragment;
@@ -426,6 +430,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                         break;
                     }
                 }
+                scrollToBottom();
                 return true;
             }
         });
@@ -442,8 +447,21 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                         .beginTransaction()
                         .add(R.id.rate_pro_team_container, mRateProTeamFragment)
                         .commit();
+                scrollToBottom();
             }
         }
+    }
+
+    private void scrollToBottom()
+    {
+        new Handler().postDelayed(new Runnable()
+        { // Scroll to the bottom
+            @Override
+            public void run()
+            {
+                mScroll.fullScroll(View.FOCUS_DOWN);
+            }
+        }, 100);
     }
 
     private void showProgress()

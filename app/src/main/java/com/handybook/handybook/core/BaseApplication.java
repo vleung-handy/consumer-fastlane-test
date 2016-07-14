@@ -1,6 +1,7 @@
 package com.handybook.handybook.core;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
@@ -11,10 +12,11 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
-import com.handybook.handybook.analytics.Mixpanel;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.event.HandyEvent;
@@ -53,6 +55,7 @@ public class BaseApplication extends MultiDexApplication
 
     private static GoogleAnalytics googleAnalytics;
     private static Tracker tracker;
+    private static String sDeviceId = "";
 
     protected ObjectGraph graph;
     @Inject
@@ -67,6 +70,8 @@ public class BaseApplication extends MultiDexApplication
     // up for event listening
     @Inject
     HelpManager helpManager;
+    @Inject
+    EventLogManager logEventsManager;
     @Inject
     HelpContactManager helpContactManager;
     @Inject
@@ -114,6 +119,8 @@ public class BaseApplication extends MultiDexApplication
         tracker.enableExceptionReporting(true);
         tracker.enableAdvertisingIdCollection(true);
         tracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
+        sDeviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
         createObjectGraph();
         final User user = userManager.getCurrentUser();
@@ -283,5 +290,22 @@ public class BaseApplication extends MultiDexApplication
     public static Tracker tracker()
     {
         return tracker;
+    }
+
+    public static String getDeviceId() { return sDeviceId; }
+
+    public static String getDeviceModel()
+    {
+        final String manufacturer = Build.MANUFACTURER;
+        final String model = Build.MODEL;
+
+        if (model.startsWith(manufacturer))
+        {
+            return model;
+        }
+        else
+        {
+            return manufacturer + " " + model;
+        }
     }
 }

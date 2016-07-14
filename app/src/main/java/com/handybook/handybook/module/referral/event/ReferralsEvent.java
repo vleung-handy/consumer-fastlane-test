@@ -1,7 +1,7 @@
 package com.handybook.handybook.module.referral.event;
 
-import com.handybook.handybook.analytics.annotation.Track;
-import com.handybook.handybook.analytics.annotation.TrackField;
+import com.handybook.handybook.logger.mixpanel.annotation.Track;
+import com.handybook.handybook.logger.mixpanel.annotation.TrackField;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;

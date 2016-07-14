@@ -1,9 +1,9 @@
-package com.handybook.handybook.analytics;
+package com.handybook.handybook.logger.mixpanel;
 
 import android.support.annotation.NonNull;
 
-import com.handybook.handybook.analytics.annotation.Track;
-import com.handybook.handybook.analytics.annotation.TrackField;
+import com.handybook.handybook.logger.mixpanel.annotation.Track;
+import com.handybook.handybook.logger.mixpanel.annotation.TrackField;
 import com.handybook.handybook.event.HandyEvent;
 
 import java.util.Set;
