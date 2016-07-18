@@ -287,6 +287,13 @@
             android:value="com.handybook.handybook.yozio.YozioMetaDataCallback"
             />
 
+        <!-- Button -->
+        <meta-data
+            android:name="com.usebutton.applicationid"
+            android:value=""
+            />
+        <!-- FIXME: Use real application ID -->
+
         <!-- Enables the Android Pay API -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
