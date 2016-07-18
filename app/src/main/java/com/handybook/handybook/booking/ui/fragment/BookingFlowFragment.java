@@ -22,6 +22,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
@@ -154,11 +155,11 @@ public class BookingFlowFragment extends InjectedFragment
         progressDialog.show();
 
         //log submitted
-        bus.post(new BookingDetailsLog.RescheduleBooking(
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                 BookingDetailsLog.EventType.SUBMITTED,
                 booking.getId(),
                 booking.getStartDate(),
-                date)
+                date))
         );
 
         dataManager.rescheduleBooking(booking.getId(), newDate, rescheduleAll, user.getId(),
@@ -168,11 +169,11 @@ public class BookingFlowFragment extends InjectedFragment
                     public void onSuccess(final Pair<String, BookingQuote> response)
                     {
                         //log success
-                        bus.post(new BookingDetailsLog.RescheduleBooking(
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                                 BookingDetailsLog.EventType.SUCCESS,
                                 booking.getId(),
                                 booking.getStartDate(),
-                                date)
+                                date))
                         );
 
                         if (!allowCallbacks)
@@ -231,11 +232,11 @@ public class BookingFlowFragment extends InjectedFragment
                     public void onError(final DataManager.DataManagerError error)
                     {
                         //log error
-                        bus.post(new BookingDetailsLog.RescheduleBooking(
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                                 BookingDetailsLog.EventType.ERROR,
                                 booking.getId(),
                                 booking.getStartDate(),
-                                date)
+                                date))
                         );
 
                         if (!allowCallbacks)

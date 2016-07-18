@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
 import java.util.ArrayList;
@@ -125,9 +126,9 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
 
             final User user = userManager.getCurrentUser();
 
-            bus.post(new BookingDetailsLog.SkipBooking(
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                     BookingDetailsLog.EventType.SUBMITTED,
-                    booking.getId())
+                    booking.getId()))
             );
 
             dataManager.cancelBooking(
@@ -138,10 +139,10 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
                     new DataManager.Callback<String>() {
                 @Override
                 public void onSuccess(final String message) {
-                    bus.post(new BookingDetailsLog.SkipBooking(
+                    bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                             BookingDetailsLog.EventType.SUCCESS,
                             booking.getId()
-                    ));
+                    )));
 
                     if (!allowCallbacks)
                     {
@@ -161,9 +162,9 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
 
                 @Override
                 public void onError(final DataManager.DataManagerError error) {
-                    bus.post(new BookingDetailsLog.SkipBooking(
+                    bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                             BookingDetailsLog.EventType.ERROR,
-                            booking.getId())
+                            booking.getId()))
                     );
 
                     if (!allowCallbacks)

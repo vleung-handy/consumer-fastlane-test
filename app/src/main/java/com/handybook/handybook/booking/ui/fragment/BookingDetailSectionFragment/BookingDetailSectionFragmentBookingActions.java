@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingAction
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.module.configuration.model.Configuration;
 
@@ -76,7 +77,10 @@ public class BookingDetailSectionFragmentBookingActions
         public void onClick(final View v)
         {
             //log that this was clicked.
-            bus.post(new BookingDetailsLog.SkipBooking(BookingDetailsLog.EventType.SELECTED, booking.getId()));
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                    BookingDetailsLog.EventType.SELECTED,
+                    booking.getId())
+            ));
 
             BookingDetailFragment parentFragment = (BookingDetailFragment) getParentFragment();
             if (parentFragment != null)
@@ -107,11 +111,11 @@ public class BookingDetailSectionFragmentBookingActions
             }
 
             //log that this was clicked.
-            bus.post(new BookingDetailsLog.RescheduleBooking(
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                     BookingDetailsLog.EventType.SELECTED,
                     booking.getId(),
                     booking.getStartDate(),
-                    null)
+                    null))
             );
 
             bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));

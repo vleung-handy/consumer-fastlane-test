@@ -256,7 +256,9 @@ public final class BookingDateFragment extends BookingFlowFragment
             {
                 //this is the reschedule flow from cancelation
                 //log that we are here.
-                bus.post(new BookingDetailsLog.RescheduleInsteadShown(mRescheduleBooking.getId()));
+                bus.post(new LogEvent.AddLogEvent(
+                        new BookingDetailsLog.RescheduleInsteadShown(mRescheduleBooking.getId())
+                ));
 
                 setToolbarTitle(getString(R.string.reschedule_instead));
                 mLocationText.setText(getString(R.string.reschedule_instead_of_canceling));
@@ -476,7 +478,9 @@ public final class BookingDateFragment extends BookingFlowFragment
     public void cancelClicked()
     {
         showUiBlockers();
-        bus.post(new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId()));
+        bus.post(new LogEvent.AddLogEvent(
+                new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId())
+        ));
         bus.post(new BookingEvent.RequestPreCancelationInfo(mRescheduleBooking.getId()));
     }
 }
