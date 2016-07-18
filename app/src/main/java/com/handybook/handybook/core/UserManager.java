@@ -21,17 +21,17 @@ import javax.inject.Inject;
 public class UserManager implements Observer
 {
     private Context mContext;
-    private Bus bus;
+    private Bus mBus;
     protected User user;
-    private PrefsManager prefsManager;
+    private PrefsManager mPrefsManager;
 
     @Inject
     UserManager(final Context context, final Bus bus, final PrefsManager prefsManager)
     {
         mContext = context;
-        this.prefsManager = prefsManager;
-        this.bus = bus;
-        this.bus.register(this);
+        mPrefsManager = prefsManager;
+        mBus = bus;
+        mBus.register(this);
     }
 
     public boolean isUserLoggedIn()
@@ -48,7 +48,7 @@ public class UserManager implements Observer
         }
         else
         {
-            if ((user = User.fromJson(prefsManager.getString(PrefsKey.USER))) != null)
+            if ((user = User.fromJson(mPrefsManager.getString(PrefsKey.USER))) != null)
             {
                 user.addObserver(this);
             }
@@ -66,22 +66,22 @@ public class UserManager implements Observer
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
         {
             user = null;
-            prefsManager.removeValue(PrefsKey.USER);
+            mPrefsManager.removeValue(PrefsKey.USER);
             Button.getButton(mContext).logout();
             Crashlytics.setUserEmail(null);
-            bus.post(new UserLoggedInEvent(false));
+            mBus.post(new UserLoggedInEvent(false));
             return;
         }
 
         user = newUser;
         user.addObserver(this);
 
-        prefsManager.setString(PrefsKey.USER, user.toJson());
+        mPrefsManager.setString(PrefsKey.USER, user.toJson());
 
         UAirship.shared().getPushManager().setAlias(user.getId());
         Button.getButton(mContext).setUserIdentifier(user.getId());
         Crashlytics.setUserEmail(user.getEmail());
-        bus.post(new UserLoggedInEvent(true));
+        mBus.post(new UserLoggedInEvent(true));
     }
 
     @Override
