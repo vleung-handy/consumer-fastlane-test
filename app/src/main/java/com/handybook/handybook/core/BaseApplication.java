@@ -139,6 +139,7 @@ public class BaseApplication extends MultiDexApplication
             tracker.setClientId(user.getId());
         }
         initFabric();
+        initButton();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
         UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
         {
@@ -253,6 +254,15 @@ public class BaseApplication extends MultiDexApplication
         {
             Crashlytics.setUserEmail(currentUser.getEmail());
         }
+    }
+
+    private void initButton()
+    {
+        if (BuildConfig.DEBUG)
+        {
+            com.usebutton.sdk.Button.enableDebugLogging();
+        }
+        com.usebutton.sdk.Button.getButton(this).start();
     }
 
     public void updateUser()

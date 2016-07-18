@@ -437,7 +437,7 @@ public final class ApplicationModule
             final PrefsManager prefsManager
     )
     {
-        return new UserManager(bus, prefsManager);
+        return new UserManager(mContext, bus, prefsManager);
     }
 
     @Provides
