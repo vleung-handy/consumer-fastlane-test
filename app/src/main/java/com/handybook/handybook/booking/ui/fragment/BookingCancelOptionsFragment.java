@@ -125,15 +125,28 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
 
             final User user = userManager.getCurrentUser();
 
-            bus.post(new BookingDetailsLog.SkipBooking(BookingDetailsLog.EventType.SUBMITTED, booking.getId()));
+            bus.post(new BookingDetailsLog.SkipBooking(
+                    BookingDetailsLog.EventType.SUBMITTED,
+                    booking.getId())
+            );
 
-            dataManager.cancelBooking(booking.getId(), optionIndex,  user.getId(), user.getAuthToken(),
+            dataManager.cancelBooking(
+                    booking.getId(),
+                    optionIndex,
+                    user.getId(),
+                    user.getAuthToken(),
                     new DataManager.Callback<String>() {
                 @Override
                 public void onSuccess(final String message) {
-                    bus.post(new BookingDetailsLog.SkipBooking(BookingDetailsLog.EventType.SUCCESS, booking.getId()));
+                    bus.post(new BookingDetailsLog.SkipBooking(
+                            BookingDetailsLog.EventType.SUCCESS,
+                            booking.getId()
+                    ));
 
-                    if (!allowCallbacks) return;
+                    if (!allowCallbacks)
+                    {
+                        return;
+                    }
                     enableInputs();
                     progressDialog.dismiss();
 
@@ -148,8 +161,16 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
 
                 @Override
                 public void onError(final DataManager.DataManagerError error) {
-                    bus.post(new BookingDetailsLog.SkipBooking(BookingDetailsLog.EventType.ERROR, booking.getId()));
-                    if (!allowCallbacks) return;
+                    bus.post(new BookingDetailsLog.SkipBooking(
+                            BookingDetailsLog.EventType.ERROR,
+                            booking.getId())
+                    );
+
+                    if (!allowCallbacks)
+                    {
+                        return;
+                    }
+
                     enableInputs();
                     progressDialog.dismiss();
                     dataManagerErrorHandler.handleError(getActivity(), error);
