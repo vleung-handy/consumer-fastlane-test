@@ -476,7 +476,7 @@ public class RateProTeamFragment extends Fragment
                         mBus.post(new LogEvent.AddLogEvent(
                                 new RatingDialogLog.ProTeam.OptionTapped(
                                         mCurrentClickedToggleButton.isChecked(),
-                                        RatingDialogLog.ProTeam.OptionType.REMOVE)));
+                                        RatingDialogLog.ProTeam.OptionType.BLOCK)));
                     }
                 });
                 resetViewForBlockPro(button, textView);

@@ -102,7 +102,7 @@ public abstract class RatingDialogLog extends EventLog
         /**
          * a pro team option is tapped
          */
-        public static class OptionTapped extends ProTeam //TODO verify this flow, what's the pro team button?
+        public static class OptionTapped extends ProTeam
         {
             private static final String EVENT_TYPE = "pro_team_option_tapped";
 

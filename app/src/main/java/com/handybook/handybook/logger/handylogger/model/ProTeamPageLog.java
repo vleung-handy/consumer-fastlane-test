@@ -161,7 +161,7 @@ public abstract class ProTeamPageLog extends EventLog
         private final int mAddedCount;
 
         @SerializedName("removed_count")
-        private final int mRemovedCDount;
+        private final int mRemovedCount;
 
         @SerializedName("provider_team_context")
         private final String mProviderTeamContext;
@@ -171,7 +171,7 @@ public abstract class ProTeamPageLog extends EventLog
         {
             super(EVENT_TYPE);
             mAddedCount = addedCount;
-            mRemovedCDount = removedCount;
+            mRemovedCount = removedCount;
             mProviderTeamContext = providerTeamContext;
 
         }
