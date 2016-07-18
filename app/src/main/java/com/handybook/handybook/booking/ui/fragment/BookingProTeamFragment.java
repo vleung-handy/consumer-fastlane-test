@@ -142,14 +142,9 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                     )
             );
         }
-        /*
-        TODO the added counts actually reflect the total count rather than the diff!
-        see mCleanersToAdd and mHandymenToAdd
-        is this a misnomer, or is it how the business actually defines it?
-         */
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.UpdateSubmitted(
                 mCleanersToAdd.size() + mHandymenToAdd.size(), //added count
-                mHandymenToRemove.size() + mHandymenToRemove.size(), //removed count
+                mCleanersToRemove.size() + mHandymenToRemove.size(), //removed count
                 ProTeamPageLog.Context.BOOKING_FLOW
         )));
         showUiBlockers();

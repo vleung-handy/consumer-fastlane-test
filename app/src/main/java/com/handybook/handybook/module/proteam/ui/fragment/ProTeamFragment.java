@@ -213,7 +213,7 @@ public class ProTeamFragment extends InjectedFragment implements
         );
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.UpdateSubmitted(
                 mCleanersToAdd.size() + mHandymenToAdd.size(),
-                mHandymenToRemove.size() + mHandymenToRemove.size(),
+                mCleanersToRemove.size() + mHandymenToRemove.size(),
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
         showUiBlockers();
