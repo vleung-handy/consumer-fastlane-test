@@ -98,6 +98,9 @@
     <string name="promo_code">Promo Code</string>
     <string name="coupon_on_payment_screen">Please enter your coupon code on the Payment screen after making your booking.</string>
     <string name="reschedule">Reschedule</string>
+    <string name="reschedule_instead">Reschedule Instead?</string>
+    <string name="reschedule_instead_of_canceling">If you\'d like, we can reschedule this\nbooking instead of canceling.</string>
+    <string name="reschedule_cancel_booking">I\'d like to cancel my booking</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="reschedule_all_bookings">Reschedule all subsequent bookings?</string>

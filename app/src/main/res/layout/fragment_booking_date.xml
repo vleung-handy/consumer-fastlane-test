@@ -30,7 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginBottom="16dp"
                 android:text="@string/when_come"
                 style="@style/TextView" />
 
@@ -51,14 +50,27 @@
                 android:layout_below="@id/date_picker"
                 android:layout_centerHorizontal="true"/>
 
+
+            <TextView
+                android:id="@+id/reschedule_cancel_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reschedule_cancel_booking"
+                android:visibility="gone"
+                android:textColor="@color/handy_blue"
+                android:layout_below="@id/time_picker"
+                android:gravity="center"
+                android:clickable="true"
+                android:layout_marginBottom="@dimen/default_margin"
+                />
+
             <TextView
                 android:id="@+id/notice_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/time_picker"
+                android:layout_below="@id/reschedule_cancel_text"
                 android:gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/default_margin"
                 android:text="notice"
                 android:visibility="gone"
                 style="@style/TextView.XSmall" />
@@ -66,7 +78,8 @@
             <View
                 android:layout_below="@id/notice_text"
                 android:layout_width="match_parent"
-                android:layout_height="16dp" />
+                android:layout_height="@dimen/default_margin"
+                />
 
         </RelativeLayout>
 
