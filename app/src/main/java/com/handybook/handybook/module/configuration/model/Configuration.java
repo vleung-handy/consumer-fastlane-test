@@ -17,7 +17,6 @@ public class Configuration
     @SerializedName("my_pro_team_enabled")
     private boolean mMyProTeamEnabled;
 
-    //    FIXME: JIA: put stuff here for sending users to reschedule when they try to cancel
     @SerializedName("show_reschedule_flow_on_cancel")
     private boolean mShowRescheduleFlowOnCancel;
 
