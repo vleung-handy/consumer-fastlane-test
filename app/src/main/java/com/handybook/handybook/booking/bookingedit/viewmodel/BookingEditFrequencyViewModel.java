@@ -6,14 +6,15 @@ import android.support.annotation.NonNull;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
-import com.handybook.handybook.booking.constant.BookingFrequency;
+import com.handybook.handybook.booking.constant.BookingRecurrence;
+import com.handybook.handybook.booking.constant.BookingRecurrence.BookingRecurrenceCode;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 
 public class BookingEditFrequencyViewModel
 {
     private final BookingEditFrequencyInfoResponse mEditFrequencyInfoResponse;
-    private final int[] mFrequencyOptionsArray = new int[]{BookingFrequency.WEEKLY, BookingFrequency.BIMONTHLY, BookingFrequency.MONTHLY};
+    private final int[] mFrequencyOptionsArray = new int[]{BookingRecurrence.WEEKLY, BookingRecurrence.BIMONTHLY, BookingRecurrence.MONTHLY};
     //allowing edit frequency only for recurring bookings
 
     private BookingEditFrequencyViewModel(
@@ -103,18 +104,18 @@ public class BookingEditFrequencyViewModel
 
     /**
      *
-     * @param frequency
+     * @param recurrenceCode
      * @return The new booking price for a given booking frequency
      */
-    private String getFormattedPriceForFrequency(final int frequency)
+    private String getFormattedPriceForFrequency(@BookingRecurrenceCode final int recurrenceCode)
     {
-        switch (frequency)
+        switch (recurrenceCode)
         {
-            case BookingFrequency.WEEKLY:
+            case BookingRecurrence.WEEKLY:
                 return mEditFrequencyInfoResponse.getWeeklyPriceFormatted();
-            case BookingFrequency.BIMONTHLY:
+            case BookingRecurrence.BIMONTHLY:
                 return mEditFrequencyInfoResponse.getBimonthlyPriceFormatted();
-            case BookingFrequency.MONTHLY:
+            case BookingRecurrence.MONTHLY:
                 return mEditFrequencyInfoResponse.getMonthlyPriceFormatted();
             default:
                 return null;
@@ -144,21 +145,22 @@ public class BookingEditFrequencyViewModel
         String[] displayStrings = new String[mFrequencyOptionsArray.length];
         for(int i = 0; i<mFrequencyOptionsArray.length; i++)
         {
-            int frequency = mFrequencyOptionsArray[i];
-            displayStrings[i] = getDisplayStringForBookingFrequency(context, frequency);
+            int recurrenceCode = mFrequencyOptionsArray[i];
+            displayStrings[i] = getDisplayStringForBookingFrequency(context, recurrenceCode);
         }
         return displayStrings;
     }
 
-    private String getDisplayStringForBookingFrequency(final Context context, final int frequency)
+    private String getDisplayStringForBookingFrequency(final Context context,
+                                                       @BookingRecurrenceCode final int recurrenceCode)
     {
-        switch(frequency)
+        switch(recurrenceCode)
         {
-            case BookingFrequency.WEEKLY:
+            case BookingRecurrence.WEEKLY:
                 return context.getResources().getString(R.string.every_week);
-            case BookingFrequency.BIMONTHLY:
+            case BookingRecurrence.BIMONTHLY:
                 return context.getResources().getString(R.string.every_two_weeks);
-            case BookingFrequency.MONTHLY:
+            case BookingRecurrence.MONTHLY:
                 return context.getResources().getString(R.string.every_four_weeks);
             default:
                 return null;

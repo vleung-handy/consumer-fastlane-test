@@ -1,6 +1,8 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -9,7 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.constant.BookingRecurrence;
+import com.handybook.handybook.booking.constant.BookingRecurrence.BookingRecurrenceCode;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
@@ -24,7 +29,14 @@ import butterknife.ButterKnife;
 public final class BookingRecurrenceFragment extends BookingFlowFragment
 {
     private BookingTransaction bookingTransaction;
-    private int[] recurValues;
+    private int[] mRecurrenceOptions;
+    private static final int[] DEFAULT_RECURRENCE_OPTIONS =
+            new int[]{
+                    BookingRecurrence.WEEKLY,
+                    BookingRecurrence.BIMONTHLY,
+                    BookingRecurrence.MONTHLY,
+                    BookingRecurrence.ONE_TIME
+            };
 
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout;
@@ -44,8 +56,17 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         bookingTransaction = bookingManager.getCurrentTransaction();
-        mixpanel.trackEventAppTrackFrequency();
+        if(bookingManager.getCurrentQuote() == null
+                || bookingManager.getCurrentQuote().getRecurrenceOptions() == null)
+        {
+            mRecurrenceOptions = DEFAULT_RECURRENCE_OPTIONS;
 
+        }
+        else
+        {
+            mRecurrenceOptions = bookingManager.getCurrentQuote().getRecurrenceOptions();
+        }
+        mixpanel.trackEventAppTrackFrequency();
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.BookingDetailsShownLog()));
     }
 
@@ -63,27 +84,22 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();
-        final BookingOption option = new BookingOption();
-        option.setType(BookingOption.TYPE_OPTION);
-        option.setDefaultValue("0");
-        option.setOptions(new String[]{
-                getString(R.string.every_week),
-                getString(R.string.every_two_weeks),
-                getString(R.string.every_four_weeks),
-                getString(R.string.once)
-        });
-        recurValues = new int[]{1, 2, 4, 0};
-        option.setOptionsSubText(new String[]
-                {null, getString(R.string.most_popular), null, null});
-        option.setOptionsRightSubText(getSavingsInfo());
+        final BookingOption option = getBookingOptionModelFromRecurrenceOptions(mRecurrenceOptions);
         final BookingOptionsSelectView optionsView
                 = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
         optionsView.hideTitle();
-        if (savedInstanceState == null) { optionsView.setCurrentIndex(1); }
-        else
+
+        //set default selected option
+        int defaultRecurrenceOption = getDefaultSelectedRecurrenceOption();
+        for(int i = 0; i<mRecurrenceOptions.length; i++)
         {
-            optionsView.setCurrentIndex(indexForFreq(bookingTransaction.getRecurringFrequency()));
+            if(mRecurrenceOptions[i] == defaultRecurrenceOption)
+            {
+                optionsView.setCurrentIndex(i);
+                break;
+            }
         }
+
         optionsLayout.addView(optionsView, 0);
         nextButton.setOnClickListener(nextClicked);
         return view;
@@ -119,7 +135,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
         public void onUpdate(final BookingOptionsView view)
         {
             final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-            bookingTransaction.setRecurringFrequency(recurValues[index]);
+            bookingTransaction.setRecurringFrequency(mRecurrenceOptions[index]);
         }
 
         @Override
@@ -139,18 +155,18 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
         }
     };
 
-    private String[] getSavingsInfo()
+    private String[] getSavingsInfoFromRecurrenceOptions(@NonNull int[] recurrenceOptions)
     {
-        final String[] info = new String[4];
+        final String[] info = new String[recurrenceOptions.length];
         final BookingQuote quote = bookingManager.getCurrentQuote();
         final float hours = bookingTransaction.getHours();
         final float prices[] = quote.getPricing(hours, 0);
         final float price = prices[0];
         final float discount = prices[1];
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < recurrenceOptions.length; i++)
         {
-            final float recurPrices[] = quote.getPricing(hours, freqForIndex(i));
+            final float recurPrices[] = quote.getPricing(hours, recurrenceOptions[i]);
             final float recurPrice = recurPrices[0];
             final float recurDiscount = recurPrices[1];
 
@@ -171,39 +187,103 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
         return info;
     }
 
-    private int indexForFreq(final int freq)
+    /**
+     * unfortunately we need to do this mapping here because
+     * the server does not return display strings
+     *
+     * @param recurrenceOptions
+     * @return A string array of display strings based on
+     * an int array of booking recurrence options
+     */
+    @NonNull
+    private String[] getDisplayStringArrayForRecurrenceOptions(
+            @NonNull int[] recurrenceOptions)
     {
-        switch (freq)
+        String[] displayStringArray = new String[recurrenceOptions.length];
+        for(int i = 0; i<displayStringArray.length; i++)
         {
-            case 1:
-                return 0;
+            displayStringArray[i] = getDisplayStringForRecurrenceCode(recurrenceOptions[i]);
+            if(displayStringArray[i] == null)
+            {
+                Crashlytics.logException(new Exception("Unable to map recurrence option to display string: " + recurrenceOptions[i]));
+            }
+        }
+        return displayStringArray;
+    }
 
-            case 2:
-                return 1;
-
-            case 4:
-                return 2;
-
+    /**
+     * @param recurrenceCode
+     * @return a display string given a booking recurrence code
+     */
+    @Nullable
+    private String getDisplayStringForRecurrenceCode(
+            @BookingRecurrenceCode int recurrenceCode)
+    {
+        switch(recurrenceCode)
+        {
+            case BookingRecurrence.WEEKLY:
+                return getString(R.string.every_week);
+            case BookingRecurrence.BIMONTHLY:
+                return getString(R.string.every_two_weeks);
+            case BookingRecurrence.MONTHLY:
+                return getString(R.string.every_four_weeks);
+            case BookingRecurrence.ONE_TIME:
+                return getString(R.string.once);
             default:
-                return 3;
+                return null;
         }
     }
 
-    private int freqForIndex(final int index)
+    @Nullable
+    private String getOptionSubTextForFrequencyCode(@BookingRecurrenceCode int recurrenceCode)
     {
-        switch (index)
+        switch(recurrenceCode)
         {
-            case 0:
-                return 1;
-
-            case 1:
-                return 2;
-
-            case 2:
-                return 4;
-
+            case BookingRecurrence.BIMONTHLY:
+                return getString(R.string.most_popular);
             default:
-                return 0;
+                return null;
         }
+    }
+
+    @NonNull
+    private String[] getOptionsSubTextArrayFromRecurrenceOptions(
+            @NonNull int[] recurrenceOptions)
+    {
+        String[] optionsSubTextArray = new String[recurrenceOptions.length];
+        for(int i = 0; i<optionsSubTextArray.length; i++)
+        {
+            optionsSubTextArray[i] = getOptionSubTextForFrequencyCode(recurrenceOptions[i]);
+            if(optionsSubTextArray[i] == null)
+            {
+                Crashlytics.logException(new Exception("Unable to map recurrence option to options subtext: " + recurrenceOptions[i]));
+            }
+        }
+        return optionsSubTextArray;
+    }
+
+    /**
+     * @return an options UI model given a booking recurrence options array
+     */
+    private BookingOption getBookingOptionModelFromRecurrenceOptions(
+            int[] recurrenceOptions)
+    {
+        final BookingOption option = new BookingOption();
+        option.setType(BookingOption.TYPE_OPTION);
+        option.setOptions(getDisplayStringArrayForRecurrenceOptions(recurrenceOptions));
+        option.setOptionsSubText(getOptionsSubTextArrayFromRecurrenceOptions(recurrenceOptions));
+        option.setOptionsRightSubText(getSavingsInfoFromRecurrenceOptions(recurrenceOptions));
+        return option;
+    }
+
+    /**
+     * setting as function rather than constant in case
+     * we want to get this from the server response later
+     * @return
+     */
+    @BookingRecurrenceCode
+    private int getDefaultSelectedRecurrenceOption()
+    {
+        return BookingRecurrence.BIMONTHLY;
     }
 }
