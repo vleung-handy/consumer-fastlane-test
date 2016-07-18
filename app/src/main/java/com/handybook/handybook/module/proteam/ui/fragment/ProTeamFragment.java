@@ -226,7 +226,8 @@ public class ProTeamFragment extends InjectedFragment implements
     @Override
     public void onYesPermanent(
             @Nullable ProTeamCategoryType proTeamCategoryType,
-            @Nullable ProTeamPro proTeamPro
+            @Nullable ProTeamPro proTeamPro,
+            @Nullable ProviderMatchPreference providerMatchPreference
     )
     {
         if (proTeamCategoryType == null || proTeamPro == null)
@@ -242,7 +243,7 @@ public class ProTeamFragment extends InjectedFragment implements
         ));
         bus.post(new ProTeamPageLog.BlockProvider.Submitted(
                 String.valueOf(proTeamPro.getId()),
-                ProviderMatchPreference.PREFERRED, //TODO assuming, because this pro is in this fragment
+                providerMatchPreference,
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         ));
         showUiBlockers();
@@ -254,9 +255,26 @@ public class ProTeamFragment extends InjectedFragment implements
     @Override
     public void onCancel(
             @Nullable ProTeamCategoryType proTeamCategoryType,
-            @Nullable ProTeamPro proTeamPro
+            @Nullable ProTeamPro proTeamPro,
+            @Nullable ProviderMatchPreference providerMatchPreference
     )
     {
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Cancelled(
+                proTeamPro == null ? null : String.valueOf(proTeamPro.getId()),
+                providerMatchPreference,
+                ProTeamPageLog.Context.MAIN_MANAGEMENT
+        )));
+    }
+
+    @Override
+    public void onDialogDisplayed(@Nullable ProTeamPro proTeamPro,
+                                  @Nullable ProviderMatchPreference providerMatchPreference)
+    {
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.WarningDisplayed(
+                proTeamPro == null ? null : String.valueOf(proTeamPro.getId()),
+                providerMatchPreference,
+                ProTeamPageLog.Context.MAIN_MANAGEMENT
+        )));
     }
 
     /**
@@ -265,21 +283,23 @@ public class ProTeamFragment extends InjectedFragment implements
     @Override
     public void onProRemovalRequested(
             final ProTeamCategoryType proTeamCategoryType,
-            final ProTeamPro proTeamPro
+            final ProTeamPro proTeamPro,
+            final ProviderMatchPreference providerMatchPreference
     )
     {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        RemoveProDialogFragment fragment = RemoveProDialogFragment.newInstance(ProTeamPageLog.Context.MAIN_MANAGEMENT);
+        RemoveProDialogFragment fragment = new RemoveProDialogFragment();
         final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
         fragment.setTitle(title);
         fragment.setProTeamPro(proTeamPro);
+        fragment.setProviderMatchPreference(providerMatchPreference);
         fragment.setProTeamCategoryType(proTeamCategoryType);
         fragment.setListener(this);
         fragment.show(fm, RemoveProDialogFragment.TAG);
 
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Tapped(
                 String.valueOf(proTeamPro.getId()),
-                ProviderMatchPreference.PREFERRED, //TODO assuming, because this pro is in this fragment
+                providerMatchPreference,
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
     }

@@ -17,6 +17,7 @@ import com.handybook.handybook.module.proteam.adapter.ProTeamCategoryAdapter;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
@@ -52,13 +53,13 @@ public class ProTeamProListFragment extends InjectedFragment
         mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
         {
             @Override
-            public void onXClicked(final ProTeamPro proTeamPro)
+            public void onXClicked(final ProTeamPro proTeamPro, final ProviderMatchPreference providerMatchPreference)
             {
                 if (mOnProInteraction == null)
                 {
                     return;
                 }
-                mOnProInteraction.onProRemovalRequested(mProTeamCategoryType, proTeamPro);
+                mOnProInteraction.onProRemovalRequested(mProTeamCategoryType, proTeamPro, providerMatchPreference);
             }
 
             @Override
@@ -181,7 +182,9 @@ public class ProTeamProListFragment extends InjectedFragment
      */
     public interface OnProInteraction
     {
-        void onProRemovalRequested(ProTeamCategoryType proTeamCategoryType, ProTeamPro proTeamPro);
+        void onProRemovalRequested(ProTeamCategoryType proTeamCategoryType,
+                                   ProTeamPro proTeamPro,
+                                   ProviderMatchPreference providerMatchPreference);
 
         void onProCheckboxStateChanged(
                 ProTeamCategoryType proTeamCategoryType,

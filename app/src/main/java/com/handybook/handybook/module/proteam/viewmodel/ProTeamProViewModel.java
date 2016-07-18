@@ -60,6 +60,11 @@ public class ProTeamProViewModel
         return new ProTeamProViewModel(proTeamPro, proTeamCategoryType, providerMatchPreference);
     }
 
+    public ProviderMatchPreference getProviderMatchPreference()
+    {
+        return mProviderMatchPreference;
+    }
+
     public ProTeamPro getProTeamPro()
     {
         return mProTeamPro;
@@ -103,7 +108,7 @@ public class ProTeamProViewModel
 
     public interface OnInteractionListener
     {
-        void onXClicked(ProTeamPro proTeamPro);
+        void onXClicked(ProTeamPro proTeamPro, ProviderMatchPreference providerMatchPreference);
 
         void onCheckedChanged(ProTeamPro proTeamPro, boolean checked);
     }

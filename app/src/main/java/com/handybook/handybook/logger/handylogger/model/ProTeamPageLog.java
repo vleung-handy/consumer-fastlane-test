@@ -39,7 +39,7 @@ public abstract class ProTeamPageLog extends EventLog
     }
 
     /**
-     * the pro team management page is opened
+     * user taps to open pro team management
      */
     public static class OpenTapped extends ProTeamPageLog
     {
@@ -55,6 +55,9 @@ public abstract class ProTeamPageLog extends EventLog
         }
     }
 
+    /**
+     * pro team management page opened
+     */
     public static class PageOpened extends ProTeamPageLog
     {
         private static final String EVENT_TYPE = "page_opened";

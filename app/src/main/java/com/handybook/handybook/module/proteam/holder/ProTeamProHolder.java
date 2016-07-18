@@ -73,7 +73,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     {
         if (mOnInteractionListener != null)
         {
-            mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro());
+            mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro(), mProTeamProViewModel.getProviderMatchPreference());
         }
     }
 
