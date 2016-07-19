@@ -324,6 +324,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
+                                mConfigurationManager.invalidateCache();
                                 mUserManager.setCurrentUser(null);
                                 //log out of Facebook also
                                 LoginManager.getInstance().logOut();

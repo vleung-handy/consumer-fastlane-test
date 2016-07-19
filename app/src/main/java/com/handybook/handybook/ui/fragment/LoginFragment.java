@@ -497,6 +497,8 @@ public final class LoginFragment extends BookingFlowFragment
         }
         bus.post(new LogEvent.AddLogEvent(new UserLoginLog.LoginLog()));
 
+        configurationManager.invalidateCache();
+
         if (mBookingUserName != null ||
                 authType == UserDataManager.AuthType.FACEBOOK && mFindUser)
         {

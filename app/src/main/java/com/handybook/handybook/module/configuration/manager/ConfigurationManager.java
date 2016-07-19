@@ -91,6 +91,11 @@ public class ConfigurationManager
         });
     }
 
+    public void invalidateCache()
+    {
+        mConfigurationCache.invalidate(KEY_CONFIGURATION_CACHE);
+    }
+
     private void setCachedConfiguration(final Configuration configuration)
     {
         mConfigurationCache.put(KEY_CONFIGURATION_CACHE, configuration);

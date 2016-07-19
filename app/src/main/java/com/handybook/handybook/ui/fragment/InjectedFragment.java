@@ -20,6 +20,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.logger.mixpanel.Mixpanel;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Bus;
@@ -43,6 +44,8 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     @Inject protected DataManager dataManager;
     @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject protected NavigationManager navigationManager;
+    @Inject
+    protected ConfigurationManager configurationManager;
 
     //TODO: acknowledged this is not ideal
     @VisibleForTesting
