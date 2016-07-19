@@ -15,6 +15,8 @@ import android.widget.FrameLayout;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
@@ -140,6 +142,11 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                     )
             );
         }
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.UpdateSubmitted(
+                mCleanersToAdd.size() + mHandymenToAdd.size(), //added count
+                mCleanersToRemove.size() + mHandymenToRemove.size(), //removed count
+                ProTeamPageLog.Context.BOOKING_FLOW
+        )));
         showUiBlockers();
         continueBookingFlow();
     }
@@ -174,10 +181,11 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
     @Override
     public void onYesPermanent(
             @Nullable ProTeamCategoryType proTeamCategoryType,
-            @Nullable ProTeamPro proTeamPro
+            @Nullable ProTeamPro proTeamPro,
+            @Nullable ProviderMatchPreference providerMatchPreference
     )
     {
-        if (proTeamCategoryType == null || proTeamPro == null)
+        if (proTeamCategoryType == null || proTeamPro == null || providerMatchPreference == null)
         {
             Crashlytics.logException(
                     new InvalidParameterException("Booking Flow Pro Team onYesPermanent invalid")
@@ -190,6 +198,11 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                 ProviderMatchPreference.NEVER,
                 ProTeamEvent.Source.PRO_MANAGEMENT
         ));
+        bus.post(new ProTeamPageLog.BlockProvider.Submitted(
+                String.valueOf(proTeamPro.getId()),
+                providerMatchPreference,
+                ProTeamPageLog.Context.BOOKING_FLOW
+        ));
         showUiBlockers();
     }
 
@@ -199,9 +212,27 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
     @Override
     public void onCancel(
             @Nullable ProTeamCategoryType proTeamCategoryType,
-            @Nullable ProTeamPro proTeamPro
+            @Nullable ProTeamPro proTeamPro,
+            @Nullable ProviderMatchPreference providerMatchPreference
     )
     {
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Cancelled(
+                proTeamPro == null ? null : String.valueOf(proTeamPro.getId()),
+                providerMatchPreference,
+                ProTeamPageLog.Context.BOOKING_FLOW
+        )));
+    }
+
+    @Override
+    public void onDialogDisplayed(@Nullable final ProTeamPro proTeamPro,
+                                  @Nullable ProviderMatchPreference providerMatchPreference
+    )
+    {
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.WarningDisplayed(
+                proTeamPro == null ? null : String.valueOf(proTeamPro.getId()),
+                providerMatchPreference,
+                ProTeamPageLog.Context.BOOKING_FLOW
+        )));
     }
 
     /**
@@ -210,14 +241,27 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
     @Override
     public void onProRemovalRequested(
             final ProTeamCategoryType proTeamCategoryType,
-            final ProTeamPro proTeamPro
+            final ProTeamPro proTeamPro,
+            final ProviderMatchPreference providerMatchPreference
     )
     {
+        if(proTeamPro == null)
+        {
+            Crashlytics.logException(new InvalidParameterException("ProTeamPro cannot be null on pro removal requested"));
+            return;
+        }
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Tapped(
+                String.valueOf(proTeamPro.getId()),
+                providerMatchPreference,
+                ProTeamPageLog.Context.BOOKING_FLOW
+        )));
+
         FragmentManager fm = getActivity().getSupportFragmentManager();
         RemoveProDialogFragment fragment = new RemoveProDialogFragment();
         final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
         fragment.setTitle(title);
         fragment.setProTeamPro(proTeamPro);
+        fragment.setProviderMatchPreference(providerMatchPreference);
         fragment.setProTeamCategoryType(proTeamCategoryType);
         fragment.setListener(this);
         fragment.show(fm, RemoveProDialogFragment.TAG);
@@ -259,6 +303,11 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                     break;
             }
         }
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.EnableButtonTapped(
+                String.valueOf(proTeamPro.getId()),
+                isChecked,
+                ProTeamPageLog.Context.BOOKING_FLOW
+        )));
     }
 
 

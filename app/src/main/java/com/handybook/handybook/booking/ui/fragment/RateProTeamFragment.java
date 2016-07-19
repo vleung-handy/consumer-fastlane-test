@@ -15,9 +15,8 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOption;
-import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOptionPresented;
-import com.handybook.handybook.module.proteam.event.logging.RatingDialogProTeamOptionTapped;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.view.ImageToggleButton;
 import com.squareup.otto.Bus;
@@ -160,18 +159,19 @@ public class RateProTeamFragment extends Fragment
             {
                 //Since this button is not part of the view pager, this can be either blocking a pro or adding a pro
                 String tag = mToggleButton.getTag();
-                RatingDialogProTeamOption.OptionType optionType;
+                RatingDialogLog.ProTeam.OptionType optionType;
 
                 if (TAG_ADD_PRO.equals(tag))
                 {
-                    optionType = RatingDialogProTeamOption.OptionType.ADD;
+                    optionType = RatingDialogLog.ProTeam.OptionType.ADD;
                 }
                 else
                 {
-                    optionType = RatingDialogProTeamOption.OptionType.REMOVE;
+                    optionType = RatingDialogLog.ProTeam.OptionType.REMOVE;
                 }
-
-                mBus.post(new RatingDialogProTeamOptionTapped(mToggleButton.isChecked(), optionType));
+                mBus.post(new LogEvent.AddLogEvent(
+                        new RatingDialogLog.ProTeam.OptionTapped
+                                (mToggleButton.isChecked(), optionType)));
             }
         });
 
@@ -267,8 +267,10 @@ public class RateProTeamFragment extends Fragment
      */
     private void resetSimpleViewForBlockPro()
     {
-        mBus.post(new RatingDialogProTeamOptionPresented(false,
-                RatingDialogProTeamOptionPresented.OptionType.BLOCK));
+        mBus.post(new LogEvent.AddLogEvent(new RatingDialogLog.ProTeam.OptionPresented(
+                false,
+                RatingDialogLog.ProTeam.OptionType.BLOCK
+        )));
 
         mPager.setVisibility(View.GONE);
         mSimpleContainer.setVisibility(View.VISIBLE);
@@ -295,8 +297,10 @@ public class RateProTeamFragment extends Fragment
      */
     private void resetViewForRemovePro(ImageToggleButton button, TextView textView)
     {
-        mBus.post(new RatingDialogProTeamOptionPresented(false,
-                RatingDialogProTeamOptionPresented.OptionType.REMOVE));
+        mBus.post(new LogEvent.AddLogEvent(new RatingDialogLog.ProTeam.OptionPresented(
+                false,
+                RatingDialogLog.ProTeam.OptionType.REMOVE
+        )));
 
         button.setChecked(false);
         textView.setText(mTitleRemovePro);
@@ -314,8 +318,10 @@ public class RateProTeamFragment extends Fragment
      */
     private void resetSimpleViewForAddPro()
     {
-        mBus.post(new RatingDialogProTeamOptionPresented(false,
-                RatingDialogProTeamOptionPresented.OptionType.ADD));
+        mBus.post(new LogEvent.AddLogEvent(new RatingDialogLog.ProTeam.OptionPresented(
+                false,
+                RatingDialogLog.ProTeam.OptionType.ADD
+        )));
 
         mPager.setVisibility(View.GONE);
         mSimpleContainer.setVisibility(View.VISIBLE);
@@ -442,12 +448,15 @@ public class RateProTeamFragment extends Fragment
                         animateToPage(1);
 
                         //the user just clicked on the "remove" button
-                        mBus.post(new RatingDialogProTeamOptionTapped(true,
-                                RatingDialogProTeamOptionPresented.OptionType.REMOVE));
+                        mBus.post(new LogEvent.AddLogEvent(
+                                new RatingDialogLog.ProTeam.OptionTapped(true, RatingDialogLog.ProTeam.OptionType.REMOVE)));
+
 
                         //this sends the user to hte page that will show BLOCK
-                        mBus.post(new RatingDialogProTeamOptionPresented(false,
-                                RatingDialogProTeamOptionPresented.OptionType.BLOCK));
+                        mBus.post(new LogEvent.AddLogEvent(new RatingDialogLog.ProTeam.OptionPresented(
+                                false,
+                                RatingDialogLog.ProTeam.OptionType.BLOCK
+                        )));
 
                     }
                 });
@@ -464,8 +473,10 @@ public class RateProTeamFragment extends Fragment
                         mCurrentClickedToggleButton = (ImageToggleButton) v;
 
                         //the user just clicked on the "block" button. Record the click
-                        mBus.post(new RatingDialogProTeamOptionTapped(mCurrentClickedToggleButton.isChecked(),
-                                RatingDialogProTeamOptionPresented.OptionType.REMOVE));
+                        mBus.post(new LogEvent.AddLogEvent(
+                                new RatingDialogLog.ProTeam.OptionTapped(
+                                        mCurrentClickedToggleButton.isChecked(),
+                                        RatingDialogLog.ProTeam.OptionType.BLOCK)));
                     }
                 });
                 resetViewForBlockPro(button, textView);

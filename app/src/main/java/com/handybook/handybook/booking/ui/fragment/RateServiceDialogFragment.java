@@ -23,11 +23,12 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
 import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.event.logging.RatingDialogSubmitted;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
@@ -121,7 +122,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                     matchPreference = mPrerateProInfo.getProviderMatchPreference();
                 }
 
-                mBus.post(new RatingDialogSubmitted(finalRating, matchPreference.toString(), tipAmountCents));
+                mBus.post(new LogEvent.AddLogEvent(new RatingDialogLog.Submitted(
+                        finalRating,
+                        matchPreference,
+                        tipAmountCents
+                )));
+
                 mBus.post(new BookingEvent.RateBookingEvent(
                         mBookingId,
                         finalRating,

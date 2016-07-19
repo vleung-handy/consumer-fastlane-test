@@ -21,10 +21,6 @@ import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivit
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.event.logging.ProTeamOpenTapped;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
@@ -32,7 +28,6 @@ import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.ThinIconButton;
 import com.handybook.handybook.util.TextUtils;
-import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

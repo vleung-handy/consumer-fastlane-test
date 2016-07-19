@@ -112,6 +112,7 @@ import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamProListFragment;
+import com.handybook.handybook.module.proteam.ui.fragment.RemoveProDialogFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -254,7 +255,8 @@ import retrofit.converter.GsonConverter;
         ProTeamFragment.class,
         ProTeamProListFragment.class,
         BookingProTeamActivity.class,
-        BookingProTeamFragment.class
+        BookingProTeamFragment.class,
+        RemoveProDialogFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
