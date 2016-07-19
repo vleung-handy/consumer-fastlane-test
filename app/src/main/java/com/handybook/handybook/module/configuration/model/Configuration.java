@@ -17,6 +17,9 @@ public class Configuration
     @SerializedName("my_pro_team_enabled")
     private boolean mMyProTeamEnabled;
 
+    @SerializedName("show_reschedule_flow_on_cancel")
+    private boolean mShowRescheduleFlowOnCancel;
+
     public boolean shouldUseHelpCenterWebView()
     {
         return mShouldUseHelpCenterWebView;
@@ -30,6 +33,11 @@ public class Configuration
     public boolean shouldUseCancelRecurringWebview()
     {
         return mShouldUseCancelRecurringWebview;
+    }
+
+    public boolean isShowRescheduleFlowOnCancel()
+    {
+        return mShowRescheduleFlowOnCancel;
     }
 
     public boolean isMyProTeamEnabled()

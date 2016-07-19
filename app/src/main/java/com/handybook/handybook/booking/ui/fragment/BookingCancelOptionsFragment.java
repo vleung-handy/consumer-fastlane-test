@@ -10,13 +10,15 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
 import java.util.ArrayList;
 
@@ -124,11 +126,28 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
 
             final User user = userManager.getCurrentUser();
 
-            dataManager.cancelBooking(booking.getId(), optionIndex,  user.getId(), user.getAuthToken(),
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                    BookingDetailsLog.EventType.SUBMITTED,
+                    booking.getId()))
+            );
+
+            dataManager.cancelBooking(
+                    booking.getId(),
+                    optionIndex,
+                    user.getId(),
+                    user.getAuthToken(),
                     new DataManager.Callback<String>() {
                 @Override
                 public void onSuccess(final String message) {
-                    if (!allowCallbacks) return;
+                    bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                            BookingDetailsLog.EventType.SUCCESS,
+                            booking.getId()
+                    )));
+
+                    if (!allowCallbacks)
+                    {
+                        return;
+                    }
                     enableInputs();
                     progressDialog.dismiss();
 
@@ -143,7 +162,16 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
 
                 @Override
                 public void onError(final DataManager.DataManagerError error) {
-                    if (!allowCallbacks) return;
+                    bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                            BookingDetailsLog.EventType.ERROR,
+                            booking.getId()))
+                    );
+
+                    if (!allowCallbacks)
+                    {
+                        return;
+                    }
+
                     enableInputs();
                     progressDialog.dismiss();
                     dataManagerErrorHandler.handleError(getActivity(), error);

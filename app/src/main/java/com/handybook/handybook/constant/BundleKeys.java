@@ -7,6 +7,7 @@ public class BundleKeys
     public static final String BOOKING_DATE = "booking_date";
     public static final String BOOKING_SOURCE = "booking_source";
     public static final String BOOKING_PHONE = "booking_phone";
+    public static final String CONFIGURATION = "configuration";
     public static final String TARGET_URL = "target_url";
     public static final String BOOKING_STATUS = "booking_status";
     public static final String DATE_EPOCH_TIME = "date_epoch_time";
@@ -24,6 +25,7 @@ public class BundleKeys
 
     public static final String RESCHEDULE_BOOKING = "reschedule_booking";
     public static final String RESCHEDULE_NOTICE = "reschedule_notice";
+    public static final String RESCHEDULE_TYPE = "reschedule_type";
     public static final String RESCHEDULE_NEW_DATE = "reschedule_new_date";
     public static final String POST_OPTIONS = "post_options";
 

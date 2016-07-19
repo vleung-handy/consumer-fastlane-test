@@ -24,6 +24,8 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
@@ -152,6 +154,15 @@ public class BookingFlowFragment extends InjectedFragment
         final User user = userManager.getCurrentUser();
         disableInputs();
         progressDialog.show();
+
+        //log submitted
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
+                BookingDetailsLog.EventType.SUBMITTED,
+                booking.getId(),
+                booking.getStartDate(),
+                date))
+        );
+
         dataManager.rescheduleBooking(
                 booking.getId(),
                 newDate,
@@ -163,6 +174,14 @@ public class BookingFlowFragment extends InjectedFragment
                     @Override
                     public void onSuccess(final Pair<String, BookingQuote> response)
                     {
+                        //log success
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
+                                BookingDetailsLog.EventType.SUCCESS,
+                                booking.getId(),
+                                booking.getStartDate(),
+                                date))
+                        );
+
                         if (!allowCallbacks)
                         {
                             return;
@@ -209,6 +228,14 @@ public class BookingFlowFragment extends InjectedFragment
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
+                        //log error
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
+                                BookingDetailsLog.EventType.ERROR,
+                                booking.getId(),
+                                booking.getStartDate(),
+                                date))
+                        );
+
                         if (!allowCallbacks)
                         {
                             return;

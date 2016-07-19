@@ -26,7 +26,7 @@ import javax.inject.Inject;
 public class EventLogManager
 {
     private static final String SENT_TIMESTAMP_SECS_KEY = "event_bundle_sent_timestamp";
-    private static final int MAX_NUM_PER_BUNDLE = 50;
+    private static final int MAX_NUM_PER_BUNDLE = 10;
     private static final Gson GSON = new Gson();
 
     private static List<Event> sLogs = new ArrayList<>();

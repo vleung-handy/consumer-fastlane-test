@@ -3,7 +3,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
-import com.handybook.handybook.booking.constant.BookingFrequency;
+import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
@@ -59,7 +59,7 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
     @Test
     public void shouldRequestEditFrequencyWhenSubmitButtonPressed() throws Exception
     {
-        when(mBookingEditFrequencyInfoResponse.getCurrentFrequency()).thenReturn(BookingFrequency.WEEKLY);
+        when(mBookingEditFrequencyInfoResponse.getCurrentFrequency()).thenReturn(BookingRecurrence.WEEKLY);
         BookingEditFrequencyViewModel editFrequencyViewModel =
                 BookingEditFrequencyViewModel.from(mBookingEditFrequencyInfoResponse);
 

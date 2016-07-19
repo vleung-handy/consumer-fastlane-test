@@ -41,6 +41,7 @@ public class BookingQuote extends Observable
     public static final String KEY_ANDROID_PAY_COUPON = "android_pay_coupon";
     public static final String KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED = "android_pay_coupon_value_formatted";
     public static final String KEY_COUPON = "coupon";
+    public static final String KEY_RECURRENCE_OPTIONS = "recurrence_options";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -78,9 +79,20 @@ public class BookingQuote extends Observable
     private String mAndroidPayCouponValueFormatted;
     @SerializedName(KEY_COUPON)
     private QuoteCoupon mCoupon;
+    @SerializedName(KEY_RECURRENCE_OPTIONS)
+    private int[] mRecurrenceOptions;
 
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
+
+    /**
+     * each item returned in this array should be a constant in BookingRecurrence
+     * @return
+     */
+    public int[] getRecurrenceOptions()
+    {
+        return mRecurrenceOptions;
+    }
 
     public String getAndroidPayCouponValueFormatted()
     {
@@ -114,7 +126,7 @@ public class BookingQuote extends Observable
 
     void setBookingId(final int bookingId)
     {
-        this.mBookingId = bookingId;
+        mBookingId = bookingId;
         triggerObservers();
     }
 
@@ -125,7 +137,7 @@ public class BookingQuote extends Observable
 
     void setServiceId(final int serviceId)
     {
-        this.mServiceId = serviceId;
+        mServiceId = serviceId;
         triggerObservers();
     }
 
@@ -136,7 +148,7 @@ public class BookingQuote extends Observable
 
     void setUserId(final String userId)
     {
-        this.mUserId = userId;
+        mUserId = userId;
         triggerObservers();
     }
 
@@ -147,7 +159,7 @@ public class BookingQuote extends Observable
 
     public void setHours(float hours)
     {
-        this.mHours = hours;
+        mHours = hours;
         triggerObservers();
     }
 
@@ -158,7 +170,7 @@ public class BookingQuote extends Observable
 
     public void setStartDate(final Date startDate)
     {
-        this.mStartDate = startDate;
+        mStartDate = startDate;
         triggerObservers();
     }
 
@@ -169,7 +181,7 @@ public class BookingQuote extends Observable
 
     void setAddress(final Address address)
     {
-        this.mAddress = address;
+        mAddress = address;
         triggerObservers();
     }
 
@@ -180,7 +192,7 @@ public class BookingQuote extends Observable
 
     void setCurrencyChar(final String currencyChar)
     {
-        this.mCurrencyChar = currencyChar;
+        mCurrencyChar = currencyChar;
         triggerObservers();
     }
 
@@ -191,7 +203,7 @@ public class BookingQuote extends Observable
 
     void setCurrencySuffix(final String currencySuffix)
     {
-        this.mCurrencySuffix = currencySuffix;
+        mCurrencySuffix = currencySuffix;
         triggerObservers();
     }
 
@@ -202,7 +214,7 @@ public class BookingQuote extends Observable
 
     void setHourlyAmount(final float hourlyAmount)
     {
-        this.mHourlyAmount = hourlyAmount;
+        mHourlyAmount = hourlyAmount;
     }
 
     public ArrayList<BookingPriceInfo> getPriceTable()
@@ -212,7 +224,7 @@ public class BookingQuote extends Observable
 
     public void setPriceTable(final ArrayList<BookingPriceInfo> priceTable)
     {
-        this.mPriceTable = priceTable;
+        mPriceTable = priceTable;
         buildPriceMap();
         triggerObservers();
     }
@@ -230,7 +242,7 @@ public class BookingQuote extends Observable
 
     public void setSurgePriceTable(final ArrayList<PeakPriceInfo> surgePriceTable)
     {
-        this.mSurgePriceTable = surgePriceTable;
+        mSurgePriceTable = surgePriceTable;
         buildPeakPriceTable();
         triggerObservers();
     }
@@ -246,14 +258,14 @@ public class BookingQuote extends Observable
 
     boolean hasRecurring()
     {
-        final BookingPriceInfo info = this.mPriceTable.get(0);
+        final BookingPriceInfo info = mPriceTable.get(0);
         return !(info.getBiMonthlyprice() <= 0 && info.getMonthlyPrice() <= 0
                 && info.getWeeklyPrice() <= 0);
     }
 
     public float[] getPricing(final float hours, final int freq)
     {
-        final BookingPriceInfo info = this.getPriceTableMap().get(hours);
+        final BookingPriceInfo info = getPriceTableMap().get(hours);
 
         switch (freq)
         {
@@ -278,7 +290,7 @@ public class BookingQuote extends Observable
 
     void setPhonePrefix(final String phonePrefix)
     {
-        this.mPhonePrefix = phonePrefix;
+        mPhonePrefix = phonePrefix;
     }
 
     public String getStripeKey()
@@ -288,7 +300,7 @@ public class BookingQuote extends Observable
 
     void setStripeKey(final String stripeKey)
     {
-        this.mStripeKey = stripeKey;
+        mStripeKey = stripeKey;
         triggerObservers();
     }
 
@@ -299,7 +311,7 @@ public class BookingQuote extends Observable
 
     public void setBookingOption(final BookingOption bookingOption)
     {
-        this.mBookingOption = bookingOption;
+        mBookingOption = bookingOption;
         triggerObservers();
     }
 
@@ -313,19 +325,19 @@ public class BookingQuote extends Observable
     {
         mPriceTableMap = new HashMap<>();
 
-        if (this.mPriceTable == null) { return; }
+        if (mPriceTable == null) { return; }
 
-        for (final BookingPriceInfo info : this.mPriceTable)
+        for (final BookingPriceInfo info : mPriceTable)
         { mPriceTableMap.put(info.getHours(), info); }
     }
 
     private void buildPeakPriceTable()
     {
-        if (this.mSurgePriceTable == null) { return; }
+        if (mSurgePriceTable == null) { return; }
 
         final HashMap<Date, ArrayList<PeakPriceInfo>> peakPriceMap = new HashMap<>();
 
-        for (final PeakPriceInfo info : this.mSurgePriceTable)
+        for (final PeakPriceInfo info : mSurgePriceTable)
         {
             final Calendar dateCal = Calendar.getInstance();
             dateCal.setTime(info.getDate());
@@ -439,6 +451,7 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_ANDROID_PAY_COUPON, context.serialize(value.getAndroidPayCouponCode()));
             jsonObj.add(KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED, context.serialize(value.getAndroidPayCouponValueFormatted()));
             jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));
+            jsonObj.add(KEY_RECURRENCE_OPTIONS, context.serialize(value.getRecurrenceOptions()));
             return jsonObj;
         }
     }
