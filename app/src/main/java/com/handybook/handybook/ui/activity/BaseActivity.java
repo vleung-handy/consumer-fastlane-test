@@ -41,6 +41,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
@@ -71,6 +72,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     protected UserManager mUserManager;
     @Inject
     DataManager mDataManager;
+    @Inject
+    ConfigurationManager mConfigurationManager;
     @Inject
     DataManagerErrorHandler mDataManagerErrorHandler;
     @Inject
