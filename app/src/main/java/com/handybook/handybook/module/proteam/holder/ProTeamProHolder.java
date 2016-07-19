@@ -1,22 +1,23 @@
 package com.handybook.handybook.module.proteam.holder;
 
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public class ProTeamProHolder extends RecyclerView.ViewHolder
+    implements CompoundButton.OnCheckedChangeListener
 {
     private ProTeamProViewModel mProTeamProViewModel;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
@@ -45,10 +46,10 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     }
 
     public void bindProTeamProViewModel(
-            @NonNull final ProTeamProViewModel proTeamProViewModel,
-            @NonNull ProviderMatchPreference providerMatchPreference
+            @NonNull final ProTeamProViewModel proTeamProViewModel
     )
     {
+        mCheckbox.setOnCheckedChangeListener(null);
         mProTeamProViewModel = proTeamProViewModel;
         mTitle.setText(mProTeamProViewModel.getTitle());
         mSubtitle.setText(mProTeamProViewModel.getSubtitle());
@@ -56,19 +57,8 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         mFooter.setText(mProTeamProViewModel.getFooter());
         mFooter.setVisibility(mProTeamProViewModel.isFooterVisible() ? View.VISIBLE : View.GONE);
         mCheckbox.setChecked(mProTeamProViewModel.isChecked());
-        switch (providerMatchPreference)
-        {
-            case PREFERRED:
-                mXButton.setVisibility(View.VISIBLE);
-                mCheckbox.setVisibility(View.GONE);
-                mPretext.setText(R.string.pro_team_pro_card_pretext_preferred);
-                break;
-            case INDIFFERENT:
-                mXButton.setVisibility(View.GONE);
-                mCheckbox.setVisibility(View.VISIBLE);
-                mPretext.setText(R.string.pro_team_pro_card_pretext_indifferent);
-                break;
-        }
+        mCheckbox.setOnCheckedChangeListener(this);
+        initTextColors();
     }
 
     public void showPretext()
@@ -82,22 +72,44 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     }
 
     @OnClick(R.id.pro_team_pro_card_x)
-    void onXClicked(View view)
+    void onXClicked()
     {
         if (mOnInteractionListener != null)
         {
-            mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro());
+            mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro(), mProTeamProViewModel.getProviderMatchPreference());
         }
     }
 
-    @OnCheckedChanged(R.id.pro_team_pro_card_checkbox)
-    void onCheckedChanged(boolean checked)
+    private void initTextColors()
     {
-        mProTeamProViewModel.setChecked(checked);
+        if (mProTeamProViewModel.isChecked())
+        {
+            final int blackColor = ContextCompat.getColor(
+                    mTitle.getContext(),
+                    R.color.handy_text_black
+            );
+            mTitle.setTextColor(blackColor);
+            mSubtitle.setTextColor(blackColor);
+        }
+        else
+        {
+            final int greyColor = ContextCompat.getColor(
+                    mTitle.getContext(),
+                    R.color.handy_text_gray
+            );
+            mTitle.setTextColor(greyColor);
+            mSubtitle.setTextColor(greyColor);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked)
+    {
+        mProTeamProViewModel.setChecked(isChecked);
+        initTextColors();
         if (mOnInteractionListener != null)
         {
-            mOnInteractionListener.onCheckedChanged(mProTeamProViewModel.getProTeamPro(), checked);
+            mOnInteractionListener.onCheckedChanged(mProTeamProViewModel.getProTeamPro(), isChecked);
         }
-
     }
 }

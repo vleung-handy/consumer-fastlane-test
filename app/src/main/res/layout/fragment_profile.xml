@@ -119,17 +119,6 @@
                 custom:iconResourceId="@drawable/ic_calendar_dark"
                 />
 
-            <com.handybook.handybook.ui.widget.ThinIconButton
-                android:id="@+id/profile_pro_team_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/profile_cancel_cleaning_plan_button"
-                android:text="@string/title_activity_pro_team"
-                android:visibility="gone"
-                tools:visibility="visible"
-                custom:iconResourceId="@drawable/ic_pro_team_form_icon_heart"
-                />
-
         </RelativeLayout>
 
     </ScrollView>

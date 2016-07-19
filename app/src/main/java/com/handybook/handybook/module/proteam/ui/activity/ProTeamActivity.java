@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.squareup.otto.Subscribe;
@@ -16,7 +15,6 @@ import com.squareup.otto.Subscribe;
 public class ProTeamActivity extends MenuDrawerActivity
 {
 
-    private Configuration mConfiguration;
     private Object mBusListener;
 
     @Override
@@ -49,7 +47,7 @@ public class ProTeamActivity extends MenuDrawerActivity
     @Override
     protected Fragment createFragment()
     {
-        return ProTeamFragment.newInstance(ProTeamFragment.Mode.PRO_MANAGE);
+        return ProTeamFragment.newInstance();
     }
 
     @Override
@@ -70,11 +68,6 @@ public class ProTeamActivity extends MenuDrawerActivity
     {
         super.onResume();
         mBus.register(mBusListener);
-
-        if (mConfiguration == null)
-        {
-            mBus.post(new ConfigurationEvent.RequestConfiguration());
-        }
     }
 
     @Override

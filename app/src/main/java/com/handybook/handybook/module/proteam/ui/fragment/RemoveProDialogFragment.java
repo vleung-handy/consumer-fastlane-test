@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,8 +50,8 @@ public class RemoveProDialogFragment extends DialogFragment
     private String mTitle;
     private RemoveProListener mListener;
     private ProTeamPro mProTeamPro;
+    private ProviderMatchPreference mProviderMatchPreference;
     private ProTeamCategoryType mProTeamCategoryType;
-
 
     @NonNull
     @Override
@@ -62,6 +63,16 @@ public class RemoveProDialogFragment extends DialogFragment
         mTextTitle.setText(mTitle);
         extendCancelButtonClickArea();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        if(mListener != null)
+        {
+            mListener.onDialogDisplayed(mProTeamPro, mProviderMatchPreference);
+        }
     }
 
     @NonNull
@@ -138,6 +149,10 @@ public class RemoveProDialogFragment extends DialogFragment
         mProTeamCategoryType = proTeamCategoryType;
     }
 
+    public void setProviderMatchPreference(@NonNull final ProviderMatchPreference providerMatchPreference)
+    {
+        mProviderMatchPreference = providerMatchPreference;
+    }
     public void setProTeamPro(@NonNull final ProTeamPro proTeamPro)
     {
         mProTeamPro = proTeamPro;
@@ -155,22 +170,12 @@ public class RemoveProDialogFragment extends DialogFragment
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    @OnClick(R.id.remove_pro_not_permanent_text)
-    public void notPermanentClicked()
-    {
-        if (mListener != null)
-        {
-            mListener.onYesNotPermanent(mProTeamCategoryType, mProTeamPro);
-        }
-        dismiss();
-    }
-
     @OnClick(R.id.remove_pro_permanent_text)
     public void permanentClicked()
     {
         if (mListener != null)
         {
-            mListener.onYesPermanent(mProTeamCategoryType, mProTeamPro);
+            mListener.onYesPermanent(mProTeamCategoryType, mProTeamPro, mProviderMatchPreference);
         }
         dismiss();
     }
@@ -186,7 +191,7 @@ public class RemoveProDialogFragment extends DialogFragment
     {
         if (mListener != null)
         {
-            mListener.onCancel(mProTeamCategoryType, mProTeamPro);
+            mListener.onCancel(mProTeamCategoryType, mProTeamPro, mProviderMatchPreference);
         }
 
         dismiss();
@@ -201,19 +206,27 @@ public class RemoveProDialogFragment extends DialogFragment
 
     public interface RemoveProListener
     {
-        void onYesNotPermanent(
-                @Nullable ProTeamCategoryType proTeamCategoryType,
-                @Nullable ProTeamPro proTeamPro
-        );
-
         void onYesPermanent(
                 @Nullable ProTeamCategoryType proTeamCategoryType,
-                @Nullable ProTeamPro proTeamPro
+                @Nullable ProTeamPro proTeamPro,
+                @Nullable ProviderMatchPreference providerMatchPreference
         );
 
         void onCancel(
                 @Nullable ProTeamCategoryType proTeamCategoryType,
-                @Nullable ProTeamPro proTeamPro
+                @Nullable ProTeamPro proTeamPro,
+                @Nullable ProviderMatchPreference providerMatchPreference
+        );
+
+        /**
+         * Need this because business wants this logged
+         * in addition to the trigger event for this dialog
+         * @param proTeamPro
+         * @param providerMatchPreference
+         */
+        void onDialogDisplayed(
+                @Nullable ProTeamPro proTeamPro,
+                @Nullable ProviderMatchPreference providerMatchPreference
         );
     }
 }

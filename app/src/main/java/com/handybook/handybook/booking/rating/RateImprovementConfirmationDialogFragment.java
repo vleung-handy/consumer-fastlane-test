@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
-import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 
 import butterknife.Bind;

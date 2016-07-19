@@ -44,26 +44,11 @@
         />
 
     <TextView
-        android:id="@+id/remove_pro_not_permanent_text"
-        style="@style/TextView.Large"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/remove_pro_dialog_text_view_height"
-        android:layout_below="@id/remove_pro_divider"
-        android:drawableLeft="@drawable/ic_pro_team_menu_remove"
-        android:drawablePadding="@dimen/default_padding"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
-        android:layout_marginTop="@dimen/default_margin"
-        android:text="@string/pro_team_remove_not_permanent"
-        android:gravity="center_vertical"
-        />
-
-    <TextView
         android:id="@+id/remove_pro_permanent_text"
         style="@style/TextView.Large"
         android:layout_width="match_parent"
         android:layout_height="@dimen/remove_pro_dialog_text_view_height"
-        android:layout_below="@id/remove_pro_not_permanent_text"
+        android:layout_below="@id/remove_pro_divider"
         android:drawableLeft="@drawable/ic_pro_team_menu_ban"
         android:drawablePadding="@dimen/default_padding"
         android:paddingLeft="@dimen/default_padding"

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ public class ProTeamProViewModel
 
     private final ProTeamPro mProTeamPro;
     private final ProTeamCategoryType mProTeamCategoryType;
+    private final ProviderMatchPreference mProviderMatchPreference;
     private final String mTitle;
     private final String mSubtitle;
     private final String mFooter;
@@ -25,11 +27,14 @@ public class ProTeamProViewModel
 
     private ProTeamProViewModel(
             @NonNull final ProTeamPro proTeamPro,
-            final ProTeamCategoryType proTeamCategoryType
+            @NonNull ProTeamCategoryType proTeamCategoryType,
+            @NonNull ProviderMatchPreference providerMatchPreference
     )
     {
         mProTeamPro = proTeamPro;
         mProTeamCategoryType = proTeamCategoryType;
+        mProviderMatchPreference = providerMatchPreference;
+        mIsChecked = mProviderMatchPreference == ProviderMatchPreference.PREFERRED;
         mTitle = proTeamPro.getName();
         mSubtitle = String.format(TEMPLATE_SPECIALTIES, proTeamPro.getDescription());
         final Date lastSeenAt = proTeamPro.getLastSeenAt();
@@ -48,10 +53,16 @@ public class ProTeamProViewModel
 
     public static ProTeamProViewModel from(
             @NonNull final ProTeamPro proTeamPro,
-            @NonNull final ProTeamCategoryType proTeamCategoryType
+            @NonNull final ProTeamCategoryType proTeamCategoryType,
+            @NonNull final ProviderMatchPreference providerMatchPreference
     )
     {
-        return new ProTeamProViewModel(proTeamPro, proTeamCategoryType);
+        return new ProTeamProViewModel(proTeamPro, proTeamCategoryType, providerMatchPreference);
+    }
+
+    public ProviderMatchPreference getProviderMatchPreference()
+    {
+        return mProviderMatchPreference;
     }
 
     public ProTeamPro getProTeamPro()
@@ -86,8 +97,7 @@ public class ProTeamProViewModel
 
     public boolean isSubtitleVisible()
     {
-        return mProTeamCategoryType == ProTeamCategoryType.HANDYMEN
-                && mProTeamPro.getDescription() != null
+        return mProTeamPro.getDescription() != null
                 && !mProTeamPro.getDescription().isEmpty();
     }
 
@@ -98,7 +108,7 @@ public class ProTeamProViewModel
 
     public interface OnInteractionListener
     {
-        void onXClicked(ProTeamPro proTeamPro);
+        void onXClicked(ProTeamPro proTeamPro, ProviderMatchPreference providerMatchPreference);
 
         void onCheckedChanged(ProTeamPro proTeamPro, boolean checked);
     }

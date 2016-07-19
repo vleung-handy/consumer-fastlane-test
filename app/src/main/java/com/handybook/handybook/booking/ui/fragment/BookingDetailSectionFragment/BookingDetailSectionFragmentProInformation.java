@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
@@ -17,9 +16,12 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.constants.SourcePage;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.event.logging.ProTeamOpenTapped;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
@@ -130,7 +132,7 @@ public class BookingDetailSectionFragmentProInformation extends
             @Override
             public void onClick(final View v)
             {
-                bus.post(new ProTeamOpenTapped("booking_details"));
+                bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.OpenTapped(SourcePage.BOOKING_DETAILS)));
                 startActivity(new Intent(getActivity(), ProTeamActivity.class));
             }
         });

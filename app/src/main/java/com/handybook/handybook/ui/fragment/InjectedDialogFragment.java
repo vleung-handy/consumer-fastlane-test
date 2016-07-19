@@ -6,8 +6,8 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.booking.manager.BookingManager;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;

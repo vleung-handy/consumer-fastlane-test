@@ -17,9 +17,9 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingExtrasLog;
+import com.handybook.handybook.manager.PrefsManager;
 
 import java.util.ArrayList;
 

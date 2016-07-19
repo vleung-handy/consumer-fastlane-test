@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
@@ -38,10 +37,11 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
-import com.handybook.handybook.manager.PrefsManager;
-import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.logger.handylogger.model.AppLog;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
+import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.ui.widget.ProgressDialog;
@@ -72,6 +72,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     protected UserManager mUserManager;
     @Inject
     DataManager mDataManager;
+    @Inject
+    ConfigurationManager mConfigurationManager;
     @Inject
     DataManagerErrorHandler mDataManagerErrorHandler;
     @Inject
@@ -357,7 +359,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     {
         super.onStart();
         allowCallbacks = true;
-        mBus.post(new ConfigurationEvent.RefreshConfiguration());
     }
 
     public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener)
