@@ -303,7 +303,6 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                     break;
             }
         }
-        //FIXME this will trigger on page open
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.EnableButtonTapped(
                 String.valueOf(proTeamPro.getId()),
                 isChecked,
