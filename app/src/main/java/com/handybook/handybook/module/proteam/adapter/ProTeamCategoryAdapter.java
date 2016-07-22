@@ -19,8 +19,8 @@ import java.util.List;
 
 public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolder>
 {
+
     private ProTeamCategoryType mProTeamCategoryType;
-    private ProviderMatchPreference mProviderMatchPreference;
     private ProTeam mProTeam;
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeamProViewModel.OnInteractionListener mOnXClickedListener;
@@ -28,12 +28,10 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     public ProTeamCategoryAdapter(
             @NonNull final ProTeam proTeam,
             @NonNull final ProTeamCategoryType proTeamCategoryType,
-            @NonNull final ProviderMatchPreference providerMatchPreference,
             @NonNull final ProTeamProViewModel.OnInteractionListener onInteractionListener
     )
     {
         mProTeamCategoryType = proTeamCategoryType;
-        mProviderMatchPreference = providerMatchPreference;
         mProTeam = proTeam;
         mOnXClickedListener = onInteractionListener;
         initProTeamProViewModels();
@@ -44,14 +42,14 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     {
         final View itemView = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.layout_pro_team_pro_card, parent, false);
+                .inflate(R.layout.layout_pro_team_pro_card_v2, parent, false);
         return new ProTeamProHolder(itemView, mOnXClickedListener);
     }
 
     @Override
     public void onBindViewHolder(final ProTeamProHolder holder, int position)
     {
-        holder.bindProTeamProViewModel(getItem(position), mProviderMatchPreference);
+        holder.bindProTeamProViewModel(getItem(position));
         if (position == 0)
         {
             holder.showPretext();
@@ -72,22 +70,37 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     {
         mProTeamProViewModels = new ArrayList<>();
         final ProTeam.ProTeamCategory proTeamCategory = mProTeam.getCategory(mProTeamCategoryType);
-        final List<ProTeamPro> proTeamPros;
+        final List<ProTeamPro> proTeamPros = new ArrayList<>();
         if (proTeamCategory == null)
         {
             return;
         }
         else
         {
-            proTeamPros = proTeamCategory.get(mProviderMatchPreference);
-        }
-        if (proTeamPros == null)
-        {
-            return;
-        }
-        for (ProTeamPro ePro : proTeamPros)
-        {
-            mProTeamProViewModels.add(ProTeamProViewModel.from(ePro, mProTeamCategoryType));
+            final List<ProTeamPro> preferredPros = proTeamCategory.getPreferred();
+            if (preferredPros != null)
+            {
+                for (ProTeamPro eachPro : preferredPros)
+                {
+                    mProTeamProViewModels.add(ProTeamProViewModel.from(
+                            eachPro,
+                            mProTeamCategoryType,
+                            ProviderMatchPreference.PREFERRED
+                    ));
+                }
+            }
+            final List<ProTeamPro> indifferentPros = proTeamCategory.getIndifferent();
+            if (indifferentPros != null)
+            {
+                for (ProTeamPro eachPro : indifferentPros)
+                {
+                    mProTeamProViewModels.add(ProTeamProViewModel.from(
+                            eachPro,
+                            mProTeamCategoryType,
+                            ProviderMatchPreference.INDIFFERENT
+                    ));
+                }
+            }
         }
     }
 

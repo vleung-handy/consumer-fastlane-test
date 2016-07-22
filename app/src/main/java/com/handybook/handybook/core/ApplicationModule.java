@@ -7,7 +7,6 @@ import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.analytics.Mixpanel;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -39,6 +38,7 @@ import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
+import com.handybook.handybook.booking.ui.activity.BookingProTeamActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
@@ -70,6 +70,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPasswordPromptFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
@@ -81,6 +82,7 @@ import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingFragment;
 import com.handybook.handybook.booking.ui.fragment.PeakPricingTableFragment;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
+import com.handybook.handybook.booking.ui.fragment.RateProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
@@ -97,6 +99,8 @@ import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.helpcenter.HelpModule;
+import com.handybook.handybook.logger.handylogger.EventLogManager;
+import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
@@ -106,9 +110,9 @@ import com.handybook.handybook.module.configuration.manager.ConfigurationManager
 import com.handybook.handybook.module.notifications.NotificationsModule;
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamAddActivity;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamProListFragment;
+import com.handybook.handybook.module.proteam.ui.fragment.RemoveProDialogFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.push.receiver.PushReceiver;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -244,12 +248,15 @@ import retrofit.converter.GsonConverter;
         RedemptionEmailSignUpFragment.class,
         RateImprovementDialogFragment.class,
         RatingsGridFragment.class,
+        RateProTeamFragment.class,
         RatingsRadioFragment.class,
         RateImprovementConfirmationDialogFragment.class,
         ProTeamActivity.class,
-        ProTeamAddActivity.class,
         ProTeamFragment.class,
-        ProTeamProListFragment.class
+        ProTeamProListFragment.class,
+        BookingProTeamActivity.class,
+        BookingProTeamFragment.class,
+        RemoveProDialogFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
@@ -526,6 +533,17 @@ public final class ApplicationModule
     )
     {
         return new ConfigurationManager(bus, prefsManager, dataManager);
+    }
+
+    @Provides
+    @Singleton
+    final EventLogManager provideLogEventsManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final PrefsManager prefsManager
+    )
+    {
+        return new EventLogManager(bus, dataManager, prefsManager);
     }
 
     @Provides

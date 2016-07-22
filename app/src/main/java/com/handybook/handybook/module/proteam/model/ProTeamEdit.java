@@ -1,5 +1,7 @@
 package com.handybook.handybook.module.proteam.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -23,9 +25,17 @@ public class ProTeamEdit
     }
 
 
-    public ProviderMatchPreference getMatchPreference()
+    public void addId(final int id, @NonNull final ProTeamCategoryType proTeamCategoryType)
     {
-        return mMatchPreference;
+        switch (proTeamCategoryType)
+        {
+            case CLEANING:
+                addCleaningId(id);
+                break;
+            case HANDYMEN:
+                addHandymenId(id);
+                break;
+        }
     }
 
     public void addCleaningId(final int id)

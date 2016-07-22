@@ -92,4 +92,10 @@ public class ProTeamPro implements Parcelable
         dest.writeString(mDescription);
         dest.writeLong(mLastSeenAt != null ? mLastSeenAt.getTime() : MILLIS_FOR_NULL_DATE);
     }
+
+    @Override
+    public String toString()
+    {
+        return "[" + mName + "]";
+    }
 }

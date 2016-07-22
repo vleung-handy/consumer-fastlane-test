@@ -34,7 +34,6 @@ public class ProTeamProListFragment extends InjectedFragment
 {
     private static final String KEY_PROTEAM = "ProTeamProList:ProTeam";
     private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeamProList:CategoryType";
-    private static final String KEY_PROVIDER_MATCH_PREFERENCE = "ProTeamProList:DisplayMode";
 
     @Bind(R.id.pro_team_pro_list_recycler_view)
     EmptiableRecyclerView mRecyclerView;
@@ -49,19 +48,18 @@ public class ProTeamProListFragment extends InjectedFragment
     private ProTeamCategoryType mProTeamCategoryType;
     private OnProInteraction mOnProInteraction;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
-    private ProviderMatchPreference mProviderMatchPreference;
 
     {
         mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
         {
             @Override
-            public void onXClicked(final ProTeamPro proTeamPro)
+            public void onXClicked(final ProTeamPro proTeamPro, final ProviderMatchPreference providerMatchPreference)
             {
                 if (mOnProInteraction == null)
                 {
                     return;
                 }
-                mOnProInteraction.onProRemovalRequested(mProTeamCategoryType, proTeamPro);
+                mOnProInteraction.onProRemovalRequested(mProTeamCategoryType, proTeamPro, providerMatchPreference);
             }
 
             @Override
@@ -79,19 +77,18 @@ public class ProTeamProListFragment extends InjectedFragment
     public ProTeamProListFragment()
     {
         // Required empty public constructor
+
     }
 
     public static ProTeamProListFragment newInstance(
             @Nullable ProTeam proTeam,
-            @NonNull ProTeamCategoryType proTeamCategoryType,
-            @NonNull ProviderMatchPreference providerMatchPreference
+            @NonNull ProTeamCategoryType proTeamCategoryType
     )
     {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_PROTEAM, proTeam);
         bundle.putParcelable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
-        bundle.putInt(KEY_PROVIDER_MATCH_PREFERENCE, providerMatchPreference.ordinal());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -110,8 +107,6 @@ public class ProTeamProListFragment extends InjectedFragment
         {
             mProteam = arguments.getParcelable(KEY_PROTEAM);
             mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
-            mProviderMatchPreference = ProviderMatchPreference
-                    .values()[arguments.getInt(KEY_PROVIDER_MATCH_PREFERENCE)];
         }
         initialize();
         return view;
@@ -134,15 +129,10 @@ public class ProTeamProListFragment extends InjectedFragment
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
         }
-        else if (mProviderMatchPreference == ProviderMatchPreference.PREFERRED)
-        {
-            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_has_available);
-            mEmptyViewText.setText(R.string.pro_team_empty_card_text_has_available);
-        }
         else
         {
-            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_no_available);
-            mEmptyViewText.setText(R.string.pro_team_empty_card_text_no_available);
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text);
         }
     }
 
@@ -161,13 +151,20 @@ public class ProTeamProListFragment extends InjectedFragment
         RecyclerView.Adapter proCardCardAdapter = new ProTeamCategoryAdapter(
                 mProteam,
                 mProTeamCategoryType,
-                mProviderMatchPreference,
                 mOnInteractionListener
         );
         mRecyclerView.setAdapter(proCardCardAdapter);
         proCardCardAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * for logging purposes
+     * @return
+     */
+    public ProTeamCategoryType getProTeamCategoryType()
+    {
+        return mProTeamCategoryType;
+    }
 
     public void setProTeam(final ProTeam proTeam)
     {
@@ -175,13 +172,7 @@ public class ProTeamProListFragment extends InjectedFragment
         initialize();
     }
 
-    public void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference)
-    {
-        mProviderMatchPreference = providerMatchPreference;
-        initialize();
-    }
-
-    void setOnProInteraction(final OnProInteraction onProInteraction)
+    public void setOnProInteraction(final OnProInteraction onProInteraction)
     {
         mOnProInteraction = onProInteraction;
     }
@@ -189,9 +180,11 @@ public class ProTeamProListFragment extends InjectedFragment
     /**
      * Implement this interface to be notified when user clicks on one of the pro cards.
      */
-    interface OnProInteraction
+    public interface OnProInteraction
     {
-        void onProRemovalRequested(ProTeamCategoryType proTeamCategoryType, ProTeamPro proTeamPro);
+        void onProRemovalRequested(ProTeamCategoryType proTeamCategoryType,
+                                   ProTeamPro proTeamPro,
+                                   ProviderMatchPreference providerMatchPreference);
 
         void onProCheckboxStateChanged(
                 ProTeamCategoryType proTeamCategoryType,

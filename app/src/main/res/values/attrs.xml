@@ -23,5 +23,24 @@
     <declare-styleable name="SwipeableViewPager">
         <attr name="swipeable"
               format="boolean"/>
+        <attr name="wrap_content_enabled"
+              format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ImageToggleButton">
+        <attr name="checked_icon"
+              format="reference"/>
+        <attr name="unchecked_icon"
+              format="reference"/>
+        <attr name="checked_text"
+              format="string"/>
+        <attr name="unchecked_text"
+              format="string"/>
+        <attr name="checked_bg"
+              format="reference"/>
+        <attr name="unchecked_bg"
+              format="reference"/>
+        <attr name="ripple_drawable"
+              format="reference"/>
     </declare-styleable>
 </resources>

@@ -19,6 +19,7 @@
     <string name="log_out">Log Out</string>
     <string name="share_using">Share using…</string>
     <string name="my_bookings">My Bookings</string>
+    <string name="my_pro_team">My Pro Team</string>
     <string name="account">My Account</string>
     <string name="want_to_log_out">Are you sure you want to log out?</string>
     <string name="update">Update</string>
@@ -98,6 +99,9 @@
     <string name="promo_code">Promo Code</string>
     <string name="coupon_on_payment_screen">Please enter your coupon code on the Payment screen after making your booking.</string>
     <string name="reschedule">Reschedule</string>
+    <string name="reschedule_instead">Reschedule Instead?</string>
+    <string name="reschedule_instead_of_canceling">If you\'d like, we can reschedule this\nbooking instead of canceling.</string>
+    <string name="reschedule_cancel_booking">I\'d like to cancel my booking</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="reschedule_all_bookings">Reschedule all subsequent bookings?</string>
@@ -181,7 +185,7 @@
     <string name="edit">Edit</string>
     <string name="add">Add</string>
     <string name="opt">(optional)</string>
-    <string name="rating_tip_prompt">Leave a tip? (optional)</string>
+    <string name="rating_tip_prompt">Leave a tip?</string>
     <string name="leave_tip_prompt_formatted">Would you like to leave a tip for %1$s?</string>
     <string name="leave_a_tip">Leave a Tip</string>
     <string name="other_tip_amount">Other</string>
@@ -358,9 +362,15 @@
     <string name="toast_error_booking_flow_coupon_invalid">Sorry, that coupon is invalid for this booking. It will not be applied to your total.</string>
     <string name="snackbar_promo_code_restored">Promo code restored!</string>
     <string name="edit_preferences_apply_to_all_text">Apply to all subsequent\nbookings in the series</string>
-    <string name="rate_dialog_pro_match_header">Add them to your Pro Team?</string>
+    <string name="rate_dialog_pro_match_title_add">Would you like this pro again?</string>
+    <string name="rate_dialog_pro_match_title_remove">Take a break from this pro?</string>
+    <string name="rate_dialog_pro_match_title_block">Never match with this pro again?</string>
+    <string name="rate_dialog_pro_match_remove">Remove from Pro Team</string>
+    <string name="rate_dialog_pro_match_add">Add to My Pro Team</string>
+    <string name="rate_dialog_pro_match_block_formatted">Block %s</string>
     <string name="rate_dialog_pro_match_preference_footer_never">We\'ll never match you with this pro again.</string>
     <string name="rate_dialog_pro_match_preference_footer_preferred">Pro Team members are requested first.</string>
+    <string name="rate_dialog_pro_team_member">Pro Team member</string>
     <string name="pro_match_preference_never">No</string>
     <string name="pro_match_preference_indifferent">Not now</string>
     <string name="pro_match_preference_preferred">Yes</string>
@@ -369,20 +379,18 @@
     <string name="cd_star_icon">star</string>
     <string name="cd_pro_team_pro_card_remove_pro_icon">Remove Pro Icon</string>
     <string name="cd_pro_team_empty_view_empty_heart_icon">No Pros Empty heart icon</string>
-    <string name="pro_team_empty_card_title_has_available">No pros on your team yet</string>
-    <string name="pro_team_empty_card_title_no_available">No more pros to add</string>
-    <string name="pro_team_empty_card_text_has_available">Once you add someone to your Pro Team, we\'ll always request them first.</string>
-    <string name="pro_team_empty_card_text_no_available">That\'s everyone! As you meet more pros, you\'ll be able to build a bigger Pro Team.</string>
+    <string name="pro_team_empty_card_title_loading">Loading Pro Team</string>
+    <string name="pro_team_empty_card_text_loading">Looking up your Pro Team…</string>
+    <string name="pro_team_empty_card_title">No pros on your team yet</string>
+    <string name="pro_team_empty_card_text">As you meet pros, you\'ll be able to build your Pro Team. We\'ll always request these pros first.</string>
     <string name="pro_team_remove_not_permanent">Yes, but not permanently</string>
     <string name="pro_team_remove_permanent">Yes, and never match us again</string>
     <string name="pro_team_remove_nevermind">Nevermind</string>
-    <string name="pro_team_empty_card_title_loading">Loading ProTeam</string>
-    <string name="pro_team_empty_card_text_loading">Looking up your ProTeam…</string>
     <string name="pro_team_remove_dialog_title">Remove %1$s?</string>
     <string name="title_activity_pro_team_add">Add Pros</string>
 
     <string name="pro_team_button_add_pros_template">Add %1$sPros</string>
-    <string name="cd_pro_team_toolbar_questionmark">Open ProTeam help article icon</string>
+    <string name="cd_pro_team_toolbar_questionmark">Open Pro Team help article icon</string>
     <string name="pro_team_pro_card_pretext_preferred">We’ll reach out to your Pro Team first. If we can’t match you, we’ll open your booking to the wider network.</string>
     <string name="pro_team_pro_card_pretext_indifferent">Choose pros you\'ve worked with before to add to your Pro Team.</string>
 </resources>

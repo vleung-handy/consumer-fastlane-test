@@ -20,6 +20,9 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.module.proteam.model.ProTeam;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingZipLog;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
@@ -62,11 +65,15 @@ public final class BookingLocationFragment extends BookingFlowFragment
         {
             ((BaseActivity) getActivity()).setOnBackPressedListener(this);
         }
+
+        bus.post(new LogEvent.AddLogEvent(new BookingZipLog.ZipShownLog()));
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_location, container, false);
@@ -209,6 +216,8 @@ public final class BookingLocationFragment extends BookingFlowFragment
                     {
                         if (!allowCallbacks) { return; }
                         List<BookingOption> bookingOptions = options.getBookingOptions();
+                        final ProTeam proTeam = options.getProTeam();
+                        bookingManager.setCurrentProTeam(proTeam);
                         final Intent intent = new Intent(
                                 getActivity(),
                                 BookingOptionsActivity.class

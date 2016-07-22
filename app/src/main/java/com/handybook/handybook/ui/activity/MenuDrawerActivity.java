@@ -31,6 +31,12 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.constants.SourcePage;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.squareup.otto.Subscribe;
 
@@ -54,7 +60,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     EnvironmentModifier mEnvironmentModifier;
 
     protected boolean disableDrawer;
-
+    protected Configuration mConfiguration;
     private boolean mShouldShowNavForTransition;
     private Object mBusEventListener;
 
@@ -110,6 +116,18 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
             {
                 Log.d(TAG, "received EnvironmentUpdatedEvent");
                 setupEnvButton();
+            }
+
+            @Subscribe
+            public void onReceiveConfigurationSuccess(
+                    final ConfigurationEvent.ReceiveConfigurationSuccess event
+            )
+            {
+                if (event != null)
+                {
+                    mConfiguration = event.getConfiguration();
+                    refreshMenu();
+                }
             }
         };
     }
@@ -225,6 +243,8 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     {
         super.onResume();
         mBus.register(mBusEventListener);
+        mBus.post(new ConfigurationEvent.RequestConfiguration());
+
         refreshMenu();
     }
 
@@ -250,6 +270,11 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         mNavigationView.getMenu().findItem(R.id.nav_menu_log_in).setVisible(!userLoggedIn);
 
         mNavigationView.getMenu().findItem(R.id.nav_menu_payment).setVisible(currentUser != null && currentUser.getStripeKey() != null);
+
+        if (mConfiguration != null)
+        {
+            mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(mConfiguration.isMyProTeamEnabled());
+        }
     }
 
     /**
@@ -279,6 +304,10 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
             case R.id.nav_menu_my_bookings:
                 navigateToActivity(BookingsActivity.class, menuItem.getItemId());
                 return true;
+            case R.id.nav_menu_my_pro_team:
+                mBus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.OpenTapped(SourcePage.SIDE_MENU)));
+                navigateToActivity(ProTeamActivity.class, menuItem.getItemId());
+                return true;
             case R.id.nav_menu_payment:
                 navigateToActivity(UpdatePaymentActivity.class, menuItem.getItemId());
                 return true;
@@ -299,6 +328,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
+                                mConfigurationManager.invalidateCache();
                                 mUserManager.setCurrentUser(null);
                                 //log out of Facebook also
                                 LoginManager.getInstance().logOut();
