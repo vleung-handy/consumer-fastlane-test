@@ -12,6 +12,8 @@ public class DateTimeUtils
     public final static SimpleDateFormat DAY_MONTH_DATE_AT_TIME_FORMATTER = new SimpleDateFormat
             ("EEE, MMM d " +
             "'@' h:mm a");
+    public final static DateFormat MONTH_AND_DAY_FORMATTER = new SimpleDateFormat("MMM d");
+
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 

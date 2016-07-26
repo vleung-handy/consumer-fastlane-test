@@ -1,26 +1,33 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
@@ -29,6 +36,7 @@ import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
+import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
 
 import java.security.InvalidParameterException;
@@ -50,6 +58,8 @@ public class ProTeamFragment extends InjectedFragment implements
         RemoveProDialogFragment.RemoveProListener
 {
 
+    @Bind(R.id.pro_team_coordinator_layout)
+    CoordinatorLayout mCoordinatorLayout;
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_tab_layout)
@@ -65,6 +75,8 @@ public class ProTeamFragment extends InjectedFragment implements
     private HashSet<ProTeamPro> mCleanersToRemove = new HashSet<>();
     private HashSet<ProTeamPro> mHandymenToAdd = new HashSet<>();
     private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
+    private String mProTeamHelpCenterUrl;
+    private Snackbar mProTeamInfoSnackbar;
 
 
     public ProTeamFragment()
@@ -123,20 +135,49 @@ public class ProTeamFragment extends InjectedFragment implements
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
         setToolbarTitle(getString(R.string.title_activity_pro_team));
         initButtons();
+        initSnackbar();
     }
 
 
     private void initButtons()
     {
-        mBottomButton.setVisibility(
-                !mCleanersToAdd.isEmpty()
-                        || !mCleanersToRemove.isEmpty()
-                        || !mHandymenToAdd.isEmpty()
-                        || !mHandymenToRemove.isEmpty() ?
-                        View.VISIBLE
-                        : View.INVISIBLE
+        final boolean proTeamChanged = !mCleanersToAdd.isEmpty()
+                || !mCleanersToRemove.isEmpty()
+                || !mHandymenToAdd.isEmpty()
+                || !mHandymenToRemove.isEmpty();
+        mBottomButton.setVisibility(proTeamChanged ? View.VISIBLE : View.INVISIBLE);
+        if (proTeamChanged && mProTeamInfoSnackbar != null && mProTeamInfoSnackbar.isShown())
+        {
+            mProTeamInfoSnackbar.dismiss();
+        }
+    }
 
-        );
+    private void initSnackbar()
+    {
+        mProTeamInfoSnackbar = Snackbar
+                .make(mCoordinatorLayout, R.string.pro_team_subject_to_change, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.learn_more, new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final View v)
+                    {
+                        if (!Strings.isNullOrEmpty(mProTeamHelpCenterUrl))
+                        {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mProTeamHelpCenterUrl));
+                            Utils.safeLaunchIntent(intent, getContext());
+                        }
+                        else
+                        {
+                            Toast.makeText(getContext(), R.string.default_error_string, Toast.LENGTH_SHORT).show();
+                            Crashlytics.logException(new Exception("Pro Team help center url is null or empty."));
+                        }
+                    }
+                });
+        mProTeamInfoSnackbar.setActionTextColor(ContextCompat.getColor(getContext(), R.color.handy_blue));
+        View snackbarView = mProTeamInfoSnackbar.getView();
+        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        mProTeamInfoSnackbar.show();
     }
 
     @Override
@@ -157,10 +198,12 @@ public class ProTeamFragment extends InjectedFragment implements
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
         mProTeam = event.getProTeam();
+        mProTeamHelpCenterUrl = event.getProTeamHelpCenterUrl();
         mTabAdapter.setProTeam(mProTeam);
         clearEditHolders();
         initButtons();
         removeUiBlockers();
+        initSnackbar();
 
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
@@ -411,6 +454,5 @@ public class ProTeamFragment extends InjectedFragment implements
             getItem(0).setProTeam(proTeam);
             getItem(1).setProTeam(proTeam);
         }
-
     }
 }
