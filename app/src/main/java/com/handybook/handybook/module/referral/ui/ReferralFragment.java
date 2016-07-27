@@ -54,7 +54,6 @@ public class ReferralFragment extends InjectedFragment
     View mEnvelopeShadow;
     @Bind(R.id.bling)
     View mBling;
-
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -111,8 +110,11 @@ public class ReferralFragment extends InjectedFragment
             if (resultCode == Activity.RESULT_OK && intent != null)
             {
                 final String resolvedChannel =
-                        ReferralIntentUtil.addReferralIntentExtras(getActivity(), intent,
-                                mReferralChannels);
+                        ReferralIntentUtil.addReferralIntentExtras(
+                                getActivity(),
+                                intent,
+                                mReferralChannels
+                        );
                 final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (ValidationUtils.isNullOrEmpty(extraText))
                 {
@@ -150,9 +152,9 @@ public class ReferralFragment extends InjectedFragment
     {
         mIsReferralInfoFresh = true;
         mReferralDescriptor = event.getReferralResponse().getReferralDescriptor();
-        mReferralChannels =
-                mReferralDescriptor.getReferralChannelsForSource(
-                        ReferralDescriptor.SOURCE_REFERRAL_PAGE);
+        mReferralChannels = mReferralDescriptor.getReferralChannelsForSource(
+                ReferralDescriptor.SOURCE_REFERRAL_PAGE
+        );
         removeErrorLayout();
         removeUiBlockers();
         mReferralContent.setVisibility(View.VISIBLE);
@@ -165,9 +167,15 @@ public class ReferralFragment extends InjectedFragment
     {
         final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
         String formattedReceiverCouponAmount = TextUtils.formatPrice(
-                mReferralDescriptor.getReceiverCouponAmount(), currencyChar, null);
+                mReferralDescriptor.getReceiverCouponAmount(),
+                currencyChar,
+                null
+        );
         String formattedSenderCreditAmount = TextUtils.formatPrice(
-                mReferralDescriptor.getSenderCreditAmount(), currencyChar, null);
+                mReferralDescriptor.getSenderCreditAmount(),
+                currencyChar,
+                null
+        );
         mCode.setText(mReferralDescriptor.getCouponCode());
         mTitle.setText(getString(R.string.referral_title_formatted, formattedReceiverCouponAmount,
                 formattedSenderCreditAmount));
@@ -179,7 +187,8 @@ public class ReferralFragment extends InjectedFragment
     {
         mEnvelope.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.levitate));
         mEnvelopeShadow.startAnimation(
-                AnimationUtils.loadAnimation(getActivity(), R.anim.expand_contract));
+                AnimationUtils.loadAnimation(getActivity(), R.anim.expand_contract)
+        );
         mBling.postDelayed(new Runnable()
         {
             @Override
@@ -233,8 +242,10 @@ public class ReferralFragment extends InjectedFragment
                 mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
         if (smsReferralInfo != null)
         {
-            final Intent smsReferralIntent =
-                    ReferralIntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo);
+            final Intent smsReferralIntent = ReferralIntentUtil.getSmsReferralIntent(
+                    getActivity(),
+                    smsReferralInfo
+            );
             bus.post(new ReferralsEvent.InviteFriendsClicked());
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
         }
