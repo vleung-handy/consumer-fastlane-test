@@ -75,7 +75,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
 
-        preventAnimationStart(mFragment, "mEnvelope");
+        preventAnimationStart(mFragment, "mImage");
         preventAnimationStart(mFragment, "mEnvelopeShadow");
         preventAnimationStart(mFragment, "mBling");
 
@@ -116,7 +116,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
         assertThat(mFragment.mTitle.getText().toString(), equalTo("Give $30, Get $20"));
         assertThat(mFragment.mSubtitle.getText().toString(),
                 equalTo("Give your friends $30 off their first Handy booking, and you get $20!"));
-        assertThat(mFragment.mCode.getText().toString(), equalTo("ABC123"));
+        assertThat(mFragment.mShareUrl.getText().toString(), equalTo("ABC123"));
     }
 
     @Test

@@ -396,4 +396,5 @@
     <string name="fragment_referral_copy_invite">Copy Invite:</string>
     <string name="fragment_referral_sms_invite">Text Invite</string>
     <string name="fragment_referral_email_invite">Email Invite</string>
+    <string name="fragment_referral_more_ways_to_share">More ways to share</string>
 </resources>

@@ -1,7 +1,11 @@
 package com.handybook.handybook.module.referral.ui;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -40,26 +44,23 @@ public class ReferralFragment extends InjectedFragment
     @Inject
     Bus mBus;
 
-    @Bind(R.id.referral_content)
+    @Bind(R.id.fragment_referral_content)
     View mReferralContent;
-    @Bind(R.id.title)
+    @Bind(R.id.fragment_referral_title)
     TextView mTitle;
-    @Bind(R.id.subtitle)
+    @Bind(R.id.fragment_referral_subtitle)
     TextView mSubtitle;
-    @Bind(R.id.code)
-    TextView mCode;
-    @Bind(R.id.envelope)
-    View mEnvelope;
-    @Bind(R.id.envelope_shadow)
-    View mEnvelopeShadow;
-    @Bind(R.id.bling)
-    View mBling;
-    @Bind(R.id.toolbar)
+    @Bind(R.id.fragment_referral_share_url)
+    TextView mShareUrl;
+    @Bind(R.id.fragment_referral_image)
+    ImageView mImage;
+    @Bind(R.id.fragment_referral_toolbar)
     Toolbar mToolbar;
 
     private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
     private boolean mIsReferralInfoFresh = false;
+    private String mReferralUri = "http://fix.me"; //FIXME Fix the link
 
     public static Fragment newInstance()
     {
@@ -73,7 +74,7 @@ public class ReferralFragment extends InjectedFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = inflater.inflate(R.layout.fragment_referral_old, container, false);
+        final View view = inflater.inflate(R.layout.fragment_referral, container, false);
         ButterKnife.bind(this, view);
 
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
@@ -160,7 +161,6 @@ public class ReferralFragment extends InjectedFragment
         mReferralContent.setVisibility(View.VISIBLE);
         showReferralDetails();
         bus.post(new ReferralsEvent.ReferralScreenShown());
-        startAnimations();
     }
 
     private void showReferralDetails()
@@ -176,30 +176,11 @@ public class ReferralFragment extends InjectedFragment
                 currencyChar,
                 null
         );
-        mCode.setText(mReferralDescriptor.getCouponCode());
+        mShareUrl.setText(mReferralDescriptor.getCouponCode());
         mTitle.setText(getString(R.string.referral_title_formatted, formattedReceiverCouponAmount,
                 formattedSenderCreditAmount));
         mSubtitle.setText(getString(R.string.referral_subtitle_formatted, formattedReceiverCouponAmount,
                 formattedSenderCreditAmount));
-    }
-
-    private void startAnimations()
-    {
-        mEnvelope.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.levitate));
-        mEnvelopeShadow.startAnimation(
-                AnimationUtils.loadAnimation(getActivity(), R.anim.expand_contract)
-        );
-        mBling.postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                if (isVisible())
-                {
-                    onEnvelopeClicked();
-                }
-            }
-        }, 1000);
     }
 
     @Subscribe
@@ -215,14 +196,8 @@ public class ReferralFragment extends InjectedFragment
         removeUiBlockers();
     }
 
-    @OnClick(R.id.envelope)
-    public void onEnvelopeClicked()
-    {
-        mBling.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.sparkle_fade));
-    }
-
-    @OnClick(R.id.share_button)
-    public void onShareButtonClicked()
+    @OnClick(R.id.fragment_referral_cta_more)
+    public void onOtherShareCtaClicked()
     {
         final Intent dummyIntent = new Intent();
         dummyIntent.setAction(Intent.ACTION_SEND);
@@ -235,8 +210,8 @@ public class ReferralFragment extends InjectedFragment
         startActivityForResult(activityPickerIntent, ActivityResult.PICK_ACTIVITY);
     }
 
-    @OnClick(R.id.invite_button)
-    public void onInviteButtonClicked()
+    @OnClick(R.id.fragment_referral_button_sms)
+    public void onSmsShareButtonClicked()
     {
         final ReferralInfo smsReferralInfo =
                 mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
@@ -249,6 +224,33 @@ public class ReferralFragment extends InjectedFragment
             bus.post(new ReferralsEvent.InviteFriendsClicked());
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
         }
+    }
+
+    @OnClick(R.id.fragment_referral_button_email)
+    public void onEmailShareButtonClicked()
+    {
+        final ReferralInfo emailReferralInfo =
+                mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_EMAIL);
+        if (emailReferralInfo != null)
+        {
+            final Intent smsReferralIntent = ReferralIntentUtil.getSmsReferralIntent(
+                    getActivity(),
+                    emailReferralInfo
+            );
+            bus.post(new ReferralsEvent.InviteFriendsClicked());
+            launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_EMAIL);
+        }
+    }
+
+    @OnClick(R.id.fragment_referral_share_url)
+    public void onShareUrlClick()
+    {
+        ClipboardManager clipboard = (ClipboardManager)
+                getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        Uri copyUri = Uri.parse(mReferralUri);
+        ClipData clip = ClipData.newUri(getActivity().getContentResolver(), "URI", copyUri);
+        clipboard.setPrimaryClip(clip);
+        showToast("Sharing link copied to clipboard!");
     }
 
     private void showErrorLayout(String errorMessage)

@@ -18,17 +18,25 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/Theme.Handy.AppBarOverlay"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            app:contentInsetStart="0dp"
-            app:navigationIcon="@drawable/ic_menu"
             android:title="@string/my_bookings"
+            app:contentInsetStart="0dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:navigationIcon="@drawable/ic_menu"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
             />
 
 
     </android.support.design.widget.AppBarLayout>
 
+    <include
+        layout="@layout/layout_error"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:visibility="gone"
+        />
+
+
     <LinearLayout
+        android:id="@+id/fragment_referral_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/handy_background_gray"
@@ -39,94 +47,99 @@
 
         <ImageView
             android:id="@+id/fragment_referral_image"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:src="@drawable/img_laundry_info"
+            android:layout_width="248dp"
+            android:layout_height="184dp"
+            android:src="@drawable/img_referral_couch"
+            android:layout_gravity="center_horizontal"
             />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="@dimen/default_margin_double"
             android:layout_marginEnd="@dimen/default_margin_double"
+            android:layout_marginStart="@dimen/default_margin_double"
+            android:orientation="vertical"
             >
 
             <TextView
                 android:id="@+id/fragment_referral_title"
+                style="@style/TextView.XLarge.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextView.XLarge.Bold"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="@dimen/default_margin_double"
+                android:gravity="center_horizontal"
                 tools:text="Earn free cleanings"
                 />
 
             <TextView
                 android:id="@+id/fragment_referral_subtitle"
+                style="@style/TextView.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextView.Medium"
-                android:lineSpacingMultiplier="1"
                 android:gravity="center_horizontal"
+                android:lineSpacingMultiplier="1"
                 tools:text="Sharing is caring, and when you share Handy with a friend, they get $XX off their first booking, and you earn $YY once their first booking is done."
                 />
 
             <com.handybook.handybook.booking.ui.view.BookingActionButton
                 android:id="@+id/fragment_referral_button_email"
+                style="@style/Button.BookingAction.Green"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
+                android:drawableLeft="@drawable/ic_email_white"
+                android:drawableStart="@drawable/ic_email_white"
                 android:text="@string/fragment_referral_email_invite"
-                style="@style/Button.BookingAction.Green"
                 />
 
             <com.handybook.handybook.booking.ui.view.BookingActionButton
                 android:id="@+id/fragment_referral_button_sms"
+                style="@style/Button.BookingAction.Grey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin_half"
+                android:drawableLeft="@drawable/ic_referral_sms_white"
+                android:drawableStart="@drawable/ic_referral_sms_white"
                 android:text="@string/fragment_referral_sms_invite"
-                style="@style/Button.BookingAction.Grey"
                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin_half"
-                android:padding="@dimen/default_padding"
-                android:orientation="horizontal"
                 android:background="@drawable/bg_rectangle_dotted_white"
+                android:orientation="horizontal"
+                android:padding="@dimen/default_padding"
                 >
 
                 <TextView
+                    style="@style/TextView.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/fragment_referral_copy_invite"
-                    style="@style/TextView.Medium"
-                    android:textColor="@color/light_grey"
                     android:layout_marginEnd="@dimen/default_margin_half"
-                    android:textIsSelectable="false"
                     android:layout_marginRight="@dimen/default_margin_half"
+                    android:text="@string/fragment_referral_copy_invite"
+                    android:textColor="@color/light_grey"
+                    android:textIsSelectable="false"
                     />
 
                 <TextView
                     android:id="@+id/fragment_referral_share_url"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="handy.com/annmarie?someextrastuff=whatever_but_long"
-                    android:lines="1"
                     android:ellipsize="end"
+                    android:lines="1"
+                    tools:text="handy.com/annmarie?someextrastuff=whatever_but_long"
                     />
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/fragment_referral_cta_more"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="handy.com/annmarie?someextrastuff=whatever_but_long"
-                android:lines="1"
-                android:ellipsize="end"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:gravity="center_horizontal"
+                android:text="@string/fragment_referral_more_ways_to_share"
                 />
 
         </LinearLayout>
