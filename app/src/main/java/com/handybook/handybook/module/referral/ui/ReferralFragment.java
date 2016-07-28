@@ -73,7 +73,7 @@ public class ReferralFragment extends InjectedFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = inflater.inflate(R.layout.fragment_referral, container, false);
+        final View view = inflater.inflate(R.layout.fragment_referral_old, container, false);
         ButterKnife.bind(this, view);
 
         mToolbar.setNavigationIcon(R.drawable.ic_menu);

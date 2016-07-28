@@ -1,187 +1,135 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@color/handy_bg"
-    android:orientation="vertical"
+    tools:context=".module.referral.ui.ReferralActivity"
     >
 
-    <include layout="@layout/toolbar"
-        />
-
-    <include
-        layout="@layout/layout_error"
-        tools:visibility="gone"
-        />
-
-    <RelativeLayout
-        android:id="@+id/referral_content"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Handy.AppBarOverlay"
         >
 
-        <LinearLayout
-            android:id="@+id/referral_description_layout"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/fragment_referral_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/default_padding"
-            >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                >
-
-                <ImageView
-                    android:id="@+id/bling"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/default_margin_double"
-                    android:layout_marginStart="@dimen/default_margin_double"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:layout_toEndOf="@+id/envelope"
-                    android:layout_toRightOf="@+id/envelope"
-                    android:src="@drawable/img_bling"
-                    android:visibility="invisible"
-                    tools:visibility="visible"
-                    />
-
-                <ImageView
-                    android:id="@+id/envelope"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="@dimen/default_margin"
-                    android:src="@drawable/img_envelope"
-                    />
-
-                <ImageView
-                    android:id="@+id/envelope_shadow"
-                    android:layout_width="148dp"
-                    android:layout_height="8dp"
-                    android:layout_below="@+id/envelope"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/circle_grey"
-                    />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/title"
-                style="@style/TextView.XXLarge.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin_half"
-                tools:text="Give $35, Get $35"
-                />
-
-            <TextView
-                android:id="@+id/subtitle"
-                style="@style/TextView.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:gravity="center"
-                tools:text="Give your friends $35 off their first Handy booking, and you get $35!"
-                />
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/referral_description_layout"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/img_point"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/Theme.Handy.AppBarOverlay"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:contentInsetStart="0dp"
+            app:navigationIcon="@drawable/ic_menu"
+            android:title="@string/my_bookings"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             />
 
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/handy_background_gray"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+        >
+
+        <ImageView
+            android:id="@+id/fragment_referral_image"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_laundry_info"
+            />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/referral_description_layout"
-            android:layout_marginEnd="@dimen/default_margin_double"
-            android:layout_marginLeft="@dimen/default_margin_double"
-            android:layout_marginRight="@dimen/default_margin_double"
-            android:layout_marginStart="@dimen/default_margin_double"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="@dimen/default_margin_double"
+            android:layout_marginEnd="@dimen/default_margin_double"
             >
 
-            <RelativeLayout
-                android:id="@+id/share_button"
-                style="@style/Button.White.Round"
-                android:layout_height="@dimen/default_button_height"
-                android:clickable="true"
-                android:paddingBottom="0dp"
-                android:paddingTop="0dp"
+            <TextView
+                android:id="@+id/fragment_referral_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextView.XLarge.Bold"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/default_margin_double"
+                tools:text="Earn free cleanings"
+                />
+
+            <TextView
+                android:id="@+id/fragment_referral_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextView.Medium"
+                android:lineSpacingMultiplier="1"
+                android:gravity="center_horizontal"
+                tools:text="Sharing is caring, and when you share Handy with a friend, they get $XX off their first booking, and you earn $YY once their first booking is done."
+                />
+
+            <com.handybook.handybook.booking.ui.view.BookingActionButton
+                android:id="@+id/fragment_referral_button_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/fragment_referral_email_invite"
+                style="@style/Button.BookingAction.Green"
+                />
+
+            <com.handybook.handybook.booking.ui.view.BookingActionButton
+                android:id="@+id/fragment_referral_button_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:text="@string/fragment_referral_sms_invite"
+                style="@style/Button.BookingAction.Grey"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:padding="@dimen/default_padding"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_rectangle_dotted_white"
                 >
 
                 <TextView
-                    android:id="@+id/code_label"
-                    style="@style/TextView.Small.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/default_margin_quarter"
-                    android:layout_marginRight="@dimen/default_margin_quarter"
-                    android:text="@string/referral_code_label"
-                    android:textAllCaps="true"
+                    android:text="@string/fragment_referral_copy_invite"
+                    style="@style/TextView.Medium"
+                    android:textColor="@color/light_grey"
+                    android:layout_marginEnd="@dimen/default_margin_half"
+                    android:textIsSelectable="false"
+                    android:layout_marginRight="@dimen/default_margin_half"
                     />
 
                 <TextView
-                    android:id="@+id/code"
-                    style="@style/TextView.Large"
+                    android:id="@+id/fragment_referral_share_url"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/default_margin_quarter"
-                    android:layout_marginRight="@dimen/default_margin_quarter"
-                    android:layout_toEndOf="@+id/code_label"
-                    android:layout_toLeftOf="@+id/share_icon"
-                    android:layout_toRightOf="@+id/code_label"
-                    android:layout_toStartOf="@+id/share_icon"
+                    tools:text="handy.com/annmarie?someextrastuff=whatever_but_long"
+                    android:lines="1"
                     android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textColor="@color/handy_tertiary_gray"
-                    tools:text="JOHN1234"
                     />
+            </LinearLayout>
 
-                <FrameLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/share_icon"
-                    android:layout_toStartOf="@+id/share_icon"
-                    android:background="@color/handy_bg"
-                    />
-
-                <ImageView
-                    android:id="@+id/share_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="@dimen/default_padding"
-                    android:paddingStart="@dimen/default_padding"
-                    android:src="@drawable/ic_share"
-                    />
-
-            </RelativeLayout>
-
-            <Button
-                android:id="@+id/invite_button"
-                style="@style/Button.Green.Round"
-                android:layout_height="@dimen/default_button_height"
-                android:layout_marginTop="@dimen/default_margin"
-                android:text="@string/referral_invite_label"
-                android:textAllCaps="false"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="handy.com/annmarie?someextrastuff=whatever_but_long"
+                android:lines="1"
+                android:ellipsize="end"
                 />
+
         </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
