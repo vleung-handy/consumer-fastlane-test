@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -142,10 +143,13 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
 
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        activity.setupHamburgerMenu(mToolbar);
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null && activity instanceof MenuDrawerActivity)
+        {
+            activity.setSupportActionBar(mToolbar);
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+            ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
+        }
 
         mPromoImage.setColorFilter(
                 getResources().getColor(R.color.handy_blue),

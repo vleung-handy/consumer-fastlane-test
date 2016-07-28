@@ -7,6 +7,8 @@ import dagger.ObjectGraph;
  */
 public class TestBaseApplication extends BaseApplication {
 
+    public boolean mIsNewlyLaunched;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -20,5 +22,16 @@ public class TestBaseApplication extends BaseApplication {
 
     @Override
     public void updateUser() {
+    }
+
+    @Override
+    public boolean isNewlyLaunched()
+    {
+        return mIsNewlyLaunched;
+    }
+
+    public void setNewlyLaunched(final boolean newlyLaunched)
+    {
+        mIsNewlyLaunched = newlyLaunched;
     }
 }
