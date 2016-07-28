@@ -25,9 +25,11 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
@@ -117,6 +119,15 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         {
             final Intent intent = new Intent(getActivity(), OnboardActivity.class);
             startActivity(intent);
+        }
+        else if (user != null
+                && user.getAnalytics() != null
+                && user.getAnalytics().getUpcomingBookings() > 0
+                && ((BaseApplication) getActivity().getApplication()).isNewlyLaunched())
+        {
+            final Intent intent = new Intent(getActivity(), BookingsActivity.class);
+            startActivity(intent);
+            getActivity().finish();
         }
     }
 

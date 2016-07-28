@@ -33,12 +33,14 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.notifications.DefaultNotificationFactory;
 
+import java.util.Date;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -53,6 +55,10 @@ public class BaseApplication extends MultiDexApplication
     public static final String FLAVOR_STAGE = "stage";
     private static final long GA_SESSION_TIMEOUT_SECONDS = 600L;
 
+    /**
+     * If less than this threshold, that means the app was newly launched.
+     */
+    private static final long NEWLY_LAUNCH_THRESHOLD_IN_SECONDS = 5;
     private static GoogleAnalytics googleAnalytics;
     private static Tracker tracker;
     private static String sDeviceId = "";
@@ -102,6 +108,8 @@ public class BaseApplication extends MultiDexApplication
     ConfigurationManager configurationManager;
     @Inject
     ProTeamManager proTeamManager;
+
+    private Date mApplicationStartTime;
     private int started;
     private boolean savedInstance;
 
@@ -114,6 +122,8 @@ public class BaseApplication extends MultiDexApplication
     public void onCreate()
     {
         super.onCreate();
+        mApplicationStartTime = new Date();
+
         googleAnalytics = GoogleAnalytics.getInstance(this);
         tracker = googleAnalytics.newTracker(R.xml.global_tracker);
         tracker.enableExceptionReporting(true);
@@ -307,5 +317,16 @@ public class BaseApplication extends MultiDexApplication
         {
             return manufacturer + " " + model;
         }
+    }
+
+    /**
+     * This application is considered newly launch if it's less than 5 seconds old.
+     *
+     * @return
+     */
+    public boolean isNewlyLaunched()
+    {
+        long diff = DateTimeUtils.getDiffInSeconds(new Date(), mApplicationStartTime);
+        return diff <= NEWLY_LAUNCH_THRESHOLD_IN_SECONDS;
     }
 }
