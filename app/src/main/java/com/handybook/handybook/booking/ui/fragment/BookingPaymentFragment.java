@@ -857,9 +857,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         final User user = userManager.getCurrentUser();
         final String userId = user != null ? user.getId() : null;
         final String email = user != null ? user.getEmail() : null;
-        final String authToken = user != null ? user.getAuthToken() : null;
 
-        dataManager.applyPromo(promoCode, bookingId, userId, email, authToken,
+        dataManager.applyPromo(promoCode, bookingId, userId, email,
                 new DataManager.Callback<BookingQuote>()
                 {
                     @Override

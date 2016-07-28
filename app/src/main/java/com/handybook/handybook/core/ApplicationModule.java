@@ -343,7 +343,11 @@ public final class ApplicationModule
                         if (user != null)
                         {
                             request.addQueryParam("app_user_id", user.getId());
-                            request.addQueryParam("auth_token", user.getAuthToken());
+                            String authToken = user.getAuthToken();
+                            if (authToken != null)
+                            {
+                                request.addHeader("X-Auth-Token", authToken);
+                            }
                         }
                     }
                 })
