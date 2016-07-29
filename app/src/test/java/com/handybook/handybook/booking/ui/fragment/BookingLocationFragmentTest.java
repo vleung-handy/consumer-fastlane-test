@@ -72,7 +72,6 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
                 eq("10001"),
                 anyString(),
                 anyString(),
-                anyString(),
                 mCallbackCaptor.capture()
         );
 
