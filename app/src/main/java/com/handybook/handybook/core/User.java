@@ -256,7 +256,7 @@ public class User extends Observable
         triggerObservers();
     }
 
-    public final Analytics getAnalytics()
+    public Analytics getAnalytics()
     {
         return mAnalytics;
     }
@@ -415,7 +415,10 @@ public class User extends Observable
     }
 
 
-    public static final class Analytics
+    /**
+     * If this class marks as final, then we won't be able to mock this for unit testing
+     */
+    public static class Analytics
     {
         @SerializedName("last_booking_end")
         private Date mLastBookingEnd;
@@ -463,7 +466,7 @@ public class User extends Observable
             return mPastBookings;
         }
 
-        public final int getUpcomingBookings()
+        public int getUpcomingBookings()
         {
             return mUpcomingBookings;
         }

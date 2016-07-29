@@ -47,4 +47,17 @@ public class DateTimeUtils
 
         return customFormatter.format(date);
     }
+
+    /**
+     * A positive number representing the difference in seconds
+     *
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static long getDiffInSeconds(Date date1, Date date2)
+    {
+        long diff = Math.abs(date2.getTime() - date1.getTime());
+        return diff / 1000 % 60;
+    }
 }
