@@ -152,13 +152,11 @@ public final class BookingLocationFragment extends BookingFlowFragment
                 final BookingRequest request = bookingManager.getCurrentRequest();
                 final User user = userManager.getCurrentUser();
                 final String userId = user != null ? user.getId() : null;
-                final String authToken = user != null ? user.getAuthToken() : null;
 
                 dataManager.validateBookingZip(
                         request.getServiceId(),
                         mZipCodeInputTextView.getZipCode(),
                         userId,
-                        authToken,
                         request.getPromoCode(),
                         new DataManager.Callback<ZipValidationResponse>()
                         {

@@ -136,7 +136,7 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
             final LaundryDropInfo.DropTime dropTime
                     = (LaundryDropInfo.DropTime)timeSpinner.getSelectedItem();
 
-            dataManager.setLaundryDropOff(booking, user.getAuthToken(), date, dropTime.getHour(),
+            dataManager.setLaundryDropOff(booking, date, dropTime.getHour(),
                     dropTime.getMinute(), dropInfo.getType(), new DataManager.Callback<Void>() {
                 @Override
                 public void onSuccess(final Void response) {

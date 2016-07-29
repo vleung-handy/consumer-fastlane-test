@@ -168,7 +168,6 @@ public class BookingFlowFragment extends InjectedFragment
                 newDate,
                 rescheduleAll,
                 user.getId(),
-                user.getAuthToken(),
                 new DataManager.Callback<Pair<String, BookingQuote>>()
                 {
                     @Override
