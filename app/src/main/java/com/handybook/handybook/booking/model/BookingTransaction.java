@@ -34,7 +34,7 @@ public class BookingTransaction extends Observable {
     @SerializedName("auth_token") private String mAuthToken;
     @SerializedName("stripe_token") private String mStripeToken;
     @SerializedName("payment_method") private String mPaymentMethod;
-    @SerializedName("referrer_token") private String mReferrerToken;
+    @SerializedName("button_referrer_token") private String mReferrerToken;
     @SerializedName("_android_promo_applied") private String mPromoApplied;
 
     public int getBookingId() {
@@ -277,7 +277,7 @@ public class BookingTransaction extends Observable {
             jsonObj.add("payment_method", context.serialize(value.getPaymentMethod()));
             jsonObj.add("extra_cleaning_text", context.serialize(value.getExtraCleaningText()));
             jsonObj.add("mobile", context.serialize(1));
-            jsonObj.add("referrer_token", context.serialize(value.getReferrerToken()));
+            jsonObj.add("button_referrer_token", context.serialize(value.getReferrerToken()));
             jsonObj.add("_android_promo_applied", context.serialize(value.promoApplied()));
 
             final int recur = value.getRecurringFrequency();
