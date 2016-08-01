@@ -16,4 +16,14 @@ public class TestUsers
                     new Address("1 Test Drive", "Apt. 13D", "99499"),
                     "9876543210",
                     mValidVisaCard);
+
+    public static TestUser LOGIN =
+            new TestUser(
+                    "test+user@handybook.com",
+                    "supersecretpassword");
+
+    public static TestUser CANCEL =
+            new TestUser(
+                    "test+cancel@handybook.com",
+                    "supersecretpassword");
 }
