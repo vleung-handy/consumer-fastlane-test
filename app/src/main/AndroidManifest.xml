@@ -291,9 +291,8 @@
         <!-- Button -->
         <meta-data
             android:name="com.usebutton.applicationid"
-            android:value=""
+            android:value="app-6c9d92fac7e09586"
             />
-        <!-- FIXME: Use real application ID -->
 
         <!-- Enables the Android Pay API -->
         <meta-data
