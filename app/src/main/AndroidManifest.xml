@@ -425,15 +425,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- REQUIRED for Button -->
-        <receiver
-            android:name="com.usebutton.sdk.internal.receivers.InstallReferrerReceiver"
-            >
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
-            </intent-filter>
-        </receiver>
-
     </application>
 
 </manifest>
