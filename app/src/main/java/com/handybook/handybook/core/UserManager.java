@@ -22,7 +22,7 @@ public class UserManager implements Observer
 {
     private Context mContext;
     private Bus mBus;
-    protected User user;
+    private User mUser;
     private PrefsManager mPrefsManager;
 
     @Inject
@@ -42,30 +42,30 @@ public class UserManager implements Observer
     @Nullable
     public User getCurrentUser()
     {
-        if (user != null)
+        if (mUser != null)
         {
-            return user;
+            return mUser;
         }
         else
         {
-            if ((user = User.fromJson(mPrefsManager.getString(PrefsKey.USER))) != null)
+            if ((mUser = User.fromJson(mPrefsManager.getString(PrefsKey.USER))) != null)
             {
-                user.addObserver(this);
+                mUser.addObserver(this);
             }
-            return user;
+            return mUser;
         }
     }
 
     public void setCurrentUser(final User newUser)
     {
-        if (user != null)
+        if (mUser != null)
         {
-            user.deleteObserver(this);
+            mUser.deleteObserver(this);
         }
 
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
         {
-            user = null;
+            mUser = null;
             mPrefsManager.removeValue(PrefsKey.USER);
             Button.getButton(mContext).logout();
             Crashlytics.setUserEmail(null);
@@ -73,14 +73,14 @@ public class UserManager implements Observer
             return;
         }
 
-        user = newUser;
-        user.addObserver(this);
+        mUser = newUser;
+        mUser.addObserver(this);
 
-        mPrefsManager.setString(PrefsKey.USER, user.toJson());
+        mPrefsManager.setString(PrefsKey.USER, mUser.toJson());
 
-        UAirship.shared().getPushManager().setAlias(user.getId());
-        Button.getButton(mContext).setUserIdentifier(user.getId());
-        Crashlytics.setUserEmail(user.getEmail());
+        UAirship.shared().getPushManager().setAlias(mUser.getId());
+        Button.getButton(mContext).setUserIdentifier(mUser.getId());
+        Crashlytics.setUserEmail(mUser.getEmail());
         mBus.post(new UserLoggedInEvent(true));
     }
 
