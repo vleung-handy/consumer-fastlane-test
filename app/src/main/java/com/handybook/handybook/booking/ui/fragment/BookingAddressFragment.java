@@ -16,7 +16,7 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingAddressLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
@@ -58,7 +58,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackAddress();
 
-        bus.post(new LogEvent.AddLogEvent(new BookingAddressLog.BookingAddressShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressShownLog()));
     }
 
     @Override
@@ -145,6 +145,8 @@ public final class BookingAddressFragment extends BookingFlowFragment
         {
             if (validateFields())
             {
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressSubmittedLog()));
+
                 final BookingTransaction transaction = bookingManager.getCurrentTransaction();
                 transaction.setFirstName(fullNameText.getFirstName());
                 transaction.setLastName(fullNameText.getLastName());

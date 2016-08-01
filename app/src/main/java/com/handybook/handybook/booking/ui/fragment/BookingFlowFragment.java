@@ -23,9 +23,10 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
@@ -111,6 +112,7 @@ public class BookingFlowFragment extends InjectedFragment
             continueFlow();
             return;
         }
+
         // user selected new time, reload quote
         if (this instanceof PeakPricingTableFragment)
         {
@@ -141,6 +143,7 @@ public class BookingFlowFragment extends InjectedFragment
         }
         disableInputs();
         progressDialog.show();
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestSubmitted()));
         dataManager.createQuote(request, bookingQuoteCallback);
     }
 
@@ -345,12 +348,14 @@ public class BookingFlowFragment extends InjectedFragment
         @Override
         public void onSuccess(final BookingQuote quote)
         {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestSuccess()));
             handleBookingQuoteSuccess(quote, false);
         }
 
         @Override
         public void onError(final DataManager.DataManagerError error)
         {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestError(error.getMessage())));
             handleBookingQuoteError(error);
         }
     };

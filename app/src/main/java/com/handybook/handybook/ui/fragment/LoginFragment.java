@@ -137,6 +137,7 @@ public final class LoginFragment extends BookingFlowFragment
         }
 
         bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog()));
     }
 
     @Override
@@ -324,6 +325,7 @@ public final class LoginFragment extends BookingFlowFragment
                 progressDialog.show();
 
                 final String email = mEmailText.getEmail();
+                bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(email)));
 
                 if (mFindUser)
                 {
@@ -495,7 +497,7 @@ public final class LoginFragment extends BookingFlowFragment
         {
             mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
         }
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.LoginLog()));
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog()));
 
         configurationManager.invalidateCache();
 

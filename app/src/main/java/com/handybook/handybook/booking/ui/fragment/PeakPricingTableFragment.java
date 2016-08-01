@@ -13,6 +13,8 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.TextUtils;
 
@@ -185,8 +187,12 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
                 @Override
                 public void onClick(final View v)
                 {
+
                     if (mIsForReschedule)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackSubmittedLog(
+                                mBookingToReschedule.getStartDate(), date
+                        )));
                         rescheduleBooking(mBookingToReschedule, date, mIsForRescheduleAll);
                     }
                     else

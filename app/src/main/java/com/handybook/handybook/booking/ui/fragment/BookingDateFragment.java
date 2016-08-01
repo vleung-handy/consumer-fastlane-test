@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
@@ -27,8 +28,9 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingTimeLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.ui.view.GroovedTimePicker;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -103,21 +105,39 @@ public final class BookingDateFragment extends BookingFlowFragment
                     rescheduleBooking(mRescheduleBooking, date.getTime(), false);
                 }
             }
-            else if (mBookingOptions != null && mBookingOptions.size() > 0)
-            {
-                final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
-                intent.putParcelableArrayListExtra(
-                        BookingOptionsActivity.EXTRA_OPTIONS,
-                        new ArrayList<>(mBookingOptions)
-                );
-                intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, mBookingOptions.get(0).getPage());
-                intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
-                startActivity(intent);
-            }
             else
             {
-                continueBookingFlow();
+                BookingRequest bookingRequest = bookingManager.getCurrentRequest();
+                if (bookingRequest != null)
+                {
+                    Date dateStart = bookingRequest.getStartDate();
+                    String timezone = bookingRequest.getTimeZone();
+                    if (dateStart != null && !Strings.isNullOrEmpty(timezone))
+                    {
+                        String dateString = DateTimeUtils.formatDate(dateStart,
+                                DateTimeUtils.UNIVERSAL_DATE_FORMAT, timezone);
+                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerSubmittedLog(dateString)));
+                    }
+
+                }
+
+                if (mBookingOptions != null && mBookingOptions.size() > 0)
+                {
+                    final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                    intent.putParcelableArrayListExtra(
+                            BookingOptionsActivity.EXTRA_OPTIONS,
+                            new ArrayList<>(mBookingOptions)
+                    );
+                    intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, mBookingOptions.get(0).getPage());
+                    intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
+                    startActivity(intent);
+                }
+                else
+                {
+                    continueBookingFlow();
+                }
             }
+
         }
     };
     private Date mRescheduleDate;
@@ -182,7 +202,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             mBookingOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
         }
 
-        bus.post(new LogEvent.AddLogEvent(new BookingTimeLog.BookingTimeShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerShownLog()));
     }
 
     @Override
@@ -478,9 +498,12 @@ public final class BookingDateFragment extends BookingFlowFragment
     public void cancelClicked()
     {
         showUiBlockers();
-        bus.post(new LogEvent.AddLogEvent(
-                new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId())
-        ));
-        bus.post(new BookingEvent.RequestPreCancelationInfo(mRescheduleBooking.getId()));
+        if (mRescheduleBooking != null)
+        {
+            bus.post(new LogEvent.AddLogEvent(
+                    new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId())
+            ));
+            bus.post(new BookingEvent.RequestPreCancelationInfo(mRescheduleBooking.getId()));
+        }
     }
 }

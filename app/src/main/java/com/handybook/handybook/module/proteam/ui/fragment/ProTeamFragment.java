@@ -20,6 +20,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
@@ -101,22 +102,22 @@ public class ProTeamFragment extends InjectedFragment implements
         );
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout)
-           {
-               @Override
-               public void onPageSelected(final int position)
-               {
-                   super.onPageSelected(position);
+                                           {
+                                               @Override
+                                               public void onPageSelected(final int position)
+                                               {
+                                                   super.onPageSelected(position);
 
-                   //log when displayed service changed
-                   ProTeamProListFragment proTeamProListFragment = mTabAdapter.getItem(position);
-                   ProTeamCategoryType proTeamCategoryType =
-                           proTeamProListFragment.getProTeamCategoryType();
-                   bus.post(new LogEvent.AddLogEvent(
-                           new ProTeamPageLog.DisplayedServiceChanged(
-                           proTeamCategoryType
-                   )));
-               }
-           }
+                                                   //log when displayed service changed
+                                                   ProTeamProListFragment proTeamProListFragment = mTabAdapter.getItem(position);
+                                                   ProTeamCategoryType proTeamCategoryType =
+                                                           proTeamProListFragment.getProTeamCategoryType();
+                                                   bus.post(new LogEvent.AddLogEvent(
+                                                           new ProTeamPageLog.DisplayedServiceChanged(
+                                                                   proTeamCategoryType
+                                                           )));
+                                               }
+                                           }
         );
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
@@ -267,8 +268,10 @@ public class ProTeamFragment extends InjectedFragment implements
     }
 
     @Override
-    public void onDialogDisplayed(@Nullable ProTeamPro proTeamPro,
-                                  @Nullable ProviderMatchPreference providerMatchPreference)
+    public void onDialogDisplayed(
+            @Nullable ProTeamPro proTeamPro,
+            @Nullable ProviderMatchPreference providerMatchPreference
+    )
     {
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.WarningDisplayed(
                 proTeamPro == null ? null : String.valueOf(proTeamPro.getId()),

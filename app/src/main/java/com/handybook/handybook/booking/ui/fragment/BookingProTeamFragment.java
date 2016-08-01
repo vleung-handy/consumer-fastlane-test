@@ -17,6 +17,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
@@ -79,6 +80,8 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
         {
             mProTeamCategoryType = ProTeamCategoryType.HANDYMEN;
         }
+
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.ProTeamShownLog()));
     }
 
     @Override
@@ -147,6 +150,9 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                 mCleanersToRemove.size() + mHandymenToRemove.size(), //removed count
                 ProTeamPageLog.Context.BOOKING_FLOW
         )));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.ProTeamSubmittedLog(
+                mCleanersToAdd.size(), mCleanersToRemove.size(),
+                mHandymenToAdd.size(), mHandymenToRemove.size())));
         showUiBlockers();
         continueBookingFlow();
     }
@@ -224,8 +230,9 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
     }
 
     @Override
-    public void onDialogDisplayed(@Nullable final ProTeamPro proTeamPro,
-                                  @Nullable ProviderMatchPreference providerMatchPreference
+    public void onDialogDisplayed(
+            @Nullable final ProTeamPro proTeamPro,
+            @Nullable ProviderMatchPreference providerMatchPreference
     )
     {
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.WarningDisplayed(
@@ -245,7 +252,7 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
             final ProviderMatchPreference providerMatchPreference
     )
     {
-        if(proTeamPro == null)
+        if (proTeamPro == null)
         {
             Crashlytics.logException(new InvalidParameterException("ProTeamPro cannot be null on pro removal requested"));
             return;
