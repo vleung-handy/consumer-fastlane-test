@@ -877,6 +877,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     private void completeBooking()
     {
+        setReferrerToken();
         dataManager.createBooking(mCurrentTransaction,
                 new DataManager.Callback<BookingCompleteTransaction>()
                 {
@@ -947,6 +948,16 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 });
+    }
+
+    private void setReferrerToken()
+    {
+        final Context applicationContext = getActivity().getApplicationContext();
+        // The variable referrerToken may be null but that's ok! It just means that the booking
+        // flow was not initiated through Button.
+        final String referrerToken = com.usebutton.sdk.Button.getButton(applicationContext)
+                .getReferrerToken();
+        mCurrentTransaction.setReferrerToken(referrerToken);
     }
 
     private final TextWatcher cardTextWatcher = new TextWatcher()

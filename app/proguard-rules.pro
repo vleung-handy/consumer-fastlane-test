@@ -147,3 +147,11 @@
 -dontwarn java.lang.ClassValue
 -dontwarn com.google.j2objc.annotations.Weak
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
+# Button
+-keepattributes Exceptions,InnerClasses,EnclosingMethod
+-keep class com.usebutton.** { *; }
+-keepclassmembers class * implements android.os.Parcelable {
+    static ** CREATOR;
+}
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient { public *; }

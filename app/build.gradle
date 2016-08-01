@@ -135,6 +135,7 @@ dependencies {
     compile 'com.airbnb:deeplinkdispatch:1.5.0'
     compile 'com.github.renaudcerrato:ViewPagerIndicator:2.4.1-gradle'
     compile 'com.urbanairship.android:urbanairship-sdk:6.4.1'
+    compile 'com.usebutton:android-sdk:5.0.1'
     compile 'com.google.android.gms:play-services-gcm:9.0.0'
     compile 'com.google.android.gms:play-services-basement:9.0.0'
     compile 'com.google.android.gms:play-services-base:9.0.0'
@@ -142,6 +143,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-wallet:9.0.0'
     compile 'com.google.android.gms:play-services-location:9.0.0'
     compile 'com.google.android.gms:play-services-analytics:9.0.0'
+    compile 'com.google.android.gms:play-services-ads:9.0.0'
     compile 'com.google.firebase:firebase-core:9.0.0'
     compile 'com.google.firebase:firebase-crash:9.0.0'
 
