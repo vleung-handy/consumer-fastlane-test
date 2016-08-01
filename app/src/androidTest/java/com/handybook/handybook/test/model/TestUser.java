@@ -21,6 +21,12 @@ public class TestUser
         mPhoneNumber = phoneNumber;
     }
 
+    public TestUser(String email, String password)
+    {
+        mEmail = email;
+        mPassword = password;
+    }
+
     public String getEmail()
     {
         return mEmail;

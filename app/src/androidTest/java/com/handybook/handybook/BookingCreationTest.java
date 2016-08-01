@@ -1,6 +1,5 @@
 package com.handybook.handybook;
 
-import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -9,6 +8,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.test.data.TestUsers;
 import com.handybook.handybook.test.model.Address;
 import com.handybook.handybook.test.model.TestUser;
+import com.handybook.handybook.test.util.AppInteractionUtil;
 import com.handybook.handybook.test.util.TextViewUtil;
 import com.handybook.handybook.test.util.ViewUtil;
 import com.stripe.android.model.Card;
@@ -20,7 +20,6 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 //note that animations should be disabled on the device running these tests
 @RunWith(AndroidJUnit4.class)
@@ -40,7 +39,7 @@ public class BookingCreationTest
     @Test
     public void testFirstTimeUserCanCreateBooking()
     {
-        logOutAndPassOnboarding();
+        AppInteractionUtil.logOutAndPassOnboarding();
 
         //wait for network call to return with service list
         ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
@@ -108,40 +107,6 @@ public class BookingCreationTest
 
         //wait for booking details page
         ViewUtil.waitForViewVisible(R.id.booking_detail_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-    }
-
-    /**
-     * logs out if necessary and passes the onboarding screen if necessary
-     *
-     * need to do this because device data isn't cleared after each test run
-     */
-    private void logOutAndPassOnboarding()
-    {
-        //log out if necessary
-        //open nav drawer
-        DrawerActions.openDrawer(R.id.drawer_layout);
-
-        //log out
-        if(ViewUtil.isViewDisplayed(withText(R.string.log_out)))
-        {
-            //press the log out button in the nav drawer
-            onView(withText(R.string.log_out)).perform(click());
-
-            //press the log out button in the confirmation dialog
-            onView(withText(R.string.log_out)).perform(click());
-            ViewUtil.waitForTextNotVisible(R.string.log_out, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-            //drawer will be closed
-        }
-        else
-        {
-            //close the drawer
-            DrawerActions.closeDrawer(R.id.drawer_layout);
-        }
-
-        if(ViewUtil.isViewDisplayed(R.id.start_button))
-        {
-            onView(withId(R.id.start_button)).perform(click());
-        }
     }
     
     private void clickNextButton()
