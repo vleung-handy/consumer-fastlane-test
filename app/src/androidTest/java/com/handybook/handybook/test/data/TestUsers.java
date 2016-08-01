@@ -17,6 +17,10 @@ public class TestUsers
                     "9876543210",
                     mValidVisaCard);
 
+    public static TestUser EXISTING_USER_BOOKING_CREATION =
+            new TestUser("test+user@handybook.com",
+                    "supersecretpassword");
+
     public static TestUser LOGIN =
             new TestUser(
                     "test+user@handybook.com",
