@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
@@ -21,8 +22,8 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingCommentsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingRequestProLog;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class BookingOptionsFragment extends BookingFlowFragment
     protected HashMap<String, Boolean> childDisplayMap;
     protected HashMap<String, Integer> optionIndexMap;
     protected HashMap<String, BookingOptionsView> optionsViewMap;
-    protected int page;
+    private int page;
     protected boolean isPost;
 
     @Bind(R.id.options_layout)
@@ -95,6 +96,7 @@ public class BookingOptionsFragment extends BookingFlowFragment
             optionIndexMap = new HashMap<>();
         }
 
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingServiceDetailsShownLog()));
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.BookingDetailsShownLog()));
     }
 
@@ -338,7 +340,7 @@ public class BookingOptionsFragment extends BookingFlowFragment
                 ((BookingOptionsTextView) optionsView).enableSingleMode();
                 mixpanel.trackEventAppTrackComments();
 
-                bus.post(new LogEvent.AddLogEvent(new BookingCommentsLog.BookingCommentsShownLog()));
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingCommentsShownLog()));
             }
             else if (pageOptions.size() == 1 && option.getType().equals("option")
                     && option.getTitle().contains("professional"))
@@ -409,12 +411,18 @@ public class BookingOptionsFragment extends BookingFlowFragment
         @Override
         public void onClick(final View v)
         {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingServiceDetailsSubmittedLog()));
+
             final ArrayList<BookingOption> nextOptions = new ArrayList<>();
             for (final BookingOption option : options)
             {
                 if (isPost || (option.getPage() > page && !option.isPost()))
                 {
                     nextOptions.add(option);
+                }
+                if(!Strings.isNullOrEmpty(option.getType()) && option.getType().equals("text"))
+                {
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingCommentsSubmittedLog()));
                 }
             }
             if (nextOptions.size() < 1 || nextOptions.get(nextOptions.size() - 1).getPage() <= page)

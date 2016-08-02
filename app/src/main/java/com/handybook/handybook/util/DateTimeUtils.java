@@ -15,7 +15,6 @@ public class DateTimeUtils
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-
     /**
      * Takes in a date, format, and time zone. It will convert the given date into a string in the
      * specified time zone.

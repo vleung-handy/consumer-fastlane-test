@@ -8,19 +8,23 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.common.primitives.Ints;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
+import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingQuoteShown;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.squareup.otto.Subscribe;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +34,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
     //TODO: need to consolidate all booking edit fragments with booking flow fragments that are used in booking creation
     private Booking mBooking;
+    private BookingQuote mBookingQuote;
 
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
@@ -54,8 +59,17 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackFrequency();
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mBookingQuote = bookingManager.getCurrentQuote();
 
-        bus.post(new LogEvent.AddLogEvent(new BookingQuoteShown.BookingQuoteShownLog()));
+        if (bookingManager.getCurrentQuote() != null && bookingManager.getCurrentQuote().getRecurrenceOptions() != null)
+        {
+            List<Integer> recurrenceOptionsList = Ints.asList(bookingManager.getCurrentQuote().getRecurrenceOptions());
+            if (recurrenceOptionsList != null)
+            {
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFrequencyShownLog(recurrenceOptionsList)));
+            }
+        }
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuotePageShown()));
     }
 
     @Override
@@ -95,8 +109,18 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
         //create and set the booking request object
         BookingEditFrequencyRequest bookingEditFrequencyRequest = new BookingEditFrequencyRequest();
-        bookingEditFrequencyRequest.setRecurringFrequency(
-                mBookingEditFrequencyViewModel.getFrequencyOptionValue(selectedIndex));
+        final int frequency = mBookingEditFrequencyViewModel.getFrequencyOptionValue(selectedIndex);
+        bookingEditFrequencyRequest.setRecurringFrequency(frequency);
+
+        if (mBookingQuote != null)
+        {
+            float[] prices = mBookingQuote.getPricing(mBooking.getHours(), frequency);
+            if (prices != null && prices.length != 0)
+            {
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFrequencySubmittedLog(
+                        frequency, Math.round(prices[0] * 100)))); //price is in $
+            }
+        }
 
         //post the booking request object
         bus.post(new BookingEditEvent.RequestEditBookingFrequency(

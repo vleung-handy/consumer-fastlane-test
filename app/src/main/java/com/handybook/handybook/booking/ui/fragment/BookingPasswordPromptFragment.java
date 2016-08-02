@@ -17,7 +17,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingPasswordLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.squareup.otto.Subscribe;
@@ -55,7 +55,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mixpanel.trackEventAppTrackPasswordPrompt();
 
-        bus.post(new LogEvent.AddLogEvent(new BookingPasswordLog.BookingPasswordShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPasswordShownLog()));
     }
 
     @Override
@@ -139,6 +139,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
     @Override
     public final void onBack()
     {
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPasswordDismissedLog()));
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener()
@@ -167,6 +168,8 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
                             mFinalizeBookingRequestPayload
                     )
             );
+
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPasswordSubmittedLog()));
 
 //            dataManager.addBookingPostInfo(bookingManager.getCurrentTransaction().getBookingId(),
 //                    mPostInfo, new DataManager.Callback<Void>()

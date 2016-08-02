@@ -25,6 +25,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingConfirmationLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
@@ -85,6 +86,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         mixpanel.trackEventAppTrackEntryInfo();
 
         bus.post(new LogEvent.AddLogEvent(new BookingConfirmationLog.BookingConfirmationShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationShownLog()));
     }
 
     @Override
@@ -194,6 +196,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     public final void onBack()
     {
         showBookings();
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationDismissedLog()));
     }
 
     private final View.OnClickListener nextClicked = new View.OnClickListener()
@@ -210,6 +213,9 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             {
                 return;
             }
+
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationSubmittedLog(mKeysText.getInput())));
+
             bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
                     Integer.parseInt(mPostInfo.getGetInId()),
                     mPostInfo.getGetInText()

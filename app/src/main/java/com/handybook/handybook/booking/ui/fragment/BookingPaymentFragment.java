@@ -55,7 +55,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingPaymentLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
@@ -246,7 +246,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCurrentQuote = bookingManager.getCurrentQuote();
         mCurrentTransaction = bookingManager.getCurrentTransaction();
 
-        bus.post(new LogEvent.AddLogEvent(new BookingPaymentLog.BookingPaymentShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPaymentShownLog()));
     }
 
     @Override
@@ -877,6 +877,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     private void completeBooking()
     {
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSubmittedLog()));
+
         setReferrerToken();
         dataManager.createBooking(mCurrentTransaction,
                 new DataManager.Callback<BookingCompleteTransaction>()
@@ -884,6 +886,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     @Override
                     public void onSuccess(final BookingCompleteTransaction trans)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())));
 
                         //UPGRADE: Should we use this trans or ask the manager for current trans? So much inconsistency....
 
@@ -941,6 +944,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestErrorLog(error.getMessage())));
+
                         if (!allowCallbacks) { return; }
                         enableInputs();
                         checkAndShowPaymentMethodSelection();
