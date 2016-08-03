@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+//TODO this class and associates need major refactoring
 public class BookingOption implements Parcelable
 {
 
@@ -26,7 +27,7 @@ public class BookingOption implements Parcelable
     @SerializedName("default_value")
     private String defaultValue;
     @SerializedName("options")
-    private String[] options;
+    private String[] options; //TODO making the option attributes in separate arrays is ugly, needs refactoring
     @SerializedName("options_sub_text")
     private String[] optionsSubText;
     @SerializedName("options_right_title_text")
@@ -35,6 +36,8 @@ public class BookingOption implements Parcelable
     private String[] optionsRightSubText;
     @SerializedName("options_images")
     private String[][] optionsImages;
+    @SerializedName("options_hidden")
+    private boolean[] optionsHidden; //determines which options are initially hidden
     @SerializedName("hour_info")
     private float[] hoursInfo;
     @SerializedName("warnings")
@@ -57,6 +60,16 @@ public class BookingOption implements Parcelable
     public void setImageResourceIds(int[] imageResourceIds)
     {
         mImageResourceIds = imageResourceIds;
+    }
+
+    public void setOptionsHidden(final boolean[] optionsHidden)
+    {
+        this.optionsHidden = optionsHidden;
+    }
+
+    public boolean[] getOptionsHidden()
+    {
+        return optionsHidden;
     }
 
     public int[] getImageResourceIds()

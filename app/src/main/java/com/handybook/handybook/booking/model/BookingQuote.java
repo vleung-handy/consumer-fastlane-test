@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -42,6 +43,7 @@ public class BookingQuote extends Observable
     public static final String KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED = "android_pay_coupon_value_formatted";
     public static final String KEY_COUPON = "coupon";
     public static final String KEY_RECURRENCE_OPTIONS = "recurrence_options";
+    public static final String KEY_QUOTE_CONFIG = "quote_config";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -81,9 +83,34 @@ public class BookingQuote extends Observable
     private QuoteCoupon mCoupon;
     @SerializedName(KEY_RECURRENCE_OPTIONS)
     private int[] mRecurrenceOptions;
+    @SerializedName(KEY_QUOTE_CONFIG)
+    private QuoteConfig mQuoteConfig;
 
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
+
+    public static class QuoteConfig
+    {
+        @SerializedName("disclaimer_text")
+        private String mDisclaimerText;
+        @SerializedName("recurrence_options")
+        private List<RecurrenceOption> mRecurrenceOptions;
+
+        public String getDisclaimerText()
+        {
+            return mDisclaimerText;
+        }
+
+        public List<RecurrenceOption> getRecurrenceOptions()
+        {
+            return mRecurrenceOptions;
+        }
+    }
+
+    public QuoteConfig getQuoteConfig()
+    {
+        return mQuoteConfig;
+    }
 
     /**
      * each item returned in this array should be a constant in BookingRecurrence
@@ -452,6 +479,7 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED, context.serialize(value.getAndroidPayCouponValueFormatted()));
             jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));
             jsonObj.add(KEY_RECURRENCE_OPTIONS, context.serialize(value.getRecurrenceOptions()));
+            jsonObj.add(KEY_QUOTE_CONFIG, context.serialize(value.getQuoteConfig()));
             return jsonObj;
         }
     }
