@@ -157,6 +157,10 @@
             android:screenOrientation="portrait"
             />
         <activity
+            android:name=".booking.ui.activity.ReportIssueActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name=".booking.ui.activity.BookingFinalizeActivity"
             android:screenOrientation="portrait"
             />

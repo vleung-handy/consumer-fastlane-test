@@ -45,6 +45,7 @@ import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
@@ -85,6 +86,7 @@ import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.RateProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
@@ -258,6 +260,8 @@ import retrofit.converter.GsonConverter;
         BookingProTeamActivity.class,
         BookingProTeamFragment.class,
         RemoveProDialogFragment.class,
+        ReportIssueActivity.class,
+        ReportIssueFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

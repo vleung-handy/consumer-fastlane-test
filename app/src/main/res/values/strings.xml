@@ -234,6 +234,9 @@
     <string name="total_due">Total Due</string>
     <string name="billed_on_date_formatted">Billed on %1$s</string>
 
+    <!-- Tools -->
+    <string name="dash_formatted">%1$s \u2013 %2$s</string>
+
     <!--shared between booking edit screens-->
     <string name="booking_edit_num_hours_formatted">(%1$s hours)</string>
     <string name="booking_edit_base_hours_formatted">Base time (%1$s hours)</string>

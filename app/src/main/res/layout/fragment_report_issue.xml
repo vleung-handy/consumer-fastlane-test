@@ -1,0 +1,63 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".booking.ui.fragment.BookingsFragment"
+    >
+
+    <include layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/report_issue_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/default_margin_double"
+                android:textSize="@dimen/text_size_hero"
+                tools:text="Monday, Mar 15, 2015"
+                />
+
+            <TextView
+                android:id="@+id/report_issue_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:textSize="@dimen/default_text_size"
+                tools:text="6:00 pm - 9:00 pm"
+                />
+
+            <TextView
+                android:id="@+id/report_issue_provider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/default_margin"
+                android:textSize="@dimen/default_text_size"
+                tools:text="Linda F."
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/horizontal_divider_height_thin"
+                android:layout_margin="@dimen/default_margin"
+                android:background="@color/handy_tertiary_gray"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

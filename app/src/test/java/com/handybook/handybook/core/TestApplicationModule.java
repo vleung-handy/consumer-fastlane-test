@@ -19,6 +19,7 @@ import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
+import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
@@ -36,6 +37,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
+import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
@@ -115,6 +117,8 @@ import static org.mockito.Mockito.when;
         RedemptionFragment.class,
         RedemptionSignUpFragment.class,
         RedemptionEmailSignUpFragment.class,
+        ReportIssueActivity.class,
+        ReportIssueFragment.class,
 }, library = true)
 public class TestApplicationModule
 {

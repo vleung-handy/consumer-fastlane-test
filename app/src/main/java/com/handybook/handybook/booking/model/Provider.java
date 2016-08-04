@@ -7,7 +7,7 @@ import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.util.StringUtils;
 
-public final class Provider implements Parcelable
+public class Provider implements Parcelable
 {
     @SerializedName("status")
     private int status;

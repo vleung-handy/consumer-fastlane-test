@@ -287,7 +287,7 @@ public class Booking implements Parcelable
         }
     }
 
-    public final Date getStartDate()
+    public Date getStartDate()
     {
         return mStartDate;
     }
@@ -297,7 +297,7 @@ public class Booking implements Parcelable
         mStartDate = startDate;
     }
 
-    public final Date getEndDate()
+    public Date getEndDate()
     {
         final Calendar endDate = Calendar.getInstance();
         endDate.setTime(this.getStartDate());
@@ -336,7 +336,7 @@ public class Booking implements Parcelable
         mAddress = address;
     }
 
-    public final Provider getProvider()
+    public Provider getProvider()
     {
         return mProvider;
     }
