@@ -21,6 +21,16 @@ public class TestUsers
             new TestUser("test+user@handybook.com",
                     "supersecretpassword");
 
+    public static TestUser UPDATE_PROFILE_USER =
+            new TestUser(
+                    "test+user2@handybook.com",
+                    "supersecretpassword");
+
+    public static TestUser UPDATE_PASSWORD_USER =
+            new TestUser(
+                    "test+android@handybook.com",
+                    "supersecretpassword");
+
     public static TestUser LOGIN =
             new TestUser(
                     "test+user@handybook.com",

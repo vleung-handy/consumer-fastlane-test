@@ -56,4 +56,9 @@ public class TestUser
     {
         return mFullName;
     }
+
+    public void setPassword(final String password)
+    {
+        mPassword = password;
+    }
 }
