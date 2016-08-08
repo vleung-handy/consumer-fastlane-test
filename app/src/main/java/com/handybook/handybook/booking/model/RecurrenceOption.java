@@ -2,10 +2,12 @@ package com.handybook.handybook.booking.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * model from server that determines how to display a recurrence option to the user
  */
-public class RecurrenceOption
+public class RecurrenceOption implements Serializable
 {
     /**
      * true if this option should be initially hidden

@@ -246,6 +246,7 @@ public class BookingOption implements Parcelable
         optionsSubText = in.createStringArray();
         optionsRightTitleText = in.createStringArray();
         optionsRightSubText = in.createStringArray();
+        optionsHidden = in.createBooleanArray();
         optionsImages = (String[][]) in.readSerializable();
         hoursInfo = in.createFloatArray();
         warnings = (String[][]) in.readSerializable();
@@ -261,6 +262,7 @@ public class BookingOption implements Parcelable
         out.writeStringArray(optionsSubText);
         out.writeStringArray(optionsRightTitleText);
         out.writeStringArray(optionsRightSubText);
+        out.writeBooleanArray(optionsHidden);
         out.writeSerializable(optionsImages);
         out.writeFloatArray(hoursInfo);
         out.writeSerializable(warnings);
