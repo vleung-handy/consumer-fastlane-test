@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.contrib.PickerActions.setTime;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 //note that animations should be disabled on the device running these tests
@@ -31,7 +32,7 @@ public class BookingCreationTest
 
     /**
      * assumes no one is logged in
-     *
+     * <p/>
      * basic test for ensuring that a new user can create a booking with default values
      */
     @Test
@@ -58,7 +59,9 @@ public class BookingCreationTest
         ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         clickNextButton();
 
-        //use default time + date
+        //use default date at 9 am
+        ViewUtil.waitForViewVisible(R.id.time_picker, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        onView(withId(R.id.time_picker)).perform(setTime(9, 0));
         clickNextButton();
 
         //create a new user
@@ -110,7 +113,7 @@ public class BookingCreationTest
 
     /**
      * assumes no one is logged in
-     *
+     * <p/>
      * basic test for ensuring that an existing user can create a booking with default values
      */
     @Test
@@ -138,8 +141,9 @@ public class BookingCreationTest
         ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         clickNextButton();
 
-        //use default time + date
+        //use default date at 9 am
         ViewUtil.waitForViewVisible(R.id.date_picker, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        onView(withId(R.id.time_picker)).perform(setTime(9, 0));
         clickNextButton();
 
         //use default frequency
