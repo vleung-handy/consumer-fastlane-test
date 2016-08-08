@@ -233,12 +233,12 @@ public class ReferralFragment extends InjectedFragment
                 mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_EMAIL);
         if (emailReferralInfo != null)
         {
-            final Intent smsReferralIntent = ReferralIntentUtil.getSmsReferralIntent(
-                    getActivity(),
-                    emailReferralInfo
-            );
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+            emailIntent.setType("message/rfc822");
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
+            emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
             bus.post(new ReferralsEvent.InviteFriendsClicked());
-            launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_EMAIL);
+            launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
         }
     }
 

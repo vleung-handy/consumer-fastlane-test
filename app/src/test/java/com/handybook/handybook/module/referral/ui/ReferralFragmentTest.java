@@ -127,7 +127,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
         when(mMockReferralInfo.getMessage()).thenReturn("share me!");
         mFragment.onReceivePrepareReferralsSuccess(mMockReceivePrepareReferralsSuccessEvent);
 
-        mFragment.onInviteButtonClicked();
+        mFragment.onSmsShareButtonClicked();
         final Intent intent = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(intent.getStringExtra("sms_body"), equalTo("share me!"));
         assertThat(intent.getAction(), equalTo(Intent.ACTION_VIEW));
@@ -136,7 +136,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldLaunchActivityPickerOnShareClicked() throws Exception
     {
-        mFragment.onShareButtonClicked();
+        mFragment.onOtherShareCtaClicked();
         final ShadowActivity.IntentForResult intent =
                 shadowOf(mFragment.getActivity()).getNextStartedActivityForResult();
         assertThat(intent.intent.getAction(), equalTo(Intent.ACTION_PICK_ACTIVITY));
