@@ -2,7 +2,6 @@ package com.handybook.handybook.helpcenter.manager;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
@@ -63,7 +62,7 @@ public class HelpManager
             nodeId = null;
         }
 
-        dataManager.getHelpInfo(nodeId, getAuthToken(), bookingId, new DataManager.Callback<HelpNodeWrapper>()
+        dataManager.getHelpInfo(nodeId, bookingId, new DataManager.Callback<HelpNodeWrapper>()
         {
             @Override
             public void onSuccess(HelpNodeWrapper helpNodeWrapper)
@@ -89,7 +88,7 @@ public class HelpManager
         String bookingId = event.bookingId;
 
         //DO NOT CACHE BOOKING NODES
-        dataManager.getHelpBookingsInfo(nodeId, getAuthToken(), bookingId, new DataManager.Callback<HelpNodeWrapper>()
+        dataManager.getHelpBookingsInfo(nodeId, bookingId, new DataManager.Callback<HelpNodeWrapper>()
         {
             @Override
             public void onSuccess(HelpNodeWrapper helpNodeWrapper)
@@ -105,11 +104,5 @@ public class HelpManager
             }
         });
 
-    }
-
-    private String getAuthToken()
-    {
-        final User user = userManager.getCurrentUser();
-        return (user != null ? user.getAuthToken() : null);
     }
 }

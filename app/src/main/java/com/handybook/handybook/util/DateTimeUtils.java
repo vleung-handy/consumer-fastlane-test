@@ -15,7 +15,6 @@ public class DateTimeUtils
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-
     /**
      * Takes in a date, format, and time zone. It will convert the given date into a string in the
      * specified time zone.
@@ -46,5 +45,18 @@ public class DateTimeUtils
         }
 
         return customFormatter.format(date);
+    }
+
+    /**
+     * A positive number representing the difference in seconds
+     *
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static long getDiffInSeconds(Date date1, Date date2)
+    {
+        long diff = Math.abs(date2.getTime() - date1.getTime());
+        return diff / 1000 % 60;
     }
 }

@@ -2,20 +2,21 @@ package com.handybook.handybook.logger.handylogger.model.booking;
 
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
-public class BookingPasswordLog extends EventLog
+public class BookingQuoteLog extends EventLog
 {
-    private static final String EVENT_CONTEXT = "post_booking_password";
+    private static final String EVENT_CONTEXT = "quote";
 
-    public BookingPasswordLog(final String eventType)
+    public BookingQuoteLog(final String eventType)
     {
         super(eventType, EVENT_CONTEXT);
     }
 
-    public static class BookingPasswordShownLog extends BookingPasswordLog
+
+    public static class BookingQuoteShownLog extends BookingQuoteLog
     {
         private static final String EVENT_TYPE = "shown";
 
-        public BookingPasswordShownLog()
+        public BookingQuoteShownLog()
         {
             super(EVENT_TYPE);
         }

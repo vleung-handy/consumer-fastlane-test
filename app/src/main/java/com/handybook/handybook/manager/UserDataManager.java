@@ -77,6 +77,7 @@ public class UserDataManager
                     @Override
                     public void onSuccess(final User user)
                     {
+                        mUserManager.setCurrentUser(user);
                         mBus.post(new HandyEvent.ReceiveAuthUserSuccess(user, AuthType.EMAIL));
                     }
 
@@ -101,6 +102,7 @@ public class UserDataManager
                     @Override
                     public void onSuccess(final User user)
                     {
+                        mUserManager.setCurrentUser(user);
                         mBus.post(new HandyEvent.ReceiveAuthUserSuccess(user, AuthType.EMAIL));
                     }
 
@@ -175,6 +177,7 @@ public class UserDataManager
             @Override
             public void onSuccess(final User user)
             {
+                mUserManager.setCurrentUser(user);
                 mBus.post(new HandyEvent.ReceiveAuthUserSuccess(user, AuthType.FACEBOOK));
             }
 

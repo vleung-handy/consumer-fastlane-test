@@ -12,13 +12,5 @@ public class BookingCommentsLog extends EventLog
         super(eventType, EVENT_CONTEXT);
     }
 
-    public static class BookingCommentsShownLog extends BookingCommentsLog
-    {
-        private static final String EVENT_TYPE = "shown";
 
-        public BookingCommentsShownLog()
-        {
-            super(EVENT_TYPE);
-        }
-    }
 }

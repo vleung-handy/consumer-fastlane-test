@@ -1,81 +1,36 @@
 package com.handybook.handybook;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.testdata.TestUser;
-import com.handybook.handybook.testutil.AppInteractionUtils;
+import com.handybook.handybook.test.data.TestUsers;
+import com.handybook.handybook.test.model.TestUser;
+import com.handybook.handybook.test.util.AppInteractionUtil;
+import com.handybook.handybook.test.util.ViewUtil;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 //note that animations should be disabled on the device running these tests
-public class LoginTest extends ActivityInstrumentationTestCase2
+@RunWith(AndroidJUnit4.class)
+public class LoginTest
 {
-    private final TestUser mTestUser = TestUser.TEST_USER_NY;
+    private static final TestUser TEST_USER = TestUsers.LOGIN;
 
-    public LoginTest()
+    @Rule
+    public ActivityTestRule<ServiceCategoriesActivity> mActivityRule =
+            new ActivityTestRule<>(ServiceCategoriesActivity.class);
+
+    @Test
+    public void testLogin()
     {
-        super(ServiceCategoriesActivity.class);
-    }
+        AppInteractionUtil.logOutAndPassOnboarding();
 
-    @Override
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-        getActivity();
-    }
+        AppInteractionUtil.logIn(TEST_USER);
 
-    @Override
-    protected void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
-    /**
-     * Logs in as the test user and then logs out
-     *
-     * Assumptions:
-     * - no one is logged into the app
-     * - there are no popup modals (for example, promos)
-     */
-    public void testCanLogInAndLogOut()
-    {
-        AppInteractionUtils.clickGetStartedButtonIfPresent();
-
-        AppInteractionUtils.clickOpenNavigationMenuButton();
-
-        /* log in as the test user */
-        //click the login tab
-        onView(withId(R.id.nav_menu_log_in)).perform(click());
-
-        //input credentials
-        onView(withId(R.id.email_text)).
-                perform(click(), typeText(mTestUser.getEmail()), closeSoftKeyboard());
-        onView(withId(R.id.password_text)).
-                perform(click(), typeText(mTestUser.getPassword()), closeSoftKeyboard());
-
-        //click the login button
-        onView(withId(R.id.login_button)).perform(click());
-
-        //wait for progress dialog
-        AppInteractionUtils.waitForProgressDialog();
-
-        AppInteractionUtils.clickOpenNavigationMenuButton();
-
-        //click the log out button
-        onView(withId(R.id.nav_menu_log_out)).perform(click());
-
-        onView(withId(R.id.button_positive_label)).perform(click());
-
-        AppInteractionUtils.clickOpenNavigationMenuButton();
-
-        //verify that the navigation bar says "log in"
-        onView(withId(R.id.nav_menu_log_in)).check(matches(isDisplayed()));
+        //wait for network call to return with service list
+        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 }

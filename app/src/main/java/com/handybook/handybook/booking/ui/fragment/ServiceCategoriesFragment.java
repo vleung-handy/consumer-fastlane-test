@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,10 +26,14 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.squareup.otto.Bus;
@@ -57,9 +62,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     /**
      * maps the service id to its icon image view as rendered.
      * using service id rather than service object as key in case the object references differ
-     * <p>
+     * <p/>
      * used for the cool icon transition to ServicesActivity
-     * <p>
+     * <p/>
      * we need this because the transition requires a
      * reference to the EXACT image view of the service icon
      * rendered in the service category views
@@ -102,6 +107,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
 
+        bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageShownLog()));
+
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final SharedPreferences.Editor edit = prefs.edit();
 
@@ -118,6 +125,15 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             final Intent intent = new Intent(getActivity(), OnboardActivity.class);
             startActivity(intent);
         }
+        else if (user != null
+                && user.getAnalytics() != null
+                && user.getAnalytics().getUpcomingBookings() > 0
+                && ((BaseApplication) getActivity().getApplication()).isNewlyLaunched())
+        {
+            final Intent intent = new Intent(getActivity(), BookingsActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -131,10 +147,13 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
 
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        activity.setupHamburgerMenu(mToolbar);
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null && activity instanceof MenuDrawerActivity)
+        {
+            activity.setSupportActionBar(mToolbar);
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+            ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
+        }
 
         mPromoImage.setColorFilter(
                 getResources().getColor(R.color.handy_blue),
@@ -151,6 +170,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             {
                 int itemPosition = mRecyclerView.getChildLayoutPosition(view);
                 Service service = mServices.get(itemPosition);
+
+                bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageSubmittedLog(service.getId())));
+
                 mServiceIconMap.put(service.getId(), ((ServiceCategoryView) view).getIcon());
                 launchServiceActivity(service);
             }
@@ -176,7 +198,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     /**
      * handles bundle arguments. currently only from deeplinks
-     * <p>
+     * <p/>
      * should be called after handleLoadServicesResponse() so that we have the list of services
      */
     private void handleBundleArguments()

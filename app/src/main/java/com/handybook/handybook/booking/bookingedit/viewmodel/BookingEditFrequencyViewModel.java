@@ -107,7 +107,7 @@ public class BookingEditFrequencyViewModel
      * @param recurrenceCode
      * @return The new booking price for a given booking frequency
      */
-    private String getFormattedPriceForFrequency(@BookingRecurrenceCode final int recurrenceCode)
+    public String getFormattedPriceForFrequency(@BookingRecurrenceCode final int recurrenceCode)
     {
         switch (recurrenceCode)
         {
@@ -172,6 +172,7 @@ public class BookingEditFrequencyViewModel
      * @param index
      * @return The frequency value for a given option index
      */
+    @BookingRecurrenceCode
     public int getFrequencyOptionValue(final int index) //TODO: need better name
     {
         return mFrequencyOptionsArray[index];

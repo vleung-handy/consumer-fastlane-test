@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingHighDemandLog;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
@@ -120,7 +121,12 @@ public final class PeakPricingFragment extends BookingFlowFragment
                     savedInstanceState.getSerializable(STATE_PRICE_TABLE);
         }
 
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingWindowShownLog()));
         bus.post(new LogEvent.AddLogEvent(new BookingHighDemandLog.BookingHighDemandShownLog()));
+        if (mBookingToReschedule != null)
+        {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackShownLog(mBookingToReschedule.getStartDate())));
+        }
     }
 
     @Override
