@@ -21,13 +21,15 @@ public class TestUsers
             new TestUser("test+user@handybook.com",
                     "supersecretpassword");
 
+    public static TestUser UPDATE_PROFILE_USER =
+            new TestUser(
+                    "test+user2@handybook.com",
+                    "supersecretpassword");
+
     public static TestUser LOGIN =
             new TestUser(
                     "test+user@handybook.com",
                     "supersecretpassword");
 
-    public static TestUser CANCEL =
-            new TestUser(
-                    "test+cancel@handybook.com",
-                    "supersecretpassword");
+
 }
