@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:background="@color/handy_bg"
+    >
 
     <Button
         android:id="@+id/next_button"
@@ -15,10 +17,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:layout_below="@id/toolbar"
-        android:layout_above="@id/next_button">
+        android:layout_above="@id/next_button"
+        >
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -26,19 +31,43 @@
                 android:id="@+id/info_header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/default_margin"
                 style="@style/ContentLayout" />
 
             <LinearLayout
                 android:id="@+id/options_layout"
-                android:layout_below="@id/info_header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/default_margin_double"
                 android:orientation="vertical"
                 android:background="@color/white" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/fragment_booking_recurrence_show_more_options_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/handy_blue"
+                android:text="@string/booking_recurrence_show_more_options"
+                android:visibility="gone"
+                android:drawableRight="@drawable/ic_down_arrow"
+                tools:visibility="visible"
+                />
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/fragment_booking_recurrence_disclaimer_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:textColor="@color/dark_grey"
+                android:gravity="center|bottom"
+                android:layout_marginBottom="@dimen/default_margin_double"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin_double"
+                android:layout_marginLeft="@dimen/default_margin_double"
+                tools:text="Disclaimer text"
+                />
+        </LinearLayout>
 
     </ScrollView>
 
