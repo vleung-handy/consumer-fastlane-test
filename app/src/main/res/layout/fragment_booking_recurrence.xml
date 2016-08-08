@@ -44,12 +44,13 @@
 
             <TextView
                 android:id="@+id/fragment_booking_recurrence_show_more_options_button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:textColor="@color/handy_blue"
                 android:text="@string/booking_recurrence_show_more_options"
                 android:visibility="gone"
+                android:drawableRight="@drawable/ic_down_arrow"
                 tools:visibility="visible"
                 />
 
