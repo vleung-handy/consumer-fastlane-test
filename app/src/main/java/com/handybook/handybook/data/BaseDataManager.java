@@ -245,6 +245,19 @@ public final class BaseDataManager extends DataManager
         });
     }
 
+    @Override
+    public void getAllServices(final List<Service> services, final Callback<List<Service>> cb)
+    {
+        mService.getServices(new HandyRetrofitCallback(cb)
+        {
+            @Override
+            protected void success(final JSONObject response)
+            {
+
+            }
+        });
+    }
+
     @Nullable
     @Override
     public List<Service> getCachedServices()

@@ -71,6 +71,10 @@ public abstract class DataManager
             Callback<List<Service>> cb
     );
 
+    public abstract void getAllServices(
+            Callback<List<Service>> cb
+    );
+
     public abstract List<Service> getCachedServices();
 
     public abstract void editBookingAddress(
