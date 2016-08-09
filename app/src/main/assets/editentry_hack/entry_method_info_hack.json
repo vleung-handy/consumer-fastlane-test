@@ -1,0 +1,72 @@
+{
+  "instructions_text": "Let your pro in without being home:",
+  "entry_method_options": [
+    {
+      "machine_name": "doorman",
+      "display_name": "Doorman",
+      "recommended": true,
+      "default": true,
+      "input_form_definition": {
+        "field_definitions": [
+          {
+            "machine_name": "description",
+            "hint_text": "Any entry instructions?",
+            "required": false,
+            "num_lines": 1
+          }
+        ]
+      }
+    },
+    {
+      "machine_name": "lockbox",
+      "display_name": "Lockbox",
+      "recommended": true,
+      "input_form_definition": {
+        "field_definitions": [
+          {
+            "machine_name": "lockbox_code",
+            "hint_text": "Enter access code",
+            "required": true,
+            "num_lines": 1
+          },
+          {
+            "machine_name": "lockbox_location",
+            "hint_text": "Describe lockbox location",
+            "required": true,
+            "num_lines": 2
+          }
+        ]
+      }
+    },
+    {
+      "machine_name": "hide_key",
+      "display_name": "I'll hide the key",
+      "recommended": true,
+      "input_form_definition": {
+        "field_definitions": [
+          {
+            "machine_name": "description",
+            "hint_text": "Any entry instructions?",
+            "required": false,
+            "num_lines": 1
+          }
+        ]
+      }
+    },
+    {
+      "machine_name": "at_home",
+      "display_name": "I'll be at home",
+      "recommended": false,
+      "input_form_definition": {
+        "field_definitions": [
+          {
+            "machine_name": "description",
+            "hint_text": "Any entry instructions?",
+            "required": false,
+            "num_lines": 1
+          }
+        ]
+      }
+    }
+  ]
+}

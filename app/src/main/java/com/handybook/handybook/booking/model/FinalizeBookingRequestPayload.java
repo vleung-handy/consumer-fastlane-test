@@ -10,6 +10,7 @@ import java.util.Observable;
 
 /**
  * Body of POST request to /api/v3/bookings/:id/finalize_booking
+ *
  */
 public class FinalizeBookingRequestPayload extends Observable
 {
@@ -85,7 +86,15 @@ public class FinalizeBookingRequestPayload extends Observable
         notifyObservers();
     }
 
-    public void setEntryInfo(final int entryMethodIndex, final String getInText)
+    /**
+     * TODO TEMP HACK - mostly a dupe of the other setEntryInfo method
+     * @param entryMethodInstructionType
+     * @param lockboxCode
+     * @param lockboxLocation
+     */
+    public void setEntryInfo(
+            @BookingInstruction.EntryMethodType String entryMethodInstructionType,
+            final String lockboxCode, final String lockboxLocation)
     {
         /*{
             "id": 5, #optional if machine_name included
@@ -101,21 +110,108 @@ public class FinalizeBookingRequestPayload extends Observable
         {
             mBookingInstructions = new ArrayList<>();
         }
-        String entryMethodInstructionType;
-        switch (entryMethodIndex)
+
+        BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
+                null,
+                BookingInstruction.MachineName.ENTRY_METHOD,
+                null,
+                entryMethodInstructionType,
+                null,
+                null
+        );
+
+        BookingInstruction lockboxCodeInstruction = new BookingInstruction(
+                null,
+                BookingInstruction.MachineName.LOCKBOX_CODE,
+                null,
+                null,
+                lockboxCode,
+                null
+        );
+
+        BookingInstruction lockboxLocationInstruction = new BookingInstruction(
+                null,
+                BookingInstruction.MachineName.KEY_LOCATION,
+                null,
+                null,
+                lockboxLocation,
+                null
+        );
+        // Find it and if it exists update it, or create the new one.
+        int entryMethodPosition = -1, keyLocationPosition = -1, lockboxCodePosition = -1;
+        for (int i = 0; i < mBookingInstructions.size(); i++)
         {
-            case 0:
-                entryMethodInstructionType = BookingInstruction.InstructionType.AT_HOME;
-                break;
-            case 1:
-                entryMethodInstructionType = BookingInstruction.InstructionType.DOORMAN;
-                break;
-            case 2:
-                entryMethodInstructionType = BookingInstruction.InstructionType.HIDE_KEY;
-                break;
-            default:
-                entryMethodInstructionType = BookingInstruction.InstructionType.AT_HOME;
+            BookingInstruction eBookingInstruction = mBookingInstructions.get(i);
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.ENTRY_METHOD))
+            {
+                entryMethodPosition = i;
+                continue;
+            }
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.KEY_LOCATION))
+            {
+                keyLocationPosition = i;
+                continue;
+            }
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.LOCKBOX_CODE))
+            {
+                lockboxCodePosition = i;
+                continue;
+            }
         }
+        if (entryMethodPosition >= 0)
+        {
+            mBookingInstructions.get(entryMethodPosition).setInstructionType(
+                    entryInfoTypeInstruction.getInstructionType()
+            );
+        }
+        else
+        {
+            mBookingInstructions.add(entryInfoTypeInstruction);
+        }
+
+        if (lockboxCodePosition >= 0)//set lockbox code
+        {
+            mBookingInstructions.get(lockboxCodePosition).setDescription(
+                    lockboxCodeInstruction.getDescription()
+            );
+        }
+        else
+        {
+            mBookingInstructions.add(lockboxCodeInstruction);
+        }
+
+        if (keyLocationPosition >= 0)//TODO HACK - USING AS LOCKBOX LOCATION
+        {
+            mBookingInstructions.get(keyLocationPosition).setDescription(
+                    lockboxLocationInstruction.getDescription()
+            );
+        }
+        else
+        {
+            mBookingInstructions.add(lockboxLocationInstruction);
+        }
+        triggerObservers();
+    }
+    public void setEntryInfo(
+            @BookingInstruction.EntryMethodType String entryMethodInstructionType,
+                             final String getInText)
+    {
+
+        /*{
+            "id": 5, #optional if machine_name included
+            "machine_name": "entry_method", #optional if id included
+            "instruction_type": "at_home"
+        },
+        {
+            "id": 3, #optional if machine_name included
+            "machine_name": "key_location", #optional if id included
+            "description": "I'll be home so just ring the buzzer!"
+        }*/
+        if (mBookingInstructions == null)
+        {
+            mBookingInstructions = new ArrayList<>();
+        }
+
         BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
                 null,
                 BookingInstruction.MachineName.ENTRY_METHOD,
@@ -158,7 +254,7 @@ public class FinalizeBookingRequestPayload extends Observable
         {
             mBookingInstructions.add(entryInfoTypeInstruction);
         }
-        if (keyLocationPosition >= 0)
+        if (keyLocationPosition >= 0)//TODO HACK - USING AS LOCKBOX LOCATION
         {
             mBookingInstructions.get(keyLocationPosition).setDescription(
                     entryInfoMessageInstruction.getDescription()

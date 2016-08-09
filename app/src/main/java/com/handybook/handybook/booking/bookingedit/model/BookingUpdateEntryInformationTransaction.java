@@ -10,6 +10,15 @@ public final class BookingUpdateEntryInformationTransaction extends Observable {
     @SerializedName("apply_to_all")
     private boolean mApplyToAllInSeries; //whether this should be applied to all bookings in the recurring series
 
+
+    @SerializedName("lockbox_code")
+    private String mLockboxAccessCode;
+
+    public void setLockboxAccessCode(final String lockboxAccessCode)
+    {
+        mLockboxAccessCode = lockboxAccessCode;
+    }
+
     public final int getGetInId() {
         return getInId;
     }

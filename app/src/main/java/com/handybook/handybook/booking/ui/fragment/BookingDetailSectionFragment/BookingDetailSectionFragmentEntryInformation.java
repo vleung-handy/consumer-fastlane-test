@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
@@ -40,8 +41,14 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
         if (entryInfo != null)
         {
             String extraEntryInfo = booking.getExtraEntryInfo();
-            getSectionView().getEntryText()
-                    .setText(entryInfo + " " + (extraEntryInfo != null ? extraEntryInfo : ""));
+            String entryInfoFormatted = entryInfo + " " + (extraEntryInfo != null ? extraEntryInfo : "");
+            if(!TextUtils.isEmpty(booking.getLockboxCode()))
+            {
+                //TODO hack, refactor later
+                entryInfoFormatted+=("\nAccess code: " + booking.getLockboxCode());
+            }
+
+            getSectionView().getEntryText().setText(entryInfoFormatted);
         }
         else
         {
