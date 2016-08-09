@@ -21,6 +21,10 @@ public class TestUsers
             new TestUser("test+user@handybook.com",
                     "supersecretpassword");
 
+    public static TestUser CANCEL_SINGLE_BOOKING_USER =
+            new TestUser("test+cancel-single-booking@handybook.com",
+                    "supersecretpassword");
+
     public static TestUser UPDATE_PROFILE_USER =
             new TestUser(
                     "test+user2@handybook.com",
