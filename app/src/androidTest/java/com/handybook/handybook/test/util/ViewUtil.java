@@ -1,12 +1,10 @@
-package com.handybook.handybook.testutil;
+package com.handybook.handybook.test.util;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.test.espresso.PerformException;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.view.View;
-import android.view.ViewGroup;
 
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 import java.util.concurrent.TimeoutException;
@@ -22,25 +20,35 @@ import static org.hamcrest.Matchers.not;
 /**
  * utility class containing non-app-specific methods to check for certain view states
  */
-public class ViewUtils
+public class ViewUtil
 {
-    private final static long MAX_WAITING_TIME_MS = 10000;
-    private final static long QUERY_INTERVAL_MS = 50;
+    private static final long VIEW_STATE_QUERY_INTERVAL_MS = 50;
+    public static final long LONG_MAX_WAIT_TIME_MS = 10000;
+    public static final long SHORT_MAX_WAIT_TIME_MS = 5000;
 
-    public static void waitForViewVisible(int viewId)
+    private ViewUtil()
     {
-        waitForViewVisibility(viewId, true);
+        //don't want this instantiated. should use static methods only
     }
 
-    public static void waitForViewNotVisible(int viewId)
+    public static void waitForViewVisible(int viewId, long maxWaitingTimeMs)
     {
-        waitForViewVisibility(viewId, false);
+        waitForViewVisibility(withId(viewId), true, maxWaitingTimeMs);
     }
 
-    public static void waitForViewToAppearThenDisappear(int viewId)
+    public static void waitForViewNotVisible(int viewId, long maxWaitingTimeMs)
     {
-        ViewUtils.waitForViewVisible(viewId);
-        ViewUtils.waitForViewNotVisible(viewId);
+        waitForViewVisibility(withId(viewId), false, maxWaitingTimeMs);
+    }
+
+    public static void waitForTextVisible(int stringResourceId, long maxWaitingTimeMs)
+    {
+        waitForViewVisibility(withText(stringResourceId), true, maxWaitingTimeMs);
+    }
+
+    public static void waitForTextNotVisible(int stringResourceId, long maxWaitingTimeMs)
+    {
+        waitForViewVisibility(withText(stringResourceId), false, maxWaitingTimeMs);
     }
 
     public static void checkToastDisplayed(int toastStringResourceId, Activity activity)
@@ -52,43 +60,48 @@ public class ViewUtils
 
     /**
      * waits for the view with the given id to be a given visibility
-     * <p/>
+     * <p>
      * TODO: cleaner way to do this?
-     *
-     * @param viewId
-     * @param visible
+     * TODO: add better error logging
      */
-    private static void waitForViewVisibility(final int viewId, final boolean visible)
+    public static void waitForViewVisibility(@NonNull Matcher<View> viewMatcher,
+                                             final boolean visible,
+                                             final long maxWaitingTimeMs)
     {
         final long startTime = System.currentTimeMillis();
-        final long endTime = startTime + MAX_WAITING_TIME_MS;
+        final long endTime = startTime + maxWaitingTimeMs;
         while (System.currentTimeMillis() < endTime)
         {
-            if (visible ? isViewDisplayed(viewId) : !isViewDisplayed(viewId))
+            if (visible == isViewDisplayed(viewMatcher))
             {
                 return;
             }
 
-            sleep(QUERY_INTERVAL_MS);
+            sleep(VIEW_STATE_QUERY_INTERVAL_MS);
         }
         throw new PerformException.Builder()
                 .withActionDescription("wait for view visibility " + visible)
-                .withViewDescription("view id: " + viewId)
+                .withViewDescription("view id: " + viewMatcher.toString())
                 .withCause(new TimeoutException())
                 .build();
     }
 
     /**
      * checks to see if a view is displayed without throwing an exception if it isn't displayed
-     *
-     * @param viewId
-     * @return
      */
     public static boolean isViewDisplayed(int viewId)
     {
+        return isViewDisplayed(withId(viewId));
+    }
+
+    /**
+     * checks to see if a view is displayed without throwing an exception if it isn't displayed
+     */
+    public static boolean isViewDisplayed(@NonNull Matcher<View> viewMatcher)
+    {
         try
         {
-            onView(withId(viewId)).check(matches(isDisplayed()));
+            onView(viewMatcher).check(matches(isDisplayed()));
             return true;
         }
         catch (Throwable e)
@@ -108,29 +121,4 @@ public class ViewUtils
             e.printStackTrace();
         }
     }
-
-
-    /**
-     * Matches that the view group has the designated children count
-     *
-     * @param count
-     * @return
-     */
-    public static Matcher<View> withChildCount(final int count)
-    {
-        return new BoundedMatcher<View, ViewGroup>(ViewGroup.class)
-        {
-            @Override
-            public boolean matchesSafely(ViewGroup group)
-            {
-                return group.getChildCount() == count;
-            }
-
-            public void describeTo(Description description)
-            {
-                description.appendText("View does not have " + count + " children");
-            }
-        };
-    }
-
 }

@@ -18,7 +18,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingExtrasLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.manager.PrefsManager;
 
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment
 {
     private BookingTransaction mBookingTransaction;
     private BookingQuote mBookingQuote;
+    private String[] options;
 
     @Inject
     PrefsManager mPrefsManager;
@@ -56,7 +57,11 @@ public final class BookingExtrasFragment extends BookingFlowFragment
         mBookingQuote = bookingManager.getCurrentQuote();
         mixpanel.trackEventAppTrackExtras();
 
-        bus.post(new LogEvent.AddLogEvent(new BookingExtrasLog.BookingExtrasShownLog()));
+        options = mBookingQuote.getBookingOption().getOptions();
+        if (options != null && options.length != 0)
+        {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingExtrasShownLog(options)));
+        }
     }
 
     @Override
@@ -111,6 +116,10 @@ public final class BookingExtrasFragment extends BookingFlowFragment
             @Override
             public void onClick(final View view)
             {
+                if (options != null)
+                {
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingExtrasSubmittedLog(options)));
+                }
                 continueBookingFlow();
             }
         });

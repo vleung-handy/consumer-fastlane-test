@@ -99,7 +99,7 @@ public interface HandyRetrofitService
     void applyPromo(
             @Field("coupon") String promoCode, @Path("quote") int quoteId,
             @Field("user_id") String userId, @Field("email") String email,
-            @Field("auth_token") String authToken, HandyRetrofitCallback cb
+            HandyRetrofitCallback cb
     );
 
     @POST("/quotes/{quote}/remove_coupon")
@@ -115,13 +115,11 @@ public interface HandyRetrofitService
     @GET("/bookings/zipcode_validation")
     void validateBookingZip(
             @Query("service_id") int serviceId, @Query("zipcode") String zipCode,
-            @Query("user_id") String userId, @Query("auth_token") String authToken,
-            @Query("entered_code") String promoCode, HandyRetrofitCallback cb
+            @Query("user_id") String userId, @Query("entered_code") String promoCode, HandyRetrofitCallback cb
     );
 
     @GET("/bookings")
     void getBookings(
-            @Query("auth_token") String authToken,
             @Nullable @Query("only_bookings") String bookingType,
             HandyRetrofitCallback cb
     );
@@ -241,7 +239,7 @@ public interface HandyRetrofitService
     void rescheduleBooking(
             @Path("booking") String bookingId, @Field("new_date") String date,
             @Field("reschedule_all") int rescheduleAll, @Field("user_id") String userId,
-            @Field("auth_token") String authToken, HandyRetrofitCallback cb
+            HandyRetrofitCallback cb
     );
 
     @GET("/bookings/precancelation_info")
@@ -251,27 +249,25 @@ public interface HandyRetrofitService
     @POST("/bookings/{booking}/cancel")
     void cancelBooking(
             @Path("booking") String bookingId, @Field("cancellation_reason") int reasonCode,
-            @Field("user_id") String userId, @Field("auth_token") String authToken,
-            HandyRetrofitCallback cb
+            @Field("user_id") String userId, HandyRetrofitCallback cb
     );
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/cancel")
     void cancelBooking(
-            @Path("booking") String bookingId, @Field("user_id") String userId,
-            @Field("auth_token") String authToken, HandyRetrofitCallback cb
+            @Path("booking") String bookingId, @Field("user_id") String userId, HandyRetrofitCallback cb
     );
 
     @GET("/bookings/{booking}/schedule_laundry")
     void getLaundryScheduleInfo(
-            @Path("booking") int bookingId, @Query("auth_token") String authToken,
+            @Path("booking") int bookingId,
             HandyRetrofitCallback cb
     );
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/schedule_laundry")
     void setLaundryDropOff(
-            @Path("booking") int bookingId, @Field("auth_token") String authToken,
+            @Path("booking") int bookingId,
             @Field("date") String date, @Field("hour") int hour,
             @Field("minute") int minute, @Field("type") String type,
             HandyRetrofitCallback cb
@@ -279,15 +275,13 @@ public interface HandyRetrofitService
 
     @GET("/bookings/{booking}/add_laundry")
     void getAddLaundryInfo(
-            @Path("booking") int bookingId, @Query("auth_token") String authToken,
-            HandyRetrofitCallback cb
+            @Path("booking") int bookingId, HandyRetrofitCallback cb
     );
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/add_laundry")
     void addLaundry(
-            @Path("booking") int bookingId, @Field("auth_token") String authToken,
-            HandyRetrofitCallback cb
+            @Path("booking") int bookingId, HandyRetrofitCallback cb
     );
 
     @GET("/recurring_bookings")
@@ -308,7 +302,7 @@ public interface HandyRetrofitService
 
     @GET("/users/{user}")
     void getUserInfo(
-            @Path("user") String userId, @Query("auth_token") String authToken,
+            @Path("user") String userId,
             HandyRetrofitCallback cb
     );
 
@@ -365,7 +359,6 @@ public interface HandyRetrofitService
     @GET("/self_service/node_details")
     void getHelpInfo(
             @Query("id") String nodeId,
-            @Query("auth_token") String authToken,
             @Query("booking_id") String bookingId,
             HandyRetrofitCallback cb
     );
@@ -373,7 +366,6 @@ public interface HandyRetrofitService
     @GET("/self_service/booking_node_details")
     void getHelpBookingsInfo(
             @Query("id") String nodeId,
-            @Query("auth_token") String authToken,
             @Query("booking_id") String bookingId,
             HandyRetrofitCallback cb
     );

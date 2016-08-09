@@ -21,7 +21,7 @@ import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingNoteToProLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
@@ -61,6 +61,9 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             @Override
             public void onClick(final View view)
             {
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingShareInfoSubmittedLog()));
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRoutineSubmittedLog()));
+
                 //discourage user from pressing button twice
                 //note that this doesn't prevent super fast clicks
                 showUiBlockers();
@@ -129,7 +132,8 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         mInstructions = getArguments().getParcelable(EXTRA_INSTRUCTIONS);
         mixpanel.trackEventAppTrackPreferences();
 
-        bus.post(new LogEvent.AddLogEvent(new BookingNoteToProLog.BookingNoteToProShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingShareInfoShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRoutineShownLog()));
     }
 
     @Override
@@ -221,6 +225,8 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     @Override
     public final void onBack()
     {
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingShareInfoDismissedLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRoutineDismissedLog()));
     }
 
 

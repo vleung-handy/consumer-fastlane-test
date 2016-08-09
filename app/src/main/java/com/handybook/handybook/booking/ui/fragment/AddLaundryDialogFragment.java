@@ -94,7 +94,7 @@ public class AddLaundryDialogFragment extends BaseDialogFragment
                 submitButton.setText(null);
 
                 final User user = userManager.getCurrentUser();
-                dataManager.addLaundry(Integer.parseInt(booking.getId()), user.getAuthToken(),
+                dataManager.addLaundry(Integer.parseInt(booking.getId()),
                         new DataManager.Callback<Void>() {
                     @Override
                     public void onSuccess(final Void response) {

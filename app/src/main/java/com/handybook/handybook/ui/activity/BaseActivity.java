@@ -242,13 +242,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                         .getDefaultSharedPreferences(BaseActivity.this);
                 if (addLaundryBookingId > 0 && !prefs.getBoolean(KEY_APP_LAUNDRY_INFO_SHOWN, false))
                 {
-                    showLaundryInfoModal(addLaundryBookingId, user.getAuthToken());
+                    showLaundryInfoModal(addLaundryBookingId);
                 }
                 else if (laundryBookingId > 0)
                 {
                     showLaundryDropOffModal(
-                            laundryBookingId,
-                            user.getAuthToken()
+                            laundryBookingId
                     );
                 }
                 else if (proName != null)
@@ -282,9 +281,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         }
     }
 
-    private void showLaundryInfoModal(final int bookingId, final String authToken)
+    private void showLaundryInfoModal(final int bookingId)
     {
-        mDataManager.getAddLaundryInfo(bookingId, authToken, new DataManager.Callback<Booking>()
+        mDataManager.getAddLaundryInfo(bookingId, new DataManager.Callback<Booking>()
         {
             @Override
             public void onSuccess(final Booking booking)
@@ -308,9 +307,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         });
     }
 
-    private void showLaundryDropOffModal(final int bookingId, final String authToken)
+    private void showLaundryDropOffModal(final int bookingId)
     {
-        mDataManager.getLaundryScheduleInfo(bookingId, authToken,
+        mDataManager.getLaundryScheduleInfo(bookingId,
                 new DataManager.Callback<LaundryDropInfo>()
                 {
                     @Override

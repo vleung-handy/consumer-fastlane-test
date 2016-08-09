@@ -23,6 +23,8 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.view.ServiceView;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.handybook.handybook.ui.descriptor.ServiceCategoryDescriptor;
 import com.handybook.handybook.ui.descriptor.ServiceDescriptor;
 
@@ -62,14 +64,33 @@ public final class ServicesFragment extends BookingFlowFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null && !getArguments().isEmpty())
+        {
+            mService = getArguments().getParcelable(EXTRA_SERVICE);
+        }
+        if (mService != null)
+        {
+            bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageShownLog(mService.getId())));
+        }
+        else
+        {
+            bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageShownLog(-1)));
+        }
+    }
+
+    @Override
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_services, container, false);
 
         ButterKnife.bind(this, view);
-        mService = getArguments().getParcelable(EXTRA_SERVICE);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
@@ -99,7 +120,8 @@ public final class ServicesFragment extends BookingFlowFragment
             initServiceIcon(descriptor);
             initToolbar(descriptor);
             initHeaderAdjustmentsOnScroll(descriptor);
-        } catch (IllegalArgumentException e)
+        }
+        catch (IllegalArgumentException e)
         {
             Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
         }
@@ -313,6 +335,7 @@ public final class ServicesFragment extends BookingFlowFragment
                     @Override
                     public void onClick(View v)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageSubmittedLog(service.getId())));
                         startBookingFlow(service.getId(), service.getUniq());
                     }
                 });

@@ -135,7 +135,6 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
                     booking.getId(),
                     optionIndex,
                     user.getId(),
-                    user.getAuthToken(),
                     new DataManager.Callback<String>() {
                 @Override
                 public void onSuccess(final String message) {

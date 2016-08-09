@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
@@ -20,9 +21,9 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingZipLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.InputTextField;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
@@ -66,7 +67,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
             ((BaseActivity) getActivity()).setOnBackPressedListener(this);
         }
 
-        bus.post(new LogEvent.AddLogEvent(new BookingZipLog.ZipShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipShownLog()));
     }
 
     @Override
@@ -146,27 +147,37 @@ public final class BookingLocationFragment extends BookingFlowFragment
         {
             if (validateFields())
             {
+                String zipCode = mZipCodeInputTextView.getZipCode();
+                if (!Strings.isNullOrEmpty(zipCode))
+                {
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSubmittedLog(zipCode)));
+                }
+
                 disableInputs();
                 progressDialog.show();
 
                 final BookingRequest request = bookingManager.getCurrentRequest();
                 final User user = userManager.getCurrentUser();
                 final String userId = user != null ? user.getId() : null;
-                final String authToken = user != null ? user.getAuthToken() : null;
 
                 dataManager.validateBookingZip(
                         request.getServiceId(),
-                        mZipCodeInputTextView.getZipCode(),
+                        zipCode,
                         userId,
-                        authToken,
                         request.getPromoCode(),
                         new DataManager.Callback<ZipValidationResponse>()
                         {
                             @Override
                             public void onSuccess(ZipValidationResponse response)
                             {
+                                String zipCode = mZipCodeInputTextView.getZipCode();
+                                if (!Strings.isNullOrEmpty(zipCode))
+                                {
+                                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(zipCode)));
+                                }
+
                                 final BookingRequest request = bookingManager.getCurrentRequest();
-                                request.setZipCode(mZipCodeInputTextView.getZipCode());
+                                request.setZipCode(zipCode);
                                 request.setTimeZone(response.timeZone);
                                 mixpanel.trackEventWhenPage(request);
                                 if (!allowCallbacks) { return; }
@@ -186,6 +197,13 @@ public final class BookingLocationFragment extends BookingFlowFragment
                             @Override
                             public void onError(final DataManager.DataManagerError error)
                             {
+                                String zipCode = mZipCodeInputTextView.getZipCode();
+                                if (!Strings.isNullOrEmpty(zipCode))
+                                {
+                                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipErrorLog(
+                                            zipCode, error.getMessage())));
+                                }
+
                                 if (!allowCallbacks) { return; }
                                 enableInputs();
                                 progressDialog.dismiss();

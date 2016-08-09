@@ -161,7 +161,6 @@ public abstract class DataManager
             int quoteId,
             String userId,
             String email,
-            String authToken,
             Callback<BookingQuote> cb
     );
 
@@ -185,7 +184,6 @@ public abstract class DataManager
             int serviceId,
             String zipCode,
             String userId,
-            String authToken,
             String promoCode,
             Callback<ZipValidationResponse> cb
     );
@@ -231,7 +229,6 @@ public abstract class DataManager
             String date,
             boolean rescheduleAll,
             String userId,
-            String authToken,
             Callback<Pair<String, BookingQuote>> cb
     );
 
@@ -244,19 +241,16 @@ public abstract class DataManager
             String bookingId,
             int reasonCode,
             String userId,
-            String authToken,
             Callback<String> cb
     );
 
     public abstract void getLaundryScheduleInfo(
             int bookingId,
-            String authToken,
             Callback<LaundryDropInfo> cb
     );
 
     public abstract void setLaundryDropOff(
             int bookingId,
-            String authToken,
             String date,
             int hour,
             int minute,
@@ -266,13 +260,11 @@ public abstract class DataManager
 
     public abstract void getAddLaundryInfo(
             int bookingId,
-            String authToken,
             Callback<Booking> cb
     );
 
     public abstract void addLaundry(
             int bookingId,
-            String authToken,
             Callback<Void> cb
     );
 
@@ -378,14 +370,12 @@ public abstract class DataManager
 
     public abstract void getHelpInfo(
             String nodeId,
-            String authToken,
             String bookingId,
             Callback<HelpNodeWrapper> cb
     );
 
     public abstract void getHelpBookingsInfo(
             String nodeId,
-            String authToken,
             String bookingId,
             Callback<HelpNodeWrapper> cb
     );

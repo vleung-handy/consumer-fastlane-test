@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--TODO: if we are going to make the extras screen look the same as the edit extras screen, we should consolidate their layout files-->
+<!--TODO: if we are going to make the extrasOptions screen look the same as the edit extrasOptions screen, we should consolidate their layout files-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
