@@ -83,7 +83,21 @@ public class ReportIssueFragmentTest extends RobolectricGradleTestWrapper
         milestoneView = fragment.mMilestonesLayout.getChildAt(1);
         assertEquals(View.VISIBLE, milestoneView.findViewById(R.id.pro_milestone_call).getVisibility());
         assertEquals(View.VISIBLE, milestoneView.findViewById(R.id.pro_milestone_text).getVisibility());
+    }
 
+    @Test
+    public void shouldShowDeepLinks()
+    {
+        ProviderJobStatus.DeepLinkWrapper[] deepLinkWrappers = new ProviderJobStatus.DeepLinkWrapper[2];
+        deepLinkWrappers[0] = new ProviderJobStatus.DeepLinkWrapper("help", "cancel",
+                "handybook://deep_link/booking_cancel?fallback_url=https://help.handy.com");
+        deepLinkWrappers[1] = new ProviderJobStatus.DeepLinkWrapper("help", "cancel",
+                "handybook://deep_link/booking_cancel?fallback_url=https://help.handy.com");
+        when(mProviderJobStatus.getDeepLinkWrappers()).thenReturn(deepLinkWrappers);
 
+        ReportIssueFragment fragment = ReportIssueFragment.newInstance(mBooking, mProviderJobStatus);
+        SupportFragmentTestUtil.startFragment(fragment, AppCompatActivity.class);
+
+        assertEquals(2, fragment.mDeepLinksLayout.getChildCount());
     }
 }

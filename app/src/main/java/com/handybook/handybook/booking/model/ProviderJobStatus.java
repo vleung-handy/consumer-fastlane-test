@@ -13,20 +13,20 @@ public class ProviderJobStatus implements Serializable
     @SerializedName("milestones")
     private Milestone[] mMilestones;
     @SerializedName("links")
-    private Object mLinks;
+    private DeepLinkWrapper[] mDeepLinkWrappers;
 
-    public ProviderJobStatus(final Provider provider, final Milestone[] milestones, final Object links)
+    public ProviderJobStatus(final Provider provider, final Milestone[] milestones, final DeepLinkWrapper[] deepLinkWrappers)
     {
         mProvider = provider;
         mMilestones = milestones;
-        mLinks = links;
+        mDeepLinkWrappers = deepLinkWrappers;
     }
 
     public Provider getProvider() { return mProvider; }
 
     public Milestone[] getMilestones() { return mMilestones; }
 
-    public Object getLinks() { return mLinks; }
+    public DeepLinkWrapper[] getDeepLinkWrappers() { return mDeepLinkWrappers; }
 
     public static class Milestone implements Serializable
     {
@@ -95,14 +95,32 @@ public class ProviderJobStatus implements Serializable
         @SerializedName("type")
         private String mType;
 
-        public Action(final String type)
+        public Action(final String type) { mType = type; }
+
+        public String getType() { return mType; }
+    }
+
+
+    public static class DeepLinkWrapper implements Serializable
+    {
+        @SerializedName("text")
+        private String mText;
+        @SerializedName("type")
+        private String mType;
+        @SerializedName("deeplink")
+        private String mDeeplink;
+
+        public DeepLinkWrapper(final String text, final String type, final String deeplink)
         {
+            mText = text;
             mType = type;
+            mDeeplink = deeplink;
         }
 
-        public String getType()
-        {
-            return mType;
-        }
+        public String getText() { return mText; }
+
+        public String getType() { return mType; }
+
+        public String getDeeplink() { return mDeeplink; }
     }
 }

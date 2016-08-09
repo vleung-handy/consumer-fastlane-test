@@ -34,8 +34,10 @@ public final class ReportIssueFragment extends InjectedFragment
     TextView mTimeText;
     @Bind(R.id.report_issue_provider)
     TextView mProviderText;
-    @Bind(R.id.report_issue_statuses)
+    @Bind(R.id.report_issue_milestones)
     LinearLayout mMilestonesLayout;
+    @Bind(R.id.report_issue_links)
+    LinearLayout mDeepLinksLayout;
 
     private Booking mBooking;
     private ProviderJobStatus mProviderJobStatus;
@@ -47,6 +49,7 @@ public final class ReportIssueFragment extends InjectedFragment
         args.putParcelable(BundleKeys.BOOKING, booking);
         args.putSerializable(BundleKeys.PRO_JOB_STATUS, proStatuses);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -74,6 +77,7 @@ public final class ReportIssueFragment extends InjectedFragment
     {
         setHeader();
         setProMilestones();
+        setDeepLinks();
     }
 
     private void setHeader()
@@ -147,6 +151,30 @@ public final class ReportIssueFragment extends InjectedFragment
             ProMilestoneView lastMilestoneView =
                     (ProMilestoneView) mMilestonesLayout.getChildAt(mMilestonesLayout.getChildCount() - 1);
             lastMilestoneView.setLineVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setDeepLinks()
+    {
+        ProviderJobStatus.DeepLinkWrapper[] deepLinkWrappers = mProviderJobStatus.getDeepLinkWrappers();
+        if (deepLinkWrappers == null) { return; }
+
+        for (final ProviderJobStatus.DeepLinkWrapper deepLinkWrapper : deepLinkWrappers)
+        {
+            TextView view = (TextView) LayoutInflater.from(
+                    getContext()).inflate(R.layout.text_list_element, mDeepLinksLayout, false);
+            view.setText(deepLinkWrapper.getText());
+            view.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(final View v)
+                {
+                    Uri uri = Uri.parse(deepLinkWrapper.getDeeplink());
+                    Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
+                    Utils.safeLaunchIntent(deepLinkIntent, getContext());
+                }
+            });
+            mDeepLinksLayout.addView(view);
         }
     }
 }
