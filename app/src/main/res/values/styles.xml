@@ -109,6 +109,10 @@
         <item name="android:background">@drawable/button_booking_action_green</item>
     </style>
 
+    <style name="Button.BookingAction.Green.Split">
+        <item name="android:background">@drawable/button_booking_action_green_split</item>
+    </style>
+
     <style name="Button.BookingAction.Blue">
         <item name="android:background">@drawable/button_booking_action_blue</item>
     </style>
@@ -138,6 +142,10 @@
 
     <style name="Button.BookingAction.Grey">
         <item name="android:background">@drawable/button_booking_action_grey</item>
+    </style>
+
+    <style name="Button.BookingAction.Grey.Split">
+        <item name="android:background">@drawable/button_booking_action_grey_split</item>
     </style>
 
     <style name="Button.Blue">

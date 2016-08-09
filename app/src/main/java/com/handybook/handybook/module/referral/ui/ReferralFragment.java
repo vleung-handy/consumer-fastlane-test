@@ -131,7 +131,8 @@ public class ReferralFragment extends InjectedFragment
     }
 
     private void launchShareIntent(
-            final Intent intent, @Nullable @ReferralChannels.Channel final String channel
+            final Intent intent,
+            @Nullable @ReferralChannels.Channel final String channel
     )
     {
         mIsReferralInfoFresh = false;
@@ -234,7 +235,7 @@ public class ReferralFragment extends InjectedFragment
         if (emailReferralInfo != null)
         {
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-            emailIntent.setType("message/rfc822");
+            emailIntent.setType("plain/text");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
             bus.post(new ReferralsEvent.InviteFriendsClicked());

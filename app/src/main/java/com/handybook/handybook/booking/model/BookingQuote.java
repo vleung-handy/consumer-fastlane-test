@@ -89,6 +89,7 @@ public class BookingQuote extends Observable
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
 
+
     public static class QuoteConfig implements Serializable
     {
         @SerializedName("disclaimer_text")

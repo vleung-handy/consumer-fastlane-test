@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             android:background="@color/handy_background_gray"
             android:orientation="vertical"
+            android:paddingBottom="64dp"
             >
 
             <FrameLayout
@@ -100,18 +101,18 @@
 
                 <com.handybook.handybook.booking.ui.view.BookingActionButton
                     android:id="@+id/fragment_referral_button_email"
-                    style="@style/Button.BookingAction.Green"
+                    style="@style/Button.BookingAction.Green.Split"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:drawableLeft="@drawable/ic_email_white"
-                    android:drawableStart="@drawable/ic_email_white"
+                    android:drawableLeft="@drawable/ic_referral_email_white"
+                    android:drawableStart="@drawable/ic_referral_email_white"
                     android:text="@string/fragment_referral_email_invite"
                     />
 
                 <com.handybook.handybook.booking.ui.view.BookingActionButton
                     android:id="@+id/fragment_referral_button_sms"
-                    style="@style/Button.BookingAction.Grey"
+                    style="@style/Button.BookingAction.Grey.Split"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin_half"
@@ -157,6 +158,7 @@
                     android:layout_marginTop="@dimen/default_margin_half"
                     android:gravity="center_horizontal"
                     android:text="@string/fragment_referral_more_ways_to_share"
+                    style="@style/TextView.Headline.Blue"
                     />
 
             </LinearLayout>
