@@ -57,6 +57,15 @@
                 android:layout_margin="@dimen/default_margin"
                 android:background="@color/handy_tertiary_gray"
                 />
+
+            <LinearLayout
+                android:layout_margin="@dimen/default_margin"
+                android:id="@+id/report_issue_statuses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                />
+
         </LinearLayout>
 
     </ScrollView>

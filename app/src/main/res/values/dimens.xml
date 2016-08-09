@@ -75,6 +75,8 @@
     <dimen name="rating_star_margin">4dp</dimen>
     <dimen name="one_third_width">120dp</dimen>
 
+    <dimen name="dot_size">14dp</dimen>
+
     <!-- Referral -->
     <dimen name="referral_image_height">184dp</dimen>
     <dimen name="referral_image_width">248dp</dimen>

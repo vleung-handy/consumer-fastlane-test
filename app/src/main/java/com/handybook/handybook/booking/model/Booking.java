@@ -404,7 +404,7 @@ public class Booking implements Parcelable
 
         mStartDate = new Date(in.readLong());
         mAddress = in.readParcelable(Address.class.getClassLoader());
-        mProvider = in.readParcelable(Provider.class.getClassLoader());
+        mProvider = (Provider) in.readSerializable();
 
         mPaymentInfo = new ArrayList<LineItem>();
         in.readTypedList(mPaymentInfo, LineItem.CREATOR);
@@ -455,7 +455,7 @@ public class Booking implements Parcelable
         out.writeFloatArray(new float[]{mHours, mPrice});
         out.writeLong(mStartDate.getTime());
         out.writeParcelable(mAddress, 0);
-        out.writeParcelable(mProvider, 0);
+        out.writeSerializable(mProvider);
         out.writeTypedList(mPaymentInfo);
         out.writeTypedList(mExtrasInfo);
         out.writeBooleanArray(new boolean[]

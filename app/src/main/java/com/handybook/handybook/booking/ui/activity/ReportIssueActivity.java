@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.ProviderJobStatus;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -14,7 +15,9 @@ public class ReportIssueActivity extends MenuDrawerActivity
     protected final Fragment createFragment()
     {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
-        return ReportIssueFragment.newInstance(booking);
+        final ProviderJobStatus proStatuses =
+                (ProviderJobStatus) getIntent().getSerializableExtra(BundleKeys.PRO_JOB_STATUS);
+        return ReportIssueFragment.newInstance(booking, proStatuses);
     }
 
     @Override
