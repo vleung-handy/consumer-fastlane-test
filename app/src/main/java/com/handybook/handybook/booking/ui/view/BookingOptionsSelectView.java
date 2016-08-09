@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.view;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +28,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     protected String[] optionsSubtitles;
     protected String[] optionsRightSubText;
     protected String[] optionsRightTitleText;
+    protected boolean[] optionsHidden;
     protected int[] optionImagesResourceIds;
     private HashMap<Integer, CheckBox> checkMap;
+    private View optionViews[]; //need a reference to the option views so we can easily modify them later
     private int checkedIndex;
     private HashSet<Integer> checkedIndexes;
     private boolean isMulti;
@@ -69,11 +72,18 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     }
 
     //TODO: is it possible to make this use isArrayIndexValid
-    private boolean shouldDisplayOptionStringFromArray(String[] array, int index)
+    private boolean shouldDisplayOptionString(String[] optionsStrings, int optionIndex)
     {
-        return array != null &&
-                index < array.length &&
-                array[index] != null && !array[index].isEmpty();
+        return optionsStrings != null &&
+                optionIndex < optionsStrings.length &&
+                !TextUtils.isEmpty(optionsStrings[optionIndex]);
+    }
+
+    private boolean shouldHideOption(boolean[] optionsHidden, int optionIndex)
+    {
+        return optionsHidden != null &&
+                optionIndex < optionsHidden.length
+                && optionsHidden[optionIndex];
     }
 
     private void showTextView(TextView textView, String textString)
@@ -104,6 +114,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         optionsRightSubText = option.getOptionsRightSubText();
         optionsRightTitleText = option.getOptionsRightTitleText();
         optionImagesResourceIds = option.getImageResourceIds();
+        optionsHidden = option.getOptionsHidden();
         checkMap = new HashMap<>();
 
 
@@ -124,6 +135,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         checkedIndex = isMulti ? 0 : optionDefaultValue;
         checkedIndexes = new HashSet<>();
 
+        optionViews = new View[optionsList.length];
         for (int i = 0; i < optionsList.length; i++)
         {
             final String optionText = optionsList[i];
@@ -133,17 +145,17 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             final TextView title = (TextView) optionView.findViewById(R.id.title_text);
             title.setText(optionText);
 
-            if (shouldDisplayOptionStringFromArray(optionsSubtitles, i))
+            if (shouldDisplayOptionString(optionsSubtitles, i))
             {
                 showTextView((TextView) optionView.findViewById(R.id.sub_text), optionsSubtitles[i]);
             }
 
-            if (shouldDisplayOptionStringFromArray(optionsRightSubText, i))
+            if (shouldDisplayOptionString(optionsRightSubText, i))
             {
                 showTextView((TextView) optionView.findViewById(R.id.right_subtitle_text), optionsRightSubText[i]);
             }
 
-            if (shouldDisplayOptionStringFromArray(optionsRightTitleText, i))
+            if (shouldDisplayOptionString(optionsRightTitleText, i))
             {
                 showTextView((TextView) optionView.findViewById(R.id.right_title_text), optionsRightTitleText[i]);
             }
@@ -192,11 +204,39 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 }
             });
 
+            if (shouldHideOption(optionsHidden, i))
+            {
+                optionView.setVisibility(GONE);
+            }
+
+            optionViews[i] = optionView;
             optionLayout.addView(optionView);
         }
 
         handleWarnings(getCurrentIndex());
         handleChildren(getCurrentIndex());
+    }
+
+    public final void showAllOptions()
+    {
+        if(optionViews == null)
+        {
+            //this shouldn't happen
+            Crashlytics.logException(new Exception("Option view is null"));
+            return;
+        }
+        for(int i = 0; i<optionViews.length; i++)
+        {
+            if(optionViews[i] == null)
+            {
+                //this shouldn't happen
+                Crashlytics.logException(new Exception("Option view is null at index " + i));
+            }
+            else
+            {
+                optionViews[i].setVisibility(VISIBLE);
+            }
+        }
     }
 
     public final String getCurrentValue()

@@ -123,7 +123,10 @@ public final class PeakPricingFragment extends BookingFlowFragment
 
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingWindowShownLog()));
         bus.post(new LogEvent.AddLogEvent(new BookingHighDemandLog.BookingHighDemandShownLog()));
-        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackShownLog(mBookingToReschedule.getStartDate())));
+        if (mBookingToReschedule != null)
+        {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackShownLog(mBookingToReschedule.getStartDate())));
+        }
     }
 
     @Override
