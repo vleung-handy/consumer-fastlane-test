@@ -1,0 +1,65 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/handy_background_gray"
+    android:animateLayoutChanges="true"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/text_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="You have 1 active cleaning plan"
+            android:layout_gravity="left|center_vertical"
+            android:padding="@dimen/default_padding"
+            />
+
+        <Button
+            android:id="@+id/button_plan_expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/edit"
+            style="@style/Button.Link"
+            />
+
+        <ImageView
+            android:id="@+id/image_plan_collapse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_pro_team_x_small"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="@dimen/default_margin"
+            android:clickable="true"
+            android:visibility="gone"
+            />
+    </FrameLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/handy_dark_divider_line"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:id="@+id/container_plan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone"
+        >
+
+    </LinearLayout>
+
+</LinearLayout>

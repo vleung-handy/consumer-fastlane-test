@@ -18,7 +18,17 @@ public final class BookingsActivity extends MenuDrawerActivity
 
     @Override
     protected final Fragment createFragment() {
-        return BookingsFragment.newInstance();
+
+        //FIXME: JIA: check this against a config
+        if (1 == 1)
+        {
+            return com.handybook.handybook.module.bookings.BookingsFragment.newInstance();
+        }
+        else
+        {
+            return BookingsFragment.newInstance();
+        }
+
     }
 
     @Override

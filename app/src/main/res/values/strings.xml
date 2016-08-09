@@ -172,6 +172,11 @@
         <item quantity="other">hours</item>
     </plurals>
 
+    <plurals name="active_cleaning_plan_formatted">
+        <item quantity="one">You have 1 active cleaning plan</item>
+        <item quantity="other">You have %d active cleaning plans</item>
+    </plurals>
+
     <string name="help_center_subject">Subject: </string>
     <string name="try_again">Try Again</string>
     <string name="error_fetching_connectivity_issue">Oops! There was an error with your internet connection.</string>
@@ -394,4 +399,6 @@
     <string name="pro_team_pro_card_pretext_preferred">We’ll reach out to your Pro Team first. If we can’t match you, we’ll open your booking to the wider network.</string>
     <string name="pro_team_pro_card_pretext_indifferent">Choose pros you\'ve worked with before to add to your Pro Team.</string>
     <string name="booking_recurrence_show_more_options">More frequencies</string>
+
+    <string name="report_an_issue">Report An Issue</string>
 </resources>

@@ -106,6 +106,7 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.NotificationsModule;
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
@@ -157,6 +158,9 @@ import retrofit.converter.GsonConverter;
         LoginFragment.class,
         ProfileFragment.class,
         BookingsFragment.class,
+        com.handybook.handybook.module.bookings.BookingsFragment.class,
+        ActiveBookingFragment.class,
+        com.handybook.handybook.module.bookings.BookingListFragment.class,
         BookingListFragment.class,
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,

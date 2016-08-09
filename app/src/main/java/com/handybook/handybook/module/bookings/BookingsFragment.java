@@ -1,12 +1,11 @@
-package com.handybook.handybook.booking.ui.fragment;
+package com.handybook.handybook.module.bookings;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -18,16 +17,13 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
-import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.view.HandyTabLayout;
 import com.handybook.handybook.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -35,29 +31,25 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * A simple {@link InjectedFragment} subclass.
- * Use the {@link BookingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- * use module/bookings/BookingsFragment
  */
-@Deprecated
 public class BookingsFragment extends InjectedFragment
 {
-    @Bind(R.id.pager)
-    ViewPager mViewPager;
-    @Bind(R.id.tab_layout)
-    HandyTabLayout mTabLayout;
+    public static final String mOverlayFragmentTag = ServiceCategoriesOverlayFragment.class.getSimpleName();
+
     @Bind(R.id.add_booking_button)
     FloatingActionButton mAddBookingButton;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    private TabAdapter mTabAdapter;
-    private List<Service> mServices;
+    @Bind(R.id.pager)
+    ViewPager mViewPager;
 
-    public static final String mOverlayFragmentTag = ServiceCategoriesOverlayFragment.class.getSimpleName();
+    @Bind(R.id.tab_layout)
+    TabLayout mTabLayout;
+
+    private List<Service> mServices;
+    private TabAdapter mTabAdapter;
 
     public BookingsFragment()
     {
@@ -82,33 +74,31 @@ public class BookingsFragment extends InjectedFragment
         if (resultCode == ActivityResult.BOOKING_UPDATED
                 || resultCode == ActivityResult.BOOKING_CANCELED)
         {
-            mTabAdapter.reloadFragments();
+            if (mTabAdapter != null)
+            {
+                mTabAdapter.reloadFragments();
+            }
         }
     }
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        mTabAdapter = new TabAdapter(getActivity(), getChildFragmentManager());
-    }
-
-    @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    )
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
     {
         final View view = inflater.inflate(R.layout.fragment_bookings, container, false);
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.my_bookings));
-        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
 
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
+
+        mTabAdapter = new TabAdapter(getActivity(), getChildFragmentManager());
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
 
         getActivity().getSupportFragmentManager()
                 .addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
@@ -128,6 +118,7 @@ public class BookingsFragment extends InjectedFragment
                         }
                     }
                 });
+
         return view;
     }
 
@@ -174,54 +165,5 @@ public class BookingsFragment extends InjectedFragment
         //do not post this before onResume, because this fragment registers the bus onResume. If
         //post prior to onResume, this fragment won't be listening to the bus for results.
         bus.post(new BookingEvent.RequestServices());
-    }
-
-    private static class TabAdapter extends FragmentPagerAdapter
-    {
-        private ArrayList<BookingListFragment> fragments = new ArrayList<>();
-        private ArrayList<String> titles = new ArrayList<>();
-
-        public TabAdapter(Context context, FragmentManager fm)
-        {
-            super(fm);
-
-            titles.add(context.getResources().getString(R.string.upcoming));
-            fragments.add(
-                    BookingListFragment.newInstance(BookingCardViewModel.List.TYPE_UPCOMING)
-            );
-            titles.add(context.getResources().getString(R.string.past));
-            fragments.add(
-                    BookingListFragment.newInstance(BookingCardViewModel.List.TYPE_PAST)
-            );
-        }
-
-        public void reloadFragments()
-        {
-            for (BookingListFragment fragment : fragments)
-            {
-                if (fragment.isVisible())
-                {
-                    fragment.loadBookings();
-                }
-            }
-        }
-
-        @Override
-        public int getCount()
-        {
-            return fragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position)
-        {
-            return titles.get(position);
-        }
-
-        @Override
-        public BookingListFragment getItem(int position)
-        {
-            return fragments.get(position);
-        }
     }
 }

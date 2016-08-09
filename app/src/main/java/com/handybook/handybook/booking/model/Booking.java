@@ -524,6 +524,10 @@ public class Booking implements Parcelable
         private String state;
         @SerializedName("zipcode")
         private String zip;
+        @SerializedName("latitude")
+        private double latitude;
+        @SerializedName("longitude")
+        private double longitude;
 
         public String getAddress1()
         {
@@ -575,6 +579,26 @@ public class Booking implements Parcelable
             this.zip = zip;
         }
 
+        public double getLatitude()
+        {
+            return latitude;
+        }
+
+        public void setLatitude(final double latitude)
+        {
+            this.latitude = latitude;
+        }
+
+        public double getLongitude()
+        {
+            return longitude;
+        }
+
+        public void setLongitude(final double longitude)
+        {
+            this.longitude = longitude;
+        }
+
         private Address(final Parcel in)
         {
             final String[] stringData = new String[5];
@@ -584,12 +608,17 @@ public class Booking implements Parcelable
             city = stringData[2];
             state = stringData[3];
             zip = stringData[4];
+
+            latitude = in.readDouble();
+            longitude = in.readDouble();
         }
 
         @Override
         public final void writeToParcel(final Parcel out, final int flags)
         {
             out.writeStringArray(new String[]{address1, address2, city, state, zip});
+            out.writeDouble(latitude);
+            out.writeDouble(longitude);
         }
 
         @Override

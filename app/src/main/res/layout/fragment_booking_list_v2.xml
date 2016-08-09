@@ -1,0 +1,55 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".module.bookings.BookingsFragment"
+    android:orientation="vertical"
+    android:background="@color/handy_background_gray"
+    >
+    <!--TODO: JIA: maybe redo this layout to be less heavy-->
+    <include
+        layout="@layout/layout_card_empty"
+        tools:visibility="gone"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/fragment_booking_list_swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.handybook.handybook.ui.view.EmptiableRecyclerView
+                android:id="@+id/fragment_booking_list_booking_card_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/layout_booking_list_item"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                >
+            </com.handybook.handybook.ui.view.EmptiableRecyclerView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_booking_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/default_margin"
+            android:src="@drawable/ic_plus_white"
+            android:tag="fab"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:backgroundTint="@color/handy_blue"
+            app:fabSize="normal"
+            />
+    </FrameLayout>
+
+</LinearLayout>
