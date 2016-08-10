@@ -1,5 +1,6 @@
 package com.handybook.handybook.module.bookings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -19,10 +21,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.util.BookingUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  */
@@ -37,6 +43,9 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     @Bind(R.id.text_start_soon_indicator)
     View mStartingSoonIndicator;
 
+    @Bind(R.id.start_soon_indicator_divider)
+    View mStartingSoonIndicatorDivider;
+
     @Bind(R.id.text_provider_name)
     TextView mTextProviderName;
 
@@ -45,6 +54,18 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
 
     @Bind(R.id.text_booking_subtitle)
     TextView mTextBookingSubtitle;
+
+    @Bind(R.id.profile_container)
+    View mProfileContainer;
+
+    @Bind(R.id.profile_container_divider)
+    View mProfileContainerDivider;
+
+    @Bind(R.id.image_call)
+    ImageView mImageCall;
+
+    @Bind(R.id.image_text)
+    ImageView mImageText;
 
     private SupportMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
@@ -85,6 +106,8 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
 
             if (mBooking.getProvider() != null)
             {
+                mProfileContainer.setVisibility(View.VISIBLE);
+                mProfileContainerDivider.setVisibility(View.VISIBLE);
                 String name = mBooking.getProvider().getFirstName();
 
                 if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(mBooking.getProvider().getLastName()))
@@ -93,16 +116,35 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
                 }
 
                 mTextProviderName.setText(name);
+
+                if (!TextUtils.isEmpty(mBooking.getProvider().getPhone()))
+                {
+                    mImageCall.setVisibility(View.VISIBLE);
+                    mImageText.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    mImageCall.setVisibility(View.GONE);
+                    mImageText.setVisibility(View.GONE);
+                }
+            }
+            else
+            {
+                //no provider is here, shouldn't happen, but if it doesn, hide the provider card.
+                mProfileContainer.setVisibility(View.GONE);
+                mProfileContainerDivider.setVisibility(View.GONE);
             }
 
             mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
             mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, getActivity()));
             mStartingSoonIndicator.setVisibility(View.VISIBLE);
+            mStartingSoonIndicatorDivider.setVisibility(View.VISIBLE);
         }
         else
         {
             mMapContainer.setVisibility(View.GONE);
             mStartingSoonIndicator.setVisibility(View.GONE);
+            mStartingSoonIndicatorDivider.setVisibility(View.GONE);
         }
 
         return view;
@@ -118,7 +160,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             LatLng latLng = new LatLng(lat, lng);
             Log.d(TAG, "updateMap: plotting: " + lat + ", " + lng);
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-            mGoogleMap.animateCamera(cameraUpdate);
+            mGoogleMap.moveCamera(cameraUpdate);
         }
     }
 
@@ -131,5 +173,36 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             mGoogleMap = googleMap;
             updateMap();
         }
+    }
+
+    @OnClick(R.id.profile_container)
+    public void profileClicked()
+    {
+        gotoBookingDetails();
+    }
+
+    @OnClick(R.id.booking_item_container)
+    public void bookingClicked()
+    {
+        gotoBookingDetails();
+    }
+
+    @OnClick(R.id.image_call)
+    public void callClicked()
+    {
+        BookingUtil.callPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
+    }
+
+    @OnClick(R.id.image_text)
+    public void textClicked()
+    {
+        BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
+    }
+
+    private void gotoBookingDetails()
+    {
+        final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
+        intent.putExtra(BundleKeys.BOOKING, mBooking);
+        getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
     }
 }

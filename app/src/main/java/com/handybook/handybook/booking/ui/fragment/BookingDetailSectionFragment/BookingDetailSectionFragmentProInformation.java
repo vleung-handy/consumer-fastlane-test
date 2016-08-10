@@ -1,12 +1,9 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingAction;
@@ -23,7 +20,7 @@ import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.util.BookingUtil;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -227,7 +224,10 @@ public class BookingDetailSectionFragmentProInformation extends
         {
             if (validateProPhoneInformation(booking))
             {
-                callPhoneNumber(booking.getProvider().getPhone());
+                BookingUtil.callPhoneNumber(
+                        booking.getProvider().getPhone(),
+                        BookingDetailSectionFragmentProInformation.this.getActivity()
+                );
             }
             else
             {
@@ -243,7 +243,10 @@ public class BookingDetailSectionFragmentProInformation extends
         {
             if (validateProPhoneInformation(booking))
             {
-                textPhoneNumber(booking.getProvider().getPhone());
+                BookingUtil.textPhoneNumber(
+                        booking.getProvider().getPhone(),
+                        BookingDetailSectionFragmentProInformation.this.getActivity()
+                );
             }
             else
             {
@@ -266,41 +269,6 @@ public class BookingDetailSectionFragmentProInformation extends
         return validPhoneNumber;
     }
 
-    //use native functionality to trigger a phone call
-    private void callPhoneNumber(final String phoneNumber)
-    {
-        if (phoneNumber == null || phoneNumber.isEmpty())
-        {
-            return;
-        }
-
-        try
-        {
-            Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("tel", phoneNumber, null)), this.getActivity());
-        }
-        catch (ActivityNotFoundException activityException)
-        {
-            Crashlytics.logException(new RuntimeException("Calling a Phone Number failed", activityException));
-        }
-    }
-
-    //use native functionality to trigger a text message interface
-    private void textPhoneNumber(final String phoneNumber)
-    {
-        if (phoneNumber == null || phoneNumber.isEmpty())
-        {
-            return;
-        }
-
-        try
-        {
-            Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null)), this.getActivity());
-        }
-        catch (ActivityNotFoundException activityException)
-        {
-            Crashlytics.logException(new RuntimeException("Texting a Phone Number failed", activityException));
-        }
-    }
 
 
 }

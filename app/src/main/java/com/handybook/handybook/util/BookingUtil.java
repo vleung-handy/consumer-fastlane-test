@@ -1,8 +1,12 @@
 package com.handybook.handybook.util;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
@@ -160,7 +164,7 @@ public class BookingUtil
     public static Integer getIconForService(String serviceMachineName)
     {
         Integer iconResourceId = DEFAULT_SERVICE_ICON_RESOURCE_ID;
-        if (serviceMachineName != null && !serviceMachineName.isEmpty())
+        if (!android.text.TextUtils.isEmpty(serviceMachineName))
         {
             if (SERVICE_ICONS.containsKey(serviceMachineName))
             {
@@ -169,6 +173,41 @@ public class BookingUtil
         }
         return iconResourceId;
     }
+
+    public static void callPhoneNumber(final String phoneNumber, Context context)
+    {
+        if (android.text.TextUtils.isEmpty(phoneNumber))
+        {
+            return;
+        }
+
+        try
+        {
+            Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("tel", phoneNumber, null)), context);
+        }
+        catch (ActivityNotFoundException activityException)
+        {
+            Crashlytics.logException(new RuntimeException("Calling a Phone Number failed", activityException));
+        }
+    }
+
+    public static void textPhoneNumber(final String phoneNumber, Context context)
+    {
+        if (phoneNumber == null || phoneNumber.isEmpty())
+        {
+            return;
+        }
+
+        try
+        {
+            Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null)), context);
+        }
+        catch (ActivityNotFoundException activityException)
+        {
+            Crashlytics.logException(new RuntimeException("Texting a Phone Number failed", activityException));
+        }
+    }
+
 
 
 }

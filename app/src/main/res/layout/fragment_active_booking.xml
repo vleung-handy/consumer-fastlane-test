@@ -26,44 +26,80 @@
         android:drawablePadding="@dimen/default_padding_half"
         />
 
+    <View
+        android:id="@+id/start_soon_indicator_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/handy_divider_line"
+        />
+
     <!--Profile card-->
     <RelativeLayout
         android:id="@+id/profile_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/default_padding"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         >
 
-        <TextView
-            android:id="@+id/text_provider_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Linda F."
+            android:orientation="vertical"
             android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            style="@style/TextAppearance.AppCompat.Title"
-            />
+            android:layout_centerVertical="true"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextView.Headline"
+                android:text="@string/professional"
+                android:textColor="@color/handy_tertiary_gray"
+                />
+
+            <TextView
+                android:id="@+id/text_provider_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Linda F."
+                android:layout_marginTop="@dimen/default_margin_half"
+                style="@style/TextAppearance.AppCompat.Title"
+                />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/image_text"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/profile_card_image_size"
+            android:layout_height="@dimen/profile_card_image_size"
             android:src="@drawable/ic_text"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             />
 
         <ImageView
             android:id="@+id/image_call"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/profile_card_image_size"
+            android:layout_height="@dimen/profile_card_image_size"
             android:src="@drawable/ic_call"
             android:layout_toLeftOf="@id/image_text"
             android:layout_centerVertical="true"
+            android:clickable="true"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginRight="@dimen/default_margin_half"
+            android:foreground="?attr/selectableItemBackground"
             />
+
     </RelativeLayout>
 
     <View
+        android:id="@+id/profile_container_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/handy_divider_line"
@@ -88,5 +124,6 @@
         style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:textAllCaps="false"
         android:layout_marginLeft="@dimen/default_margin"
+        android:textColor="@color/handy_tertiary_gray"
         />
 </LinearLayout>

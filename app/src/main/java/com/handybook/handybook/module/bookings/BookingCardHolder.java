@@ -47,11 +47,17 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     public void bindToBooking(@NonNull final Booking booking)
     {
         mBooking = booking;
+        mImageIcon.setVisibility(View.VISIBLE);
 
         if (mServices != null)
         {
             String machineName = BookingUtil.findParentService(booking, mServices);
             mImageIcon.setImageResource(BookingUtil.getIconForService(machineName));
+        }
+        else
+        {
+            //this will give us back the default cleaning icon
+            mImageIcon.setImageResource(BookingUtil.getIconForService(null));
         }
 
         mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
