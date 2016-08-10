@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.model.Service;
 
 import java.util.List;
 
@@ -34,10 +35,11 @@ public class ActiveBookingListAdapter extends SimpleBookingListAdapater
             @NonNull final List<Booking> bookings,
             @NonNull final List<RecurringBooking> recurringBookings,
             final String activePlanCountTitle,
-            final View.OnClickListener clickListener
+            final View.OnClickListener clickListener,
+            List<Service> services
     )
     {
-        super(fragmentManager, bookings, clickListener);
+        super(fragmentManager, bookings, clickListener, services);
         mActivePlanCountTitle = activePlanCountTitle;
         mRecurringBookings = recurringBookings;
         updateWithActivePlan();
@@ -61,7 +63,7 @@ public class ActiveBookingListAdapter extends SimpleBookingListAdapater
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.layout_booking_list_item, parent, false);
 
-            return new BookingCardHolder(itemView, mOnClickListener);
+            return new BookingCardHolder(itemView, mOnClickListener, mServices);
 
         }
         else

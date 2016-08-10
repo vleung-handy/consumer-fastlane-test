@@ -364,35 +364,6 @@ public abstract class BookingEvent
         }
     }
 
-
-    public static class RequestAllServices {}
-
-
-    public static class ReceiveAllServicesSuccess extends HandyEvent.ReceiveSuccessEvent
-    {
-        private List<Service> mServices;
-
-        public ReceiveAllServicesSuccess(final List<Service> services)
-        {
-            mServices = services;
-        }
-
-        public List<Service> getServices()
-        {
-            return mServices;
-        }
-    }
-
-
-    public static class ReceiveAllServicesError extends HandyEvent.ReceiveErrorEvent
-    {
-        public ReceiveAllServicesError(final DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-
     public static class RequestServices {}
 
 

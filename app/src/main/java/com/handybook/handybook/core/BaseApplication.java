@@ -12,7 +12,6 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
@@ -177,9 +176,6 @@ public class BaseApplication extends MultiDexApplication
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
             mixpanel.trackEventAppTrackInstall();
         }
-
-        //this is to warm up the cache and get all the services.
-        bus.post(new BookingEvent.RequestAllServices());
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {

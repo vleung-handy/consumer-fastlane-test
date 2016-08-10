@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,36 +8,43 @@
     android:padding="@dimen/default_padding"
     android:foreground="?attr/selectableItemBackground"
     android:background="@color/handy_white"
-    android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/text_service_name"
+    <ImageView
+        android:id="@+id/image_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_margin_quarter"
-        android:visibility="gone"
-        tools:text="Furniture Assembly"
-        tools:visibility="visible"
-        android:textColor="@color/handy_blue"
-        android:textStyle="bold"
+        tools:src="@drawable/ic_cleaner_fill"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         />
 
-    <TextView
-        android:id="@+id/text_booking_title"
-        style="@style/TextView.Medium"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Thursday, Sept 12"
-        android:textStyle="bold"
-        />
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/image_icon"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/default_margin"
+        >
 
-    <TextView
-        android:id="@+id/text_booking_subtitle"
-        style="@style/TextView.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        tools:text="11:00 – 2:00 p, (3 hours)"
-        />
-</LinearLayout>
+        <TextView
+            android:id="@+id/text_booking_title"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Thursday, Sept 12"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/text_booking_subtitle"
+            style="@style/TextView.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            tools:text="11:00 – 2:00 p, (3 hours)"
+            />
+    </LinearLayout>
+</RelativeLayout>

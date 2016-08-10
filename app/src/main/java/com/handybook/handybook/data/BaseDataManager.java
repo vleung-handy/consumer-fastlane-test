@@ -89,6 +89,8 @@ public final class BaseDataManager extends DataManager
         return mEndpoint.getBaseUrl();
     }
 
+//    FIXME: JIA: fix the way we cache services.
+
     /**
      * If there is a cached version, return the cache, and updates the cache in the background.
      * If there was a cached version, then cache update success will not be broadcasted.
@@ -241,19 +243,6 @@ public final class BaseDataManager extends DataManager
                         }
                     }
                 });
-            }
-        });
-    }
-
-    @Override
-    public void getAllServices(final List<Service> services, final Callback<List<Service>> cb)
-    {
-        mService.getServices(new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(final JSONObject response)
-            {
-
             }
         });
     }

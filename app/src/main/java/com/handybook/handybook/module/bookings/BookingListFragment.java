@@ -19,6 +19,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
@@ -40,7 +41,8 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
 {
     public static final String STATE_BOOKINGS = "state:bookings";
     public static final String STATE_RECURRING_BOOKINGS = "state:recurring_bookings";
-    public static final String STATE_ACTIVE_PLAN_COUNT = "state:recurring_bookings";
+    public static final String STATE_ACTIVE_PLAN_COUNT = "state:active_plan_count";
+    public static final String STATE_SERVICES = "state:services";
     private static final String KEY_LIST_TYPE = "list_type";
     private static final String TAG = BookingListFragment.class.getName();
 
@@ -62,7 +64,9 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
     private int mActivePlanCount;
     private SimpleBookingListAdapater mSimpleBookingListAdapater;
     private ActiveBookingListAdapter mActiveBookingListAdapter;
-
+    private List<Service> mServices;
+    private boolean mServiceRequestCompleted = false;
+    private boolean mBookingsRequestCompleted = false;
     private LinearLayoutManager mLayoutManager;
 
     //FIXME: JIA: make this come from the server.
@@ -86,9 +90,11 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
 
         if (savedInstanceState != null)
         {
+            Log.d(TAG, "restoring instance state. ");
             mBookings = savedInstanceState.getParcelableArrayList(STATE_BOOKINGS);
             mRecurringBookings = (List<RecurringBooking>) savedInstanceState.getSerializable(STATE_RECURRING_BOOKINGS);
             mActivePlanCount = savedInstanceState.getInt(STATE_ACTIVE_PLAN_COUNT, 0);
+            mServices = savedInstanceState.getParcelableArrayList(STATE_SERVICES);
         }
 
         if (getArguments() != null)
@@ -123,8 +129,6 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
         mEmptiableRecyclerView.setLayoutManager(mLayoutManager);
         mEmptiableRecyclerView.setEmptyView(mNoBookingsView);
         mEmptiableRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
-        bindBookingsToList();
-        // Only allow SwipeRefresh when Recycler scrolled all the way up
 
         return view;
     }
@@ -133,17 +137,20 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
     public final void onSaveInstanceState(final Bundle outState)
     {
         super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState: ");
         if (mBookings != null && !mBookings.isEmpty())
         {
             //FIXME: JIA: test this to make sure it works.
             outState.putParcelableArrayList(STATE_BOOKINGS, (ArrayList<? extends Parcelable>) mBookings);
             outState.putSerializable(STATE_RECURRING_BOOKINGS, (Serializable) mRecurringBookings);
             outState.putInt(STATE_ACTIVE_PLAN_COUNT, mActivePlanCount);
+            outState.putParcelableArrayList(STATE_SERVICES, (ArrayList<? extends Parcelable>) mServices);
         }
     }
 
     protected void loadBookings()
     {
+        mBookingsRequestCompleted = false;
         mSwipeRefreshLayout.setRefreshing(true);
 
         if (mListType == ListType.UPCOMING)
@@ -177,12 +184,13 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
                                 intent.putExtra(BundleKeys.BOOKING, booking);
                                 getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                             }
-                        });
+                        },
+                        mServices
+                );
                 mEmptiableRecyclerView.setAdapter(mActiveBookingListAdapter);
             }
             else
             {
-
                 mSimpleBookingListAdapater = new SimpleBookingListAdapater(
                         getChildFragmentManager(),
                         mBookings,
@@ -196,7 +204,8 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
                                 intent.putExtra(BundleKeys.BOOKING, booking);
                                 getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                             }
-                        });
+                        },
+                        mServices);
 
                 mEmptiableRecyclerView.setAdapter(mSimpleBookingListAdapater);
 
@@ -204,6 +213,23 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
         }
     }
 
+    @Subscribe
+    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
+    {
+        mServices = event.getServices();
+        mServiceRequestCompleted = true;
+
+        setupBookingsView();
+    }
+
+    @Subscribe
+    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError error)
+    {
+        //we don't really care that the services errored out, we just won't display the
+        //services icon.
+        mServiceRequestCompleted = true;
+        setupBookingsView();
+    }
 
     @Subscribe
     public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event)
@@ -214,7 +240,7 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
         {
             return;
         }
-
+        mBookingsRequestCompleted = true;
         Log.d(TAG, "onReceiveBookingsSuccess: " + event.getOnlyBookingsValue());
         if (event.getBookingWrapper().getRecurringBookings() != null &&
                 !event.getBookingWrapper().getRecurringBookings().isEmpty())
@@ -228,34 +254,46 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
         }
 
         mBookings = event.getBookingWrapper().getBookings();
-        mSwipeRefreshLayout.setRefreshing(false);
 
-        bindBookingsToList();
+        setupBookingsView();
+    }
+
+    /**
+     * Only perform the setup if we got responses from both bookings and get services
+     */
+    private void setupBookingsView()
+    {
+        if (mBookingsRequestCompleted && mServiceRequestCompleted)
+        {
+            mSwipeRefreshLayout.setRefreshing(false);
+
+            bindBookingsToList();
 
 //        FIXME: JIA: only disable this when the mapview is turned on.
-        if (mShouldShowMapView)
-        {
-            //if we're showing the map, disable this pull to refresh thing.
-            mSwipeRefreshLayout.setEnabled(false);
-        }
-        else
-        {
-            mEmptiableRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+            if (mShouldShowMapView)
             {
-                @Override
-                public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
+                //if we're showing the map, disable this pull to refresh thing.
+                mSwipeRefreshLayout.setEnabled(false);
+            }
+            else
+            {
+                mEmptiableRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
                 {
-                    super.onScrolled(recyclerView, dx, dy);
-                    if (!recyclerView.canScrollVertically(-1))
+                    @Override
+                    public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
                     {
-                        mSwipeRefreshLayout.setEnabled(true);
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (!recyclerView.canScrollVertically(-1))
+                        {
+                            mSwipeRefreshLayout.setEnabled(true);
+                        }
+                        else
+                        {
+                            mSwipeRefreshLayout.setEnabled(false);
+                        }
                     }
-                    else
-                    {
-                        mSwipeRefreshLayout.setEnabled(false);
-                    }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -286,6 +324,22 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
             mNoBookingsView.setVisibility(View.GONE);
             loadBookings();
         }
+        else
+        {
+            mBookingsRequestCompleted = true;
+        }
+
+        if (mServices == null)
+        {
+            mServiceRequestCompleted = false;
+            bus.post(new BookingEvent.RequestServices());
+        }
+        else
+        {
+            mServiceRequestCompleted = true;
+        }
+
+        setupBookingsView();
     }
 
     @Override
@@ -316,6 +370,7 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
     @Subscribe
     public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e)
     {
+        mBookingsRequestCompleted = true;
         mSwipeRefreshLayout.setRefreshing(false);
         toast.setText("Error loading bookings, please try again.");
         toast.show();

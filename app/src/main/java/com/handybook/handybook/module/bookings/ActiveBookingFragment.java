@@ -19,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.util.BookingUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -94,8 +95,8 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
                 mTextProviderName.setText(name);
             }
 
-            mTextBookingTitle.setText(BookingHelper.getTitle(mBooking));
-            mTextBookingSubtitle.setText(BookingHelper.getSubtitle(mBooking, getActivity()));
+            mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
+            mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, getActivity()));
             mStartingSoonIndicator.setVisibility(View.VISIBLE);
         }
         else

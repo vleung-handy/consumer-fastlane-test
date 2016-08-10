@@ -4,10 +4,15 @@ package com.handybook.handybook.module.bookings;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.util.BookingUtil;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,38 +22,40 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
 
     private Booking mBooking;
 
-    @Bind(R.id.text_service_name)
-    TextView mTextServiceName;
+    @Bind(R.id.image_icon)
+    ImageView mImageIcon;
     @Bind(R.id.text_booking_title)
     TextView mTextBookingTitle;
     @Bind(R.id.text_booking_subtitle)
     TextView mTextBookingSubtitle;
 
+    List<Service> mServices;
     View.OnClickListener mOnClickListener;
 
-    public BookingCardHolder(View itemView, View.OnClickListener clickListener)
+    public BookingCardHolder(
+            View itemView,
+            View.OnClickListener clickListener,
+            List<Service> services
+    )
     {
         super(itemView);
         ButterKnife.bind(this, itemView);
         mOnClickListener = clickListener;
+        mServices = services;
     }
 
     public void bindToBooking(@NonNull final Booking booking)
     {
         mBooking = booking;
-        mTextServiceName.setText(mBooking.getServiceName());
 
-        if (!booking.isRecurring())
+        if (mServices != null)
         {
-            mTextServiceName.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            mTextServiceName.setVisibility(View.GONE);
+            String machineName = BookingUtil.findParentService(booking, mServices);
+            mImageIcon.setImageResource(BookingUtil.getIconForService(machineName));
         }
 
-        mTextBookingTitle.setText(BookingHelper.getTitle(mBooking));
-        mTextBookingSubtitle.setText(BookingHelper.getSubtitle(mBooking, itemView.getContext()));
+        mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
+        mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, itemView.getContext()));
 
         itemView.setTag(mBooking);
         itemView.setOnClickListener(new View.OnClickListener()
@@ -63,6 +70,4 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
             }
         });
     }
-
-
 }

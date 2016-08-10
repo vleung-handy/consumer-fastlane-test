@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.Service;
 
 import java.util.List;
 
@@ -26,16 +27,19 @@ public class SimpleBookingListAdapater extends RecyclerView.Adapter<RecyclerView
     protected List<Booking> mBookings;
     protected View.OnClickListener mOnClickListener;
     protected FragmentManager mFragmentManager;
+    protected List<Service> mServices;
 
     public SimpleBookingListAdapater(
             FragmentManager fragmentManager,
             @NonNull final List<Booking> bookings,
-            final View.OnClickListener clickListener
+            final View.OnClickListener clickListener,
+            List<Service> services
     )
     {
         mFragmentManager = fragmentManager;
         mOnClickListener = clickListener;
         mBookings = bookings;
+        mServices = services;
     }
 
     public List<Booking> getBookings()
@@ -49,7 +53,13 @@ public class SimpleBookingListAdapater extends RecyclerView.Adapter<RecyclerView
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_booking_list_item, parent, false);
 
-        return new BookingCardHolder(itemView, mOnClickListener);
+        return new BookingCardHolder(itemView, mOnClickListener, mServices);
+    }
+
+    public void setServices(final List<Service> services)
+    {
+        mServices = services;
+        notifyDataSetChanged();
     }
 
     @Override
