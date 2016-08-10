@@ -234,7 +234,7 @@ public class ReferralFragment extends InjectedFragment
                 mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_EMAIL);
         if (emailReferralInfo != null)
         {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("plain/text");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
