@@ -1,9 +1,10 @@
-package com.handybook.handybook;
+package com.handybook.handybook.test.booking;
 
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.test.data.TestUsers;
 import com.handybook.handybook.test.model.Address;
