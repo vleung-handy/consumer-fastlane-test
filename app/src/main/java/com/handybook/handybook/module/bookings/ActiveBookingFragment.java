@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +15,9 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -27,6 +27,7 @@ import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.util.PlayServicesUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,9 +39,6 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
 {
     private static final String TAG = ActiveBookingFragment.class.getName();
     private static final String KEY_BOOKING = "booking";
-
-    @Bind(R.id.map_container)
-    View mMapContainer;
 
     @Bind(R.id.text_start_soon_indicator)
     View mStartingSoonIndicator;
@@ -69,7 +67,9 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     @Bind(R.id.image_text)
     ImageView mImageText;
 
-    private SupportMapFragment mMapFragment;
+    @Bind(R.id.map_view)
+    MapView mMapView;
+
     private GoogleMap mGoogleMap;
     private Booking mBooking;
 
@@ -100,17 +100,19 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
 
         if (mBooking != null && mShouldShowMap)
         {
-            mMapFragment = SupportMapFragment.newInstance();
-            mMapFragment.getMapAsync(this);
 
-            Log.d(TAG, "onCreateView: inserting map fragment into map_container");
+            if (PlayServicesUtils.hasPlayServices(getActivity()))
+            {
+                mMapView.onCreate(savedInstanceState);
+                mMapView.setVisibility(View.VISIBLE);
+                mMapView.getMapAsync(this);
+            }
+            else
+            {
+                mMapView.setVisibility(View.GONE);
+            }
 
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.map_container, mMapFragment);
-            fragmentTransaction.commit();
-            mMapContainer.setVisibility(View.VISIBLE);
-
-            if (mBooking.getProvider() != null)
+            if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider().getFullName().trim()))
             {
                 mProfileContainer.setVisibility(View.VISIBLE);
                 mProfileContainerDivider.setVisibility(View.VISIBLE);
@@ -148,7 +150,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
         }
         else
         {
-            mMapContainer.setVisibility(View.GONE);
+            mMapView.setVisibility(View.GONE);
             mStartingSoonIndicator.setVisibility(View.GONE);
             mStartingSoonIndicatorDivider.setVisibility(View.GONE);
         }
@@ -188,6 +190,10 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
         if (mGoogleMap == null)
         {
             mGoogleMap = googleMap;
+
+            // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+            MapsInitializer.initialize(this.getActivity());
+
             updateMap();
         }
     }
@@ -221,5 +227,37 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
         final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
         intent.putExtra(BundleKeys.BOOKING, mBooking);
         getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
+    }
+
+    @Override
+    public void onResume()
+    {
+        if (mMapView.getVisibility() == View.VISIBLE)
+        {
+            mMapView.onResume();
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        if (mMapView.getVisibility() == View.VISIBLE)
+        {
+            mMapView.onDestroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory()
+    {
+        super.onLowMemory();
+
+        if (mMapView.getVisibility() == View.VISIBLE)
+        {
+            mMapView.onLowMemory();
+        }
+
     }
 }

@@ -3,7 +3,6 @@ package com.handybook.handybook.module.bookings;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import com.handybook.handybook.R;
 
@@ -58,7 +57,6 @@ public class TabAdapter extends FragmentPagerAdapter
     @Override
     public BookingListFragment getItem(int position)
     {
-        Log.d(TAG, "getItem: " + position);
         return fragments.get(position);
     }
 }

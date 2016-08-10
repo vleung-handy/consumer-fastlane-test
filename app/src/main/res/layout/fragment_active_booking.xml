@@ -6,14 +6,13 @@
               android:layout_height="match_parent"
     >
 
-    <FrameLayout
-        android:id="@+id/map_container"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:visibility="gone"
         tools:visibility="visible"
-        />
-
+        ></com.google.android.gms.maps.MapView>
     <TextView
         android:id="@+id/text_start_soon_indicator"
         android:layout_width="match_parent"
