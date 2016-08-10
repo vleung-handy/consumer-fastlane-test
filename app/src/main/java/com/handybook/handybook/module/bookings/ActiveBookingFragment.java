@@ -18,7 +18,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
@@ -87,6 +89,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
     {
+        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_active_booking, container, false);
         ButterKnife.bind(this, view);
 
@@ -99,6 +102,9 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
         {
             mMapFragment = SupportMapFragment.newInstance();
             mMapFragment.getMapAsync(this);
+
+            Log.d(TAG, "onCreateView: inserting map fragment into map_container");
+
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.map_container, mMapFragment);
             fragmentTransaction.commit();
@@ -157,10 +163,21 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             double lat = mBooking.getAddress().getLatitude();
             double lng = mBooking.getAddress().getLongitude();
 
-            LatLng latLng = new LatLng(lat, lng);
+            LatLng addressLatLng = new LatLng(lat, lng);
             Log.d(TAG, "updateMap: plotting: " + lat + ", " + lng);
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(addressLatLng, 15);
             mGoogleMap.moveCamera(cameraUpdate);
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(addressLatLng)
+                    .title("Destination")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
+
+            //FIXME: replace this with pro location information when it's there.
+            LatLng providerLatLng = new LatLng(40.741899, -73.998602);
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(providerLatLng)
+                    .title("Provider")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pro_location)));
         }
     }
 

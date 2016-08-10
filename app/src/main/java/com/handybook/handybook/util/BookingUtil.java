@@ -157,7 +157,8 @@ public class BookingUtil
 
     public static String getTitle(Booking booking)
     {
-        return TextUtils.formatDate(booking.getStartDate(), TITLE_DATE_FORMAT);
+//        FIXME: JIA: remove the booking id part once done testing.
+        return TextUtils.formatDate(booking.getStartDate(), TITLE_DATE_FORMAT) + " " + booking.getId();
     }
 
 
