@@ -56,8 +56,6 @@ public final class BookingAddressFragment extends BookingFlowFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mixpanel.trackEventAppTrackAddress();
-
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressShownLog()));
     }
 

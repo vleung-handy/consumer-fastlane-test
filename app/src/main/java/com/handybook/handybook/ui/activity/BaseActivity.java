@@ -107,10 +107,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         }
         final Intent intent = getIntent();
         final Uri data = intent.getData();
-        if (data != null && data.getHost() != null && data.getHost().equals(YOZIO_DEEPLINK_HOST))
-        {
-            mMixpanel.trackEventYozioOpen(Yozio.getMetaData(intent));
-        }
         mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER, 0, 0);
         mProgressDialog = new ProgressDialog(this);
@@ -275,10 +271,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 rateServiceDialogFragment,
                 BaseActivity.this,
                 RateServiceDialogFragment.class.getSimpleName());
-        if (successfullyLaunched)
-        {
-            mMixpanel.trackEventProRate(Mixpanel.ProRateEventType.SHOW, bookingId, proName, 0);
-        }
     }
 
     private void showLaundryInfoModal(final int bookingId)

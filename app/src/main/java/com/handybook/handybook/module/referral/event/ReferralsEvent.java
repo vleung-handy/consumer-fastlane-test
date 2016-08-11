@@ -2,8 +2,6 @@ package com.handybook.handybook.module.referral.event;
 
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.logger.mixpanel.annotation.Track;
-import com.handybook.handybook.logger.mixpanel.annotation.TrackField;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 
@@ -93,51 +91,5 @@ public abstract class ReferralsEvent
         {
             this.error = error;
         }
-    }
-
-
-    @Track("referral screen shown")
-    public static class ReferralScreenShown {}
-
-
-    @Track("invite friends clicked")
-    public static class InviteFriendsClicked {}
-
-
-    @Track("other share option clicked")
-    public static class OtherShareOptionsClicked
-    {
-        @TrackField("share option")
-        private String mShareOption;
-
-        public OtherShareOptionsClicked(final String shareOption)
-        {
-            mShareOption = shareOption;
-        }
-    }
-
-
-    @Track("accept referral shown")
-    public static class RedemptionScreenShown
-    {
-    }
-
-
-    @Track("accept referral signup")
-    public static class RedemptionSignUpClicked
-    {
-        @TrackField("signup type")
-        private String mType;
-
-        public RedemptionSignUpClicked(final String type)
-        {
-            mType = type;
-        }
-    }
-
-
-    @Track("accept referral existing login")
-    public static class RedemptionLogin
-    {
     }
 }

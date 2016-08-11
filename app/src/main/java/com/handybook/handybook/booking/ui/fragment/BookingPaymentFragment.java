@@ -233,7 +233,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         {
             mUseExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
         }
-        mixpanel.trackEventAppTrackPayment();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -273,11 +272,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             final Bundle savedInstanceState
     )
     {
-        mixpanel.trackEventPaymentPage(
-                mCurrentRequest,
-                mCurrentQuote,
-                mCurrentTransaction
-        );
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_payment, container, false);
 
@@ -894,7 +888,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         {
                             bus.post(new MixpanelEvent.TrackBookingCompletedWithPaymentMethodEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
                         }
-                        mixpanel.trackEventSubmitPayment(mCurrentRequest, mCurrentQuote, mCurrentTransaction);
                         mixpanel.trackEventBookingMade(mCurrentRequest, mCurrentQuote, mCurrentTransaction);
 
                         if (!allowCallbacks) { return; }

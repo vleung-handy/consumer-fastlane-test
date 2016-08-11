@@ -118,11 +118,6 @@ public final class LoginFragment extends BookingFlowFragment
         mBookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
         mBookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
 
-        if (!mFindUser && mBookingUserName == null)
-        {
-            mixpanel.trackPageLogin();
-        }
-
         String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
         if (!TextUtils.isEmpty(mDestinationActivity))
         {
@@ -161,7 +156,6 @@ public final class LoginFragment extends BookingFlowFragment
             mForgotButton.setVisibility(View.GONE);
             mLoginButton.setText(getString(R.string.next));
             mEmailText.setText(mBookingRequest.getEmail());
-            mixpanel.trackEventAppTrackContact();
         }
         else if (mBookingUserEmail != null)
         {
@@ -179,7 +173,6 @@ public final class LoginFragment extends BookingFlowFragment
                 mWelcomeText.setVisibility(View.VISIBLE);
             }
             mBookingRequest.setEmail(mBookingUserEmail);
-            mixpanel.trackEventAppTrackLogIn();
         }
         else
         {

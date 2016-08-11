@@ -120,7 +120,6 @@ public class ReferralFragment extends InjectedFragment
                 }
                 final String applicationName =
                         ReferralIntentUtil.getApplicationNameFromIntent(getActivity(), intent);
-                bus.post(new ReferralsEvent.OtherShareOptionsClicked(applicationName));
                 launchShareIntent(intent, resolvedChannel);
             }
         }
@@ -157,7 +156,6 @@ public class ReferralFragment extends InjectedFragment
         removeUiBlockers();
         mReferralContent.setVisibility(View.VISIBLE);
         showReferralDetails();
-        bus.post(new ReferralsEvent.ReferralScreenShown());
         startAnimations();
     }
 
@@ -235,7 +233,6 @@ public class ReferralFragment extends InjectedFragment
         {
             final Intent smsReferralIntent =
                     ReferralIntentUtil.getSmsReferralIntent(getActivity(), smsReferralInfo);
-            bus.post(new ReferralsEvent.InviteFriendsClicked());
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
         }
     }

@@ -130,7 +130,6 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mIsNewUser = getArguments().getBoolean(EXTRA_NEW_USER, false);
         mInstructions = getArguments().getParcelable(EXTRA_INSTRUCTIONS);
-        mixpanel.trackEventAppTrackPreferences();
 
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingShareInfoShownLog()));
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRoutineShownLog()));
