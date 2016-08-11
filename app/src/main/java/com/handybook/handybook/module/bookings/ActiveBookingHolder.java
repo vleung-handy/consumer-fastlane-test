@@ -13,18 +13,23 @@ import com.handybook.handybook.booking.model.Booking;
  */
 public class ActiveBookingHolder extends RecyclerView.ViewHolder
 {
-    public ActiveBookingHolder(final View itemView)
+    private View.OnTouchListener mMapTouchListener;
+
+    public ActiveBookingHolder(final View itemView, View.OnTouchListener onTouchListener)
     {
         super(itemView);
+        mMapTouchListener = onTouchListener;
     }
 
     public void bindActiveBooking(FragmentManager fragmentManager, @NonNull final Booking mBooking)
     {
         ActiveBookingFragment frag = ActiveBookingFragment.newInstance(mBooking);
-
+        frag.setMapTouchListener(mMapTouchListener);
         fragmentManager.beginTransaction()
                 .replace(R.id.active_booking_container, frag)
                 .commit();
+
+
     }
 
 }

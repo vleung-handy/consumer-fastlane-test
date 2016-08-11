@@ -27,6 +27,7 @@ public class ActiveBookingListAdapter extends SimpleBookingListAdapater
     private static final int REGULAR = 2;
     private static final String TAG = ActiveBookingListAdapter.class.getName();
 
+    private View.OnTouchListener mMapTouchListener;
     private String mActivePlanCountTitle;
     protected List<RecurringBooking> mRecurringBookings;
 
@@ -36,12 +37,14 @@ public class ActiveBookingListAdapter extends SimpleBookingListAdapater
             @NonNull final List<RecurringBooking> recurringBookings,
             final String activePlanCountTitle,
             final View.OnClickListener clickListener,
-            List<Service> services
+            List<Service> services,
+            View.OnTouchListener touchListener
     )
     {
         super(fragmentManager, bookings, clickListener, services);
         mActivePlanCountTitle = activePlanCountTitle;
         mRecurringBookings = recurringBookings;
+        mMapTouchListener = touchListener;
         updateWithActivePlan();
     }
 
@@ -71,7 +74,7 @@ public class ActiveBookingListAdapter extends SimpleBookingListAdapater
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.active_booking_container, parent, false);
 
-            return new ActiveBookingHolder(itemView);
+            return new ActiveBookingHolder(itemView, mMapTouchListener);
         }
 
     }

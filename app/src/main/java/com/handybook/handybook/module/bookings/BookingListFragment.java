@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -185,7 +186,29 @@ public class BookingListFragment extends InjectedFragment implements SwipeRefres
                                 getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                             }
                         },
-                        mServices
+                        mServices,
+                        new View.OnTouchListener()
+                        {
+                            @Override
+                            public boolean onTouch(final View v, final MotionEvent ev)
+                            {
+                                int action = ev.getAction();
+                                switch (action)
+                                {
+                                    case MotionEvent.ACTION_DOWN:
+                                        // Disallow ScrollView to intercept touch events.
+                                        mEmptiableRecyclerView.requestDisallowInterceptTouchEvent(true);
+                                        break;
+
+                                    case MotionEvent.ACTION_UP:
+                                        // Allow ScrollView to intercept touch events.
+                                        mEmptiableRecyclerView.requestDisallowInterceptTouchEvent(false);
+                                        break;
+                                }
+
+                                return false;
+                            }
+                        }
                 );
                 mEmptiableRecyclerView.setAdapter(mActiveBookingListAdapter);
             }

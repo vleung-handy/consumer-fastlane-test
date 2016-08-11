@@ -39,6 +39,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
 {
     private static final String TAG = ActiveBookingFragment.class.getName();
     private static final String KEY_BOOKING = "booking";
+    private static final String KEY_TOUCH_LISTENER = "touch_listener";
 
     @Bind(R.id.text_start_soon_indicator)
     View mStartingSoonIndicator;
@@ -70,6 +71,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     @Bind(R.id.map_view)
     MapView mMapView;
 
+    private View.OnTouchListener mMapTouchListener;
     private GoogleMap mGoogleMap;
     private Booking mBooking;
 
@@ -106,6 +108,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
                 mMapView.onCreate(savedInstanceState);
                 mMapView.setVisibility(View.VISIBLE);
                 mMapView.getMapAsync(this);
+                mMapView.setOnTouchListener(mMapTouchListener);
             }
             else
             {
@@ -156,6 +159,11 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
         }
 
         return view;
+    }
+
+    public void setMapTouchListener(final View.OnTouchListener mapTouchListener)
+    {
+        mMapTouchListener = mapTouchListener;
     }
 
     private void updateMap()
