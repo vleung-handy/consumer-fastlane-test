@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -71,12 +73,15 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     @Bind(R.id.map_view)
     MapView mMapView;
 
-    private View.OnTouchListener mMapTouchListener;
+    @Bind(R.id.transparent_image)
+    ImageView mTransparentImage;
+
     private GoogleMap mGoogleMap;
     private Booking mBooking;
 
     //    FIXME -- use API value for this.
     private boolean mShouldShowMap = true;
+    private ScrollView mParentScrollView;
 
     public static ActiveBookingFragment newInstance(Booking booking)
     {
@@ -108,7 +113,40 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
                 mMapView.onCreate(savedInstanceState);
                 mMapView.setVisibility(View.VISIBLE);
                 mMapView.getMapAsync(this);
-                mMapView.setOnTouchListener(mMapTouchListener);
+
+                if (mParentScrollView != null)
+                {
+                    mTransparentImage.setOnTouchListener(new View.OnTouchListener()
+                    {
+
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event)
+                        {
+                            int action = event.getAction();
+                            switch (action)
+                            {
+                                case MotionEvent.ACTION_DOWN:
+                                    // Disallow ScrollView to intercept touch events.
+                                    mParentScrollView.requestDisallowInterceptTouchEvent(true);
+                                    // Disable touch on transparent view
+                                    return false;
+
+                                case MotionEvent.ACTION_UP:
+                                    // Allow ScrollView to intercept touch events.
+                                    mParentScrollView.requestDisallowInterceptTouchEvent(false);
+                                    return true;
+
+                                case MotionEvent.ACTION_MOVE:
+                                    mParentScrollView.requestDisallowInterceptTouchEvent(true);
+                                    return false;
+
+                                default:
+                                    return true;
+                            }
+                        }
+                    });
+                }
+
             }
             else
             {
@@ -159,11 +197,6 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
         }
 
         return view;
-    }
-
-    public void setMapTouchListener(final View.OnTouchListener mapTouchListener)
-    {
-        mMapTouchListener = mapTouchListener;
     }
 
     private void updateMap()
@@ -267,5 +300,10 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             mMapView.onLowMemory();
         }
 
+    }
+
+    public void setParentScrollView(final ScrollView parentScrollView)
+    {
+        mParentScrollView = parentScrollView;
     }
 }

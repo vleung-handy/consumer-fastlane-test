@@ -1,128 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/default_margin"
+    app:optCardCornerRadius="@dimen/med_elevation"
+    app:optCardElevation="@dimen/med_elevation"
     >
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/map_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:visibility="gone"
-        tools:visibility="visible"
-        ></com.google.android.gms.maps.MapView>
-    <TextView
-        android:id="@+id/text_start_soon_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Your booking starts soon"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:padding="@dimen/default_padding"
-        android:drawableLeft="@drawable/green_dot"
-        android:drawablePadding="@dimen/default_padding_half"
-        />
-
-    <View
-        android:id="@+id/start_soon_indicator_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/handy_divider_line"
-        />
-
-    <!--Profile card-->
-    <RelativeLayout
-        android:id="@+id/profile_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/default_padding"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         >
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextView.Headline"
-                android:text="@string/professional"
-                android:textColor="@color/handy_tertiary_gray"
-                />
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
+                ></com.google.android.gms.maps.MapView>
 
-            <TextView
-                android:id="@+id/text_provider_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Linda F."
-                android:layout_marginTop="@dimen/default_margin_half"
-                style="@style/TextAppearance.AppCompat.Title"
+            <ImageView
+                android:id="@+id/transparent_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/transparent"
                 />
-        </LinearLayout>
+        </FrameLayout>
 
-        <ImageView
-            android:id="@+id/image_text"
-            android:layout_width="@dimen/profile_card_image_size"
-            android:layout_height="@dimen/profile_card_image_size"
-            android:src="@drawable/ic_text"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+
+        <TextView
+            android:id="@+id/text_start_soon_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/green_dot"
+            android:drawablePadding="@dimen/default_padding_half"
+            android:padding="@dimen/default_padding"
+            android:text="Your booking starts soon"
             android:visibility="gone"
             tools:visibility="visible"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
             />
 
-        <ImageView
-            android:id="@+id/image_call"
-            android:layout_width="@dimen/profile_card_image_size"
-            android:layout_height="@dimen/profile_card_image_size"
-            android:src="@drawable/ic_call"
-            android:layout_toLeftOf="@id/image_text"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_marginRight="@dimen/default_margin_half"
-            android:foreground="?attr/selectableItemBackground"
+        <View
+            android:id="@+id/start_soon_indicator_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/handy_divider_line"
             />
 
-    </RelativeLayout>
+        <!--Profile card-->
+        <RelativeLayout
+            android:id="@+id/profile_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/default_padding"
+            >
 
-    <View
-        android:id="@+id/profile_container_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/handy_divider_line"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                >
 
-    <include layout="@layout/layout_booking_list_item"/>
+                <TextView
+                    style="@style/TextView.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/professional"
+                    android:textColor="@color/handy_tertiary_gray"
+                    />
+
+                <TextView
+                    android:id="@+id/text_provider_name"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin_half"
+                    tools:text="Linda F."
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_text"
+                android:layout_width="@dimen/profile_card_image_size"
+                android:layout_height="@dimen/profile_card_image_size"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:src="@drawable/ic_text"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+            <ImageView
+                android:id="@+id/image_call"
+                android:layout_width="@dimen/profile_card_image_size"
+                android:layout_height="@dimen/profile_card_image_size"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/default_margin_half"
+                android:layout_toLeftOf="@id/image_text"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:src="@drawable/ic_call"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/profile_container_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:background="@color/handy_divider_line"
+            />
+
+        <include layout="@layout/layout_booking_list_item"/>
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/handy_divider_line"
-        />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/handy_divider_line"
+            />
 
-    <Button
-        android:id="@+id/button_report_issue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/report_an_issue"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:textAllCaps="false"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:textColor="@color/handy_tertiary_gray"
-        />
-</LinearLayout>
+        <Button
+            android:id="@+id/button_report_issue"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:text="@string/report_an_issue"
+            android:textAllCaps="false"
+            android:textColor="@color/handy_tertiary_gray"
+            />
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

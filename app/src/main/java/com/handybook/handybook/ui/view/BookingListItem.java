@@ -1,9 +1,9 @@
-package com.handybook.handybook.module.bookings;
+package com.handybook.handybook.ui.view;
 
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,9 +17,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BookingCardHolder extends RecyclerView.ViewHolder
+public class BookingListItem extends FrameLayout
 {
-
     private Booking mBooking;
 
     @Bind(R.id.image_icon)
@@ -29,29 +28,37 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     @Bind(R.id.text_booking_subtitle)
     TextView mTextBookingSubtitle;
 
-    List<Service> mServices;
-    View.OnClickListener mOnClickListener;
+    private List<Service> mServices;
+    private View.OnClickListener mOnClickListener;
 
-    public BookingCardHolder(
-            View itemView,
+    public BookingListItem(
+            Context context,
             View.OnClickListener clickListener,
-            List<Service> services
+            List<Service> services,
+            Booking booking
     )
     {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
+        super(context);
         mOnClickListener = clickListener;
         mServices = services;
+        mBooking = booking;
+        init();
     }
 
-    public void bindToBooking(@NonNull final Booking booking)
+    void init()
     {
-        mBooking = booking;
+        inflate(getContext(), R.layout.layout_booking_list_item, this);
+        ButterKnife.bind(this);
+        bindToBooking();
+    }
+
+    public void bindToBooking()
+    {
         mImageIcon.setVisibility(View.VISIBLE);
 
         if (mServices != null)
         {
-            String machineName = BookingUtil.findParentService(booking, mServices);
+            String machineName = BookingUtil.findParentService(mBooking, mServices);
             mImageIcon.setImageResource(BookingUtil.getIconForService(machineName));
         }
         else
@@ -61,10 +68,9 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
         }
 
         mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
-        mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, itemView.getContext()));
+        mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, getContext()));
 
-        itemView.setTag(mBooking);
-        itemView.setOnClickListener(new View.OnClickListener()
+        this.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
@@ -75,5 +81,10 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
                 }
             }
         });
+    }
+
+    public Booking getBooking()
+    {
+        return mBooking;
     }
 }
