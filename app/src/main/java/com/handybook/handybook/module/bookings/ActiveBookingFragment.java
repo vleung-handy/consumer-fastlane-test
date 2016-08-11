@@ -22,6 +22,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
@@ -206,10 +207,17 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             double lat = mBooking.getAddress().getLatitude();
             double lng = mBooking.getAddress().getLongitude();
 
+            //FIXME: remove this.
+            if (lat == 0 && lng == 0)
+            {
+                Log.e(TAG, "updateMap: address not returning lat/lng, harding something");
+                lat = 40.7399124;
+                lng = -73.9953073;
+            }
+
             LatLng addressLatLng = new LatLng(lat, lng);
             Log.d(TAG, "updateMap: plotting: " + lat + ", " + lng);
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(addressLatLng, 15);
-            mGoogleMap.moveCamera(cameraUpdate);
+
             mGoogleMap.addMarker(new MarkerOptions()
                     .position(addressLatLng)
                     .title("Destination")
@@ -221,6 +229,18 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
                     .position(providerLatLng)
                     .title("Provider")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pro_location)));
+
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(addressLatLng);
+            builder.include(providerLatLng);
+            LatLngBounds bounds = builder.build();
+
+            //gives it some padding, so that the markers are not right at the edge of the screen.
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int padding = (int) (width * 0.10);
+
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            mGoogleMap.moveCamera(cu);
         }
     }
 

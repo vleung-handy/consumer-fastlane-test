@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 tools:visibility="visible"
-                ></com.google.android.gms.maps.MapView>
+                />
 
             <ImageView
                 android:id="@+id/transparent_image"

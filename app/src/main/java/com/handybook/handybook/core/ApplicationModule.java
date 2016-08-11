@@ -161,7 +161,6 @@ import retrofit.converter.GsonConverter;
         BookingsFragment.class,
         UpcomingBookingsFragment.class,
         ActiveBookingFragment.class,
-        com.handybook.handybook.module.bookings.BookingListFragment.class,
         BookingListFragment.class,
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,

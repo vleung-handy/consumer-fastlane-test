@@ -62,9 +62,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
-                        >
-
-                    </com.handybook.handybook.ui.view.ExpandableCleaningPlan>
+                        />
 
                     <LinearLayout
                         android:id="@+id/active_booking_container"
