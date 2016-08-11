@@ -237,9 +237,10 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
 
             //gives it some padding, so that the markers are not right at the edge of the screen.
             int width = getResources().getDisplayMetrics().widthPixels;
-            int padding = (int) (width * 0.10);
+            int height = getResources().getDisplayMetrics().heightPixels;
+            int padding = (int) (width * 0.20);
 
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
             mGoogleMap.moveCamera(cu);
         }
     }
