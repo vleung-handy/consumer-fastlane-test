@@ -3,7 +3,7 @@ package com.handybook.handybook.ui.view;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
  * Just a dumb little view that shows static information to the user when there are
  * active plans, but no generated bookings.
  */
-public class ActivePlanNoBookingView extends FrameLayout
+public class ActivePlanNoBookingView extends LinearLayout
 {
     @Bind(R.id.text_date)
     TextView mTextDate;

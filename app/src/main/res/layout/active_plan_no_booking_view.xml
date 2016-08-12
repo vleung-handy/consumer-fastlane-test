@@ -4,12 +4,7 @@ but there are generated bookings
 
 Assumes inflated into a vertical linear layout
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:gravity="center_horizontal"
-              android:padding="@dimen/default_padding"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
     <ImageView
@@ -61,4 +56,4 @@ Assumes inflated into a vertical linear layout
         android:text="Bookings are automatically created\n28 days in advance"
         android:gravity="center"
         />
-</LinearLayout>
+</merge>
