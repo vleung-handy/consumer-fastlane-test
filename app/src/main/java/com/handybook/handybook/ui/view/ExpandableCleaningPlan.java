@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.util.UiUtils;
 
 import java.util.List;
 
@@ -41,12 +42,17 @@ public class ExpandableCleaningPlan extends FrameLayout
     @Bind(R.id.divider)
     View mDivider;
 
+    @Bind(R.id.header_container)
+    FrameLayout mHeaderContainer;
+
     public ExpandableCleaningPlan(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
 
         inflate(getContext(), R.layout.layout_cleaning_plan, this);
         ButterKnife.bind(this);
+
+        UiUtils.extendTouchArea(mHeaderContainer, mImageCollapse);
     }
 
     @OnClick(R.id.button_plan_expand)

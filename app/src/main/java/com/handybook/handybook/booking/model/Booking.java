@@ -82,6 +82,8 @@ public class Booking implements Parcelable
     private boolean mCanLeaveTip;
     @SerializedName("instructions")
     private Instructions mInstructions;
+    @SerializedName("active_booking_status")
+    private ActiveBookingStatus mActiveBookingStatus;
 
     public boolean canEditExtras()
     {
@@ -133,6 +135,11 @@ public class Booking implements Parcelable
     public final boolean isRecurring()
     {
         return mRecurringId != null && !mRecurringId.isEmpty() && !"0".equals(mRecurringId);
+    }
+
+    public ActiveBookingStatus getActiveBookingStatus()
+    {
+        return mActiveBookingStatus;
     }
 
     public final String getRecurringInfo()
@@ -849,5 +856,119 @@ public class Booking implements Parcelable
         }
     }
 
+
+    public static class ActiveBookingStatus implements Parcelable
+    {
+        @SerializedName("map_enabled")
+        private boolean mMapEnabled;
+
+        @SerializedName("booking")
+        private Location mBookingLocation;
+
+        @SerializedName("provider")
+        private Location mProviderLocation;
+
+        public boolean isMapEnabled()
+        {
+            return mMapEnabled;
+        }
+
+        public Location getBookingLocation()
+        {
+            return mBookingLocation;
+        }
+
+        public Location getProviderLocation()
+        {
+            return mProviderLocation;
+        }
+
+        private ActiveBookingStatus(final Parcel in)
+        {
+            final boolean[] booleanArray = new boolean[1];
+            in.readBooleanArray(booleanArray);
+            mMapEnabled = booleanArray[0];
+        }
+
+        @Override
+        public final void writeToParcel(final Parcel out, final int flags)
+        {
+            out.writeBooleanArray(new boolean[]{mMapEnabled});
+        }
+
+        @Override
+        public final int describeContents()
+        {
+            return 0;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
+        {
+            public ActiveBookingStatus createFromParcel(final Parcel in)
+            {
+                return new ActiveBookingStatus(in);
+            }
+
+            public ActiveBookingStatus[] newArray(final int size)
+            {
+                return new ActiveBookingStatus[size];
+            }
+        };
+
+    }
+
+
+    public static class Location implements Parcelable
+    {
+        //the server returns lat/long as strings
+        @SerializedName("latitude")
+        private String mLatitude;
+
+        @SerializedName("longitude")
+        private String mLongitude;
+
+        private Location(final Parcel in)
+        {
+            final String[] stringArray = new String[2];
+            in.readStringArray(stringArray);
+            mLatitude = stringArray[0];
+            mLongitude = stringArray[1];
+        }
+
+        public String getLatitude()
+        {
+            return mLatitude;
+        }
+
+        public String getLongitude()
+        {
+            return mLongitude;
+        }
+
+        @Override
+        public final void writeToParcel(final Parcel out, final int flags)
+        {
+            out.writeStringArray(new String[]{mLatitude, mLongitude});
+        }
+
+        @Override
+        public final int describeContents()
+        {
+            return 0;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
+        {
+            public Location createFromParcel(final Parcel in)
+            {
+                return new Location(in);
+            }
+
+            public Location[] newArray(final int size)
+            {
+                return new Location[size];
+            }
+        };
+    }
 
 }

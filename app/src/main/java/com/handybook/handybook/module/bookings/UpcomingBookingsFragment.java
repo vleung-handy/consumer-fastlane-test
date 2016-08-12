@@ -220,19 +220,37 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     {
         if (mBookings != null)
         {
-            //FIXME: remove this hard coding indexes
-            ActiveBookingFragment frag = ActiveBookingFragment.newInstance(mBookings.get(0));
-            frag.setParentScrollView(mScrollView);
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.active_booking_container, frag, mBookings.get(0).getId())
-                    .commit();
+            //active bookings, if any, are always at the top of the list.
+            int i = 0;
+            for (int x = i; x < mBookings.size(); x++)
+            {
+                Booking booking = mBookings.get(x);
+                if (booking.getActiveBookingStatus() != null && booking.getActiveBookingStatus().isMapEnabled())
+                {
+                    ActiveBookingFragment frag = ActiveBookingFragment.newInstance(booking);
+                    frag.setParentScrollView(mScrollView);
 
-            mActiveBookingContainer.setVisibility(View.VISIBLE);
+                    //important here to use booking id as TAG, so that there aren't conflicts with multiple active bookings.
+                    getChildFragmentManager().beginTransaction()
+                            .replace(R.id.active_booking_container, frag, booking.getId())
+                            .commit();
+
+                    mActiveBookingContainer.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    //at this index, we no longer have active bookings.
+                    break;
+                }
+            }
+
+
+            //FIXME: remove this hard coding indexes
 
             mBookingsContainer.removeAllViews();
-            for (int i = 1; i < mBookings.size(); i++)
+            for (int x = i; x < mBookings.size(); x++)
             {
-                Booking booking = mBookings.get(i);
+                Booking booking = mBookings.get(x);
                 mBookingsContainer.addView(new BookingListItem(
                         getActivity(),
                         new View.OnClickListener()

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -210,7 +211,8 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             //FIXME: remove this.
             if (lat == 0 && lng == 0)
             {
-                Log.e(TAG, "updateMap: address not returning lat/lng, harding something");
+                Toast.makeText(this.getActivity(), "No address location, faking it.", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "updateMap: address not returning lat/lng, hard coding something");
                 lat = 40.7399124;
                 lng = -73.9953073;
             }
@@ -224,7 +226,24 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
 
             //FIXME: replace this with pro location information when it's there.
-            LatLng providerLatLng = new LatLng(40.741899, -73.998602);
+
+            Booking.Location providerLocation = mBooking.getActiveBookingStatus().getProviderLocation();
+
+            LatLng providerLatLng;
+            if (!isBadLocation(providerLocation))
+            {
+                providerLatLng = new LatLng(
+                        Double.valueOf(providerLocation.getLatitude()),
+                        Double.valueOf(providerLocation.getLongitude())
+                );
+            }
+            else
+            {
+                Log.e(TAG, "updateMap: provider location not returning lat/lng, hard coding something");
+                Toast.makeText(this.getActivity(), "No provider location, faking it.", Toast.LENGTH_SHORT).show();
+                providerLatLng = new LatLng(40.741899, -73.998602);
+            }
+
             mGoogleMap.addMarker(new MarkerOptions()
                     .position(providerLatLng)
                     .title("Provider")
@@ -238,11 +257,26 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             //gives it some padding, so that the markers are not right at the edge of the screen.
             int width = getResources().getDisplayMetrics().widthPixels;
             int height = getResources().getDisplayMetrics().heightPixels;
-            int padding = (int) (width * 0.20);
+            int padding = (int) (width * 0.30);
 
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
             mGoogleMap.moveCamera(cu);
         }
+    }
+
+    /**
+     * A bad location is null, empty string, or 0
+     *
+     * @param str
+     * @return
+     */
+    private boolean isBadLocation(Booking.Location location)
+    {
+        return location == null ||
+                TextUtils.isEmpty(location.getLatitude()) ||
+                TextUtils.isEmpty(location.getLongitude()) ||
+                Double.valueOf(location.getLatitude()) == 0 ||
+                Double.valueOf(location.getLongitude()) == 0;
     }
 
     @Override
