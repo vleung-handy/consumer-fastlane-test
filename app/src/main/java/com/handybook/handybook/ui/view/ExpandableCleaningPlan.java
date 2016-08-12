@@ -74,27 +74,24 @@ public class ExpandableCleaningPlan extends FrameLayout
     )
     {
         mTextView.setText(activePlanCountTitle);
-        if (recurringBookings.size() != mPlanContainer.getChildCount())
+        mPlanContainer.removeAllViews();
+        for (final UserRecurringBooking recurringBooking : recurringBookings)
         {
-            mPlanContainer.removeAllViews();
-            for (final UserRecurringBooking recurringBooking : recurringBookings)
-            {
-                View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, mPlanContainer, false);
-                view.setTag(recurringBooking);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, mPlanContainer, false);
+            view.setTag(recurringBooking);
 
-                Button editButton = (Button) view.findViewById(R.id.button_edit);
-                editButton.setTag(recurringBooking);
-                TextView title = (TextView) view.findViewById(R.id.text_plan_title);
-                TextView subTitle = (TextView) view.findViewById(R.id.text_plan_subtitle);
+            Button editButton = (Button) view.findViewById(R.id.button_edit);
+            editButton.setTag(recurringBooking);
+            TextView title = (TextView) view.findViewById(R.id.text_plan_title);
+            TextView subTitle = (TextView) view.findViewById(R.id.text_plan_subtitle);
 
-                title.setText(getTitle(recurringBooking));
-                subTitle.setText(BookingUtil.getRecurrenceSubTitle(recurringBooking));
+            title.setText(getTitle(recurringBooking));
+            subTitle.setText(BookingUtil.getRecurrenceSubTitle(recurringBooking));
 
-                editButton.setOnClickListener(clickListener);
-                view.setOnClickListener(clickListener);
+            editButton.setOnClickListener(clickListener);
+            view.setOnClickListener(clickListener);
 
-                mPlanContainer.addView(view);
-            }
+            mPlanContainer.addView(view);
         }
     }
 

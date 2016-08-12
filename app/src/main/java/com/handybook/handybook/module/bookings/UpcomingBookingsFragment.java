@@ -119,7 +119,9 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (resultCode == ActivityResult.BOOKING_UPDATED
                 || resultCode == ActivityResult.BOOKING_CANCELED)
         {
-            loadBookings();
+            //this happens before onResume, so we just have to null out the bookings and it'll reload onResume.
+            mBookings = null;
+            mRecurringBookings = null;
         }
     }
 
