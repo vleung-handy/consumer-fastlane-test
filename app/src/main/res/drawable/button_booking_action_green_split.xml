@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <selector xmlns:android="http://schemas.android.com/apk/res/android">
+        <selector>
             <item android:state_enabled="false">
                 <shape android:shape="rectangle">
                     <corners android:radius="@dimen/round_button_radius"/>
@@ -12,13 +12,13 @@
                     <solid android:color="@color/transparent"/>
                 </shape>
             </item>
-            <item android:state_pressed="false">
+            <item android:state_pressed="true">
                 <shape android:shape="rectangle">
                     <corners android:radius="@dimen/round_button_radius"/>
-                    <solid android:color="@color/handy_green"/>
+                    <solid android:color="@color/handy_green_dark_pressed"/>
                 </shape>
             </item>
-            <item android:state_pressed="true">
+            <item android:state_pressed="false">
                 <shape android:shape="rectangle">
                     <corners android:radius="@dimen/round_button_radius"/>
                     <solid android:color="@color/handy_green_pressed"/>
@@ -27,18 +27,23 @@
             <item android:state_enabled="true">
                 <shape android:shape="rectangle">
                     <corners android:radius="@dimen/round_button_radius"/>
-                    <solid android:color="@color/handy_green"/>
+                    <solid android:color="@color/handy_green_pressed"/>
                 </shape>
             </item>
         </selector>
     </item>
-    <item android:width="60dp">
-        <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="0dp"
+        android:left="60dp"
+        android:right="0dp"
+        android:top="0dp"
+        >
+        <selector>
             <item android:state_enabled="false">
                 <shape android:shape="rectangle">
                     <corners
-                        android:bottomLeftRadius="@dimen/round_button_radius"
-                        android:topLeftRadius="@dimen/round_button_radius"
+                        android:bottomRightRadius="@dimen/round_button_radius"
+                        android:topRightRadius="@dimen/round_button_radius"
                         />
                     <stroke
                         android:width="@dimen/round_button_stroke"
@@ -47,31 +52,31 @@
                     <solid android:color="@color/transparent"/>
                 </shape>
             </item>
-            <item android:state_pressed="false">
-                <shape android:shape="rectangle">
-                    <corners
-                        android:bottomLeftRadius="@dimen/round_button_radius"
-                        android:topLeftRadius="@dimen/round_button_radius"
-                        />
-                    <solid android:color="@color/handy_black_super_trans"/>
-                </shape>
-            </item>
             <item android:state_pressed="true">
                 <shape android:shape="rectangle">
                     <corners
-                        android:bottomLeftRadius="@dimen/round_button_radius"
-                        android:topLeftRadius="@dimen/round_button_radius"
+                        android:bottomRightRadius="@dimen/round_button_radius"
+                        android:topRightRadius="@dimen/round_button_radius"
                         />
-                    <solid android:color="@color/handy_black_super_trans"/>
+                    <solid android:color="@color/handy_green_pressed"/>
+                </shape>
+            </item>
+            <item android:state_pressed="false">
+                <shape android:shape="rectangle">
+                    <corners
+                        android:bottomRightRadius="@dimen/round_button_radius"
+                        android:topRightRadius="@dimen/round_button_radius"
+                        />
+                    <solid android:color="@color/handy_green"/>
                 </shape>
             </item>
             <item android:state_enabled="true">
                 <shape android:shape="rectangle">
                     <corners
-                        android:bottomLeftRadius="@dimen/round_button_radius"
-                        android:topLeftRadius="@dimen/round_button_radius"
+                        android:bottomRightRadius="@dimen/round_button_radius"
+                        android:topRightRadius="@dimen/round_button_radius"
                         />
-                    <solid android:color="@color/handy_black_super_trans"/>
+                    <solid android:color="@color/handy_green"/>
                 </shape>
             </item>
         </selector>

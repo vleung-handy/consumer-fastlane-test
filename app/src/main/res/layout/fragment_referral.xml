@@ -38,6 +38,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/default_padding"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
@@ -52,20 +53,21 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_half"
                 >
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="184dp"
+                    android:layout_height="@dimen/referral_image_height"
                     android:background="@color/handy_bg"
                     />
 
                 <ImageView
                     android:id="@+id/fragment_referral_image"
-                    android:layout_width="248dp"
-                    android:layout_height="184dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="@dimen/referral_image_width"
+                    android:layout_height="@dimen/referral_image_height"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/default_margin"
                     android:src="@drawable/img_referral_couch"
                     />
             </FrameLayout>
@@ -83,7 +85,8 @@
                     style="@style/TextView.XLarge.Bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin_double"
+                    android:layout_marginBottom="@dimen/default_margin_quarter"
+                    android:layout_marginTop="@dimen/default_margin"
                     android:gravity="center_horizontal"
                     tools:text="Earn free cleanings"
                     />
@@ -105,6 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
                     android:drawableLeft="@drawable/ic_referral_email_white"
+                    android:drawablePadding="-40dp"
                     android:drawableStart="@drawable/ic_referral_email_white"
                     android:text="@string/fragment_referral_email_invite"
                     />
@@ -116,6 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin_half"
                     android:drawableLeft="@drawable/ic_referral_sms_white"
+                    android:drawablePadding="-40dp"
                     android:drawableStart="@drawable/ic_referral_sms_white"
                     android:text="@string/fragment_referral_sms_invite"
                     />
@@ -154,11 +159,13 @@
                     android:id="@+id/fragment_referral_cta_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin_half"
                     android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/default_margin_4x"
+                    android:paddingTop="@dimen/default_margin"
                     android:text="@string/fragment_referral_more_ways_to_share"
-                    style="@style/TextView.Headline.Blue"
-                    android:layout_marginBottom="64dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/handy_blue"
+                    android:textStyle="normal"
                     />
 
             </LinearLayout>
