@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -34,6 +35,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.ui.view.ActivePlanNoBookingView;
 import com.handybook.handybook.ui.view.BookingListItem;
 import com.handybook.handybook.ui.view.ExpandableCleaningPlan;
 import com.handybook.handybook.util.UiUtils;
@@ -72,8 +74,14 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Bind(R.id.bookings_container)
     LinearLayout mBookingsContainer;
 
+    @Bind(R.id.parent_bookings_container)
+    CardView mParentBookingsContainer;
+
     @Bind(R.id.active_booking_container)
     LinearLayout mActiveBookingContainer;
+
+    @Bind(R.id.active_plan_no_booking_container)
+    ActivePlanNoBookingView mActivePlanNoBookingView;
 
     @Bind(R.id.card_empty)
     View mNoBookingsView;
@@ -218,7 +226,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
     private void bindBookingsToList()
     {
-        if (mBookings != null)
+        if (mBookings != null && !mBookings.isEmpty())
         {
             //active bookings, if any, are always at the top of the list.
             int i = 0;
@@ -240,6 +248,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 else
                 {
                     //at this index, we no longer have active bookings.
+                    i = x;
                     break;
                 }
             }
@@ -271,7 +280,49 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 //add divider
                 mBookingsContainer.addView(getActivity().getLayoutInflater().inflate(R.layout.layout_divider, mBookingsContainer, false));
             }
+        }
+    }
 
+    /**
+     * There are quite a bit of views that show/hide. This method manages all those states
+     */
+    private void updateVisibilityState()
+    {
+        if (mBookings == null || mBookings.isEmpty())
+        {
+            //no bookings
+            mParentBookingsContainer.setVisibility(View.GONE);
+
+            if (mActivePlanCount > 0)
+            {
+                //if there are plans, show active plan, no booking view
+                mActivePlanNoBookingView.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                //if there are no active plans, no bookings,
+                //show No Scheduled Bookings View
+                //FIXME: JIA: do this
+            }
+
+        }
+        else
+        {
+            //there are bookings
+            mParentBookingsContainer.setVisibility(View.VISIBLE);
+            mActivePlanNoBookingView.setVisibility(View.GONE);
+            //we don't have to worry about active bookings. It's handled somewhere else.
+
+        }
+
+        //active cleaning plans display independently of bookings
+        if (mActivePlanCount > 0)
+        {
+            mExpandableCleaningPlan.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mExpandableCleaningPlan.setVisibility(View.GONE);
         }
     }
 
@@ -294,8 +345,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (event.getBookingWrapper().getRecurringBookings() != null &&
                 !event.getBookingWrapper().getRecurringBookings().isEmpty())
         {
+            //FIXME: Howard is going to make a new endpoint for editing recurring sequence, that will allow changing frequency when there is no booking generated.
             mRecurringBookings = event.getBookingWrapper().getRecurringBookings();
-            filterRecurrencePlans();
             mActivePlanCount = mRecurringBookings.size();
         }
         else
@@ -304,35 +355,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         }
 
         setupBookingsView();
-    }
-
-    /**
-     * an active cleaning plan is a recurring plan that has at least one booking. If there are
-     * plans with no booking, remove those.
-     */
-    private void filterRecurrencePlans()
-    {
-        for (int i = mRecurringBookings.size() - 1; i >= 0; i--)
-        {
-            UserRecurringBooking rb = mRecurringBookings.get(i);
-            boolean found = false;
-            if (mBookings != null)
-            {
-                for (Booking b : mBookings)
-                {
-                    if (b.getRecurringId() != null && String.valueOf(b.getRecurringId()).equals(rb.getId()))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!found)
-            {
-                mRecurringBookings.remove(i);
-            }
-        }
     }
 
     @Subscribe
@@ -356,7 +378,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
             if (mActivePlanCount > 0)
             {
-                mExpandableCleaningPlan.setVisibility(View.VISIBLE);
                 mExpandableCleaningPlan.bind(new View.OnClickListener()
                                              {
                                                  @Override
@@ -381,13 +402,12 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                                              },
                         mRecurringBookings,
                         getActiveCountString());
-            }
-            else
-            {
-                mExpandableCleaningPlan.setVisibility(View.GONE);
+
+                mActivePlanNoBookingView.bind(mRecurringBookings);
             }
 
             bindBookingsToList();
+            updateVisibilityState();
 
 //        FIXME: JIA: only disable this when the mapview is turned on.
             if (mShouldShowMapView)

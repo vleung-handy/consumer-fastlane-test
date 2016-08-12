@@ -13,6 +13,9 @@ public class DateTimeUtils
     public final static SimpleDateFormat DAY_MONTH_DATE_AT_TIME_FORMATTER
             = new SimpleDateFormat("EEE, MMM d " + "'@' h:mm a", Locale.getDefault());
 
+    public final static SimpleDateFormat DAY_OF_WEEK_MONTH_DAY_FORMATTER =
+            new SimpleDateFormat("EEEE, MMMM d", Locale.getDefault());
+
     public final static SimpleDateFormat DAY_OF_WEEK_FORMATTER =
             new SimpleDateFormat("EEEE", Locale.getDefault());
 
@@ -82,5 +85,16 @@ public class DateTimeUtils
     public static String getTime(Date date)
     {
         return LOCAL_TIME_12_HOURS.format(date);
+    }
+
+    /**
+     * Returns in the form of Friday, Sept 12
+     *
+     * @param date
+     * @return
+     */
+    public static String getDayMonthDay(Date date)
+    {
+        return DAY_OF_WEEK_MONTH_DAY_FORMATTER.format(date);
     }
 }

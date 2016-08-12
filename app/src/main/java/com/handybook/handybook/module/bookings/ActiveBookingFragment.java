@@ -226,7 +226,6 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
 
             //FIXME: replace this with pro location information when it's there.
-
             Booking.Location providerLocation = mBooking.getActiveBookingStatus().getProviderLocation();
 
             LatLng providerLatLng;
@@ -239,6 +238,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             }
             else
             {
+                //FIXME: remove these fake data.
                 Log.e(TAG, "updateMap: provider location not returning lat/lng, hard coding something");
                 Toast.makeText(this.getActivity(), "No provider location, faking it.", Toast.LENGTH_SHORT).show();
                 providerLatLng = new LatLng(40.741899, -73.998602);

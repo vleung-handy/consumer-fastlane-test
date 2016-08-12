@@ -176,8 +176,18 @@ public class BookingUtil
      */
     public static String getRecurrenceSubTitle(UserRecurringBooking rb)
     {
-        return DateTimeUtils.getDayOfWeek(rb.getDateStart()) + "\'s" + " @ " +
-                DateTimeUtils.getTime(rb.getDateStart()) + " - " + rb.getHours() + " hours";
+        return DateTimeUtils.getDayOfWeek(rb.getDateStart()) + "\'s" + " @ " + getRecurrenceSubTitle2(rb);
+    }
+
+    /**
+     * Return in the form of 2:00pm - 3 hours
+     *
+     * @param rb
+     * @return
+     */
+    public static String getRecurrenceSubTitle2(UserRecurringBooking rb)
+    {
+        return DateTimeUtils.getTime(rb.getDateStart()) + " - " + rb.getHours() + " hours";
     }
 
     public static Integer getIconForService(String serviceMachineName)

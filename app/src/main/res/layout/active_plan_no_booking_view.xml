@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This is used in the active booking screen, to show that there are active plans,
+but there are generated bookings
+
+Assumes inflated into a vertical linear layout
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+              android:padding="@dimen/default_padding"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_cleaner"
+        android:layout_marginTop="@dimen/default_margin"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/your_next_booking"
+        android:layout_marginTop="@dimen/default_margin_double"
+        style="@style/TextView.Headline"
+        android:textColor="@color/handy_tertiary_gray"
+        />
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Friday, Sept 12"
+        android:layout_marginTop="@dimen/default_margin"
+        style="@style/TextView.Bold"
+        />
+
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2:00pm -- 3 hours"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/default_margin_double"
+        android:layout_marginRight="@dimen/default_margin_double"
+        android:background="@color/handy_divider_line"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        android:text="Bookings are automatically created\n28 days in advance"
+        android:gravity="center"
+        />
+</LinearLayout>
