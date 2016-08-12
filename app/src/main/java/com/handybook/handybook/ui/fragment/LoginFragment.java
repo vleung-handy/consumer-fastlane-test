@@ -131,8 +131,8 @@ public final class LoginFragment extends BookingFlowFragment
         }
 
         bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.LOGIN_TYPE_EMAIL)));
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.LOGIN_TYPE_FACEBOOK)));
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_EMAIL)));
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_FACEBOOK)));
     }
 
     @Override
@@ -318,7 +318,7 @@ public final class LoginFragment extends BookingFlowFragment
                 progressDialog.show();
 
                 final String email = mEmailText.getEmail();
-                bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(email, UserLoginLog.LOGIN_TYPE_EMAIL)));
+                bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(email, UserLoginLog.AUTH_TYPE_EMAIL)));
 
                 if (mFindUser)
                 {
@@ -524,9 +524,9 @@ public final class LoginFragment extends BookingFlowFragment
         switch(authType)
         {
             case FACEBOOK:
-                return UserLoginLog.LOGIN_TYPE_FACEBOOK;
+                return UserLoginLog.AUTH_TYPE_FACEBOOK;
             case EMAIL:
-                return UserLoginLog.LOGIN_TYPE_EMAIL;
+                return UserLoginLog.AUTH_TYPE_EMAIL;
         }
         return null;
     }
@@ -537,7 +537,7 @@ public final class LoginFragment extends BookingFlowFragment
     )
     {
         String authTypeForLogger = getAuthTypeForLogger(authType);
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginFailureLog(authTypeForLogger, error == null ? null : error.getMessage())));
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginErrorLog(authTypeForLogger, error == null ? null : error.getMessage())));
         progressDialog.dismiss();
         enableInputs();
 

@@ -178,7 +178,6 @@ public final class BookingLocationFragment extends BookingFlowFragment
                                 final BookingRequest request = bookingManager.getCurrentRequest();
                                 request.setZipCode(zipCode);
                                 request.setTimeZone(response.timeZone);
-                                mixpanel.trackEventWhenPage(request);
                                 if (!allowCallbacks) { return; }
                                 enableInputs();
                                 progressDialog.dismiss();

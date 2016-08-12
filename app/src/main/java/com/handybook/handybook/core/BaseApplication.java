@@ -195,14 +195,6 @@ public class BaseApplication extends MultiDexApplication
                 ++started;
                 if (started == 1)
                 {
-                    if (!savedInstance)
-                    {
-                        mixpanel.trackEventAppOpened(true);
-                    }
-                    else
-                    {
-                        mixpanel.trackEventAppOpened(false);
-                    }
                     updateUser();
                 }
             }

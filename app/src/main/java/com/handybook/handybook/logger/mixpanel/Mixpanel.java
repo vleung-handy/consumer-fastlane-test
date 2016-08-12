@@ -99,65 +99,6 @@ public class Mixpanel
         mixpanelAPI.registerSuperProperties(props);
     }
 
-
-    //TODO dupe to internal logger
-    public void trackEventLoginSuccess(final LoginType type)
-    {
-        final JSONObject props = new JSONObject();
-        addProps(props, "log_in_type", type.getValue());
-        mixpanelAPI.track("log in successful", props);
-    }
-    //TODO dupe to internal logger
-    public void trackEventLoginFailure(final LoginType type)
-    {
-        final JSONObject props = new JSONObject();
-        addProps(props, "log_in_type", type.getValue());
-        mixpanelAPI.track("log in failure", props);
-    }
-
-    //TODO dupe to internal logger
-    public void trackEventWhenPage(BookingRequest request)
-    {
-        trackWhenPageEvents("when page", request);
-    }
-
-    //TODO dupe to internal logger
-    public void trackEventWhenPageSubmitted(BookingRequest request)
-    {
-        trackWhenPageEvents("when page submitted", request);
-    }
-    //TODO dupe to internal logger
-    public void trackEventBookingMade(
-            BookingRequest request,
-            BookingQuote quote,
-            BookingTransaction transaction)
-    {
-        final String event = "booking made";
-        final Boolean called = calledMap.get(event);
-        if (called != null && called)
-        {
-            return;
-        }
-        final JSONObject props = new JSONObject();
-        addBookingMadeFlowProps(props, request, quote, transaction);
-        mixpanelAPI.track(event, props);
-        calledMap.put(event, true);
-    }
-
-    //TODO dupe to internal logger
-    public void trackEventFirstTimeUse()
-    {
-        mixpanelAPI.track("first time use", null);
-    }
-
-    //TODO dupe to internal logger
-    public void trackEventAppOpened(final boolean newOpen)
-    {
-        final JSONObject props = new JSONObject();
-        addProps(props, "new_open", newOpen);
-        mixpanelAPI.track("app had been opened", props);
-    }
-
     private void addProps(final JSONObject object, final String key, final Object value)
     {
         try

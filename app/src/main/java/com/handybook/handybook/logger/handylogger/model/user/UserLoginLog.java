@@ -11,12 +11,12 @@ import java.lang.annotation.RetentionPolicy;
 
 public class UserLoginLog extends EventLog
 {
-    public static final String LOGIN_TYPE_FACEBOOK = "facebook";
-    public static final String LOGIN_TYPE_EMAIL = "email";
+    public static final String AUTH_TYPE_FACEBOOK = "facebook";
+    public static final String AUTH_TYPE_EMAIL = "email";
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            LOGIN_TYPE_EMAIL,
-            LOGIN_TYPE_FACEBOOK
+            AUTH_TYPE_EMAIL,
+            AUTH_TYPE_FACEBOOK
     })
     public @interface AuthType
     {
@@ -69,14 +69,14 @@ public class UserLoginLog extends EventLog
         }
     }
 
-    public static class UserLoginFailureLog extends UserLoginLog
+    public static class UserLoginErrorLog extends UserLoginLog
     {
-        private static final String EVENT_TYPE = "failure";
+        private static final String EVENT_TYPE = "error";
 
         @SerializedName("error_message")
         private final String mErrorMessage;
 
-        public UserLoginFailureLog(@AuthType String authType, String errorMessage)
+        public UserLoginErrorLog(@AuthType String authType, String errorMessage)
         {
             super(EVENT_TYPE, authType);
             mErrorMessage = errorMessage;

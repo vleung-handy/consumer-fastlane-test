@@ -888,7 +888,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         {
                             bus.post(new MixpanelEvent.TrackBookingCompletedWithPaymentMethodEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
                         }
-                        mixpanel.trackEventBookingMade(mCurrentRequest, mCurrentQuote, mCurrentTransaction);
 
                         if (!allowCallbacks) { return; }
 
