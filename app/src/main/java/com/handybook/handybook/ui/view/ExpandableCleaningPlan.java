@@ -11,7 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
+import com.handybook.handybook.util.BookingUtil;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class ExpandableCleaningPlan extends FrameLayout
 
     public void bind(
             final View.OnClickListener clickListener,
-            final List<RecurringBooking> recurringBookings,
+            final List<UserRecurringBooking> recurringBookings,
             final String activePlanCountTitle
     )
     {
@@ -76,7 +77,7 @@ public class ExpandableCleaningPlan extends FrameLayout
         if (recurringBookings.size() != mPlanContainer.getChildCount())
         {
             mPlanContainer.removeAllViews();
-            for (final RecurringBooking recurringBooking : recurringBookings)
+            for (final UserRecurringBooking recurringBooking : recurringBookings)
             {
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, mPlanContainer, false);
                 view.setTag(recurringBooking);
@@ -87,7 +88,7 @@ public class ExpandableCleaningPlan extends FrameLayout
                 TextView subTitle = (TextView) view.findViewById(R.id.text_plan_subtitle);
 
                 title.setText(getTitle(recurringBooking));
-                subTitle.setText(getSubTitle(recurringBooking));
+                subTitle.setText(BookingUtil.getRecurrenceSubTitle(recurringBooking));
 
                 editButton.setOnClickListener(clickListener);
                 view.setOnClickListener(clickListener);
@@ -97,15 +98,8 @@ public class ExpandableCleaningPlan extends FrameLayout
         }
     }
 
-    private String getTitle(RecurringBooking booking)
+    private String getTitle(UserRecurringBooking booking)
     {
-        //FIXME: JIA: update this
-        return "Monthly Home Cleaning";
-    }
-
-    private String getSubTitle(RecurringBooking booking)
-    {
-        //FIXME: JIA: update this
-        return "Monday's @ 2pm - 3 hours.";
+        return booking.getServiceName() + " (" + booking.getRecurringStringShort() + ")";
     }
 }

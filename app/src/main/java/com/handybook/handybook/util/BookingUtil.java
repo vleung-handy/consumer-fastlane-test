@@ -10,6 +10,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -155,12 +156,29 @@ public class BookingUtil
         return subtitle;
     }
 
+    /**
+     * Returns in the form of "Monday, August 15"
+     *
+     * @param booking
+     * @return
+     */
     public static String getTitle(Booking booking)
     {
 //        FIXME: JIA: remove the booking id part once done testing.
         return TextUtils.formatDate(booking.getStartDate(), TITLE_DATE_FORMAT) + " " + booking.getId();
     }
 
+    /**
+     * Return in the form of Monday's @ 2:00pm - 3 hours
+     *
+     * @param rb
+     * @return
+     */
+    public static String getRecurrenceSubTitle(UserRecurringBooking rb)
+    {
+        return DateTimeUtils.getDayOfWeek(rb.getDateStart()) + "\'s" + " @ " +
+                DateTimeUtils.getTime(rb.getDateStart()) + " - " + rb.getHours() + " hours";
+    }
 
     public static Integer getIconForService(String serviceMachineName)
     {

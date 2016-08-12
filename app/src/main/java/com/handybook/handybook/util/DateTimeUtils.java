@@ -3,15 +3,21 @@ package com.handybook.handybook.util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class DateTimeUtils
 {
     public final static int MILLISECONDS_IN_SECOND = 1000;
     public final static int SECONDS_IN_MINUTE = 60;
-    public final static SimpleDateFormat DAY_MONTH_DATE_AT_TIME_FORMATTER = new SimpleDateFormat
-            ("EEE, MMM d " +
-            "'@' h:mm a");
+    public final static SimpleDateFormat DAY_MONTH_DATE_AT_TIME_FORMATTER
+            = new SimpleDateFormat("EEE, MMM d " + "'@' h:mm a", Locale.getDefault());
+
+    public final static SimpleDateFormat DAY_OF_WEEK_FORMATTER =
+            new SimpleDateFormat("EEEE", Locale.getDefault());
+
+    public final static SimpleDateFormat LOCAL_TIME_12_HOURS =
+            new SimpleDateFormat("h:mm aaa", Locale.getDefault());
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -58,5 +64,23 @@ public class DateTimeUtils
     {
         long diff = Math.abs(date2.getTime() - date1.getTime());
         return diff / 1000 % 60;
+    }
+
+
+    /**
+     * Day of the week/
+     * Monday, Tuesday, Wednesday, etc.
+     *
+     * @param date
+     * @return
+     */
+    public static String getDayOfWeek(Date date)
+    {
+        return DAY_OF_WEEK_FORMATTER.format(date);
+    }
+
+    public static String getTime(Date date)
+    {
+        return LOCAL_TIME_12_HOURS.format(date);
     }
 }

@@ -1,5 +1,6 @@
 package com.handybook.handybook.module.bookings;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,11 +20,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.constant.ActivityResult;
@@ -63,6 +66,9 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Bind(R.id.scroll_view)
     ScrollView mScrollView;
 
+    @Bind(R.id.main_container)
+    LinearLayout mMainContainer;
+
     @Bind(R.id.bookings_container)
     LinearLayout mBookingsContainer;
 
@@ -79,7 +85,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     ExpandableCleaningPlan mExpandableCleaningPlan;
 
     private List<Booking> mBookings;
-    private List<RecurringBooking> mRecurringBookings;
+    private List<UserRecurringBooking> mRecurringBookings;
     private int mActivePlanCount;
     private List<Service> mServices;
 
@@ -208,7 +214,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         bus.post(new BookingEvent.RequestBookings(Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING));
     }
 
-
     private void bindBookingsToList()
     {
         if (mBookings != null)
@@ -222,6 +227,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
             mActiveBookingContainer.setVisibility(View.VISIBLE);
 
+            mBookingsContainer.removeAllViews();
             for (int i = 1; i < mBookings.size(); i++)
             {
                 Booking booking = mBookings.get(i);
@@ -233,7 +239,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                             public void onClick(final View v)
                             {
                                 final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
-                                Booking booking = (Booking) v.getTag();
+                                Booking booking = ((BookingListItem) v).getBooking();
                                 intent.putExtra(BundleKeys.BOOKING, booking);
                                 getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                             }
@@ -242,6 +248,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                         booking
                 ));
 
+                //add divider
                 mBookingsContainer.addView(getActivity().getLayoutInflater().inflate(R.layout.layout_divider, mBookingsContainer, false));
             }
 
@@ -262,22 +269,51 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     {
         mBookingsRequestCompleted = true;
         Log.d(TAG, "onReceiveBookingsSuccess: " + event.getOnlyBookingsValue());
+        mBookings = event.getBookingWrapper().getBookings();
+
         if (event.getBookingWrapper().getRecurringBookings() != null &&
                 !event.getBookingWrapper().getRecurringBookings().isEmpty())
         {
-            mActivePlanCount = event.getBookingWrapper().getRecurringBookings().size();
             mRecurringBookings = event.getBookingWrapper().getRecurringBookings();
+            filterRecurrencePlans();
+            mActivePlanCount = mRecurringBookings.size();
         }
         else
         {
             mActivePlanCount = 0;
         }
 
-        mBookings = event.getBookingWrapper().getBookings();
-
         setupBookingsView();
     }
 
+    /**
+     * an active cleaning plan is a recurring plan that has at least one booking. If there are
+     * plans with no booking, remove those.
+     */
+    private void filterRecurrencePlans()
+    {
+        for (int i = mRecurringBookings.size() - 1; i >= 0; i--)
+        {
+            UserRecurringBooking rb = mRecurringBookings.get(i);
+            boolean found = false;
+            if (mBookings != null)
+            {
+                for (Booking b : mBookings)
+                {
+                    if (b.getRecurringId() != null && String.valueOf(b.getRecurringId()).equals(rb.getId()))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                mRecurringBookings.remove(i);
+            }
+        }
+    }
 
     @Subscribe
     public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e)
@@ -306,9 +342,21 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                                                  @Override
                                                  public void onClick(final View v)
                                                  {
+                                                     UserRecurringBooking rb = (UserRecurringBooking) v.getTag();
+                                                     Booking booking = getBookingWithRecurringId(rb.getId());
 
-                                                     RecurringBooking rb = (RecurringBooking) v.getTag();
-                                                     Toast.makeText(getContext(), "Plan clicked: " + rb.getId(), Toast.LENGTH_SHORT).show();
+                                                     if (booking != null)
+                                                     {
+                                                         final Intent intent = new Intent(UpcomingBookingsFragment.this.getActivity(), BookingEditFrequencyActivity.class);
+                                                         intent.putExtra(BundleKeys.BOOKING, booking);
+                                                         Activity activity = UpcomingBookingsFragment.this.getActivity();
+                                                         activity.startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
+                                                     }
+                                                     else
+                                                     {
+                                                         //this should never happen, but just in case it does.
+                                                         Toast.makeText(UpcomingBookingsFragment.this.getActivity(), R.string.unable_to_edit_plan, Toast.LENGTH_SHORT).show();
+                                                     }
                                                  }
                                              },
                         mRecurringBookings,
@@ -350,6 +398,28 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 //                });
             }
         }
+    }
+
+    /**
+     * Takes in a recurring id, and finds the first booking that has such recurring id.
+     *
+     * @param id
+     * @return
+     */
+    private Booking getBookingWithRecurringId(final String id)
+    {
+        for (Booking booking : mBookings)
+        {
+            if (booking.getRecurringId() != null && String.valueOf(booking.getRecurringId()).equals(id))
+            {
+                return booking;
+            }
+        }
+
+        Crashlytics.logException(new RuntimeException("User requested to edit recurrence with id:"
+                + id + " but there is no booking with such recurrence id."));
+
+        return null;
     }
 
     private String getActiveCountString()

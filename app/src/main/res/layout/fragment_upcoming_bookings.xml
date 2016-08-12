@@ -18,11 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/Theme.Handy.AppBarOverlay"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            app:contentInsetStart="0dp"
-            app:navigationIcon="@drawable/ic_menu"
             android:title="@string/my_bookings"
+            app:contentInsetStart="0dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:navigationIcon="@drawable/ic_menu"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
             />
 
     </android.support.design.widget.AppBarLayout>
@@ -51,11 +51,11 @@
                 >
 
                 <LinearLayout
-                    android:id="@+id/bookings_container"
+                    android:id="@+id/main_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:animateLayoutChanges="true"
+                    android:orientation="vertical"
                     >
 
                     <com.handybook.handybook.ui.view.ExpandableCleaningPlan
@@ -72,10 +72,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/default_margin"
-                        android:visibility="gone"
                         android:orientation="vertical"
+                        android:visibility="gone"
                         />
 
+                    <LinearLayout
+                        android:id="@+id/bookings_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="vertical"
+                        />
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
@@ -91,8 +98,8 @@
         android:layout_margin="@dimen/default_margin"
         android:src="@drawable/ic_plus_white"
         android:tag="fab"
-        app:backgroundTint="@color/handy_blue"
         android:visibility="gone"
+        app:backgroundTint="@color/handy_blue"
         app:fabSize="normal"
         />
 </android.support.design.widget.CoordinatorLayout>

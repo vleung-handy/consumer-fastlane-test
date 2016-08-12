@@ -401,4 +401,5 @@
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
     <string name="report_an_issue">Report An Issue</string>
+    <string name="unable_to_edit_plan">Unable to edit this plan at this time. Please try again later.</string>
 </resources>
