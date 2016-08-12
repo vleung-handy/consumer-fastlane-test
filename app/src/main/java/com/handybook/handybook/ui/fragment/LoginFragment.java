@@ -33,7 +33,6 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.ui.activity.LoginActivity;
@@ -132,7 +131,8 @@ public final class LoginFragment extends BookingFlowFragment
         }
 
         bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog()));
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.LOGIN_TYPE_EMAIL)));
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.LOGIN_TYPE_FACEBOOK)));
     }
 
     @Override
@@ -318,7 +318,7 @@ public final class LoginFragment extends BookingFlowFragment
                 progressDialog.show();
 
                 final String email = mEmailText.getEmail();
-                bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(email)));
+                bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(email, UserLoginLog.LOGIN_TYPE_EMAIL)));
 
                 if (mFindUser)
                 {
@@ -482,15 +482,10 @@ public final class LoginFragment extends BookingFlowFragment
     public void onReceiveUserSuccess(final HandyEvent.ReceiveUserSuccess event)
     {
         final UserDataManager.AuthType authType = event.getAuthType();
-        if (authType == UserDataManager.AuthType.FACEBOOK)
-        {
-            mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.FACEBOOK);
-        }
-        else
-        {
-            mixpanel.trackEventLoginSuccess(Mixpanel.LoginType.EMAIL);
-        }
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog()));
+        String authTypeForLogger = getAuthTypeForLogger(authType);
+
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSuccessLog(authTypeForLogger)));
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(authTypeForLogger)));
 
         configurationManager.invalidateCache();
 
@@ -522,17 +517,27 @@ public final class LoginFragment extends BookingFlowFragment
         handleUserCallbackError(event.error, event.getAuthType());
     }
 
+    @UserLoginLog.AuthType
+    private String getAuthTypeForLogger(UserDataManager.AuthType authType)
+    {
+        if(authType == null) return null;
+        switch(authType)
+        {
+            case FACEBOOK:
+                return UserLoginLog.LOGIN_TYPE_FACEBOOK;
+            case EMAIL:
+                return UserLoginLog.LOGIN_TYPE_EMAIL;
+        }
+        return null;
+    }
+
     private void handleUserCallbackError(
             final DataManager.DataManagerError error,
             final UserDataManager.AuthType authType
     )
     {
-        if (authType == UserDataManager.AuthType.FACEBOOK)
-        {
-            mixpanel.trackEventLoginFailure(Mixpanel.LoginType.FACEBOOK);
-        }
-        else { mixpanel.trackEventLoginFailure(Mixpanel.LoginType.EMAIL); }
-
+        String authTypeForLogger = getAuthTypeForLogger(authType);
+        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginFailureLog(authTypeForLogger, error == null ? null : error.getMessage())));
         progressDialog.dismiss();
         enableInputs();
 
