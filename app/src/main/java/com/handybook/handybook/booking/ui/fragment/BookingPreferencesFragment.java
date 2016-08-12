@@ -22,7 +22,6 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
@@ -74,12 +73,6 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                     );
                 }
                 mFinalizeBookingRequestPayload.setNoteToPro(mNoteToProTextView.getInput());
-                bus.post(new MixpanelEvent.TrackChecklist(
-                        bookingManager.getCurrentTransaction().getBookingId(),
-                        true,
-                        mIsPreferenceDragged,
-                        mIsPreferenceToggled
-                ));
                 mFinalizeBookingRequestPayload.setShouldApplyToAll(
                         // Yeah I don't like this either, but see BookingRecurrenceFragment...
                         bookingManager.getCurrentTransaction().getRecurringFrequency() > 0

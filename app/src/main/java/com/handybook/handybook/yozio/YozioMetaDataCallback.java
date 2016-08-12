@@ -3,19 +3,14 @@ package com.handybook.handybook.yozio;
 import android.content.Context;
 
 import com.handybook.handybook.core.ApplicationModule;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.yozio.android.Yozio;
 import com.yozio.android.interfaces.YozioMetaDataCallbackable;
 
 import java.util.HashMap;
 
-import javax.inject.Inject;
-
 import dagger.ObjectGraph;
 
 public class YozioMetaDataCallback implements YozioMetaDataCallbackable {
-
-    @Inject Mixpanel mixpanel;
 
 	public final void onCallback(final Context context, final String targetActivityClassName,
                            final HashMap<String, Object> metaData) {

@@ -21,7 +21,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
@@ -213,12 +212,6 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
         disableInputs();
         progressDialog.show();
         int bookingId = Integer.parseInt(mBooking.getId());
-        bus.post(new MixpanelEvent.TrackChecklist(
-                Integer.parseInt(mBooking.getId()),
-                false, // This is not post booking (it's edit)
-                mIsPreferenceDragged,
-                mIsPreferenceToggled
-        ));
         bus.post(new BookingEditEvent.RequestEditPreferences(bookingId, mFinalizeBookingRequestPayload));
     }
 

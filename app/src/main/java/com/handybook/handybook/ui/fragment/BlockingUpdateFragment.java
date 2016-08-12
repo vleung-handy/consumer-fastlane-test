@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,13 +36,6 @@ public class BlockingUpdateFragment extends InjectedFragment
         return root;
     }
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        bus.post(new MixpanelEvent.BlockingScreenDisplayed());
-    }
-
 
     @OnClick(R.id.b_modal_blocking_button)
     public void launchPlayStore(final Button submitButton)
@@ -67,9 +59,6 @@ public class BlockingUpdateFragment extends InjectedFragment
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             );
-        } finally
-        {
-            bus.post(new MixpanelEvent.BlockingScreenButtonPressed());
         }
     }
 
