@@ -39,7 +39,6 @@ import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
@@ -66,8 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
 
     @Inject
     PrefsManager mPrefsManager;
-    @Inject
-    Mixpanel mMixpanel;
     @Inject
     protected UserManager mUserManager;
     @Inject
@@ -169,7 +166,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Override
     protected void onDestroy()
     {
-        mMixpanel.flush();
         super.onDestroy();
     }
 

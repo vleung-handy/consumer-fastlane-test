@@ -3,18 +3,14 @@ package com.handybook.handybook.core;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.squareup.otto.Bus;
-import com.squareup.otto.DeadEvent;
 
 final class MainBus extends Bus
 {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-    private Mixpanel mixpanel;
 
-    public MainBus(final Mixpanel mixpanel)
+    public MainBus()
     {
-        this.mixpanel = mixpanel;
     }
 
     @Override
@@ -39,10 +35,6 @@ final class MainBus extends Bus
     {
         if (Looper.myLooper() == Looper.getMainLooper())
         {
-            if (!(event instanceof DeadEvent))
-            {
-                mixpanel.trackEvent(event); // side effect
-            }
             super.post(event);
         }
         else

@@ -17,7 +17,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.TextUtils;
 

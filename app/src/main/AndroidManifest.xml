@@ -326,7 +326,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
         <activity
             android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
             android:label="@string/title_activity_notification_feed"

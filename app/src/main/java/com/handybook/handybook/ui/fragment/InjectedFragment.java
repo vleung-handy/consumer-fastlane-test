@@ -19,7 +19,6 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.handybook.handybook.util.ValidationUtils;
@@ -40,7 +39,6 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     //UPGRADE: Move away from direct calls to these and go through the bus
     @Inject protected BookingManager bookingManager;
     @Inject protected UserManager userManager;
-    @Inject protected Mixpanel mixpanel;
     @Inject protected DataManager dataManager;
     @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject protected NavigationManager navigationManager;

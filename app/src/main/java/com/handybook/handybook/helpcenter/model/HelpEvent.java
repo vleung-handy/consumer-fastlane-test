@@ -2,7 +2,6 @@ package com.handybook.handybook.helpcenter.model;
 
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.logger.mixpanel.annotation.Track;
 
 import retrofit.mime.TypedInput;
 
@@ -77,7 +76,6 @@ public abstract class HelpEvent
 
 
     //Help Contact Message
-    @Track("pro help contact form submitted")
     public static class RequestNotifyHelpContact extends HandyEvent
     {
         public TypedInput body;

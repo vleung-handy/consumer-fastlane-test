@@ -2,15 +2,12 @@ package com.handybook.handybook.core;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.squareup.otto.Subscribe;
 
 import org.junit.Test;
 import org.robolectric.shadows.ShadowLooper;
 
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
 public class MainBusTest extends RobolectricGradleTestWrapper
@@ -18,10 +15,7 @@ public class MainBusTest extends RobolectricGradleTestWrapper
     @Test
     public void testForceRegistrationOnMainLooper() throws Exception
     {
-        Mixpanel mockMixpanel = mock(Mixpanel.class);
-        doNothing().when(mockMixpanel).trackEvent(any());
-
-        final MainBus bus = new MainBus(mockMixpanel);
+        final MainBus bus = new MainBus();
         final boolean[] eventTriggered = {false};
         final Object object = new Object()
         {

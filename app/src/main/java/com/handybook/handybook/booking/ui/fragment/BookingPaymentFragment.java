@@ -56,7 +56,6 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
@@ -134,7 +133,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed()
     {
-        bus.post(new MixpanelEvent.TrackScanCreditCardClicked());
         startCardScanActivity();
     }
 
@@ -159,12 +157,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             {
                 io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
                 onScannedCardResult(scannedCardResult);
-                bus.post(new MixpanelEvent.TrackScanCreditCardResult(true));
-            }
-            else
-            {
-                bus.post(new MixpanelEvent.TrackScanCreditCardResult(false));
-                //canceled
             }
         }
     }
@@ -599,8 +591,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         }
 
         showViewForPromoCodeApplied();
-        bus.post(new MixpanelEvent.TrackPaymentMethodShownEvent(
-                MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
     private boolean hasAndroidPayPromoSavings()
@@ -724,9 +714,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCreditCardIcon.setCardIcon(CreditCard.Type.ANDROID_PAY);
 
         applyAndroidPayCoupon();
-
-        bus.post(new MixpanelEvent.TrackPaymentMethodProvidedEvent(
-                MixpanelEvent.PaymentMethod.ANDROID_PAY));
     }
 
     private void applyAndroidPayCoupon()
@@ -883,12 +870,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())));
 
                         //UPGRADE: Should we use this trans or ask the manager for current trans? So much inconsistency....
-
-                        if (mUseAndroidPay)
-                        {
-                            bus.post(new MixpanelEvent.TrackBookingCompletedWithPaymentMethodEvent(MixpanelEvent.PaymentMethod.ANDROID_PAY));
-                        }
-
                         if (!allowCallbacks) { return; }
 
                         mCurrentTransaction.setBookingId(trans.getId());

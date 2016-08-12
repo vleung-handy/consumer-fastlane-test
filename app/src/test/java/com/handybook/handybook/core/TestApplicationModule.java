@@ -44,7 +44,6 @@ import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.SecurePreferences;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
@@ -218,15 +217,6 @@ public class TestApplicationModule
     {
         return mock(PrefsManager.class);
     }
-
-
-    @Provides
-    @Singleton
-    final Mixpanel provideMixpanel()
-    {
-        return mock(Mixpanel.class);
-    }
-
 
     @Provides
     @Singleton
