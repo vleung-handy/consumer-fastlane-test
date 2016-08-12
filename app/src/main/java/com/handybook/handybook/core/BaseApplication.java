@@ -174,7 +174,6 @@ public class BaseApplication extends MultiDexApplication
         if (prefsManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
         {
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
-            mixpanel.trackEventAppTrackInstall();
         }
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
@@ -196,14 +195,6 @@ public class BaseApplication extends MultiDexApplication
                 ++started;
                 if (started == 1)
                 {
-                    if (!savedInstance)
-                    {
-                        mixpanel.trackEventAppOpened(true);
-                    }
-                    else
-                    {
-                        mixpanel.trackEventAppOpened(false);
-                    }
                     updateUser();
                 }
             }

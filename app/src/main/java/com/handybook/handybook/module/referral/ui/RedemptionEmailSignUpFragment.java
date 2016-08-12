@@ -45,7 +45,6 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
     @OnClick(R.id.login_button)
     public void onLoginButtonClicked()
     {
-        bus.post(new ReferralsEvent.RedemptionLogin());
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
@@ -66,8 +65,6 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment
 
             final String email = mEmailInput.getEmail();
             final String password = mPasswordInput.getPassword();
-            bus.post(new ReferralsEvent.RedemptionSignUpClicked(
-                    UserDataManager.AuthType.EMAIL.toString().toLowerCase()));
             bus.post(new HandyEvent.RequestCreateUser(email, password, mReferralGuid));
         }
     }

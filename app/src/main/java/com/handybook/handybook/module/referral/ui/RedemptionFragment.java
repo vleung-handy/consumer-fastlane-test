@@ -1,10 +1,8 @@
 package com.handybook.handybook.module.referral.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +53,6 @@ public class RedemptionFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_redemption, container, false);
         ButterKnife.bind(this, view);
 
-        bus.post(new ReferralsEvent.RedemptionScreenShown());
         requestRedemptionDetails();
 
         return view;

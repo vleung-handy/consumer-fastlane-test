@@ -338,7 +338,6 @@ public class BookingOptionsFragment extends BookingFlowFragment
                 setToolbarTitle(getString(R.string.comments));
                 optionsLayout.setBackgroundColor(0);
                 ((BookingOptionsTextView) optionsView).enableSingleMode();
-                mixpanel.trackEventAppTrackComments();
 
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingCommentsShownLog()));
             }
@@ -349,7 +348,6 @@ public class BookingOptionsFragment extends BookingFlowFragment
                 headerText.setVisibility(View.VISIBLE);
                 setToolbarTitle(getString(R.string.request_pro));
                 ((BookingOptionsIndexView) optionsView).hideTitle();
-                mixpanel.trackEventAppTrackRequestPro();
 
                 bus.post(new LogEvent.AddLogEvent(new BookingRequestProLog.BookingRequestProShownLog()));
             }

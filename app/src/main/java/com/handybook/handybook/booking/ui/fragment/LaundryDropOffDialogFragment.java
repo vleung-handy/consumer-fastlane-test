@@ -72,8 +72,6 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
         final Bundle args = getArguments();
         booking = args.getInt(EXTRA_BOOKING);
         dropInfo = args.getParcelable(EXTRA_DROP_INFO);
-
-        mixpanel.trackPageScheduleLaundry(Mixpanel.LaundryEventSource.APP_OPEN, dropInfo.getType());
     }
 
     @Override
@@ -140,8 +138,6 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
                     dropTime.getMinute(), dropInfo.getType(), new DataManager.Callback<Void>() {
                 @Override
                 public void onSuccess(final Void response) {
-                    mixpanel.trackEventLaundryScheduled(Mixpanel.LaundryEventSource.APP_OPEN, dropInfo.getType());
-
                     if (!allowCallbacks) return;
                     dismiss();
                 }

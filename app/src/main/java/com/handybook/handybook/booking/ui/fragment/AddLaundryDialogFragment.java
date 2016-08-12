@@ -60,7 +60,6 @@ public class AddLaundryDialogFragment extends BaseDialogFragment
 
         final Bundle args = getArguments();
         booking = args.getParcelable(EXTRA_BOOKING);
-        mixpanel.trackPageAddLaundryConfirm(Mixpanel.LaundryEventSource.APP_OPEN);
     }
 
     @Override
@@ -98,8 +97,6 @@ public class AddLaundryDialogFragment extends BaseDialogFragment
                         new DataManager.Callback<Void>() {
                     @Override
                     public void onSuccess(final Void response) {
-                        mixpanel.trackEventLaundryAdded(Mixpanel.LaundryEventSource.APP_OPEN);
-
                         if (!allowCallbacks) return;
                         dismiss();
 

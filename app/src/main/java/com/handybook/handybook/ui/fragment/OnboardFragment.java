@@ -53,16 +53,12 @@ public final class OnboardFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
 
-        mixpanel.trackOnboardingShown();
-
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final SharedPreferences.Editor edit = prefs.edit();
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                mixpanel.trackOnboardingActionSkip(currentIndex + 1);
-
                 edit.putBoolean("APP_ONBOARD_SHOWN", true);
                 edit.apply();
 
@@ -73,8 +69,6 @@ public final class OnboardFragment extends BookingFlowFragment
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                mixpanel.trackOnboardingActionLogin(currentIndex + 1);
-
                 edit.putBoolean("APP_ONBOARD_SHOWN", true);
                 edit.apply();
 

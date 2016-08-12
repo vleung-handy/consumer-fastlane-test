@@ -22,8 +22,6 @@ public class YozioMetaDataCallback implements YozioMetaDataCallbackable {
         final ObjectGraph graph = ObjectGraph.create(new ApplicationModule(context));
         graph.inject(this);
 
-        mixpanel.trackEventYozioInstall(metaData);
-
         // launching the activity with meta data using Yozio helper
         // You have to use Yozio.startActivityWithMetaData here, so the analytics will work properly.
         if (targetActivityClassName != null) {

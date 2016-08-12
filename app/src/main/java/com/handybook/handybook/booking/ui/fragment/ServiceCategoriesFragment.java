@@ -112,13 +112,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final SharedPreferences.Editor edit = prefs.edit();
 
-        if (!prefs.getBoolean("APP_OPENED_PREV", false))
-        {
-            mixpanel.trackEventFirstTimeUse();
-            edit.putBoolean("APP_OPENED_PREV", true);
-            edit.apply();
-        }
-
         final User user = userManager.getCurrentUser();
         if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false) && user == null)
         {

@@ -302,7 +302,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         }
         dismiss();
         final int finalRating = mRating + 1;
-        mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, mBookingId, mProName, finalRating);
         if (finalRating < GOOD_RATING)
         {
             FragmentUtils.safeLaunchDialogFragment(
