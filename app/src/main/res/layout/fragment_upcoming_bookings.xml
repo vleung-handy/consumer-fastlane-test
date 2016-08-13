@@ -63,6 +63,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:orientation="vertical"
+                        android:background="@color/handy_background_gray"
+                        android:animateLayoutChanges="true"
                         />
 
                     <!--Using a linear layout because there can be multiple active bookings -->

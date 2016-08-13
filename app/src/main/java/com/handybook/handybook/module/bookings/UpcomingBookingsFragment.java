@@ -1,7 +1,9 @@
 package com.handybook.handybook.module.bookings;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -175,6 +177,11 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 R.color.handy_service_plumber
         );
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+        {
+            mMainContainer.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+            mExpandableCleaningPlan.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGE_DISAPPEARING);
+        }
         return view;
     }
 

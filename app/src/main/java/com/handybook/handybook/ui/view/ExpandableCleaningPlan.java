@@ -24,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Use with R.layout.layout_cleaning_plan
  */
-public class ExpandableCleaningPlan extends FrameLayout
+public class ExpandableCleaningPlan extends LinearLayout
 {
 
     @Bind(R.id.text_view_title)
