@@ -60,7 +60,6 @@ public class ReferralFragment extends InjectedFragment
     private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
     private boolean mIsReferralInfoFresh = false;
-    private String mReferralUri = "http://fix.me"; //FIXME Fix the link
 
     public static Fragment newInstance()
     {
@@ -177,11 +176,12 @@ public class ReferralFragment extends InjectedFragment
                 currencyChar,
                 null
         );
-        mShareUrl.setText(mReferralDescriptor.getCouponCode());
-        mTitle.setText(getString(R.string.referral_title_formatted, formattedReceiverCouponAmount,
-                formattedSenderCreditAmount));
-        mSubtitle.setText(getString(R.string.referral_subtitle_formatted, formattedReceiverCouponAmount,
-                formattedSenderCreditAmount));
+        final String sharingLink =
+                mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_FACEBOOK).getUrl();
+        mShareUrl.setText(sharingLink);
+        mTitle.setText(getString(R.string.referral_title));
+        mSubtitle.setText(getString(R.string.referral_subtitle_formatted,
+                formattedSenderCreditAmount, formattedReceiverCouponAmount));
     }
 
     @Subscribe
@@ -248,10 +248,12 @@ public class ReferralFragment extends InjectedFragment
     {
         ClipboardManager clipboard = (ClipboardManager)
                 getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        Uri copyUri = Uri.parse(mReferralUri);
+        final String sharingLink =
+                mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_FACEBOOK).getUrl();
+        Uri copyUri = Uri.parse(sharingLink);
         ClipData clip = ClipData.newUri(getActivity().getContentResolver(), "URI", copyUri);
         clipboard.setPrimaryClip(clip);
-        showToast("Sharing link copied to clipboard!");
+        showToast(R.string.referral_copied_to_clipboard);
     }
 
     private void showErrorLayout(String errorMessage)
