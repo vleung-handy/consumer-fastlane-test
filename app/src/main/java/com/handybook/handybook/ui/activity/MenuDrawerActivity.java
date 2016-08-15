@@ -258,6 +258,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     /**
      * Updates the menu item visibilities based on the user's login status
      */
+
     private void refreshMenu()
     {
         final User currentUser = mUserManager.getCurrentUser();
@@ -271,10 +272,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
 
         mNavigationView.getMenu().findItem(R.id.nav_menu_payment).setVisible(currentUser != null && currentUser.getStripeKey() != null);
 
-        if (mConfiguration != null)
-        {
-            mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(mConfiguration.isMyProTeamEnabled());
-        }
+        mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
     }
 
     /**
