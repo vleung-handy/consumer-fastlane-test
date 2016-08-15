@@ -214,21 +214,6 @@ public class HelpNativeFragment extends InjectedFragment
         scrollView.setVisibility(View.VISIBLE);
         trackPath(helpNode);
         updateDisplay(helpNode);
-
-        //UPGRADE: move this out to its own function / mixpanel tracking shouold be wrangled into the navigation events
-        if (helpNode != null)
-        {
-            switch (helpNode.getType())
-            {
-                case HelpNode.HelpNodeType.ROOT:
-                    mixpanel.trackEventHelpCenterOpened();
-                    break;
-
-                case HelpNode.HelpNodeType.ARTICLE:
-                    mixpanel.trackEventHelpCenterLeaf(Integer.toString(helpNode.getId()), helpNode.getLabel());
-                    break;
-            }
-        }
     }
 
     private void helpNodeReceivedForNextPage(HelpNode helpNode)
@@ -428,7 +413,6 @@ public class HelpNativeFragment extends InjectedFragment
                         params.put(NavigationManager.PARAM_BOOKING_ID, currentBookingId);
                     }
                     Boolean success = navigationManager.navigateTo(ctaButton.navigationData, params);
-                    mixpanel.trackEventHelpCenterDeepLinkClicked(Integer.toString(ctaButton.nodeId), ctaButton.nodeLabel);
                 }
             });
         }

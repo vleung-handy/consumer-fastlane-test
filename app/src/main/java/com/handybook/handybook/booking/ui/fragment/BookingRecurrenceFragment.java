@@ -54,7 +54,6 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         bookingTransaction = bookingManager.getCurrentTransaction();
-        mixpanel.trackEventAppTrackFrequency();
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.BookingDetailsShownLog()));
     }
 

@@ -18,7 +18,6 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,6 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
     @OnClick(R.id.close_button)
     public void onCloseButtonClicked()
     {
-        bus.post(new MixpanelEvent.TrackAddBookingFabMenuDismissed());
         getActivity().onBackPressed();
     }
 
@@ -101,7 +99,6 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                 container, false);
         ButterKnife.bind(this, view);
         initServices();
-        bus.post(new MixpanelEvent.TrackAddBookingFabMenuShown());
         return view;
     }
 
@@ -170,7 +167,6 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
             final Service service
     )
     {
-        bus.post(new MixpanelEvent.TrackAddBookingFabServiceSelected(service.getId(), service.getUniq()));
         if (service.getServices().size() > 0)
         {
             final Intent intent = new Intent(getActivity(), ServicesActivity.class);

@@ -100,7 +100,6 @@ import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.helpcenter.HelpModule;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
@@ -396,9 +395,9 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final Bus provideBus(final Mixpanel mixpanel)
+    final Bus provideBus()
     {
-        return new MainBus(mixpanel);
+        return new MainBus();
     }
 
     @Provides
@@ -468,13 +467,6 @@ public final class ApplicationModule
     )
     {
         return new DeepLinkIntentProvider(userManager);
-    }
-
-    @Provides
-    @Singleton
-    final Mixpanel provideMixpanel(final PrefsManager prefsManager)
-    {
-        return new Mixpanel(mContext, prefsManager);
     }
 
     @Provides

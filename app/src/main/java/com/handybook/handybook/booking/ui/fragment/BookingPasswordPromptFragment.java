@@ -53,8 +53,6 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mixpanel.trackEventAppTrackPasswordPrompt();
-
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPasswordShownLog()));
     }
 

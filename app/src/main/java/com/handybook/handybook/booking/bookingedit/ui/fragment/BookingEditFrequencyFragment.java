@@ -57,7 +57,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mixpanel.trackEventAppTrackFrequency();
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mBookingQuote = bookingManager.getCurrentQuote();
 

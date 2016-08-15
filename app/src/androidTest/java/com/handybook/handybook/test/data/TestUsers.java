@@ -40,4 +40,8 @@ public class TestUsers
             new TestUser(
                     "test+cancel@handybook.com",
                     "supersecretpassword");
+
+    public static TestUser CANCEL_RECURRING_USER = new TestUser(
+            "test+cancel-plan@handybook.com",
+            "supersecretpassword");
 }

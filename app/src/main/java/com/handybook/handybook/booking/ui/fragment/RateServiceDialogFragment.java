@@ -25,8 +25,6 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
@@ -134,10 +132,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                         tipAmountCents,
                         matchPreference
                 ));
-                if (tipAmountCents != null)
-                {
-                    mBus.post(new MixpanelEvent.TrackSubmitTip(tipAmountCents, MixpanelEvent.TipParentFlow.RATING_FLOW));
-                }
             }
         };
     }
@@ -248,9 +242,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             getChildFragmentManager().beginTransaction()
                     .replace(R.id.rate_dialog_tip_layout_container, tipFragment)
                     .commit();
-            mBus.post(new MixpanelEvent.TrackShowTipPrompt(MixpanelEvent.TipParentFlow.RATING_FLOW));
         }
-        mBus.post(new MixpanelEvent.TrackShowRatingPrompt());
         return view;
     }
 
@@ -302,7 +294,6 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         }
         dismiss();
         final int finalRating = mRating + 1;
-        mixpanel.trackEventProRate(Mixpanel.ProRateEventType.SUBMIT, mBookingId, mProName, finalRating);
         if (finalRating < GOOD_RATING)
         {
             FragmentUtils.safeLaunchDialogFragment(

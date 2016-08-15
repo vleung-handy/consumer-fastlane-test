@@ -11,7 +11,6 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.squareup.otto.Bus;
 
@@ -26,7 +25,6 @@ public class InjectedDialogFragment extends DialogFragment {
 
     @Inject protected BookingManager bookingManager;
     @Inject protected UserManager userManager;
-    @Inject protected Mixpanel mixpanel;
     @Inject protected DataManager dataManager;
     @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject

@@ -122,9 +122,6 @@ public class ReferralFragment extends InjectedFragment
                 {
                     intent.putExtra(Intent.EXTRA_TEXT, mReferralDescriptor.getCouponCode());
                 }
-                final String applicationName =
-                        ReferralIntentUtil.getApplicationNameFromIntent(getActivity(), intent);
-                bus.post(new ReferralsEvent.OtherShareOptionsClicked(applicationName));
                 launchShareIntent(intent, resolvedChannel);
             }
         }
@@ -162,7 +159,6 @@ public class ReferralFragment extends InjectedFragment
         removeUiBlockers();
         mReferralContent.setVisibility(View.VISIBLE);
         showReferralDetails();
-        bus.post(new ReferralsEvent.ReferralScreenShown());
     }
 
     private void showReferralDetails()
@@ -223,7 +219,6 @@ public class ReferralFragment extends InjectedFragment
                     getActivity(),
                     smsReferralInfo
             );
-            bus.post(new ReferralsEvent.InviteFriendsClicked());
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
         }
     }
@@ -239,7 +234,6 @@ public class ReferralFragment extends InjectedFragment
             emailIntent.setType("plain/text");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
-            bus.post(new ReferralsEvent.InviteFriendsClicked());
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
         }
     }
