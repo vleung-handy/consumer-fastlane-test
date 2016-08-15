@@ -41,6 +41,8 @@ import butterknife.OnClick;
 
 public class ReferralFragment extends InjectedFragment
 {
+    private static final String BASE_REFERRAL_URL = "handy.com/r/";
+    private static final String BASE_REFERRAL_URL_SCHEME = "https://";
     @Inject
     Bus mBus;
 
@@ -176,8 +178,7 @@ public class ReferralFragment extends InjectedFragment
                 currencyChar,
                 null
         );
-        final String sharingLink =
-                mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_FACEBOOK).getUrl();
+        final String sharingLink = BASE_REFERRAL_URL + mReferralDescriptor.getCouponCode();
         mShareUrl.setText(sharingLink);
         mTitle.setText(getString(R.string.referral_title));
         mSubtitle.setText(getString(R.string.referral_subtitle_formatted,
@@ -248,8 +249,8 @@ public class ReferralFragment extends InjectedFragment
     {
         ClipboardManager clipboard = (ClipboardManager)
                 getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        final String sharingLink =
-                mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_FACEBOOK).getUrl();
+        final String sharingLink = BASE_REFERRAL_URL_SCHEME + BASE_REFERRAL_URL +
+                mReferralDescriptor.getCouponCode();
         Uri copyUri = Uri.parse(sharingLink);
         ClipData clip = ClipData.newUri(getActivity().getContentResolver(), "URI", copyUri);
         clipboard.setPrimaryClip(clip);
