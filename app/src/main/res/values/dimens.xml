@@ -57,7 +57,7 @@
     <dimen name="high_elevation">8dp</dimen>
     <dimen name="checkbox_round_square">32dp</dimen>
 
-    <dimen name="booking_list_item_height">90dp</dimen>
+    <dimen name="booking_list_item_height">80dp</dimen>
 
     <!-- For ratings grid -->
     <dimen name="grid_image_width">80dp</dimen>

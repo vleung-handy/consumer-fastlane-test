@@ -13,18 +13,6 @@
         android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical"
         >
-
-        <TextView
-            android:id="@+id/text_plan_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin_quarter"
-            android:visibility="gone"
-            tools:text="Furniture Assembly"
-            tools:visibility="visible"
-            android:textStyle="bold"
-            />
-
         <TextView
             android:id="@+id/text_plan_title"
             style="@style/TextView.Medium"
