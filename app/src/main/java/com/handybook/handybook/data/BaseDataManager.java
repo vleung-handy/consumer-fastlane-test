@@ -30,6 +30,7 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.model.ProviderJobStatus;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
@@ -462,6 +463,12 @@ public final class BaseDataManager extends DataManager
     {
         mService.validateBookingZip(serviceId, zipCode, userId, promoCode,
                 new ZipValidationRetroFitCallback(cb));
+    }
+
+    @Override
+    public void getBookingMilestones(final String bookingId, final Callback<ProviderJobStatus> cb)
+    {
+        mService.getBookingMilestones(bookingId, new BookingMilestonesCallback(cb));
     }
 
     @Override

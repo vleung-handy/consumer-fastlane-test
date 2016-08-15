@@ -8,21 +8,16 @@ import java.util.Date;
 
 public class ProviderJobStatus implements Serializable
 {
-    @SerializedName("provider")
-    private Provider mProvider;
     @SerializedName("milestones")
     private Milestone[] mMilestones;
     @SerializedName("links")
     private DeepLinkWrapper[] mDeepLinkWrappers;
 
-    public ProviderJobStatus(final Provider provider, final Milestone[] milestones, final DeepLinkWrapper[] deepLinkWrappers)
+    public ProviderJobStatus(final Milestone[] milestones, final DeepLinkWrapper[] deepLinkWrappers)
     {
-        mProvider = provider;
         mMilestones = milestones;
         mDeepLinkWrappers = deepLinkWrappers;
     }
-
-    public Provider getProvider() { return mProvider; }
 
     public Milestone[] getMilestones() { return mMilestones; }
 
