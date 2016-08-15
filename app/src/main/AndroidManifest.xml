@@ -54,8 +54,10 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data android:scheme="handybook"/>
                 <data android:scheme="handy"/>
             </intent-filter>
@@ -78,12 +80,14 @@
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data
-                    android:scheme="https"
                     android:host="handy.bttn.io"
                     android:pathPattern=".*"
+                    android:scheme="https"
                     />
             </intent-filter>
         </activity>
@@ -231,9 +235,9 @@
             />
         <activity
             android:name=".module.proteam.ui.activity.ProTeamActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_pro_team"
             android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Handy"
             >
             <meta-data
@@ -241,7 +245,6 @@
                 android:value="com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity"
                 />
         </activity>
-
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
@@ -300,14 +303,12 @@
             android:value="true"
             />
 
-
-        <!--For google maps andm other google services-->
-        <!--FIXME: JIA: make this use the official handy API key, instead of Jia's own API key-->
+        <!-- For google maps andm other google services -->
+        <!-- FIXME: JIA: make this use the official handy API key, instead of Jia's own API key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAxZkM2_NVOoHBRyheb_56nGU9zo8wsyng"
             />
-
 
         <!-- URBAN AIRSHIP -->
 
@@ -433,6 +434,10 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".module.bookings.HistoryActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

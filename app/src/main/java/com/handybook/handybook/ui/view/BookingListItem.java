@@ -59,12 +59,12 @@ public class BookingListItem extends FrameLayout
         if (mServices != null)
         {
             String machineName = BookingUtil.findParentService(mBooking, mServices);
-            mImageIcon.setImageResource(BookingUtil.getIconForService(machineName));
+            mImageIcon.setImageResource(BookingUtil.getIconForService(machineName, BookingUtil.IconType.OUTLINE));
         }
         else
         {
             //this will give us back the default cleaning icon
-            mImageIcon.setImageResource(BookingUtil.getIconForService(null));
+            mImageIcon.setImageResource(BookingUtil.getIconForService(null, BookingUtil.IconType.OUTLINE));
         }
 
         mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));

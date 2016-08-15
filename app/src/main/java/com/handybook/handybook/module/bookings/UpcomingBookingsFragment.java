@@ -180,7 +180,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
         {
             mMainContainer.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-            mExpandableCleaningPlan.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGE_DISAPPEARING);
+//            mExpandableCleaningPlan.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGE_DISAPPEARING);
         }
         return view;
     }
