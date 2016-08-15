@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -235,6 +236,10 @@ public class ReferralFragment extends InjectedFragment
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
+        }
+        else
+        {
+            Crashlytics.logException(new Exception("Email referral info is null"));
         }
     }
 
