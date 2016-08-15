@@ -222,6 +222,10 @@ public class ReferralFragment extends InjectedFragment
             );
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
         }
+        else
+        {
+            Crashlytics.logException(new Exception("SMS referral info is null"));
+        }
     }
 
     @OnClick(R.id.fragment_referral_button_email)
