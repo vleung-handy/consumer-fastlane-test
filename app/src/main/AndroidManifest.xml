@@ -40,7 +40,7 @@
         android:name=".core.BaseApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Handy"
+        android:theme="@style/HandyTheme"
         >
         <activity
             android:name=".booking.ui.activity.ServiceCategoriesActivity"
@@ -229,7 +229,7 @@
             android:label="@string/title_activity_pro_team"
             android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Handy"
+            android:theme="@style/HandyTheme"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -340,7 +340,7 @@
             android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
             android:label="@string/title_activity_notification_feed"
             android:parentActivityName=".booking.ui.activity.ServicesActivity"
-            android:theme="@style/Theme.Base"
+            android:theme="@style/BaseTheme"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
