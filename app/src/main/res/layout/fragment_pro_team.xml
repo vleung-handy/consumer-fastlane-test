@@ -19,14 +19,14 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/Theme.Handy.AppBarOverlay"
+            android:theme="@style/HandyTheme.AppBarOverlay"
             >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/pro_team_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:theme="@style/Theme.Handy.AppBarOverlay"
+                android:theme="@style/HandyTheme.AppBarOverlay"
                 android:title="@string/title_activity_pro_team"
                 app:contentInsetStart="0dp"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
