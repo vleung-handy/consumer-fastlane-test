@@ -56,6 +56,12 @@
     <dimen name="high_elevation">8dp</dimen>
     <dimen name="checkbox_round_square">32dp</dimen>
 
+    <!-- Pro Team -->
+    <dimen name="pro_team_margin">12dp</dimen>
+    <dimen name="pro_team_star_width_height">16dp</dimen>
+    <dimen name="pro_team_star_margin">3dp</dimen>
+    <dimen name="pro_team_bookings_margin">5dp</dimen>
+
     <!-- For ratings grid -->
     <dimen name="grid_image_width">80dp</dimen>
     <!-- This is (8 + 80 + 8) * 3 to account for the padding on the gird item layout-->

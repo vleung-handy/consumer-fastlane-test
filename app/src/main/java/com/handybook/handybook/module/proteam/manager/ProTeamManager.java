@@ -42,7 +42,8 @@ public class ProTeamManager
             @Override
             public void onSuccess(final ProTeamWrapper proTeamWrapper)
             {
-                mBus.post(new ProTeamEvent.ReceiveProTeamSuccess(proTeamWrapper.getProTeam()));
+                mBus.post(new ProTeamEvent.ReceiveProTeamSuccess(proTeamWrapper.getProTeam(),
+                        proTeamWrapper.getProTeamHelpCenterUrl()));
             }
 
             @Override
