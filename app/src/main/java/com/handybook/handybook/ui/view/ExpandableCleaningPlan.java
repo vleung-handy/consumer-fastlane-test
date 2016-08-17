@@ -51,8 +51,6 @@ public class ExpandableCleaningPlan extends LinearLayout
 
         inflate(getContext(), R.layout.layout_cleaning_plan, this);
         ButterKnife.bind(this);
-
-        UiUtils.extendTouchArea(mHeaderContainer, mImageCollapse);
     }
 
     @OnClick(R.id.button_plan_expand)
@@ -62,6 +60,8 @@ public class ExpandableCleaningPlan extends LinearLayout
         mButtonExpand.setVisibility(View.GONE);
         mImageCollapse.setVisibility(View.VISIBLE);
         mDivider.setVisibility(View.VISIBLE);
+
+        UiUtils.extendTouchArea(mHeaderContainer, mImageCollapse);
     }
 
     @OnClick(R.id.image_plan_collapse)

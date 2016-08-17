@@ -2,19 +2,20 @@ package com.handybook.handybook.module.bookings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,16 +23,24 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.PlayServicesUtils;
+
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,11 +48,11 @@ import butterknife.OnClick;
 
 /**
  */
-public class ActiveBookingFragment extends Fragment implements OnMapReadyCallback
+public class ActiveBookingFragment extends InjectedFragment implements OnMapReadyCallback
 {
     private static final String TAG = ActiveBookingFragment.class.getName();
     private static final String KEY_BOOKING = "booking";
-    private static final String KEY_TOUCH_LISTENER = "touch_listener";
+    private static final int GEO_STATUS_PING_INTERVAL = 10000;  //ping for geo status every 10 seconds
 
     @Bind(R.id.text_start_soon_indicator)
     View mStartingSoonIndicator;
@@ -75,11 +84,33 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     @Bind(R.id.map_view)
     MapView mMapView;
 
+    @Bind(R.id.map_container)
+    FrameLayout mMapContainer;
+
     @Bind(R.id.transparent_image)
     ImageView mTransparentImage;
 
+    @Bind(R.id.text_pro_location_time)
+    TextView mTextLocationTime;
+
     private GoogleMap mGoogleMap;
     private Booking mBooking;
+    private Marker mProviderLocationMarker;
+    private String mProviderName;
+    private LatLng mProviderLatLng;
+    private LatLng mAddressLatLng;
+    private boolean mFirstZoom = true;
+    private Handler mHandler;
+    private Runnable mRunnable = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            Log.d(TAG, getThisName() + "ping for location data: ");
+            requestGeoStatus();
+            periodicUpdate();
+        }
+    };
 
     //    FIXME -- use API value for this.
     private boolean mShouldShowMap = true;
@@ -113,8 +144,9 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             if (PlayServicesUtils.hasPlayServices(getActivity()))
             {
                 mMapView.onCreate(savedInstanceState);
-                mMapView.setVisibility(View.VISIBLE);
                 mMapView.getMapAsync(this);
+                mMapView.setVisibility(View.VISIBLE);
+                mMapContainer.setVisibility(View.VISIBLE);
 
                 if (mParentScrollView != null)
                 {
@@ -153,20 +185,21 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             else
             {
                 mMapView.setVisibility(View.GONE);
+                mMapContainer.setVisibility(View.GONE);
             }
 
             if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider().getFullName().trim()))
             {
                 mProfileContainer.setVisibility(View.VISIBLE);
                 mProfileContainerDivider.setVisibility(View.VISIBLE);
-                String name = mBooking.getProvider().getFirstName();
+                mProviderName = mBooking.getProvider().getFirstName();
 
-                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(mBooking.getProvider().getLastName()))
+                if (!TextUtils.isEmpty(mProviderName) && !TextUtils.isEmpty(mBooking.getProvider().getLastName()))
                 {
-                    name += " " + mBooking.getProvider().getLastName().charAt(0) + ".";
+                    mProviderName += " " + mBooking.getProvider().getLastName().charAt(0) + ".";
                 }
 
-                mTextProviderName.setText(name);
+                mTextProviderName.setText(mProviderName);
 
                 if (!TextUtils.isEmpty(mBooking.getProvider().getPhone()))
                 {
@@ -208,66 +241,138 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
             double lat = mBooking.getAddress().getLatitude();
             double lng = mBooking.getAddress().getLongitude();
 
-            //FIXME: remove this.
-            if (lat == 0 && lng == 0)
-            {
-                Toast.makeText(this.getActivity(), "No address location, faking it.", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "updateMap: address not returning lat/lng, hard coding something");
-                lat = 40.7399124;
-                lng = -73.9953073;
-            }
-
-            LatLng addressLatLng = new LatLng(lat, lng);
+            mAddressLatLng = new LatLng(lat, lng);
             Log.d(TAG, "updateMap: plotting: " + lat + ", " + lng);
 
+            mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener()
+            {
+                @Override
+                public void onCameraChange(final CameraPosition cameraPosition)
+                {
+                    float maxZoom = 16.0f;
+                    if (cameraPosition.zoom > maxZoom)
+                    {
+                        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(maxZoom));
+                    }
+                }
+            });
+
             mGoogleMap.addMarker(new MarkerOptions()
-                    .position(addressLatLng)
+                    .position(mAddressLatLng)
                     .title("Destination")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
 
-            //FIXME: replace this with pro location information when it's there.
             Booking.Location providerLocation = mBooking.getActiveBookingStatus().getProviderLocation();
 
-            LatLng providerLatLng;
             if (!isBadLocation(providerLocation))
             {
-                providerLatLng = new LatLng(
+                mProviderLatLng = new LatLng(
                         Double.valueOf(providerLocation.getLatitude()),
                         Double.valueOf(providerLocation.getLongitude())
                 );
+
+                //FIXME: JIA: remove this hard code
+                String time = DateTimeUtils.getTime(new Date());
+                mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
+
+                mProviderLocationMarker = mGoogleMap.addMarker(
+                        new MarkerOptions()
+                                .position(mProviderLatLng)
+                                .title(mProviderName)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pro_location))
+                );
+
+                if (mHandler == null)
+                {
+                    //start the handler to ping for location change every time
+                    mHandler = new Handler();
+                    periodicUpdate();
+                }
+
             }
             else
             {
-                //FIXME: remove these fake data.
-                Log.e(TAG, "updateMap: provider location not returning lat/lng, hard coding something");
-                Toast.makeText(this.getActivity(), "No provider location, faking it.", Toast.LENGTH_SHORT).show();
-                providerLatLng = new LatLng(40.741899, -73.998602);
+                Crashlytics.logException(new RuntimeException("Active booking enabled, but no pro location"));
             }
 
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(providerLatLng)
-                    .title("Provider")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pro_location)));
+            adjustMap();
 
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            builder.include(addressLatLng);
-            builder.include(providerLatLng);
+        }
+    }
+
+    private void periodicUpdate()
+    {
+        Log.d(TAG, "periodicUpdate: " + getThisName());
+        if (mHandler != null)
+        {
+            mHandler.postDelayed(mRunnable, GEO_STATUS_PING_INTERVAL);
+        }
+    }
+
+    private String getThisName()
+    {
+        return String.valueOf(ActiveBookingFragment.this.hashCode());
+    }
+
+    private void requestGeoStatus()
+    {
+        dataManager.getBookingGeoStatus(mBooking.getId(), new DataManager.Callback<BookingGeoStatus>()
+        {
+            @Override
+            public void onSuccess(final BookingGeoStatus response)
+            {
+                mProviderLatLng = new LatLng(response.getProLat(), response.getProLng());
+                adjustMap();
+
+                //FIXME: JIA: remove this hard code
+                String time = DateTimeUtils.getTime(new Date());
+                mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
+                Log.d(TAG, "receive geo status success: " + response.getProLat() + "," + response.getProLng());
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
+                //don't worry about it.
+            }
+        });
+    }
+
+    private void adjustMap()
+    {
+        if (mGoogleMap == null || !isAdded())
+        {
+            return;
+        }
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(mAddressLatLng);
+
+        if (mProviderLatLng != null)
+        {
+            builder.include(mProviderLatLng);
+            mProviderLocationMarker.setPosition(mProviderLatLng);
+        }
+
+        if (mFirstZoom)
+        {
             LatLngBounds bounds = builder.build();
 
             //gives it some padding, so that the markers are not right at the edge of the screen.
             int width = getResources().getDisplayMetrics().widthPixels;
-            int height = getResources().getDisplayMetrics().heightPixels;
-            int padding = (int) (width * 0.30);
+            int height = getResources().getDimensionPixelSize(R.dimen.active_booking_map_height);
+            int padding = getResources().getDimensionPixelOffset(R.dimen.default_padding_4x);
 
+            //first zoom to enclose all the markers.
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
             mGoogleMap.moveCamera(cu);
+            mFirstZoom = false;
         }
     }
 
     /**
      * A bad location is null, empty string, or 0
      *
-     * @param str
      * @return
      */
     private boolean isBadLocation(Booking.Location location)
@@ -328,7 +433,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onResume()
     {
-        if (mMapView.getVisibility() == View.VISIBLE)
+        if (mMapView != null && mMapView.getVisibility() == View.VISIBLE)
         {
             mMapView.onResume();
         }
@@ -336,9 +441,22 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     }
 
     @Override
+    public void onPause()
+    {
+        super.onPause();
+
+        //make sure this step is done, otherwise there will be a memory leak.
+        if (mHandler != null)
+        {
+            mHandler.removeCallbacks(mRunnable);
+            mHandler = null;
+        }
+    }
+
+    @Override
     public void onDestroy()
     {
-        if (mMapView.getVisibility() == View.VISIBLE)
+        if (mMapView != null && mMapView.getVisibility() == View.VISIBLE)
         {
             mMapView.onDestroy();
         }
@@ -350,7 +468,7 @@ public class ActiveBookingFragment extends Fragment implements OnMapReadyCallbac
     {
         super.onLowMemory();
 
-        if (mMapView.getVisibility() == View.VISIBLE)
+        if (mMapView != null && mMapView.getVisibility() == View.VISIBLE)
         {
             mMapView.onLowMemory();
         }

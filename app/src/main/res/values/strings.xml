@@ -404,4 +404,5 @@
     <string name="report_an_issue">Report An Issue</string>
     <string name="unable_to_edit_plan">Unable to edit this plan at this time. Please try again later.</string>
     <string name="your_next_booking">Your Next Booking</string>
+    <string name="pro_location_time_formatted">pro\'s location recorded at %s</string>
 </resources>

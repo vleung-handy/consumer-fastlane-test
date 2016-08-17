@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProT
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
+import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
@@ -414,6 +415,8 @@ public abstract class DataManager
     public abstract void requestConfiguration(final Callback<Configuration> callback);
 
     public abstract void getRecurringBookings(final Callback<RecurringBookingsResponse> callback);
+
+    public abstract void getBookingGeoStatus(final String bookingId, final Callback<BookingGeoStatus> callback);
 
     public abstract String getBaseUrl();
 

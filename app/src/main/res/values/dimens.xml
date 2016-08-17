@@ -58,6 +58,7 @@
     <dimen name="checkbox_round_square">32dp</dimen>
 
     <dimen name="booking_list_item_height">80dp</dimen>
+    <dimen name="list_item_left_margin">40dp</dimen>
 
     <!-- For ratings grid -->
     <dimen name="grid_image_width">80dp</dimen>
@@ -73,4 +74,5 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="active_booking_map_height">250dp</dimen>
 </resources>
