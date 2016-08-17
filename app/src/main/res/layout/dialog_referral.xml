@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    android:id="@+id/referral_dialog_container"
+    android:id="@+id/dialog_referral_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         >
 
         <LinearLayout
-            android:id="@+id/referral_dialog_content"
+            android:id="@+id/dialog_referral_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_icon_size"
@@ -33,7 +33,7 @@
                 android:layout_marginBottom="@dimen/default_margin_half"
                 android:layout_marginTop="@dimen/default_margin_4x"
                 android:gravity="center_horizontal"
-                tools:text="Earn free cleanings"
+                android:text="@string/referral_title"
                 />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_marginBottom="@dimen/default_margin"
                 android:gravity="center_horizontal"
                 android:lineSpacingMultiplier="1"
-                tools:text="@string/referral_modal_subtitle_formatted"
+                tools:text="@string/referral_dialog_subtitle_formatted"
                 />
 
         </LinearLayout>
@@ -60,9 +60,9 @@
             android:id="@+id/dialog_referral_close_button"
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
-            android:layout_alignEnd="@id/referral_dialog_content"
-            android:layout_alignRight="@id/referral_dialog_content"
-            android:layout_alignTop="@id/referral_dialog_content"
+            android:layout_alignEnd="@id/dialog_referral_content"
+            android:layout_alignRight="@id/dialog_referral_content"
+            android:layout_alignTop="@id/dialog_referral_content"
             android:padding="@dimen/default_padding_half"
             android:src="@drawable/ic_x_dark"
             />
@@ -70,7 +70,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/referral_dialog_content"
+            android:layout_below="@id/dialog_referral_content"
             android:background="@color/white"
             >
 

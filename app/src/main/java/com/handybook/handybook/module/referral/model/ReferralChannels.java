@@ -6,6 +6,7 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -13,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
  * Holds ReferralInfo objects for each supported channel used for in-app sharing. Supported
  * channels include SMS, Facebook, Twitter, etc.
  */
-public class ReferralChannels
+public class ReferralChannels implements Serializable
 {
     public static final String CHANNEL_EMAIL = "email";
     public static final String CHANNEL_GMAIL = "gmail";

@@ -345,7 +345,7 @@
     <string name="referral_code_label">Your code:</string>
     <string name="referral_title">Earn free cleanings</string>
     <string name="referral_subtitle_formatted">Get %1$s in credit when you send %2$s to a friend for their first booking.</string>
-    <string name="referral_modal_subtitle_formatted">Send your friends %1$s off their first booking, and earn %2$s in credit.</string>
+    <string name="referral_dialog_subtitle_formatted">Send your friends %1$s off their first booking, and earn %2$s in credit.</string>
     <string name="referral_copied_to_clipboard">Sharing link copied to clipboard</string>
     <string name="redemption_title_formatted">%1$s sent you %2$s!</string>
     <string name="redemption_subtitle_formatted">Sign up to claim %1$s credit towards your first booking.</string>

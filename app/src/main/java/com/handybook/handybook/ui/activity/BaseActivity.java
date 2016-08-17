@@ -26,6 +26,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
@@ -194,7 +195,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Override
     public void showReferralDialog(final ReferralResponse referralResponse)
     {
-        // FIXME: Launch referral dialog here
+        final ReferralDialogFragment dialogFragment =
+                ReferralDialogFragment.newInstance(referralResponse.getReferralDescriptor());
+        FragmentUtils.safeLaunchDialogFragment(dialogFragment, this,
+                ReferralDialogFragment.class.getSimpleName());
     }
 
     private void showRequiredUserModals()
