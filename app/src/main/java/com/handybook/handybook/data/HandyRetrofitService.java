@@ -287,6 +287,9 @@ public interface HandyRetrofitService
     @GET("/recurring_bookings")
     void getRecurringBookings(HandyRetrofitCallback cb);
 
+    @GET("/bookings/{booking_id}/geo_status")
+    void getBookingGeoStatus(@Path("booking_id") String bookingId, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(

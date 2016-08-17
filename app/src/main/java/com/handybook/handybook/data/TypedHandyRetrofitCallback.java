@@ -9,6 +9,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoRe
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
@@ -226,6 +227,16 @@ class RecurringBookingsResponseHandyRetrofitCallback
         extends TypedHandyRetrofitCallback<RecurringBookingsResponse>
 {
     RecurringBookingsResponseHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class BookingGeoStatusHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<BookingGeoStatus>
+{
+    BookingGeoStatusHandyRetrofitCallback(final DataManager.Callback callback)
     {
         super(callback);
     }

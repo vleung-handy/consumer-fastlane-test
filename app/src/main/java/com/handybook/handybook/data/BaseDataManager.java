@@ -20,6 +20,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProT
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
+import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
@@ -88,6 +89,8 @@ public final class BaseDataManager extends DataManager
     {
         return mEndpoint.getBaseUrl();
     }
+
+//    FIXME: JIA: fix the way we cache services.
 
     /**
      * If there is a cached version, return the cache, and updates the cache in the background.
@@ -1001,6 +1004,12 @@ public final class BaseDataManager extends DataManager
     public void getRecurringBookings(final Callback<RecurringBookingsResponse> cb)
     {
         mService.getRecurringBookings(new RecurringBookingsResponseHandyRetrofitCallback(cb));
+    }
+
+    @Override
+    public void getBookingGeoStatus(final String bookingId, final Callback<BookingGeoStatus> callback)
+    {
+        mService.getBookingGeoStatus(bookingId, new BookingGeoStatusHandyRetrofitCallback(callback));
     }
 
     @Override

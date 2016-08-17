@@ -5,6 +5,8 @@
     <item type="id" name="nav_menu_my_bookings" />
     <item type="id"
           name="nav_menu_my_pro_team"/>
+    <item type="id"
+          name="nav_menu_history"/>
     <item type="id" name="nav_menu_payment" />
     <item type="id"
           name="nav_menu_free_cleanings"/>
