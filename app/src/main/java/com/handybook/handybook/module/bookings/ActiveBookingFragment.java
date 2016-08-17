@@ -1,5 +1,6 @@
 package com.handybook.handybook.module.bookings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -392,9 +393,24 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         {
             mGoogleMap = googleMap;
 
+            if (this.getActivity() != null)
+            {
+                // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+                MapsInitializer.initialize(this.getActivity());
+                updateMap();
+            }
+        }
+    }
+
+    @Override
+    public void onAttach(final Context context)
+    {
+        super.onAttach(context);
+
+        if (mGoogleMap != null)
+        {
             // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
             MapsInitializer.initialize(this.getActivity());
-
             updateMap();
         }
     }

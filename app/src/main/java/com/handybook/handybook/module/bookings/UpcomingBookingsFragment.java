@@ -172,7 +172,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
         {
             mMainContainer.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-//            mExpandableCleaningPlan.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGE_DISAPPEARING);
         }
         return view;
     }
@@ -234,13 +233,17 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 Booking booking = mBookings.get(x);
                 if (booking.getActiveBookingStatus() != null && booking.getActiveBookingStatus().isMapEnabled())
                 {
-                    ActiveBookingFragment frag = ActiveBookingFragment.newInstance(booking);
-                    frag.setParentScrollView(mScrollView);
 
-                    //important here to use booking id as TAG, so that there aren't conflicts with multiple active bookings.
-                    getChildFragmentManager().beginTransaction()
-                            .replace(R.id.active_booking_container, frag, booking.getId())
-                            .commit();
+                    if (getChildFragmentManager().findFragmentByTag(booking.getId()) == null)
+                    {
+                        ActiveBookingFragment frag = ActiveBookingFragment.newInstance(booking);
+                        frag.setParentScrollView(mScrollView);
+
+                        //important here to use booking id as TAG, so that there aren't conflicts with multiple active bookings.
+                        getChildFragmentManager().beginTransaction()
+                                .add(R.id.active_booking_container, frag, booking.getId())
+                                .commit();
+                    }
 
                     mActiveBookingContainer.setVisibility(View.VISIBLE);
                 }

@@ -404,6 +404,7 @@ public class Booking implements Parcelable
         mStartDate = new Date(in.readLong());
         mAddress = in.readParcelable(Address.class.getClassLoader());
         mProvider = in.readParcelable(Provider.class.getClassLoader());
+        mActiveBookingStatus = in.readParcelable(ActiveBookingStatus.class.getClassLoader());
 
         mPaymentInfo = new ArrayList<LineItem>();
         in.readTypedList(mPaymentInfo, LineItem.CREATOR);
@@ -452,6 +453,7 @@ public class Booking implements Parcelable
         out.writeLong(mStartDate.getTime());
         out.writeParcelable(mAddress, 0);
         out.writeParcelable(mProvider, 0);
+        out.writeParcelable(mActiveBookingStatus, 0);
         out.writeTypedList(mPaymentInfo);
         out.writeTypedList(mExtrasInfo);
         out.writeBooleanArray(new boolean[]
@@ -888,12 +890,17 @@ public class Booking implements Parcelable
             final boolean[] booleanArray = new boolean[1];
             in.readBooleanArray(booleanArray);
             mMapEnabled = booleanArray[0];
+            mBookingLocation = in.readParcelable(Location.class.getClassLoader());
+            mProviderLocation = in.readParcelable(Location.class.getClassLoader());
+
         }
 
         @Override
         public final void writeToParcel(final Parcel out, final int flags)
         {
             out.writeBooleanArray(new boolean[]{mMapEnabled});
+            out.writeParcelable(mBookingLocation, 0);
+            out.writeParcelable(mProviderLocation, 0);
         }
 
         @Override
