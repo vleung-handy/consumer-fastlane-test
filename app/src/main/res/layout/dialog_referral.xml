@@ -83,6 +83,10 @@
                 android:background="@drawable/border_grey_right"
                 android:drawableLeft="@drawable/ic_email_gray"
                 android:drawableStart="@drawable/ic_email_gray"
+                android:paddingEnd="@dimen/default_padding_double"
+                android:paddingLeft="@dimen/default_padding_double"
+                android:paddingRight="@dimen/default_padding_double"
+                android:paddingStart="@dimen/default_padding_double"
                 android:text="@string/email"
                 android:textColor="@color/handy_tertiary_gray"
                 />
@@ -95,6 +99,10 @@
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_text_gray"
                 android:drawableStart="@drawable/ic_text_gray"
+                android:paddingEnd="@dimen/default_padding_double"
+                android:paddingLeft="@dimen/default_padding_double"
+                android:paddingRight="@dimen/default_padding_double"
+                android:paddingStart="@dimen/default_padding_double"
                 android:text="@string/text"
                 android:textColor="@color/handy_tertiary_gray"
                 />
