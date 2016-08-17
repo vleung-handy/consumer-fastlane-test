@@ -57,7 +57,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mixpanel.trackEventAppTrackFrequency();
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mBookingQuote = bookingManager.getCurrentQuote();
 
@@ -115,10 +114,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         if (mBookingQuote != null)
         {
             float[] prices = mBookingQuote.getPricing(mBooking.getHours(), frequency);
-            if (prices != null && prices.length != 0)
+            if (prices != null && prices.length >= 2)
             {
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFrequencySubmittedLog(
-                        frequency, Math.round(prices[0] * 100)))); //price is in $
+                        frequency, Math.round(prices[1] * 100)))); //discount price is in $
             }
         }
 

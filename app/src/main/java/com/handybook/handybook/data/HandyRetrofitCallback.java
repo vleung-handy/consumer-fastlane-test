@@ -42,7 +42,8 @@ public abstract class HandyRetrofitCallback implements retrofit.Callback<Respons
             }
 
             obj = new JSONObject(resp.toString());
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             throw new RuntimeException("Unable to parse API response body");
         }
@@ -76,7 +77,7 @@ public abstract class HandyRetrofitCallback implements retrofit.Callback<Respons
             }
             callback.onError(err);
         }
-        else success(obj);
+        else { success(obj); }
     }
 
     @Override
@@ -102,14 +103,17 @@ public abstract class HandyRetrofitCallback implements retrofit.Callback<Respons
                             RestError restError = (RestError) error.getBodyAs(RestError.class);
                             String[] messages;
 
-                            if ((messages = restError.messages) != null && messages.length > 0)
+                            if (restError != null && (messages = restError.messages) != null && messages.length > 0)
                             {
                                 err = new DataManager.DataManagerError(DataManager.Type.CLIENT, messages[0]);
+                                err.setInvalidInputs(restError.invalidInputs);
                             }
-                            else err = new DataManager.DataManagerError(DataManager.Type.CLIENT);
-                            err.setInvalidInputs(restError.invalidInputs);
+                            else
+                            {
+                                err = new DataManager.DataManagerError(DataManager.Type.CLIENT);
+                            }
                         }
-                        else err = new DataManager.DataManagerError(DataManager.Type.CLIENT);
+                        else { err = new DataManager.DataManagerError(DataManager.Type.CLIENT); }
                     }
                     else if (status >= 500 && status < 600)
                     {

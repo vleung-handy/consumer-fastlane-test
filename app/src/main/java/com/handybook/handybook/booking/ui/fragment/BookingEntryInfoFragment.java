@@ -83,7 +83,6 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mIsNewUser = getArguments().getBoolean(EXTRA_NEW_USER, false);
         mInstructions = getArguments().getParcelable(EXTRA_INSTRUCTIONS);
-        mixpanel.trackEventAppTrackEntryInfo();
 
         bus.post(new LogEvent.AddLogEvent(new BookingConfirmationLog.BookingConfirmationShownLog()));
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationShownLog()));

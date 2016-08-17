@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.TextUtils;
 
@@ -57,7 +56,6 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment
 
         final Bundle args = getArguments();
         booking = args.getParcelable(EXTRA_BOOKING);
-        mixpanel.trackPageAddLaundryIntro(Mixpanel.LaundryEventSource.APP_OPEN);
     }
 
     @Override

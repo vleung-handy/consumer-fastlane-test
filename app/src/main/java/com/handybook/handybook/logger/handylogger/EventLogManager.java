@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
@@ -111,7 +112,15 @@ public class EventLogManager
     private List<String> loadSavedEventBundles()
     {
         String json = mPrefsManager.getString(PrefsKey.EVENT_LOG_BUNDLES, "");
-        String[] bundles = GSON.fromJson(json, String[].class);
+        String[] bundles = null;
+        try
+        {
+            bundles = GSON.fromJson(json, String[].class);
+        }
+        catch (JsonSyntaxException e)
+        {
+            Crashlytics.logException(e);
+        }
         if (bundles != null)
         {
             return new ArrayList<>(Arrays.asList(bundles));

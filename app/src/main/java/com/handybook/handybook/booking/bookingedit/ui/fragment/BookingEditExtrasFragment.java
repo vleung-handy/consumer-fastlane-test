@@ -75,7 +75,6 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         //booking should never be null here
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         Crashlytics.log("Showing edit extras for booking with id " + mBooking.getId());
-        mixpanel.trackEventAppTrackExtras();
     }
 
     @Override

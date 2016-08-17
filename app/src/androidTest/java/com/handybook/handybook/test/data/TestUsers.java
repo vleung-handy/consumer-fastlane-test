@@ -17,6 +17,20 @@ public class TestUsers
                     "9876543210",
                     mValidVisaCard);
 
+    public static TestUser EXISTING_USER_BOOKING_CREATION =
+            new TestUser("test+user@handybook.com",
+                    "supersecretpassword");
+
+    public static TestUser UPDATE_PROFILE_USER =
+            new TestUser(
+                    "test+user2@handybook.com",
+                    "supersecretpassword");
+
+    public static TestUser UPDATE_PASSWORD_USER =
+            new TestUser(
+                    "test+android@handybook.com",
+                    "supersecretpassword");
+
     public static TestUser LOGIN =
             new TestUser(
                     "test+user@handybook.com",
@@ -26,4 +40,8 @@ public class TestUsers
             new TestUser(
                     "test+cancel@handybook.com",
                     "supersecretpassword");
+
+    public static TestUser CANCEL_RECURRING_USER = new TestUser(
+            "test+cancel-plan@handybook.com",
+            "supersecretpassword");
 }

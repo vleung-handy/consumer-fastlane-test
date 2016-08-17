@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 
 import butterknife.Bind;
@@ -100,7 +98,6 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
     @OnClick(R.id.skip_button)
     public void needHelp()
     {
-        mBus.post(new MixpanelEvent.AppProRateHelp(Mixpanel.ProRateEventType.SHOW, mBookingId));
         startActivity(HelpActivity.DeepLink.PRO_ISSUES.getIntent(getActivity()));
         dismiss();
     }

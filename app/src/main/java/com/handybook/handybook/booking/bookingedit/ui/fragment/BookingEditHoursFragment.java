@@ -74,7 +74,6 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        mixpanel.trackEventAppTrackExtras();
     }
 
     @Override

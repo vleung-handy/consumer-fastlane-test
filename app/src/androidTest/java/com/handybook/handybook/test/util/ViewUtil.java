@@ -4,12 +4,17 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.PerformException;
 import android.view.View;
+import android.view.ViewGroup;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import java.util.concurrent.TimeoutException;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -34,6 +39,11 @@ public class ViewUtil
     public static void waitForViewVisible(int viewId, long maxWaitingTimeMs)
     {
         waitForViewVisibility(withId(viewId), true, maxWaitingTimeMs);
+    }
+
+    public static void waitForViewInScrollViewVisible(int viewId, long maxWaitingTimeMs)
+    {
+        waitForViewInScrollViewVisibility(withId(viewId), true, maxWaitingTimeMs);
     }
 
     public static void waitForViewNotVisible(int viewId, long maxWaitingTimeMs)
@@ -64,15 +74,42 @@ public class ViewUtil
      * TODO: cleaner way to do this?
      * TODO: add better error logging
      */
-    public static void waitForViewVisibility(@NonNull Matcher<View> viewMatcher,
-                                             final boolean visible,
-                                             final long maxWaitingTimeMs)
+    public static void waitForViewVisibility(
+            @NonNull Matcher<View> viewMatcher,
+            final boolean visible,
+            final long maxWaitingTimeMs
+    )
     {
         final long startTime = System.currentTimeMillis();
         final long endTime = startTime + maxWaitingTimeMs;
         while (System.currentTimeMillis() < endTime)
         {
             if (visible == isViewDisplayed(viewMatcher))
+            {
+                return;
+            }
+
+            sleep(VIEW_STATE_QUERY_INTERVAL_MS);
+        }
+        throw new PerformException.Builder()
+                .withActionDescription("wait for view visibility " + visible)
+                .withViewDescription("view id: " + viewMatcher.toString())
+                .withCause(new TimeoutException())
+                .build();
+    }
+
+
+    public static void waitForViewInScrollViewVisibility(
+            @NonNull Matcher<View> viewMatcher,
+            final boolean visible,
+            final long maxWaitingTimeMs
+    )
+    {
+        final long startTime = System.currentTimeMillis();
+        final long endTime = startTime + maxWaitingTimeMs;
+        while (System.currentTimeMillis() < endTime)
+        {
+            if (visible == isViewInScrollViewDisplayed(viewMatcher))
             {
                 return;
             }
@@ -108,6 +145,73 @@ public class ViewUtil
         {
             return false;
         }
+    }
+
+
+    /**
+     * checks to see if a view is displayed without throwing an exception if it isn't displayed
+     */
+    public static boolean isViewInScrollViewDisplayed(@NonNull Matcher<View> viewMatcher)
+    {
+        try
+        {
+            onView(viewMatcher).perform(scrollTo()).check(matches(isDisplayed()));
+            return true;
+        }
+        catch (Throwable e)
+        {
+            return false;
+        }
+    }
+
+    public static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition)
+    {
+        return new TypeSafeMatcher<View>()
+        {
+            @Override
+            public void describeTo(Description description)
+            {
+                description.appendText("position " + childPosition + " of parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view)
+            {
+                if (!(view.getParent() instanceof ViewGroup)) { return false; }
+                ViewGroup parent = (ViewGroup) view.getParent();
+
+                return parentMatcher.matches(parent)
+                        && parent.getChildCount() > childPosition
+                        && parent.getChildAt(childPosition).equals(view);
+            }
+        };
+    }
+
+    public static <T> Matcher<T> first(final Matcher<T> matcher)
+    {
+        return new BaseMatcher<T>()
+        {
+            boolean isFirst = true;
+
+            @Override
+            public boolean matches(final Object item)
+            {
+                if (isFirst && matcher.matches(item))
+                {
+                    isFirst = false;
+                    return true;
+                }
+
+                return false;
+            }
+
+            @Override
+            public void describeTo(final Description description)
+            {
+                description.appendText("should return first matching item");
+            }
+        };
     }
 
     private static void sleep(final long timeMs)

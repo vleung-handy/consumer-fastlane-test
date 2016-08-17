@@ -19,8 +19,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
@@ -145,8 +143,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         mFragmentList.add(mainFragment);
         mAdapter.notifyDataSetChanged();
         progressDialog.dismiss();
-        mBus.post(new MixpanelEvent.AppProRateReason(Mixpanel.ProRateEventType.SHOW,
-                Integer.parseInt(mBookingId), null, mPrerateProInfo.isCleaning()));
     }
 
     /**
@@ -264,9 +260,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
         progressDialog.dismiss();
 
         int bookingId = Integer.parseInt(mBookingId);
-        mBus.post(new MixpanelEvent.AppProRateReason(Mixpanel.ProRateEventType.SUBMIT, bookingId,
-                mFeedback.getSelectedOptions().keySet(), mPrerateProInfo.isCleaning()));
-
         Set<String> subReasons = new HashSet<>();
         for (String key : mFeedback.getSelectedOptions().keySet())
         {
@@ -277,14 +270,6 @@ public class RateImprovementDialogFragment extends BaseDialogFragment implements
                     subReasons.add(s);
                 }
             }
-        }
-
-        if (!subReasons.isEmpty())
-        {
-            //this key has subreasons, track it.
-
-            mBus.post(new MixpanelEvent.AppProRateSubreason(Mixpanel.ProRateEventType.SUBMIT,
-                    bookingId, subReasons, mPrerateProInfo.isCleaning()));
         }
 
         FragmentUtils.safeLaunchDialogFragment(
