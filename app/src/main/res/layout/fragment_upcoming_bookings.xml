@@ -33,11 +33,6 @@
         android:layout_marginTop="?attr/actionBarSize"
         >
 
-        <include
-            layout="@layout/layout_card_empty"
-            tools:visibility="gone"
-            />
-
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
@@ -48,6 +43,7 @@
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/handy_background_gray"
                 >
 
                 <LinearLayout
@@ -64,7 +60,6 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:orientation="vertical"
-                        android:background="@color/handy_background_gray"
                         />
 
                     <!--Using a linear layout because there can be multiple active bookings -->
@@ -78,29 +73,38 @@
                         android:visibility="gone"
                         />
 
-                    <android.support.v7.widget.CardView
+                    <LinearLayout
                         android:id="@+id/parent_bookings_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:optCardElevation="@dimen/low_elevation"
+                        android:elevation="@dimen/low_elevation"
+                        android:orientation="vertical"
                         >
 
+                        <TextView
+                            android:id="@+id/text_upcoming_bookings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/TextView.Headline"
+                            android:text="@string/upcoming_bookings"
+                            android:padding="@dimen/default_padding"
+                            android:textColor="@color/handy_tertiary_gray"
+                            android:visibility="gone"
+                            />
                         <LinearLayout
                             android:id="@+id/bookings_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             />
-                    </android.support.v7.widget.CardView>
+                    </LinearLayout>
 
-                    <com.handybook.handybook.ui.view.ActivePlanNoBookingView
+                    <com.handybook.handybook.ui.view.NoBookingsView
                         android:id="@+id/active_plan_no_booking_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:padding="@dimen/default_padding"
+                        android:gravity="center"
                         />
                 </LinearLayout>
             </ScrollView>

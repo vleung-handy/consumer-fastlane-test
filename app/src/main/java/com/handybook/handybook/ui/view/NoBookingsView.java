@@ -3,6 +3,7 @@ package com.handybook.handybook.ui.view;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
  * Just a dumb little view that shows static information to the user when there are
  * active plans, but no generated bookings.
  */
-public class ActivePlanNoBookingView extends LinearLayout
+public class NoBookingsView extends FrameLayout
 {
     @Bind(R.id.text_date)
     TextView mTextDate;
@@ -30,10 +31,16 @@ public class ActivePlanNoBookingView extends LinearLayout
     @Bind(R.id.text_time)
     TextView mTextTime;
 
-    public ActivePlanNoBookingView(final Context context, final AttributeSet attrs)
+    @Bind(R.id.container_recurrence_booking)
+    LinearLayout mContainerRecurrenceBooking;
+
+    @Bind(R.id.container_regular_booking)
+    LinearLayout mContainerRegularBooking;
+
+    public NoBookingsView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
-        inflate(getContext(), R.layout.active_plan_no_booking_view, this);
+        inflate(getContext(), R.layout.no_bookings_view, this);
         ButterKnife.bind(this);
     }
 
@@ -42,11 +49,13 @@ public class ActivePlanNoBookingView extends LinearLayout
      *
      * @param bookings
      */
-    public void bind(@NonNull List<UserRecurringBooking> bookings)
+    public void bindForNoRecurringBookings(@NonNull List<UserRecurringBooking> bookings)
     {
 
         if (bookings.isEmpty())
         {
+            mContainerRecurrenceBooking.setVisibility(GONE);
+            mContainerRegularBooking.setVisibility(VISIBLE);
             return;
         }
 
@@ -64,5 +73,14 @@ public class ActivePlanNoBookingView extends LinearLayout
 
         mTextDate.setText(DateTimeUtils.getDayMonthDay(booking.getDateStart()));
         mTextTime.setText(BookingUtil.getRecurrenceSubTitle2(booking));
+
+        mContainerRecurrenceBooking.setVisibility(VISIBLE);
+        mContainerRegularBooking.setVisibility(GONE);
+    }
+
+    public void bindForNoBookingsAtAll()
+    {
+        mContainerRecurrenceBooking.setVisibility(GONE);
+        mContainerRegularBooking.setVisibility(VISIBLE);
     }
 }
