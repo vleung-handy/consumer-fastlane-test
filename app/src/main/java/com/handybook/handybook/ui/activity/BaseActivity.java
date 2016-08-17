@@ -263,7 +263,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
                 .newInstance(bookingId, proName, -1, localizedMonetaryAmounts, user.getCurrencyChar());
 
-        boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
+        FragmentUtils.safeLaunchDialogFragment(
                 rateServiceDialogFragment,
                 BaseActivity.this,
                 RateServiceDialogFragment.class.getSimpleName());
