@@ -20,7 +20,6 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
@@ -151,8 +150,6 @@ public class BookingsFragment extends InjectedFragment
     @OnClick(R.id.add_booking_button)
     public void onServicesButtonClicked()
     {
-        bus.post(new MixpanelEvent.TrackAddBookingFabClicked());
-
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null)
         {

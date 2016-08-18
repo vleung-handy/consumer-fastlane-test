@@ -22,7 +22,6 @@ import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
@@ -80,7 +79,6 @@ public class UpdatePaymentFragment extends InjectedFragment
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed()
     {
-        bus.post(new MixpanelEvent.TrackScanCreditCardClicked());
         startCardScanActivity();
     }
 
@@ -105,12 +103,6 @@ public class UpdatePaymentFragment extends InjectedFragment
             {
                 io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
                 onScannedCardResult(scannedCardResult);
-                bus.post(new MixpanelEvent.TrackScanCreditCardResult(true));
-            }
-            else
-            {
-                bus.post(new MixpanelEvent.TrackScanCreditCardResult(false));
-                //canceled
             }
         }
     }

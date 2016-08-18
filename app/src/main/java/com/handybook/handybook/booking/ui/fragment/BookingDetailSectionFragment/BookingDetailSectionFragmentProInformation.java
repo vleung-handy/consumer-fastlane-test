@@ -16,7 +16,6 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
@@ -138,9 +137,6 @@ public class BookingDetailSectionFragmentProInformation extends
     @Override
     protected void onActionClick()
     {
-        bus.post(new MixpanelEvent.TrackShowTipPrompt(
-                MixpanelEvent.TipParentFlow.BOOKING_DETAILS_FLOW));
-
         TipDialogFragment tipDialogFragment = TipDialogFragment.newInstance(
                 Integer.parseInt(booking.getId()),
                 booking.getProvider().getFirstName());

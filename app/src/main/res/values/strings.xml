@@ -348,8 +348,9 @@
     <string name="free_cleanings">Free Cleanings</string>
     <string name="referral_invite_label">Invite Friends</string>
     <string name="referral_code_label">Your code:</string>
-    <string name="referral_title_formatted">Give %1$s, Get %2$s</string>
-    <string name="referral_subtitle_formatted">Give your friends %1$s off their first Handy booking, and you get %2$s!</string>
+    <string name="referral_title">Earn free cleanings</string>
+    <string name="referral_subtitle_formatted">Get %1$s in credit when you send %2$s to a friend for their first booking.</string>
+    <string name="referral_copied_to_clipboard">Sharing link copied to clipboard</string>
     <string name="redemption_title_formatted">%1$s sent you %2$s!</string>
     <string name="redemption_subtitle_formatted">Sign up to claim %1$s credit towards your first booking.</string>
     <string name="sign_up_with_facebook">Sign Up with Facebook</string>
@@ -401,4 +402,10 @@
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
     <string name="report_an_issue">Report An Issue</string>
+    <string name="pro_team_subject_to_change">Your Pro Team is subject to change.</string>
+    <string name="learn_more">Learn more</string>
+    <string name="fragment_referral_copy_invite">Copy:</string>
+    <string name="fragment_referral_sms_invite">Text Invite</string>
+    <string name="fragment_referral_email_invite">Email Invite</string>
+    <string name="fragment_referral_more_ways_to_share">More ways to share</string>
 </resources>

@@ -219,15 +219,15 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
     public final void showAllOptions()
     {
-        if(optionViews == null)
+        if (optionViews == null)
         {
             //this shouldn't happen
             Crashlytics.logException(new Exception("Option view is null"));
             return;
         }
-        for(int i = 0; i<optionViews.length; i++)
+        for (int i = 0; i < optionViews.length; i++)
         {
-            if(optionViews[i] == null)
+            if (optionViews[i] == null)
             {
                 //this shouldn't happen
                 Crashlytics.logException(new Exception("Option view is null at index " + i));

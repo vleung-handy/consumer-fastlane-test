@@ -21,7 +21,6 @@ import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
-import com.handybook.handybook.logger.mixpanel.Mixpanel;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
@@ -68,8 +67,6 @@ public class BaseApplication extends MultiDexApplication
     UserManager userManager;
     @Inject
     DataManager dataManager;
-    @Inject
-    Mixpanel mixpanel;
     @Inject
     Bus bus;
     // We are injecting all of our event bus listening managers in BaseApplication to start them
@@ -170,11 +167,9 @@ public class BaseApplication extends MultiDexApplication
         {
             NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal")).start(this);
         }
-        // If this is the first ever run of the application, emit Mixpanel event
         if (prefsManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
         {
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
-            mixpanel.trackEventAppTrackInstall();
         }
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
@@ -197,14 +192,6 @@ public class BaseApplication extends MultiDexApplication
                 ++started;
                 if (started == 1)
                 {
-                    if (!savedInstance)
-                    {
-                        mixpanel.trackEventAppOpened(true);
-                    }
-                    else
-                    {
-                        mixpanel.trackEventAppOpened(false);
-                    }
                     updateUser();
                 }
             }

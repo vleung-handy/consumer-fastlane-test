@@ -13,7 +13,6 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.logger.mixpanel.annotation.Track;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 
 import java.util.List;
@@ -443,10 +442,6 @@ public abstract class BookingEvent
             this.error = error;
         }
     }
-
-
-    @Track("add booking fab clicked")
-    public static class AddBookingButtonClicked {}
 
 
     public static class RequestTipPro extends HandyEvent.RequestEvent

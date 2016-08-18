@@ -54,7 +54,6 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         bookingTransaction = bookingManager.getCurrentTransaction();
-        mixpanel.trackEventAppTrackFrequency();
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.BookingDetailsShownLog()));
     }
 
@@ -87,6 +86,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
 
     /**
      * updates the view and sets global vars based on the given QuoteConfig
+     *
      * @param quoteConfig
      */
     private void initFromQuoteConfig(BookingQuote.QuoteConfig quoteConfig)
@@ -126,11 +126,12 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
      */
     private void selectDefaultOption(
             @NonNull BookingOptionsSelectView optionsSelectView,
-            @NonNull List<RecurrenceOption> recurrenceOptions)
+            @NonNull List<RecurrenceOption> recurrenceOptions
+    )
     {
-        for(int i = 0; i<recurrenceOptions.size(); i++)
+        for (int i = 0; i < recurrenceOptions.size(); i++)
         {
-            if(recurrenceOptions.get(i).isDefault())
+            if (recurrenceOptions.get(i).isDefault())
             {
                 optionsSelectView.setCurrentIndex(i);
                 return;
@@ -169,8 +170,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
         {
             final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
             RecurrenceOption recurrenceOption = mRecurrenceOptions.get(index);
-                bookingTransaction.setRecurringFrequency(
-                        recurrenceOption.getFrequencyValue());
+            bookingTransaction.setRecurringFrequency(
+                    recurrenceOption.getFrequencyValue());
 
         }
 
@@ -193,7 +194,7 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
 
     /**
      * this button should only show if there are hidden recurrence options
-     *
+     * <p/>
      * clicking it will show all the options and hide this button
      */
     @OnClick(R.id.fragment_booking_recurrence_show_more_options_button)
@@ -210,11 +211,12 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
      * @return
      */
     private boolean hasHiddenOption(
-            @NonNull List<RecurrenceOption> recurrenceOptions)
+            @NonNull List<RecurrenceOption> recurrenceOptions
+    )
     {
-        for(RecurrenceOption recurrenceOption : recurrenceOptions)
+        for (RecurrenceOption recurrenceOption : recurrenceOptions)
         {
-            if(recurrenceOption.isHidden())
+            if (recurrenceOption.isHidden())
             {
                 return true;
             }
@@ -230,7 +232,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
 
     @NonNull
     private String[] getSavingsInfoArray(
-            @NonNull List<RecurrenceOption> recurrenceOptions)
+            @NonNull List<RecurrenceOption> recurrenceOptions
+    )
     {
         final String[] info = new String[recurrenceOptions.size()];
         for (int i = 0; i < info.length; i++)
@@ -242,10 +245,11 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
 
     @NonNull
     private String[] getOptionsTitleTextArray(
-            @NonNull List<RecurrenceOption> recurrenceOptions)
+            @NonNull List<RecurrenceOption> recurrenceOptions
+    )
     {
         String[] optionsTitleTextArray = new String[recurrenceOptions.size()];
-        for(int i = 0; i<optionsTitleTextArray.length; i++)
+        for (int i = 0; i < optionsTitleTextArray.length; i++)
         {
             optionsTitleTextArray[i] = recurrenceOptions.get(i).getText();
         }
@@ -254,7 +258,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
 
     @NonNull
     private String[] getOptionsSubTextArray(
-            @NonNull List<RecurrenceOption> recurrenceOptions)
+            @NonNull List<RecurrenceOption> recurrenceOptions
+    )
     {
         String[] optionsSubTextArray = new String[recurrenceOptions.size()];
         for(int i = 0; i<optionsSubTextArray.length; i++)
@@ -266,10 +271,11 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
 
     @NonNull
     private boolean[] getOptionsHiddenArray(
-            @NonNull List<RecurrenceOption> recurrenceOptions)
+            @NonNull List<RecurrenceOption> recurrenceOptions
+    )
     {
         boolean[] optionsHidden = new boolean[recurrenceOptions.size()];
-        for(int i = 0; i<optionsHidden.length; i++)
+        for (int i = 0; i < optionsHidden.length; i++)
         {
             optionsHidden[i] = recurrenceOptions.get(i).isHidden();
         }
@@ -278,7 +284,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
 
     @NonNull
     private BookingOption getBookingOptionModel(
-            @NonNull List<RecurrenceOption> recurrenceOptions)
+            @NonNull List<RecurrenceOption> recurrenceOptions
+    )
     {
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);

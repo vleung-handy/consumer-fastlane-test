@@ -40,7 +40,7 @@
         android:name=".core.BaseApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Handy"
+        android:theme="@style/HandyTheme"
         >
         <activity
             android:name=".booking.ui.activity.ServiceCategoriesActivity"
@@ -51,13 +51,6 @@
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="handybook"/>
-                <data android:scheme="handy"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -78,12 +71,14 @@
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data
-                    android:scheme="https"
                     android:host="handy.bttn.io"
                     android:pathPattern=".*"
+                    android:scheme="https"
                     />
             </intent-filter>
         </activity>
@@ -231,10 +226,10 @@
             />
         <activity
             android:name=".module.proteam.ui.activity.ProTeamActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_pro_team"
             android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
-            android:theme="@style/Theme.Handy"
+            android:screenOrientation="portrait"
+            android:theme="@style/HandyTheme"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -246,6 +241,21 @@
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
             />
+        <!-- Required by the DeepLinkDispatch library -->
+        <activity
+            android:name=".deeplink.DeepLinkActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="handybook"/>
+                <data android:scheme="handy"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -335,12 +345,11 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"/>
         <activity
             android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
             android:label="@string/title_activity_notification_feed"
             android:parentActivityName=".booking.ui.activity.ServicesActivity"
-            android:theme="@style/Theme.Base"
+            android:theme="@style/BaseTheme"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -68,7 +68,6 @@ public class RedemptionSignUpFragment extends InjectedFragment
     @OnClick(R.id.login_button)
     public void onLoginButtonClicked()
     {
-        bus.post(new ReferralsEvent.RedemptionLogin());
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
@@ -174,8 +173,6 @@ public class RedemptionSignUpFragment extends InjectedFragment
                 public void onSuccess(final LoginResult loginResult)
                 {
                     final AccessToken accessToken = loginResult.getAccessToken();
-                    bus.post(new ReferralsEvent.RedemptionSignUpClicked(
-                            UserDataManager.AuthType.FACEBOOK.toString().toLowerCase()));
                     bus.post(new HandyEvent.RequestAuthFacebookUser(accessToken, mReferralGuid));
                 }
 

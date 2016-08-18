@@ -18,7 +18,8 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Button.checkForDeepLink(this, new Button.DeepLinkListener() {
+        Button.checkForDeepLink(this, new Button.DeepLinkListener()
+        {
             @Override
             public void onDeepLink(final Intent intent)
             {

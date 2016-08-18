@@ -1,7 +1,6 @@
 package com.handybook.handybook.module.proteam.model;
 
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
@@ -14,6 +13,8 @@ public class ProTeamWrapper
 
     @SerializedName("pro_team")
     private ProTeam mProTeam;
+    @SerializedName("pro_team_help_center_url")
+    private String mProTeamHelpCenterUrl;
 
     @Nullable
     public ProTeam getProTeam()
@@ -21,9 +22,16 @@ public class ProTeamWrapper
         return mProTeam;
     }
 
-    @Nullable
-    public static ProTeamWrapper fromJson(@NonNull final String json)
+    public String getProTeamHelpCenterUrl()
     {
+        return mProTeamHelpCenterUrl;
+    }
+
+    @Nullable
+    public static ProTeamWrapper fromJson(@Nullable final String json)
+    {
+        if (json == null) { return null; }
+
         return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
                 .fromJson(json, ProTeamWrapper.class);
     }

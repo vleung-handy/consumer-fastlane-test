@@ -90,7 +90,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mixpanel.trackEventAppTrackDetails();
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mBookingId = getArguments().getString(BundleKeys.BOOKING_ID);
 

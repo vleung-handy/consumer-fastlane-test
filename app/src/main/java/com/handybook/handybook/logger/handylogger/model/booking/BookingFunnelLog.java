@@ -12,7 +12,7 @@ public class BookingFunnelLog extends EventLog
 {
     private static final String EVENT_CONTEXT = "booking_funnel";
 
-    public BookingFunnelLog(final String eventType)
+    protected BookingFunnelLog(final String eventType)
     {
         super(eventType, EVENT_CONTEXT);
     }

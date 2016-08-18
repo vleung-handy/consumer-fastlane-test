@@ -55,8 +55,6 @@ public final class BookingExtrasFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         mBookingTransaction = bookingManager.getCurrentTransaction();
         mBookingQuote = bookingManager.getCurrentQuote();
-        mixpanel.trackEventAppTrackExtras();
-
         options = mBookingQuote.getBookingOption().getOptions();
         if (options != null && options.length != 0)
         {

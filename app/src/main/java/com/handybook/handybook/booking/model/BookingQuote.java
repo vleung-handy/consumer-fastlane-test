@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.model;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -89,6 +90,7 @@ public class BookingQuote extends Observable
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
 
+
     public static class QuoteConfig implements Serializable
     {
         @SerializedName("disclaimer_text")
@@ -114,6 +116,7 @@ public class BookingQuote extends Observable
 
     /**
      * each item returned in this array should be a constant in BookingRecurrence
+     *
      * @return
      */
     public int[] getRecurrenceOptions()
@@ -293,6 +296,19 @@ public class BookingQuote extends Observable
     public float[] getPricing(final float hours, final int freq)
     {
         final BookingPriceInfo info = getPriceTableMap().get(hours);
+        if (info == null)
+        {
+            try
+            {
+                Crashlytics.log(toJson());
+            }
+            catch (Exception e)
+            {
+                Crashlytics.log("BookingQuote toJSON failed.");
+            }
+            Crashlytics.logException(new NullPointerException("BookingPriceInfo is null"));
+            return new float[]{};
+        }
 
         switch (freq)
         {
