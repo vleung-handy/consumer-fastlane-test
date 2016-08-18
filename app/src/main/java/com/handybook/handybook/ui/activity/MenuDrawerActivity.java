@@ -34,6 +34,7 @@ import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
@@ -48,20 +49,21 @@ import butterknife.ButterKnife;
 public abstract class MenuDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     private static final String TAG = MenuDrawerActivity.class.getName();
-    private static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
-    private static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
+    protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
+    protected static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
 
     @Bind(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+    protected DrawerLayout mDrawerLayout;
 
     @Bind(R.id.navigation)
-    NavigationView mNavigationView;
+    protected NavigationView mNavigationView;
+
     @Inject
     EnvironmentModifier mEnvironmentModifier;
 
     protected boolean disableDrawer;
     protected Configuration mConfiguration;
-    private boolean mShouldShowNavForTransition;
+    protected boolean mShouldShowNavForTransition;
     private Object mBusEventListener;
 
     protected abstract Fragment createFragment();
@@ -305,6 +307,9 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
             case R.id.nav_menu_my_pro_team:
                 mBus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.OpenTapped(SourcePage.SIDE_MENU)));
                 navigateToActivity(ProTeamActivity.class, menuItem.getItemId());
+                return true;
+            case R.id.nav_menu_history:
+                navigateToActivity(HistoryActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_payment:
                 navigateToActivity(UpdatePaymentActivity.class, menuItem.getItemId());

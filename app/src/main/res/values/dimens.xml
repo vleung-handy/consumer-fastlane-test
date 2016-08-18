@@ -62,6 +62,8 @@
     <dimen name="pro_team_star_width_height">16dp</dimen>
     <dimen name="pro_team_star_margin">3dp</dimen>
     <dimen name="pro_team_bookings_margin">5dp</dimen>
+    <dimen name="booking_list_item_height">80dp</dimen>
+    <dimen name="list_item_left_margin">40dp</dimen>
 
     <!-- For ratings grid -->
     <dimen name="grid_image_width">80dp</dimen>
@@ -73,9 +75,14 @@
     <dimen name="image_toggle_button_height">48dp</dimen>
     <dimen name="rating_star_margin">4dp</dimen>
     <dimen name="one_third_width">120dp</dimen>
-    <dimen name="profile_card_image_size">40dp</dimen>
 
     <!-- Referral -->
     <dimen name="referral_image_height">184dp</dimen>
     <dimen name="referral_image_width">248dp</dimen>
+    <dimen name="profile_card_image_size">40dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="active_booking_map_height">250dp</dimen>
 </resources>

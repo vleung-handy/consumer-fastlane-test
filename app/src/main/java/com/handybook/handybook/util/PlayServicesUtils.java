@@ -1,7 +1,6 @@
 package com.handybook.handybook.util;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -16,7 +15,6 @@ public class PlayServicesUtils
         switch (statusCode)
         {
             case ConnectionResult.SUCCESS:
-                Toast.makeText(context, "SUCCESS", Toast.LENGTH_SHORT).show();
                 return true;
             case ConnectionResult.SERVICE_MISSING:
                 return false;

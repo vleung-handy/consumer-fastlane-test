@@ -10,6 +10,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -29,20 +30,36 @@ public class BookingUtil
 
     //Service to Service Icon resource id mapping
     private static final Map<String, Integer> SERVICE_ICONS;
+    private static final Map<String, Integer> SERVICE_OUTLINE_ICONS;
+    private static final Map<String, Integer> PAST_SERVICE_ICONS;
 
     static
     {
         SERVICE_ICONS = new HashMap<>();
-        //Cleaning
         SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_cleaner_fill);
-        //Handyman
-        SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handyman_fill); //there are many handyman services, not sure how they all map
+        SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handyman_fill);
         SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_painter_fill);
         SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_plumber_fill);
         SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_electrician_fill);
+
+        SERVICE_OUTLINE_ICONS = new HashMap<>();
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_service_cleaning_outline_84);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_service_handyman_outline_84);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_service_painting_outline_84);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_service_plumbing_outline_84);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_service_electrical_outline_84);
+
+        PAST_SERVICE_ICONS = new HashMap<>();
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_cleaner_gray);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handyman_gray);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_painter_gray);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_plumber_gray);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_electrician_gray);
     }
 
     private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_cleaner_fill;
+    private static final Integer DEFAULT_SERVICE_OUTLINE_ICON_RESOURCE_ID = R.drawable.ic_service_cleaning_outline;
+    private static final Integer DEFAULT_PAST_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_cleaner_gray;
 
 
     /**
@@ -129,6 +146,12 @@ public class BookingUtil
     public static final int MINUTES_PER_HOUR = 60;
     public static final String DURATION_FORMAT = "#.#";
 
+
+    public enum IconType
+    {
+        FILL, OUTLINE, GRAY
+    }
+
     public static String getSubtitle(Booking booking, Context context)
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
@@ -155,24 +178,79 @@ public class BookingUtil
         return subtitle;
     }
 
+    /**
+     * Returns in the form of "Monday, August 15"
+     *
+     * @param booking
+     * @return
+     */
     public static String getTitle(Booking booking)
     {
 //        FIXME: JIA: remove the booking id part once done testing.
         return TextUtils.formatDate(booking.getStartDate(), TITLE_DATE_FORMAT) + " " + booking.getId();
     }
 
-
-    public static Integer getIconForService(String serviceMachineName)
+    /**
+     * Return in the form of Monday's @ 2:00pm - 3 hours
+     *
+     * @param rb
+     * @return
+     */
+    public static String getRecurrenceSubTitle(UserRecurringBooking rb)
     {
-        Integer iconResourceId = DEFAULT_SERVICE_ICON_RESOURCE_ID;
+        return DateTimeUtils.getDayOfWeek(rb.getDateStart()) + "\'s" + " @ " + getRecurrenceSubTitle2(rb);
+    }
+
+    /**
+     * Return in the form of 2:00pm - 3 hours
+     *
+     * @param rb
+     * @return
+     */
+    public static String getRecurrenceSubTitle2(UserRecurringBooking rb)
+    {
+        return DateTimeUtils.getTime(rb.getDateStart()) + " - " + rb.getHours() + " hours";
+    }
+
+    public static Integer getIconForService(String serviceMachineName, IconType iconType)
+    {
         if (!android.text.TextUtils.isEmpty(serviceMachineName))
         {
-            if (SERVICE_ICONS.containsKey(serviceMachineName))
+            switch (iconType)
             {
-                return SERVICE_ICONS.get(serviceMachineName);
+                case FILL:
+                    if (SERVICE_ICONS.containsKey(serviceMachineName))
+                    {
+                        return SERVICE_ICONS.get(serviceMachineName);
+                    }
+                    break;
+                case OUTLINE:
+                    if (SERVICE_OUTLINE_ICONS.containsKey(serviceMachineName))
+                    {
+                        return SERVICE_OUTLINE_ICONS.get(serviceMachineName);
+                    }
+                    break;
+                case GRAY:
+                    if (PAST_SERVICE_ICONS.containsKey(serviceMachineName))
+                    {
+                        return PAST_SERVICE_ICONS.get(serviceMachineName);
+                    }
+                    break;
             }
         }
-        return iconResourceId;
+
+        //if it gets to this point, nothing was found, so return the default icons
+        switch (iconType)
+        {
+            case FILL:
+                return DEFAULT_SERVICE_ICON_RESOURCE_ID;
+            case OUTLINE:
+                return DEFAULT_SERVICE_OUTLINE_ICON_RESOURCE_ID;
+            case GRAY:
+                return DEFAULT_PAST_SERVICE_ICON_RESOURCE_ID;
+        }
+
+        return DEFAULT_SERVICE_ICON_RESOURCE_ID;
     }
 
     public static void callPhoneNumber(final String phoneNumber, Context context)

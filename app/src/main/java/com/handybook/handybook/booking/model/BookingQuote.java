@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.model;
 
 import com.crashlytics.android.Crashlytics;
+import android.support.annotation.Nullable;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -293,6 +294,7 @@ public class BookingQuote extends Observable
                 && info.getWeeklyPrice() <= 0);
     }
 
+    @Nullable
     public float[] getPricing(final float hours, final int freq)
     {
         final BookingPriceInfo info = getPriceTableMap().get(hours);
@@ -310,6 +312,10 @@ public class BookingQuote extends Observable
             return new float[]{};
         }
 
+        if (info == null)
+        {
+            return null;
+        }
         switch (freq)
         {
             case 1:

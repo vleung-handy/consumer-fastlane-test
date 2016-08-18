@@ -3,6 +3,7 @@ package com.handybook.handybook.util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class DateTimeUtils
@@ -14,6 +15,14 @@ public class DateTimeUtils
             "'@' h:mm a");
     public final static DateFormat MONTH_AND_DAY_FORMATTER = new SimpleDateFormat("MMM d");
 
+    public final static SimpleDateFormat DAY_OF_WEEK_MONTH_DAY_FORMATTER =
+            new SimpleDateFormat("EEEE, MMMM d", Locale.getDefault());
+
+    public final static SimpleDateFormat DAY_OF_WEEK_FORMATTER =
+            new SimpleDateFormat("EEEE", Locale.getDefault());
+
+    public final static SimpleDateFormat LOCAL_TIME_12_HOURS =
+            new SimpleDateFormat("h:mm aaa", Locale.getDefault());
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -60,5 +69,34 @@ public class DateTimeUtils
     {
         long diff = Math.abs(date2.getTime() - date1.getTime());
         return diff / 1000 % 60;
+    }
+
+
+    /**
+     * Day of the week/
+     * Monday, Tuesday, Wednesday, etc.
+     *
+     * @param date
+     * @return
+     */
+    public static String getDayOfWeek(Date date)
+    {
+        return DAY_OF_WEEK_FORMATTER.format(date);
+    }
+
+    public static String getTime(Date date)
+    {
+        return LOCAL_TIME_12_HOURS.format(date);
+    }
+
+    /**
+     * Returns in the form of Friday, Sept 12
+     *
+     * @param date
+     * @return
+     */
+    public static String getDayMonthDay(Date date)
+    {
+        return DAY_OF_WEEK_MONTH_DAY_FORMATTER.format(date);
     }
 }

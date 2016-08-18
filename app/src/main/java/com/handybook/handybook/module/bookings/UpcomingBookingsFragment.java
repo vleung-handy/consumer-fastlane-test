@@ -1,6 +1,9 @@
 package com.handybook.handybook.module.bookings;
 
+import android.animation.LayoutTransition;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,11 +22,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.constant.ActivityResult;
@@ -32,6 +37,7 @@ import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.BookingListItem;
 import com.handybook.handybook.ui.view.ExpandableCleaningPlan;
+import com.handybook.handybook.ui.view.NoBookingsView;
 import com.handybook.handybook.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
@@ -62,32 +68,34 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Bind(R.id.scroll_view)
     ScrollView mScrollView;
 
+    @Bind(R.id.main_container)
+    LinearLayout mMainContainer;
+
     @Bind(R.id.bookings_container)
     LinearLayout mBookingsContainer;
+
+    @Bind(R.id.parent_bookings_container)
+    LinearLayout mParentBookingsContainer;
 
     @Bind(R.id.active_booking_container)
     LinearLayout mActiveBookingContainer;
 
-    @Bind(R.id.card_empty)
-    View mNoBookingsView;
+    @Bind(R.id.active_plan_no_booking_container)
+    NoBookingsView mNoBookingsView;
 
-    @Bind(R.id.card_empty_text)
-    TextView mNoBookingsText;
+    @Bind(R.id.text_upcoming_bookings)
+    TextView mTextUpcomingBookings;
 
     @Bind(R.id.expanable_cleaning_plan)
     ExpandableCleaningPlan mExpandableCleaningPlan;
 
     private List<Booking> mBookings;
-    private List<RecurringBooking> mRecurringBookings;
+    private List<UserRecurringBooking> mRecurringBookings;
     private int mActivePlanCount;
     private List<Service> mServices;
 
     private boolean mServiceRequestCompleted = false;
     private boolean mBookingsRequestCompleted = false;
-
-
-    //FIXME: JIA: make this come from the server.
-    private boolean mShouldShowMapView = true;
 
     public UpcomingBookingsFragment()
     {
@@ -112,7 +120,9 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (resultCode == ActivityResult.BOOKING_UPDATED
                 || resultCode == ActivityResult.BOOKING_CANCELED)
         {
-            loadBookings();
+            //this happens before onResume, so we just have to null out the bookings and it'll reload onResume.
+            mBookings = null;
+            mRecurringBookings = null;
         }
     }
 
@@ -158,6 +168,10 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 R.color.handy_service_plumber
         );
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+        {
+            mMainContainer.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        }
         return view;
     }
 
@@ -205,23 +219,44 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         bus.post(new BookingEvent.RequestBookings(Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING));
     }
 
-
     private void bindBookingsToList()
     {
-        if (mBookings != null)
+        if (mBookings != null && !mBookings.isEmpty())
         {
-            //FIXME: remove this hard coding indexes
-            ActiveBookingFragment frag = ActiveBookingFragment.newInstance(mBookings.get(0));
-            frag.setParentScrollView(mScrollView);
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.active_booking_container, frag, mBookings.get(0).getId())
-                    .commit();
-
-            mActiveBookingContainer.setVisibility(View.VISIBLE);
-
-            for (int i = 1; i < mBookings.size(); i++)
+            //active bookings, if any, are always at the top of the list.
+            int i = 0;
+            for (int x = i; x < mBookings.size(); x++)
             {
-                Booking booking = mBookings.get(i);
+                Booking booking = mBookings.get(x);
+                if (booking.getActiveBookingStatus() != null && booking.getActiveBookingStatus().isMapEnabled())
+                {
+
+                    if (getChildFragmentManager().findFragmentByTag(booking.getId()) == null)
+                    {
+                        ActiveBookingFragment frag = ActiveBookingFragment.newInstance(booking);
+                        frag.setParentScrollView(mScrollView);
+
+                        //important here to use booking id as TAG, so that there aren't conflicts with multiple active bookings.
+                        getChildFragmentManager().beginTransaction()
+                                .add(R.id.active_booking_container, frag, booking.getId())
+                                .commit();
+                    }
+
+                    mActiveBookingContainer.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    //at this index, we no longer have active bookings.
+                    i = x;
+                    break;
+                }
+            }
+
+            //the rest of the bookings that are not "active"
+            mBookingsContainer.removeAllViews();
+            for (int x = i; x < mBookings.size(); x++)
+            {
+                Booking booking = mBookings.get(x);
                 mBookingsContainer.addView(new BookingListItem(
                         getActivity(),
                         new View.OnClickListener()
@@ -230,7 +265,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                             public void onClick(final View v)
                             {
                                 final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
-                                Booking booking = (Booking) v.getTag();
+                                Booking booking = ((BookingListItem) v).getBooking();
                                 intent.putExtra(BundleKeys.BOOKING, booking);
                                 getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                             }
@@ -239,10 +274,63 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                         booking
                 ));
 
+                //add divider
                 mBookingsContainer.addView(getActivity().getLayoutInflater().inflate(R.layout.layout_divider, mBookingsContainer, false));
+            }
+        }
+    }
+
+    /**
+     * There are quite a bit of views that show/hide. This method manages all those states
+     */
+    private void updateVisibilityState()
+    {
+        if (mBookings == null || mBookings.isEmpty())
+        {
+            //no bookings
+            mParentBookingsContainer.setVisibility(View.GONE);
+
+            if (mActivePlanCount > 0)
+            {
+                //if there are plans, show active plan, no booking view
+                mNoBookingsView.bindForNoRecurringBookings(mRecurringBookings);
+            }
+            else
+            {
+                mNoBookingsView.bindForNoBookingsAtAll();
+            }
+
+            mNoBookingsView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            //there are bookings
+            mParentBookingsContainer.setVisibility(View.VISIBLE);
+            mNoBookingsView.setVisibility(View.GONE);
+
+            //if the active bookings are showing, and there are inactive bookings, then show the "upcoming text"
+            if (mActiveBookingContainer.getVisibility() == View.VISIBLE
+                    && mBookingsContainer.getChildCount() > 0)
+            {
+                mTextUpcomingBookings.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mTextUpcomingBookings.setVisibility(View.GONE);
             }
 
         }
+
+        //active cleaning plans display independently of bookings
+        if (mActivePlanCount > 0)
+        {
+            mExpandableCleaningPlan.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mExpandableCleaningPlan.setVisibility(View.GONE);
+        }
+
     }
 
     @Subscribe
@@ -259,22 +347,22 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     {
         mBookingsRequestCompleted = true;
         Log.d(TAG, "onReceiveBookingsSuccess: " + event.getOnlyBookingsValue());
+        mBookings = event.getBookingWrapper().getBookings();
+
         if (event.getBookingWrapper().getRecurringBookings() != null &&
                 !event.getBookingWrapper().getRecurringBookings().isEmpty())
         {
-            mActivePlanCount = event.getBookingWrapper().getRecurringBookings().size();
+            //FIXME: Howard is going to make a new endpoint for editing recurring sequence, that will allow changing frequency when there is no booking generated.
             mRecurringBookings = event.getBookingWrapper().getRecurringBookings();
+            mActivePlanCount = mRecurringBookings.size();
         }
         else
         {
             mActivePlanCount = 0;
         }
 
-        mBookings = event.getBookingWrapper().getBookings();
-
         setupBookingsView();
     }
-
 
     @Subscribe
     public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e)
@@ -297,28 +385,36 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
             if (mActivePlanCount > 0)
             {
-                mExpandableCleaningPlan.setVisibility(View.VISIBLE);
                 mExpandableCleaningPlan.bind(new View.OnClickListener()
                                              {
                                                  @Override
                                                  public void onClick(final View v)
                                                  {
-                                                     RecurringBooking rb = (RecurringBooking) v.getTag();
-                                                     Toast.makeText(getContext(), "Plan clicked: " + rb.getId(), Toast.LENGTH_SHORT).show();
+                                                     UserRecurringBooking rb = (UserRecurringBooking) v.getTag();
+                                                     Booking booking = getBookingWithRecurringId(rb.getId());
+
+                                                     if (booking != null)
+                                                     {
+                                                         final Intent intent = new Intent(UpcomingBookingsFragment.this.getActivity(), BookingEditFrequencyActivity.class);
+                                                         intent.putExtra(BundleKeys.BOOKING, booking);
+                                                         Activity activity = UpcomingBookingsFragment.this.getActivity();
+                                                         activity.startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
+                                                     }
+                                                     else
+                                                     {
+                                                         //this should never happen, but just in case it does.
+                                                         Toast.makeText(UpcomingBookingsFragment.this.getActivity(), R.string.unable_to_edit_plan, Toast.LENGTH_SHORT).show();
+                                                     }
                                                  }
                                              },
                         mRecurringBookings,
                         getActiveCountString());
             }
-            else
-            {
-                mExpandableCleaningPlan.setVisibility(View.GONE);
-            }
 
             bindBookingsToList();
+            updateVisibilityState();
 
-//        FIXME: JIA: only disable this when the mapview is turned on.
-            if (mShouldShowMapView)
+            if (mActiveBookingContainer.getVisibility() == View.VISIBLE)
             {
                 //if we're showing the map, disable this pull to refresh thing.
                 mSwipeRefreshLayout.setEnabled(false);
@@ -348,6 +444,28 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         }
     }
 
+    /**
+     * Takes in a recurring id, and finds the first booking that has such recurring id.
+     *
+     * @param id
+     * @return
+     */
+    private Booking getBookingWithRecurringId(final String id)
+    {
+        for (Booking booking : mBookings)
+        {
+            if (booking.getRecurringId() != null && String.valueOf(booking.getRecurringId()).equals(id))
+            {
+                return booking;
+            }
+        }
+
+        Crashlytics.logException(new RuntimeException("User requested to edit recurrence with id:"
+                + id + " but there is no booking with such recurrence id."));
+
+        return null;
+    }
+
     private String getActiveCountString()
     {
         if (mActivePlanCount > 0)
@@ -371,7 +489,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
         if (mBookings == null || mBookings.isEmpty())
         {
-            mNoBookingsView.setVisibility(View.GONE);
             loadBookings();
         }
         else

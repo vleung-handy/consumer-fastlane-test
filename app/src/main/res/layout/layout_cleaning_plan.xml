@@ -1,14 +1,11 @@
-<LinearLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/handy_background_gray"
-    android:animateLayoutChanges="true"
+
     >
 
     <FrameLayout
+        android:id="@+id/header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -58,8 +55,14 @@
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="gone"
+        android:animateLayoutChanges="true"
         >
 
     </LinearLayout>
 
-</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/handy_dark_divider_line"
+        />
+</merge>

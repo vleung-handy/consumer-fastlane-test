@@ -17,8 +17,9 @@
         >
 
         <FrameLayout
+            android:id="@+id/map_container"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="@dimen/active_booking_map_height"
             >
 
             <com.google.android.gms.maps.MapView
@@ -27,7 +28,21 @@
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 tools:visibility="visible"
-                ></com.google.android.gms.maps.MapView>
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/text_pro_location_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="@dimen/default_margin_half"
+                android:layout_marginBottom="@dimen/default_margin"
+                tools:text="@string/pro_location_time_formatted"
+                android:background="@color/btn_white_transparent"
+                android:textColor="@color/handy_text_gray"
+                android:padding="@dimen/default_padding_half"
+                />
 
             <ImageView
                 android:id="@+id/transparent_image"

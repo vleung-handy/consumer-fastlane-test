@@ -11,7 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
+import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.util.UiUtils;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Use with R.layout.layout_cleaning_plan
  */
-public class ExpandableCleaningPlan extends FrameLayout
+public class ExpandableCleaningPlan extends LinearLayout
 {
 
     @Bind(R.id.text_view_title)
@@ -40,6 +42,9 @@ public class ExpandableCleaningPlan extends FrameLayout
     @Bind(R.id.divider)
     View mDivider;
 
+    @Bind(R.id.header_container)
+    FrameLayout mHeaderContainer;
+
     public ExpandableCleaningPlan(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
@@ -55,6 +60,8 @@ public class ExpandableCleaningPlan extends FrameLayout
         mButtonExpand.setVisibility(View.GONE);
         mImageCollapse.setVisibility(View.VISIBLE);
         mDivider.setVisibility(View.VISIBLE);
+
+        UiUtils.extendTouchArea(mHeaderContainer, mImageCollapse);
     }
 
     @OnClick(R.id.image_plan_collapse)
@@ -68,44 +75,34 @@ public class ExpandableCleaningPlan extends FrameLayout
 
     public void bind(
             final View.OnClickListener clickListener,
-            final List<RecurringBooking> recurringBookings,
+            final List<UserRecurringBooking> recurringBookings,
             final String activePlanCountTitle
     )
     {
         mTextView.setText(activePlanCountTitle);
-        if (recurringBookings.size() != mPlanContainer.getChildCount())
+        mPlanContainer.removeAllViews();
+        for (final UserRecurringBooking recurringBooking : recurringBookings)
         {
-            mPlanContainer.removeAllViews();
-            for (final RecurringBooking recurringBooking : recurringBookings)
-            {
-                View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, mPlanContainer, false);
-                view.setTag(recurringBooking);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, mPlanContainer, false);
+            view.setTag(recurringBooking);
 
-                Button editButton = (Button) view.findViewById(R.id.button_edit);
-                editButton.setTag(recurringBooking);
-                TextView title = (TextView) view.findViewById(R.id.text_plan_title);
-                TextView subTitle = (TextView) view.findViewById(R.id.text_plan_subtitle);
+            Button editButton = (Button) view.findViewById(R.id.button_edit);
+            editButton.setTag(recurringBooking);
+            TextView title = (TextView) view.findViewById(R.id.text_plan_title);
+            TextView subTitle = (TextView) view.findViewById(R.id.text_plan_subtitle);
 
-                title.setText(getTitle(recurringBooking));
-                subTitle.setText(getSubTitle(recurringBooking));
+            title.setText(getTitle(recurringBooking));
+            subTitle.setText(BookingUtil.getRecurrenceSubTitle(recurringBooking));
 
-                editButton.setOnClickListener(clickListener);
-                view.setOnClickListener(clickListener);
+            editButton.setOnClickListener(clickListener);
+            view.setOnClickListener(clickListener);
 
-                mPlanContainer.addView(view);
-            }
+            mPlanContainer.addView(view);
         }
     }
 
-    private String getTitle(RecurringBooking booking)
+    private String getTitle(UserRecurringBooking booking)
     {
-        //FIXME: JIA: update this
-        return "Monthly Home Cleaning";
-    }
-
-    private String getSubTitle(RecurringBooking booking)
-    {
-        //FIXME: JIA: update this
-        return "Monday's @ 2pm - 3 hours.";
+        return booking.getServiceName() + " (" + booking.getRecurringStringShort() + ")";
     }
 }

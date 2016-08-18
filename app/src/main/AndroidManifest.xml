@@ -53,7 +53,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -236,7 +235,6 @@
                 android:value="com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity"
                 />
         </activity>
-
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
@@ -310,14 +308,12 @@
             android:value="true"
             />
 
-
-        <!--For google maps andm other google services-->
-        <!--FIXME: JIA: make this use the official handy API key, instead of Jia's own API key-->
+        <!-- For google maps andm other google services -->
+        <!-- FIXME: JIA: make this use the official handy API key, instead of Jia's own API key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAxZkM2_NVOoHBRyheb_56nGU9zo8wsyng"
+            android:value="AIzaSyAbigRaEkIHF8vyCE-8wuvANRwrhvzJn4w"
             />
-
 
         <!-- URBAN AIRSHIP -->
 
@@ -442,6 +438,10 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".module.bookings.HistoryActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

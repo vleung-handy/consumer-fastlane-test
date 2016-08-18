@@ -29,7 +29,7 @@ public class ServiceIconImageView extends ImageView
 
     public void updateServiceIconByBooking(Booking booking, List<Service> services)
     {
-        Integer iconResourceId = BookingUtil.getIconForService(BookingUtil.findParentService(booking, services));
+        Integer iconResourceId = BookingUtil.getIconForService(BookingUtil.findParentService(booking, services), BookingUtil.IconType.FILL);
         setImageResource(iconResourceId);
     }
 

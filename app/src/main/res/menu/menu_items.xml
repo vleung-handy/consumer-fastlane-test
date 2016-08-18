@@ -27,6 +27,13 @@
             />
 
         <item
+            android:id="@id/nav_menu_history"
+            android:checked="false"
+            android:title="@string/history"
+            android:icon="@drawable/menu_history"
+            />
+
+        <item
             android:id="@+id/nav_menu_free_cleanings"
             android:checked="false"
             android:title="@string/free_cleanings"
