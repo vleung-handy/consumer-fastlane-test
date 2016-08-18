@@ -113,8 +113,6 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
     };
 
-    //    FIXME -- use API value for this.
-    private boolean mShouldShowMap = true;
     private ScrollView mParentScrollView;
 
     public static ActiveBookingFragment newInstance(Booking booking)
@@ -139,7 +137,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             mBooking = getArguments().getParcelable(KEY_BOOKING);
         }
 
-        if (mBooking != null && mShouldShowMap)
+        if (mBooking != null)
         {
 
             if (PlayServicesUtils.hasPlayServices(getActivity()))

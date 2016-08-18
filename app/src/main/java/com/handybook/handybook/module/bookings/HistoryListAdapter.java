@@ -15,12 +15,9 @@ import java.util.List;
  */
 public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-
-    private static final String TAG = HistoryListAdapter.class.getName();
-
-    protected List<Booking> mBookings;
-    protected View.OnClickListener mOnClickListener;
-    protected List<Service> mServices;
+    private List<Booking> mBookings;
+    private View.OnClickListener mOnClickListener;
+    private List<Service> mServices;
 
     public HistoryListAdapter(final List<Booking> bookings, final View.OnClickListener onClickListener, final List<Service> services)
     {

@@ -308,8 +308,6 @@
             android:value="true"
             />
 
-        <!-- For google maps andm other google services -->
-        <!-- FIXME: JIA: make this use the official handy API key, instead of Jia's own API key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAbigRaEkIHF8vyCE-8wuvANRwrhvzJn4w"
