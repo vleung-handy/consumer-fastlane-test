@@ -28,7 +28,6 @@ import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.logger.mixpanel.MixpanelEvent;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.BookingListItem;
@@ -185,8 +184,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @OnClick(R.id.add_booking_button)
     public void onServicesButtonClicked()
     {
-        bus.post(new MixpanelEvent.TrackAddBookingFabClicked());
-
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null)
         {
@@ -306,7 +303,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                                                  @Override
                                                  public void onClick(final View v)
                                                  {
-
                                                      RecurringBooking rb = (RecurringBooking) v.getTag();
                                                      Toast.makeText(getContext(), "Plan clicked: " + rb.getId(), Toast.LENGTH_SHORT).show();
                                                  }

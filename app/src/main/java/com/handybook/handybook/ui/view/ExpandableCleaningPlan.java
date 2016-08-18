@@ -61,8 +61,8 @@ public class ExpandableCleaningPlan extends FrameLayout
     public void collapse()
     {
         mPlanContainer.setVisibility(View.GONE);
-        mImageCollapse.setVisibility(View.GONE);
         mButtonExpand.setVisibility(View.VISIBLE);
+        mImageCollapse.setVisibility(View.GONE);
         mDivider.setVisibility(View.GONE);
     }
 
