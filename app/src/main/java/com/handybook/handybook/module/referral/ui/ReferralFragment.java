@@ -151,6 +151,10 @@ public class ReferralFragment extends InjectedFragment
             ReferralsEvent.ReceivePrepareReferralsSuccess event
     )
     {
+        if (event.isForDialog())
+        {
+            return;
+        }
         mIsReferralInfoFresh = true;
         mReferralDescriptor = event.getReferralResponse().getReferralDescriptor();
         mReferralChannels = mReferralDescriptor.getReferralChannelsForSource(
