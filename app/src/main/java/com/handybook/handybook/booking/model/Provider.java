@@ -3,7 +3,9 @@ package com.handybook.handybook.booking.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.util.StringUtils;
 
 public final class Provider implements Parcelable
 {
@@ -54,6 +56,25 @@ public final class Provider implements Parcelable
     final void setPhone(final String phone)
     {
         this.phone = phone;
+    }
+
+    /**
+     * TODO temporary logic. eventually make the server return this
+     * @return the provider's first name and last initial in the format: Aaaaa B.
+     *
+     */
+    public final String getFirstNameAndLastInitial()
+    {
+        String firstNameAndLastInitial = "";
+        if (!Strings.isNullOrEmpty(firstName))
+        {
+            firstNameAndLastInitial += StringUtils.capitalizeFirstCharacter(firstName);
+        }
+        if (!Strings.isNullOrEmpty(lastName))
+        {
+            firstNameAndLastInitial += (" " + Character.toUpperCase(lastName.charAt(0)) + ".");
+        }
+        return firstNameAndLastInitial;
     }
 
     public final String getFullName()
