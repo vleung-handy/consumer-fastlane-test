@@ -195,10 +195,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Override
     public void showReferralDialog(final ReferralResponse referralResponse)
     {
-        final ReferralDialogFragment dialogFragment =
-                ReferralDialogFragment.newInstance(referralResponse.getReferralDescriptor());
-        FragmentUtils.safeLaunchDialogFragment(dialogFragment, this,
-                ReferralDialogFragment.class.getSimpleName());
+        if (getSupportFragmentManager().findFragmentByTag(ReferralDialogFragment.TAG) == null)
+        {
+            final ReferralDialogFragment dialogFragment =
+                    ReferralDialogFragment.newInstance(referralResponse.getReferralDescriptor());
+            FragmentUtils.safeLaunchDialogFragment(dialogFragment, this,
+                    ReferralDialogFragment.TAG);
+        }
     }
 
     private void showRequiredUserModals()
@@ -211,6 +214,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(ReferralDialogFragment.TAG) != null
                 || !(
                 BaseActivity.this instanceof ServiceCategoriesActivity
                         || BaseActivity.this instanceof BookingDetailActivity

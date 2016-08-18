@@ -25,6 +25,8 @@ import butterknife.OnClick;
 
 public class ReferralDialogFragment extends BaseDialogFragment
 {
+    public static final String TAG = ReferralDialogFragment.class.getSimpleName();
+
     @Bind(R.id.dialog_referral_subtitle)
     TextView mSubtitle;
 
