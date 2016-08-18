@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,25 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.ProviderJobStatus;
+import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.view.ProMilestoneView;
+import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
+import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -169,12 +181,86 @@ public final class ReportIssueFragment extends InjectedFragment
                 @Override
                 public void onClick(final View v)
                 {
-                    Uri uri = Uri.parse(deepLinkWrapper.getDeeplink());
-                    Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
-                    Utils.safeLaunchIntent(deepLinkIntent, getContext());
+                    if (ProviderJobStatus.DeepLinkWrapper.TYPE_CANCEL.equals(deepLinkWrapper.getType()))
+                    {
+                        // show cancel page
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                                BookingDetailsLog.EventType.SELECTED,
+                                mBooking.getId())
+                        ));
+
+                        bus.post(new BookingEvent.RequestPreCancelationInfo(mBooking.getId()));
+                    }
+                    else if (ProviderJobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType()))
+                    {
+                        // show reschedule page
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
+                                BookingDetailsLog.EventType.SELECTED,
+                                mBooking.getId(),
+                                mBooking.getStartDate(),
+                                null))
+                        );
+
+                        bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
+                    }
+                    else if (!Strings.isNullOrEmpty(deepLinkWrapper.getDeeplink()))
+                    {
+                        // should parse deeplink and fallback url
+                        Uri uri = Uri.parse(deepLinkWrapper.getDeeplink());
+                        Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
+                        Utils.safeLaunchIntent(deepLinkIntent, getContext());
+                    }
                 }
             });
             mDeepLinksLayout.addView(view);
         }
+    }
+
+    @Subscribe
+    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
+    {
+        removeUiBlockers();
+
+        Pair<String, List<String>> result = event.result;
+
+        final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
+        if (result.second != null)
+        {
+            intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
+        }
+        else
+        {
+            intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>());
+        }
+        intent.putExtra(BundleKeys.NOTICE, result.first);
+        intent.putExtra(BundleKeys.BOOKING, mBooking);
+        startActivityForResult(intent, ActivityResult.BOOKING_CANCELED);
+    }
+
+    @Subscribe
+    public void onReceivePreCancellationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
+    {
+        removeUiBlockers();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
+    }
+
+    @Subscribe
+    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event)
+    {
+        removeUiBlockers();
+
+        final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
+        intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, event.notice);
+        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.NORMAL);
+
+        startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+    }
+
+    @Subscribe
+    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event)
+    {
+        removeUiBlockers();
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 }

@@ -98,6 +98,9 @@ public class ProviderJobStatus implements Serializable
 
     public static class DeepLinkWrapper implements Serializable
     {
+        public static final String TYPE_CANCEL = "cancel";
+        public static final String TYPE_RESCHEDULE = "reschedule";
+
         @SerializedName("text")
         private String mText;
         @SerializedName("type")
