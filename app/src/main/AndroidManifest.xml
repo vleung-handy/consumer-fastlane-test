@@ -312,7 +312,7 @@
         <!-- FIXME: JIA: make this use the official handy API key, instead of Jia's own API key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAxZkM2_NVOoHBRyheb_56nGU9zo8wsyng"
+            android:value="AIzaSyAbigRaEkIHF8vyCE-8wuvANRwrhvzJn4w"
             />
 
         <!-- URBAN AIRSHIP -->
