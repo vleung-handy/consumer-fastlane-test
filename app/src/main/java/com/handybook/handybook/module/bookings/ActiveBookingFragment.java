@@ -288,7 +288,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                 Crashlytics.logException(new RuntimeException("Active booking enabled, but no pro location"));
             }
 
-            adjustMap();
+            adjustMapPositioning();
 
         }
     }
@@ -315,7 +315,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             public void onSuccess(final BookingGeoStatus response)
             {
                 mProviderLatLng = new LatLng(response.getProLat(), response.getProLng());
-                adjustMap();
+                adjustMapPositioning();
 
                 //FIXME: JIA: remove this hard code
                 String time = DateTimeUtils.getTime(new Date());
@@ -331,7 +331,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         });
     }
 
-    private void adjustMap()
+    private void adjustMapPositioning()
     {
         if (mGoogleMap == null || !isAdded())
         {
