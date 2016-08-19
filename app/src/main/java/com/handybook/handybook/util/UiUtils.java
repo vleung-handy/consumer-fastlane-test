@@ -14,6 +14,11 @@ import android.view.inputmethod.InputMethodManager;
 
 public final class UiUtils
 {
+    /**
+     * The amount of padding to extend the touch area of a view
+     */
+    private static final int PADDING_AREA = 200;
+
     public static void toggleKeyboard(Activity activity)
     {
         View currentFocus = activity.getCurrentFocus();
@@ -104,10 +109,10 @@ public final class UiUtils
 
                 // Extend the touch area of the ImageButton beyond its bounds
                 // on the right and bottom.
-                delegateArea.right += 200;
-                delegateArea.bottom += 200;
-                delegateArea.left -= 200;
-                delegateArea.top -= 200;
+                delegateArea.right += PADDING_AREA;
+                delegateArea.bottom += PADDING_AREA;
+                delegateArea.left -= PADDING_AREA;
+                delegateArea.top -= PADDING_AREA;
 
                 // Instantiate a TouchDelegate.
                 // "delegateArea" is the bounds in local coordinates of

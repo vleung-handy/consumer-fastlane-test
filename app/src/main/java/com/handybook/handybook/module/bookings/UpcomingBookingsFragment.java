@@ -224,8 +224,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (mBookings != null && !mBookings.isEmpty())
         {
             //active bookings, if any, are always at the top of the list.
-            int i = 0;
-            for (int x = i; x < mBookings.size(); x++)
+            int bookingsIndex = 0;
+            for (int x = bookingsIndex; x < mBookings.size(); x++)
             {
                 Booking booking = mBookings.get(x);
                 if (booking.getActiveBookingStatus() != null && booking.getActiveBookingStatus().isMapEnabled())
@@ -247,14 +247,14 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 else
                 {
                     //at this index, we no longer have active bookings.
-                    i = x;
+                    bookingsIndex = x;
                     break;
                 }
             }
 
             //the rest of the bookings that are not "active"
             mBookingsContainer.removeAllViews();
-            for (int x = i; x < mBookings.size(); x++)
+            for (int x = bookingsIndex; x < mBookings.size(); x++)
             {
                 Booking booking = mBookings.get(x);
                 mBookingsContainer.addView(new BookingListItem(
@@ -447,21 +447,21 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     /**
      * Takes in a recurring id, and finds the first booking that has such recurring id.
      *
-     * @param id
+     * @param recurringId
      * @return
      */
-    private Booking getBookingWithRecurringId(final String id)
+    private Booking getBookingWithRecurringId(final String recurringId)
     {
         for (Booking booking : mBookings)
         {
-            if (booking.getRecurringId() != null && String.valueOf(booking.getRecurringId()).equals(id))
+            if (booking.getRecurringId() != null && String.valueOf(booking.getRecurringId()).equals(recurringId))
             {
                 return booking;
             }
         }
 
         Crashlytics.logException(new RuntimeException("User requested to edit recurrence with id:"
-                + id + " but there is no booking with such recurrence id."));
+                + recurringId + " but there is no booking with such recurrence id."));
 
         return null;
     }

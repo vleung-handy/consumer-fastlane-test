@@ -9,6 +9,8 @@ import java.util.Date;
  */
 public class UserRecurringBooking implements Serializable
 {
+
+    //This is the recurring series id.
     @SerializedName("id")
     private String mId;
 

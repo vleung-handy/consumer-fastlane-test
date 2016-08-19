@@ -53,7 +53,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 {
     private static final String TAG = ActiveBookingFragment.class.getName();
     private static final String KEY_BOOKING = "booking";
-    private static final int GEO_STATUS_PING_INTERVAL = 10000;  //ping for geo status every 10 seconds
+    private static final int GEO_STATUS_PING_INTERVAL_MS = 10000;  //ping for geo status every 10 seconds
 
     @Bind(R.id.text_start_soon_indicator)
     View mStartingSoonIndicator;
@@ -191,13 +191,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             {
                 mProfileContainer.setVisibility(View.VISIBLE);
                 mProfileContainerDivider.setVisibility(View.VISIBLE);
-                mProviderName = mBooking.getProvider().getFirstName();
-
-                if (!TextUtils.isEmpty(mProviderName) && !TextUtils.isEmpty(mBooking.getProvider().getLastName()))
-                {
-                    mProviderName += " " + mBooking.getProvider().getLastName().charAt(0) + ".";
-                }
-
+                mProviderName = mBooking.getProvider().getFirstNameAndLastInitial();
                 mTextProviderName.setText(mProviderName);
 
                 if (!TextUtils.isEmpty(mBooking.getProvider().getPhone()))
@@ -304,7 +298,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         Log.d(TAG, "periodicUpdate: " + getThisName());
         if (mHandler != null)
         {
-            mHandler.postDelayed(mRunnable, GEO_STATUS_PING_INTERVAL);
+            mHandler.postDelayed(mRunnable, GEO_STATUS_PING_INTERVAL_MS);
         }
     }
 
@@ -444,10 +438,15 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
     }
 
+    private boolean isMapBeingShown()
+    {
+        return mMapView != null && mMapView.getVisibility() == View.VISIBLE;
+    }
+
     @Override
     public void onResume()
     {
-        if (mMapView != null && mMapView.getVisibility() == View.VISIBLE)
+        if (isMapBeingShown())
         {
             mMapView.onResume();
         }
@@ -470,7 +469,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Override
     public void onDestroy()
     {
-        if (mMapView != null && mMapView.getVisibility() == View.VISIBLE)
+        if (isMapBeingShown())
         {
             mMapView.onDestroy();
         }
@@ -482,7 +481,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     {
         super.onLowMemory();
 
-        if (mMapView != null && mMapView.getVisibility() == View.VISIBLE)
+        if (isMapBeingShown())
         {
             mMapView.onLowMemory();
         }
