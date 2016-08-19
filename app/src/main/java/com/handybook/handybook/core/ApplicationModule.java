@@ -85,6 +85,7 @@ import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.RateProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
@@ -241,6 +242,7 @@ import retrofit.converter.GsonConverter;
         PushReceiver.class,
         ReferralActivity.class,
         ReferralFragment.class,
+        ReferralDialogFragment.class,
         RedemptionActivity.class,
         RedemptionFragment.class,
         RedemptionSignUpFragment.class,

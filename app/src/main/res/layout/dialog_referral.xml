@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/dialog_referral_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/handy_black_trans"
+    >
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        >
+
+        <LinearLayout
+            android:id="@+id/dialog_referral_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_icon_size"
+            android:background="@drawable/border_grey_bottom"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding"
+            >
+
+            <TextView
+                style="@style/TextView.XLarge.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin_3x"
+                android:gravity="center_horizontal"
+                android:text="@string/referral_title"
+                />
+
+            <TextView
+                android:id="@+id/dialog_referral_subtitle"
+                style="@style/TextView.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:gravity="center_horizontal"
+                android:lineSpacingMultiplier="1"
+                tools:text="@string/referral_dialog_subtitle_formatted"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/default_icon_size_double"
+            android:layout_height="@dimen/default_icon_size_double"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_gift"
+            />
+
+        <ImageView
+            android:id="@+id/dialog_referral_close_button"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_alignEnd="@id/dialog_referral_content"
+            android:layout_alignRight="@id/dialog_referral_content"
+            android:layout_alignTop="@id/dialog_referral_content"
+            android:layout_margin="@dimen/default_margin_quarter"
+            android:alpha=".5"
+            android:paddingBottom="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding_half"
+            android:paddingLeft="@dimen/default_padding"
+            android:paddingRight="@dimen/default_padding_half"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingTop="@dimen/default_padding_half"
+            android:src="@drawable/ic_x_dark"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_referral_content"
+            android:background="@color/white"
+            >
+
+            <Button
+                android:id="@+id/dialog_referral_email_button"
+                style="@style/Button.White"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/border_grey_right"
+                android:drawableLeft="@drawable/ic_email_gray"
+                android:drawableStart="@drawable/ic_email_gray"
+                android:paddingEnd="@dimen/default_padding_double"
+                android:paddingLeft="@dimen/default_padding_double"
+                android:paddingRight="@dimen/default_padding_double"
+                android:paddingStart="@dimen/default_padding_double"
+                android:text="@string/email"
+                android:textColor="@color/handy_tertiary_gray"
+                />
+
+            <Button
+                android:id="@+id/dialog_referral_text_button"
+                style="@style/Button.White"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_text_gray"
+                android:drawableStart="@drawable/ic_text_gray"
+                android:paddingEnd="@dimen/default_padding_double"
+                android:paddingLeft="@dimen/default_padding_double"
+                android:paddingRight="@dimen/default_padding_double"
+                android:paddingStart="@dimen/default_padding_double"
+                android:text="@string/text"
+                android:textColor="@color/handy_tertiary_gray"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>

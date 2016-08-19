@@ -26,6 +26,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
@@ -43,6 +44,7 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.module.referral.model.ReferralResponse;
 import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Bus;
@@ -190,6 +192,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         }
     }
 
+    @Override
+    public void showReferralDialog(final ReferralResponse referralResponse)
+    {
+        if (getSupportFragmentManager().findFragmentByTag(ReferralDialogFragment.TAG) == null)
+        {
+            final ReferralDialogFragment dialogFragment =
+                    ReferralDialogFragment.newInstance(referralResponse.getReferralDescriptor());
+            FragmentUtils.safeLaunchDialogFragment(dialogFragment, this,
+                    ReferralDialogFragment.TAG);
+        }
+    }
+
     private void showRequiredUserModals()
     {
         final FragmentManager fm = getSupportFragmentManager();
@@ -200,6 +214,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
                 || fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) != null
+                || fm.findFragmentByTag(ReferralDialogFragment.TAG) != null
                 || !(
                 BaseActivity.this instanceof ServiceCategoriesActivity
                         || BaseActivity.this instanceof BookingDetailActivity
@@ -263,7 +278,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
                 .newInstance(bookingId, proName, -1, localizedMonetaryAmounts, user.getCurrencyChar());
 
-        boolean successfullyLaunched = FragmentUtils.safeLaunchDialogFragment(
+        FragmentUtils.safeLaunchDialogFragment(
                 rateServiceDialogFragment,
                 BaseActivity.this,
                 RateServiceDialogFragment.class.getSimpleName());
