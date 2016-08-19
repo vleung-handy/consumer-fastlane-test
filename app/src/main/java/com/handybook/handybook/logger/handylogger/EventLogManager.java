@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.handybook.handybook.BuildConfig;
 import com.google.gson.JsonSyntaxException;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.User;
@@ -50,26 +51,29 @@ public class EventLogManager
     @Subscribe
     public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
     {
-        //log the payload to Crashlytics too
-        try
+        if (!BuildConfig.DEBUG)
         {
-            //putting in try/catch block just in case GSON.toJson throws an exception
-            String eventLogJson = GSON.toJson(event.getLog());
-            String crashlyticsLogString =
-                    event.getLog().getEventName()
-                            + ": " + eventLogJson;
-            Crashlytics.log(crashlyticsLogString);
-        }
-        catch (Exception e)
-        {
-            Crashlytics.logException(e);
-        }
+            //log the payload to Crashlytics too
+            try
+            {
+                //putting in try/catch block just in case GSON.toJson throws an exception
+                String eventLogJson = GSON.toJson(event.getLog());
+                String crashlyticsLogString =
+                        event.getLog().getEventName()
+                                + ": " + eventLogJson;
+                Crashlytics.log(crashlyticsLogString);
+            }
+            catch (Exception e)
+            {
+                Crashlytics.logException(e);
+            }
 
-        sLogs.add(new Event(event.getLog()));
-        if (sLogs.size() >= MAX_NUM_PER_BUNDLE)
-        {
-            saveLogs(null);
-            sendLogs(null);
+            sLogs.add(new Event(event.getLog()));
+            if (sLogs.size() >= MAX_NUM_PER_BUNDLE)
+            {
+                saveLogs(null);
+                sendLogs(null);
+            }
         }
     }
 
