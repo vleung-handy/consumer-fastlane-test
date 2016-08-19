@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.ProviderJobStatus;
+import com.handybook.handybook.booking.model.JobStatus;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class ReportIssueFragmentTest extends RobolectricGradleTestWrapper
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     Booking mBooking;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    ProviderJobStatus mProviderJobStatus;
+    JobStatus mJobStatus;
 
     @Before
     public void setUp()
@@ -45,7 +45,7 @@ public class ReportIssueFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldHaveCorrectTitleAndHeader()
     {
-        ReportIssueFragment fragment = ReportIssueFragment.newInstance(mBooking, mProviderJobStatus);
+        ReportIssueFragment fragment = ReportIssueFragment.newInstance(mBooking, mJobStatus);
         SupportFragmentTestUtil.startFragment(fragment, AppCompatActivity.class);
 
         assertEquals(fragment.getString(R.string.help),
@@ -59,18 +59,17 @@ public class ReportIssueFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldShowMilestones()
     {
-        ProviderJobStatus.Milestone[] milestones = new ProviderJobStatus.Milestone[6];
-        ProviderJobStatus.Action[] actions = new ProviderJobStatus.Action[1];
-        actions[0] = new ProviderJobStatus.Action("call_or_text");
-        milestones[0] = new ProviderJobStatus.Milestone("On their way", "Your pro, John, is on his way", ProviderJobStatus.Milestone.COMPLETE, null, new Date());
-        milestones[1] = new ProviderJobStatus.Milestone("incomplete", "incomplete", ProviderJobStatus.Milestone.INCOMPLETE, actions, new Date());
-        milestones[2] = new ProviderJobStatus.Milestone("warning", "warning", ProviderJobStatus.Milestone.WARNING, null, new Date());
-        milestones[3] = new ProviderJobStatus.Milestone("error", "error", ProviderJobStatus.Milestone.ERROR, null, new Date());
-        milestones[4] = new ProviderJobStatus.Milestone("invalid", "invalid", ProviderJobStatus.Milestone.INVALID, null, new Date());
-        milestones[5] = new ProviderJobStatus.Milestone("", "", "", null, new Date());
-        when(mProviderJobStatus.getMilestones()).thenReturn(milestones);
+        JobStatus.Milestone[] milestones = new JobStatus.Milestone[6];
+        JobStatus.Action actions = new JobStatus.Action("call_sms_contact");
+        milestones[0] = new JobStatus.Milestone("On their way", "Your pro, John, is on his way", JobStatus.Milestone.COMPLETE, null, new Date());
+        milestones[1] = new JobStatus.Milestone("incomplete", "incomplete", JobStatus.Milestone.INCOMPLETE, actions, new Date());
+        milestones[2] = new JobStatus.Milestone("warning", "warning", JobStatus.Milestone.WARNING, null, new Date());
+        milestones[3] = new JobStatus.Milestone("error", "error", JobStatus.Milestone.ERROR, null, new Date());
+        milestones[4] = new JobStatus.Milestone("invalid", "invalid", JobStatus.Milestone.INVALID, null, new Date());
+        milestones[5] = new JobStatus.Milestone("", "", "", null, new Date());
+        when(mJobStatus.getMilestones()).thenReturn(milestones);
 
-        ReportIssueFragment fragment = ReportIssueFragment.newInstance(mBooking, mProviderJobStatus);
+        ReportIssueFragment fragment = ReportIssueFragment.newInstance(mBooking, mJobStatus);
         SupportFragmentTestUtil.startFragment(fragment, AppCompatActivity.class);
 
         // Should have at least 3 milestones.
@@ -88,14 +87,14 @@ public class ReportIssueFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldShowDeepLinks()
     {
-        ProviderJobStatus.DeepLinkWrapper[] deepLinkWrappers = new ProviderJobStatus.DeepLinkWrapper[2];
-        deepLinkWrappers[0] = new ProviderJobStatus.DeepLinkWrapper("help", "cancel",
+        JobStatus.DeepLinkWrapper[] deepLinkWrappers = new JobStatus.DeepLinkWrapper[2];
+        deepLinkWrappers[0] = new JobStatus.DeepLinkWrapper("help", "cancel",
                 "handybook://deep_link/booking_cancel?fallback_url=https://help.handy.com");
-        deepLinkWrappers[1] = new ProviderJobStatus.DeepLinkWrapper("help", "cancel",
+        deepLinkWrappers[1] = new JobStatus.DeepLinkWrapper("help", "cancel",
                 "handybook://deep_link/booking_cancel?fallback_url=https://help.handy.com");
-        when(mProviderJobStatus.getDeepLinkWrappers()).thenReturn(deepLinkWrappers);
+        when(mJobStatus.getDeepLinkWrappers()).thenReturn(deepLinkWrappers);
 
-        ReportIssueFragment fragment = ReportIssueFragment.newInstance(mBooking, mProviderJobStatus);
+        ReportIssueFragment fragment = ReportIssueFragment.newInstance(mBooking, mJobStatus);
         SupportFragmentTestUtil.startFragment(fragment, AppCompatActivity.class);
 
         assertEquals(2, fragment.mDeepLinksLayout.getChildCount());

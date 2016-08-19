@@ -6,14 +6,14 @@ import com.handybook.handybook.R;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ProviderJobStatus implements Serializable
+public class JobStatus implements Serializable
 {
     @SerializedName("milestones")
     private Milestone[] mMilestones;
     @SerializedName("links")
     private DeepLinkWrapper[] mDeepLinkWrappers;
 
-    public ProviderJobStatus(final Milestone[] milestones, final DeepLinkWrapper[] deepLinkWrappers)
+    public JobStatus(final Milestone[] milestones, final DeepLinkWrapper[] deepLinkWrappers)
     {
         mMilestones = milestones;
         mDeepLinkWrappers = deepLinkWrappers;
@@ -36,17 +36,17 @@ public class ProviderJobStatus implements Serializable
         private String mBody;
         @SerializedName("status")
         private String mStatus;
-        @SerializedName("actions")
-        private Action[] mActions;
+        @SerializedName("action")
+        private Action mAction;
         @SerializedName("timestamp")
         private Date mTimestamp;
 
-        public Milestone(final String title, final String body, final String status, final Action[] actions, final Date timestamp)
+        public Milestone(final String title, final String body, final String status, final Action action, final Date timestamp)
         {
             mTitle = title;
             mBody = body;
             mStatus = status;
-            mActions = actions;
+            mAction = action;
             mTimestamp = timestamp;
         }
 
@@ -56,7 +56,7 @@ public class ProviderJobStatus implements Serializable
 
         public String getStatus() { return mStatus; }
 
-        public Action[] getActions() { return mActions; }
+        public Action getAction() { return mAction; }
 
         public Date getTimestamp() { return mTimestamp; }
 
@@ -85,7 +85,7 @@ public class ProviderJobStatus implements Serializable
 
     public static class Action implements Serializable
     {
-        public static final String CALL_OR_TEXT = "call_or_text";
+        public static final String CALL_OR_TEXT = "call_sms_contact";
 
         @SerializedName("type")
         private String mType;

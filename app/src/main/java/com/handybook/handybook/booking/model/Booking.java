@@ -82,6 +82,8 @@ public class Booking implements Parcelable
     private boolean mCanEditExtras;
     @SerializedName("can_leave_tip")
     private boolean mCanLeaveTip;
+    @SerializedName("milestones_enabled")
+    private boolean mMilestonesEnabled;
     @SerializedName("instructions")
     private Instructions mInstructions;
 
@@ -186,6 +188,8 @@ public class Booking implements Parcelable
     {
         return mCanLeaveTip;
     }
+
+    public boolean isMilestonesEnabled() { return mMilestonesEnabled; }
 
     public Instructions getInstructions()
     {
@@ -412,13 +416,14 @@ public class Booking implements Parcelable
         mExtrasInfo = new ArrayList<ExtraInfo>();
         in.readTypedList(mExtrasInfo, ExtraInfo.CREATOR);
 
-        final boolean[] booleanData = new boolean[4];
+        final boolean[] booleanData = new boolean[5];
         in.readBooleanArray(booleanData);
 
         mCanEditFrequency = booleanData[0];
         mCanEditExtras = booleanData[1];
         mCanEditHours = booleanData[2];
         mCanLeaveTip = booleanData[3];
+        mMilestonesEnabled = booleanData[4];
 
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
 
@@ -464,6 +469,7 @@ public class Booking implements Parcelable
                         mCanEditExtras,
                         mCanEditHours,
                         mCanLeaveTip,
+                        mMilestonesEnabled,
                 });
         out.writeParcelable(mInstructions, 0);
     }

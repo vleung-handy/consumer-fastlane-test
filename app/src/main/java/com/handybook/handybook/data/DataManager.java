@@ -25,9 +25,9 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
+import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
-import com.handybook.handybook.booking.model.ProviderJobStatus;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
@@ -189,7 +189,7 @@ public abstract class DataManager
             Callback<ZipValidationResponse> cb
     );
 
-    public abstract void getBookingMilestones(String bookingId, Callback<ProviderJobStatus> cb);
+    public abstract void getBookingMilestones(String bookingId, Callback<JobStatus> cb);
 
     public abstract void getBookings(
             User user,

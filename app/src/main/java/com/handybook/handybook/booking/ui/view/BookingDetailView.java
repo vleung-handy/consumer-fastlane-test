@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,7 +22,6 @@ import butterknife.Bind;
 
 // TODO: Continue chopping this class up into fragments so all the elements in BookingDetailFragment
 // are BookingDetailSectionFragments
-
 public final class BookingDetailView extends InjectedRelativeLayout
 {
     @Bind(R.id.date_text)
@@ -38,6 +38,8 @@ public final class BookingDetailView extends InjectedRelativeLayout
     TextView bookingText;
     @Bind(R.id.nav_text)
     TextView navText;
+    @Bind(R.id.booking_report_issue_button)
+    Button mReportIssueButton;
     @Bind(R.id.back_button)
     public ImageButton backButton;
 
@@ -98,6 +100,12 @@ public final class BookingDetailView extends InjectedRelativeLayout
 
         dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
                 booking.getBookingTimezone()));
+    }
+
+    public void updateReportIssueButton(final Booking booking, final OnClickListener onClickListener)
+    {
+        mReportIssueButton.setVisibility(booking.isMilestonesEnabled() ? VISIBLE : GONE);
+        mReportIssueButton.setOnClickListener(onClickListener);
     }
 
     private void updateFrequencySectionDisplay(final Booking booking)

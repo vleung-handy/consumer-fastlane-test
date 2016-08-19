@@ -12,9 +12,9 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
+import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.model.Provider;
-import com.handybook.handybook.booking.model.ProviderJobStatus;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
@@ -81,7 +81,7 @@ class ZipValidationRetroFitCallback extends TypedHandyRetrofitCallback<ZipValida
 }
 
 
-class BookingMilestonesCallback extends TypedHandyRetrofitCallback<ProviderJobStatus>
+class BookingMilestonesCallback extends TypedHandyRetrofitCallback<JobStatus>
 {
     BookingMilestonesCallback(DataManager.Callback callback)
     {

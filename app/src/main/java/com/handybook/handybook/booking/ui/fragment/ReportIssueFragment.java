@@ -16,7 +16,7 @@ import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.ProviderJobStatus;
+import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.view.ProMilestoneView;
@@ -52,9 +52,9 @@ public final class ReportIssueFragment extends InjectedFragment
     LinearLayout mDeepLinksLayout;
 
     private Booking mBooking;
-    private ProviderJobStatus mProviderJobStatus;
+    private JobStatus mJobStatus;
 
-    public static ReportIssueFragment newInstance(final Booking booking, final ProviderJobStatus proStatuses)
+    public static ReportIssueFragment newInstance(final Booking booking, final JobStatus proStatuses)
     {
         final ReportIssueFragment fragment = new ReportIssueFragment();
         final Bundle args = new Bundle();
@@ -72,7 +72,7 @@ public final class ReportIssueFragment extends InjectedFragment
         setHasOptionsMenu(true);
 
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        mProviderJobStatus = (ProviderJobStatus) getArguments().getSerializable(BundleKeys.PRO_JOB_STATUS);
+        mJobStatus = (JobStatus) getArguments().getSerializable(BundleKeys.PRO_JOB_STATUS);
     }
 
     @Override
@@ -108,44 +108,43 @@ public final class ReportIssueFragment extends InjectedFragment
 
     private void setProMilestones()
     {
-        ProviderJobStatus.Milestone[] milestones = mProviderJobStatus.getMilestones();
+        JobStatus.Milestone[] milestones = mJobStatus.getMilestones();
         if (milestones != null)
         {
-            for (int i = 0; i < milestones.length; ++i)
+            for (final JobStatus.Milestone milestone : milestones)
             {
                 ProMilestoneView milestoneView = new ProMilestoneView(getContext());
-                milestoneView.setDotColor(milestones[i].getStatusColorDrawableId());
-                milestoneView.setTitleText(milestones[i].getTitle());
-                milestoneView.setBodyText(milestones[i].getBody());
-                if (milestones[i].getActions() != null)
+                milestoneView.setDotColor(milestone.getStatusColorDrawableId());
+                milestoneView.setTitleText(milestone.getTitle());
+                milestoneView.setBodyText(milestone.getBody());
+                if (milestone.getAction() != null)
                 {
-                    for (ProviderJobStatus.Action action : milestones[i].getActions())
+                    JobStatus.Action action = milestone.getAction();
+
+                    if (JobStatus.Action.CALL_OR_TEXT.equals(action.getType()))
                     {
-                        if (ProviderJobStatus.Action.CALL_OR_TEXT.equals(action.getType()))
+                        final String phone = mBooking.getProvider().getPhone();
+                        milestoneView.setCallAndTextButtonVisibility(View.VISIBLE);
+                        milestoneView.setCallButtonOnClickListener(new View.OnClickListener()
                         {
-                            final String phone = mBooking.getProvider().getPhone();
-                            milestoneView.setCallAndTextButtonVisibility(View.VISIBLE);
-                            milestoneView.setCallButtonOnClickListener(new View.OnClickListener()
+                            @Override
+                            public void onClick(final View v)
                             {
-                                @Override
-                                public void onClick(final View v)
-                                {
-                                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                                    Utils.safeLaunchIntent(intent, getContext());
+                                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                                Utils.safeLaunchIntent(intent, getContext());
 
-                                }
-                            });
-                            milestoneView.setTextButtonOnClickListener(new View.OnClickListener()
+                            }
+                        });
+                        milestoneView.setTextButtonOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(final View v)
                             {
-                                @Override
-                                public void onClick(final View v)
-                                {
-                                    Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
-                                    Utils.safeLaunchIntent(intent, getContext());
+                                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
+                                Utils.safeLaunchIntent(intent, getContext());
 
-                                }
-                            });
-                        }
+                            }
+                        });
                     }
                 }
                 mMilestonesLayout.addView(milestoneView);
@@ -168,10 +167,10 @@ public final class ReportIssueFragment extends InjectedFragment
 
     private void setDeepLinks()
     {
-        ProviderJobStatus.DeepLinkWrapper[] deepLinkWrappers = mProviderJobStatus.getDeepLinkWrappers();
+        JobStatus.DeepLinkWrapper[] deepLinkWrappers = mJobStatus.getDeepLinkWrappers();
         if (deepLinkWrappers == null) { return; }
 
-        for (final ProviderJobStatus.DeepLinkWrapper deepLinkWrapper : deepLinkWrappers)
+        for (final JobStatus.DeepLinkWrapper deepLinkWrapper : deepLinkWrappers)
         {
             TextView view = (TextView) LayoutInflater.from(
                     getContext()).inflate(R.layout.text_list_element, mDeepLinksLayout, false);
@@ -181,7 +180,7 @@ public final class ReportIssueFragment extends InjectedFragment
                 @Override
                 public void onClick(final View v)
                 {
-                    if (ProviderJobStatus.DeepLinkWrapper.TYPE_CANCEL.equals(deepLinkWrapper.getType()))
+                    if (JobStatus.DeepLinkWrapper.TYPE_CANCEL.equals(deepLinkWrapper.getType()))
                     {
                         // show cancel page
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
@@ -191,7 +190,7 @@ public final class ReportIssueFragment extends InjectedFragment
 
                         bus.post(new BookingEvent.RequestPreCancelationInfo(mBooking.getId()));
                     }
-                    else if (ProviderJobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType()))
+                    else if (JobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType()))
                     {
                         // show reschedule page
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(

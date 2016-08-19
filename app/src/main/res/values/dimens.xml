@@ -76,6 +76,8 @@
     <dimen name="one_third_width">120dp</dimen>
 
     <dimen name="dot_size">14dp</dimen>
+    <dimen name="report_issue_button_width">224dp</dimen>
+
 
     <!-- Referral -->
     <dimen name="referral_image_height">184dp</dimen>
