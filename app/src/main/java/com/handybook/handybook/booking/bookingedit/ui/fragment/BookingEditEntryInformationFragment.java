@@ -76,6 +76,12 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         entryInformationTransaction = new BookingUpdateEntryInformationTransaction();
         entryInformationTransaction.setGetInId(booking.getEntryType());
         entryInformationTransaction.setGetInText(booking.getExtraEntryInfo());
+
+        /*
+        NOTE: there's currently no UI to ask whether it should be applied to all
+        so defaulting this to true
+         */
+        entryInformationTransaction.setApplyToAllInSeries(true);
     }
 
     @Override

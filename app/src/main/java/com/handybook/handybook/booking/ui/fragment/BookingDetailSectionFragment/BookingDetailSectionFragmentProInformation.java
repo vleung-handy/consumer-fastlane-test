@@ -96,7 +96,7 @@ public class BookingDetailSectionFragmentProInformation extends
 
         if (booking.hasAssignedProvider())
         {
-            getSectionView().getEntryText().setText(pro.getFullName());
+            getSectionView().getEntryText().setText(pro.getFirstNameAndLastInitial());
             getSectionView().getEntryText().setVisibility(View.VISIBLE);
             getSectionView().noProView.setVisibility(View.GONE);
         }
