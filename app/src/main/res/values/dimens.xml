@@ -75,7 +75,7 @@
     <dimen name="rating_star_margin">4dp</dimen>
     <dimen name="one_third_width">120dp</dimen>
 
-    <dimen name="dot_size">14dp</dimen>
+    <dimen name="dot_size">16dp</dimen>
     <dimen name="report_issue_button_width">224dp</dimen>
 
 

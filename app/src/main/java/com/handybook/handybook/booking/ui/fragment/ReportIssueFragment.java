@@ -98,9 +98,9 @@ public final class ReportIssueFragment extends InjectedFragment
                 mBooking.getBookingTimezone()));
 
         final String startTime = DateTimeUtils.formatDate(mBooking.getStartDate(), "h:mm aaa",
-                mBooking.getBookingTimezone());
+                mBooking.getBookingTimezone()).toLowerCase();
         final String endTime = DateTimeUtils.formatDate(mBooking.getEndDate(), "h:mm aaa",
-                mBooking.getBookingTimezone());
+                mBooking.getBookingTimezone()).toLowerCase();
         mTimeText.setText(getString(R.string.dash_formatted, startTime, endTime));
 
         mProviderText.setText(mBooking.getProvider().getFullName());

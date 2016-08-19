@@ -24,7 +24,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin_half"
+                android:layout_margin="@dimen/default_margin"
                 android:background="@color/white"
                 android:orientation="vertical"
                 >
@@ -62,8 +62,10 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/horizontal_divider_height_thin"
-                    android:layout_margin="@dimen/default_margin"
-                    android:background="@color/handy_tertiary_gray"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:background="@color/divider_gray"
                     />
 
                 <LinearLayout
@@ -81,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divider_gray"
                 android:orientation="vertical"
-                android:showDividers="middle"
+                android:showDividers="beginning|middle"
                 />
 
         </LinearLayout>

@@ -1,96 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:orientation="vertical"
+		>
 
-        <View
-            android:id="@+id/pro_milestone_dot"
-            android:layout_width="@dimen/dot_size"
-            android:layout_height="@dimen/dot_size"
-            android:layout_marginTop="@dimen/default_margin_half"
-            android:background="@drawable/circle_grey_stroke"
-            />
+		<View
+			android:id="@+id/pro_milestone_dot"
+			android:layout_width="@dimen/dot_size"
+			android:layout_height="@dimen/dot_size"
+			android:layout_marginTop="@dimen/default_margin_half"
+			android:background="@drawable/circle_grey_stroke"
+			/>
 
-        <View
-            android:id="@+id/pro_milestone_line"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/default_margin_half"
-            android:layout_marginTop="@dimen/default_margin_half"
-            android:background="@color/handy_tertiary_gray"
-            />
+		<View
+			android:id="@+id/pro_milestone_line"
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:layout_marginBottom="@dimen/default_margin_half"
+			android:layout_marginTop="@dimen/default_margin_half"
+			android:background="@color/handy_input_field_stroke"
+			/>
 
-    </LinearLayout>
+	</LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_margin_double"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:orientation="vertical"
-        >
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/default_margin"
+		android:layout_marginLeft="@dimen/default_margin"
+		android:layout_marginTop="@dimen/default_margin_quarter"
+		android:orientation="vertical"
+		>
 
-        <TextView
-            android:id="@+id/pro_milestone_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/handy_text_black"
-            android:textSize="@dimen/text_size_large"
-            tools:text="Your pro is on the way"
-            />
+		<TextView
+			android:id="@+id/pro_milestone_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@color/handy_text_black"
+			android:textSize="@dimen/text_size_large"
+			tools:text="Your pro is on the way"
+			/>
 
-        <TextView
-            android:id="@+id/pro_milestone_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin_half"
-            android:textColor="@color/handy_tertiary_gray"
-            android:textSize="@dimen/text_size_small"
-            tools:text="Your pro is on the way\nYour pro is on the way\nYour pro is on the way"
-            />
+		<TextView
+			android:id="@+id/pro_milestone_body"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/default_margin_quarter"
+			android:textColor="@color/handy_tertiary_gray"
+			android:textSize="@dimen/text_size_small"
+			tools:text="Your pro is on the way\nYour pro is on the way\nYour pro is on the way"
+			/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            >
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginTop="@dimen/default_margin_half"
+			android:orientation="horizontal"
+			android:paddingBottom="@dimen/default_padding"
+			>
 
-            <Button
-                android:id="@+id/pro_milestone_call"
-                style="@style/Button.BookingAction.White"
-                android:layout_width="@dimen/one_third_width"
-                android:layout_height="@dimen/default_button_height"
-                android:layout_marginEnd="@dimen/default_margin_half"
-                android:layout_marginRight="@dimen/default_margin_half"
-                android:drawableLeft="@drawable/ic_call_blue"
-                android:text="@string/call"
-                android:visibility="gone"
-                tools:visibility="visible"
-                />
+			<Button
+				android:id="@+id/pro_milestone_call"
+				style="@style/Button.BookingAction.White"
+				android:layout_width="@dimen/one_third_width"
+				android:layout_height="@dimen/default_button_height"
+				android:layout_marginEnd="@dimen/default_margin_half"
+				android:layout_marginRight="@dimen/default_margin_half"
+				android:drawableLeft="@drawable/ic_call_blue"
+				android:text="@string/call"
+				android:visibility="gone"
+				tools:visibility="visible"
+				/>
 
-            <Button
-                android:id="@+id/pro_milestone_text"
-                style="@style/Button.BookingAction.White"
-                android:layout_width="@dimen/one_third_width"
-                android:layout_height="@dimen/default_button_height"
-                android:drawableLeft="@drawable/ic_text_blue"
-                android:text="@string/text"
-                android:visibility="gone"
-                tools:visibility="visible"
-                />
-        </LinearLayout>
-    </LinearLayout>
+			<Button
+				android:id="@+id/pro_milestone_text"
+				style="@style/Button.BookingAction.White"
+				android:layout_width="@dimen/one_third_width"
+				android:layout_height="@dimen/default_button_height"
+				android:drawableLeft="@drawable/ic_text_blue"
+				android:text="@string/text"
+				android:visibility="gone"
+				tools:visibility="visible"
+				/>
+		</LinearLayout>
+	</LinearLayout>
 </LinearLayout>

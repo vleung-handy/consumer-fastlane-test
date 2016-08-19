@@ -149,9 +149,11 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Override
-    public final void onActivityResult(final int requestCode,
-                                       final int resultCode,
-                                       final Intent data)
+    public final void onActivityResult(
+            final int requestCode,
+            final int resultCode,
+            final Intent data
+    )
     {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -368,8 +370,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             removeUiBlockers();
             dataManagerErrorHandler.handleError(getActivity(), event.error);
         }
-
-
     }
 
     @Subscribe
@@ -384,7 +384,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
+    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
     {
         removeUiBlockers();
 
@@ -398,7 +398,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreCancelationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
+    public void onReceivePreCancellationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
     {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
@@ -452,7 +452,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         periodEnd.add(Calendar.MINUTE, 15); //And 15 minutes after
         return periodStart.getTime().before(now) && periodEnd.getTime().after(now);
     }
-
 
     @Override
     public boolean onMenuItemClick(final MenuItem item)
