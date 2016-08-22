@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
@@ -55,10 +54,8 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
     Toolbar mToolbar;
 
     private List<Booking> mBookings;
-    private List<Service> mServices;
     private LinearLayoutManager mLayoutManager;
     private HistoryListAdapter mAdapter;
-    private boolean mServiceRequestCompleted = false;
     private boolean mBookingsRequestCompleted = false;
 
     @Nullable
@@ -129,30 +126,10 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
                             intent.putExtra(BundleKeys.BOOKING, booking);
                             getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                         }
-                    },
-                    mServices);
+                    });
 
             mEmptiableRecyclerView.setAdapter(mAdapter);
         }
-    }
-
-
-    @Subscribe
-    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
-    {
-        mServices = event.getServices();
-        mServiceRequestCompleted = true;
-
-        setupBookingsView();
-    }
-
-    @Subscribe
-    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError error)
-    {
-        //we don't really care that the services errored out, we just won't display the
-        //services icon.
-        mServiceRequestCompleted = true;
-        setupBookingsView();
     }
 
     @Subscribe
@@ -179,7 +156,7 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
      */
     private void setupBookingsView()
     {
-        if (mBookingsRequestCompleted && mServiceRequestCompleted)
+        if (mBookingsRequestCompleted)
         {
             mSwipeRefreshLayout.setRefreshing(false);
             bindBookingsToList();
@@ -200,16 +177,6 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
         else
         {
             mBookingsRequestCompleted = true;
-        }
-
-        if (mServices == null)
-        {
-            mServiceRequestCompleted = false;
-            bus.post(new BookingEvent.RequestServices());
-        }
-        else
-        {
-            mServiceRequestCompleted = true;
         }
 
         setupBookingsView();

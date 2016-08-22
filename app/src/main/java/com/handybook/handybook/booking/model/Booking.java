@@ -40,6 +40,9 @@ public class Booking implements Parcelable
     private String mServiceName;
     @SerializedName("service_machine")
     private String mServiceMachineName;
+    @NonNull
+    @SerializedName("service")
+    private BookingService mService;
     @SerializedName("date_start")
     private Date mStartDate;
     @SerializedName("hours")
@@ -140,6 +143,11 @@ public class Booking implements Parcelable
     public ActiveBookingStatus getActiveBookingStatus()
     {
         return mActiveBookingStatus;
+    }
+
+    public BookingService getService()
+    {
+        return mService;
     }
 
     public final String getRecurringInfo()
@@ -405,6 +413,7 @@ public class Booking implements Parcelable
         mAddress = in.readParcelable(Address.class.getClassLoader());
         mProvider = in.readParcelable(Provider.class.getClassLoader());
         mActiveBookingStatus = in.readParcelable(ActiveBookingStatus.class.getClassLoader());
+        mService = in.readParcelable(BookingService.class.getClassLoader());
 
         mPaymentInfo = new ArrayList<LineItem>();
         in.readTypedList(mPaymentInfo, LineItem.CREATOR);
@@ -454,6 +463,7 @@ public class Booking implements Parcelable
         out.writeParcelable(mAddress, 0);
         out.writeParcelable(mProvider, 0);
         out.writeParcelable(mActiveBookingStatus, 0);
+        out.writeParcelable(mService, 0);
         out.writeTypedList(mPaymentInfo);
         out.writeTypedList(mExtrasInfo);
         out.writeBooleanArray(new boolean[]

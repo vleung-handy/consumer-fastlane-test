@@ -9,6 +9,7 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingService;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserRecurringBooking;
 
@@ -37,20 +38,23 @@ public class BookingUtil
     {
         SERVICE_ICONS = new HashMap<>();
         SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_cleaner_fill);
+        SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_cleaner_fill);
         SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handyman_fill);
         SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_painter_fill);
         SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_plumber_fill);
         SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_electrician_fill);
 
         SERVICE_OUTLINE_ICONS = new HashMap<>();
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_service_cleaning_outline_84);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_service_handyman_outline_84);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_service_painting_outline_84);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_service_plumbing_outline_84);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_service_electrical_outline_84);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_service_cleaning_outline_small);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_service_cleaning_outline_small);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_service_handyman_outline_small);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_service_painting_outline_small);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_service_plumbing_outline_small);
+        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_service_electrical_outline_small);
 
         PAST_SERVICE_ICONS = new HashMap<>();
         PAST_SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_cleaner_gray);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_cleaner_gray);
         PAST_SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handyman_gray);
         PAST_SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_painter_gray);
         PAST_SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_plumber_gray);
@@ -58,7 +62,7 @@ public class BookingUtil
     }
 
     private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_cleaner_fill;
-    private static final Integer DEFAULT_SERVICE_OUTLINE_ICON_RESOURCE_ID = R.drawable.ic_service_cleaning_outline;
+    private static final Integer DEFAULT_SERVICE_OUTLINE_ICON_RESOURCE_ID = R.drawable.ic_service_cleaning_outline_small;
     private static final Integer DEFAULT_PAST_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_cleaner_gray;
 
 
@@ -69,6 +73,8 @@ public class BookingUtil
      * @param booking
      * @param services
      * @return
+     *
+     * @deprecated - use getIconForService directly, as a booking should already include the parent service
      */
     public static String findParentService(Booking booking, @Nonnull List<Service> services)
     {
@@ -186,8 +192,7 @@ public class BookingUtil
      */
     public static String getTitle(Booking booking)
     {
-//        FIXME: JIA: remove the booking id part once done testing.
-        return TextUtils.formatDate(booking.getStartDate(), TITLE_DATE_FORMAT) + " " + booking.getId();
+        return TextUtils.formatDate(booking.getStartDate(), TITLE_DATE_FORMAT);
     }
 
     /**
@@ -212,8 +217,25 @@ public class BookingUtil
         return DateTimeUtils.getTime(rb.getDateStart()) + " - " + rb.getHours() + " hours";
     }
 
-    public static Integer getIconForService(String serviceMachineName, IconType iconType)
+    public static Integer getIconForService(Booking booking, IconType iconType)
     {
+        //if the service is a painting, then we have a special case, and we want to show the
+        //painting icon. Otherwise, we'll go on and fetch the correct icon.
+        String serviceMachineName = booking.getServiceMachineName();
+        if (!serviceMachineName.equalsIgnoreCase("painting"))
+        {
+
+            BookingService service = booking.getService();
+
+            //keep going deeper into the tree until there is no parent
+            while (service.getParent() != null)
+            {
+                service = service.getParent();
+            }
+
+            serviceMachineName = service.getMachineName();
+        }
+
         if (!android.text.TextUtils.isEmpty(serviceMachineName))
         {
             switch (iconType)

@@ -8,18 +8,16 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.util.BookingUtil;
 
 import java.util.Date;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * Used in the history view
  */
-
 public class BookingCardHolder extends RecyclerView.ViewHolder
 {
 
@@ -32,19 +30,16 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
     @Bind(R.id.text_booking_subtitle)
     TextView mTextBookingSubtitle;
 
-    List<Service> mServices;
     View.OnClickListener mOnClickListener;
 
     public BookingCardHolder(
             View itemView,
-            View.OnClickListener clickListener,
-            List<Service> services
+            View.OnClickListener clickListener
     )
     {
         super(itemView);
         ButterKnife.bind(this, itemView);
         mOnClickListener = clickListener;
-        mServices = services;
     }
 
     public void bindToBooking(@NonNull final Booking booking)
@@ -59,16 +54,7 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
             iconType = BookingUtil.IconType.GRAY;
         }
 
-        if (mServices != null)
-        {
-            String machineName = BookingUtil.findParentService(booking, mServices);
-            mImageIcon.setImageResource(BookingUtil.getIconForService(machineName, iconType));
-        }
-        else
-        {
-            mImageIcon.setImageResource(BookingUtil.getIconForService(null, iconType));
-        }
-
+        mImageIcon.setImageResource(BookingUtil.getIconForService(mBooking, iconType));
         mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
         mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, itemView.getContext()));
 

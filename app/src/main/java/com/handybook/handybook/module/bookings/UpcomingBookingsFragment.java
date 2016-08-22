@@ -270,7 +270,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                                 getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                             }
                         },
-                        mServices,
                         booking
                 ));
 

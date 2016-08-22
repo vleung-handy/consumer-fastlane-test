@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.Service;
 
 import java.util.List;
 
@@ -17,13 +16,11 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 {
     private List<Booking> mBookings;
     private View.OnClickListener mOnClickListener;
-    private List<Service> mServices;
 
-    public HistoryListAdapter(final List<Booking> bookings, final View.OnClickListener onClickListener, final List<Service> services)
+    public HistoryListAdapter(final List<Booking> bookings, final View.OnClickListener onClickListener)
     {
         mBookings = bookings;
         mOnClickListener = onClickListener;
-        mServices = services;
     }
 
     @Override
@@ -32,14 +29,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_booking_list_item, parent, false);
 
-        return new BookingCardHolder(itemView, mOnClickListener, mServices);
-    }
-
-
-    public void setServices(final List<Service> services)
-    {
-        mServices = services;
-        notifyDataSetChanged();
+        return new BookingCardHolder(itemView, mOnClickListener);
     }
 
     @Override
