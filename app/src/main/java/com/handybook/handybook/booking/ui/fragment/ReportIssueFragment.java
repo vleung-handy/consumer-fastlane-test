@@ -37,7 +37,6 @@ import butterknife.ButterKnife;
 
 public final class ReportIssueFragment extends InjectedFragment
 {
-    private static final int MINIMUM_MILESTONES = 3;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.report_issue_date)
@@ -103,7 +102,7 @@ public final class ReportIssueFragment extends InjectedFragment
                 mBooking.getBookingTimezone()).toLowerCase();
         mTimeText.setText(getString(R.string.dash_formatted, startTime, endTime));
 
-        mProviderText.setText(mBooking.getProvider().getFullName());
+        mProviderText.setText(mBooking.getProvider().getFirstNameAndLastInitial());
     }
 
     private void setProMilestones()
@@ -111,10 +110,11 @@ public final class ReportIssueFragment extends InjectedFragment
         JobStatus.Milestone[] milestones = mJobStatus.getMilestones();
         if (milestones != null)
         {
-            for (final JobStatus.Milestone milestone : milestones)
+            for (int i = 0; i < milestones.length; ++i)
             {
+                JobStatus.Milestone milestone = milestones[i];
                 ProMilestoneView milestoneView = new ProMilestoneView(getContext());
-                milestoneView.setDotColor(milestone.getStatusColorDrawableId());
+                milestoneView.setDotColor(mJobStatus.getStatusDrawableId(i));
                 milestoneView.setTitleText(milestone.getTitle());
                 milestoneView.setBodyText(milestone.getBody());
                 if (milestone.getAction() != null)
@@ -150,15 +150,13 @@ public final class ReportIssueFragment extends InjectedFragment
                 mMilestonesLayout.addView(milestoneView);
             }
 
-            // There should be at least 3 milestones. We will add blank ones if missing.
-            // Eventually, there should be a boolean value from server to tell us if the task is completed or not.
-            int milestoneCount = milestones.length;
-            while (milestoneCount < MINIMUM_MILESTONES)
+            if (!mJobStatus.isComplete())
             {
                 ProMilestoneView milestoneView = new ProMilestoneView(getContext());
                 mMilestonesLayout.addView(milestoneView);
-                ++milestoneCount;
             }
+
+            // Remove the link from last milestone
             ProMilestoneView lastMilestoneView =
                     (ProMilestoneView) mMilestonesLayout.getChildAt(mMilestonesLayout.getChildCount() - 1);
             lastMilestoneView.setLineVisibility(View.INVISIBLE);

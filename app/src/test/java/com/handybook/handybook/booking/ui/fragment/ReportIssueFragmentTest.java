@@ -8,6 +8,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.JobStatus;
+import com.handybook.handybook.booking.model.Provider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +20,6 @@ import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -39,7 +38,9 @@ public class ReportIssueFragmentTest extends RobolectricGradleTestWrapper
         when(mBooking.getBookingTimezone()).thenReturn("EST");
         when(mBooking.getStartDate()).thenReturn(new Date());
         when(mBooking.getEndDate()).thenReturn(new Date());
-        when(mBooking.getProvider().getFullName()).thenReturn("Xi Wei");
+        Provider provider = new Provider(1, "Xi", "Wei", "123456789");
+        when(mBooking.getProvider()).thenReturn(provider);
+//        when(mBooking.getProvider().getFirstNameAndLastInitial()).thenReturn("Xi W.");
     }
 
     @Test
@@ -53,35 +54,33 @@ public class ReportIssueFragmentTest extends RobolectricGradleTestWrapper
         assertNotNull(fragment.getView().findViewById(R.id.report_issue_date));
         assertNotNull(fragment.getView().findViewById(R.id.report_issue_time));
         TextView providerText = (TextView) fragment.getView().findViewById(R.id.report_issue_provider);
-        assertEquals("Xi Wei", providerText.getText());
+        assertEquals("Xi W.", providerText.getText());
     }
 
     @Test
     public void shouldShowMilestones()
     {
-        JobStatus.Milestone[] milestones = new JobStatus.Milestone[6];
+        JobStatus.Milestone[] milestones = new JobStatus.Milestone[4];
         JobStatus.Action actions = new JobStatus.Action("call_sms_contact");
-        milestones[0] = new JobStatus.Milestone("On their way", "Your pro, John, is on his way", JobStatus.Milestone.COMPLETE, null, new Date());
-        milestones[1] = new JobStatus.Milestone("incomplete", "incomplete", JobStatus.Milestone.INCOMPLETE, actions, new Date());
-        milestones[2] = new JobStatus.Milestone("warning", "warning", JobStatus.Milestone.WARNING, null, new Date());
-        milestones[3] = new JobStatus.Milestone("error", "error", JobStatus.Milestone.ERROR, null, new Date());
-        milestones[4] = new JobStatus.Milestone("invalid", "invalid", JobStatus.Milestone.INVALID, null, new Date());
-        milestones[5] = new JobStatus.Milestone("", "", "", null, new Date());
+        milestones[0] = new JobStatus.Milestone("On their way", "Your pro, John, is on his way", JobStatus.Milestone.NORMAL, actions, new Date());
+        milestones[1] = new JobStatus.Milestone("warning", "warning", JobStatus.Milestone.WARNING, null, new Date());
+        milestones[2] = new JobStatus.Milestone("error", "error", JobStatus.Milestone.ERROR, null, new Date());
+        milestones[3] = new JobStatus.Milestone("invalid", "invalid", JobStatus.Milestone.INVALID, null, new Date());
         when(mJobStatus.getMilestones()).thenReturn(milestones);
 
         ReportIssueFragment fragment = ReportIssueFragment.newInstance(mBooking, mJobStatus);
         SupportFragmentTestUtil.startFragment(fragment, AppCompatActivity.class);
 
-        // Should have at least 3 milestones.
-        assertThat(fragment.mMilestonesLayout.getChildCount(), greaterThan(3));
+        // Should have at n + 1 milestones displayed
+        assertEquals(5, fragment.mMilestonesLayout.getChildCount());
 
         // Only the 2nd milestone should have contact buttons
         View milestoneView = fragment.mMilestonesLayout.getChildAt(0);
-        assertEquals(View.GONE, milestoneView.findViewById(R.id.pro_milestone_call).getVisibility());
-        assertEquals(View.GONE, milestoneView.findViewById(R.id.pro_milestone_text).getVisibility());
-        milestoneView = fragment.mMilestonesLayout.getChildAt(1);
         assertEquals(View.VISIBLE, milestoneView.findViewById(R.id.pro_milestone_call).getVisibility());
         assertEquals(View.VISIBLE, milestoneView.findViewById(R.id.pro_milestone_text).getVisibility());
+        milestoneView = fragment.mMilestonesLayout.getChildAt(1);
+        assertEquals(View.GONE, milestoneView.findViewById(R.id.pro_milestone_call).getVisibility());
+        assertEquals(View.GONE, milestoneView.findViewById(R.id.pro_milestone_text).getVisibility());
     }
 
     @Test

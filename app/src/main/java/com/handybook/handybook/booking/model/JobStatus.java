@@ -12,21 +12,49 @@ public class JobStatus implements Serializable
     private Milestone[] mMilestones;
     @SerializedName("links")
     private DeepLinkWrapper[] mDeepLinkWrappers;
+    @SerializedName("complete")
+    private boolean mComplete;
 
-    public JobStatus(final Milestone[] milestones, final DeepLinkWrapper[] deepLinkWrappers)
+    public JobStatus(final Milestone[] milestones, final DeepLinkWrapper[] deepLinkWrappers, final boolean complete)
     {
         mMilestones = milestones;
         mDeepLinkWrappers = deepLinkWrappers;
+        mComplete = complete;
     }
 
     public Milestone[] getMilestones() { return mMilestones; }
 
     public DeepLinkWrapper[] getDeepLinkWrappers() { return mDeepLinkWrappers; }
 
+    public boolean isComplete() { return mComplete; }
+
+    // Return stroke if it's the last element and the job is completed
+    public int getStatusDrawableId(int index)
+    {
+        String mStatus = mMilestones[index].getStatus();
+        boolean isFill = index < mMilestones.length - 1 || mComplete;
+        if (mStatus == null)
+        {
+            return isFill ? R.drawable.circle_grey : R.drawable.circle_grey_stroke;
+        }
+
+        switch (mStatus)
+        {
+            case Milestone.NORMAL:
+                return isFill ? R.drawable.circle_green : R.drawable.circle_green_stroke;
+            case Milestone.WARNING:
+                return isFill ? R.drawable.circle_yellow : R.drawable.circle_yellow_stroke;
+            case Milestone.ERROR:
+                return isFill ? R.drawable.circle_red : R.drawable.circle_red_stroke;
+            case Milestone.INVALID:
+            default:
+                return isFill ? R.drawable.circle_grey : R.drawable.circle_grey_stroke;
+        }
+    }
+
     public static class Milestone implements Serializable
     {
-        public static final String COMPLETE = "complete";
-        public static final String INCOMPLETE = "incomplete";
+        public static final String NORMAL = "normal";
         public static final String WARNING = "warning";
         public static final String ERROR = "error";
         public static final String INVALID = "invalid";
@@ -59,27 +87,6 @@ public class JobStatus implements Serializable
         public Action getAction() { return mAction; }
 
         public Date getTimestamp() { return mTimestamp; }
-
-        public int getStatusColorDrawableId()
-        {
-            if (mStatus == null) { return R.drawable.circle_grey_stroke; }
-
-            switch (mStatus)
-            {
-                case COMPLETE:
-                    return R.drawable.circle_green;
-                case INCOMPLETE:
-                    return R.drawable.circle_green_stroke;
-                case WARNING:
-                    return R.drawable.circle_yellow;
-                case ERROR:
-                    return R.drawable.circle_red;
-                case INVALID:
-                    return R.drawable.circle_grey;
-                default:
-                    return R.drawable.circle_grey_stroke;
-            }
-        }
     }
 
 
