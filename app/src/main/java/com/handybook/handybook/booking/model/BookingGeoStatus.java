@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  */
@@ -22,6 +23,9 @@ public class BookingGeoStatus implements Serializable
 
     @SerializedName("in_progress")
     private boolean mInProgress;
+
+    @SerializedName("pro_coord_timestamp")
+    private Date mTimeStamp;
 
     @SerializedName("cancellation_threshold")
     private String mCancelationThreshold;
@@ -54,6 +58,11 @@ public class BookingGeoStatus implements Serializable
     public void setProLat(final double proLat)
     {
         mProLat = proLat;
+    }
+
+    public Date getTimeStamp()
+    {
+        return mTimeStamp;
     }
 
     public double getProLng()

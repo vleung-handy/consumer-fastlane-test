@@ -264,9 +264,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                         Double.valueOf(providerLocation.getLongitude())
                 );
 
-                //FIXME: JIA: remove this hard code
-                String time = DateTimeUtils.getTime(new Date());
-                mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
+                setTimeStamp(mBooking.getActiveBookingStatus().getProviderLocation().getTimeStamp());
 
                 mProviderLocationMarker = mGoogleMap.addMarker(
                         new MarkerOptions()
@@ -293,6 +291,20 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
     }
 
+    private void setTimeStamp(Date timeStamp)
+    {
+        if (timeStamp != null)
+        {
+            String time = DateTimeUtils.getTime(timeStamp);
+            mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
+            mTextLocationTime.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mTextLocationTime.setVisibility(View.GONE);
+        }
+    }
+
     private void periodicUpdate()
     {
         Log.d(TAG, "periodicUpdate: " + getThisName());
@@ -316,11 +328,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             {
                 mProviderLatLng = new LatLng(response.getProLat(), response.getProLng());
                 adjustMapPositioning();
-
-                //FIXME: JIA: remove this hard code
-                String time = DateTimeUtils.getTime(new Date());
-                mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
-                Log.d(TAG, "receive geo status success: " + response.getProLat() + "," + response.getProLng());
+                setTimeStamp(response.getTimeStamp());
             }
 
             @Override

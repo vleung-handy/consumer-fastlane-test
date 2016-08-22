@@ -944,12 +944,16 @@ public class Booking implements Parcelable
         @SerializedName("longitude")
         private String mLongitude;
 
+        @SerializedName("timestamp")
+        private Date mTimeStamp;
+
         private Location(final Parcel in)
         {
             final String[] stringArray = new String[2];
             in.readStringArray(stringArray);
             mLatitude = stringArray[0];
             mLongitude = stringArray[1];
+            mTimeStamp = new Date(in.readLong());
         }
 
         public String getLatitude()
@@ -962,10 +966,21 @@ public class Booking implements Parcelable
             return mLongitude;
         }
 
+        public Date getTimeStamp()
+        {
+            return mTimeStamp;
+        }
+
         @Override
         public final void writeToParcel(final Parcel out, final int flags)
         {
             out.writeStringArray(new String[]{mLatitude, mLongitude});
+
+            //some locations don't report time stamps
+            if (mTimeStamp != null)
+            {
+                out.writeLong(mTimeStamp.getTime());
+            }
         }
 
         @Override

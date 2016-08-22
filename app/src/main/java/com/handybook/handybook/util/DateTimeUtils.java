@@ -1,5 +1,7 @@
 package com.handybook.handybook.util;
 
+import android.support.annotation.NonNull;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -84,7 +86,7 @@ public class DateTimeUtils
         return DAY_OF_WEEK_FORMATTER.format(date);
     }
 
-    public static String getTime(Date date)
+    public static String getTime(@NonNull Date date)
     {
         return LOCAL_TIME_12_HOURS.format(date);
     }
