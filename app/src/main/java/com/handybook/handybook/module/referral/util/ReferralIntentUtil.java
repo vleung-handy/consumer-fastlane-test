@@ -36,10 +36,14 @@ public class ReferralIntentUtil
         final Uri data = intent.getData();
         if (data != null)
         {
-            final String referralGuid = data.getQueryParameter(KEY_REFERRAL_GUID);
-            if (!ValidationUtils.isNullOrEmpty(referralGuid))
+            final List<String> pathSegments = data.getPathSegments();
+            if (pathSegments.size() > 0)
             {
-                return referralGuid;
+                final String referralGuid = pathSegments.get(pathSegments.size() - 1);
+                if (!ValidationUtils.isNullOrEmpty(referralGuid))
+                {
+                    return referralGuid;
+                }
             }
         }
         return intent.getStringExtra(KEY_REFERRAL_GUID);
