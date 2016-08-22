@@ -953,7 +953,9 @@ public class Booking implements Parcelable
             in.readStringArray(stringArray);
             mLatitude = stringArray[0];
             mLongitude = stringArray[1];
-            mTimeStamp = new Date(in.readLong());
+
+            long tmpDate = in.readLong();
+            mTimeStamp = tmpDate == -1 ? null : new Date(tmpDate);
         }
 
         public String getLatitude()
@@ -977,10 +979,7 @@ public class Booking implements Parcelable
             out.writeStringArray(new String[]{mLatitude, mLongitude});
 
             //some locations don't report time stamps
-            if (mTimeStamp != null)
-            {
-                out.writeLong(mTimeStamp.getTime());
-            }
+            out.writeLong(mTimeStamp != null ? mTimeStamp.getTime() : -1);
         }
 
         @Override
