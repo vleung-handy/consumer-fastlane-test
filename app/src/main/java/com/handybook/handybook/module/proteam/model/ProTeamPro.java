@@ -14,6 +14,7 @@ import java.util.Date;
 public class ProTeamPro implements Parcelable
 {
     private static final int MILLIS_FOR_NULL_DATE = -1;
+    private static final float INVALID_AVERAGE_RATING = -1;
 
     @SerializedName("id")
     private int mId;
@@ -43,6 +44,10 @@ public class ProTeamPro implements Parcelable
             mLastSeenAt = new Date(millis);
         }
         mAverageRating = in.readFloat();
+        if (mAverageRating == INVALID_AVERAGE_RATING)
+        {
+            mAverageRating = null;
+        }
         mBookingCount = in.readInt();
     }
 
@@ -107,7 +112,7 @@ public class ProTeamPro implements Parcelable
         dest.writeString(mName);
         dest.writeString(mDescription);
         dest.writeLong(mLastSeenAt != null ? mLastSeenAt.getTime() : MILLIS_FOR_NULL_DATE);
-        dest.writeFloat(mAverageRating);
+        dest.writeFloat(mAverageRating == null ? INVALID_AVERAGE_RATING : mAverageRating);
         dest.writeInt(mBookingCount);
     }
 
