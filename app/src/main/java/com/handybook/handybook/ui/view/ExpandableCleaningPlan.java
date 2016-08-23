@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.util.StringUtils;
 import com.handybook.handybook.util.UiUtils;
 
 import java.util.List;
@@ -81,8 +82,9 @@ public class ExpandableCleaningPlan extends LinearLayout
     {
         mTextView.setText(activePlanCountTitle);
         mPlanContainer.removeAllViews();
-        for (final UserRecurringBooking recurringBooking : recurringBookings)
+        for (int i = 0; i < recurringBookings.size(); i++)
         {
+            UserRecurringBooking recurringBooking = recurringBookings.get(i);
             View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, mPlanContainer, false);
             view.setTag(recurringBooking);
 
@@ -91,18 +93,21 @@ public class ExpandableCleaningPlan extends LinearLayout
             TextView title = (TextView) view.findViewById(R.id.text_plan_title);
             TextView subTitle = (TextView) view.findViewById(R.id.text_plan_subtitle);
 
-            title.setText(getTitle(recurringBooking));
+            title.setText(StringUtils.capitalizeFirstCharacter(recurringBooking.getRecurringStringShort()));
             subTitle.setText(BookingUtil.getRecurrenceSubTitle(recurringBooking));
 
             editButton.setOnClickListener(clickListener);
             view.setOnClickListener(clickListener);
 
             mPlanContainer.addView(view);
-        }
-    }
 
-    private String getTitle(UserRecurringBooking booking)
-    {
-        return booking.getServiceName() + " (" + booking.getRecurringStringShort() + ")";
+            if (i < recurringBookings.size() - 1)
+            {
+                //since there are more bookings to come, add a divider
+                View divider = LayoutInflater.from(getContext()).inflate(R.layout.layout_divider, mPlanContainer, false);
+                mPlanContainer.addView(divider);
+            }
+        }
+
     }
 }

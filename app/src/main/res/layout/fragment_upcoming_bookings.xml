@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/handy_background_gray"
+                android:fillViewport="true"
                 >
 
                 <LinearLayout
@@ -60,6 +61,7 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:orientation="vertical"
+                        android:background="@color/handy_white"
                         />
 
                     <!--Using a linear layout because there can be multiple active bookings -->
@@ -90,6 +92,8 @@
                             android:padding="@dimen/default_padding"
                             android:textColor="@color/handy_tertiary_gray"
                             android:visibility="gone"
+                            tools:visibility="visible"
+                            android:textSize="@dimen/text_size_xsmall"
                             />
                         <LinearLayout
                             android:id="@+id/bookings_container"
@@ -100,9 +104,9 @@
                     </LinearLayout>
 
                     <com.handybook.handybook.ui.view.NoBookingsView
-                        android:id="@+id/active_plan_no_booking_container"
+                        android:id="@+id/no_booking_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:visibility="gone"
                         android:gravity="center"
                         />

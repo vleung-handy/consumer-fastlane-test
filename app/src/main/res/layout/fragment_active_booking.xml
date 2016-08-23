@@ -37,11 +37,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
                 android:layout_marginRight="@dimen/default_margin_half"
-                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_half"
                 tools:text="@string/pro_location_time_formatted"
                 android:background="@color/btn_white_transparent"
-                android:textColor="@color/handy_text_gray"
+                android:textColor="@color/handy_text_gray_2"
                 android:padding="@dimen/default_padding_half"
+                style="@style/TextView.XSmall"
                 />
 
             <ImageView
@@ -63,6 +64,7 @@
             android:text="Your booking starts soon"
             android:visibility="gone"
             tools:visibility="visible"
+            style="@style/TextView.Small"
             />
 
         <View
@@ -96,11 +98,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/professional"
                     android:textColor="@color/handy_tertiary_gray"
+                    android:textSize="@dimen/text_size_xsmall"
                     />
 
                 <TextView
                     android:id="@+id/text_provider_name"
-                    style="@style/TextAppearance.AppCompat.Title"
+                    style="@style/TextView.Large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin_half"
@@ -110,27 +113,27 @@
 
             <ImageView
                 android:id="@+id/image_text"
-                android:layout_width="@dimen/profile_card_image_size"
-                android:layout_height="@dimen/profile_card_image_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:src="@drawable/ic_text"
+                android:src="@drawable/ic_text_grey"
                 android:visibility="gone"
                 tools:visibility="visible"
                 />
 
             <ImageView
                 android:id="@+id/image_call"
-                android:layout_width="@dimen/profile_card_image_size"
-                android:layout_height="@dimen/profile_card_image_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/default_margin_half"
+                android:layout_marginRight="@dimen/default_margin"
                 android:layout_toLeftOf="@id/image_text"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:src="@drawable/ic_call"
+                android:src="@drawable/ic_call_grey"
                 android:visibility="gone"
                 tools:visibility="visible"
                 />
@@ -164,6 +167,7 @@
             android:text="@string/report_an_issue"
             android:textAllCaps="false"
             android:textColor="@color/handy_tertiary_gray"
+            android:textSize="@dimen/text_size_medium"
             />
     </LinearLayout>
 

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--This is used in the active booking screen, to show that there are active plans,
 but there are generated bookings
-
-Assumes inflated into a vertical linear layout
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
@@ -11,15 +9,21 @@ Assumes inflated into a vertical linear layout
               android:orientation="vertical"
               android:layout_gravity="center"
               android:gravity="center_horizontal"
-              android:padding="@dimen/default_padding"
     >
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/img_no_booking"
-        android:layout_marginTop="@dimen/default_margin"
-        />
+        android:paddingTop="@dimen/default_padding_double"
+        android:background="@color/handy_green"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_no_booking"
+            />
+    </FrameLayout>
 
     <!--This holds all the views needed for showing recurring bookings, but no generated booking -->
     <LinearLayout

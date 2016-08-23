@@ -53,17 +53,17 @@ public class BookingUtil
         SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_service_electrical_outline_small);
 
         PAST_SERVICE_ICONS = new HashMap<>();
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_cleaner_gray);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_cleaner_gray);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_handyman_gray);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_painter_gray);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_plumber_gray);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_electrician_gray);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_service_cleaning_outline_gray_small);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_service_cleaning_outline_gray_small);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_service_handyman_outline_gray_small);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_service_painting_outline_gray_small);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_service_plumbing_outline_gray_small);
+        PAST_SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_service_electrical_outline_gray_small);
     }
 
     private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_cleaner_fill;
     private static final Integer DEFAULT_SERVICE_OUTLINE_ICON_RESOURCE_ID = R.drawable.ic_service_cleaning_outline_small;
-    private static final Integer DEFAULT_PAST_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_cleaner_gray;
+    private static final Integer DEFAULT_PAST_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_service_cleaning_outline_gray_small;
 
 
     /**
@@ -148,7 +148,7 @@ public class BookingUtil
     }
 
     public static final String TITLE_DATE_FORMAT = "EEEE',' MMMM d";
-    public static final String SUBTITLE_DATE_FORMAT = "h:mm aaa";
+    public static final String SUBTITLE_DATE_FORMAT = "h:mmaaa";
     public static final int MINUTES_PER_HOUR = 60;
     public static final String DURATION_FORMAT = "#.#";
 
@@ -158,11 +158,18 @@ public class BookingUtil
         FILL, OUTLINE, GRAY
     }
 
+    /**
+     * Returns in the form of 3:00 pm - 7:00 pm
+     *
+     * @param booking
+     * @param context
+     * @return
+     */
     public static String getSubtitle(Booking booking, Context context)
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
         final String start = DateTimeUtils.formatDate(booking.getStartDate(),
-                SUBTITLE_DATE_FORMAT, booking.getBookingTimezone());
+                SUBTITLE_DATE_FORMAT, booking.getBookingTimezone()).toLowerCase();
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(booking.getStartDate());
@@ -171,15 +178,12 @@ public class BookingUtil
 
         //make sure this date is in the timezone of the booking location. This will be shown to the user
         final String end = DateTimeUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone());
-
-        final String duration = TextUtils.formatDecimal(booking.getHours(), DURATION_FORMAT);
+                booking.getBookingTimezone()).toLowerCase();
 
         final String subtitle = context.getString(
                 R.string.booking_card_row_time_and_duration,
                 start,
-                end,
-                duration
+                end
         );
         return subtitle;
     }
@@ -196,14 +200,15 @@ public class BookingUtil
     }
 
     /**
-     * Return in the form of Monday's @ 2:00pm - 3 hours
+     * Return in the form of Monday, Aug 1 @ 2:00pm
      *
      * @param rb
      * @return
      */
     public static String getRecurrenceSubTitle(UserRecurringBooking rb)
     {
-        return DateTimeUtils.getDayOfWeek(rb.getDateStart()) + "\'s" + " @ " + getRecurrenceSubTitle2(rb);
+        return DateTimeUtils.getDayShortMonthDay(rb.getDateStart()) + " @ "
+                + DateTimeUtils.getTime(rb.getDateStart());
     }
 
     /**

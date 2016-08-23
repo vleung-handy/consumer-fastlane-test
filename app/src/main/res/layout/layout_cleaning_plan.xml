@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:text="@string/edit"
-            style="@style/Button.Link"
+            style="@style/Button.Link.Bold"
+            android:gravity="right|center_vertical"
             />
 
         <ImageView

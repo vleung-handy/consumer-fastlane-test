@@ -59,6 +59,7 @@
     <color name="handy_white_semitransparent">#88ffffff</color>
     <color name="handy_text_black">#434343</color>
     <color name="handy_text_gray">#999999</color>
+    <color name="handy_text_gray_2">#4a4a4a</color>
     <color name="handy_divider_line">#eeeeee</color>
     <color name="handy_dark_divider_line">#cccccc</color>
     <color name="handy_input_field_stroke">#d1d1d1</color>

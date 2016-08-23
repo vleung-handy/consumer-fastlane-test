@@ -80,7 +80,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Bind(R.id.active_booking_container)
     LinearLayout mActiveBookingContainer;
 
-    @Bind(R.id.active_plan_no_booking_container)
+    @Bind(R.id.no_booking_view)
     NoBookingsView mNoBookingsView;
 
     @Bind(R.id.text_upcoming_bookings)
