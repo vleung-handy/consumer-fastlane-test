@@ -115,42 +115,6 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         return view;
     }
 
-    //TODO the edit entry endpoint expects an index for the selected entry method
-    private int getEntryMethodGetInIdForMachineName(String entryMethodMachineName)
-    {
-        switch (entryMethodMachineName)
-        {
-            case BookingInstruction.InstructionType.EntryMethod.AT_HOME:
-                return 0;
-            case BookingInstruction.InstructionType.EntryMethod.DOORMAN:
-                return 1;
-            case BookingInstruction.InstructionType.EntryMethod.HIDE_KEY:
-                return 2;
-            case BookingInstruction.InstructionType.EntryMethod.LOCKBOX:
-                return 3;
-            default:
-                return -1;
-        }
-    }
-
-    //TODO the booking stores the selected entry method as an in index but the entry methods model only knows machine name
-    private String getEntryMethodMachineNameForGetInId(int getInId)
-    {
-        switch(getInId)
-        {
-            case 0:
-                return BookingInstruction.InstructionType.EntryMethod.AT_HOME;
-            case 1:
-                return BookingInstruction.InstructionType.EntryMethod.DOORMAN;
-            case 2:
-                return BookingInstruction.InstructionType.EntryMethod.HIDE_KEY;
-            case 3:
-                return BookingInstruction.InstructionType.EntryMethod.LOCKBOX;
-            default:
-                return null;
-        }
-    }
-
     @OnClick(R.id.next_button)
     public void onNextButtonClicked()
     {
@@ -165,7 +129,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         //create the object to send to the server based on the selected entry method + input fields
         EntryMethodOption selectedEntryMethodOption = mEntryMethodOptions.get(selectedOptionIndex);
 
-        int getInId = getEntryMethodGetInIdForMachineName(selectedEntryMethodOption.getMachineName());
+        int getInId = EntryMethodOption.getEntryMethodGetInIdForMachineName(selectedEntryMethodOption.getMachineName());
         entryInformationTransaction.setGetInId(getInId);
         entryInformationTransaction.setLockboxAccessCode("");
 
@@ -217,7 +181,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     /**
      * updates the view and sets global vars based on the given QuoteConfig
      */
-    private void initFromEntryMethodsInfo(EntryMethodsInfo entryMethodsInfo)
+    private void initFromEntryMethodsInfo(@NonNull EntryMethodsInfo entryMethodsInfo)
     {
         //only need this to be global because of the options view updated listener
         mEntryMethodOptions = entryMethodsInfo.getEntryMethodOptions();
@@ -243,7 +207,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     {
         int bookingEntryMethodId = booking.getEntryType();
         String bookingEntryMethodMachineName =
-                getEntryMethodMachineNameForGetInId(bookingEntryMethodId);
+                EntryMethodOption.getEntryMethodMachineNameForGetInId(bookingEntryMethodId);
 
         if(bookingEntryMethodMachineName == null) return;
 
@@ -379,7 +343,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         int selectedOptionIndex = mOptionsView.getCurrentIndex();
         EntryMethodOption selectedEntryMethodOption = mEntryMethodOptions.get(selectedOptionIndex);
 
-        int selectedGetInId = getEntryMethodGetInIdForMachineName(
+        int selectedGetInId = EntryMethodOption.getEntryMethodGetInIdForMachineName(
                 selectedEntryMethodOption.getMachineName());
 
         //if selection is equal to what it was before
@@ -424,6 +388,9 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         option.setType(BookingOption.TYPE_OPTION);
         option.setOptions(OptionListToAttributeArrayConverter.getOptionsTitleTextArray(entryMethodOptions));
         option.setOptionsSubText(OptionListToAttributeArrayConverter.getOptionsSubTextArray(entryMethodOptions));
+        option.setDefaultValue("-1");
+        //^this makes it default to nothing.
+        //for some reason the model expects string but parses this into an int
 
         //UI for recommended options
         //TODO hacky, refactor asap

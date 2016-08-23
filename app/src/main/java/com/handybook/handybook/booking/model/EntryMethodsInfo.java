@@ -99,6 +99,7 @@ public class EntryMethodsInfo implements Serializable
             Crashlytics.logException(e);
         }
 
+        //should never be null since we're getting this from the assets folder
         return null;
     }
 }

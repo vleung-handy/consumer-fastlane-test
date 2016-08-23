@@ -142,7 +142,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     /**
      * updates the view and sets global vars based on the given QuoteConfig
      */
-    private void initFromEntryMethodsInfo(EntryMethodsInfo entryMethodsInfo)
+    private void initFromEntryMethodsInfo(@NonNull EntryMethodsInfo entryMethodsInfo)
     {
         //only need this to be global because of the options view updated listener
         mEntryMethodOptions = entryMethodsInfo.getEntryMethodOptions();
@@ -394,6 +394,9 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         option.setType(BookingOption.TYPE_OPTION);
         option.setOptions(OptionListToAttributeArrayConverter.getOptionsTitleTextArray(entryMethodOptions));
         option.setOptionsSubText(OptionListToAttributeArrayConverter.getOptionsSubTextArray(entryMethodOptions));
+        option.setDefaultValue("-1");
+        //^this makes it default to nothing.
+        //for some reason the model expects string but parses this into an int
 
         //UI for recommended options
         //TODO hacky, refactor asap

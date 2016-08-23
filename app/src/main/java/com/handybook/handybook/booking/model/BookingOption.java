@@ -31,7 +31,7 @@ public class BookingOption implements Parcelable
     @SerializedName("options_sub_text")
     private String[] optionsSubText;
     @SerializedName("options_super_text")
-    private String[] optionsSuperText; //TODO hacky, refactor
+    private String[] mOptionsSuperText; //TODO hacky, refactor
     @SerializedName("options_right_title_text")
     private String[] optionsRightTitleText;
     @SerializedName("options_left_text")
@@ -41,7 +41,7 @@ public class BookingOption implements Parcelable
     @SerializedName("options_hidden")
     private boolean[] optionsHidden; //determines which options are initially hidden
     @SerializedName("options_left_strip_indicator_visible")
-    private boolean[] leftStripIndicatorVisible; //TODO hacky, refactor
+    private boolean[] mLeftStripIndicatorVisible; //TODO hacky, refactor
     @SerializedName("hour_info")
     private float[] hoursInfo;
     @SerializedName("warnings")
@@ -63,22 +63,22 @@ public class BookingOption implements Parcelable
 
     public void setLeftStripIndicatorVisible(final boolean[] leftStripIndicatorVisible)
     {
-        this.leftStripIndicatorVisible = leftStripIndicatorVisible;
+        mLeftStripIndicatorVisible = leftStripIndicatorVisible;
     }
 
     public boolean[] getLeftStripIndicatorVisible()
     {
-        return leftStripIndicatorVisible;
+        return mLeftStripIndicatorVisible;
     }
 
     public void setOptionsSuperText(final String[] optionsSuperText)
     {
-        this.optionsSuperText = optionsSuperText;
+        mOptionsSuperText = optionsSuperText;
     }
 
     public String[] getOptionsSuperText()
     {
-        return optionsSuperText;
+        return mOptionsSuperText;
     }
 
     public void setImageResourceIds(int[] imageResourceIds)

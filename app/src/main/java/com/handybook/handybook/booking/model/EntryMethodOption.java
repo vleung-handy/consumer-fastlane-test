@@ -72,4 +72,41 @@ public class EntryMethodOption implements Serializable, Option
     }
 
 
+    /*TODO temporarily putting the below methods here now for hack*/
+    //TODO the edit entry endpoint expects an index for the selected entry method
+    public static int getEntryMethodGetInIdForMachineName(String entryMethodMachineName)
+    {
+        switch (entryMethodMachineName)
+        {
+            case BookingInstruction.InstructionType.EntryMethod.AT_HOME:
+                return 0;
+            case BookingInstruction.InstructionType.EntryMethod.DOORMAN:
+                return 1;
+            case BookingInstruction.InstructionType.EntryMethod.HIDE_KEY:
+                return 2;
+            case BookingInstruction.InstructionType.EntryMethod.LOCKBOX:
+                return 3;
+            default:
+                return -1;
+        }
+    }
+
+    //TODO the booking stores the selected entry method as an in index but the entry methods model only knows machine name
+    @BookingInstruction.EntryMethodType
+    public static String getEntryMethodMachineNameForGetInId(int getInId)
+    {
+        switch(getInId)
+        {
+            case 0:
+                return BookingInstruction.InstructionType.EntryMethod.AT_HOME;
+            case 1:
+                return BookingInstruction.InstructionType.EntryMethod.DOORMAN;
+            case 2:
+                return BookingInstruction.InstructionType.EntryMethod.HIDE_KEY;
+            case 3:
+                return BookingInstruction.InstructionType.EntryMethod.LOCKBOX;
+            default:
+                return null;
+        }
+    }
 }

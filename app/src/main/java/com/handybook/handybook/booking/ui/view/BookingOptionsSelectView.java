@@ -234,7 +234,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             }
 
             optionViews[i] = optionView;
-                optionLayout.addView(optionView);
+            optionLayout.addView(optionView);
         }
 
         handleWarnings(getCurrentIndex());

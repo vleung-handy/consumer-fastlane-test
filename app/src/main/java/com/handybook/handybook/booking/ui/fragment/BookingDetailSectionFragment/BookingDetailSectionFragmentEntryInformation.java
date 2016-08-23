@@ -1,14 +1,15 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
-import android.text.TextUtils;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingInstruction;
+import com.handybook.handybook.booking.model.EntryMethodOption;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
 
 public class BookingDetailSectionFragmentEntryInformation extends BookingDetailSectionFragment
 {
@@ -40,12 +41,22 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
         final String entryInfo = booking.getEntryInfo();
         if (entryInfo != null)
         {
-            String extraEntryInfo = booking.getExtraEntryInfo();
-            String entryInfoFormatted = entryInfo + " " + (extraEntryInfo != null ? extraEntryInfo : "");
-            if(!TextUtils.isEmpty(booking.getLockboxCode()))
+            String extraEntryInfo = booking.getExtraEntryInfo(); //TODO doubling as lockbox location for hack
+            int entryMethodTypeId = booking.getEntryType();
+            String entryMethodMachineName =
+                    EntryMethodOption.getEntryMethodMachineNameForGetInId(entryMethodTypeId);
+            String entryInfoFormatted = "";
+
+            if(BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(entryMethodMachineName))
             {
                 //TODO hack, refactor later
-                entryInfoFormatted+=("\nAccess code: " + booking.getLockboxCode());
+                entryInfoFormatted+=(entryInfo + "\nLocation: " + extraEntryInfo +
+                        "\nAccess code: " + booking.getLockboxCode());
+            }
+            else
+            {
+                //not lockbox
+                entryInfoFormatted = entryInfo + " " + (extraEntryInfo != null ? extraEntryInfo : "");
             }
 
             getSectionView().getEntryText().setText(entryInfoFormatted);
