@@ -2,6 +2,7 @@ package com.handybook.handybook.helpcenter.model;
 
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.model.response.HelpCenterResponse;
 
 import retrofit.mime.TypedInput;
 
@@ -98,6 +99,33 @@ public abstract class HelpEvent
     public static class ReceiveNotifyHelpContactError extends HandyEvent.ReceiveErrorEvent
     {
         public ReceiveNotifyHelpContactError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
+    //Help Center
+    public static class RequestHelpCenter extends HandyEvent
+    {
+        public RequestHelpCenter() { }
+    }
+
+
+    public static class ReceiveHelpCenterSuccess extends HandyEvent.ReceiveSuccessEvent
+    {
+        public HelpCenterResponse helpCenterResponse;
+
+        public ReceiveHelpCenterSuccess(HelpCenterResponse helpCenterResponse)
+        {
+            this.helpCenterResponse = helpCenterResponse;
+        }
+    }
+
+
+    public static class ReceiveHelpCenterError extends HandyEvent.ReceiveErrorEvent
+    {
+        public ReceiveHelpCenterError(DataManager.DataManagerError error)
         {
             this.error = error;
         }

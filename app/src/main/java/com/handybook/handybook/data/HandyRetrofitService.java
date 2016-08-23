@@ -438,6 +438,9 @@ public interface HandyRetrofitService
     @POST("/events")
     void postLogs(@Body JsonObject eventLogBundle, HandyRetrofitCallback cb);
 
+    @GET("/help/help_info")
+    void getHelpCenterInfo(HandyRetrofitCallback cb);
+
     final class RateProRequest
     {
         @SerializedName("positive_feedback")

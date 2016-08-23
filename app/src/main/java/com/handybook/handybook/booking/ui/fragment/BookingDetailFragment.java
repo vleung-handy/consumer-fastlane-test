@@ -239,6 +239,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                                 Intent intent = new Intent(getContext(), ReportIssueActivity.class);
                                 intent.putExtra(BundleKeys.BOOKING, mBooking);
                                 intent.putExtra(BundleKeys.PRO_JOB_STATUS, status);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
+                                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }
 
@@ -440,7 +442,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private boolean shouldShowPanicButtons(final Booking booking)
     {
-        if(booking == null){return false;}
+        if (booking == null) {return false;}
         final Date now = new Date();
 
         final GregorianCalendar periodStart = new GregorianCalendar();

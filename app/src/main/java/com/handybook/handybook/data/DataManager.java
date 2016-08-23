@@ -47,6 +47,7 @@ import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
@@ -343,6 +344,18 @@ public class DataManager
                 });
     }
 
+    /**
+     * Requests a HandyNotification.ResultSet from the server
+     *
+     * @param userId  id of the user to request notifications for
+     * @param count   max size of the notification list (can be smaller)
+     * @param sinceId <i>optional</i> Bottom delimiter, exclusive. Only notification after this id.
+     * @param untilId <i>optional</i> Top delimiter, exclusive. Only get notification before this
+     *                id
+     * @param cb      the callback used for returning data
+     * @see <a href="https://dev.twitter.com/rest/public/timelines">Twitter's implementation</a>
+     * <p/>
+     */
     public void getNotifications(
             long userId,
             @Nullable final Long count,
@@ -1092,6 +1105,11 @@ public class DataManager
                     }
                 }
         );
+    }
+
+    public void getHelpCenterInfo(final Callback<HelpCenterResponse> cb)
+    {
+        mService.getHelpCenterInfo(new HelpCenterResponseHandyRetrofitCallback(cb));
     }
 
     public void postLogs(final JsonObject eventLogBundle, final Callback<EventLogResponse> cb)

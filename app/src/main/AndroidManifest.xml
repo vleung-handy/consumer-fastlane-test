@@ -176,8 +176,6 @@
             android:name=".ui.activity.OnboardActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".helpcenter.ui.activity.HelpNativeActivity"/>
-        <activity android:name=".helpcenter.ui.activity.HelpWebViewActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
         <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
         <activity

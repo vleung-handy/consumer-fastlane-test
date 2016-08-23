@@ -7,10 +7,7 @@ import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactAct
 import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpWebViewActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
-import com.handybook.handybook.helpcenter.ui.fragment.HelpNativeFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.squareup.otto.Bus;
 
@@ -24,13 +21,10 @@ import dagger.Provides;
         complete = false,
         injects = {
                 HelpActivity.class,
-                HelpFragment.class,
-                HelpWebViewActivity.class,
                 HelpWebViewFragment.class,
-                HelpNativeActivity.class,
-                HelpNativeFragment.class,
                 HelpContactFragment.class,
                 HelpContactActivity.class,
+                HelpFragment.class
         })
 public final class HelpModule
 {

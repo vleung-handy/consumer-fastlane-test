@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
@@ -79,11 +80,21 @@ public class DeepLinkIntentProvider
             DEEP_LINK_NEW_BASE_URL + "bookings"})
     public static Intent getMyBookingsIntent(Context context)
     {
-        if(isUserLoggedIn())
+        if (isUserLoggedIn())
         {
             return new Intent(context, BookingsActivity.class);
         }
         return getLoginIntent(context, BookingsActivity.class);
+    }
+
+    @DeepLink({DEEP_LINK_SIDE_MENU_URL + "past_bookings"})
+    public static Intent getPastBookingsIntent(Context context)
+    {
+        if (isUserLoggedIn())
+        {
+            return new Intent(context, HistoryActivity.class);
+        }
+        return getLoginIntent(context, HistoryActivity.class);
     }
 
     @DeepLink({DEEP_LINK_SIDE_MENU_URL + "mybookings/id/{" + BundleKeys.BOOKING_ID + "}",
@@ -102,7 +113,7 @@ public class DeepLinkIntentProvider
             DEEP_LINK_NEW_BASE_URL + "account"})
     public static Intent getAccountIntent(Context context)
     {
-        if(isUserLoggedIn())
+        if (isUserLoggedIn())
         {
             return new Intent(context, ProfileActivity.class);
         }

@@ -7,6 +7,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -57,7 +58,7 @@ public class HelpManager
         }
 
         //Server expects us to request will a null node ID if we want root
-        if(nodeId != null && nodeId.equals(ROOT_NODE_ID))
+        if (nodeId != null && nodeId.equals(ROOT_NODE_ID))
         {
             nodeId = null;
         }
@@ -104,5 +105,24 @@ public class HelpManager
             }
         });
 
+    }
+
+    @Subscribe
+    public void onRequestHelpCenter(final HelpEvent.RequestHelpCenter event)
+    {
+        dataManager.getHelpCenterInfo(new DataManager.Callback<HelpCenterResponse>()
+        {
+            @Override
+            public void onSuccess(final HelpCenterResponse response)
+            {
+                bus.post(new HelpEvent.ReceiveHelpCenterSuccess(response));
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
+                bus.post(new HelpEvent.ReceiveHelpCenterError(error));
+            }
+        });
     }
 }

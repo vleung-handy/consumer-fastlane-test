@@ -10,12 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.HandyWebViewClient;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyWebView;
 import com.handybook.handybook.ui.widget.MenuButton;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +34,7 @@ public class HelpWebViewFragment extends InjectedFragment
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.web_view)
     HandyWebView mWebView;
+    private String helpCenterUrl;
 
     public static HelpWebViewFragment newInstance(final Bundle arguments)
     {
@@ -76,17 +83,87 @@ public class HelpWebViewFragment extends InjectedFragment
         });
         mWebView.getSettings().setJavaScriptEnabled(true);
 
-        String helpCenterUrl = getArguments().getString(BundleKeys.HELP_CENTER_URL);
-        final String id = getArguments().getString(BundleKeys.HELP_ID);
-        final String linkType = getArguments().getString(BundleKeys.HELP_LINK_TYPE);
-        if (id != null)
+        return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        Bundle args = getArguments();
+        if (args != null && !args.isEmpty())
         {
-            helpCenterUrl = Uri.parse(helpCenterUrl).buildUpon()
-                    .appendQueryParameter(REDIRECT_TO, linkType + id)
-                    .build().toString();
+            helpCenterUrl = getArguments().getString(BundleKeys.HELP_CENTER_URL);
+            if (!Strings.isNullOrEmpty(helpCenterUrl))
+            { loadURL(); }
+            else
+            {
+                requestConfiguration();
+            }
+        }
+        else
+        {
+            requestConfiguration();
+        }
+    }
+
+    @Subscribe
+    public void onReceiveConfigurationSuccess(
+            final ConfigurationEvent.ReceiveConfigurationSuccess event
+    )
+    {
+        removeUiBlockers();
+        final Configuration configuration = event.getConfiguration();
+        if (configuration != null)
+        {
+            helpCenterUrl = configuration.getHelpCenterUrl();
+            loadURL();
+        }
+    }
+
+    @Subscribe
+    public void onReceiveConfigurationError(
+            final ConfigurationEvent.ReceiveConfigurationError event
+    )
+    {
+        removeUiBlockers();
+        showErrorDialog(event.error.getMessage(), new DialogCallback()
+        {
+            @Override
+            public void onRetry()
+            {
+                requestConfiguration();
+            }
+
+            @Override
+            public void onCancel()
+            {
+                ((MenuDrawerActivity) getActivity())
+                        .navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+            }
+        });
+    }
+
+    private void requestConfiguration()
+    {
+        showUiBlockers();
+        bus.post(new ConfigurationEvent.RequestConfiguration());
+    }
+
+    private void loadURL()
+    {
+        Bundle args = getArguments();
+        if (args != null && !args.isEmpty())
+        {
+            final String id = getArguments().getString(BundleKeys.HELP_ID);
+            final String linkType = getArguments().getString(BundleKeys.HELP_LINK_TYPE);
+            if (id != null && linkType != null)
+            {
+                helpCenterUrl = Uri.parse(helpCenterUrl).buildUpon()
+                        .appendQueryParameter(REDIRECT_TO, linkType + id)
+                        .build().toString();
+            }
         }
         mWebView.loadUrl(helpCenterUrl);
-
-        return view;
     }
 }
