@@ -58,6 +58,8 @@ public class Booking implements Parcelable
     private String mEntryInfo;   //string descriptor of the entry type
     @SerializedName("getintxt")
     private String mExtraEntryInfo; //additional information i.e. where user will hide the key
+    @SerializedName("lockbox_code")
+    private String mLockboxCode; //ugly because hack
     @SerializedName("msg_to_pro")
     private String mProNote;
     @SerializedName("laundry_status")
@@ -82,6 +84,11 @@ public class Booking implements Parcelable
     private boolean mCanLeaveTip;
     @SerializedName("instructions")
     private Instructions mInstructions;
+
+    public String getLockboxCode()
+    {
+        return mLockboxCode;
+    }
 
     public boolean canEditExtras()
     {
@@ -361,7 +368,7 @@ public class Booking implements Parcelable
 
     private Booking(final Parcel in)
     {
-        final String[] stringData = new String[11];
+        final String[] stringData = new String[12];
         in.readStringArray(stringData);
         mId = stringData[0];
         mServiceName = stringData[1];
@@ -383,6 +390,7 @@ public class Booking implements Parcelable
         mBilledStatus = stringData[8];
         mRecurringId = stringData[9];
         mBookingTimezone = stringData[10];
+        mLockboxCode = stringData[11];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -413,6 +421,8 @@ public class Booking implements Parcelable
         mCanLeaveTip = booleanData[3];
 
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
+
+
     }
 
     public static Booking fromJson(final String json)
@@ -436,7 +446,8 @@ public class Booking implements Parcelable
                                 mProNote,
                                 mBilledStatus,
                                 mRecurringId,
-                                mBookingTimezone
+                                mBookingTimezone,
+                                mLockboxCode
                         }
         );
 

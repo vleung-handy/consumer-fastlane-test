@@ -22,12 +22,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-
+//TODO this desperately needs to be refactored
 public final class BookingOptionsSelectView extends BookingOptionsIndexView
 {
     protected String[] optionsSubtitles;
+    protected String[] optionsSuperText;//todo rename
     protected String[] optionsRightSubText;
     protected String[] optionsRightTitleText;
+    protected boolean[] optionsLeftStripIndicatorVisible;
     protected boolean[] optionsHidden;
     protected int[] optionImagesResourceIds;
     private HashMap<Integer, CheckBox> checkMap;
@@ -79,10 +81,20 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 !TextUtils.isEmpty(optionsStrings[optionIndex]);
     }
 
+    private boolean isBooleanOptionValid(boolean[] options, int optionIndex)
+    {
+        return options != null && optionIndex < options.length;
+    }
+
+    private boolean shouldShowLeftStripIndicator(boolean[] shouldShowLeftStripIndicator, int optionIndex)
+    {
+        return isBooleanOptionValid(shouldShowLeftStripIndicator, optionIndex)
+                && shouldShowLeftStripIndicator[optionIndex];
+    }
+
     private boolean shouldHideOption(boolean[] optionsHidden, int optionIndex)
     {
-        return optionsHidden != null &&
-                optionIndex < optionsHidden.length
+        return isBooleanOptionValid(optionsHidden, optionIndex)
                 && optionsHidden[optionIndex];
     }
 
@@ -110,11 +122,13 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
         final LinearLayout optionLayout = (LinearLayout) this.findViewById(R.id.options_layout);
 
+        optionsSuperText = option.getOptionsSuperText();
         optionsSubtitles = option.getOptionsSubText();
         optionsRightSubText = option.getOptionsRightSubText();
         optionsRightTitleText = option.getOptionsRightTitleText();
         optionImagesResourceIds = option.getImageResourceIds();
         optionsHidden = option.getOptionsHidden();
+        optionsLeftStripIndicatorVisible = option.getLeftStripIndicatorVisible();
         checkMap = new HashMap<>();
 
 
@@ -139,7 +153,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         for (int i = 0; i < optionsList.length; i++)
         {
             final String optionText = optionsList[i];
-            final LinearLayout optionView = (LinearLayout) LayoutInflater.from(context)
+            final ViewGroup optionView = (ViewGroup) LayoutInflater.from(context)
                     .inflate(mOptionEntryLayoutResourceId, this, false);
 
             final TextView title = (TextView) optionView.findViewById(R.id.title_text);
@@ -158,6 +172,16 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             if (shouldDisplayOptionString(optionsRightTitleText, i))
             {
                 showTextView((TextView) optionView.findViewById(R.id.right_title_text), optionsRightTitleText[i]);
+            }
+
+            if (shouldDisplayOptionString(optionsSuperText, i))
+            {
+                showTextView((TextView) optionView.findViewById(R.id.booking_select_option_super_text), optionsSuperText[i]);
+            }
+
+            if(shouldShowLeftStripIndicator(optionsLeftStripIndicatorVisible, i))
+            {
+                optionView.findViewById(R.id.booking_select_option_left_strip_indicator).setVisibility(VISIBLE);
             }
 
             final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);

@@ -76,7 +76,8 @@
     <string name="peak_price_info_unavailable">Due to high demand, certain times are unavailable. Scroll through the calendar to find alternate times.</string>
     <string name="unavailable">Unavailable</string>
     <string name="confirmation">Confirmation</string>
-    <string name="payment_confirmed">Your payment has been confirmed.\nHow will your professional get in?</string>
+    <string name="payment_confirmed">Your payment is confirmed.</string>
+    <string name="fragment_booking_edit_entry_info_instructions">Your payment has been confirmed.\nHow will your professional get in?</string>
     <string name="will_be_home">I’ll be home</string>
     <string name="doorman">Doorman</string>
     <string name="will_hide_key">I’ll hide the key</string>
@@ -402,5 +403,6 @@
     <string name="fragment_referral_sms_invite">Text Invite</string>
     <string name="fragment_referral_email_invite">Email Invite</string>
     <string name="fragment_referral_more_ways_to_share">More ways to share</string>
+    <string name="recommended">Recommended</string>
     <string name="cd_share_icon">Open Share Screen</string>
 </resources>
