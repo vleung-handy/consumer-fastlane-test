@@ -116,7 +116,12 @@ public final class ReportIssueFragment extends InjectedFragment
                 ProMilestoneView milestoneView = new ProMilestoneView(getContext());
                 milestoneView.setDotColor(mJobStatus.getStatusDrawableId(i));
                 milestoneView.setTitleText(milestone.getTitle());
+                milestoneView.setIsCurrentMilestone(i == milestones.length - 1);
                 milestoneView.setBodyText(milestone.getBody());
+                if (milestone.getTimestamp() != null)
+                {
+                    milestoneView.setTimeText(DateTimeUtils.getTimeWithoutDate(milestone.getTimestamp()));
+                }
                 if (milestone.getAction() != null)
                 {
                     JobStatus.Action action = milestone.getAction();
@@ -202,7 +207,6 @@ public final class ReportIssueFragment extends InjectedFragment
                     }
                     else if (!Strings.isNullOrEmpty(deepLinkWrapper.getDeeplink()))
                     {
-                        // should parse deeplink and fallback url
                         Uri uri = Uri.parse(deepLinkWrapper.getDeeplink());
                         Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
                         Utils.safeLaunchIntent(deepLinkIntent, getContext());

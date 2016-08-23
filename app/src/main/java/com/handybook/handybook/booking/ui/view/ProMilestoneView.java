@@ -4,12 +4,14 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.util.TextUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +26,8 @@ public class ProMilestoneView extends FrameLayout
     TextView mTitleText;
     @Bind(R.id.pro_milestone_body)
     TextView mBodyText;
+    @Bind(R.id.pro_milestone_time)
+    TextView mTimeText;
     @Bind(R.id.pro_milestone_call)
     Button mCallButton;
     @Bind(R.id.pro_milestone_text)
@@ -68,6 +72,12 @@ public class ProMilestoneView extends FrameLayout
 
     public void setBodyText(CharSequence text) { mBodyText.setText(text); }
 
+    public void setTimeText(CharSequence text)
+    {
+        mTimeText.setVisibility(VISIBLE);
+        mTimeText.setText(text);
+    }
+
     public void setCallAndTextButtonVisibility(int visibility)
     {
         mCallButton.setVisibility(visibility);
@@ -82,5 +92,19 @@ public class ProMilestoneView extends FrameLayout
     public void setTextButtonOnClickListener(OnClickListener onClickListener)
     {
         mTextButton.setOnClickListener(onClickListener);
+    }
+
+    public void setIsCurrentMilestone(boolean isCurrent)
+    {
+        if (isCurrent)
+        {
+            mTitleText.setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOLD));
+            mTitleText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        }
+        else
+        {
+            mTitleText.setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));
+            mTitleText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        }
     }
 }

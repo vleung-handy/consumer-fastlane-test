@@ -35,7 +35,7 @@ public class JobStatus implements Serializable
         boolean isFill = index < mMilestones.length - 1 || mComplete;
         if (mStatus == null)
         {
-            return isFill ? R.drawable.circle_grey : R.drawable.circle_grey_stroke;
+            return R.drawable.circle_grey_stroke_light;
         }
 
         switch (mStatus)
@@ -47,8 +47,9 @@ public class JobStatus implements Serializable
             case Milestone.ERROR:
                 return isFill ? R.drawable.circle_red : R.drawable.circle_red_stroke;
             case Milestone.INVALID:
-            default:
                 return isFill ? R.drawable.circle_grey : R.drawable.circle_grey_stroke;
+            default:
+                return R.drawable.circle_grey_stroke_light;
         }
     }
 
@@ -112,7 +113,7 @@ public class JobStatus implements Serializable
         private String mText;
         @SerializedName("type")
         private String mType;
-        @SerializedName("deeplink")
+        @SerializedName("link")
         private String mDeeplink;
 
         public DeepLinkWrapper(final String text, final String type, final String deeplink)
