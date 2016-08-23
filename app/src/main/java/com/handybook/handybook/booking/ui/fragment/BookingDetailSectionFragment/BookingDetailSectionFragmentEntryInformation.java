@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.text.Html;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -45,21 +46,19 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
             int entryMethodTypeId = booking.getEntryType();
             String entryMethodMachineName =
                     EntryMethodOption.getEntryMethodMachineNameForGetInId(entryMethodTypeId);
-            String entryInfoFormatted = "";
 
             if(BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(entryMethodMachineName))
             {
                 //TODO hack, refactor later
-                entryInfoFormatted+=(entryInfo + "\nLocation: " + extraEntryInfo +
-                        "\nAccess code: " + booking.getLockboxCode());
+                String htmlText = "<b>" + entryInfo + "</b><br>Location: " + extraEntryInfo + "<br>Access code: " + booking.getLockboxCode();
+                getSectionView().getEntryText().setText(Html.fromHtml(htmlText));
             }
             else
             {
                 //not lockbox
-                entryInfoFormatted = entryInfo + " " + (extraEntryInfo != null ? extraEntryInfo : "");
+                String entryInfoFormatted = entryInfo + " " + (extraEntryInfo != null ? extraEntryInfo : "");
+                getSectionView().getEntryText().setText(entryInfoFormatted);
             }
-
-            getSectionView().getEntryText().setText(entryInfoFormatted);
         }
         else
         {
