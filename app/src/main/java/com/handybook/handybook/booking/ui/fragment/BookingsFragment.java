@@ -153,6 +153,7 @@ public class BookingsFragment extends InjectedFragment
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null)
         {
+            bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.AddBookingPressedLog()));
             fragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
                     .add(R.id.fragment_container,
