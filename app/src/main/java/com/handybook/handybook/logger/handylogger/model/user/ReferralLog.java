@@ -29,11 +29,17 @@ public abstract class ReferralLog extends EventLog
         private static final String EVENT_TYPE = "share_button_tapped";
         @SerializedName("referral_medium")
         private String mReferralMedium;
+        @SerializedName("referral_identifier")
+        private String mReferralIdentifier;
 
-        public ShareButtonTapped(final String referralMedium)
+        public ShareButtonTapped(
+                final String referralMedium,
+                final String referralIdentifier
+        )
         {
             super(EVENT_TYPE);
             mReferralMedium = referralMedium;
+            mReferralIdentifier = referralIdentifier;
         }
     }
 }

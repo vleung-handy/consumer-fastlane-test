@@ -214,7 +214,7 @@ public class ReferralFragment extends InjectedFragment
         activityPickerIntent.putExtra(Intent.EXTRA_INTENT, dummyIntent);
         startActivityForResult(activityPickerIntent, ActivityResult.PICK_ACTIVITY);
         mBus.post(new LogEvent.AddLogEvent(
-                new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_OTHER)));
+                new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_OTHER, null)));
     }
 
     @OnClick(R.id.fragment_referral_button_sms)
@@ -230,7 +230,8 @@ public class ReferralFragment extends InjectedFragment
             );
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
             mBus.post(new LogEvent.AddLogEvent(
-                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_SMS)));
+                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_SMS,
+                            smsReferralInfo.getGuid())));
         }
         else
         {
@@ -252,7 +253,8 @@ public class ReferralFragment extends InjectedFragment
             emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
             mBus.post(new LogEvent.AddLogEvent(
-                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_EMAIL)));
+                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_EMAIL,
+                            emailReferralInfo.getGuid())));
         }
         else
         {
@@ -272,7 +274,7 @@ public class ReferralFragment extends InjectedFragment
         clipboard.setPrimaryClip(clip);
         showToast(R.string.referral_copied_to_clipboard);
         mBus.post(new LogEvent.AddLogEvent(
-                new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_OTHER)));
+                new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_OTHER, null)));
     }
 
     private void showErrorLayout(String errorMessage)

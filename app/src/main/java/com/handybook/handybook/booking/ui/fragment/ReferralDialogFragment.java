@@ -87,7 +87,8 @@ public class ReferralDialogFragment extends BaseDialogFragment
             emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
             mBus.post(new LogEvent.AddLogEvent(
-                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_EMAIL)));
+                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_EMAIL,
+                            emailReferralInfo.getGuid())));
         }
         else
         {
@@ -108,7 +109,8 @@ public class ReferralDialogFragment extends BaseDialogFragment
             );
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
             mBus.post(new LogEvent.AddLogEvent(
-                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_SMS)));
+                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_SMS,
+                            smsReferralInfo.getGuid())));
         }
         else
         {
