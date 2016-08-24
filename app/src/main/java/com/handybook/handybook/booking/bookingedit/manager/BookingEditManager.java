@@ -146,7 +146,6 @@ public class BookingEditManager
                     public void onSuccess(Void response)
                     {
                         mBus.post(new BookingEditEvent.ReceiveUpdateRecurringFrequencySuccess());
-
                     }
 
                     @Override
