@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/handy_background_gray"
     >
 
     <LinearLayout
@@ -44,9 +45,10 @@
         android:id="@+id/button_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Button.Link"
+        style="@style/Button.Link.Bold"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="@string/edit"
+        android:gravity="right|center_vertical"
         />
 </RelativeLayout>

@@ -193,7 +193,7 @@
     </style>
 
     <style name="Button.Link.Bold">
-        <item name="android:textStyle">bold</item>
+        <item name="fontPath">fonts/CircularStd-Bold.otf</item>
     </style>
 
     <style name="RoundedButton">

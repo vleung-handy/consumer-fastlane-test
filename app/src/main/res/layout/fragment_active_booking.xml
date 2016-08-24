@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/default_margin"
+    android:layout_marginBottom="@dimen/default_margin_half"
     app:optCardCornerRadius="@dimen/med_elevation"
     app:optCardElevation="@dimen/med_elevation"
     >
@@ -111,31 +111,38 @@
                     />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/image_text"
+            <TextView
+                android:id="@+id/text_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:src="@drawable/ic_text_grey"
+                android:drawableLeft="@drawable/ic_text_grey"
+                android:drawablePadding="@dimen/default_padding_quarter"
                 android:visibility="gone"
                 tools:visibility="visible"
+                android:text="@string/text"
+                android:textColor="@color/handy_tertiary_gray"
+                android:gravity="center_vertical"
                 />
 
-            <ImageView
-                android:id="@+id/image_call"
+            <TextView
+                android:id="@+id/text_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/default_margin"
-                android:layout_toLeftOf="@id/image_text"
+                android:layout_marginRight="@dimen/default_margin_double"
+                android:layout_toLeftOf="@id/text_text"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:src="@drawable/ic_call_grey"
+                android:drawableLeft="@drawable/ic_call_grey"
                 android:visibility="gone"
                 tools:visibility="visible"
+                android:text="@string/call"
+                android:textColor="@color/handy_tertiary_gray"
+                android:gravity="center_vertical"
                 />
 
         </RelativeLayout>
@@ -151,7 +158,6 @@
 
         <include layout="@layout/layout_booking_list_item"/>
 
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -163,11 +169,12 @@
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
             android:text="@string/report_an_issue"
             android:textAllCaps="false"
             android:textColor="@color/handy_tertiary_gray"
             android:textSize="@dimen/text_size_medium"
+            android:paddingLeft="@dimen/default_padding"
+            android:gravity="left|center_vertical"
             />
     </LinearLayout>
 
