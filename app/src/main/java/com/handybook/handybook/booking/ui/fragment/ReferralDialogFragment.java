@@ -31,6 +31,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
     TextView mSubtitle;
 
     private static final String REFERRAL_DESCRIPTOR = "referral_descriptor";
+    private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{"handy-referrals@handy.com"};
     private ReferralChannels mReferralChannels;
     private ReferralDescriptor mReferralDescriptor;
 
@@ -81,6 +82,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
             emailIntent.setType("plain/text");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
+            emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
         }
         else

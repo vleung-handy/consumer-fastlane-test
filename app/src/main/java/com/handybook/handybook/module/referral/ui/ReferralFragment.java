@@ -44,6 +44,8 @@ public class ReferralFragment extends InjectedFragment
 {
     private static final String BASE_REFERRAL_URL = "handy.com/r/";
     private static final String BASE_REFERRAL_URL_SCHEME = "https://";
+    private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{"handy-referrals@handy.com"};
+
     @Inject
     Bus mBus;
 
@@ -243,6 +245,7 @@ public class ReferralFragment extends InjectedFragment
             emailIntent.setType("plain/text");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
+            emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
         }
         else
