@@ -1,5 +1,6 @@
 package com.handybook.handybook.logger.handylogger.model.user;
 
+import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 public abstract class ReferralLog extends EventLog
@@ -19,6 +20,20 @@ public abstract class ReferralLog extends EventLog
         public ReferralOpenLog()
         {
             super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class ShareButtonTapped extends ReferralLog
+    {
+        private static final String EVENT_TYPE = "share_button_tapped";
+        @SerializedName("referral_medium")
+        private String mReferralMedium;
+
+        public ShareButtonTapped(final String referralMedium)
+        {
+            super(EVENT_TYPE);
+            mReferralMedium = referralMedium;
         }
     }
 }
