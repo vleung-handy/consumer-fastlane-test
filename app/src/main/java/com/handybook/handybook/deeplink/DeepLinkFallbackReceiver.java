@@ -27,6 +27,7 @@ public class DeepLinkFallbackReceiver extends BroadcastReceiver
             {
                 Uri uri = Uri.parse(uriString);
                 final Intent yozioIntent = getYozioIntent(context, uri);
+                // This is only expected to be hit on cold start of the app.
                 if (yozioIntent != null)
                 {
                     context.startActivity(yozioIntent);
