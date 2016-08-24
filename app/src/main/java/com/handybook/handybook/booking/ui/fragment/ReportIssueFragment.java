@@ -24,6 +24,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.Utils;
@@ -72,6 +73,8 @@ public final class ReportIssueFragment extends InjectedFragment
 
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mJobStatus = (JobStatus) getArguments().getSerializable(BundleKeys.PRO_JOB_STATUS);
+
+        bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ReportIssueOpened(mBooking.getId(), getLastMilestoneTitle())));
     }
 
     @Override
@@ -135,9 +138,10 @@ public final class ReportIssueFragment extends InjectedFragment
                             @Override
                             public void onClick(final View v)
                             {
+                                bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
+                                        mBooking.getId(), IssueResolutionLog.ProContacted.PHONE)));
                                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
                                 Utils.safeLaunchIntent(intent, getContext());
-
                             }
                         });
                         milestoneView.setTextButtonOnClickListener(new View.OnClickListener()
@@ -145,9 +149,10 @@ public final class ReportIssueFragment extends InjectedFragment
                             @Override
                             public void onClick(final View v)
                             {
+                                bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
+                                        mBooking.getId(), IssueResolutionLog.ProContacted.SMS)));
                                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
                                 Utils.safeLaunchIntent(intent, getContext());
-
                             }
                         });
                     }
@@ -183,6 +188,9 @@ public final class ReportIssueFragment extends InjectedFragment
                 @Override
                 public void onClick(final View v)
                 {
+                    bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.HelpLinkTapped(
+                            mBooking.getId(), deepLinkWrapper.getText(), deepLinkWrapper.getDeeplink())));
+
                     if (JobStatus.DeepLinkWrapper.TYPE_CANCEL.equals(deepLinkWrapper.getType()))
                     {
                         // show cancel page
@@ -215,6 +223,21 @@ public final class ReportIssueFragment extends InjectedFragment
             });
             mDeepLinksLayout.addView(view);
         }
+    }
+
+    private String getLastMilestoneTitle()
+    {
+        String lastMilestoneTitle = "";
+        JobStatus.Milestone[] milestones = mJobStatus.getMilestones();
+        if (milestones != null && milestones.length > 0)
+        {
+            JobStatus.Milestone milestone = milestones[milestones.length - 1];
+            if (!Strings.isNullOrEmpty(milestone.getTitle()))
+            {
+                lastMilestoneTitle = milestone.getTitle();
+            }
+        }
+        return lastMilestoneTitle;
     }
 
     @Subscribe
