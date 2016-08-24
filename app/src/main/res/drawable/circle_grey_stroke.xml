@@ -3,5 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval"
     >
-    <solid android:color="@color/handy_tertiary_gray"/>
+    <stroke
+        android:width="2dp"
+        android:color="@color/handy_tertiary_gray"
+        />
 </shape>

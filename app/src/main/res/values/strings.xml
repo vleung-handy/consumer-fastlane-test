@@ -134,7 +134,6 @@
     <string name="rating_improvement_anonymous">All feedback is anonymous.</string>
     <string name="rating_improvement_all_that_apply">Select all that apply.</string>
     <string name="close">Close</string>
-    <string name="ok">Ok</string>
     <string name="glad_you_enjoy">Glad you enjoyed it!</string>
     <string name="good_vibes">We love to pass on the good vibes.</string>
     <string name="send">Send</string>
@@ -234,6 +233,9 @@
     <string name="total_due">Total Due</string>
     <string name="billed_on_date_formatted">Billed on %1$s</string>
 
+    <!-- Tools -->
+    <string name="dash_formatted">%1$s \u2013 %2$s</string>
+
     <!--shared between booking edit screens-->
     <string name="booking_edit_num_hours_formatted">(%1$s hours)</string>
     <string name="booking_edit_base_hours_formatted">Base time (%1$s hours)</string>
@@ -256,6 +258,8 @@
     <string name="booking_edit_hours_update_success">Successfully updated booking hours</string>
     <string name="booking_edit_hours_options_warning">Because you are booking less time than recommended, we may not be able to do a complete job.</string>
     <string name="booking_edit_hours_action_button">Add/Remove Hours</string>
+
+    <string name="report_an_issue">Report an issue</string>
 
     <string name="home_cleaner">Home Cleaner</string>
     <string name="home_cleaner_slogan">Let your home shine</string>

@@ -8,5 +8,4 @@
         android:id="@+id/booking_detail_view"
         layout="@layout/element_booking_detail"/>
 
-
 </RelativeLayout>
