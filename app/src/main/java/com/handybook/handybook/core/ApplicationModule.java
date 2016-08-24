@@ -92,7 +92,6 @@ import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
-import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
@@ -176,7 +175,7 @@ import retrofit.converter.GsonConverter;
         PromosFragment.class,
         BookingExtrasFragment.class,
         BookingRecurrenceFragment.class,
-        BaseDataManager.class,
+        DataManager.class,
         ServiceCategoriesActivity.class,
         ServicesActivity.class, ProfileActivity.class,
         PeakPricingActivity.class,
@@ -393,7 +392,7 @@ public final class ApplicationModule
             final PrefsManager prefsManager
     )
     {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
+        final DataManager dataManager = new DataManager(service, endpoint, prefsManager);
         return dataManager;
     }
 
