@@ -40,7 +40,7 @@
     },
     {
       "machine_name": "hide_key",
-      "display_name": "I'll hide the key",
+      "display_name": "Hidden key",
       "recommended": true,
       "input_form_definition": {
         "field_definitions": [
@@ -55,7 +55,7 @@
     },
     {
       "machine_name": "at_home",
-      "display_name": "I'll be at home",
+      "display_name": "No thanks, I’ll be home",
       "recommended": false,
       "input_form_definition": {
         "field_definitions": [
