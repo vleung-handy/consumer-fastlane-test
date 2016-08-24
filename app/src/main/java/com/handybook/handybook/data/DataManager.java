@@ -298,6 +298,17 @@ public abstract class DataManager
             Callback<BookingEditFrequencyInfoResponse> cb
     );
 
+    public abstract void updateRecurringFrequency(
+            String recurringId,
+            BookingEditFrequencyRequest bookingEditFrequencyRequest,
+            Callback<Void> cb
+    );
+
+    public abstract void getRecurringFrequency(
+            String recurringId,
+            Callback<BookingEditFrequencyInfoResponse> cb
+    );
+
     public abstract void ratePro(
             int bookingId,
             int rating,

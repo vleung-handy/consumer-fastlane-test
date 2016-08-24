@@ -20,9 +20,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
@@ -390,20 +388,10 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                                                  public void onClick(final View v)
                                                  {
                                                      UserRecurringBooking rb = (UserRecurringBooking) v.getTag();
-                                                     Booking booking = getBookingWithRecurringId(rb.getId());
-
-                                                     if (booking != null)
-                                                     {
-                                                         final Intent intent = new Intent(UpcomingBookingsFragment.this.getActivity(), BookingEditFrequencyActivity.class);
-                                                         intent.putExtra(BundleKeys.BOOKING, booking);
-                                                         Activity activity = UpcomingBookingsFragment.this.getActivity();
-                                                         activity.startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
-                                                     }
-                                                     else
-                                                     {
-                                                         //this should never happen, but just in case it does.
-                                                         Toast.makeText(UpcomingBookingsFragment.this.getActivity(), R.string.unable_to_edit_plan, Toast.LENGTH_SHORT).show();
-                                                     }
+                                                     final Intent intent = new Intent(UpcomingBookingsFragment.this.getActivity(), BookingEditFrequencyActivity.class);
+                                                     intent.putExtra(BundleKeys.RECURRING_BOOKING, rb);
+                                                     Activity activity = UpcomingBookingsFragment.this.getActivity();
+                                                     activity.startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                                                  }
                                              },
                         mRecurringBookings,
@@ -441,28 +429,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 //                });
             }
         }
-    }
-
-    /**
-     * Takes in a recurring id, and finds the first booking that has such recurring id.
-     *
-     * @param recurringId
-     * @return
-     */
-    private Booking getBookingWithRecurringId(final String recurringId)
-    {
-        for (Booking booking : mBookings)
-        {
-            if (booking.getRecurringId() != null && String.valueOf(booking.getRecurringId()).equals(recurringId))
-            {
-                return booking;
-            }
-        }
-
-        Crashlytics.logException(new RuntimeException("User requested to edit recurrence with id:"
-                + recurringId + " but there is no booking with such recurrence id."));
-
-        return null;
     }
 
     private String getActiveCountString()

@@ -10,6 +10,7 @@ import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.constant.BookingRecurrence.BookingRecurrenceCode;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
 
 public class BookingEditFrequencyViewModel
 {
@@ -33,9 +34,10 @@ public class BookingEditFrequencyViewModel
      *
      * @param context
      * @param booking
+     * @param recurringBooking
      * @return A BookingOption object that models the booking options view
      */
-    public BookingOption getBookingOptionFromBooking(final Context context, final Booking booking)
+    public BookingOption getBookingOptionFromBooking(final Context context, final Booking booking, final UserRecurringBooking recurringBooking)
     {
         //TODO: mostly duplicated from checkout flow fragment, should reconsider redesigning the options logic
         final BookingOption option = new BookingOption();
@@ -56,7 +58,7 @@ public class BookingEditFrequencyViewModel
         String[] optionsRightSubText = new String[mFrequencyOptionsArray.length];
         String rightSubText = context.getResources().getString(
                 R.string.booking_options_right_sub_text,
-                getServiceShortNameFromBooking(context, booking));
+                getServiceShortNameFromBooking(context, booking, recurringBooking));
 
         //set all the right sub texts to the service short name
         for (int i = 0; i < optionsRightSubText.length; i++)
@@ -71,11 +73,28 @@ public class BookingEditFrequencyViewModel
      * gets the service short name from the given booking, to be displayed on the right hand side of the option entry
      * @param context
      * @param booking
+     * @param recurringBooking
      * @return
      */
-    public final String getServiceShortNameFromBooking(final Context context, final Booking booking)
+    public final String getServiceShortNameFromBooking(
+            final Context context,
+            final Booking booking,
+            final UserRecurringBooking recurringBooking
+    )
     {
-        switch (booking.getServiceMachineName())
+        String serviceName = "";
+
+        if (booking != null)
+        {
+            serviceName = booking.getServiceMachineName();
+        }
+
+        if (recurringBooking != null)
+        {
+            serviceName = recurringBooking.getMachineName();
+        }
+
+        switch (serviceName)
         {
             case Booking.SERVICE_CLEANING:
             case Booking.SERVICE_HOME_CLEANING:

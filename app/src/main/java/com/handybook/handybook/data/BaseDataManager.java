@@ -1073,6 +1073,33 @@ public final class BaseDataManager extends DataManager
     }
 
     @Override
+    public void updateRecurringFrequency(
+            final String recurringId,
+            final BookingEditFrequencyRequest bookingEditFrequencyRequest,
+            final Callback<Void> cb
+    )
+    {
+        mService.updateRecurringFrequency(recurringId, bookingEditFrequencyRequest, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            protected void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getRecurringFrequency(
+            final String recurringId,
+            final Callback<BookingEditFrequencyInfoResponse> cb
+    )
+    {
+        mService.getRecurringFrequency(recurringId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
+    }
+
+    @Override
     public void finalizeBooking(
             int bookingId,
             @NonNull FinalizeBookingRequestPayload finalizeBookingRequestPayload,
