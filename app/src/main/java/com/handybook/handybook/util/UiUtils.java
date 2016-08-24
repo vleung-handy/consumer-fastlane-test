@@ -17,7 +17,7 @@ public final class UiUtils
     /**
      * The amount of padding to extend the touch area of a view
      */
-    private static final int PADDING_AREA = 200;
+    public static final int PADDING_AREA = 200;
 
     public static void toggleKeyboard(Activity activity)
     {
@@ -91,7 +91,7 @@ public final class UiUtils
 
     }
 
-    public static void extendTouchArea(final View parentContainer, final View viewToExtend)
+    public static void extendTouchArea(final View parentContainer, final View viewToExtend, final int padArea)
     {
         parentContainer.post(new Runnable()
         {
@@ -109,10 +109,10 @@ public final class UiUtils
 
                 // Extend the touch area of the ImageButton beyond its bounds
                 // on the right and bottom.
-                delegateArea.right += PADDING_AREA;
-                delegateArea.bottom += PADDING_AREA;
-                delegateArea.left -= PADDING_AREA;
-                delegateArea.top -= PADDING_AREA;
+                delegateArea.right += padArea;
+                delegateArea.bottom += padArea;
+                delegateArea.left -= padArea;
+                delegateArea.top -= padArea;
 
                 // Instantiate a TouchDelegate.
                 // "delegateArea" is the bounds in local coordinates of
