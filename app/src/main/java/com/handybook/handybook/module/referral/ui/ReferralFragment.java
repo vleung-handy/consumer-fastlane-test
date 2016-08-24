@@ -213,6 +213,8 @@ public class ReferralFragment extends InjectedFragment
         activityPickerIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.share_using));
         activityPickerIntent.putExtra(Intent.EXTRA_INTENT, dummyIntent);
         startActivityForResult(activityPickerIntent, ActivityResult.PICK_ACTIVITY);
+        mBus.post(new LogEvent.AddLogEvent(
+                new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_OTHER)));
     }
 
     @OnClick(R.id.fragment_referral_button_sms)
