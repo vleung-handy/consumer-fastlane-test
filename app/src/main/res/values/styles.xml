@@ -188,6 +188,12 @@
            parent="Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:textColor">@color/handy_blue</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
+    </style>
+
+    <style name="Button.Link.Bold">
+        <item name="fontPath">fonts/CircularStd-Bold.otf</item>
     </style>
 
     <style name="RoundedButton">

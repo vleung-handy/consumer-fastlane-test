@@ -9,10 +9,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.util.BookingUtil;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,19 +25,16 @@ public class BookingListItem extends FrameLayout
     @Bind(R.id.text_booking_subtitle)
     TextView mTextBookingSubtitle;
 
-    private List<Service> mServices;
     private View.OnClickListener mOnClickListener;
 
     public BookingListItem(
             Context context,
             View.OnClickListener clickListener,
-            List<Service> services,
             Booking booking
     )
     {
         super(context);
         mOnClickListener = clickListener;
-        mServices = services;
         mBooking = booking;
         init();
     }
@@ -55,17 +49,7 @@ public class BookingListItem extends FrameLayout
     public void bindToBooking()
     {
         mImageIcon.setVisibility(View.VISIBLE);
-
-        if (mServices != null)
-        {
-            String machineName = BookingUtil.findParentService(mBooking, mServices);
-            mImageIcon.setImageResource(BookingUtil.getIconForService(machineName, BookingUtil.IconType.OUTLINE));
-        }
-        else
-        {
-            //this will give us back the default cleaning icon
-            mImageIcon.setImageResource(BookingUtil.getIconForService(null, BookingUtil.IconType.OUTLINE));
-        }
+        mImageIcon.setImageResource(BookingUtil.getIconForService(mBooking, BookingUtil.IconType.OUTLINE));
 
         mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
         mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, getContext()));

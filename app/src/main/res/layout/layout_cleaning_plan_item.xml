@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/handy_background_gray"
     >
 
     <LinearLayout
@@ -15,20 +16,28 @@
         >
         <TextView
             android:id="@+id/text_plan_title"
-            style="@style/TextView.Medium"
+            style="@style/TextView.Large.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Thursday, Sept 12"
+            tools:text="Every 2 Weeks"
             android:textStyle="bold"
             />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_cleaning"
+            android:layout_marginTop="@dimen/default_margin_half"
+            style="@style/TextView.Medium"
+            />
+
+        <TextView
             android:id="@+id/text_plan_subtitle"
-            style="@style/TextView.Small"
+            style="@style/TextView.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            tools:text="11:00 – 2:00 p, (3 hours)"
+            tools:text="Monday Aug 1 @ 2:00pm"
             />
     </LinearLayout>
 
@@ -36,9 +45,10 @@
         android:id="@+id/button_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Button.Link"
+        style="@style/Button.Link.Bold"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="@string/edit"
+        android:gravity="right|center_vertical"
         />
 </RelativeLayout>

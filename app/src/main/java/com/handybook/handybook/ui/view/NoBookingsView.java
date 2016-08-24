@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,6 +38,9 @@ public class NoBookingsView extends FrameLayout
     @Bind(R.id.container_regular_booking)
     LinearLayout mContainerRegularBooking;
 
+    @Bind(R.id.image_main)
+    ImageView mImageMain;
+
     public NoBookingsView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
@@ -54,8 +58,7 @@ public class NoBookingsView extends FrameLayout
 
         if (bookings.isEmpty())
         {
-            mContainerRecurrenceBooking.setVisibility(GONE);
-            mContainerRegularBooking.setVisibility(VISIBLE);
+            bindForNoBookingsAtAll();
             return;
         }
 
@@ -76,11 +79,13 @@ public class NoBookingsView extends FrameLayout
 
         mContainerRecurrenceBooking.setVisibility(VISIBLE);
         mContainerRegularBooking.setVisibility(GONE);
+        mImageMain.setImageResource(R.drawable.img_clean_home);
     }
 
     public void bindForNoBookingsAtAll()
     {
         mContainerRecurrenceBooking.setVisibility(GONE);
         mContainerRegularBooking.setVisibility(VISIBLE);
+        mImageMain.setImageResource(R.drawable.img_dirty_home);
     }
 }

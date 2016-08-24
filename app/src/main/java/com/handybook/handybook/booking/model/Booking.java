@@ -40,6 +40,9 @@ public class Booking implements Parcelable
     private String mServiceName;
     @SerializedName("service_machine")
     private String mServiceMachineName;
+    @NonNull
+    @SerializedName("service")
+    private BookingService mService;
     @SerializedName("date_start")
     private Date mStartDate;
     @SerializedName("hours")
@@ -140,6 +143,11 @@ public class Booking implements Parcelable
     public ActiveBookingStatus getActiveBookingStatus()
     {
         return mActiveBookingStatus;
+    }
+
+    public BookingService getService()
+    {
+        return mService;
     }
 
     public final String getRecurringInfo()
@@ -405,6 +413,7 @@ public class Booking implements Parcelable
         mAddress = in.readParcelable(Address.class.getClassLoader());
         mProvider = in.readParcelable(Provider.class.getClassLoader());
         mActiveBookingStatus = in.readParcelable(ActiveBookingStatus.class.getClassLoader());
+        mService = in.readParcelable(BookingService.class.getClassLoader());
 
         mPaymentInfo = new ArrayList<LineItem>();
         in.readTypedList(mPaymentInfo, LineItem.CREATOR);
@@ -454,6 +463,7 @@ public class Booking implements Parcelable
         out.writeParcelable(mAddress, 0);
         out.writeParcelable(mProvider, 0);
         out.writeParcelable(mActiveBookingStatus, 0);
+        out.writeParcelable(mService, 0);
         out.writeTypedList(mPaymentInfo);
         out.writeTypedList(mExtrasInfo);
         out.writeBooleanArray(new boolean[]
@@ -934,12 +944,18 @@ public class Booking implements Parcelable
         @SerializedName("longitude")
         private String mLongitude;
 
+        @SerializedName("timestamp")
+        private Date mTimeStamp;
+
         private Location(final Parcel in)
         {
             final String[] stringArray = new String[2];
             in.readStringArray(stringArray);
             mLatitude = stringArray[0];
             mLongitude = stringArray[1];
+
+            long tmpDate = in.readLong();
+            mTimeStamp = tmpDate == -1 ? null : new Date(tmpDate);
         }
 
         public String getLatitude()
@@ -952,10 +968,18 @@ public class Booking implements Parcelable
             return mLongitude;
         }
 
+        public Date getTimeStamp()
+        {
+            return mTimeStamp;
+        }
+
         @Override
         public final void writeToParcel(final Parcel out, final int flags)
         {
             out.writeStringArray(new String[]{mLatitude, mLongitude});
+
+            //some locations don't report time stamps
+            out.writeLong(mTimeStamp != null ? mTimeStamp.getTime() : -1);
         }
 
         @Override

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.CameraUpdate;
@@ -51,7 +51,6 @@ import butterknife.OnClick;
  */
 public class ActiveBookingFragment extends InjectedFragment implements OnMapReadyCallback
 {
-    private static final String TAG = ActiveBookingFragment.class.getName();
     private static final String KEY_BOOKING = "booking";
     private static final int GEO_STATUS_PING_INTERVAL_MS = 10000;  //ping for geo status every 10 seconds
 
@@ -76,11 +75,11 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Bind(R.id.profile_container_divider)
     View mProfileContainerDivider;
 
-    @Bind(R.id.image_call)
-    ImageView mImageCall;
+    @Bind(R.id.text_call)
+    TextView mTextCall;
 
-    @Bind(R.id.image_text)
-    ImageView mImageText;
+    @Bind(R.id.text_text)
+    TextView mTextText;
 
     @Bind(R.id.map_view)
     MapView mMapView;
@@ -107,7 +106,6 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         @Override
         public void run()
         {
-            Log.d(TAG, getThisName() + "ping for location data: ");
             requestGeoStatus();
             periodicUpdate();
         }
@@ -128,7 +126,6 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
     {
-        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_active_booking, container, false);
         ButterKnife.bind(this, view);
 
@@ -196,13 +193,13 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
                 if (!TextUtils.isEmpty(mBooking.getProvider().getPhone()))
                 {
-                    mImageCall.setVisibility(View.VISIBLE);
-                    mImageText.setVisibility(View.VISIBLE);
+                    mTextCall.setVisibility(View.VISIBLE);
+                    mTextText.setVisibility(View.VISIBLE);
                 }
                 else
                 {
-                    mImageCall.setVisibility(View.GONE);
-                    mImageText.setVisibility(View.GONE);
+                    mTextCall.setVisibility(View.GONE);
+                    mTextText.setVisibility(View.GONE);
                 }
             }
             else
@@ -235,7 +232,6 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             double lng = mBooking.getAddress().getLongitude();
 
             mAddressLatLng = new LatLng(lat, lng);
-            Log.d(TAG, "updateMap: plotting: " + lat + ", " + lng);
 
             mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener()
             {
@@ -264,9 +260,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                         Double.valueOf(providerLocation.getLongitude())
                 );
 
-                //FIXME: JIA: remove this hard code
-                String time = DateTimeUtils.getTime(new Date());
-                mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
+                setTimeStamp(mBooking.getActiveBookingStatus().getProviderLocation().getTimeStamp());
 
                 mProviderLocationMarker = mGoogleMap.addMarker(
                         new MarkerOptions()
@@ -293,9 +287,22 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
     }
 
+    private void setTimeStamp(Date timeStamp)
+    {
+        if (timeStamp != null)
+        {
+            String time = DateTimeUtils.getTime(timeStamp);
+            mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
+            mTextLocationTime.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mTextLocationTime.setVisibility(View.GONE);
+        }
+    }
+
     private void periodicUpdate()
     {
-        Log.d(TAG, "periodicUpdate: " + getThisName());
         if (mHandler != null)
         {
             mHandler.postDelayed(mRunnable, GEO_STATUS_PING_INTERVAL_MS);
@@ -316,11 +323,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             {
                 mProviderLatLng = new LatLng(response.getProLat(), response.getProLng());
                 adjustMapPositioning();
-
-                //FIXME: JIA: remove this hard code
-                String time = DateTimeUtils.getTime(new Date());
-                mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
-                Log.d(TAG, "receive geo status success: " + response.getProLat() + "," + response.getProLng());
+                setTimeStamp(response.getTimeStamp());
             }
 
             @Override
@@ -380,7 +383,6 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Override
     public void onMapReady(final GoogleMap googleMap)
     {
-        Log.d(TAG, "onMapReady: ");
         if (mGoogleMap == null)
         {
             mGoogleMap = googleMap;
@@ -419,17 +421,25 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         gotoBookingDetails();
     }
 
-    @OnClick(R.id.image_call)
+    @OnClick(R.id.text_call)
     public void callClicked()
     {
         BookingUtil.callPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
     }
 
-    @OnClick(R.id.image_text)
+    @OnClick(R.id.text_text)
     public void textClicked()
     {
         BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
     }
+
+    @OnClick(R.id.button_report_issue)
+    public void reportIssueClicked()
+    {
+        //FIXME: JIA: implement this to hook up with Report Issue before go live.
+        Toast.makeText(getActivity(), "To be implemented", Toast.LENGTH_SHORT).show();
+    }
+
 
     private void gotoBookingDetails()
     {

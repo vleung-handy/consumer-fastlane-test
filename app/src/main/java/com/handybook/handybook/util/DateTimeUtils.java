@@ -1,5 +1,7 @@
 package com.handybook.handybook.util;
 
+import android.support.annotation.NonNull;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,11 +20,14 @@ public class DateTimeUtils
     public final static SimpleDateFormat DAY_OF_WEEK_MONTH_DAY_FORMATTER =
             new SimpleDateFormat("EEEE, MMMM d", Locale.getDefault());
 
+    public final static SimpleDateFormat DAY_OF_WEEK_SHORT_MONTH_DAY_FORMATTER =
+            new SimpleDateFormat("EEEE, MMM d", Locale.getDefault());
+
     public final static SimpleDateFormat DAY_OF_WEEK_FORMATTER =
             new SimpleDateFormat("EEEE", Locale.getDefault());
 
     public final static SimpleDateFormat LOCAL_TIME_12_HOURS =
-            new SimpleDateFormat("h:mm aaa", Locale.getDefault());
+            new SimpleDateFormat("h:mmaaa", Locale.getDefault());
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -84,9 +89,20 @@ public class DateTimeUtils
         return DAY_OF_WEEK_FORMATTER.format(date);
     }
 
-    public static String getTime(Date date)
+    public static String getTime(@NonNull Date date)
     {
-        return LOCAL_TIME_12_HOURS.format(date);
+        return LOCAL_TIME_12_HOURS.format(date).toLowerCase();
+    }
+
+    /**
+     * Returns in the form of Friday, September 12
+     *
+     * @param date
+     * @return
+     */
+    public static String getDayMonthDay(Date date)
+    {
+        return DAY_OF_WEEK_MONTH_DAY_FORMATTER.format(date);
     }
 
     /**
@@ -95,8 +111,8 @@ public class DateTimeUtils
      * @param date
      * @return
      */
-    public static String getDayMonthDay(Date date)
+    public static String getDayShortMonthDay(Date date)
     {
-        return DAY_OF_WEEK_MONTH_DAY_FORMATTER.format(date);
+        return DAY_OF_WEEK_SHORT_MONTH_DAY_FORMATTER.format(date);
     }
 }

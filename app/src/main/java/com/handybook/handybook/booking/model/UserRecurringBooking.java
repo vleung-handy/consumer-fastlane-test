@@ -17,7 +17,7 @@ public class UserRecurringBooking implements Serializable
     @SerializedName("service_name")
     private String mServiceName;
 
-    @SerializedName("machine_name")
+    @SerializedName("service_machine")
     private String mMachineName;
 
     @SerializedName("date_start")

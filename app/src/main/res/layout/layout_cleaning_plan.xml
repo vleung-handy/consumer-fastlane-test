@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:text="@string/edit"
-            style="@style/Button.Link"
+            style="@style/Button.Link.Bold"
+            android:gravity="right|center_vertical"
             />
 
         <ImageView
@@ -40,11 +41,9 @@
             />
     </FrameLayout>
 
-    <View
+    <include
         android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/handy_dark_divider_line"
+        layout="@layout/layout_divider"
         android:visibility="gone"
         />
 
@@ -60,9 +59,8 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/handy_dark_divider_line"
+    <include
+        layout="@layout/layout_divider"
         />
+
 </merge>
