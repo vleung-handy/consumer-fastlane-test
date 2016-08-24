@@ -22,6 +22,7 @@ public class ReferralChannels implements Serializable
     public static final String CHANNEL_FACEBOOK = "facebook";
     public static final String CHANNEL_TWITTER = "twitter";
     public static final String CHANNEL_SMS = "sms";
+    public static final String CHANNEL_OTHER = "other";
 
     @SerializedName(CHANNEL_EMAIL)
     private ReferralInfo mEmailReferralInfo;
