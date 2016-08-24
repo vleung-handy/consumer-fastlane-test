@@ -61,7 +61,7 @@ public class ExpandableCleaningPlan extends LinearLayout
         mImageCollapse.setVisibility(View.VISIBLE);
         mDivider.setVisibility(View.VISIBLE);
 
-        UiUtils.extendTouchArea(mHeaderContainer, mImageCollapse, UiUtils.PADDING_AREA);
+        UiUtils.extendTouchArea(mHeaderContainer, mImageCollapse, UiUtils.SERVICE_ICON_TOUCH_PADDING);
     }
 
     @OnClick(R.id.image_plan_collapse)

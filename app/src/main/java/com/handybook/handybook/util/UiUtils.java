@@ -17,7 +17,7 @@ public final class UiUtils
     /**
      * The amount of padding to extend the touch area of a view
      */
-    public static final int PADDING_AREA = 200;
+    public static final int SERVICE_ICON_TOUCH_PADDING = 200;
 
     public static void toggleKeyboard(Activity activity)
     {
