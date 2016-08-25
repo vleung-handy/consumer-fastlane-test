@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -14,7 +13,6 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
@@ -45,7 +43,6 @@ import com.handybook.handybook.module.configuration.manager.ConfigurationManager
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
-import com.handybook.handybook.ui.widget.ProgressDialog;
 import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Bus;
 import com.yozio.android.Yozio;
@@ -62,7 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
     private static final String TAG = BaseActivity.class.getName();
     protected boolean allowCallbacks;
-    protected ProgressDialog mProgressDialog;
     protected Toast mToast;
 
     @Inject
@@ -104,14 +100,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
         }
-        final Intent intent = getIntent();
-        final Uri data = intent.getData();
         mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER, 0, 0);
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setDelay(400);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage(getString(R.string.loading));
     }
 
     @Override
