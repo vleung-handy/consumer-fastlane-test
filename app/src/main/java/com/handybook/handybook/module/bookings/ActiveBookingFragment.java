@@ -48,6 +48,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * This fragment contains only the information regarding one active booking.
+ * It holds the map, plots the location of both the provider and the destination.
+ * It pings the server for updated provider location information periodically.
+ * Also shows the provider's name, and allows calling/texting to the provider.
  */
 public class ActiveBookingFragment extends InjectedFragment implements OnMapReadyCallback
 {
@@ -80,6 +84,9 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     @Bind(R.id.text_text)
     TextView mTextText;
+
+    @Bind(R.id.booking_item_container)
+    View mBookingItemContainer;
 
     @Bind(R.id.map_view)
     MapView mMapView;
