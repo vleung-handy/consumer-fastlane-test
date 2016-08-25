@@ -70,6 +70,7 @@ import dagger.Module;
 import dagger.Provides;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 @Module(injects = {
@@ -168,9 +169,13 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
-    final DataManager provideDataManager()
+    final DataManager provideDataManager(
+            final HandyRetrofitService service,
+            final HandyRetrofitEndpoint endpoint,
+            final PrefsManager prefsManager
+    )
     {
-        return mock(DataManager.class);
+        return spy(new TestDataManager(service, endpoint, prefsManager));
     }
 
     @Provides
