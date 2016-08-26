@@ -22,4 +22,14 @@ public class UpcomingBookingsLog extends EventLog
         }
     }
 
+
+    public static class AddBookingPressedLog extends UpcomingBookingsLog
+    {
+        private static final String EVENT_TYPE = "add_booking_tapped";
+
+        public AddBookingPressedLog()
+        {
+            super(EVENT_TYPE);
+        }
+    }
 }

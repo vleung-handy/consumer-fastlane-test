@@ -68,9 +68,10 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         // Make rating bar yellow
         mProTeamRatingBar.getProgressDrawable().mutate()
                 .setColorFilter(ContextCompat.getColor(mContext, R.color.handy_yellow), PorterDuff.Mode.SRC_ATOP);
-        final Float averageRating = mProTeamProViewModel.getAverageRating();
+        Float averageRating = mProTeamProViewModel.getAverageRating();
         if (averageRating != null)
         {
+            averageRating /= 2; // Average rating is out of 10, needs to be out of 5
             mProTeamRatingBar.setRating(averageRating);
         }
         else

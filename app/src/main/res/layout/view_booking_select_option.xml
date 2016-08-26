@@ -18,6 +18,7 @@
             android:id="@+id/booking_select_option_super_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/default_padding_quarter"
             android:layout_marginBottom="@dimen/default_margin_half"
             android:textAllCaps="true"
             android:freezesText="false"

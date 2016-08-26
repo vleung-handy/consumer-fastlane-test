@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
@@ -31,6 +33,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
     TextView mSubtitle;
 
     private static final String REFERRAL_DESCRIPTOR = "referral_descriptor";
+    private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{"handy-referrals@handy.com"};
     private ReferralChannels mReferralChannels;
     private ReferralDescriptor mReferralDescriptor;
 
@@ -81,7 +84,11 @@ public class ReferralDialogFragment extends BaseDialogFragment
             emailIntent.setType("plain/text");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
+            emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
+            mBus.post(new LogEvent.AddLogEvent(
+                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_EMAIL,
+                            emailReferralInfo.getGuid())));
         }
         else
         {
@@ -101,6 +108,9 @@ public class ReferralDialogFragment extends BaseDialogFragment
                     smsReferralInfo
             );
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
+            mBus.post(new LogEvent.AddLogEvent(
+                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_SMS,
+                            smsReferralInfo.getGuid())));
         }
         else
         {
