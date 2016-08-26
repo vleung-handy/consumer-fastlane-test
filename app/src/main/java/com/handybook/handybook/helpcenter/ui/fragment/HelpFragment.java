@@ -44,7 +44,7 @@ public class HelpFragment extends InjectedFragment
         final Configuration configuration = event.getConfiguration();
         if (configuration.shouldUseHelpCenterWebView())
         {
-            final Bundle arguments  = new Bundle();;
+            final Bundle arguments = new Bundle();
             if (getArguments() != null)
             {
                 arguments.putAll(getArguments());
