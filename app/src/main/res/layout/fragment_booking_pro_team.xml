@@ -19,7 +19,7 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/Theme.Handy.AppBarOverlay"
+            android:theme="@style/HandyTheme.AppBarOverlay"
             >
 
             <android.support.v7.widget.Toolbar
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="@dimen/med_elevation"
-                android:theme="@style/Theme.Handy.AppBarOverlay"
+                android:theme="@style/HandyTheme.AppBarOverlay"
                 app:contentInsetStart="0dp"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:navigationIcon="@drawable/ic_back"

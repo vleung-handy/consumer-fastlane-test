@@ -6,6 +6,7 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -15,7 +16,7 @@ import java.lang.annotation.RetentionPolicy;
  * referral which are not specific to the source (e.g. sender credit, receiver credit and coupon
  * code).
  */
-public class ReferralDescriptor
+public class ReferralDescriptor implements Serializable
 {
     public static final String SOURCE_REFERRAL_PAGE = "referral_page";
     public static final String SOURCE_PROFILE_PAGE = "profile_page";

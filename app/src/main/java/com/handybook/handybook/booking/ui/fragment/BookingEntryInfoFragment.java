@@ -2,11 +2,8 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,37 +12,54 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.model.BookingPostInfo;
-import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
+import com.handybook.handybook.booking.model.EntryMethodOption;
+import com.handybook.handybook.booking.model.EntryMethodsInfo;
+import com.handybook.handybook.booking.model.InputFormDefinition;
 import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.booking.util.OptionListToAttributeArrayConverter;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingConfirmationLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
-import com.handybook.handybook.util.TextUtils;
+import com.squareup.otto.Subscribe;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
-
+/**
+ * TODO TEMPORARILY SUPER HACKY, REFACTOR ASAP
+ */
 public final class BookingEntryInfoFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener
 {
+    //TODO other fragments have these too. needs to be consolidated
     static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
     static final String EXTRA_INSTRUCTIONS = "com.handy.handy.EXTRA_INSTRUCTIONS";
-    private static final String STATE_KEY_HIGHLIGHT = "KEY_HIGHLIGHT";
 
-    private BookingOptionsView mOptionsView;
-    private BookingPostInfo mPostInfo;
-    private FinalizeBookingRequestPayload mFinalizeBookingPayload;
+    private List<EntryMethodOption> mEntryMethodOptions;
+
+    private BookingOptionsSelectView mOptionsView;
+
+    /**
+     * map of input form machine name to input form fields
+     *
+     * TODO refactor this stuff
+     */
+    private Map<String, BasicInputTextView> mSelectedOptionInputFormFields = new HashMap<>();
+
     private boolean mIsNewUser;
 
     private Instructions mInstructions;
@@ -55,16 +69,20 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     TextView mHeaderText;
     @Bind(R.id.next_button)
     Button mNextButton;
+    @Bind(R.id.fragment_booking_entry_info_bottom)
+    LinearLayout mBottomView;
+    @Bind(R.id.fragment_booking_entry_info_instructions_text)
+    TextView mInstructionsText;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.keys_text)
-    BasicInputTextView mKeysText;
+    private boolean mEntryMethodsInitialized = false;
 
     public static BookingEntryInfoFragment newInstance(
             final boolean isNewUser,
-            final Instructions instructions
+            final Instructions instructions,
+            final EntryMethodsInfo entryMethodsInfo
     )
     {
         final BookingEntryInfoFragment fragment = new BookingEntryInfoFragment();
@@ -72,7 +90,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
         args.putBoolean(EXTRA_NEW_USER, isNewUser);
         args.putParcelable(EXTRA_INSTRUCTIONS, instructions);
-
+        args.putSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO, entryMethodsInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -105,51 +123,58 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         setupToolbar(mToolbar, getString(R.string.confirmation));
         ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
 
-        mKeysText.setMinLength(2);
-        mKeysText.setHint(getString(R.string.where_hide_key));
-        mKeysText.addTextChangedListener(keyTextWatcher);
-        mPostInfo = bookingManager.getCurrentPostInfo();
-        final String text = getString(R.string.payment_confirmed);
-        final SpannableString spanText = new SpannableString(text);
-
-        spanText.setSpan(new CalligraphyTypefaceSpan(TextUtils.get(getActivity(),
-                "CircularStd-Medium.otf")), 0, text.indexOf("\n"),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mHeaderText.setText(spanText, TextView.BufferType.SPANNABLE);
-        final BookingOption option = new BookingOption();
-        option.setType(BookingOption.TYPE_OPTION);
-        option.setDefaultValue("0");
-
-        option.setOptions(new String[]{getString(R.string.will_be_home),
-                getString(R.string.doorman), getString(R.string.will_hide_key)});
-        mOptionsView = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
-        ((BookingOptionsSelectView) mOptionsView).hideTitle();
-        final String indexStr = mPostInfo.getGetInId();
-        final int index = indexStr == null ? 0 : Integer.parseInt(indexStr);
-        ((BookingOptionsSelectView) mOptionsView).setCurrentIndex(index);
-        mOptionsLayout.addView(mOptionsView, 0);
-        mNextButton.setOnClickListener(nextClicked);
+        //TODO not being sent from server yet
+//        EntryMethodsInfo entryMethodsInfo = (EntryMethodsInfo) getArguments()
+//                .getSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO);
+//        if(entryMethodsInfo != null)
+//        {
+//            initFromEntryMethodsInfo(entryMethodsInfo);
+//            mNextButton.setOnClickListener(nextClicked);
+//        }
+//        else
+//        {
+//            Crashlytics.logException(new Exception("Entry methods info from bundle args is null"));
+//            Toast.makeText(getContext(), R.string.default_error_string, Toast.LENGTH_SHORT).show();
+//        }
         return view;
     }
 
-    @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
+    /**
+     * updates the view and sets global vars based on the given QuoteConfig
+     */
+    private void initFromEntryMethodsInfo(@NonNull EntryMethodsInfo entryMethodsInfo)
     {
-        super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null)
-        {
-            if (savedInstanceState.getBoolean(STATE_KEY_HIGHLIGHT))
-            {
-                mKeysText.highlight();
-            }
-        }
+        //only need this to be global because of the options view updated listener
+        mEntryMethodOptions = entryMethodsInfo.getEntryMethodOptions();
+
+        mInstructionsText.setText(entryMethodsInfo.getInstructionText());
+        /*
+        build a BookingOption model from the recurrence options so we can use it
+        to create an options view
+         */
+        final BookingOption option = getBookingOptionModel(mEntryMethodOptions);
+        mOptionsView
+                = new BookingOptionsSelectView(getActivity(), option, optionUpdated);
+        mOptionsView.hideTitle();
+
+        //set default selected option
+        selectDefaultOption(mOptionsView, mEntryMethodOptions);
+
+        mOptionsLayout.addView(mOptionsView, 0);
     }
 
-    @Override
-    public final void onSaveInstanceState(final Bundle outState)
+    private void selectDefaultOption(
+            @NonNull BookingOptionsSelectView optionsSelectView,
+            @NonNull List<EntryMethodOption> entryMethodOptions)
     {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_KEY_HIGHLIGHT, mKeysText.isHighlighted());
+        for(int i = 0; i<entryMethodOptions.size(); i++)
+        {
+            if(entryMethodOptions.get(i).isDefault())
+            {
+                optionsSelectView.setCurrentIndex(i);
+                return;
+            }
+        }
     }
 
     @Override
@@ -182,13 +207,17 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
     private boolean validateFields()
     {
-        boolean validate = true;
-
-        if (((BookingOptionsSelectView) mOptionsView).getCurrentIndex() == 2 && !mKeysText.validate())
+        boolean areAllFieldsValid = true;
+        for(String key : mSelectedOptionInputFormFields.keySet())
         {
-            validate = false;
+            BasicInputTextView inputTextView = mSelectedOptionInputFormFields.get(key);
+            if(!inputTextView.validate())
+            //this also updates the field UI depending on whether value is valid so can't just return
+            {
+                areAllFieldsValid = false;
+            }
         }
-        return validate;
+        return areAllFieldsValid;
     }
 
     @Override
@@ -213,12 +242,44 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                 return;
             }
 
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationSubmittedLog(mKeysText.getInput())));
+            int selectedOptionIndex = mOptionsView.getCurrentIndex();
+            EntryMethodOption entryMethodOption = mEntryMethodOptions.get(selectedOptionIndex);
 
-            bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
-                    Integer.parseInt(mPostInfo.getGetInId()),
-                    mPostInfo.getGetInText()
-            );
+
+            if(mSelectedOptionInputFormFields != null)
+            {
+                if(BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
+                        entryMethodOption.getMachineName()))
+                {
+                    String lockboxAccessCode = mSelectedOptionInputFormFields.get(
+                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE).getInput();
+                    String lockboxLocation = mSelectedOptionInputFormFields.get(
+                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION).getInput();
+                    bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
+                            entryMethodOption.getMachineName(),
+                            lockboxAccessCode,
+                            lockboxLocation //TODO not supporting structured data for now
+
+                    );
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationSubmittedLog(lockboxAccessCode+"\n" + lockboxLocation)));
+                }
+                else
+                {
+                    String entryDescription = mSelectedOptionInputFormFields.get(
+                            InputFormDefinition.InputFormField.SupportedMachineName.DESCRIPTION).getInput();
+                    //set info for non-lockbox options
+                    bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
+                            entryMethodOption.getMachineName(),
+                            entryDescription //TODO not supporting structured data for now
+
+                    );
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationSubmittedLog(entryDescription)));
+                }
+
+            }
+
+
+
             final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
             intent.putExtra(
                     BookingFinalizeActivity.EXTRA_PAGE,
@@ -244,6 +305,55 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         startActivity(intent);
     }
 
+
+    /**
+     * TODO pre-generate the views
+     * updates the input form based on the selected entry method option
+     * @param entryMethodOption
+     */
+    private void updateViewForSelectedEntryMethodOption(@NonNull EntryMethodOption entryMethodOption)
+    {
+        mBottomView.removeAllViews();
+        mSelectedOptionInputFormFields.clear();
+
+        //update the input form
+        InputFormDefinition inputFormDefinition = entryMethodOption.getInputFormDefinition();
+        if(inputFormDefinition == null) return;
+
+        List<InputFormDefinition.InputFormField> inputFormFields =
+                inputFormDefinition.getFieldDefinitions();
+        for(InputFormDefinition.InputFormField inputFormField : inputFormFields)
+        {
+            BasicInputTextView inputTextView =
+                    (BasicInputTextView) LayoutInflater.from(getContext()).inflate(R.layout.element_text_input_view, null);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.bottomMargin = (int) getResources().getDimension(R.dimen.default_margin_quarter);
+
+            if(inputFormField.isRequired())
+            {
+                //TODO don't like using this input view's method but using it for now
+                inputTextView.setMinLength(1);
+            }
+            inputTextView.setHint(inputFormField.getHintText());
+            inputTextView.setLines(inputFormField.getNumLines());
+            mBottomView.addView(inputTextView, layoutParams);
+
+            mSelectedOptionInputFormFields.put(inputFormField.getMachineName(), inputTextView);
+        }
+    }
+
+    private boolean[] getRecommendedArray(List<EntryMethodOption> entryMethodOptions)
+    {
+        boolean[] recommended = new boolean[entryMethodOptions.size()];
+        for(int i = 0; i<recommended.length; i++)
+        {
+            recommended[i] = entryMethodOptions.get(i).isRecommended();
+        }
+        return recommended;
+    }
+
+
     private final BookingOptionsView.OnUpdatedListener optionUpdated;
 
     {
@@ -253,17 +363,8 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             public void onUpdate(final BookingOptionsView view)
             {
                 final int index = ((BookingOptionsSelectView) view).getCurrentIndex();
-                mPostInfo.setGetInId(Integer.toString(index));
-
-                if (index == 2)
-                {
-                    mKeysText.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    mKeysText.unHighlight();
-                    mKeysText.setVisibility(View.GONE);
-                }
+                EntryMethodOption entryMethodOption = mEntryMethodOptions.get(index);
+                updateViewForSelectedEntryMethodOption(entryMethodOption);
             }
 
             @Override
@@ -284,29 +385,57 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         };
     }
 
-    private final TextWatcher keyTextWatcher = new TextWatcher()
+
+    @NonNull
+    private BookingOption getBookingOptionModel(
+            @NonNull List<EntryMethodOption> entryMethodOptions)
     {
-        @Override
-        public void beforeTextChanged(
-                final CharSequence charSequence, final int start,
-                final int count, final int after
-        )
-        {
+        final BookingOption option = new BookingOption();
+        option.setType(BookingOption.TYPE_OPTION);
+        option.setOptions(OptionListToAttributeArrayConverter.getOptionsTitleTextArray(entryMethodOptions));
+        option.setOptionsSubText(OptionListToAttributeArrayConverter.getOptionsSubTextArray(entryMethodOptions));
+        option.setDefaultValue("-1");
+        //^this makes it default to nothing.
+        //for some reason the model expects string but parses this into an int
 
-        }
-
-        @Override
-        public void onTextChanged(
-                final CharSequence charSequence, final int start,
-                final int before, final int count
-        )
+        //UI for recommended options
+        //TODO hacky, refactor asap
+        if(!entryMethodOptions.isEmpty())
         {
+            EntryMethodOption lastOption = entryMethodOptions.get(entryMethodOptions.size() - 1);
+            if (BookingInstruction.InstructionType.EntryMethod.AT_HOME.equals(lastOption.getMachineName()))
+            {
+                //set "Recommended" as the super text for the first option
+                String[] superTextArray = new String[entryMethodOptions.size()];
+                superTextArray[0] = getResources().getString(R.string.recommended);
+                option.setOptionsSuperText(superTextArray);
+            }
         }
+        option.setLeftStripIndicatorVisible(getRecommendedArray(entryMethodOptions));
+        return option;
+    }
 
-        @Override
-        public void afterTextChanged(final Editable editable)
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(!mEntryMethodsInitialized)
         {
-            mPostInfo.setGetInText(mKeysText.getInput());
+            bus.post(new ConfigurationEvent.RequestConfiguration());
         }
-    };
+    }
+
+    @Subscribe
+    public void onReceiveConfigurationSuccess(final ConfigurationEvent.ReceiveConfigurationSuccess event)
+    {
+        //todo if not initialized yet
+        if(!mEntryMethodsInitialized)
+        {
+            EntryMethodsInfo entryMethodsInfo =
+                    EntryMethodsInfo.getEntryMethodInfo_HACK(event.getConfiguration(), getContext());
+            initFromEntryMethodsInfo(entryMethodsInfo);
+            mNextButton.setOnClickListener(nextClicked);
+            mEntryMethodsInitialized = true;
+        }
+    }
 }

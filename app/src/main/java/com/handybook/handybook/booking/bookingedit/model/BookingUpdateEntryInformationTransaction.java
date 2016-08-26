@@ -7,6 +7,16 @@ import java.util.Observable;
 public final class BookingUpdateEntryInformationTransaction extends Observable {
     @SerializedName("getin") private int getInId;            //Get-In identifier, numeric, corresponds to value on server  . TODO: Sync values to consts here
     @SerializedName("getintxt") private String getInText;     //User entered text that explains additional Get-In information
+    @SerializedName("apply_to_all")
+    private boolean mApplyToAllInSeries; //whether this should be applied to all bookings in the recurring series
+    @SerializedName("lockbox_code")
+    private String mLockboxAccessCode; //TODO ugly, lockbox hack
+
+    public final void setLockboxAccessCode(final String lockboxAccessCode)
+    {
+        mLockboxAccessCode = lockboxAccessCode;
+        triggerObservers();
+    }
 
     public final int getGetInId() {
         return getInId;
@@ -29,5 +39,10 @@ public final class BookingUpdateEntryInformationTransaction extends Observable {
     private void triggerObservers() {
         setChanged();
         notifyObservers();
+    }
+
+    public void setApplyToAllInSeries(final boolean applyToAllInSeries)
+    {
+        mApplyToAllInSeries = applyToAllInSeries;
     }
 }

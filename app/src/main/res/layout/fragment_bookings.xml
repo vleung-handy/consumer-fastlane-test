@@ -10,20 +10,31 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.Handy.AppBarOverlay"
+        android:theme="@style/HandyTheme.AppBarOverlay"
         >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="@style/Theme.Handy.AppBarOverlay"
+            android:theme="@style/HandyTheme.AppBarOverlay"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:contentInsetStart="0dp"
             app:navigationIcon="@drawable/ic_menu"
             android:title="@string/my_bookings"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            />
+            >
+            <ImageButton
+                android:id="@+id/bookings_share_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_share_icon"
+                android:padding="@dimen/default_padding"
+                android:src="@drawable/ic_nav_gift_white"
+                />
+        </android.support.v7.widget.Toolbar>
 
 
         <com.handybook.handybook.ui.view.HandyTabLayout

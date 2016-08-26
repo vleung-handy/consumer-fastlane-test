@@ -908,6 +908,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         intent.putExtra(BookingFinalizeActivity.EXTRA_NEW_USER, isNewUser);
                         intent.putExtra(BookingFinalizeActivity.EXTRA_INSTRUCTIONS,
                                 trans.getInstructions());
+                        intent.putExtra(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO,
+                                trans.getEntryMethodsInfo());
                         startActivity(intent);
 
                         enableInputs();

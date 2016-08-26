@@ -30,7 +30,7 @@ public class ReferralsManager
             @Override
             public void onSuccess(final ReferralResponse response)
             {
-                mBus.post(new ReferralsEvent.ReceivePrepareReferralsSuccess(response));
+                mBus.post(new ReferralsEvent.ReceivePrepareReferralsSuccess(response, event.isForDialog()));
             }
 
             @Override

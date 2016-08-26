@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Base"
+    <style name="BaseTheme"
            parent="Theme.AppCompat.Light.NoActionBar">
         <item name="simpleAlertDialogStyle">@style/Theme.SimpleAlertDialog.Light</item>
         <item name="abstractWheelViewStyle">@style/abstractWheelViewStyle</item>
@@ -15,10 +15,10 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-    <style name="Theme.Handy"
-           parent="Theme.Base"></style>
+    <style name="HandyTheme"
+           parent="BaseTheme"></style>
 
-    <style name="Theme.Handy.AppBarOverlay">
+    <style name="HandyTheme.AppBarOverlay">
         <item name="android:background">?colorPrimary</item>
         <item name="android:textColorPrimary">@color/handy_white</item>
     </style>
@@ -39,7 +39,7 @@
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
-    <style name="Theme.Handy.PopupOverlay">
+    <style name="HandyTheme.PopupOverlay">
 
     </style>
 
@@ -218,7 +218,7 @@
 
     <!-- This is to override the selected color of a radio button -->
     <style name="RadioButtonStyle"
-           parent="Theme.Handy">
+           parent="HandyTheme">
         <item name="colorAccent">@color/handy_darkened_blue</item>
         <item name="android:textSize">@dimen/default_text_size</item>
     </style>

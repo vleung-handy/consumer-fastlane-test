@@ -32,7 +32,6 @@
         android:orientation="horizontal"
         >
 
-
         <CheckBox
             android:id="@+id/pro_team_pro_card_checkbox"
             android:layout_width="wrap_content"
@@ -48,9 +47,9 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="@dimen/pro_team_margin"
             android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/pro_team_margin"
             android:layout_weight="1"
             android:orientation="vertical"
             >
@@ -64,22 +63,45 @@
                 />
 
             <TextView
-                android:id="@+id/pro_team_pro_card_pro_subtitle"
-                style="@style/TextView.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/handy_text_black"
-                tools:text="Specialitites: Handyman, Plumbing"
-                />
-
-            <TextView
                 android:id="@+id/pro_team_pro_card_pro_footer"
                 style="@style/TextView.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/handy_text_gray"
-                tools:text="Last service on Tues, May 19"
+                tools:text="Last on Tues, May 19"
                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/pro_team_margin"
+            android:layout_marginTop="@dimen/pro_team_margin"
+            android:orientation="vertical"
+            >
+
+            <RatingBar
+                android:id="@+id/pro_team_rating_bar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pro_team_star_width_height"
+                android:layout_gravity="end"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.5"
+                />
+
+            <TextView
+                android:id="@+id/booking_count_text"
+                style="@style/TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/pro_team_bookings_margin"
+                android:textColor="@color/handy_text_gray"
+                tools:text="12 bookings"
+                />
+
         </LinearLayout>
 
         <ImageButton

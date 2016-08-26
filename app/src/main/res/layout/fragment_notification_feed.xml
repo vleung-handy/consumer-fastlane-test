@@ -14,7 +14,7 @@
         android:id="@+id/app_bar_layout"
         android:layout_height="@dimen/app_bar_height"
         android:layout_width="match_parent"
-        android:theme="@style/Theme.Handy.AppBarOverlay"
+        android:theme="@style/HandyTheme.AppBarOverlay"
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/Theme.Handy.PopupOverlay"
+                app:popupTheme="@style/HandyTheme.PopupOverlay"
                 >
             </android.support.v7.widget.Toolbar>
 

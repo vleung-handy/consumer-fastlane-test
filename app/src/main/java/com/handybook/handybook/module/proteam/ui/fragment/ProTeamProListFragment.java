@@ -148,7 +148,7 @@ public class ProTeamProListFragment extends InjectedFragment
         {
             return;
         }
-        RecyclerView.Adapter proCardCardAdapter = new ProTeamCategoryAdapter(
+        RecyclerView.Adapter proCardCardAdapter = new ProTeamCategoryAdapter(getContext(),
                 mProteam,
                 mProTeamCategoryType,
                 mOnInteractionListener
@@ -159,6 +159,7 @@ public class ProTeamProListFragment extends InjectedFragment
 
     /**
      * for logging purposes
+     *
      * @return
      */
     public ProTeamCategoryType getProTeamCategoryType()
@@ -182,9 +183,11 @@ public class ProTeamProListFragment extends InjectedFragment
      */
     public interface OnProInteraction
     {
-        void onProRemovalRequested(ProTeamCategoryType proTeamCategoryType,
-                                   ProTeamPro proTeamPro,
-                                   ProviderMatchPreference providerMatchPreference);
+        void onProRemovalRequested(
+                ProTeamCategoryType proTeamCategoryType,
+                ProTeamPro proTeamPro,
+                ProviderMatchPreference providerMatchPreference
+        );
 
         void onProCheckboxStateChanged(
                 ProTeamCategoryType proTeamCategoryType,

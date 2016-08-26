@@ -5,24 +5,26 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.util.DateTimeUtils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class ProTeamProViewModel
 {
     private static final String TEMPLATE_SPECIALTIES = "Specialties: %s";
-    private static final String TEMPLATE_FOOTER_CLEANING = "Last cleaning on %s";
-    private static final String TEMPLATE_FOOTER_HANDYMEN = "Last service on %s";
+    private static final String TEMPLATE_LAST_SEEN_FOOTER = "Last on %s";
+    private static final String TEMPLATE_BOOKINGS_PLURAL_FOOTER = "%d bookings ";
+    private static final String TEMPLATE_BOOKINGS_FOOTER = "%d booking";
 
     private final ProTeamPro mProTeamPro;
     private final ProTeamCategoryType mProTeamCategoryType;
     private final ProviderMatchPreference mProviderMatchPreference;
     private final String mTitle;
     private final String mSubtitle;
-    private final String mFooter;
+    private final String mLastSeenFooter;
+    private final Float mAverageRating;
+    private final String mBookingFooter;
     private boolean mIsChecked;
 
     private ProTeamProViewModel(
@@ -40,15 +42,19 @@ public class ProTeamProViewModel
         final Date lastSeenAt = proTeamPro.getLastSeenAt();
         if (lastSeenAt == null)
         {
-            mFooter = null;
+            mLastSeenFooter = null;
         }
         else
         {
-            final DateFormat df = new SimpleDateFormat("EEE, MMM d", Locale.US);
-            final String template = mProTeamCategoryType == ProTeamCategoryType.CLEANING ?
-                    TEMPLATE_FOOTER_CLEANING : TEMPLATE_FOOTER_HANDYMEN;
-            mFooter = String.format(template, df.format(lastSeenAt));
+            mLastSeenFooter = String.format(TEMPLATE_LAST_SEEN_FOOTER,
+                    DateTimeUtils.MONTH_AND_DAY_FORMATTER.format(lastSeenAt));
         }
+        mAverageRating = proTeamPro.getAverageRating();
+        final int bookingCount = proTeamPro.getBookingCount();
+        if (bookingCount == 1)
+        { mBookingFooter = String.format(Locale.getDefault(), TEMPLATE_BOOKINGS_FOOTER, bookingCount); }
+        else
+        { mBookingFooter = String.format(Locale.getDefault(), TEMPLATE_BOOKINGS_PLURAL_FOOTER, bookingCount); }
     }
 
     public static ProTeamProViewModel from(
@@ -80,9 +86,19 @@ public class ProTeamProViewModel
         return mSubtitle;
     }
 
-    public String getFooter()
+    public String getLastSeenFooter()
     {
-        return mFooter;
+        return mLastSeenFooter;
+    }
+
+    public Float getAverageRating()
+    {
+        return mAverageRating;
+    }
+
+    public String getBookingFooter()
+    {
+        return mBookingFooter;
     }
 
     public boolean isChecked()
@@ -93,12 +109,6 @@ public class ProTeamProViewModel
     public void setChecked(final boolean checked)
     {
         mIsChecked = checked;
-    }
-
-    public boolean isSubtitleVisible()
-    {
-        return mProTeamPro.getDescription() != null
-                && !mProTeamPro.getDescription().isEmpty();
     }
 
     public boolean isFooterVisible()

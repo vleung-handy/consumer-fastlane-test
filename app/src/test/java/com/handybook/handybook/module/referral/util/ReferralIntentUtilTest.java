@@ -17,7 +17,7 @@ public class ReferralIntentUtilTest extends RobolectricGradleTestWrapper
     public void returnsReferralGuidFromIntentData() throws Exception
     {
         final Intent intent = new Intent();
-        intent.setData(Uri.parse("http://a.b.c?h=some_guid"));
+        intent.setData(Uri.parse("http://a.b.c/abc123/some_guid"));
 
         final String referralGuid = ReferralIntentUtil.getReferralGuidFromIntent(intent);
 

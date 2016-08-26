@@ -6,7 +6,7 @@ import android.view.animation.Animation;
 
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.lang.reflect.Field;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 
 @Ignore
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN,
         constants = BuildConfig.class,
         packageName = "com.handybook.handybook")

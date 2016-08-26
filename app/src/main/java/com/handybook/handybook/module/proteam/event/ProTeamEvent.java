@@ -25,16 +25,23 @@ public abstract class ProTeamEvent
     public static class ReceiveProTeamSuccess extends HandyEvent.ReceiveSuccessEvent
     {
         private final ProTeam mProTeam;
+        private final String mProTeamHelpCenterUrl;
 
-        public ReceiveProTeamSuccess(final ProTeam proTeam)
+        public ReceiveProTeamSuccess(final ProTeam proTeam, final String proTeamHelpCenterUrl)
         {
             mProTeam = proTeam;
+            mProTeamHelpCenterUrl = proTeamHelpCenterUrl;
         }
 
         @Nullable
         public ProTeam getProTeam()
         {
             return mProTeam;
+        }
+
+        public String getProTeamHelpCenterUrl()
+        {
+            return mProTeamHelpCenterUrl;
         }
     }
 

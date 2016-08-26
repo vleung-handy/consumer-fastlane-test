@@ -40,7 +40,7 @@
         android:name=".core.BaseApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Handy"
+        android:theme="@style/HandyTheme"
         >
         <activity
             android:name=".booking.ui.activity.ServiceCategoriesActivity"
@@ -51,23 +51,6 @@
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="yozio"
-                    android:path="/"
-                    android:scheme="handy"
-                    />
-                <data
-                    android:host="deeplink.yozio.com"
-                    android:pathPrefix="/ea269dcf-ff3c-435a-bdc6-55b4c7904493"
-                    android:scheme="https"
-                    />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
@@ -130,20 +113,7 @@
             android:name=".module.referral.ui.RedemptionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="r.handy.com"
-                    android:path="/r"
-                    android:scheme="http"
-                    />
-            </intent-filter>
-        </activity>
+            />
         <activity
             android:name=".booking.ui.activity.BookingOptionsActivity"
             android:screenOrientation="portrait"
@@ -167,6 +137,14 @@
         <activity
             android:name=".booking.ui.activity.BookingDetailActivity"
             android:parentActivityName=".booking.ui.activity.BookingsActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.ReportIssueActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"
             />
         <activity
@@ -229,7 +207,7 @@
             android:label="@string/title_activity_pro_team"
             android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Handy"
+            android:theme="@style/HandyTheme"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -254,6 +232,16 @@
 
                 <data android:scheme="handybook"/>
                 <data android:scheme="handy"/>
+                <data
+                    android:host="yozio"
+                    android:path="/"
+                    android:scheme="handy"
+                    />
+                <data
+                    android:host="deeplink.yozio.com"
+                    android:pathPrefix="/ea269dcf-ff3c-435a-bdc6-55b4c7904493"
+                    android:scheme="https"
+                    />
             </intent-filter>
         </activity>
         <activity
@@ -340,7 +328,7 @@
             android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
             android:label="@string/title_activity_notification_feed"
             android:parentActivityName=".booking.ui.activity.ServicesActivity"
-            android:theme="@style/Theme.Base"
+            android:theme="@style/BaseTheme"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

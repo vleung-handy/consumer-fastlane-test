@@ -14,13 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
@@ -33,6 +36,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
@@ -145,9 +149,11 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Override
-    public final void onActivityResult(final int requestCode,
-                                       final int resultCode,
-                                       final Intent data)
+    public final void onActivityResult(
+            final int requestCode,
+            final int resultCode,
+            final Intent data
+    )
     {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -220,6 +226,38 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     {
         mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.INVISIBLE);
         mBookingDetailView.updateDisplay(booking, mServices);
+        mBookingDetailView.updateReportIssueButton(mBooking, new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                dataManager.getBookingMilestones(mBooking.getId(), new DataManager.Callback<JobStatus>()
+                        {
+                            @Override
+                            public void onSuccess(JobStatus status)
+                            {
+                                Intent intent = new Intent(getContext(), ReportIssueActivity.class);
+                                intent.putExtra(BundleKeys.BOOKING, mBooking);
+                                intent.putExtra(BundleKeys.PRO_JOB_STATUS, status);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onError(final DataManager.DataManagerError error)
+                            {
+                                if (!Strings.isNullOrEmpty(error.getMessage()))
+                                {
+                                    showToast(error.getMessage());
+                                }
+                                else
+                                {
+                                    showToast(R.string.an_error_has_occurred);
+                                }
+                            }
+                        }
+                );
+            }
+        });
         setupClickListeners();
         addSectionFragments();
     }
@@ -332,8 +370,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             removeUiBlockers();
             dataManagerErrorHandler.handleError(getActivity(), event.error);
         }
-
-
     }
 
     @Subscribe
@@ -348,7 +384,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
+    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
     {
         removeUiBlockers();
 
@@ -362,7 +398,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreCancelationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
+    public void onReceivePreCancellationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
     {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
@@ -417,7 +453,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         return periodStart.getTime().before(now) && periodEnd.getTime().after(now);
     }
 
-
     @Override
     public boolean onMenuItemClick(final MenuItem item)
     {
@@ -453,6 +488,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     public enum RescheduleType
     {
-        NORMAL, FROM_CANCELATION;
+        NORMAL, FROM_CANCELATION
     }
 }

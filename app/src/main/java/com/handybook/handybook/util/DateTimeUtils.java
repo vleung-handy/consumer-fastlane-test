@@ -2,7 +2,9 @@ package com.handybook.handybook.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class DateTimeUtils
@@ -12,6 +14,10 @@ public class DateTimeUtils
     public final static SimpleDateFormat DAY_MONTH_DATE_AT_TIME_FORMATTER = new SimpleDateFormat
             ("EEE, MMM d " +
             "'@' h:mm a");
+    public final static DateFormat MONTH_AND_DAY_FORMATTER = new SimpleDateFormat("MMM d");
+    public final static SimpleDateFormat LOCAL_TIME_12_HOURS_FORMATTER =
+            new SimpleDateFormat("hh:mm a", Locale.getDefault());
+
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -58,5 +64,18 @@ public class DateTimeUtils
     {
         long diff = Math.abs(date2.getTime() - date1.getTime());
         return diff / 1000 % 60;
+    }
+
+    public static String getTimeWithoutDate(final Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return getLocalTime12HoursFormatter().format(cal.getTime()).toLowerCase();
+    }
+
+    private static SimpleDateFormat getLocalTime12HoursFormatter()
+    {
+        LOCAL_TIME_12_HOURS_FORMATTER.setTimeZone(TimeZone.getDefault());
+        return LOCAL_TIME_12_HOURS_FORMATTER;
     }
 }

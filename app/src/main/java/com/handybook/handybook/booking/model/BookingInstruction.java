@@ -3,10 +3,14 @@ package com.handybook.handybook.booking.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.R;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +28,8 @@ public class BookingInstruction implements Parcelable
     private String mDescription;
     @SerializedName("requested")
     private Boolean mIsRequested;
+    @SerializedName("lockbox_code")
+    private String mLockboxCode;
 
 
     private static final Map<String, Integer> ICONS;
@@ -39,10 +45,10 @@ public class BookingInstruction implements Parcelable
     }
 
     public BookingInstruction(
-            final Long id,
-            final String machineName,
+            @Nullable final Long id,
+            @BookingInstructionMachineName final String machineName,
             final String title,
-            final String instructionType,
+            @BookingInstructionType final String instructionType,
             final String description,
             final Boolean isRequested
     )
@@ -62,6 +68,7 @@ public class BookingInstruction implements Parcelable
         mTitle = in.readString();
         mInstructionType = in.readString();
         mDescription = in.readString();
+        mLockboxCode = in.readString();
         mIsRequested = (in.readInt() == 0) ? false : true;
     }
 
@@ -165,6 +172,7 @@ public class BookingInstruction implements Parcelable
         dest.writeString(mTitle);
         dest.writeString(mInstructionType);
         dest.writeString(mDescription);
+        dest.writeString(mLockboxCode);
         dest.writeInt((mIsRequested != null && mIsRequested) ? 1 : 0);
     }
 
@@ -180,8 +188,20 @@ public class BookingInstruction implements Parcelable
         public static final String NOTE_TO_PRO = "note_to_pro";
         public static final String ENTRY_METHOD = "entry_method";
         public static final String KEY_LOCATION = "key_location";
+        public static final String LOCKBOX_CODE = "lockbox_code";
     }
 
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            MachineName.PREFERENCE,
+            MachineName.NOTE_TO_PRO,
+            MachineName.ENTRY_METHOD,
+            MachineName.KEY_LOCATION,
+            MachineName.LOCKBOX_CODE
+    })
+    public @interface BookingInstructionMachineName
+    {
+    }
 
     public static final class InstructionType
     {
@@ -190,8 +210,43 @@ public class BookingInstruction implements Parcelable
         public static final String BATHROOM = "bathroom";
         public static final String FLOORS = "floors";
         public static final String GENERAL = "general";
-        public static final String AT_HOME = "at_home";
-        public static final String DOORMAN = "doorman";
-        public static final String HIDE_KEY = "hide_key";
+
+        public static final class EntryMethod
+        {
+            public static final String DOORMAN = "doorman";
+            public static final String AT_HOME = "at_home";
+            public static final String HIDE_KEY = "hide_key";
+            public static final String LOCKBOX = "lockbox";
+        }
     }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            InstructionType.KITCHEN,
+            InstructionType.BEDROOM,
+            InstructionType.BATHROOM,
+            InstructionType.FLOORS,
+            InstructionType.GENERAL,
+
+            InstructionType.EntryMethod.AT_HOME,
+            InstructionType.EntryMethod.DOORMAN,
+            InstructionType.EntryMethod.HIDE_KEY,
+            InstructionType.EntryMethod.LOCKBOX,
+    })
+    public @interface BookingInstructionType
+    {
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            InstructionType.EntryMethod.AT_HOME,
+            InstructionType.EntryMethod.DOORMAN,
+            InstructionType.EntryMethod.HIDE_KEY,
+            InstructionType.EntryMethod.LOCKBOX,
+    })
+    public @interface EntryMethodType
+    {
+    }
+
+
 }
