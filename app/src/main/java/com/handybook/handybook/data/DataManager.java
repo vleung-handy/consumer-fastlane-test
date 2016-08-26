@@ -296,7 +296,7 @@ public class DataManager
     Callback<SuccessWrapper> cb
     )
     {
-        mService.sendCancelRecurringBookingEmail(bookingRecurringId, new SuccessHandyRetroFitCallback(cb));
+        mService.sendCancelRecurringBookingEmail(bookingRecurringId, "", new SuccessHandyRetroFitCallback(cb));
     }
 
     public void getEditBookingExtrasInfo(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
@@ -928,7 +928,7 @@ public class DataManager
 
     public void requestPrepareReferrals(final Callback<ReferralResponse> cb)
     {
-        mService.requestPrepareReferrals(new ReferralResponseHandyRetrofitCallback(cb));
+        mService.requestPrepareReferrals("", new ReferralResponseHandyRetrofitCallback(cb));
     }
 
     public void requestConfirmReferral(final String guid, final Callback<Void> cb)
