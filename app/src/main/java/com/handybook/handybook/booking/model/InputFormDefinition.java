@@ -14,7 +14,7 @@ public class InputFormDefinition implements Serializable
 {
     //more fields may be added at this level, like title
 
-    @SerializedName("field_definitions")
+    @SerializedName("input_fields")
     private List<InputFormField> mFieldDefinitions;
 
     public List<InputFormField> getFieldDefinitions()
@@ -27,8 +27,8 @@ public class InputFormDefinition implements Serializable
         public static class SupportedMachineName
         {
             public static final String LOCKBOX_ACCESS_CODE = "lockbox_code";
-            public static final String LOCKBOX_LOCATION = "lockbox_location";
-            public static final String DESCRIPTION = "description";
+            public static final String LOCKBOX_LOCATION = "key_location";
+            public static final String DESCRIPTION = "key_location";
         }
         @SerializedName("hint_text")
         private String mHintText;

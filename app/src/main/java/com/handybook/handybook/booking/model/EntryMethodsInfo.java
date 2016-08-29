@@ -20,16 +20,6 @@ import java.util.ListIterator;
  */
 public class EntryMethodsInfo implements Serializable
 {
-    public String getInstructionText()
-    {
-        return mInstructionText;
-    }
-
-    public List<EntryMethodOption> getEntryMethodOptions()
-    {
-        return mEntryMethodOptions;
-    }
-
     /**
      * The instructions text for the entry methods
      *
@@ -37,10 +27,10 @@ public class EntryMethodsInfo implements Serializable
      */
     @SerializedName("instructions_text")
     private String mInstructionText;
-
     @SerializedName("entry_method_options")
     private List<EntryMethodOption> mEntryMethodOptions;
-
+    @SerializedName("default_option_machine_name")
+    private String mDefaultOptionMachineName;
 
     /**
      * TODO for testing only, remove
@@ -101,5 +91,26 @@ public class EntryMethodsInfo implements Serializable
 
         //should never be null since we're getting this from the assets folder
         return null;
+    }
+
+    public List<EntryMethodOption> getEntryMethodOptions()
+    {
+        return mEntryMethodOptions;
+    }
+
+    public String getInstructionText()
+    {
+        return mInstructionText;
+    }
+
+    /**
+     * the default option to be selected
+     *
+     * should be one of BookingInstruction.InstructionType.EntryMethod
+     * @return
+     */
+    public String getDefaultOptionMachineName()
+    {
+        return mDefaultOptionMachineName;
     }
 }
