@@ -409,4 +409,7 @@
     <string name="fragment_referral_more_ways_to_share">More ways to share</string>
     <string name="recommended">Recommended</string>
     <string name="cd_share_icon">Open Share Screen</string>
+
+    <!-- Content Description for ImageViews -->
+    <string name="pro_team_star">Star</string>
 </resources>

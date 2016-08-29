@@ -46,7 +46,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
         final View itemView = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.layout_pro_team_pro_card_v2, parent, false);
-        return new ProTeamProHolder(mContext, itemView, mOnXClickedListener);
+        return new ProTeamProHolder(itemView, mOnXClickedListener);
     }
 
     @Override
