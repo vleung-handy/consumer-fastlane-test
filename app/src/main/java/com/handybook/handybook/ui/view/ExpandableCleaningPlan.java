@@ -32,7 +32,7 @@ public class ExpandableCleaningPlan extends LinearLayout
     TextView mTextView;
 
     @Bind(R.id.container_plan)
-    LinearLayout mPlanContainer;
+    public LinearLayout mPlanContainer;
 
     @Bind(R.id.image_plan_collapse)
     ImageView mImageCollapse;
