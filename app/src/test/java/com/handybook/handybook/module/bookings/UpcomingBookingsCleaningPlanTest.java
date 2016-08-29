@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.bookings;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,18 +18,20 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 /**
- * Tests all the different parts that relates to having an active booking, upcoming bookings
- * and the existence of a cleaning plan.
+ * This is to test the situation where there are no cleaning plans on the upcoming bookings page
  */
-public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
+public class UpcomingBookingsCleaningPlanTest extends UpcomingBookingsBaseTest
 {
+
     @Before
     public void setUp() throws Exception
     {
         mUpcomingBookingsFragment = UpcomingBookingsFragment.newInstance();
-        String json = IoUtils.getJsonString("upcoming_bookings.json");
-        final UserBookingsWrapper activeBooking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+        String json = IoUtils.getJsonString("upcoming_bookings_no_plan.json");
+        final UserBookingsWrapper bookings = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
                 .create()
                 .fromJson(json, UserBookingsWrapper.class);
 
@@ -41,7 +44,7 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
 
         SupportFragmentTestUtil.startFragment(mUpcomingBookingsFragment, AppCompatActivity.class);
 
-        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(activeBooking, Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING);
+        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(bookings, Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING);
         mUpcomingBookingsFragment.onReceiveBookingsSuccess(mBookingReceiveSuccessfulEvent);
         mUpcomingBookingsFragment.onReceiveServicesSuccess(new BookingEvent.ReceiveServicesSuccess(services));
     }
@@ -58,6 +61,15 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
     }
 
     /**
+     * Cleaning plans should not be visible
+     */
+    @Test
+    public void testCleaningPlanVisibility()
+    {
+        assertEquals("Cleaning plans should not be visible", View.GONE, mUpcomingBookingsFragment.mExpandableCleaningPlan.getVisibility());
+    }
+
+    /**
      * Verify that there are upcoming bookings
      */
     @Test
@@ -66,12 +78,4 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
         testUpcomingBookingsContainingBookings(mUpcomingBookingsFragment, 6);
     }
 
-    /**
-     * Verify the correctness of the cleaning plans
-     */
-    @Test
-    public void testCleaningPlan()
-    {
-        testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 3);
-    }
 }
