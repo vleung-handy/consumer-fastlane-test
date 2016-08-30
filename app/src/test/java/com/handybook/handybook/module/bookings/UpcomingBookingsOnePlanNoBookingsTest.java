@@ -10,15 +10,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This is to test the situation where there is no active booking at all in the upcoming bookings page
+ * This tests the case where a user has no bookings at all, just an active cleaning plan
  */
-public class UpcomingBookingsNoActiveTest extends UpcomingBookingsBaseTest
+public class UpcomingBookingsOnePlanNoBookingsTest extends UpcomingBookingsBaseTest
 {
     @Before
     public void setUp() throws Exception
     {
         super.setup();
-        String json = IoUtils.getJsonString("upcoming_no_active_bookings.json");
+        String json = IoUtils.getJsonString("one_plan_no_bookings.json");
         final UserBookingsWrapper bookings = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
                 .create()
                 .fromJson(json, UserBookingsWrapper.class);
@@ -33,28 +33,21 @@ public class UpcomingBookingsNoActiveTest extends UpcomingBookingsBaseTest
         assertNoActiveBooking();
     }
 
-    /**
-     * Verify the correctness of the cleaning plans
-     */
     @Test
     public void testCleaningPlan()
     {
-        testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 3);
-    }
-
-    /**
-     * Verify that there are upcoming bookings
-     */
-    @Test
-    public void testUpcomingBookingsSection()
-    {
-        testUpcomingBookingsContainingBookings(mUpcomingBookingsFragment, 8);
+        testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 1);
     }
 
     @Test
-    public void testEmptyViewNotShowing()
+    public void testNoUpcomingBookings()
     {
-        assertEmptyViewNotShowing();
+        assertNoUpcomingBookings();
+    }
+
+    @Test
+    public void testEmptyViewShowing()
+    {
+        assertEmptyViewShowing();
     }
 }
-
