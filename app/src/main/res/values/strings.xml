@@ -267,6 +267,10 @@
 
     <string name="report_an_issue">Report an issue</string>
 
+
+    <string name="install">Install</string>
+    <string name="need_google_play">To view maps, please install Google Play Services</string>
+
     <string name="home_cleaner">Home Cleaner</string>
     <string name="home_cleaner_slogan">Let your home shine</string>
     <string name="handyman">Handyman</string>
@@ -414,10 +418,13 @@
     <string name="fragment_referral_sms_invite">Text Invite</string>
     <string name="fragment_referral_email_invite">Email Invite</string>
     <string name="fragment_referral_more_ways_to_share">More ways to share</string>
-<<<<<<< HEAD
+    <string name="recommended">Recommended</string>
+    <string name="cd_share_icon">Open Share Screen</string>
+
+    <!-- Content Description for ImageViews -->
+    <string name="pro_team_star">Star</string>
 
     <!--For Active Booking-->
-    <string name="report_an_issue">Report An Issue</string>
     <string name="unable_to_edit_plan">Unable to edit this plan at this time. Please try again later.</string>
     <string name="your_next_booking">Your Next Booking</string>
     <string name="pro_location_time_formatted">pro\'s location recorded at %s</string>
@@ -426,11 +433,5 @@
     <string name="no_bookings_text">Book a fix up, pick up, or clean up.</string>
     <string name="no_scheduled_bookings">No scheduled bookings</string>
     <string name="next_cleaning">Next cleaning:</string>
-=======
-    <string name="recommended">Recommended</string>
-    <string name="cd_share_icon">Open Share Screen</string>
 
-    <!-- Content Description for ImageViews -->
-    <string name="pro_team_star">Star</string>
->>>>>>> develop
 </resources>

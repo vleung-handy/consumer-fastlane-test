@@ -10,11 +10,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.CameraUpdate;
@@ -33,10 +31,12 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.ui.view.MapPlaceholderView;
 import com.handybook.handybook.util.BookingUtil;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.PlayServicesUtils;
@@ -48,6 +48,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * This fragment contains only the information regarding one active booking.
+ * It holds the map, plots the location of both the provider and the destination.
+ * It pings the server for updated provider location information periodically.
+ * Also shows the provider's name, and allows calling/texting to the provider.
  */
 public class ActiveBookingFragment extends InjectedFragment implements OnMapReadyCallback
 {
@@ -81,17 +85,20 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Bind(R.id.text_text)
     TextView mTextText;
 
+    @Bind(R.id.booking_item_container)
+    View mBookingItemContainer;
+
     @Bind(R.id.map_view)
     MapView mMapView;
-
-    @Bind(R.id.map_container)
-    FrameLayout mMapContainer;
 
     @Bind(R.id.transparent_image)
     ImageView mTransparentImage;
 
     @Bind(R.id.text_pro_location_time)
     TextView mTextLocationTime;
+
+    @Bind(R.id.map_place_holder)
+    MapPlaceholderView mMapPlaceHolderView;
 
     private GoogleMap mGoogleMap;
     private Booking mBooking;
@@ -142,8 +149,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                 mMapView.onCreate(savedInstanceState);
                 mMapView.getMapAsync(this);
                 mMapView.setVisibility(View.VISIBLE);
-                mMapContainer.setVisibility(View.VISIBLE);
-
+                mMapPlaceHolderView.setVisibility(View.GONE);
                 if (mParentScrollView != null)
                 {
                     mTransparentImage.setOnTouchListener(new View.OnTouchListener()
@@ -181,7 +187,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             else
             {
                 mMapView.setVisibility(View.GONE);
-                mMapContainer.setVisibility(View.GONE);
+                mMapPlaceHolderView.setVisibility(View.VISIBLE);
             }
 
             if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider().getFullName().trim()))
@@ -436,8 +442,9 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @OnClick(R.id.button_report_issue)
     public void reportIssueClicked()
     {
-        //FIXME: JIA: implement this to hook up with Report Issue before go live.
-        Toast.makeText(getActivity(), "To be implemented", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), ReportIssueActivity.class);
+        intent.putExtra(BundleKeys.BOOKING, mBooking);
+        startActivity(intent);
     }
 
 

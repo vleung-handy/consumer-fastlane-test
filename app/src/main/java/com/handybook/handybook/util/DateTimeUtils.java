@@ -79,7 +79,6 @@ public class DateTimeUtils
         return diff / 1000 % 60;
     }
 
-
     /**
      * Day of the week/
      * Monday, Tuesday, Wednesday, etc.

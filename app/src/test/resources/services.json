@@ -1,0 +1,148 @@
+[
+  {
+    "id": 3,
+    "name": "Home Cleaning",
+    "order": 0,
+    "parent": 0,
+    "uniq": "home_cleaning"
+  },
+  {
+    "id": 2,
+    "name": "Handyman Services",
+    "order": 2,
+    "parent": 0,
+    "services": [
+      {
+        "id": 8,
+        "name": "Pictures & Shelves",
+        "order": 5,
+        "parent": 2,
+        "uniq": "hanging_pictures_shelves"
+      },
+      {
+        "id": 9,
+        "name": "Air Conditioner",
+        "order": 6,
+        "parent": 2,
+        "uniq": "ac_repair"
+      },
+      {
+        "id": 10,
+        "name": "Furniture Assembly",
+        "order": 7,
+        "parent": 2,
+        "uniq": "furniture_assembly"
+      },
+      {
+        "id": 11,
+        "name": "General Help",
+        "order": 8,
+        "parent": 2,
+        "uniq": "general_labor"
+      },
+      {
+        "id": 15,
+        "name": "Moving Help",
+        "order": 8,
+        "parent": 2,
+        "uniq": "moving_help"
+      },
+      {
+        "id": 38,
+        "name": "TV Mounting",
+        "order": 9,
+        "parent": 2,
+        "uniq": "mount_tv"
+      },
+      {
+        "id": 42,
+        "name": "Window Treatments",
+        "order": 10,
+        "parent": 2,
+        "uniq": "install_window_treatments"
+      },
+      {
+        "id": 43,
+        "name": "Knobs/Locks",
+        "order": 11,
+        "parent": 2,
+        "uniq": "install_knobs_locks"
+      },
+      {
+        "id": 22,
+        "name": "Custom Job",
+        "order": 12,
+        "parent": 2,
+        "uniq": "other_handyman_service"
+      }
+    ],
+    "uniq": "handyman"
+  },
+  {
+    "id": 0,
+    "name": "Plumbing",
+    "order": 3,
+    "parent": 0,
+    "services": [
+      {
+        "id": 1,
+        "name": "Cleaning",
+        "order": 1,
+        "parent": 0,
+        "uniq": "cleaning"
+      }
+    ],
+    "uniq": "plumbing"
+  },
+  {
+    "id": 45,
+    "name": "Electrician",
+    "order": 4,
+    "parent": 0,
+    "services": [
+      {
+        "id": 50,
+        "name": "Thermostat",
+        "order": 0,
+        "parent": 45,
+        "uniq": "thermostat"
+      },
+      {
+        "id": 46,
+        "name": "Light Fixtures",
+        "order": 18,
+        "parent": 45,
+        "uniq": "light_fixtures"
+      },
+      {
+        "id": 47,
+        "name": "Ceiling & Bath Fans",
+        "order": 19,
+        "parent": 45,
+        "uniq": "ceiling_fan"
+      },
+      {
+        "id": 49,
+        "name": "Outlets & Switches",
+        "order": 20,
+        "parent": 45,
+        "uniq": "outlets"
+      },
+      {
+        "id": 51,
+        "name": "Custom Job",
+        "order": 21,
+        "parent": 45,
+        "uniq": "other_electrical"
+      }
+    ],
+    "uniq": "electrician"
+  },
+  {
+    "id": 39,
+    "name": "Interior Painting",
+    "order": 5,
+    "parent": 0,
+    "uniq": "painting"
+  }
+]

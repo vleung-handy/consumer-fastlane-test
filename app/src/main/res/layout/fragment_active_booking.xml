@@ -51,6 +51,13 @@
                 android:layout_height="match_parent"
                 android:src="@color/transparent"
                 />
+
+            <com.handybook.handybook.ui.view.MapPlaceholderView
+                android:id="@+id/map_place_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
         </FrameLayout>
 
 
