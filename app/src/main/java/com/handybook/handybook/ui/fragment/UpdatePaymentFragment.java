@@ -27,6 +27,7 @@ import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
+import com.handybook.handybook.util.Utils;
 import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
@@ -62,6 +63,8 @@ public class UpdatePaymentFragment extends InjectedFragment
     ImageView mLockIcon;
     @Bind(R.id.scan_card_button)
     TextView mScanCardButton;
+
+    private View mView;
 
     //TODO: this fragment duplicates a lots of logic in BookingPaymentFragment; we should consolidate
     //as a consequence of not doing the above, we have lots of repeated code between
@@ -198,6 +201,10 @@ public class UpdatePaymentFragment extends InjectedFragment
         final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                 mExpText.getExpYear(), mCvcText.getCVC());
         freezeCardInput(card.getType(), card.getLast4());
+        if (mView != null)
+        {
+            Utils.hideSoftKeyboard(getActivity(), mView);
+        }
         showToast(R.string.update_successful);
     }
 
@@ -210,11 +217,13 @@ public class UpdatePaymentFragment extends InjectedFragment
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
-        final View view = inflater.inflate(R.layout.fragment_update_payment, container, false);
-        ButterKnife.bind(this, view);
+        mView = inflater.inflate(R.layout.fragment_update_payment, container, false);
+        ButterKnife.bind(this, mView);
 
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
         menuButton.setColor(getResources().getColor(R.color.white));
@@ -260,7 +269,7 @@ public class UpdatePaymentFragment extends InjectedFragment
             }
         });
 
-        return view;
+        return mView;
     }
 
     private boolean areFieldsValid()
