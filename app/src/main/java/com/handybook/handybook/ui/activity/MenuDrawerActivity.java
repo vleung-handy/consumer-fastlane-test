@@ -275,6 +275,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         mNavigationView.getMenu().findItem(R.id.nav_menu_payment).setVisible(currentUser != null && currentUser.getStripeKey() != null);
 
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
+        mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(mConfiguration != null && mConfiguration.isActiveBookingEnabled());
     }
 
     /**

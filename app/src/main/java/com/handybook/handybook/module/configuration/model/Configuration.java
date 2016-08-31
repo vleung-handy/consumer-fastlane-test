@@ -23,6 +23,9 @@ public class Configuration
     @SerializedName("lockbox_entry_method_enabled")
     private boolean mLockboxEntryMethodEnabled;
 
+    //FIXME: JIA: hook this up correctly when the API is ready
+    private boolean mActiveBookingEnabled = true;
+
     public boolean isLockboxEntryMethodEnabled()
     {
         return mLockboxEntryMethodEnabled;
@@ -46,6 +49,16 @@ public class Configuration
     public boolean isShowRescheduleFlowOnCancel()
     {
         return mShowRescheduleFlowOnCancel;
+    }
+
+    /**
+     * FIXME: JIA: before go live, make sure to hook this up to the actual configuration endpoint
+     *
+     * @return
+     */
+    public boolean isActiveBookingEnabled()
+    {
+        return mActiveBookingEnabled;
     }
 
     public boolean isMyProTeamEnabled()

@@ -110,7 +110,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageShownLog()));
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final SharedPreferences.Editor edit = prefs.edit();
 
         final User user = userManager.getCurrentUser();
         if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false) && user == null)
