@@ -62,9 +62,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     /**
      * maps the service id to its icon image view as rendered.
      * using service id rather than service object as key in case the object references differ
-     * <p/>
+     * <p>
      * used for the cool icon transition to ServicesActivity
-     * <p/>
+     * <p>
      * we need this because the transition requires a
      * reference to the EXACT image view of the service icon
      * rendered in the service category views
@@ -191,7 +191,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     /**
      * handles bundle arguments. currently only from deeplinks
-     * <p/>
+     * <p>
      * should be called after handleLoadServicesResponse() so that we have the list of services
      */
     private void handleBundleArguments()
@@ -322,7 +322,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @OnClick(R.id.coupon_layout)
     public void onCouponClick()
     {
-        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class);
+        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class,
+                R.id.nav_menu_promotions);
     }
 
     /**

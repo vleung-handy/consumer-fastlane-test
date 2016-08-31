@@ -503,11 +503,12 @@ public final class LoginFragment extends BookingFlowFragment
 
         if (mDestinationClass != null)
         {
-            activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras());
+            activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras(),
+                    null);
         }
         else
         {
-            activity.navigateToActivity(ServiceCategoriesActivity.class);
+            activity.navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
         }
     }
 
@@ -520,8 +521,8 @@ public final class LoginFragment extends BookingFlowFragment
     @UserLoginLog.AuthType
     private String getAuthTypeForLogger(UserDataManager.AuthType authType)
     {
-        if(authType == null) return null;
-        switch(authType)
+        if (authType == null) { return null; }
+        switch (authType)
         {
             case FACEBOOK:
                 return UserLoginLog.AUTH_TYPE_FACEBOOK;
