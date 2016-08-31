@@ -79,19 +79,6 @@ public class DateTimeUtils
         return diff / 1000 % 60;
     }
 
-    public static String getTimeWithoutDate(final Date date)
-    {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        return getLocalTime12HoursFormatter().format(cal.getTime()).toLowerCase();
-    }
-
-    private static SimpleDateFormat getLocalTime12HoursFormatter()
-    {
-        LOCAL_TIME_12_HOURS_FORMATTER.setTimeZone(TimeZone.getDefault());
-        return LOCAL_TIME_12_HOURS_FORMATTER;
-    }
-
     /**
      * Day of the week/
      * Monday, Tuesday, Wednesday, etc.
@@ -129,5 +116,17 @@ public class DateTimeUtils
     public static String getDayShortMonthDay(Date date)
     {
         return DAY_OF_WEEK_SHORT_MONTH_DAY_FORMATTER.format(date);
+    }
+    public static String getTimeWithoutDate(final Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return getLocalTime12HoursFormatter().format(cal.getTime()).toLowerCase();
+    }
+
+    private static SimpleDateFormat getLocalTime12HoursFormatter()
+    {
+        LOCAL_TIME_12_HOURS_FORMATTER.setTimeZone(TimeZone.getDefault());
+        return LOCAL_TIME_12_HOURS_FORMATTER;
     }
 }

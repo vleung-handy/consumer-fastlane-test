@@ -457,20 +457,20 @@ public class Booking implements Parcelable
     public final void writeToParcel(final Parcel out, final int flags)
     {
         out.writeStringArray(new String[]
-                        {
-                                mId,
-                                mServiceName,
-                                mServiceMachineName,
-                                mLaundryStatus != null ? mLaundryStatus.name() : "",
-                                mRecurringInfo,
-                                mEntryInfo,
-                                mExtraEntryInfo,
-                                mProNote,
-                                mBilledStatus,
-                                mRecurringId,
-                                mBookingTimezone,
-                                mLockboxCode
-                        }
+                {
+                        mId,
+                        mServiceName,
+                        mServiceMachineName,
+                        mLaundryStatus != null ? mLaundryStatus.name() : "",
+                        mRecurringInfo,
+                        mEntryInfo,
+                        mExtraEntryInfo,
+                        mProNote,
+                        mBilledStatus,
+                        mRecurringId,
+                        mBookingTimezone,
+                        mLockboxCode
+                }
         );
 
         out.writeIntArray(new int[]{mIsPast, mEntryType});
