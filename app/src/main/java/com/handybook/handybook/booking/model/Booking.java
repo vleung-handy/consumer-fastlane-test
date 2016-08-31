@@ -40,6 +40,9 @@ public class Booking implements Parcelable
     private String mServiceName;
     @SerializedName("service_machine")
     private String mServiceMachineName;
+    @NonNull
+    @SerializedName("service")
+    private BookingService mService;
     @SerializedName("date_start")
     private Date mStartDate;
     @SerializedName("hours")
@@ -86,6 +89,8 @@ public class Booking implements Parcelable
     private boolean mMilestonesEnabled;
     @SerializedName("instructions")
     private Instructions mInstructions;
+    @SerializedName("active_booking_status")
+    private ActiveBookingStatus mActiveBookingStatus;
 
     public String getLockboxCode()
     {
@@ -142,6 +147,16 @@ public class Booking implements Parcelable
     public final boolean isRecurring()
     {
         return mRecurringId != null && !mRecurringId.isEmpty() && !"0".equals(mRecurringId);
+    }
+
+    public ActiveBookingStatus getActiveBookingStatus()
+    {
+        return mActiveBookingStatus;
+    }
+
+    public BookingService getService()
+    {
+        return mService;
     }
 
     public final String getRecurringInfo()
@@ -409,6 +424,8 @@ public class Booking implements Parcelable
         mStartDate = new Date(in.readLong());
         mAddress = in.readParcelable(Address.class.getClassLoader());
         mProvider = (Provider) in.readSerializable();
+        mActiveBookingStatus = in.readParcelable(ActiveBookingStatus.class.getClassLoader());
+        mService = in.readParcelable(BookingService.class.getClassLoader());
 
         mPaymentInfo = new ArrayList<LineItem>();
         in.readTypedList(mPaymentInfo, LineItem.CREATOR);
@@ -461,6 +478,8 @@ public class Booking implements Parcelable
         out.writeLong(mStartDate.getTime());
         out.writeParcelable(mAddress, 0);
         out.writeSerializable(mProvider);
+        out.writeParcelable(mActiveBookingStatus, 0);
+        out.writeParcelable(mService, 0);
         out.writeTypedList(mPaymentInfo);
         out.writeTypedList(mExtrasInfo);
         out.writeBooleanArray(new boolean[]
@@ -541,6 +560,10 @@ public class Booking implements Parcelable
         private String state;
         @SerializedName("zipcode")
         private String zip;
+        @SerializedName("latitude")
+        private double latitude;
+        @SerializedName("longitude")
+        private double longitude;
 
         public String getAddress1()
         {
@@ -592,6 +615,26 @@ public class Booking implements Parcelable
             this.zip = zip;
         }
 
+        public double getLatitude()
+        {
+            return latitude;
+        }
+
+        public void setLatitude(final double latitude)
+        {
+            this.latitude = latitude;
+        }
+
+        public double getLongitude()
+        {
+            return longitude;
+        }
+
+        public void setLongitude(final double longitude)
+        {
+            this.longitude = longitude;
+        }
+
         private Address(final Parcel in)
         {
             final String[] stringData = new String[5];
@@ -601,12 +644,17 @@ public class Booking implements Parcelable
             city = stringData[2];
             state = stringData[3];
             zip = stringData[4];
+
+            latitude = in.readDouble();
+            longitude = in.readDouble();
         }
 
         @Override
         public final void writeToParcel(final Parcel out, final int flags)
         {
             out.writeStringArray(new String[]{address1, address2, city, state, zip});
+            out.writeDouble(latitude);
+            out.writeDouble(longitude);
         }
 
         @Override
@@ -837,5 +885,138 @@ public class Booking implements Parcelable
         }
     }
 
+
+    public static class ActiveBookingStatus implements Parcelable
+    {
+        @SerializedName("map_enabled")
+        private boolean mMapEnabled;
+
+        @SerializedName("booking")
+        private Location mBookingLocation;
+
+        @SerializedName("provider")
+        private Location mProviderLocation;
+
+        public boolean isMapEnabled()
+        {
+            return mMapEnabled;
+        }
+
+        public Location getBookingLocation()
+        {
+            return mBookingLocation;
+        }
+
+        public Location getProviderLocation()
+        {
+            return mProviderLocation;
+        }
+
+        private ActiveBookingStatus(final Parcel in)
+        {
+            final boolean[] booleanArray = new boolean[1];
+            in.readBooleanArray(booleanArray);
+            mMapEnabled = booleanArray[0];
+            mBookingLocation = in.readParcelable(Location.class.getClassLoader());
+            mProviderLocation = in.readParcelable(Location.class.getClassLoader());
+
+        }
+
+        @Override
+        public final void writeToParcel(final Parcel out, final int flags)
+        {
+            out.writeBooleanArray(new boolean[]{mMapEnabled});
+            out.writeParcelable(mBookingLocation, 0);
+            out.writeParcelable(mProviderLocation, 0);
+        }
+
+        @Override
+        public final int describeContents()
+        {
+            return 0;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
+        {
+            public ActiveBookingStatus createFromParcel(final Parcel in)
+            {
+                return new ActiveBookingStatus(in);
+            }
+
+            public ActiveBookingStatus[] newArray(final int size)
+            {
+                return new ActiveBookingStatus[size];
+            }
+        };
+
+    }
+
+
+    public static class Location implements Parcelable
+    {
+        //the server returns lat/long as strings
+        @SerializedName("latitude")
+        private String mLatitude;
+
+        @SerializedName("longitude")
+        private String mLongitude;
+
+        @SerializedName("timestamp")
+        private Date mTimeStamp;
+
+        private Location(final Parcel in)
+        {
+            final String[] stringArray = new String[2];
+            in.readStringArray(stringArray);
+            mLatitude = stringArray[0];
+            mLongitude = stringArray[1];
+
+            long tmpDate = in.readLong();
+            mTimeStamp = tmpDate == -1 ? null : new Date(tmpDate);
+        }
+
+        public String getLatitude()
+        {
+            return mLatitude;
+        }
+
+        public String getLongitude()
+        {
+            return mLongitude;
+        }
+
+        public Date getTimeStamp()
+        {
+            return mTimeStamp;
+        }
+
+        @Override
+        public final void writeToParcel(final Parcel out, final int flags)
+        {
+            out.writeStringArray(new String[]{mLatitude, mLongitude});
+
+            //some locations don't report time stamps
+            out.writeLong(mTimeStamp != null ? mTimeStamp.getTime() : -1);
+        }
+
+        @Override
+        public final int describeContents()
+        {
+            return 0;
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
+        {
+            public Location createFromParcel(final Parcel in)
+            {
+                return new Location(in);
+            }
+
+            public Location[] newArray(final int size)
+            {
+                return new Location[size];
+            }
+        };
+    }
 
 }

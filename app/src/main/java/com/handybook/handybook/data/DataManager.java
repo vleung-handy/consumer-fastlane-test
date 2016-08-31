@@ -20,6 +20,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProT
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
+import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
@@ -972,6 +973,11 @@ public class DataManager
         });
     }
 
+    public void getBookingGeoStatus(final String bookingId, final Callback<BookingGeoStatus> callback)
+    {
+        mService.getBookingGeoStatus(bookingId, new BookingGeoStatusHandyRetrofitCallback(callback));
+    }
+
     public final void updateBookingEntryInformation(
             int bookingId,
             BookingUpdateEntryInformationTransaction entryInformationTransaction,
@@ -1010,6 +1016,31 @@ public class DataManager
     )
     {
         mService.getBookingPricesForFrequencies(bookingId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
+    }
+
+    public final void updateRecurringFrequency(
+            final String recurringId,
+            final BookingEditFrequencyRequest bookingEditFrequencyRequest,
+            final Callback<Void> cb
+    )
+    {
+        mService.updateRecurringFrequency(recurringId, bookingEditFrequencyRequest, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            protected void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+
+            }
+        });
+    }
+
+    public final void getRecurringFrequency(
+            final String recurringId,
+            final Callback<BookingEditFrequencyInfoResponse> cb
+    )
+    {
+        mService.getRecurringFrequency(recurringId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
     }
 
     public void finalizeBooking(

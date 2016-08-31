@@ -116,6 +116,36 @@ public abstract class BookingEditEvent
     }
 
 
+    //Update the frequency of a booking
+    public static class RequestUpdateRecurringFrequency extends HandyEvent.RequestEvent
+    {
+        public final String recurringId;
+        public final BookingEditFrequencyRequest bookingEditFrequencyRequest;
+
+        public RequestUpdateRecurringFrequency(String recurringId, BookingEditFrequencyRequest bookingEditFrequencyRequest)
+        {
+            this.recurringId = recurringId;
+            this.bookingEditFrequencyRequest = bookingEditFrequencyRequest;
+        }
+    }
+
+
+    public static class ReceiveUpdateRecurringFrequencySuccess extends HandyEvent.ReceiveSuccessEvent
+    {
+        public ReceiveUpdateRecurringFrequencySuccess()
+        {
+        }
+    }
+
+
+    public static class ReceiveUpdateRecurringFrequencyError extends HandyEvent.ReceiveErrorEvent
+    {
+        public ReceiveUpdateRecurringFrequencyError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
     //Get the booking prices for each booking frequency
     public static class RequestGetEditFrequencyViewModel extends HandyEvent.RequestEvent
     {
@@ -142,6 +172,38 @@ public abstract class BookingEditEvent
     public static class ReceiveGetEditFrequencyViewModelError extends HandyEvent.ReceiveErrorEvent
     {
         public ReceiveGetEditFrequencyViewModelError(DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
+    //Get the booking prices for each booking frequency
+    public static class RequestRecurringFrequencyViewModel extends HandyEvent.RequestEvent
+    {
+        public final String recurringId;
+
+        public RequestRecurringFrequencyViewModel(String recurringId)
+        {
+            this.recurringId = recurringId;
+        }
+    }
+
+
+    public static class ReceiveRecurringFrequencyViewModelSuccess extends HandyEvent.ReceiveSuccessEvent
+    {
+        public final BookingEditFrequencyViewModel bookingEditFrequencyViewModel;
+
+        public ReceiveRecurringFrequencyViewModelSuccess(BookingEditFrequencyViewModel bookingEditFrequencyViewModel)
+        {
+            this.bookingEditFrequencyViewModel = bookingEditFrequencyViewModel;
+        }
+    }
+
+
+    public static class ReceiveRecurringFrequencyViewModelError extends HandyEvent.ReceiveErrorEvent
+    {
+        public ReceiveRecurringFrequencyViewModelError(DataManager.DataManagerError error)
         {
             this.error = error;
         }

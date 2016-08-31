@@ -2,9 +2,10 @@ package com.handybook.handybook.booking.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RecurringBooking
+public class RecurringBooking implements Serializable
 {
     @SerializedName("id")
     private int mId;

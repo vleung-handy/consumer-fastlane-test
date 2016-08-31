@@ -221,6 +221,13 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+
+    /**
+     * @param bookingId
+     * @param bookingEditFrequencyRequest
+     * @param cb
+     * @deprecated Use /recurring_bookings/{recurring_id}/edit_frequency instead.
+     */
     @POST("/bookings/{booking}/edit_frequency")
     void updateBookingFrequency(
             @Path("booking") int bookingId,
@@ -228,9 +235,29 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+
+    /**
+     *
+     * @param bookingId
+     * @param cb
+     * @deprecated use /recurring_bookings/{recurring_id}/edit_frequency instead
+     */
     @GET("/bookings/{booking}/edit_frequency")
     void getBookingPricesForFrequencies(
             @Path("booking") int bookingId,
+            HandyRetrofitCallback cb
+    );
+
+    @POST("/recurring_bookings/{recurring_id}/edit_frequency")
+    void updateRecurringFrequency(
+            @Path("recurring_id") String recurringId,
+            @Body BookingEditFrequencyRequest bookingEditFrequencyRequest,
+            HandyRetrofitCallback cb
+    );
+
+    @GET("/recurring_bookings/{recurring_id}/edit_frequency")
+    void getRecurringFrequency(
+            @Path("recurring_id") String recurringId,
             HandyRetrofitCallback cb
     );
 
@@ -289,6 +316,9 @@ public interface HandyRetrofitService
 
     @GET("/recurring_bookings")
     void getRecurringBookings(HandyRetrofitCallback cb);
+
+    @GET("/bookings/{booking_id}/geo_status")
+    void getBookingGeoStatus(@Path("booking_id") String bookingId, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/user_sessions")

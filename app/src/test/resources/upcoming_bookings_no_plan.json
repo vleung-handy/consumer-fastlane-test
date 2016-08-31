@@ -1,0 +1,439 @@
+{
+  "user_bookings": [
+    {
+      "booking_status": 0,
+      "cancellation_threshold": "post_critical",
+      "is_in_progress": false,
+      "in_progress_status": null,
+      "service_id": 38,
+      "service_name": "Mount TV",
+      "service_machine": "mount_tv",
+      "service": {
+        "id": 38,
+        "machine_name": "mount_tv",
+        "name": "Mount TV",
+        "parent": {
+          "id": 2,
+          "machine_name": "handyman",
+          "name": "Handyman"
+        }
+      },
+      "id": 195370,
+      "address": {
+        "zipcode": "10011",
+        "address1": "33 W 19 Street",
+        "address2": "6",
+        "city": "New York",
+        "state": "NY",
+        "latitude": "40.7400054",
+        "longitude": "-73.9930771"
+      },
+      "price": 98,
+      "date_start": "2016-08-25T09:16:26-04:00",
+      "booking_timezone": "America/New_York",
+      "hours": 2,
+      "getintxt": null,
+      "msg_to_pro": null,
+      "provider": {
+        "phone": "+15572408027",
+        "first_name": "Marky",
+        "last_name": "Sildrey",
+        "id": 27685,
+        "status": 3
+      },
+      "can_leave_tip": true,
+      "num_providers": 1,
+      "description": "  There will be a TV mounted onto a brick or concrete wall Customer will help lift TV ",
+      "comments": null,
+      "user_id": 27680,
+      "recurring": 0,
+      "recurring_id": null,
+      "recurring_string_short": null,
+      "recurring_hours": null,
+      "available_pros": null,
+      "recurring_string": null,
+      "payment_hash": null,
+      "billed_status": "Paid  •••• 1111",
+      "extras_info": [],
+      "instructions": null,
+      "active_booking_status": {
+        "map_enabled": true,
+        "booking": {
+          "latitude": "40.7400054",
+          "longitude": "-73.9930771"
+        },
+        "provider": {
+          "latitude": "40.750905",
+          "longitude": "-74.000403",
+          "timestamp": "2016-08-25T09:16:33-04:00"
+        }
+      }
+    },
+    {
+      "booking_status": 0,
+      "cancellation_threshold": "non_critical",
+      "is_in_progress": false,
+      "in_progress_status": null,
+      "service_id": 3,
+      "service_name": "Home Cleaning",
+      "service_machine": "home_cleaning",
+      "service": {
+        "id": 3,
+        "machine_name": "home_cleaning",
+        "name": "Home Cleaning",
+        "parent": {
+          "id": 1,
+          "machine_name": "cleaning",
+          "name": "Cleaning"
+        }
+      },
+      "id": 194946,
+      "address": {
+        "zipcode": "10011",
+        "address1": "33 W 19 Street",
+        "address2": "6",
+        "city": "New York",
+        "state": "NY",
+        "latitude": "40.7400054",
+        "longitude": "-73.9930771"
+      },
+      "price": 87,
+      "date_start": "2016-09-05T16:00:00-04:00",
+      "booking_timezone": "America/New_York",
+      "hours": 3,
+      "getintxt": null,
+      "msg_to_pro": null,
+      "provider": {
+        "phone": null,
+        "first_name": "Marky",
+        "last_name": "Sildrey",
+        "id": 27685,
+        "status": 3
+      },
+      "can_leave_tip": false,
+      "num_providers": 1,
+      "description": "",
+      "comments": null,
+      "user_id": 27680,
+      "recurring": 0,
+      "recurring_id": 14893,
+      "recurring_string_short": "every 4 weeks",
+      "next_recurrence": "2016-10-03T16:00:00-04:00",
+      "recurring_hours": 3,
+      "available_pros": [
+        [
+          774,
+          "001 0."
+        ],
+        [
+          27685,
+          "Marky S."
+        ]
+      ],
+      "recurring_string": "Repeats every 4 weeks",
+      "payment_hash": null,
+      "billed_status": "Billed on Sun, Sep 4",
+      "extras_info": [],
+      "can_edit_hours": true,
+      "can_edit_extras": true,
+      "can_edit_frequency": true,
+      "instructions": {
+        "title": "Typical Cleaning Service",
+        "instructions_checklist": [
+          {
+            "description": "Vacuum carpets, sweep and mop hard surfaces.",
+            "id": 149671,
+            "instruction_type": "floors",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Floors",
+            "text": "Vacuum carpets, sweep and mop hard surfaces."
+          },
+          {
+            "description": "Load dishwasher, wipe surfaces, and clean sink.",
+            "id": 149672,
+            "instruction_type": "kitchen",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Kitchen",
+            "text": "Load dishwasher, wipe surfaces, and clean sink."
+          },
+          {
+            "description": "Make the bed.",
+            "id": 149673,
+            "instruction_type": "bedroom",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Bedroom",
+            "text": "Make the bed."
+          },
+          {
+            "description": "Clean toilet, shower, tub, and sink.",
+            "id": 149674,
+            "instruction_type": "bathroom",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Bathroom",
+            "text": "Clean toilet, shower, tub, and sink."
+          },
+          {
+            "description": "Dust all surfaces, wipe mirrors, & remove garbage.",
+            "id": 149675,
+            "instruction_type": "general",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "General",
+            "text": "Dust all surfaces, wipe mirrors, & remove garbage."
+          }
+        ]
+      },
+      "active_booking_status": {
+        "map_enabled": false
+      }
+    },
+    {
+      "booking_status": 0,
+      "cancellation_threshold": "non_critical",
+      "is_in_progress": false,
+      "in_progress_status": null,
+      "service_id": 3,
+      "service_name": "Home Cleaning",
+      "service_machine": "home_cleaning",
+      "service": {
+        "id": 3,
+        "machine_name": "home_cleaning",
+        "name": "Home Cleaning",
+        "parent": {
+          "id": 1,
+          "machine_name": "cleaning",
+          "name": "Cleaning"
+        }
+      },
+      "id": 194944,
+      "address": {
+        "zipcode": "10011",
+        "address1": "33 W 19 Street",
+        "address2": "6",
+        "city": "New York",
+        "state": "NY",
+        "latitude": "40.7400054",
+        "longitude": "-73.9930771"
+      },
+      "price": 81,
+      "date_start": "2016-09-08T13:00:00-04:00",
+      "booking_timezone": "America/New_York",
+      "hours": 3,
+      "getintxt": null,
+      "msg_to_pro": null,
+      "provider": {
+        "phone": null,
+        "first_name": "Marky",
+        "last_name": "Sildrey",
+        "id": 27685,
+        "status": 3
+      },
+      "can_leave_tip": false,
+      "num_providers": 1,
+      "description": "",
+      "comments": null,
+      "user_id": 27680,
+      "recurring": 0,
+      "recurring_id": 14895,
+      "recurring_string_short": "every 2 weeks",
+      "next_recurrence": "2016-10-06T13:00:00-04:00",
+      "recurring_hours": 3,
+      "available_pros": [
+        [
+          774,
+          "001 0."
+        ],
+        [
+          27685,
+          "Marky S."
+        ]
+      ],
+      "recurring_string": "Repeats every 2 weeks",
+      "payment_hash": null,
+      "billed_status": "Billed on Wed, Sep 7",
+      "extras_info": [],
+      "can_edit_hours": true,
+      "can_edit_extras": true,
+      "can_edit_frequency": true,
+      "instructions": {
+        "title": "Typical Cleaning Service",
+        "instructions_checklist": [
+          {
+            "description": "Vacuum carpets, sweep and mop hard surfaces.",
+            "id": 149664,
+            "instruction_type": "floors",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Floors",
+            "text": "Vacuum carpets, sweep and mop hard surfaces."
+          },
+          {
+            "description": "Load dishwasher, wipe surfaces, and clean sink.",
+            "id": 149665,
+            "instruction_type": "kitchen",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Kitchen",
+            "text": "Load dishwasher, wipe surfaces, and clean sink."
+          },
+          {
+            "description": "Make the bed.",
+            "id": 149666,
+            "instruction_type": "bedroom",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Bedroom",
+            "text": "Make the bed."
+          },
+          {
+            "description": "Clean toilet, shower, tub, and sink.",
+            "id": 149667,
+            "instruction_type": "bathroom",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Bathroom",
+            "text": "Clean toilet, shower, tub, and sink."
+          },
+          {
+            "description": "Dust all surfaces, wipe mirrors, & remove garbage.",
+            "id": 149668,
+            "instruction_type": "general",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "General",
+            "text": "Dust all surfaces, wipe mirrors, & remove garbage."
+          }
+        ]
+      },
+      "active_booking_status": {
+        "map_enabled": false
+      }
+    },
+    {
+      "booking_status": 0,
+      "cancellation_threshold": "non_critical",
+      "is_in_progress": false,
+      "in_progress_status": null,
+      "service_id": 3,
+      "service_name": "Home Cleaning",
+      "service_machine": "home_cleaning",
+      "service": {
+        "id": 3,
+        "machine_name": "home_cleaning",
+        "name": "Home Cleaning",
+        "parent": {
+          "id": 1,
+          "machine_name": "cleaning",
+          "name": "Cleaning"
+        }
+      },
+      "id": 195450,
+      "address": {
+        "zipcode": "10011",
+        "address1": "33 W 19 Street",
+        "address2": "6",
+        "city": "New York",
+        "state": "NY",
+        "latitude": "40.7400054",
+        "longitude": "-73.9930771"
+      },
+      "price": 81,
+      "date_start": "2016-09-22T13:00:00-04:00",
+      "booking_timezone": "America/New_York",
+      "hours": 3,
+      "getintxt": null,
+      "msg_to_pro": null,
+      "provider": {
+        "phone": null,
+        "status": 0
+      },
+      "can_leave_tip": false,
+      "num_providers": 1,
+      "description": "",
+      "comments": null,
+      "user_id": 27680,
+      "recurring": 0,
+      "recurring_id": 14895,
+      "recurring_string_short": "every 2 weeks",
+      "next_recurrence": "2016-10-06T13:00:00-04:00",
+      "recurring_hours": 3,
+      "available_pros": [
+        [
+          774,
+          "001 0."
+        ],
+        [
+          27685,
+          "Marky S."
+        ]
+      ],
+      "recurring_string": "Repeats every 2 weeks",
+      "payment_hash": null,
+      "billed_status": "Billed on Wed, Sep 21",
+      "extras_info": [],
+      "can_edit_hours": true,
+      "can_edit_extras": true,
+      "can_edit_frequency": true,
+      "instructions": {
+        "title": "Typical Cleaning Service",
+        "instructions_checklist": [
+          {
+            "description": "Vacuum carpets, sweep and mop hard surfaces.",
+            "id": 153540,
+            "instruction_type": "floors",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Floors",
+            "text": "Vacuum carpets, sweep and mop hard surfaces."
+          },
+          {
+            "description": "Load dishwasher, wipe surfaces, and clean sink.",
+            "id": 153541,
+            "instruction_type": "kitchen",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Kitchen",
+            "text": "Load dishwasher, wipe surfaces, and clean sink."
+          },
+          {
+            "description": "Make the bed.",
+            "id": 153542,
+            "instruction_type": "bedroom",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Bedroom",
+            "text": "Make the bed."
+          },
+          {
+            "description": "Clean toilet, shower, tub, and sink.",
+            "id": 153543,
+            "instruction_type": "bathroom",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "Bathroom",
+            "text": "Clean toilet, shower, tub, and sink."
+          },
+          {
+            "description": "Dust all surfaces, wipe mirrors, & remove garbage.",
+            "id": 153544,
+            "instruction_type": "general",
+            "machine_name": "preference",
+            "requested": true,
+            "title": "General",
+            "text": "Dust all surfaces, wipe mirrors, & remove garbage."
+          }
+        ]
+      },
+      "active_booking_status": {
+        "map_enabled": false
+      }
+    }
+  ],
+  "user_has_recurring_bookings": true,
+  "currency_char": "$",
+  "currency_suffix": ""
+}

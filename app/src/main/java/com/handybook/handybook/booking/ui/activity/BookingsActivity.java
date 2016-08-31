@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
+import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public final class BookingsActivity extends MenuDrawerActivity
@@ -18,7 +19,17 @@ public final class BookingsActivity extends MenuDrawerActivity
 
     @Override
     protected final Fragment createFragment() {
-        return BookingsFragment.newInstance();
+
+        //FIXME: JIA: check this against a config
+        if (1 == 1)
+        {
+            return UpcomingBookingsFragment.newInstance();
+        }
+        else
+        {
+            return BookingsFragment.newInstance();
+        }
+
     }
 
     @Override

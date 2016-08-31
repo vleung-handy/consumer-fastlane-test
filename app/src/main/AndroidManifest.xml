@@ -214,7 +214,6 @@
                 android:value="com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity"
                 />
         </activity>
-
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
@@ -296,6 +295,11 @@
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true"
+            />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAbigRaEkIHF8vyCE-8wuvANRwrhvzJn4w"
             />
 
         <!-- URBAN AIRSHIP -->
@@ -421,6 +425,10 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".module.bookings.HistoryActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

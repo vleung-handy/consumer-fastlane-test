@@ -1,0 +1,135 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".booking.ui.fragment.BookingsFragment"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/HandyTheme.AppBarOverlay"
+            android:title="@string/my_bookings"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:navigationIcon="@drawable/ic_menu"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        >
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_background_gray"
+                android:fillViewport="true"
+                >
+
+                <LinearLayout
+                    android:id="@+id/main_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true"
+                    >
+
+                    <com.handybook.handybook.ui.view.ExpandableCleaningPlan
+                        android:id="@+id/expanable_cleaning_plan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical"
+                        android:background="@color/handy_white"
+                        />
+
+                    <!--Using a linear layout because there can be multiple active bookings -->
+                    <LinearLayout
+                        android:id="@+id/active_booking_container"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/parent_bookings_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/low_elevation"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:id="@+id/text_upcoming_bookings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/TextView.Headline"
+                            android:text="@string/upcoming_bookings"
+                            android:paddingLeft="@dimen/default_padding"
+                            android:paddingTop="@dimen/default_padding"
+                            android:paddingBottom="@dimen/default_padding_half"
+                            android:textColor="@color/handy_tertiary_gray"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:textSize="@dimen/text_size_xsmall"
+                            />
+                        <LinearLayout
+                            android:id="@+id/bookings_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            />
+                    </LinearLayout>
+
+                    <com.handybook.handybook.ui.view.NoBookingsView
+                        android:id="@+id/no_booking_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:background="@color/white"
+                        />
+                </LinearLayout>
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_booking_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/default_margin"
+        android:src="@drawable/ic_plus_white"
+        android:tag="fab"
+        android:visibility="gone"
+        app:backgroundTint="@color/handy_blue"
+        app:fabSize="normal"
+        />
+</android.support.design.widget.CoordinatorLayout>

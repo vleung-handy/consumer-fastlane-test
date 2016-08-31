@@ -20,6 +20,7 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
+import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
@@ -49,6 +50,8 @@ import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.bookings.ActiveBookingFragment;
+import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.ui.RedemptionActivity;
 import com.handybook.handybook.module.referral.ui.RedemptionEmailSignUpFragment;
@@ -75,6 +78,7 @@ import static org.mockito.Mockito.when;
 
 @Module(injects = {
         TestBaseApplication.class,
+        ActiveBookingFragment.class,
         BaseActivity.class,
         BookingEditFrequencyActivity.class,
         BookingEditFrequencyFragment.class,
@@ -106,6 +110,7 @@ import static org.mockito.Mockito.when;
         BookingPaymentActivity.class,
         BookingPaymentFragment.class,
         BookingPaymentFragmentTest.class,
+        BookingsActivity.class,
         CancelRecurringBookingSelectionFragment.class,
         BookingEditAddressFragment.class,
         UpdatePaymentActivity.class,
@@ -120,6 +125,7 @@ import static org.mockito.Mockito.when;
         RedemptionEmailSignUpFragment.class,
         ReportIssueActivity.class,
         ReportIssueFragment.class,
+        UpcomingBookingsFragment.class
 }, library = true)
 public class TestApplicationModule
 {
