@@ -267,6 +267,10 @@
 
     <string name="report_an_issue">Report an issue</string>
 
+
+    <string name="install">Install</string>
+    <string name="need_google_play">To view maps, please install Google Play Services</string>
+
     <string name="home_cleaner">Home Cleaner</string>
     <string name="home_cleaner_slogan">Let your home shine</string>
     <string name="handyman">Handyman</string>

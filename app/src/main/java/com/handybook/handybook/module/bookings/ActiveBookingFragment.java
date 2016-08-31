@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -37,6 +36,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.ui.view.MapPlaceholderView;
 import com.handybook.handybook.util.BookingUtil;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.PlayServicesUtils;
@@ -91,14 +91,14 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Bind(R.id.map_view)
     MapView mMapView;
 
-    @Bind(R.id.map_container)
-    FrameLayout mMapContainer;
-
     @Bind(R.id.transparent_image)
     ImageView mTransparentImage;
 
     @Bind(R.id.text_pro_location_time)
     TextView mTextLocationTime;
+
+    @Bind(R.id.map_place_holder)
+    MapPlaceholderView mMapPlaceHolderView;
 
     private GoogleMap mGoogleMap;
     private Booking mBooking;
@@ -149,8 +149,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                 mMapView.onCreate(savedInstanceState);
                 mMapView.getMapAsync(this);
                 mMapView.setVisibility(View.VISIBLE);
-                mMapContainer.setVisibility(View.VISIBLE);
-
+                mMapPlaceHolderView.setVisibility(View.GONE);
                 if (mParentScrollView != null)
                 {
                     mTransparentImage.setOnTouchListener(new View.OnTouchListener()
@@ -188,7 +187,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             else
             {
                 mMapView.setVisibility(View.GONE);
-                mMapContainer.setVisibility(View.GONE);
+                mMapPlaceHolderView.setVisibility(View.VISIBLE);
             }
 
             if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider().getFullName().trim()))
