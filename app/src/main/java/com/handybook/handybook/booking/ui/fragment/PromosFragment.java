@@ -25,7 +25,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class PromosFragment extends BookingFlowFragment {
+public final class PromosFragment extends BookingFlowFragment
+{
 
     public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
 
@@ -108,7 +109,7 @@ public final class PromosFragment extends BookingFlowFragment {
 
     /**
      * handles the bundle arguments. currently arguments are only passed from deep links
-     * <p>
+     * <p/>
      * must be called after onCreateView() due to butterknife dependency
      */
     private void handleBundleArguments()
@@ -161,7 +162,8 @@ public final class PromosFragment extends BookingFlowFragment {
                     else if (code.getType() == PromoCode.Type.COUPON)
                     {
                         bookingManager.setPromoTabCoupon(code.getCode());
-                        ((MenuDrawerActivity)getActivity()).navigateToActivity(ServiceCategoriesActivity.class);
+                        ((MenuDrawerActivity) getActivity()).navigateToActivity(
+                                ServiceCategoriesActivity.class, R.id.nav_menu_home);
                     }
                 }
 
