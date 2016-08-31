@@ -979,7 +979,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     )//.. on /v3/quotes/{1245}/set_coupon
     {
         if (!allowCallbacks) { return; }
-        mCurrentQuote = newQuote;
+        mCurrentQuote.setPriceTable(newQuote.getPriceTable());
+        mCurrentQuote.setSurgePriceTable(newQuote.getSurgePriceTable());
+        mCurrentQuote.setCoupon(newQuote.getCoupon());
         showBookingWarningIfApplicable(mCurrentQuote);
         transaction.setPromoApplied(promo);
         updatePromoUI();
