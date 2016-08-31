@@ -18,6 +18,7 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.RecurrenceOption;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.booking.util.OptionListToAttributeArrayConverter;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
@@ -244,32 +245,6 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
     }
 
     @NonNull
-    private String[] getOptionsTitleTextArray(
-            @NonNull List<RecurrenceOption> recurrenceOptions
-    )
-    {
-        String[] optionsTitleTextArray = new String[recurrenceOptions.size()];
-        for (int i = 0; i < optionsTitleTextArray.length; i++)
-        {
-            optionsTitleTextArray[i] = recurrenceOptions.get(i).getText();
-        }
-        return optionsTitleTextArray;
-    }
-
-    @NonNull
-    private String[] getOptionsSubTextArray(
-            @NonNull List<RecurrenceOption> recurrenceOptions
-    )
-    {
-        String[] optionsSubTextArray = new String[recurrenceOptions.size()];
-        for(int i = 0; i<optionsSubTextArray.length; i++)
-        {
-            optionsSubTextArray[i] = recurrenceOptions.get(i).getSubText();
-        }
-        return optionsSubTextArray;
-    }
-
-    @NonNull
     private boolean[] getOptionsHiddenArray(
             @NonNull List<RecurrenceOption> recurrenceOptions
     )
@@ -289,8 +264,8 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment
     {
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
-        option.setOptions(getOptionsTitleTextArray(recurrenceOptions));
-        option.setOptionsSubText(getOptionsSubTextArray(recurrenceOptions));
+        option.setOptions(OptionListToAttributeArrayConverter.getOptionsTitleTextArray(recurrenceOptions));
+        option.setOptionsSubText(OptionListToAttributeArrayConverter.getOptionsSubTextArray(recurrenceOptions));
         option.setOptionsRightSubText(getSavingsInfoArray(recurrenceOptions));
         option.setOptionsHidden(getOptionsHiddenArray(recurrenceOptions));
         return option;

@@ -23,6 +23,7 @@ public class BundleKeys
     public static final String CANCELLED_BOOKING = "cancelled_booking";
     public static final String UPDATED_BOOKING = "updated_booking";
     public static final String BOOKING_RATE_PRO_NAME = "prof";
+    public static final String PRO_JOB_STATUS = "pro_statuses";
 
     public static final String RESCHEDULE_BOOKING = "reschedule_booking";
     public static final String RESCHEDULE_NOTICE = "reschedule_notice";

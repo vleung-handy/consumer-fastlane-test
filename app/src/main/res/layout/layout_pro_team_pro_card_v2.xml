@@ -80,16 +80,32 @@
             android:orientation="vertical"
             >
 
-            <RatingBar
-                android:id="@+id/pro_team_rating_bar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/pro_team_star_width_height"
-                android:layout_gravity="end"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:stepSize="0.5"
-                />
+            <LinearLayout
+                android:id="@+id/pro_average_rating_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/pro_team_star_width_height"
+                    android:layout_height="@dimen/pro_team_star_width_height"
+                    android:contentDescription="@string/pro_team_star"
+                    android:src="@drawable/ic_star"
+                    />
+
+                <TextView
+                    android:id="@+id/average_rating_text"
+                    style="@style/TextView.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/pro_team_average_rating_star_margin"
+                    android:layout_marginStart="@dimen/pro_team_average_rating_star_margin"
+                    tools:text="4.5"
+                    />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/booking_count_text"

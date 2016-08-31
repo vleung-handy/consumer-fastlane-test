@@ -18,6 +18,13 @@ public class BookingCompleteTransaction
     private User mUser;
     @SerializedName("instructions")
     private Instructions mInstructions;
+    @SerializedName("entry_methods_info")
+    private EntryMethodsInfo mEntryMethodsInfo;
+
+    public EntryMethodsInfo getEntryMethodsInfo()
+    {
+        return mEntryMethodsInfo;
+    }
 
     public int getId()
     {
@@ -69,6 +76,7 @@ public class BookingCompleteTransaction
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("id", context.serialize(value.getId()));
             jsonObj.add("user_info", context.serialize(value.getUser()));
+            jsonObj.add("entry_methods_info", context.serialize(value.getEntryMethodsInfo()));
             return jsonObj;
         }
     }

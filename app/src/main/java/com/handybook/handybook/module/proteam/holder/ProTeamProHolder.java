@@ -1,19 +1,19 @@
 package com.handybook.handybook.module.proteam.holder;
 
-import android.content.Context;
-import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+
+import java.text.DecimalFormat;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,7 +22,6 @@ import butterknife.OnClick;
 public class ProTeamProHolder extends RecyclerView.ViewHolder
         implements CompoundButton.OnCheckedChangeListener
 {
-    private Context mContext;
     private ProTeamProViewModel mProTeamProViewModel;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
     @Bind(R.id.pro_team_pro_card_pretext)
@@ -33,8 +32,10 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     TextView mFooter;
     @Bind(R.id.pro_team_pro_card_checkbox)
     CheckBox mCheckbox;
-    @Bind(R.id.pro_team_rating_bar)
-    RatingBar mProTeamRatingBar;
+    @Bind(R.id.pro_average_rating_layout)
+    ViewGroup mProAverageRatingLayout;
+    @Bind(R.id.average_rating_text)
+    TextView mProAverageRating;
     @Bind(R.id.booking_count_text)
     TextView mBookingCountText;
     @Bind(R.id.pro_team_pro_card_x)
@@ -42,13 +43,11 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
 
 
     public ProTeamProHolder(
-            Context context,
             View itemView,
             ProTeamProViewModel.OnInteractionListener onInteractionListener
     )
     {
         super(itemView);
-        mContext = context;
         mOnInteractionListener = onInteractionListener;
         ButterKnife.bind(this, itemView);
     }
@@ -65,17 +64,19 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         mCheckbox.setChecked(mProTeamProViewModel.isChecked());
         mCheckbox.setOnCheckedChangeListener(this);
 
-        // Make rating bar yellow
-        mProTeamRatingBar.getProgressDrawable().mutate()
-                .setColorFilter(ContextCompat.getColor(mContext, R.color.handy_yellow), PorterDuff.Mode.SRC_ATOP);
-        final Float averageRating = mProTeamProViewModel.getAverageRating();
+        Float averageRating = mProTeamProViewModel.getAverageRating();
         if (averageRating != null)
         {
-            mProTeamRatingBar.setRating(averageRating);
+            averageRating /= 2; // Average rating is out of 10, needs to be out of 5
+            DecimalFormat df = new DecimalFormat();
+            df.setMinimumFractionDigits(1);
+            df.setMaximumFractionDigits(1);
+            mProAverageRating.setText(df.format(averageRating));
         }
         else
         {
-            mProTeamRatingBar.setVisibility(View.INVISIBLE);
+
+            mProAverageRatingLayout.setVisibility(View.INVISIBLE);
         }
 
         mBookingCountText.setText(mProTeamProViewModel.getBookingFooter());

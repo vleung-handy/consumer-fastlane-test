@@ -77,7 +77,8 @@
     <string name="peak_price_info_unavailable">Due to high demand, certain times are unavailable. Scroll through the calendar to find alternate times.</string>
     <string name="unavailable">Unavailable</string>
     <string name="confirmation">Confirmation</string>
-    <string name="payment_confirmed">Your payment has been confirmed.\nHow will your professional get in?</string>
+    <string name="payment_confirmed">Your payment is confirmed.</string>
+    <string name="fragment_booking_edit_entry_info_instructions">Your payment has been confirmed.\nHow will your professional get in?</string>
     <string name="will_be_home">I’ll be home</string>
     <string name="doorman">Doorman</string>
     <string name="will_hide_key">I’ll hide the key</string>
@@ -134,7 +135,6 @@
     <string name="rating_improvement_anonymous">All feedback is anonymous.</string>
     <string name="rating_improvement_all_that_apply">Select all that apply.</string>
     <string name="close">Close</string>
-    <string name="ok">Ok</string>
     <string name="glad_you_enjoy">Glad you enjoyed it!</string>
     <string name="good_vibes">We love to pass on the good vibes.</string>
     <string name="send">Send</string>
@@ -239,6 +239,9 @@
     <string name="total_due">Total Due</string>
     <string name="billed_on_date_formatted">Billed on %1$s</string>
 
+    <!-- Tools -->
+    <string name="dash_formatted">%1$s \u2013 %2$s</string>
+
     <!--shared between booking edit screens-->
     <string name="booking_edit_num_hours_formatted">(%1$s hours)</string>
     <string name="booking_edit_base_hours_formatted">Base time (%1$s hours)</string>
@@ -261,6 +264,8 @@
     <string name="booking_edit_hours_update_success">Successfully updated booking hours</string>
     <string name="booking_edit_hours_options_warning">Because you are booking less time than recommended, we may not be able to do a complete job.</string>
     <string name="booking_edit_hours_action_button">Add/Remove Hours</string>
+
+    <string name="report_an_issue">Report an issue</string>
 
     <string name="home_cleaner">Home Cleaner</string>
     <string name="home_cleaner_slogan">Let your home shine</string>
@@ -351,6 +356,7 @@
     <string name="referral_code_label">Your code:</string>
     <string name="referral_title">Earn free cleanings</string>
     <string name="referral_subtitle_formatted">Get %1$s in credit when you send %2$s to a friend for their first booking.</string>
+    <string name="referral_dialog_subtitle_formatted">Send your friends %1$s off their first booking, and earn %2$s in credit.</string>
     <string name="referral_copied_to_clipboard">Sharing link copied to clipboard</string>
     <string name="redemption_title_formatted">%1$s sent you %2$s!</string>
     <string name="redemption_subtitle_formatted">Sign up to claim %1$s credit towards your first booking.</string>
@@ -398,7 +404,7 @@
 
     <string name="pro_team_button_add_pros_template">Add %1$sPros</string>
     <string name="cd_pro_team_toolbar_questionmark">Open Pro Team help article icon</string>
-    <string name="pro_team_pro_card_pretext_preferred">We’ll reach out to your Pro Team first. If we can’t match you, we’ll open your booking to the wider network.</string>
+    <string name="pro_team_pro_card_pretext_preferred">Want to book your favorite pros? We\'ll send them your request first.</string>
     <string name="pro_team_pro_card_pretext_indifferent">Choose pros you\'ve worked with before to add to your Pro Team.</string>
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
@@ -408,6 +414,7 @@
     <string name="fragment_referral_sms_invite">Text Invite</string>
     <string name="fragment_referral_email_invite">Email Invite</string>
     <string name="fragment_referral_more_ways_to_share">More ways to share</string>
+<<<<<<< HEAD
 
     <!--For Active Booking-->
     <string name="report_an_issue">Report An Issue</string>
@@ -419,4 +426,11 @@
     <string name="no_bookings_text">Book a fix up, pick up, or clean up.</string>
     <string name="no_scheduled_bookings">No scheduled bookings</string>
     <string name="next_cleaning">Next cleaning:</string>
+=======
+    <string name="recommended">Recommended</string>
+    <string name="cd_share_icon">Open Share Screen</string>
+
+    <!-- Content Description for ImageViews -->
+    <string name="pro_team_star">Star</string>
+>>>>>>> develop
 </resources>

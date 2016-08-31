@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="option_left_strip_indicator_width">5dp</dimen>
     <dimen name="default_icon_size_half">20dp</dimen>
     <dimen name="default_icon_size">40dp</dimen>
     <dimen name="default_icon_size_double">80dp</dimen>
@@ -36,6 +37,7 @@
     <dimen name="icon_padding">2dp</dimen>
     <dimen name="framed_icon_inset">8dp</dimen>
     <dimen name="horizontal_divider_height">2dp</dimen>
+    <dimen name="horizontal_divider_height_thin">1dp</dimen>
     <dimen name="select_payment_vertical_padding">30dp</dimen>
     <dimen name="select_payment_horizontal_padding">40dp</dimen>
     <dimen name="select_payment_button_gap">10dp</dimen>
@@ -64,6 +66,7 @@
     <dimen name="pro_team_bookings_margin">5dp</dimen>
     <dimen name="booking_list_item_height">80dp</dimen>
     <dimen name="list_item_left_margin">40dp</dimen>
+    <dimen name="pro_team_average_rating_star_margin">5dp</dimen>
 
     <!-- For ratings grid -->
     <dimen name="grid_image_width">80dp</dimen>
@@ -75,6 +78,10 @@
     <dimen name="image_toggle_button_height">48dp</dimen>
     <dimen name="rating_star_margin">4dp</dimen>
     <dimen name="one_third_width">120dp</dimen>
+
+    <dimen name="dot_size">16dp</dimen>
+    <dimen name="report_issue_button_width">224dp</dimen>
+
 
     <!-- Referral -->
     <dimen name="referral_image_height">184dp</dimen>

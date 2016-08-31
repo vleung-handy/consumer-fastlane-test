@@ -50,6 +50,7 @@ public class PasswordUpdateTest
         TextViewUtil.updateEditTextView(R.id.profile_new_password_text, NEW_PASSWORD);
         onView(withId(R.id.profile_update_button)).perform(click());
         ViewUtil.waitForViewVisible(R.id.profile_old_password_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForToastMessageVisibility(R.string.info_updated, mActivityRule.getActivity(), ViewUtil.LONG_MAX_WAIT_TIME_MS);
 
         // Confirm that login with the new password works
         AppInteractionUtil.logOutAndPassOnboarding();

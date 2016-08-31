@@ -2,53 +2,57 @@
 <com.handybook.handybook.booking.ui.view.BookingDetailView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/handy_bg"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".BookingDetailActivity"
-    tools:showIn="@layout/fragment_booking_detail">
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    tools:context=".booking.ui.activity.BookingDetailActivity"
+    tools:showIn="@layout/fragment_booking_detail"
+    >
 
     <RelativeLayout
+        android:id="@+id/nav_bar"
         style="@style/RelativeLayout.NavBar.Blue"
-        android:id="@+id/nav_bar">
+        >
 
         <ImageButton
             android:id="@+id/back_button"
+            style="@style/NavBarButton.Back"
             android:src="@drawable/ic_back"
-            style="@style/NavBarButton.Back"/>
+            />
 
         <TextView
-            style="@style/TextView"
             android:id="@+id/nav_text"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/back_button"
-            android:layout_width="wrap_content"
             android:textColor="@color/handy_white"
             android:textSize="@dimen/text_size_large"
             tools:text="Service Name"
             />
 
         <TextView
-            style="@style/TextView"
             android:id="@+id/booking_text"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/nav_text"
             android:layout_below="@+id/nav_text"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
             android:textColor="@color/handy_white"
             android:textSize="@dimen/text_size_xsmall"
-            tools:text="#123456798"/>
+            tools:text="#123456798"
+            />
 
         <TextView
-            style="@style/TextView.XSmall.Bold"
-            android:clickable="true"
             android:id="@+id/nav_help"
+            style="@style/TextView.XSmall.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_half"
-            android:layout_width="wrap_content"
+            android:clickable="true"
             android:padding="@dimen/default_padding_half"
             android:text="@string/nav_help"
             android:textAllCaps="true"
@@ -61,117 +65,136 @@
 
 
     <ScrollView
-        android:layout_below="@id/nav_bar"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_bar"
         >
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
             <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/default_margin_half"
                 android:layout_marginRight="@dimen/default_margin_half"
                 android:layout_marginTop="@dimen/default_margin"
-                android:layout_width="match_parent"
                 >
 
                 <RelativeLayout
-                    android:background="@color/white"
                     android:id="@+id/date_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:layout_width="match_parent"
+                    android:background="@color/white"
                     android:paddingBottom="35dp"
                     android:paddingTop="50dp"
                     >
 
                     <TextView
-                        style="@style/TextView.XLarge.Bold"
                         android:id="@+id/date_text"
-                        android:layout_centerHorizontal="true"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
+                        style="@style/TextView.XLarge.Bold"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="3dp"
                         android:textSize="@dimen/text_size_hero"
                         tools:text="Long Date Goes Here"
                         />
 
                     <TextView
-                        style="@style/TextView"
                         android:id="@+id/time_text"
+                        style="@style/TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/date_text"
                         android:layout_centerHorizontal="true"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
                         tools:text="Long Time"
                         />
 
                     <LinearLayout
-                        android:gravity="center_vertical"
                         android:id="@+id/freq_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/time_text"
                         android:layout_centerHorizontal="true"
-                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
-                        android:orientation="horizontal">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        >
 
                         <ImageView
-                            android:contentDescription="@string/image_content_description_icon_recurring"
                             android:id="@+id/icon_recur"
-                            android:layout_height="20dp"
                             android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@string/image_content_description_icon_recurring"
                             android:scaleX="-1"
-                            android:src="@drawable/ic_recurring"/>
+                            android:src="@drawable/ic_recurring"
+                            />
 
                         <TextView
-                            style="@style/TextView"
                             android:id="@+id/freq_text"
+                            style="@style/TextView"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="4dp"
                             android:layout_marginStart="4dp"
-                            android:layout_width="wrap_content"
                             android:textColor="@color/steel"
-                            tools:text="Freq"/>
+                            tools:text="Freq"
+                            />
 
                     </LinearLayout>
+
+                    <Button
+                        android:id="@+id/booking_report_issue_button"
+                        style="@style/Button.BookingAction.White"
+                        android:layout_width="@dimen/report_issue_button_width"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/freq_layout"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:text="@string/report_an_issue"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        />
 
                 </RelativeLayout>
 
                 <com.handybook.handybook.booking.ui.view.ServiceIconImageView
                     android:id="@+id/service_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="false"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:src="@drawable/ic_cleaner_fill"/>
+                    android:src="@drawable/ic_cleaner_fill"
+                    />
 
                 <LinearLayout
                     android:id="@+id/section_fragment_container"
-                    android:layout_below="@id/date_section"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_section"
                     android:orientation="vertical"
                     />
 
             </RelativeLayout>
 
             <ImageView
-                android:contentDescription="@string/image_content_description_handy_logo"
-                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:layout_marginTop="@dimen/default_margin_half"
-                android:layout_width="wrap_content"
-                android:src="@drawable/ic_booking_detail_logo"/>
+                android:contentDescription="@string/image_content_description_handy_logo"
+                android:src="@drawable/ic_booking_detail_logo"
+                />
         </LinearLayout>
 
     </ScrollView>

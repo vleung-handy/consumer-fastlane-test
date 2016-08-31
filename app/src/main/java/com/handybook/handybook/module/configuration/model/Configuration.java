@@ -20,6 +20,14 @@ public class Configuration
     @SerializedName("show_reschedule_flow_on_cancel")
     private boolean mShowRescheduleFlowOnCancel;
 
+    @SerializedName("lockbox_entry_method_enabled")
+    private boolean mLockboxEntryMethodEnabled;
+
+    public boolean isLockboxEntryMethodEnabled()
+    {
+        return mLockboxEntryMethodEnabled;
+    }
+
     public boolean shouldUseHelpCenterWebView()
     {
         return mShouldUseHelpCenterWebView;

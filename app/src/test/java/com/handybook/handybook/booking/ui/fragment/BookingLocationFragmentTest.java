@@ -30,6 +30,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -79,9 +80,9 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
         responseObject.timeZone = "America/Los_Angeles";
 
         mCallbackCaptor.getValue().onSuccess(responseObject);
-        verify(mMockRequest).setZipCode("10001");
+        verify(mMockRequest, atLeast(1)).setZipCode("10001");
 
-        verify(mDataManager).getQuoteOptions(
+        verify(mDataManager, atLeast(1)).getQuoteOptions(
                 anyInt(),
                 anyString(),
                 mCallbackCaptor.capture()

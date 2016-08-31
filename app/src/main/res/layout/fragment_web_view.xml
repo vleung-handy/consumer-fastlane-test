@@ -1,0 +1,18 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    android:orientation="vertical"
+    tools:context=".ui.activity.WebViewActivity"
+    >
+
+    <include layout="@layout/toolbar"/>
+
+    <com.handybook.handybook.ui.view.HandyWebView
+        android:id="@+id/handy_web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>

@@ -61,6 +61,8 @@ public class Booking implements Parcelable
     private String mEntryInfo;   //string descriptor of the entry type
     @SerializedName("getintxt")
     private String mExtraEntryInfo; //additional information i.e. where user will hide the key
+    @SerializedName("lockbox_code")
+    private String mLockboxCode; //ugly because hack
     @SerializedName("msg_to_pro")
     private String mProNote;
     @SerializedName("laundry_status")
@@ -83,10 +85,17 @@ public class Booking implements Parcelable
     private boolean mCanEditExtras;
     @SerializedName("can_leave_tip")
     private boolean mCanLeaveTip;
+    @SerializedName("milestones_enabled")
+    private boolean mMilestonesEnabled;
     @SerializedName("instructions")
     private Instructions mInstructions;
     @SerializedName("active_booking_status")
     private ActiveBookingStatus mActiveBookingStatus;
+
+    public String getLockboxCode()
+    {
+        return mLockboxCode;
+    }
 
     public boolean canEditExtras()
     {
@@ -195,6 +204,8 @@ public class Booking implements Parcelable
         return mCanLeaveTip;
     }
 
+    public boolean isMilestonesEnabled() { return mMilestonesEnabled; }
+
     public Instructions getInstructions()
     {
         return mInstructions;
@@ -295,7 +306,7 @@ public class Booking implements Parcelable
         }
     }
 
-    public final Date getStartDate()
+    public Date getStartDate()
     {
         return mStartDate;
     }
@@ -305,7 +316,7 @@ public class Booking implements Parcelable
         mStartDate = startDate;
     }
 
-    public final Date getEndDate()
+    public Date getEndDate()
     {
         final Calendar endDate = Calendar.getInstance();
         endDate.setTime(this.getStartDate());
@@ -344,7 +355,7 @@ public class Booking implements Parcelable
         mAddress = address;
     }
 
-    public final Provider getProvider()
+    public Provider getProvider()
     {
         return mProvider;
     }
@@ -376,7 +387,7 @@ public class Booking implements Parcelable
 
     private Booking(final Parcel in)
     {
-        final String[] stringData = new String[11];
+        final String[] stringData = new String[12];
         in.readStringArray(stringData);
         mId = stringData[0];
         mServiceName = stringData[1];
@@ -398,6 +409,7 @@ public class Booking implements Parcelable
         mBilledStatus = stringData[8];
         mRecurringId = stringData[9];
         mBookingTimezone = stringData[10];
+        mLockboxCode = stringData[11];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -411,7 +423,7 @@ public class Booking implements Parcelable
 
         mStartDate = new Date(in.readLong());
         mAddress = in.readParcelable(Address.class.getClassLoader());
-        mProvider = in.readParcelable(Provider.class.getClassLoader());
+        mProvider = (Provider) in.readSerializable();
         mActiveBookingStatus = in.readParcelable(ActiveBookingStatus.class.getClassLoader());
         mService = in.readParcelable(BookingService.class.getClassLoader());
 
@@ -421,15 +433,18 @@ public class Booking implements Parcelable
         mExtrasInfo = new ArrayList<ExtraInfo>();
         in.readTypedList(mExtrasInfo, ExtraInfo.CREATOR);
 
-        final boolean[] booleanData = new boolean[4];
+        final boolean[] booleanData = new boolean[5];
         in.readBooleanArray(booleanData);
 
         mCanEditFrequency = booleanData[0];
         mCanEditExtras = booleanData[1];
         mCanEditHours = booleanData[2];
         mCanLeaveTip = booleanData[3];
+        mMilestonesEnabled = booleanData[4];
 
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
+
+
     }
 
     public static Booking fromJson(final String json)
@@ -442,26 +457,27 @@ public class Booking implements Parcelable
     public final void writeToParcel(final Parcel out, final int flags)
     {
         out.writeStringArray(new String[]
-                        {
-                                mId,
-                                mServiceName,
-                                mServiceMachineName,
-                                mLaundryStatus != null ? mLaundryStatus.name() : "",
-                                mRecurringInfo,
-                                mEntryInfo,
-                                mExtraEntryInfo,
-                                mProNote,
-                                mBilledStatus,
-                                mRecurringId,
-                                mBookingTimezone
-                        }
+                {
+                        mId,
+                        mServiceName,
+                        mServiceMachineName,
+                        mLaundryStatus != null ? mLaundryStatus.name() : "",
+                        mRecurringInfo,
+                        mEntryInfo,
+                        mExtraEntryInfo,
+                        mProNote,
+                        mBilledStatus,
+                        mRecurringId,
+                        mBookingTimezone,
+                        mLockboxCode
+                }
         );
 
         out.writeIntArray(new int[]{mIsPast, mEntryType});
         out.writeFloatArray(new float[]{mHours, mPrice});
         out.writeLong(mStartDate.getTime());
         out.writeParcelable(mAddress, 0);
-        out.writeParcelable(mProvider, 0);
+        out.writeSerializable(mProvider);
         out.writeParcelable(mActiveBookingStatus, 0);
         out.writeParcelable(mService, 0);
         out.writeTypedList(mPaymentInfo);
@@ -472,6 +488,7 @@ public class Booking implements Parcelable
                         mCanEditExtras,
                         mCanEditHours,
                         mCanLeaveTip,
+                        mMilestonesEnabled,
                 });
         out.writeParcelable(mInstructions, 0);
     }

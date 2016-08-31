@@ -1,88 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:background="@drawable/cell_options_list_entry"
-              android:paddingTop="@dimen/default_padding_half"
-              android:paddingBottom="@dimen/default_padding_half"
-              android:paddingLeft="@dimen/default_padding"
-              android:paddingRight="@dimen/default_padding"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal">
+              android:layout_height="wrap_content">
 
-    <CheckBox
-        android:id="@+id/check_box"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/icon_padding"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:background="@drawable/option_checkbox"
-        android:button="@null"
-        android:saveEnabled="false"
-        android:layout_marginRight="12dp"
-        android:layout_marginEnd="12dp" />
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_weight="4">
-
+        android:orientation="vertical"
+        android:paddingTop="@dimen/default_padding_half"
+        android:paddingBottom="@dimen/default_padding_half"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        >
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/booking_select_option_super_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Title"
-            android:freezesText="false"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
-            style="@style/TextView" />
-
-        <TextView
-            android:id="@+id/sub_text"
-            android:layout_below="@id/title_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/default_padding_quarter"
+            android:layout_marginBottom="@dimen/default_margin_half"
             android:textAllCaps="true"
             android:freezesText="false"
             android:visibility="gone"
-            tools:text="Subtitle\nSubtitle Line 2"
+            tools:text="Recommended"
             tools:visibility="visible"
-            android:textColor="@drawable/black_text_blue_selected_color_selector"
-            style="@style/TextView.Headline.XSmall.Blue" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_weight="1.25"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="center|right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/right_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:freezesText="false"
-            android:singleLine="true"
-            android:visibility="gone"
-            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
-            style="@style/TextView.XLarge.Bold" />
-        <TextView
-            android:id="@+id/right_subtitle_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:freezesText="false"
-            android:singleLine="true"
-            android:visibility="gone"
-            android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+            android:textColor="@color/handy_blue"
             style="@style/TextView.Headline.XSmall.Bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <CheckBox
+                android:id="@+id/check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/icon_padding"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/option_checkbox"
+                android:button="@null"
+                android:saveEnabled="false"
+                android:layout_marginRight="12dp"
+                android:layout_marginEnd="12dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/title_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Title"
+                    android:freezesText="false"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+                    style="@style/TextView" />
+
+                <TextView
+                    android:id="@+id/sub_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:freezesText="false"
+                    android:visibility="gone"
+                    tools:text="Subtitle blah blah blah blah blah blah blah\nSubtitle Line 2"
+                    tools:visibility="visible"
+                    android:textColor="@drawable/black_text_blue_selected_color_selector"
+                    style="@style/TextView.Headline.XSmall.Blue" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center|right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/right_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:freezesText="false"
+                    android:singleLine="true"
+                    android:visibility="gone"
+                    android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+                    tools:visibility="visible"
+                    tools:text="0% off"
+                    style="@style/TextView.XLarge.Bold" />
+                <TextView
+                    android:id="@+id/right_subtitle_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:freezesText="false"
+                    android:singleLine="true"
+                    android:visibility="gone"
+                    android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+                    style="@style/TextView.Headline.XSmall.Bold" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/booking_select_option_left_strip_indicator"
+        android:layout_width="@dimen/option_left_strip_indicator_width"
+        android:layout_height="match_parent"
+        android:background="@color/handy_blue"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        />
 
-</LinearLayout>
+</FrameLayout>

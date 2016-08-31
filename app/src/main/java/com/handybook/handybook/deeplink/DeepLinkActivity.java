@@ -6,13 +6,13 @@ import android.support.v4.content.LocalBroadcastManager;
 
 public class DeepLinkActivity extends com.airbnb.deeplinkdispatch.DeepLinkActivity
 {
-    private DeepLinkErrorReceiver mDeepLinkErrorReceiver;
+    private DeepLinkFallbackReceiver mDeepLinkFallbackReceiver;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
-        mDeepLinkErrorReceiver = new DeepLinkErrorReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mDeepLinkErrorReceiver,
+        mDeepLinkFallbackReceiver = new DeepLinkFallbackReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mDeepLinkFallbackReceiver,
                 new IntentFilter(DeepLinkActivity.ACTION));
         super.onCreate(savedInstanceState);
     }
@@ -20,9 +20,9 @@ public class DeepLinkActivity extends com.airbnb.deeplinkdispatch.DeepLinkActivi
     @Override
     protected void onDestroy()
     {
-        if (mDeepLinkErrorReceiver != null)
+        if (mDeepLinkFallbackReceiver != null)
         {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(mDeepLinkErrorReceiver);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mDeepLinkFallbackReceiver);
         }
         super.onDestroy();
     }

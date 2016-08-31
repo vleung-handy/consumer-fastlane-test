@@ -45,6 +45,7 @@ import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
@@ -85,11 +86,12 @@ import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.RateProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
-import com.handybook.handybook.data.BaseDataManager;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
@@ -132,6 +134,7 @@ import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
+import com.handybook.handybook.ui.activity.WebViewActivity;
 import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
@@ -139,6 +142,7 @@ import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.ui.fragment.ProfileFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
+import com.handybook.handybook.ui.fragment.WebViewFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -178,7 +182,7 @@ import retrofit.converter.GsonConverter;
         PromosFragment.class,
         BookingExtrasFragment.class,
         BookingRecurrenceFragment.class,
-        BaseDataManager.class,
+        DataManager.class,
         ServiceCategoriesActivity.class,
         ServicesActivity.class, ProfileActivity.class,
         PeakPricingActivity.class,
@@ -249,6 +253,7 @@ import retrofit.converter.GsonConverter;
         PushReceiver.class,
         ReferralActivity.class,
         ReferralFragment.class,
+        ReferralDialogFragment.class,
         RedemptionActivity.class,
         RedemptionFragment.class,
         RedemptionSignUpFragment.class,
@@ -264,6 +269,10 @@ import retrofit.converter.GsonConverter;
         BookingProTeamActivity.class,
         BookingProTeamFragment.class,
         RemoveProDialogFragment.class,
+        ReportIssueActivity.class,
+        ReportIssueFragment.class,
+        WebViewActivity.class,
+        WebViewFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
@@ -391,7 +400,7 @@ public final class ApplicationModule
             final PrefsManager prefsManager
     )
     {
-        final BaseDataManager dataManager = new BaseDataManager(service, endpoint, prefsManager);
+        final DataManager dataManager = new DataManager(service, endpoint, prefsManager);
         return dataManager;
     }
 

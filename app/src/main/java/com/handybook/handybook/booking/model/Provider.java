@@ -1,61 +1,69 @@
 package com.handybook.handybook.booking.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.util.StringUtils;
 
-public final class Provider implements Parcelable
+import java.io.Serializable;
+
+public class Provider implements Serializable
 {
     @SerializedName("status")
-    private int status;
+    private int mStatus;
     @SerializedName("first_name")
-    private String firstName;
+    private String mFirstName;
     @SerializedName("last_name")
-    private String lastName;
+    private String mLastName;
     @SerializedName("phone")
-    private String phone;
+    private String mPhone;
+
+    public Provider(final int status, final String firstName, final String lastName, final String phone)
+    {
+        mStatus = status;
+        mFirstName = firstName;
+        mLastName = lastName;
+        mPhone = phone;
+    }
 
     public final int getStatus()
     {
-        return status;
+        return mStatus;
     }
 
     final void setStatus(final int status)
     {
-        this.status = status;
+        this.mStatus = status;
     }
 
     public final String getFirstName()
     {
-        return firstName;
+        return mFirstName;
     }
 
     final void setFirstName(final String firstName)
     {
-        this.firstName = firstName;
+        this.mFirstName = firstName;
     }
 
     public final String getLastName()
     {
-        return lastName;
+        return mLastName;
     }
 
     final void setLastName(final String lastName)
     {
-        this.lastName = lastName;
+        this.mLastName = lastName;
     }
 
     public final String getPhone()
     {
-        return phone;
+        return mPhone;
     }
 
     final void setPhone(final String phone)
     {
-        this.phone = phone;
+        this.mPhone = phone;
     }
 
     /**
@@ -66,61 +74,21 @@ public final class Provider implements Parcelable
     public final String getFirstNameAndLastInitial()
     {
         String firstNameAndLastInitial = "";
-        if (!Strings.isNullOrEmpty(firstName))
+        if (!Strings.isNullOrEmpty(mFirstName))
         {
-            firstNameAndLastInitial += StringUtils.capitalizeFirstCharacter(firstName);
+            firstNameAndLastInitial += StringUtils.capitalizeFirstCharacter(mFirstName);
         }
-        if (!Strings.isNullOrEmpty(lastName))
+        if (!Strings.isNullOrEmpty(mLastName))
         {
-            firstNameAndLastInitial += (" " + Character.toUpperCase(lastName.charAt(0)) + ".");
+            firstNameAndLastInitial += (" " + Character.toUpperCase(mLastName.charAt(0)) + ".");
         }
         return firstNameAndLastInitial;
     }
 
     public final String getFullName()
     {
-        return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
+        return (mFirstName != null ? mFirstName : "") + " " + (mLastName != null ? mLastName : "");
     }
-
-    private Provider(final Parcel in)
-    {
-        final int[] intData = new int[1];
-        in.readIntArray(intData);
-        status = intData[0];
-
-        final String[] stringData = new String[3];
-        in.readStringArray(stringData);
-        firstName = stringData[0];
-        lastName = stringData[1];
-        phone = stringData[2];
-    }
-
-    @Override
-    public final void writeToParcel(final Parcel out, final int flags)
-    {
-        out.writeIntArray(new int[]{status});
-        out.writeStringArray(new String[]{firstName, lastName, phone});
-    }
-
-    @Override
-    public final int describeContents()
-    {
-        return 0;
-    }
-
-    public static final Creator CREATOR = new Creator()
-    {
-        public Provider createFromParcel(final Parcel in)
-        {
-            return new Provider(in);
-        }
-
-        public Provider[] newArray(final int size)
-        {
-            return new Provider[size];
-        }
-    };
 
     public static final int PROVIDER_STATUS_ASSIGNED = 3; //TODO: Not sure what this is, just conjecturing based on code
-
 }

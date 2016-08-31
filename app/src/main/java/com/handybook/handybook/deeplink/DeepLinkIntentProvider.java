@@ -13,6 +13,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.ProfileActivity;
 
@@ -120,5 +121,12 @@ public class DeepLinkIntentProvider
     public static Intent getProTeamIntent(Context context)
     {
         return new Intent(context, ProTeamActivity.class);
+    }
+
+    @DeepLink({DEEP_LINK_BASE_URL + "share",
+            DEEP_LINK_NEW_BASE_URL + "share"})
+    public static Intent getReferralIntent(Context context)
+    {
+        return new Intent(context, ReferralActivity.class);
     }
 }

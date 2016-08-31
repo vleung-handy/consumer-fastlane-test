@@ -118,6 +118,9 @@ public interface HandyRetrofitService
             @Query("user_id") String userId, @Query("entered_code") String promoCode, HandyRetrofitCallback cb
     );
 
+    @GET("/bookings/{id}/milestones")
+    void getBookingMilestones(@Path("id") String bookingId, HandyRetrofitCallback cb);
+
     @GET("/bookings")
     void getBookings(
             @Nullable @Query("only_bookings") String bookingType,

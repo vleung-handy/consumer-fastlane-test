@@ -2,7 +2,9 @@ package com.handybook.handybook.module.referral.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ReferralInfo
+import java.io.Serializable;
+
+public class ReferralInfo implements Serializable
 {
     @SerializedName("guid")
     private String mGuid;

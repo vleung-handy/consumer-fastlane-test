@@ -3,6 +3,7 @@ package com.handybook.handybook.test.util;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.PerformException;
+import android.support.test.espresso.ViewInteraction;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -98,6 +99,29 @@ public class ViewUtil
                 .build();
     }
 
+    public static void waitForToastMessageVisibility(
+            int toastStringResourceId, Activity activity, final long maxWaitingTimeMs
+    )
+    {
+        ViewInteraction viewInteraction = onView(withText(toastStringResourceId))
+                .inRoot(withDecorView(not(activity.getWindow().getDecorView())));
+        final long startTime = System.currentTimeMillis();
+        final long endTime = startTime + maxWaitingTimeMs;
+        while (System.currentTimeMillis() < endTime)
+        {
+            if (isViewDisplayed(viewInteraction))
+            {
+                return;
+            }
+
+            sleep(VIEW_STATE_QUERY_INTERVAL_MS);
+        }
+        throw new PerformException.Builder()
+                .withActionDescription("wait for toast message visibility ")
+                .withViewDescription("view id: " + onView(withText(toastStringResourceId)).toString())
+                .withCause(new TimeoutException())
+                .build();
+    }
 
     public static void waitForViewInScrollViewVisibility(
             @NonNull Matcher<View> viewMatcher,
@@ -147,6 +171,18 @@ public class ViewUtil
         }
     }
 
+    public static boolean isViewDisplayed(@NonNull ViewInteraction viewInteraction)
+    {
+        try
+        {
+            viewInteraction.check(matches(isDisplayed()));
+            return true;
+        }
+        catch (Throwable e)
+        {
+            return false;
+        }
+    }
 
     /**
      * checks to see if a view is displayed without throwing an exception if it isn't displayed

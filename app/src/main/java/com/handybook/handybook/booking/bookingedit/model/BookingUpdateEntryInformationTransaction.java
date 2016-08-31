@@ -9,6 +9,14 @@ public final class BookingUpdateEntryInformationTransaction extends Observable {
     @SerializedName("getintxt") private String getInText;     //User entered text that explains additional Get-In information
     @SerializedName("apply_to_all")
     private boolean mApplyToAllInSeries; //whether this should be applied to all bookings in the recurring series
+    @SerializedName("lockbox_code")
+    private String mLockboxAccessCode; //TODO ugly, lockbox hack
+
+    public final void setLockboxAccessCode(final String lockboxAccessCode)
+    {
+        mLockboxAccessCode = lockboxAccessCode;
+        triggerObservers();
+    }
 
     public final int getGetInId() {
         return getInId;
