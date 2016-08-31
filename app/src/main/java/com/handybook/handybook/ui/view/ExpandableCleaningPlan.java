@@ -32,7 +32,7 @@ public class ExpandableCleaningPlan extends LinearLayout
     TextView mTextView;
 
     @Bind(R.id.container_plan)
-    public LinearLayout mPlanContainer;
+    public LinearLayout planContainer;
 
     @Bind(R.id.image_plan_collapse)
     ImageView mImageCollapse;
@@ -57,7 +57,7 @@ public class ExpandableCleaningPlan extends LinearLayout
     @OnClick(R.id.button_plan_expand)
     public void expand()
     {
-        mPlanContainer.setVisibility(View.VISIBLE);
+        planContainer.setVisibility(View.VISIBLE);
         mButtonExpand.setVisibility(View.GONE);
         mImageCollapse.setVisibility(View.VISIBLE);
         mDivider.setVisibility(View.VISIBLE);
@@ -68,7 +68,7 @@ public class ExpandableCleaningPlan extends LinearLayout
     @OnClick(R.id.image_plan_collapse)
     public void collapse()
     {
-        mPlanContainer.setVisibility(View.GONE);
+        planContainer.setVisibility(View.GONE);
         mButtonExpand.setVisibility(View.VISIBLE);
         mImageCollapse.setVisibility(View.GONE);
         mDivider.setVisibility(View.GONE);
@@ -81,11 +81,11 @@ public class ExpandableCleaningPlan extends LinearLayout
     )
     {
         mTextView.setText(activePlanCountTitle);
-        mPlanContainer.removeAllViews();
+        planContainer.removeAllViews();
         for (int i = 0; i < recurringBookings.size(); i++)
         {
             UserRecurringBooking recurringBooking = recurringBookings.get(i);
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, mPlanContainer, false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, planContainer, false);
             view.setTag(recurringBooking);
 
             Button editButton = (Button) view.findViewById(R.id.button_edit);
@@ -99,13 +99,13 @@ public class ExpandableCleaningPlan extends LinearLayout
             editButton.setOnClickListener(clickListener);
             view.setOnClickListener(clickListener);
 
-            mPlanContainer.addView(view);
+            planContainer.addView(view);
 
             if (i < recurringBookings.size() - 1)
             {
                 //since there are more bookings to come, add a divider
-                View divider = LayoutInflater.from(getContext()).inflate(R.layout.layout_divider, mPlanContainer, false);
-                mPlanContainer.addView(divider);
+                View divider = LayoutInflater.from(getContext()).inflate(R.layout.layout_divider, planContainer, false);
+                planContainer.addView(divider);
             }
         }
 

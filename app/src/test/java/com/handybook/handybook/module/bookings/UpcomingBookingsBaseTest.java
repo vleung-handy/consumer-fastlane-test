@@ -82,13 +82,13 @@ public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper
     {
         assertEquals("Cleaning plans should be visible", View.VISIBLE, fragment.mExpandableCleaningPlan.getVisibility());
         assertEquals("There should be plans with a dividers in between for a total of " + childCount
-                + " views.", childCount, fragment.mExpandableCleaningPlan.mPlanContainer.getChildCount());
+                + " views.", childCount, fragment.mExpandableCleaningPlan.planContainer.getChildCount());
 
         //we only test the clicking of the plans, if the above rule passes
-        if (fragment.mExpandableCleaningPlan.mPlanContainer.getChildCount() == childCount)
+        if (fragment.mExpandableCleaningPlan.planContainer.getChildCount() == childCount)
         {
             //when the plan is clicked, it should launch the rescheduling activity
-            fragment.mExpandableCleaningPlan.mPlanContainer.getChildAt(0).performClick();
+            fragment.mExpandableCleaningPlan.planContainer.getChildAt(0).performClick();
             ShadowActivity shadowActivity = Shadows.shadowOf(fragment.getActivity());
             Intent startedIntent = shadowActivity.getNextStartedActivity();
             ShadowIntent shadowIntent = Shadows.shadowOf(startedIntent);

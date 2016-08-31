@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.CameraUpdate;
@@ -32,6 +31,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
@@ -442,8 +442,9 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @OnClick(R.id.button_report_issue)
     public void reportIssueClicked()
     {
-        //FIXME: JIA: implement this to hook up with Report Issue before go live.
-        Toast.makeText(getActivity(), "To be implemented", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), ReportIssueActivity.class);
+        intent.putExtra(BundleKeys.BOOKING, mBooking);
+        startActivity(intent);
     }
 
 
