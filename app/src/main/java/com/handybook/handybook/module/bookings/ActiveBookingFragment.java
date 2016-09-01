@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,14 +21,12 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.ActivityResult;
@@ -60,6 +57,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 {
     private static final String KEY_BOOKING = "booking";
     private static final int GEO_STATUS_PING_INTERVAL_MS = 10000;  //ping for geo status every 10 seconds
+    private static final float MAP_CLOSEUP_ZOOM_LEVEL = 16;
 
     @Bind(R.id.text_start_soon_indicator)
     View mStartingSoonIndicator;
@@ -115,14 +113,14 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     private String mProviderName;
     private LatLng mProviderLatLng;
     private LatLng mAddressLatLng;
-    private boolean mFirstZoom = true;
+    private Booking.LocationStatus mLocationStatus;
     private Handler mHandler;
     private Runnable mRunnable = new Runnable()
     {
         @Override
         public void run()
         {
-            requestGeoStatus();
+            requestLocationStatus();
             periodicUpdate();
         }
     };
@@ -152,77 +150,9 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
         if (mBooking != null)
         {
-
-            if (PlayServicesUtils.hasPlayServices(getActivity()))
-            {
-                mMapView.onCreate(savedInstanceState);
-                mMapView.getMapAsync(this);
-                mMapView.setVisibility(View.VISIBLE);
-                mMapPlaceHolderView.setVisibility(View.GONE);
-                if (mParentScrollView != null)
-                {
-                    mTransparentImage.setOnTouchListener(new View.OnTouchListener()
-                    {
-
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event)
-                        {
-                            int action = event.getAction();
-                            switch (action)
-                            {
-                                case MotionEvent.ACTION_DOWN:
-                                    // Disallow ScrollView to intercept touch events.
-                                    mParentScrollView.requestDisallowInterceptTouchEvent(true);
-                                    // Disable touch on transparent view
-                                    return false;
-
-                                case MotionEvent.ACTION_UP:
-                                    // Allow ScrollView to intercept touch events.
-                                    mParentScrollView.requestDisallowInterceptTouchEvent(false);
-                                    return true;
-
-                                case MotionEvent.ACTION_MOVE:
-                                    mParentScrollView.requestDisallowInterceptTouchEvent(true);
-                                    return false;
-
-                                default:
-                                    return true;
-                            }
-                        }
-                    });
-                }
-
-            }
-            else
-            {
-                mMapView.setVisibility(View.GONE);
-                mMapPlaceHolderView.setVisibility(View.VISIBLE);
-            }
-
-            if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider().getFullName().trim()))
-            {
-                mProfileContainer.setVisibility(View.VISIBLE);
-                mProfileContainerDivider.setVisibility(View.VISIBLE);
-                mProviderName = mBooking.getProvider().getFirstNameAndLastInitial();
-                mTextProviderName.setText(mProviderName);
-
-                if (!TextUtils.isEmpty(mBooking.getProvider().getPhone()))
-                {
-                    mTextCall.setVisibility(View.VISIBLE);
-                    mTextText.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    mTextCall.setVisibility(View.GONE);
-                    mTextText.setVisibility(View.GONE);
-                }
-            }
-            else
-            {
-                //no provider is here, shouldn't happen, but if it doesn, hide the provider card.
-                mProfileContainer.setVisibility(View.GONE);
-                mProfileContainerDivider.setVisibility(View.GONE);
-            }
+            mLocationStatus = mBooking.getActiveBookingStatus();
+            toggleMapServicesAvailability(savedInstanceState);
+            toggleProviderSection();
 
             mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
             mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, getActivity()));
@@ -248,68 +178,170 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         return view;
     }
 
-    private void updateMap()
+    /**
+     * If there is provider information, then fill it out, otherwise, don't show that section
+     */
+    private void toggleProviderSection()
     {
-        if (mBooking != null)
+        if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider().getFullName().trim()))
         {
-            double lat = mBooking.getAddress().getLatitude();
-            double lng = mBooking.getAddress().getLongitude();
+            mProfileContainer.setVisibility(View.VISIBLE);
+            mProfileContainerDivider.setVisibility(View.VISIBLE);
+            mProviderName = mBooking.getProvider().getFirstNameAndLastInitial();
+            mTextProviderName.setText(mProviderName);
 
-            mAddressLatLng = new LatLng(lat, lng);
-
-            mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener()
+            if (!TextUtils.isEmpty(mBooking.getProvider().getPhone()))
             {
-                @Override
-                public void onCameraChange(final CameraPosition cameraPosition)
-                {
-                    float maxZoom = 16.0f;
-                    if (cameraPosition.zoom > maxZoom)
-                    {
-                        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(maxZoom));
-                    }
-                }
-            });
-
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(mAddressLatLng)
-                    .title("Destination")
-                    .anchor(0.5f, 0.5f)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_house_pin)));
-
-            Booking.Location providerLocation = mBooking.getActiveBookingStatus().getProviderLocation();
-
-            if (!isBadLocation(providerLocation))
-            {
-                mProviderLatLng = new LatLng(
-                        Double.valueOf(providerLocation.getLatitude()),
-                        Double.valueOf(providerLocation.getLongitude())
-                );
-
-                setTimeStamp(mBooking.getActiveBookingStatus().getProviderLocation().getTimeStamp());
-
-                mProviderLocationMarker = mGoogleMap.addMarker(
-                        new MarkerOptions()
-                                .position(mProviderLatLng)
-                                .title(mProviderName)
-                                .anchor(0.5f, 0.5f)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_pro_pin))
-                );
-
-                if (mHandler == null)
-                {
-                    //start the handler to ping for location change every time
-                    mHandler = new Handler();
-                    periodicUpdate();
-                }
-
+                mTextCall.setVisibility(View.VISIBLE);
+                mTextText.setVisibility(View.VISIBLE);
             }
             else
             {
-                Crashlytics.logException(new RuntimeException("Active booking enabled, but no pro location"));
+                mTextCall.setVisibility(View.GONE);
+                mTextText.setVisibility(View.GONE);
+            }
+        }
+        else
+        {
+            //no provider is here, shouldn't happen, but if it doesn, hide the provider card.
+            mProfileContainer.setVisibility(View.GONE);
+            mProfileContainerDivider.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Toggles the correct display for the map section. If device supports map, then show it,
+     * otherwise show a way to install support for maps
+     *
+     * @param savedInstanceState
+     */
+    private void toggleMapServicesAvailability(Bundle savedInstanceState)
+    {
+        if (PlayServicesUtils.hasPlayServices(getActivity()))
+        {
+            mMapView.onCreate(savedInstanceState);
+            mMapView.getMapAsync(this);
+            mMapView.setVisibility(View.VISIBLE);
+            mMapPlaceHolderView.setVisibility(View.GONE);
+            if (mParentScrollView != null)
+            {
+                mTransparentImage.setOnTouchListener(new View.OnTouchListener()
+                {
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event)
+                    {
+                        int action = event.getAction();
+                        switch (action)
+                        {
+                            case MotionEvent.ACTION_DOWN:
+                                // Disallow ScrollView to intercept touch events.
+                                mParentScrollView.requestDisallowInterceptTouchEvent(true);
+                                // Disable touch on transparent view
+                                return false;
+
+                            case MotionEvent.ACTION_UP:
+                                // Allow ScrollView to intercept touch events.
+                                mParentScrollView.requestDisallowInterceptTouchEvent(false);
+                                return true;
+
+                            case MotionEvent.ACTION_MOVE:
+                                mParentScrollView.requestDisallowInterceptTouchEvent(true);
+                                return false;
+
+                            default:
+                                return true;
+                        }
+                    }
+                });
             }
 
-            adjustMapPositioning();
+        }
+        else
+        {
+            mMapView.setVisibility(View.GONE);
+            mMapPlaceHolderView.setVisibility(View.VISIBLE);
+        }
+    }
 
+
+    /**
+     * This is tricky. We have to handle the display of both the pro location and the booking location
+     *
+     * If there are no booking location, show error view
+     * If prolocation should be shown, but there isn't any, then show error view
+     * if prolocation should not be shown, then don't attempt to show pro location
+     *
+     * if there are booking location and prolocation should be shown, and there is pro location,
+     * then plot all parties on the map.
+     *
+     * Whenever we plot provider location, we also want to setup periodic update of the pro's location
+     *
+     */
+    private void updateMap()
+    {
+        if (mLocationStatus != null)
+        {
+            mMissingLocationView.setVisibility(View.GONE);
+
+            //if there is bad location, show the error message and do nothing else
+            if (isBadLocation(mLocationStatus.getBookingLocation()))
+            {
+                mMissingLocationView.missingBookingLocation();
+                mMissingLocationView.setVisibility(View.VISIBLE);
+                return;
+            }
+            else
+            {
+                mAddressLatLng = new LatLng(
+                        Double.valueOf(mLocationStatus.getBookingLocation().getLatitude()),
+                        Double.valueOf(mLocationStatus.getBookingLocation().getLongitude())
+                );
+
+                mGoogleMap.addMarker(new MarkerOptions()
+                        .position(mAddressLatLng)
+                        .title("Destination")
+                        .anchor(0.5f, 0.5f)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_house_pin)));
+            }
+
+            //we first check whether the provider location should even be shown
+            if (mLocationStatus.isProviderLocationVisible())
+            {
+                //if there is no provider location, then show error and exit
+                if (isBadLocation(mLocationStatus.getProviderLocation()))
+                {
+                    mMissingLocationView.missingProviderLocation();
+                    mMissingLocationView.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    mProviderLatLng = new LatLng(
+                            Double.valueOf(mLocationStatus.getProviderLocation().getLatitude()),
+                            Double.valueOf(mLocationStatus.getProviderLocation().getLongitude())
+                    );
+
+                    mProviderLocationMarker = mGoogleMap.addMarker(
+                            new MarkerOptions()
+                                    .position(mProviderLatLng)
+                                    .title(mProviderName)
+                                    .anchor(0.5f, 0.5f)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_pro_pin))
+                    );
+
+                    if (mHandler == null)
+                    {
+                        //start the handler to ping for location change every time
+                        mHandler = new Handler();
+                        periodicUpdate();
+                    }
+                    setTimeStamp(mBooking.getActiveBookingStatus().getProviderLocation().getTimeStamp());
+                }
+            }
+
+            //need to call this at the end because there could be a situation where there is
+            //booking location but not provider location, so we want to zoom there at least.
+            adjustMapPositioning();
         }
     }
 
@@ -335,16 +367,22 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
     }
 
-    private void requestGeoStatus()
+    private void requestLocationStatus()
     {
-        dataManager.getBookingGeoStatus(mBooking.getId(), new DataManager.Callback<BookingGeoStatus>()
+        dataManager.getLocationStatus(mBooking.getId(), new DataManager.Callback<Booking.LocationStatus>()
         {
             @Override
-            public void onSuccess(final BookingGeoStatus response)
+            public void onSuccess(final Booking.LocationStatus response)
             {
-                mProviderLatLng = new LatLng(response.getProLat(), response.getProLng());
-                adjustMapPositioning();
-                setTimeStamp(response.getTimeStamp());
+
+                if (response != null && !isBadLocation(response.getProviderLocation()))
+                {
+                    double lat = Double.parseDouble(response.getProviderLocation().getLatitude());
+                    double lng = Double.parseDouble(response.getProviderLocation().getLongitude());
+                    mProviderLatLng = new LatLng(lat, lng);
+                    adjustMapPositioning();
+                    setTimeStamp(response.getProviderLocation().getTimeStamp());
+                }
             }
 
             @Override
@@ -363,7 +401,11 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(mAddressLatLng);
+
+        if (mAddressLatLng != null)
+        {
+            builder.include(mAddressLatLng);
+        }
 
         if (mProviderLatLng != null)
         {
@@ -371,10 +413,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             mProviderLocationMarker.setPosition(mProviderLatLng);
         }
 
-        if (mFirstZoom)
+        if (mAddressLatLng != null && mProviderLatLng != null)
         {
+            //we bound the map view by the two locations if we actually have 2 locations
             LatLngBounds bounds = builder.build();
-
             //gives it some padding, so that the markers are not right at the edge of the screen.
             int width = getResources().getDisplayMetrics().widthPixels;
             int height = getResources().getDimensionPixelSize(R.dimen.active_booking_map_height);
@@ -383,7 +425,14 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             //first zoom to enclose all the markers.
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
             mGoogleMap.moveCamera(cu);
-            mFirstZoom = false;
+        }
+        else if (mAddressLatLng != null)
+        {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mAddressLatLng, MAP_CLOSEUP_ZOOM_LEVEL));
+        }
+        else if (mProviderLatLng != null)
+        {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mProviderLatLng, MAP_CLOSEUP_ZOOM_LEVEL));
         }
     }
 

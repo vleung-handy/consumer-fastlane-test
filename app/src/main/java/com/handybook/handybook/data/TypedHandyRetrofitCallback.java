@@ -13,8 +13,8 @@ import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
-import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
+import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
@@ -255,6 +255,16 @@ class BookingGeoStatusHandyRetrofitCallback
         extends TypedHandyRetrofitCallback<BookingGeoStatus>
 {
     BookingGeoStatusHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class BookingLocationStatusHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<Booking.LocationStatus>
+{
+    BookingLocationStatusHandyRetrofitCallback(final DataManager.Callback callback)
     {
         super(callback);
     }
