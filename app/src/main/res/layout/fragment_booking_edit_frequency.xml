@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:background="@color/handy_bg"
-              android:layout_height="match_parent"
               android:layout_width="match_parent"
-              android:orientation="vertical">
+              android:layout_height="match_parent"
+              android:background="@color/handy_bg"
+              android:orientation="vertical"
+    >
 
     <!--TODO: create templates for the booking flow screens-->
     <com.handybook.handybook.ui.widget.BackButtonNavBar
@@ -14,15 +15,17 @@
         />
 
     <ScrollView
-        android:layout_weight="1"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_width="match_parent">
+        android:layout_weight="1"
+        >
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/default_padding">
+            android:paddingBottom="@dimen/default_padding"
+            >
 
             <TextView
                 style="@style/TextView.CenteredHeader"
@@ -30,20 +33,22 @@
                 />
 
             <LinearLayout
-                android:background="@color/white"
                 android:id="@+id/options_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
-                android:layout_width="match_parent"
-                android:orientation="vertical"/>
+                android:background="@color/white"
+                android:orientation="vertical"
+                />
 
         </LinearLayout>
 
     </ScrollView>
+
     <Button
-        style="@style/Button.Green"
-        android:onClick="onNextButtonClick"
-        android:textAllCaps="false"
         android:id="@+id/next_button"
-        android:text="@string/update"/>
+        style="@style/Button.Green"
+        android:text="@string/update"
+        android:textAllCaps="false"
+        />
 </LinearLayout>

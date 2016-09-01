@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ public class BookingActionButton extends Button
         super(context);
     }
 
+    @SuppressWarnings("deprecation")
     public void init(String bookingAction, OnClickListener clickListener)
     {
         final BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(bookingAction);
@@ -42,7 +44,14 @@ public class BookingActionButton extends Button
         }
 
         setBackgroundResource(bookingActionButtonType.getBackgroundDrawableId());
-        setTextAppearance(getContext(), bookingActionButtonType.getTextStyleId());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            setTextAppearance(bookingActionButtonType.getTextStyleId());
+        }
+        else
+        {
+            setTextAppearance(getContext(), bookingActionButtonType.getTextStyleId());
+        }
         setText(bookingActionButtonType.getDisplayNameId());
         setId(bookingActionButtonType.getAccessibilityId());
         setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));

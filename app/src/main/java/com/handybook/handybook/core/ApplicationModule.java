@@ -402,8 +402,7 @@ public final class ApplicationModule
             final PrefsManager prefsManager
     )
     {
-        final DataManager dataManager = new DataManager(service, endpoint, prefsManager);
-        return dataManager;
+        return new DataManager(service, endpoint, prefsManager);
     }
 
     @Provides

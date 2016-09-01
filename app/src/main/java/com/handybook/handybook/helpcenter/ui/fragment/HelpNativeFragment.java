@@ -412,7 +412,6 @@ public class HelpNativeFragment extends InjectedFragment
                     {
                         params.put(NavigationManager.PARAM_BOOKING_ID, currentBookingId);
                     }
-                    Boolean success = navigationManager.navigateTo(ctaButton.navigationData, params);
                 }
             });
         }

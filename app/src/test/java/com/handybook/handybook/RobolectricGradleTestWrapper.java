@@ -4,6 +4,8 @@ import android.os.Build;
 import android.view.View;
 import android.view.animation.Animation;
 
+import com.handybook.handybook.core.TestBaseApplication;
+
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -19,6 +21,7 @@ import static org.mockito.Mockito.spy;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN,
         constants = BuildConfig.class,
+        application = TestBaseApplication.class,
         packageName = "com.handybook.handybook")
 public class RobolectricGradleTestWrapper
 {

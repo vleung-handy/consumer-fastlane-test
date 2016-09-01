@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@color/transparent"
               android:clipChildren="false"
               android:clipToPadding="false"
               android:gravity="center"
+              android:orientation="vertical"
     >
 
     <ImageView
-        android:contentDescription="rate"
-        android:layout_gravity="center"
-        android:layout_height="@dimen/service_circle"
         android:layout_width="@dimen/service_circle"
+        android:layout_height="@dimen/service_circle"
+        android:layout_gravity="center"
+        android:contentDescription="rate"
         android:src="@drawable/ic_question_fill"
         />
 
     <TextView
         android:id="@+id/tv_rating_title"
+        style="@style/TextView.XLarge.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextView.XLarge.Bold"
-        android:gravity="center"
-        tools:text="@string/rating_improvement_title"
         android:layout_marginTop="@dimen/default_margin"
+        android:gravity="center"
+        tools:text="What could your professional do to improve?"
         />
 
     <View

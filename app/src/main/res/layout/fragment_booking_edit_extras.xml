@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--TODO: if we are going to make the extrasOptions screen look the same as the edit extrasOptions screen, we should consolidate their layout files-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:background="@color/handy_bg"
     >
 
     <Button
         android:id="@+id/next_button"
         style="@style/Button.Green"
+        android:text="@string/update"
         android:textAllCaps="false"
-        android:onClick="onSaveButtonPressed"
-        android:text="@string/update"/>
+        />
 
     <com.handybook.handybook.ui.widget.BackButtonNavBar
         android:id="@+id/nav_bar"
@@ -32,9 +32,10 @@
         >
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
             <TextView
                 style="@style/TextView.CenteredHeader"
@@ -47,28 +48,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:background="@color/white"
-                android:orientation="vertical"/>
+                android:orientation="vertical"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:orientation="vertical"
-                android:padding="@dimen/default_padding">
+                android:padding="@dimen/default_padding"
+                >
 
                 <include
                     android:id="@+id/booking_edit_extras_booking_label_row"
                     layout="@layout/element_label_value_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/default_margin"/>
+                    android:layout_marginBottom="@dimen/default_margin"
+                    />
 
                 <LinearLayout
                     android:id="@+id/booking_extras_price_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
                 </LinearLayout>
 
                 <include layout="@layout/element_horizontal_divider"/>
@@ -77,13 +82,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             style="@style/TextView.Bold"
@@ -94,14 +101,16 @@
                             android:textAllCaps="true"
                             android:textColor="@color/handy_text_black"
                             android:textSize="@dimen/text_size_large"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            />
 
                         <TextView
                             android:id="@+id/booking_edit_extras_booking_duration_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_medium"/>
+                            android:textSize="@dimen/text_size_medium"
+                            />
                     </LinearLayout>
 
                     <TextView
@@ -113,7 +122,8 @@
                         android:gravity="right"
                         android:textColor="@color/handy_text_black"
                         android:textSize="@dimen/text_size_xxlarge"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        />
 
                 </LinearLayout>
 
@@ -121,7 +131,8 @@
                     android:id="@+id/booking_edit_extras_billed_on_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black_pressed"/>
+                    android:textColor="@color/black_pressed"
+                    />
 
             </LinearLayout>
 

@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="id" name="nav_menu_home" />
-    <item type="id" name="nav_menu_profile" />
-    <item type="id" name="nav_menu_my_bookings" />
-    <item type="id"
-          name="nav_menu_my_pro_team"/>
+    <item name="nav_menu_home"
+          type="id"/>
+    <item name="nav_menu_profile"
+          type="id"/>
+    <item name="nav_menu_my_bookings"
+          type="id"/>
+    <item name="nav_menu_my_pro_team"
+          type="id"/>
     <item type="id"
           name="nav_menu_history"/>
-    <item type="id" name="nav_menu_payment" />
-    <item type="id"
-          name="nav_menu_free_cleanings"/>
-    <item type="id" name="nav_menu_help" />
-    <item type="id"
-          name="toolbar"/>
-    <item type="id" name="nav_menu_promotions" />
-    <item type="id" name="nav_menu_log_out" />
-    <item type="id" name="nav_menu_log_in" />
-    <item type="id" name="action_button_reschedule_booking" />
-    <item type="id" name="action_button_edit_hours" />
-    <item type="id" name="action_button_cancel_booking" />
-    <item type="id" name="action_button_contact_phone" />
-    <item type="id" name="action_button_contact_text" />
-    <item type="id" name="edit_booking_extras_button" />
+    <item name="nav_menu_payment"
+          type="id"/>
+    <item name="nav_menu_free_cleanings"
+          type="id"/>
+    <item name="nav_menu_help"
+          type="id"/>
+    <item name="toolbar"
+          type="id"/>
+    <item name="nav_menu_promotions"
+          type="id"/>
+    <item name="nav_menu_log_out"
+          type="id"/>
+    <item name="nav_menu_log_in"
+          type="id"/>
+    <item name="action_button_reschedule_booking"
+          type="id"/>
+    <item name="action_button_edit_hours"
+          type="id"/>
+    <item name="action_button_cancel_booking"
+          type="id"/>
+    <item name="action_button_contact_phone"
+          type="id"/>
+    <item name="action_button_contact_text"
+          type="id"/>
+    <item name="edit_booking_extras_button"
+          type="id"/>
 </resources>

@@ -2,14 +2,15 @@ package com.handybook.handybook.module.push.manager;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.push.action.PushActionConstants;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.event.UserLoggedInEvent;
+import com.handybook.handybook.module.push.action.PushActionConstants;
 import com.handybook.handybook.module.push.action.PushActionWidgets;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -90,8 +91,9 @@ public class UrbanAirshipManager
         final DefaultNotificationFactory defaultNotificationFactory =
                 new DefaultNotificationFactory(application);
 
-        defaultNotificationFactory.setColor(application.getResources()
-                .getColor(R.color.handy_blue));
+        defaultNotificationFactory.setColor(
+                ContextCompat.getColor(application.getApplicationContext(),
+                        R.color.handy_blue));
         defaultNotificationFactory.setSmallIconId(R.drawable.ic_notification);
         return defaultNotificationFactory;
     }

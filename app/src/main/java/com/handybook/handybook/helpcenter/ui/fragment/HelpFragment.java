@@ -3,6 +3,7 @@ package com.handybook.handybook.helpcenter.ui.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
@@ -50,11 +51,11 @@ public class HelpFragment extends InjectedFragment
                 arguments.putAll(getArguments());
             }
             arguments.putString(BundleKeys.HELP_CENTER_URL, configuration.getHelpCenterUrl());
-            activity.navigateToActivity(HelpWebViewActivity.class, arguments);
+            activity.navigateToActivity(HelpWebViewActivity.class, arguments, R.id.nav_menu_help);
         }
         else
         {
-            activity.navigateToActivity(HelpNativeActivity.class, getArguments());
+            activity.navigateToActivity(HelpNativeActivity.class, getArguments(), R.id.nav_menu_help);
         }
     }
 
@@ -75,7 +76,7 @@ public class HelpFragment extends InjectedFragment
             public void onCancel()
             {
                 ((MenuDrawerActivity) getActivity())
-                        .navigateToActivity(ServiceCategoriesActivity.class);
+                        .navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_help);
             }
         });
     }

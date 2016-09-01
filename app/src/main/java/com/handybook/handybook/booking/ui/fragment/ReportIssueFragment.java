@@ -171,7 +171,8 @@ public final class ReportIssueFragment extends InjectedFragment
                 {
                     JobStatus.Action action = milestone.getAction();
 
-                    if (JobStatus.Action.CALL_OR_TEXT.equals(action.getType()))
+                    if (JobStatus.Action.CALL_OR_TEXT.equals(action.getType())
+                            && !Strings.isNullOrEmpty(mBooking.getProvider().getPhone()))
                     {
                         final String phone = mBooking.getProvider().getPhone();
                         milestoneView.setCallAndTextButtonVisibility(View.VISIBLE);
@@ -182,7 +183,8 @@ public final class ReportIssueFragment extends InjectedFragment
                             {
                                 bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
                                         mBooking.getId(), IssueResolutionLog.ProContacted.PHONE)));
-                                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                                Intent intent =
+                                        new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
                                 Utils.safeLaunchIntent(intent, getContext());
                             }
                         });
@@ -193,7 +195,8 @@ public final class ReportIssueFragment extends InjectedFragment
                             {
                                 bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
                                         mBooking.getId(), IssueResolutionLog.ProContacted.SMS)));
-                                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
+                                Intent intent =
+                                        new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
                                 Utils.safeLaunchIntent(intent, getContext());
                             }
                         });

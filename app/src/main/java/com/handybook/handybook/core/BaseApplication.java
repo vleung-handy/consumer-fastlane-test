@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
+import android.support.v4.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -145,7 +146,8 @@ public class BaseApplication extends MultiDexApplication
             {
                 final DefaultNotificationFactory defaultNotificationFactory =
                         new DefaultNotificationFactory(getApplicationContext());
-                defaultNotificationFactory.setColor(getResources().getColor(R.color.handy_blue));
+                defaultNotificationFactory.setColor(
+                        ContextCompat.getColor(getApplicationContext(), R.color.handy_blue));
                 defaultNotificationFactory.setSmallIconId(R.drawable.ic_notification);
                 airship.getPushManager().setNotificationFactory(defaultNotificationFactory);
                 airship.getPushManager().setPushEnabled(false);

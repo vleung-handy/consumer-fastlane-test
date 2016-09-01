@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Sample RAW reasons:
- * <p>
+ * <p/>
  * "reasons": {
  * "title": "What could your professional do to improve?",
  * "professionalism": {},
@@ -31,7 +31,7 @@ import java.util.Map;
  * "type": "single"
  * }
  * }
- * <p>
+ * <p/>
  * Created by jtse on 4/1/16.
  */
 public class Reasons implements Serializable
@@ -53,10 +53,10 @@ public class Reasons implements Serializable
      * title: "What could your professional do to improve?"
      * left_early: {}
      * quality_of_service: {}
-     * <p>
+     * <p/>
      * We have to ignore the "title" key. For the rest of the keys, we have to remove the underscore
      * and capitalize the first word. For example:
-     * <p>
+     * <p/>
      * quality_of_service will be Quality of service
      */
     public Reasons(Map<String, Object> mRawReasons, boolean isCleaning, String key)
@@ -69,11 +69,7 @@ public class Reasons implements Serializable
             {
                 mTitle = (String) mRawReasons.get(s);
             }
-            else if ("type".equalsIgnoreCase(s))
-            {
-                continue;
-            }
-            else
+            else if (!"type".equalsIgnoreCase(s))
             {
                 //Each reason can potentially have subreasons. Look above for the sample JSON, quality_of_service.
                 Object object = mRawReasons.get(s);
@@ -82,7 +78,7 @@ public class Reasons implements Serializable
                 if (object instanceof Map)
                 {
                     Map<String, Object> rawSubReasons = (Map<String, Object>) object;
-                    if (rawSubReasons != null && !rawSubReasons.isEmpty())
+                    if (!rawSubReasons.isEmpty())
                     {
                         subReasons = new Reasons(rawSubReasons, isCleaning, s);
                     }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -148,7 +149,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
 
         mPromoImage.setColorFilter(
-                getResources().getColor(R.color.handy_blue),
+                ContextCompat.getColor(getContext(), R.color.handy_blue),
                 PorterDuff.Mode.SRC_ATOP);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -295,7 +296,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             final int index = text.toString().indexOf(coupon);
             text.setSpan(
                     new ForegroundColorSpan(
-                            getResources().getColor(R.color.handy_blue)
+                            ContextCompat.getColor(getContext(), R.color.handy_blue)
                     ),
                     index,
                     index + coupon.length(),
@@ -321,7 +322,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @OnClick(R.id.coupon_layout)
     public void onCouponClick()
     {
-        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class);
+        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class,
+                R.id.nav_menu_promotions);
     }
 
     /**
@@ -387,8 +389,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             ServiceCategoryView v = new ServiceCategoryView(getContext());
             v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             v.setOnClickListener(mListener);
-            RecyclerViewHolder rcv = new RecyclerViewHolder(v);
-            return rcv;
+            return new RecyclerViewHolder(v);
         }
 
         @Override

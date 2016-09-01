@@ -102,7 +102,7 @@ public class ScreenName
      * @param activity The activity whose name we will provide
      * @return the name defined for activity or it's canonical name
      */
-    public static final String from(final Activity activity)
+    public static String from(final Activity activity)
     {
         final String canonicalName = activity.getClass().getCanonicalName();
         final String screenName = sScreenNames.get(canonicalName);

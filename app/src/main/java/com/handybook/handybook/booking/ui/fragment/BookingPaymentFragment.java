@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
@@ -294,7 +295,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCreditCardText.addTextChangedListener(cardTextWatcher);
         mNextButton.setOnClickListener(nextClicked);
 
-        mLockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
+        mLockIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
 
         showViewForPromoCodeApplied();
@@ -979,7 +980,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     )//.. on /v3/quotes/{1245}/set_coupon
     {
         if (!allowCallbacks) { return; }
-        mCurrentQuote = newQuote;
+        mCurrentQuote.setPriceTable(newQuote.getPriceTable());
+        mCurrentQuote.setSurgePriceTable(newQuote.getSurgePriceTable());
+        mCurrentQuote.setCoupon(newQuote.getCoupon());
         showBookingWarningIfApplicable(mCurrentQuote);
         transaction.setPromoApplied(promo);
         updatePromoUI();

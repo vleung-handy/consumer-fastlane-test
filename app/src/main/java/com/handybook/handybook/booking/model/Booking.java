@@ -792,7 +792,7 @@ public class Booking implements Parcelable
             return getImageResource(imageName);
         }
 
-        private final int getImageResource(ExtraInfoImageName extraInfoImageName)
+        private int getImageResource(ExtraInfoImageName extraInfoImageName)
         {
             if (EXTRAS_ICONS.containsKey(extraInfoImageName))
             {

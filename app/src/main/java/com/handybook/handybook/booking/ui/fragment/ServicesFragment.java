@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -131,7 +132,8 @@ public final class ServicesFragment extends BookingFlowFragment
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(descriptor.getColorDark()));
+            getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),
+                    descriptor.getColorDark()));
         }
     }
 
@@ -153,13 +155,13 @@ public final class ServicesFragment extends BookingFlowFragment
         }
         else
         {
-            mHeader.setBackgroundColor(getResources().getColor(descriptor.getColor()));
+            mHeader.setBackgroundColor(ContextCompat.getColor(getContext(), descriptor.getColor()));
         }
     }
 
     private void initToolbar(ServiceCategoryDescriptor descriptor)
     {
-        mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mToolbar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.transparent));
         mToolbarIcon.setImageResource(descriptor.getIcon());
     }
 
@@ -218,7 +220,7 @@ public final class ServicesFragment extends BookingFlowFragment
             public void onAnimationEnd(Animation animation)
             {
                 hideView(mIcon, null);
-                mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+                mToolbar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.transparent));
             }
 
             @Override
@@ -243,7 +245,7 @@ public final class ServicesFragment extends BookingFlowFragment
             public void onAnimationEnd(Animation animation)
             {
                 hideView(mToolbarIcon, null);
-                mToolbar.setBackgroundColor(getResources().getColor(color));
+                mToolbar.setBackgroundColor(ContextCompat.getColor(getContext(), color));
             }
 
             @Override

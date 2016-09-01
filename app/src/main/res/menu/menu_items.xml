@@ -8,22 +8,22 @@
         <item
             android:id="@id/nav_menu_my_bookings"
             android:checked="false"
-            android:title="@string/my_bookings"
             android:icon="@drawable/menu_my_bookings"
+            android:title="@string/my_bookings"
             />
 
         <item
             android:id="@id/nav_menu_home"
             android:checked="false"
-            android:title="@string/make_a_booking"
             android:icon="@drawable/menu_booking"
+            android:title="@string/make_a_booking"
             />
 
         <item
             android:id="@id/nav_menu_my_pro_team"
             android:checked="false"
-            android:title="@string/my_pro_team"
             android:icon="@drawable/menu_pro_team"
+            android:title="@string/my_pro_team"
             />
 
         <item
@@ -36,52 +36,55 @@
         <item
             android:id="@+id/nav_menu_free_cleanings"
             android:checked="false"
-            android:title="@string/free_cleanings"
             android:icon="@drawable/menu_referral"
+            android:title="@string/free_cleanings"
             />
 
         <item
             android:id="@id/nav_menu_promotions"
             android:checked="false"
-            android:title="@string/promotions_menu"
             android:icon="@drawable/menu_promo"
+            android:title="@string/promotions_menu"
             />
 
         <item
             android:id="@id/nav_menu_payment"
             android:checked="false"
-            android:title="@string/payment"
             android:icon="@drawable/menu_payment"
+            android:title="@string/payment"
             />
 
         <item
             android:id="@id/nav_menu_profile"
             android:checked="false"
-            android:title="@string/account"
             android:icon="@drawable/menu_account"
+            android:title="@string/account"
             />
 
     </group>
-    <group android:id="@+id/bottom_group">
+    <group
+        android:id="@+id/bottom_group"
+        >
         <item
             android:id="@id/nav_menu_help"
+            android:checkable="true"
             android:checked="false"
-            android:title="@string/help"
             android:icon="@drawable/menu_help"
+            android:title="@string/help"
             />
 
         <item
             android:id="@id/nav_menu_log_out"
-            android:checked="false"
-            android:title="@string/log_out"
+            android:checkable="false"
             android:icon="@drawable/menu_logout"
+            android:title="@string/log_out"
             />
 
         <item
             android:id="@id/nav_menu_log_in"
-            android:checked="false"
-            android:title="@string/log_in"
+            android:checkable="false"
             android:icon="@drawable/menu_login"
+            android:title="@string/log_in"
             />
     </group>
 </menu>

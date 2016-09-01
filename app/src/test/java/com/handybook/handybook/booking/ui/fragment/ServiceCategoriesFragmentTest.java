@@ -43,8 +43,6 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     private Service mMockService;
     @Captor
     private ArgumentCaptor<DataManager.Callback> mCallbackCaptor;
-    @Inject
-    DataManager mDataManager;
 
     @Inject
     UserManager mUserManager;
@@ -69,9 +67,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
                 ShadowApplication.getInstance().getApplicationContext());
-        sharedPreferences.edit().putBoolean("APP_ONBOARD_SHOWN", true).commit();
-
-
+        sharedPreferences.edit().putBoolean("APP_ONBOARD_SHOWN", true).apply();
     }
 
     /**

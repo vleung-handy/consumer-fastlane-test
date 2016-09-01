@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -121,8 +122,8 @@ public final class HelpNodeView extends InjectedRelativeLayout
     private void layoutForRoot(final HelpNode node)
     {
         headerTitle.setText(getResources().getString(R.string.what_need_help_with));
-        setHeaderColor(getResources().getColor(R.color.handy_blue));
-        helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_smiley));
+        setHeaderColor(ContextCompat.getColor(getContext(), R.color.handy_blue));
+        helpIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_help_smiley));
         layoutNavList(node);
     }
 
@@ -135,8 +136,8 @@ public final class HelpNodeView extends InjectedRelativeLayout
     {
         headerTitle.setText(node.getLabel());
 
-        setHeaderColor(getResources().getColor(R.color.handy_yellow));
-        helpIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_help_bulb));
+        setHeaderColor(ContextCompat.getColor(getContext(), R.color.handy_yellow));
+        helpIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_help_bulb));
         helpTriangleView.setVisibility(View.VISIBLE);
 
         contactButton.setVisibility(GONE);
@@ -192,7 +193,7 @@ public final class HelpNodeView extends InjectedRelativeLayout
 
         if (node.getType().equals(HelpNode.HelpNodeType.BOOKINGS_NAV))
         {
-            setHeaderColor(getResources().getColor(R.color.handy_teal));
+            setHeaderColor(ContextCompat.getColor(getContext(), R.color.handy_teal));
         }
 
         for (final HelpNode childNode : node.getChildren())
@@ -227,7 +228,7 @@ public final class HelpNodeView extends InjectedRelativeLayout
                 //if the type/label is null we still inflate to keep our click listeners in sync but we hide the inflated view since it is empty
                 textView.setText(childNode.getLabel());
 
-                if(childNode.getLabel() == null)
+                if (childNode.getLabel() == null)
                 {
                     navView.setVisibility(View.GONE);
                 }
@@ -235,21 +236,22 @@ public final class HelpNodeView extends InjectedRelativeLayout
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void setHeaderColor(final int color)
     {
-        final Drawable header = getResources().getDrawable(R.drawable.help_header_purple);
-        if(header != null)
+        final Drawable header = ContextCompat.getDrawable(getContext(), R.drawable.help_header_purple);
+        if (header != null)
         {
             header.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
         {
-            helpHeader.setBackgroundDrawable(header);
+            helpHeader.setBackground(header);
         }
         else
         {
-            helpHeader.setBackground(header);
+            helpHeader.setBackgroundDrawable(header);
         }
     }
 

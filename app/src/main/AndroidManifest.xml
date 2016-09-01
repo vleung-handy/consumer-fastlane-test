@@ -84,7 +84,10 @@
                     />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.LoginActivity"/>
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".booking.ui.activity.ServicesActivity"
             android:screenOrientation="portrait"
@@ -169,7 +172,10 @@
             />
         <activity android:name=".booking.ui.activity.PeakPricingActivity"/>
         <activity android:name=".booking.ui.activity.PromosActivity"/>
-        <activity android:name=".ui.activity.OnboardActivity"/>
+        <activity
+            android:name=".ui.activity.OnboardActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".helpcenter.ui.activity.HelpNativeActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpWebViewActivity"/>
         <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
@@ -231,6 +237,13 @@
 
                 <data android:scheme="handybook"/>
                 <data android:scheme="handy"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data
                     android:host="yozio"
                     android:path="/"
