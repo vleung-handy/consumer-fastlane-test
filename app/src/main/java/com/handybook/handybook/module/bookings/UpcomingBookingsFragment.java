@@ -31,6 +31,9 @@ import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
+import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.BookingListItem;
@@ -199,6 +202,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null)
         {
+            bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.AddBookingPressedLog()));
             fragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
                     .add(R.id.fragment_container,
@@ -209,6 +213,12 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         }
     }
 
+    @OnClick(R.id.bookings_share_button)
+    public void onShareButtonClicked()
+    {
+        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareButtonPressedLog()));
+        startActivity(new Intent(getActivity(), ReferralActivity.class));
+    }
 
     protected void loadBookings()
     {
@@ -254,7 +264,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             mBookingsContainer.removeAllViews();
             for (int x = bookingsIndex; x < mBookings.size(); x++)
             {
-                Booking booking = mBookings.get(x);
+                final Booking booking = mBookings.get(x);
                 mBookingsContainer.addView(new BookingListItem(
                         getActivity(),
                         new View.OnClickListener()
@@ -262,6 +272,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                             @Override
                             public void onClick(final View v)
                             {
+                                bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.BookingDetailsTappedLog(booking.getId())));
                                 final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
                                 Booking booking = ((BookingListItem) v).getBooking();
                                 intent.putExtra(BundleKeys.BOOKING, booking);

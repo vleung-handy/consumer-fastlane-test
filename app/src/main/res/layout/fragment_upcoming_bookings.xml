@@ -23,7 +23,19 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:navigationIcon="@drawable/ic_menu"
             app:titleTextAppearance="@style/Toolbar.TitleText"
-            />
+            >
+
+            <ImageButton
+                android:id="@+id/bookings_share_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_share_icon"
+                android:padding="@dimen/default_padding"
+                android:src="@drawable/ic_nav_gift_white"
+                />
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
