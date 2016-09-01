@@ -321,8 +321,6 @@ public final class NavigationManager
 
     private void openActivity(final Class<? extends Activity> targetClass, final HashMap<String, String> params)
     {
-        Intent navIntent = new Intent(this.context, targetClass);
-
         startActivity(new Intent(this.context, targetClass));
     }
 
@@ -333,7 +331,6 @@ public final class NavigationManager
 
     private void openBookingRequiredActivity(final String bookingId, final Class targetClass)
     {
-        User user = userManager.getCurrentUser();
         final Context intentContext = this.context;
         dataManager.getBooking(bookingId,
                 new DataManager.Callback<Booking>()

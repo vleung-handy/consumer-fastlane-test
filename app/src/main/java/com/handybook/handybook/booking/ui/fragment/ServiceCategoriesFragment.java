@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,9 +63,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     /**
      * maps the service id to its icon image view as rendered.
      * using service id rather than service object as key in case the object references differ
-     * <p>
+     * <p/>
      * used for the cool icon transition to ServicesActivity
-     * <p>
+     * <p/>
      * we need this because the transition requires a
      * reference to the EXACT image view of the service icon
      * rendered in the service category views
@@ -110,7 +111,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageShownLog()));
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final SharedPreferences.Editor edit = prefs.edit();
 
         final User user = userManager.getCurrentUser();
         if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false) && user == null)
@@ -149,7 +149,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
 
         mPromoImage.setColorFilter(
-                getResources().getColor(R.color.handy_blue),
+                ContextCompat.getColor(getContext(), R.color.handy_blue),
                 PorterDuff.Mode.SRC_ATOP);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -191,7 +191,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     /**
      * handles bundle arguments. currently only from deeplinks
-     * <p>
+     * <p/>
      * should be called after handleLoadServicesResponse() so that we have the list of services
      */
     private void handleBundleArguments()
@@ -296,7 +296,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             final int index = text.toString().indexOf(coupon);
             text.setSpan(
                     new ForegroundColorSpan(
-                            getResources().getColor(R.color.handy_blue)
+                            ContextCompat.getColor(getContext(), R.color.handy_blue)
                     ),
                     index,
                     index + coupon.length(),
@@ -389,8 +389,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             ServiceCategoryView v = new ServiceCategoryView(getContext());
             v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             v.setOnClickListener(mListener);
-            RecyclerViewHolder rcv = new RecyclerViewHolder(v);
-            return rcv;
+            return new RecyclerViewHolder(v);
         }
 
         @Override

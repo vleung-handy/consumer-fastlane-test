@@ -2,8 +2,6 @@ package com.handybook.handybook.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.manager.BookingManager;
@@ -18,25 +16,27 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public class InjectedDialogFragment extends DialogFragment {
+public class InjectedDialogFragment extends DialogFragment
+{
     protected boolean allowCallbacks;
     protected ProgressDialog progressDialog;
-    protected Toast toast;
 
-    @Inject protected BookingManager bookingManager;
-    @Inject protected UserManager userManager;
-    @Inject protected DataManager dataManager;
-    @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject
+    protected BookingManager bookingManager;
+    @Inject
+    protected UserManager userManager;
+    @Inject
+    protected DataManager dataManager;
+    @Inject
+    protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject
     protected Bus mBus;
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        ((BaseApplication)getActivity().getApplication()).inject(this);
-
-        toast = Toast.makeText(getActivity(), null, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
+        ((BaseApplication) getActivity().getApplication()).inject(this);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setDelay(400);
@@ -45,19 +45,22 @@ public class InjectedDialogFragment extends DialogFragment {
     }
 
     @Override
-    public final void onDestroyView() {
+    public final void onDestroyView()
+    {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
         allowCallbacks = true;
     }
 
     @Override
-    public void onStop() {
+    public void onStop()
+    {
         super.onStop();
         allowCallbacks = false;
     }

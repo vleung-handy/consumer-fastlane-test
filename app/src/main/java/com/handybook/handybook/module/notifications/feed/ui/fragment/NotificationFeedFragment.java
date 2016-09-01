@@ -3,7 +3,6 @@ package com.handybook.handybook.module.notifications.feed.ui.fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +45,7 @@ public class NotificationFeedFragment extends InjectedFragment
 
     public static NotificationFeedFragment newInstance()
     {
-        NotificationFeedFragment fragment = new NotificationFeedFragment();
-        return fragment;
-
+        return new NotificationFeedFragment();
     }
 
     public static NotificationFeedFragment newInstance(final HandyNotification.List notifications)

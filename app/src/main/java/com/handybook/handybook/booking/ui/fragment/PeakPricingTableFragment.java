@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,7 +156,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         switch (type)
         {
             case PEAK_PRICE:
-                priceText.setTextColor(getResources().getColor(R.color.price_green));
+                priceText.setTextColor(ContextCompat.getColor(getContext(), R.color.price_green));
                 if (mIsForVoucher || mIsForReschedule || mIsForRescheduleAll)
                 {
                     formatRow(row, RowState.AVAILABLE);
@@ -213,21 +214,21 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         switch (rowState)
         {
             case PRICE_REGULAR:
-                vTime.setTextColor(getResources().getColor(R.color.handy_text_black));
-                vPrice.setTextColor(getResources().getColor(R.color.price_green));
+                vTime.setTextColor(ContextCompat.getColor(getContext(), R.color.handy_text_black));
+                vPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.price_green));
                 break;
             case PRICE_PEAK:
-                vTime.setTextColor(getResources().getColor(R.color.handy_text_black));
-                vPrice.setTextColor(getResources().getColor(R.color.error_red));
+                vTime.setTextColor(ContextCompat.getColor(getContext(), R.color.handy_text_black));
+                vPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.error_red));
                 break;
             case AVAILABLE:
-                vTime.setTextColor(getResources().getColor(R.color.black_pressed));
-                vPrice.setTextColor(getResources().getColor(R.color.price_green));
+                vTime.setTextColor(ContextCompat.getColor(getContext(), R.color.black_pressed));
+                vPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.price_green));
                 vPrice.setText(getString(R.string.available));
                 break;
             default: // Default to unavailable
-                vTime.setTextColor(getResources().getColor(R.color.black_pressed));
-                vPrice.setTextColor(getResources().getColor(R.color.black_pressed));
+                vTime.setTextColor(ContextCompat.getColor(getContext(), R.color.black_pressed));
+                vPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.black_pressed));
                 vPrice.setText(getString(R.string.unavailable));
                 break;
         }

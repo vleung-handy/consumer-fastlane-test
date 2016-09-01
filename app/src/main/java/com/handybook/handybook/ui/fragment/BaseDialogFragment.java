@@ -35,8 +35,10 @@ public class BaseDialogFragment extends InjectedDialogFragment
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -104,7 +106,7 @@ public class BaseDialogFragment extends InjectedDialogFragment
 
     protected void showToast(String message, int length)
     {
-        toast = Toast.makeText(getActivity().getApplicationContext(), message, length);
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, length);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }

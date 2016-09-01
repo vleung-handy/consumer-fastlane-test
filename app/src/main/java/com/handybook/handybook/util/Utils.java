@@ -79,7 +79,7 @@ public final class Utils
         Color.colorToHSV(color1, hsva);
         Color.colorToHSV(color2, hsvb);
 
-        for (int i = 0; i < 3; i++) hsvb[i] = (hsva[i] + ((hsvb[i] - hsva[i]) * proportion));
+        for (int i = 0; i < 3; i++) { hsvb[i] = (hsva[i] + ((hsvb[i] - hsva[i]) * proportion)); }
         return Color.HSVToColor(hsvb);
     }
 
@@ -102,11 +102,13 @@ public final class Utils
         if (context == null)
         {
             Crashlytics.logException(new Exception("Trying to launch an intent with a null context!"));
-        } else if (context.getPackageManager().resolveActivity(intent, 0) != null)
+        }
+        else if (context.getPackageManager().resolveActivity(intent, 0) != null)
         {
             context.startActivity(intent);
             return true;
-        } else //no activity found to handle the intent
+        }
+        else //no activity found to handle the intent
         {
             //note: this must be called from the UI thread
             Toast toast = Toast.makeText(context, R.string.error_no_intent_handler_found, Toast.LENGTH_SHORT);
@@ -121,8 +123,7 @@ public final class Utils
     {
         Date nowDate = Calendar.getInstance().getTime(); // Get time now
         long differenceInMillis = nowDate.getTime() - oldDate.getTime();
-        long differenceInMinutes = (differenceInMillis) / 1000L / 60L; // Divide by millis/sec, secs/min
-        return differenceInMinutes;
+        return ((differenceInMillis) / 1000L / 60L); // Divide by millis/sec, secs/min
     }
 
     public static long hoursPastDate(Date oldDate)
