@@ -140,7 +140,8 @@ import com.handybook.handybook.ui.fragment.ProfileFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.WebViewFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
-import com.jakewharton.retrofit.Ok3Client;
+import com.squareup.okhttp.CertificatePinner;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
@@ -150,10 +151,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.CertificatePinner;
-import okhttp3.OkHttpClient;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
@@ -318,11 +318,11 @@ public final class ApplicationModule
             final UserManager userManager
     )
     {
-        final OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
-        okHttpClientBuilder.readTimeout(60, TimeUnit.SECONDS);
+        final OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
-            okHttpClientBuilder.certificatePinner(new CertificatePinner.Builder()
+            okHttpClient.setCertificatePinner(new CertificatePinner.Builder()
                     .add(mConfigs.getProperty("hostname"),
                             "sha1/tbHJQrYmt+5isj5s44sk794iYFc=",
                             "sha1/SXxoaOSEzPC6BgGmxAt/EAcsajw=",
@@ -330,7 +330,6 @@ public final class ApplicationModule
                             "sha1/T5x9IXmcrQ7YuQxXnxoCmeeQ84c=")
                     .build());
         }
-        final OkHttpClient okHttpClient = okHttpClientBuilder.build();
 
         final String username = mConfigs.getProperty("api_username");
         String password = mConfigs.getProperty("api_password_internal");
@@ -388,7 +387,7 @@ public final class ApplicationModule
                                 new BookingTransaction.BookingTransactionSerializer())
                         .setExclusionStrategies(User.getExclusionStrategy())
                         .registerTypeAdapter(User.class, new User.UserSerializer())
-                        .create())).setClient(new Ok3Client(okHttpClient)).build();
+                        .create())).setClient(new OkClient(okHttpClient)).build();
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
         {
