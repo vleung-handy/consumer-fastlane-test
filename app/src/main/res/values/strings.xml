@@ -433,5 +433,7 @@
     <string name="no_bookings_text">Book a fix up, pick up, or clean up.</string>
     <string name="no_scheduled_bookings">No scheduled bookings</string>
     <string name="next_cleaning">Next cleaning:</string>
+    <string name="location_data_unavailable">Location Data Unavailable</string>
+    <string name="missing_booking_location">We\'re having trouble locating your\naddress.</string>
 
 </resources>

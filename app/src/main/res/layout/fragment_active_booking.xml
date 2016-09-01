@@ -58,6 +58,13 @@
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 />
+
+            <com.handybook.handybook.ui.view.MissingLocationView
+                android:id="@+id/missing_location_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
         </FrameLayout>
 
 

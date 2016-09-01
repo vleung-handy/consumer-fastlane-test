@@ -39,6 +39,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.MapPlaceholderView;
+import com.handybook.handybook.ui.view.MissingLocationView;
 import com.handybook.handybook.util.BookingUtil;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.handybook.handybook.util.PlayServicesUtils;
@@ -104,6 +105,9 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     @Bind(R.id.map_place_holder)
     MapPlaceholderView mMapPlaceHolderView;
+
+    @Bind(R.id.missing_location_view)
+    MissingLocationView mMissingLocationView;
 
     private GoogleMap mGoogleMap;
     private Booking mBooking;
@@ -269,7 +273,8 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             mGoogleMap.addMarker(new MarkerOptions()
                     .position(mAddressLatLng)
                     .title("Destination")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
+                    .anchor(0.5f, 0.5f)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_house_pin)));
 
             Booking.Location providerLocation = mBooking.getActiveBookingStatus().getProviderLocation();
 
@@ -286,7 +291,8 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                         new MarkerOptions()
                                 .position(mProviderLatLng)
                                 .title(mProviderName)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pro_location))
+                                .anchor(0.5f, 0.5f)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_pro_pin))
                 );
 
                 if (mHandler == null)
