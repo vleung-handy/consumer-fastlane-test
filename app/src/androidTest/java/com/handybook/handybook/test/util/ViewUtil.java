@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.ViewInteraction;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -18,9 +20,12 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 /**
@@ -71,7 +76,7 @@ public class ViewUtil
 
     /**
      * waits for the view with the given id to be a given visibility
-     * <p>
+     * <p/>
      * TODO: cleaner way to do this?
      * TODO: add better error logging
      */
@@ -182,6 +187,13 @@ public class ViewUtil
         {
             return false;
         }
+    }
+
+    public static ViewInteraction matchToolbarTitle(int stringResourceId)
+    {
+        return onView(
+                allOf(isAssignableFrom(TextView.class), withParent(isAssignableFrom(Toolbar.class)))
+        ).check(matches(withText(stringResourceId)));
     }
 
     /**

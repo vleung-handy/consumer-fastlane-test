@@ -2,9 +2,6 @@ package com.handybook.handybook.core;
 
 import dagger.ObjectGraph;
 
-/**
- * Created by jwilliams on 3/3/15.
- */
 public class TestBaseApplication extends BaseApplication {
 
     public boolean mIsNewlyLaunched;
