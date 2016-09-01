@@ -2,6 +2,7 @@ package com.handybook.handybook.core;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
@@ -19,8 +20,8 @@ import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
-import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
+import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
@@ -238,6 +239,14 @@ public class TestApplicationModule
     final SecurePreferences provideSecurePreferences()
     {
         return mock(SecurePreferences.class);
+    }
+
+
+    @Provides
+    @Singleton
+    final SharedPreferences provideSharedPrefs()
+    {
+        return mock(SharedPreferences.class);
     }
 
     @Provides
