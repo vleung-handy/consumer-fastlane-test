@@ -12,7 +12,7 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.util.IoUtils;
+import com.handybook.handybook.util.IOUtils;
 
 import org.junit.Ignore;
 import org.robolectric.Shadows;
@@ -37,7 +37,7 @@ public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper
         mUpcomingBookingsFragment = UpcomingBookingsFragment.newInstance();
         SupportFragmentTestUtil.startFragment(mUpcomingBookingsFragment, AppCompatActivity.class);
 
-        String json = IoUtils.getJsonString("services.json");
+        String json = IOUtils.getJsonStringForTest("services.json");
         List<Service> services = new Gson().fromJson(
                 json,
                 new TypeToken<List<Service>>()
