@@ -973,9 +973,20 @@ public class DataManager
         });
     }
 
+    /**
+     * @param bookingId
+     * @param callback
+     * @deprecated - use getLocationStatus instead.
+     */
+    @Deprecated
     public void getBookingGeoStatus(final String bookingId, final Callback<BookingGeoStatus> callback)
     {
         mService.getBookingGeoStatus(bookingId, new BookingGeoStatusHandyRetrofitCallback(callback));
+    }
+
+    public void getLocationStatus(final String bookingId, final Callback<Booking.LocationStatus> callback)
+    {
+        mService.getLocationStatus(bookingId, new BookingLocationStatusHandyRetrofitCallback(callback));
     }
 
     public final void updateBookingEntryInformation(

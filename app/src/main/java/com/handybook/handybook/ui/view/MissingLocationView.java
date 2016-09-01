@@ -30,4 +30,15 @@ public class MissingLocationView extends FrameLayout
         inflate(getContext(), R.layout.missing_location_view, this);
         ButterKnife.bind(this);
     }
+
+    public void missingBookingLocation()
+    {
+        mTextErrorMessage.setText(getResources().getString(R.string.missing_booking_location));
+    }
+
+    public void missingProviderLocation()
+    {
+        mTextErrorMessage.setText(getResources().getString(R.string.missing_provider_location));
+    }
+
 }

@@ -43,6 +43,7 @@
                 android:textColor="@color/handy_text_gray_2"
                 android:padding="@dimen/default_padding_half"
                 style="@style/TextView.XSmall"
+                android:visibility="gone"
                 />
 
             <ImageView
