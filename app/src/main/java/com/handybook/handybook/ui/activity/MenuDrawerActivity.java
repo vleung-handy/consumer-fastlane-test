@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -76,15 +78,18 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         ButterKnife.bind(this);
         if (requiresUser() && !mUserManager.isUserLoggedIn())
         {
-            navigateToActivity(ServiceCategoriesActivity.class);
+            navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
             finish();
             return;
         }
         FacebookSdk.sdkInitialize(getApplicationContext());
         setupEnvButton();
-        int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
-        mNavigationView.setCheckedItem(selectedMenuId);
         mNavigationView.setNavigationItemSelectedListener(this);
+        int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
+        if (selectedMenuId != -1)
+        {
+            mNavigationView.setCheckedItem(selectedMenuId);
+        }
         final FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null)
@@ -107,7 +112,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 refreshMenu();
                 if (!event.isLoggedIn())
                 {
-                    navigateToActivity(ServiceCategoriesActivity.class);
+                    navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
                 }
             }
 
@@ -148,18 +153,16 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         }
     }
 
-    public final void navigateToActivity(final Class<? extends Activity> clazz)
-    {
-        navigateToActivity(clazz, new Bundle());
-    }
-
     /**
      * Navigates to the activity if it's not already there.
      *
-     * @param clazz
-     * @param menuIdToBeSelected
+     * @param clazz              Activity class to launch
+     * @param menuIdTobeSelected Nav menu item Id to be selected
      */
-    public final void navigateToActivity(final Class<? extends Activity> clazz, int menuIdToBeSelected)
+    public final void navigateToActivity(
+            final Class<? extends Activity> clazz,
+            @Nullable @IdRes Integer menuIdTobeSelected
+    )
     {
         if (this.getClass().getName().equals(clazz.getName()))
         {
@@ -168,19 +171,23 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         }
         else
         {
-            Bundle bundle = new Bundle();
-            bundle.putInt(MenuDrawerActivity.EXTRA_SHOW_SELECTED_MENU_ITEM, menuIdToBeSelected);
-            navigateToActivity(clazz, bundle);
+            navigateToActivity(clazz, new Bundle(), menuIdTobeSelected);
         }
     }
 
-
-    public final void navigateToActivity(final Class<? extends Activity> clazz, final Bundle extras)
+    public final void navigateToActivity(
+            final Class<? extends Activity> clazz, final Bundle extras,
+            @Nullable @IdRes Integer menuIdToBeSelected
+    )
     {
         final Intent intent = new Intent(this, clazz);
+        intent.putExtras(extras);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
-        intent.putExtras(extras);
+        if (menuIdToBeSelected != null)
+        {
+            intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_SELECTED_MENU_ITEM, menuIdToBeSelected);
+        }
         startActivity(intent);
         MenuDrawerActivity.this.overridePendingTransition(0, 0);
         MenuDrawerActivity.this.finish();
@@ -293,7 +300,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 }
                 else
                 {
-                    navigateToActivity(ServiceCategoriesActivity.class);
+                    navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
                 }
                 return true;
             case R.id.nav_menu_profile:
@@ -344,7 +351,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
 
                 return false;
             case R.id.nav_menu_log_in:
-                navigateToActivity(LoginActivity.class);
+                navigateToActivity(LoginActivity.class, R.id.nav_menu_log_in);
                 return false;
         }
 
@@ -361,7 +368,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         else if (isTaskRoot() && !(this instanceof ServiceCategoriesActivity))
         {
             //if backpress results in exiting the app AND this is not the home page, then bring back to the home page first
-            navigateToActivity(ServiceCategoriesActivity.class);
+            navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
         }
         else
         {

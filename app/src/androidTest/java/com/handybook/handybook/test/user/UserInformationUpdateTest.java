@@ -1,6 +1,5 @@
 package com.handybook.handybook.test.user;
 
-
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.rule.ActivityTestRule;
 
@@ -20,18 +19,22 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class PasswordUpdateTest
+
+public class UserInformationUpdateTest
 {
-    private static final TestUser TEST_USER = TestUsers.UPDATE_PASSWORD_USER;
-    private static final String NEW_PASSWORD = "newpassword";
+    private static final TestUser TEST_USER = TestUsers.UPDATE_PROFILE_USER;
+
+    private static final String NEW_NAME = "test updateuser";
+    private static final String NEW_EMAIL = "testupdateprofile@user.com";
+    private static final String NEW_PHONE = "9013345567";
+    private static final String NEW_PHONE_FORMATTED = "(901) 334-5567";
 
     @Rule
     public ActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new ActivityTestRule<>(ServiceCategoriesActivity.class);
 
-
     @Test
-    public void testUpdatePassword()
+    public void testUpdateInformation()
     {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
@@ -44,20 +47,25 @@ public class PasswordUpdateTest
         DrawerActions.openDrawer(R.id.drawer_layout);
         onView(withText(R.string.account)).perform(click());
 
-        // Change password
-        ViewUtil.waitForViewVisible(R.id.profile_old_password_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        TextViewUtil.updateEditTextView(R.id.profile_old_password_text, TEST_USER.getPassword());
-        TextViewUtil.updateEditTextView(R.id.profile_new_password_text, NEW_PASSWORD);
+        // Change name, email, phone number and click update
+        ViewUtil.waitForViewVisible(R.id.profile_fullname_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        TextViewUtil.updateEditTextView(R.id.profile_fullname_text, NEW_NAME);
+        TextViewUtil.updateEditTextView(R.id.profile_email_text, NEW_EMAIL);
+        TextViewUtil.updateEditTextView(R.id.profile_phone_text, NEW_PHONE);
         onView(withId(R.id.profile_update_button)).perform(click());
-        ViewUtil.waitForViewVisible(R.id.profile_old_password_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        ViewUtil.waitForToastMessageVisibility(R.string.info_updated, mActivityRule.getActivity(), ViewUtil.LONG_MAX_WAIT_TIME_MS);
 
-        // Confirm that login with the new password works
-        AppInteractionUtil.logOutAndPassOnboarding();
-        TEST_USER.setPassword(NEW_PASSWORD);
-        AppInteractionUtil.logIn(TEST_USER);
-
-        // If services page is visible, then login worked
+        // Go somewhere else(Make a Booking, in this case) and come back to profile screen
+        ViewUtil.waitForViewVisible(R.id.profile_fullname_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        DrawerActions.openDrawer(R.id.drawer_layout);
+        onView(withText(R.string.make_a_booking)).perform(click());
         ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        DrawerActions.openDrawer(R.id.drawer_layout);
+        onView(withText(R.string.account)).perform(click());
+
+        // Confirm that the changes were persisted
+        ViewUtil.waitForViewVisible(R.id.profile_fullname_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        TextViewUtil.assertViewHasText(R.id.profile_fullname_text, NEW_NAME);
+        TextViewUtil.assertViewHasText(R.id.profile_email_text, NEW_EMAIL);
+        TextViewUtil.assertViewHasText(R.id.profile_phone_text, NEW_PHONE_FORMATTED);
     }
 }
