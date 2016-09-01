@@ -91,7 +91,7 @@ public class Booking implements Parcelable
     @SerializedName("instructions")
     private Instructions mInstructions;
     @SerializedName("active_booking_status")
-    private LocationStatus mActiveBookingStatus;
+    private LocationStatus mActiveBookingLocationStatus;
 
     public String getLockboxCode()
     {
@@ -150,9 +150,9 @@ public class Booking implements Parcelable
         return mRecurringId != null && !mRecurringId.isEmpty() && !"0".equals(mRecurringId);
     }
 
-    public LocationStatus getActiveBookingStatus()
+    public LocationStatus getActiveBookingLocationStatus()
     {
-        return mActiveBookingStatus;
+        return mActiveBookingLocationStatus;
     }
 
     public BookingService getService()
@@ -425,7 +425,7 @@ public class Booking implements Parcelable
         mStartDate = new Date(in.readLong());
         mAddress = in.readParcelable(Address.class.getClassLoader());
         mProvider = (Provider) in.readSerializable();
-        mActiveBookingStatus = (LocationStatus) in.readSerializable();
+        mActiveBookingLocationStatus = (LocationStatus) in.readSerializable();
         mService = in.readParcelable(BookingService.class.getClassLoader());
 
         mPaymentInfo = new ArrayList<LineItem>();
@@ -479,7 +479,7 @@ public class Booking implements Parcelable
         out.writeLong(mStartDate.getTime());
         out.writeParcelable(mAddress, 0);
         out.writeSerializable(mProvider);
-        out.writeSerializable(mActiveBookingStatus);
+        out.writeSerializable(mActiveBookingLocationStatus);
         out.writeParcelable(mService, 0);
         out.writeTypedList(mPaymentInfo);
         out.writeTypedList(mExtrasInfo);

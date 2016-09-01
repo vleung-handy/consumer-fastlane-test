@@ -58,6 +58,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     private static final String KEY_BOOKING = "booking";
     private static final int GEO_STATUS_PING_INTERVAL_MS = 10000;  //ping for geo status every 10 seconds
     private static final float MAP_CLOSEUP_ZOOM_LEVEL = 16;
+    private static final float ANCHOR_MID_POINT = 0.5f;
 
     @Bind(R.id.text_start_soon_indicator)
     View mStartingSoonIndicator;
@@ -150,7 +151,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
         if (mBooking != null)
         {
-            mLocationStatus = mBooking.getActiveBookingStatus();
+            mLocationStatus = mBooking.getActiveBookingLocationStatus();
             toggleMapServicesAvailability(savedInstanceState);
             toggleProviderSection();
 
@@ -300,8 +301,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
                 mGoogleMap.addMarker(new MarkerOptions()
                         .position(mAddressLatLng)
-                        .title("Destination")
-                        .anchor(0.5f, 0.5f)
+                        .anchor(ANCHOR_MID_POINT, ANCHOR_MID_POINT)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_house_pin)));
             }
 
@@ -325,7 +325,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                             new MarkerOptions()
                                     .position(mProviderLatLng)
                                     .title(mProviderName)
-                                    .anchor(0.5f, 0.5f)
+                                    .anchor(ANCHOR_MID_POINT, ANCHOR_MID_POINT)
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_pro_pin))
                     );
 
@@ -335,7 +335,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                         mHandler = new Handler();
                         periodicUpdate();
                     }
-                    setTimeStamp(mBooking.getActiveBookingStatus().getProviderLocation().getTimeStamp());
+                    setTimeStamp(mBooking.getActiveBookingLocationStatus().getProviderLocation().getTimeStamp());
                 }
             }
 

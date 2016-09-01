@@ -236,7 +236,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             for (int x = bookingsIndex; x < mBookings.size(); x++)
             {
                 Booking booking = mBookings.get(x);
-                if (booking.getActiveBookingStatus() != null && booking.getActiveBookingStatus().isMapEnabled())
+                if (booking.getActiveBookingLocationStatus() != null && booking.getActiveBookingLocationStatus().isMapEnabled())
                 {
 
                     if (getChildFragmentManager().findFragmentByTag(booking.getId()) == null)
