@@ -35,6 +35,8 @@ import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.MapPlaceholderView;
 import com.handybook.handybook.util.BookingUtil;
@@ -437,18 +439,23 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @OnClick(R.id.text_call)
     public void callClicked()
     {
+        bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
+                mBooking.getId(), ActiveBookingLog.BookingProContactedLog.PHONE)));
         BookingUtil.callPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
     }
 
     @OnClick(R.id.text_text)
     public void textClicked()
     {
+        bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
+                mBooking.getId(), ActiveBookingLog.BookingProContactedLog.SMS)));
         BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
     }
 
     @OnClick(R.id.button_report_issue)
     public void reportIssueClicked()
     {
+        bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.ReportIssueTappedLog(mBooking.getId())));
         Intent intent = new Intent(getContext(), ReportIssueActivity.class);
         intent.putExtra(BundleKeys.BOOKING, mBooking);
         startActivity(intent);
@@ -457,6 +464,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     private void gotoBookingDetails()
     {
+        bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingDetailsTappedLog(mBooking.getId())));
         final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
         intent.putExtra(BundleKeys.BOOKING, mBooking);
         getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);

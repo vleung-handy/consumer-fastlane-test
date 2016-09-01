@@ -21,6 +21,10 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.PastBookingsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
+import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.EmptiableRecyclerView;
@@ -31,6 +35,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  */
@@ -123,6 +128,7 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
                         {
                             final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
                             Booking booking = (Booking) v.getTag();
+                            bus.post(new LogEvent.AddLogEvent(new PastBookingsLog.BookingDetailsTappedLog(booking.getId())));
                             intent.putExtra(BundleKeys.BOOKING, booking);
                             getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
                         }
@@ -163,6 +169,12 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
         }
     }
 
+    @OnClick(R.id.bookings_share_button)
+    public void onShareButtonClicked()
+    {
+        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareButtonPressedLog()));
+        startActivity(new Intent(getActivity(), ReferralActivity.class));
+    }
 
     @Override
     public void onResume()
