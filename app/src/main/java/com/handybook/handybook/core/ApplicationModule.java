@@ -1,7 +1,9 @@
 package com.handybook.handybook.core;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Base64;
 
@@ -427,6 +429,13 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
+    final SharedPreferences provideSharedPrefs()
+    {
+        return PreferenceManager.getDefaultSharedPreferences(mContext);
+    }
+
+    @Provides
+    @Singleton
     final BookingManager provideBookingManager(
             final Bus bus,
             final PrefsManager prefsManager,
@@ -541,11 +550,11 @@ public final class ApplicationModule
     @Singleton
     final ConfigurationManager provideConfigurationManager(
             final Bus bus,
-            final PrefsManager prefsManager,
+            final SharedPreferences sharedPreferences,
             final DataManager dataManager
     )
     {
-        return new ConfigurationManager(bus, prefsManager, dataManager);
+        return new ConfigurationManager(bus, sharedPreferences, dataManager);
     }
 
     @Provides

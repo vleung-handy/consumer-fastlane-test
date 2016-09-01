@@ -88,6 +88,9 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Bind(R.id.booking_item_container)
     View mBookingItemContainer;
 
+    @Bind(R.id.report_an_issue_container)
+    View mReportIssueContainer;
+
     @Bind(R.id.map_view)
     MapView mMapView;
 
@@ -227,6 +230,15 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             mStartingSoonIndicatorDivider.setVisibility(View.GONE);
         }
 
+        if (mBooking.isMilestonesEnabled())
+        {
+            mReportIssueContainer.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mReportIssueContainer.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
@@ -313,11 +325,6 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         {
             mHandler.postDelayed(mRunnable, GEO_STATUS_PING_INTERVAL_MS);
         }
-    }
-
-    private String getThisName()
-    {
-        return String.valueOf(ActiveBookingFragment.this.hashCode());
     }
 
     private void requestGeoStatus()
