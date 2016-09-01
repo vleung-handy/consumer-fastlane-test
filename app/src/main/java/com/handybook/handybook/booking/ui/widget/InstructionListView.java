@@ -169,11 +169,7 @@ public class InstructionListView extends FrameLayout
 
     private void notifyObserver(ChangeType changeType)
     {
-        if (mOnInstructionsChangedListener == null)
-        {
-            return;
-        }
-        else
+        if (mOnInstructionsChangedListener != null)
         {
             mOnInstructionsChangedListener.onInstructionsChanged(mInstructions, changeType);
         }

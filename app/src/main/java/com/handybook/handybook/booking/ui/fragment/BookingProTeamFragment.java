@@ -57,8 +57,7 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
 
     public static BookingProTeamFragment newInstance()
     {
-        final BookingProTeamFragment fragment = new BookingProTeamFragment();
-        return fragment;
+        return new BookingProTeamFragment();
     }
 
     @Override

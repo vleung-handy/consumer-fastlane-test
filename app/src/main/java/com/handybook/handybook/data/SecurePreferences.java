@@ -52,6 +52,7 @@ public class SecurePreferences
         }
     }
 
+
     private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
     private static final String KEY_TRANSFORMATION = "AES/ECB/PKCS5Padding";
     private static final String SECRET_KEY_HASH_TRANSFORMATION = "SHA-256";
@@ -88,10 +89,8 @@ public class SecurePreferences
             this.preferences = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
 
             this.encryptKeys = encryptKeys;
-        } catch (GeneralSecurityException e)
-        {
-            throw new SecurePreferencesException(e);
-        } catch (UnsupportedEncodingException e)
+        }
+        catch (GeneralSecurityException | UnsupportedEncodingException e)
         {
             throw new SecurePreferencesException(e);
         }
@@ -125,8 +124,7 @@ public class SecurePreferences
     {
         MessageDigest md = MessageDigest.getInstance(SECRET_KEY_HASH_TRANSFORMATION);
         md.reset();
-        byte[] keyBytes = md.digest(key.getBytes(CHARSET));
-        return keyBytes;
+        return md.digest(key.getBytes(CHARSET));
     }
 
     public void put(String key, String value)
@@ -191,7 +189,8 @@ public class SecurePreferences
         try
         {
             secureValue = convert(writer, value.getBytes(CHARSET));
-        } catch (UnsupportedEncodingException e)
+        }
+        catch (UnsupportedEncodingException e)
         {
             throw new SecurePreferencesException(e);
         }
@@ -206,7 +205,8 @@ public class SecurePreferences
         try
         {
             return new String(value, CHARSET);
-        } catch (UnsupportedEncodingException e)
+        }
+        catch (UnsupportedEncodingException e)
         {
             throw new SecurePreferencesException(e);
         }
@@ -217,7 +217,8 @@ public class SecurePreferences
         try
         {
             return cipher.doFinal(bs);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             throw new SecurePreferencesException(e);
         }

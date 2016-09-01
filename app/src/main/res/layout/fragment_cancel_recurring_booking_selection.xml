@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/handy_bg"
+              android:orientation="vertical"
               android:visibility="gone"
               tools:visibility="visible"
-              android:background="@color/handy_bg"
-              android:layout_height="match_parent"
-              android:layout_width="match_parent"
-              android:orientation="vertical"
     >
 
     <!--TODO: use a toolbar-->
@@ -19,15 +19,17 @@
         />
 
     <ScrollView
-        android:layout_weight="1"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_width="match_parent">
+        android:layout_weight="1"
+        >
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/default_padding">
+            android:paddingBottom="@dimen/default_padding"
+            >
 
             <TextView
                 style="@style/TextView.CenteredHeader"
@@ -35,20 +37,22 @@
                 />
 
             <LinearLayout
-                android:background="@color/white"
                 android:id="@+id/options_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
-                android:layout_width="match_parent"
-                android:orientation="vertical"/>
+                android:background="@color/white"
+                android:orientation="vertical"
+                />
 
         </LinearLayout>
 
     </ScrollView>
+
     <Button
-        style="@style/Button.Green"
         android:id="@+id/next_button"
-        android:onClick="onNextButtonClicked"
+        style="@style/Button.Green"
+        android:text="@string/select"
         android:textAllCaps="false"
-        android:text="@string/select"/>
+        />
 </LinearLayout>

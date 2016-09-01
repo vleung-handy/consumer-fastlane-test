@@ -393,8 +393,9 @@ public class BookingOptionsFragment extends BookingFlowFragment
 
         if (view instanceof BookingOptionsIndexView)
         {
-            requestOptions.put(option.getUniq(), ((BookingOptionsIndexView) view).getCurrentValue());
-            optionIndexMap.put(option.getUniq(), ((BookingOptionsIndexView) view).getCurrentIndex());
+            BookingOptionsIndexView indexView = (BookingOptionsIndexView) view;
+            requestOptions.put(option.getUniq(), indexView.getCurrentValue());
+            optionIndexMap.put(option.getUniq(), indexView.getCurrentIndex());
         }
         else
         {
@@ -418,7 +419,7 @@ public class BookingOptionsFragment extends BookingFlowFragment
                 {
                     nextOptions.add(option);
                 }
-                if(!Strings.isNullOrEmpty(option.getType()) && option.getType().equals("text"))
+                if (!Strings.isNullOrEmpty(option.getType()) && option.getType().equals("text"))
                 {
                     bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingCommentsSubmittedLog()));
                 }

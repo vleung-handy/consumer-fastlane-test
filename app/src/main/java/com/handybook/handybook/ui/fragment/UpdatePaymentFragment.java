@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -226,7 +227,7 @@ public class UpdatePaymentFragment extends InjectedFragment
         ButterKnife.bind(this, mView);
 
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(getResources().getColor(R.color.white));
+        menuButton.setColor(ContextCompat.getColor(getContext(), R.color.white));
         mMenuButtonLayout.addView(menuButton);
 
         final User currentUser = userManager.getCurrentUser();
@@ -241,7 +242,7 @@ public class UpdatePaymentFragment extends InjectedFragment
             mCancelButton.setVisibility(View.GONE);
         }
 
-        mLockIcon.setColorFilter(getResources().getColor(R.color.black_pressed),
+        mLockIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.black_pressed),
                 PorterDuff.Mode.SRC_ATOP);
 
         mCreditCardText.addTextChangedListener(new TextWatcher()

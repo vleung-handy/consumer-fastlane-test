@@ -73,11 +73,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     {
         mProTeamProViewModels = new ArrayList<>();
         final ProTeam.ProTeamCategory proTeamCategory = mProTeam.getCategory(mProTeamCategoryType);
-        if (proTeamCategory == null)
-        {
-            return;
-        }
-        else
+        if (proTeamCategory != null)
         {
             final List<ProTeamPro> preferredPros = proTeamCategory.getPreferred();
             if (preferredPros != null)

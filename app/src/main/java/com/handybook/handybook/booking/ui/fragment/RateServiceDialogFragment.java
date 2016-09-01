@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -363,7 +364,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             else
             {
                 star.setColorFilter(
-                        getResources().getColor(R.color.light_grey),
+                        ContextCompat.getColor(getContext(), R.color.light_grey),
                         PorterDuff.Mode.SRC_ATOP
                 );
             }
@@ -409,7 +410,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         // init all stars to empty
         for (final ImageView star : mStars)
         {
-            star.setColorFilter(getResources().getColor(R.color.light_grey), PorterDuff.Mode.SRC_ATOP);
+            star.setColorFilter(ContextCompat.getColor(getContext(), R.color.light_grey), PorterDuff.Mode.SRC_ATOP);
         }
         // fill mStars when dragging across them
         mRatingsLayout.setOnTouchListener(new View.OnTouchListener()

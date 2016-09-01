@@ -74,7 +74,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         //booking should never be null here
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        Crashlytics.log("Showing edit extras for booking with id " + mBooking.getId());
+        if (mBooking != null)
+        {
+            Crashlytics.log("Showing edit extras for booking with id " + mBooking.getId());
+        }
     }
 
     @Override
@@ -87,8 +90,10 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_edit_extras, container, false);
@@ -163,14 +168,18 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         }
 
         @Override
-        public void onShowChildren(final BookingOptionsView view,
-                                   final String[] items)
+        public void onShowChildren(
+                final BookingOptionsView view,
+                final String[] items
+        )
         {
         }
 
         @Override
-        public void onHideChildren(final BookingOptionsView view,
-                                   final String[] items)
+        public void onHideChildren(
+                final BookingOptionsView view,
+                final String[] items
+        )
         {
         }
     };
@@ -214,7 +223,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         mBilledOnText.setText(getResources().getString(
                 R.string.billed_on_date_formatted,
                 mBookingEditExtrasViewModel
-                .getFutureBillDateFormatted()));
+                        .getFutureBillDateFormatted()));
 
         mTotalDueText.setText(mBookingEditExtrasViewModel.getTotalDueText(
                 mOptionsView.getCheckedIndexes(),
@@ -265,7 +274,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditExtrasViewModelSuccess(
-            BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess event)
+            BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess event
+    )
     {
         mBookingEditExtrasViewModel = event.mBookingEditExtrasViewModel;
 
@@ -277,7 +287,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
     @Subscribe
     public final void onReceiveEditExtrasViewModelError(
-            BookingEditEvent.ReceiveEditBookingExtrasViewModelError event)
+            BookingEditEvent.ReceiveEditBookingExtrasViewModelError event
+    )
     {
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid

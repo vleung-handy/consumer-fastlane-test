@@ -105,7 +105,7 @@ public final class CreditCardExpDateInputTextView extends InputTextField {
         return getExpDate()[1];
     }
 
-    private final int[] getExpDate() {
+    private int[] getExpDate() {
         final String expDate = this.getText().toString().trim();
         int expMonth = -1;
         int expYear = -1;

@@ -86,8 +86,7 @@ public class ProTeamFragment extends InjectedFragment implements
 
     public static ProTeamFragment newInstance()
     {
-        ProTeamFragment fragment = new ProTeamFragment();
-        return fragment;
+       return new ProTeamFragment();
     }
 
     @Override

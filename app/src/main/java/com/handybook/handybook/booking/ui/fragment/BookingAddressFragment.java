@@ -48,8 +48,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
 
     public static BookingAddressFragment newInstance()
     {
-        final BookingAddressFragment fragment = new BookingAddressFragment();
-        return fragment;
+        return new BookingAddressFragment();
     }
 
     @Override

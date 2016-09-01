@@ -36,6 +36,7 @@
         android:id="@+id/iv_card_booking_row_left_edge_indicator"
         android:layout_width="2dp"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/default_margin_half"

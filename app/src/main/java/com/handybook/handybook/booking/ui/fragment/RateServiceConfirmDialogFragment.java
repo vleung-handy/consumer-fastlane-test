@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
@@ -48,7 +50,8 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     @Bind(R.id.submit_button_layout)
     View submitButtonLayout;
 
-    public static RateServiceConfirmDialogFragment newInstance(final int bookingId, final int rating) {
+    public static RateServiceConfirmDialogFragment newInstance(final int bookingId, final int rating)
+    {
         final RateServiceConfirmDialogFragment rateServiceConfirmDialogFragment
                 = new RateServiceConfirmDialogFragment();
 
@@ -61,7 +64,8 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
@@ -70,8 +74,11 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState) {
+    public View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
+    {
 
         super.onCreateView(inflater, container, savedInstanceState);
 
@@ -81,9 +88,11 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
         initLayout(rating);
         submitButton.setOnClickListener(submitListener);
 
-        skipButton.setOnClickListener(new View.OnClickListener() {
+        skipButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(final View v) {
+            public void onClick(final View v)
+            {
                 dismiss();
             }
         });
@@ -92,14 +101,18 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
-        if (rating == 4) {
+        if (rating == 4)
+        {
             // dismiss handler automatically if rating is a 4
             final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
+            handler.postDelayed(new Runnable()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     dismiss();
                 }
             }, 1000);
@@ -107,30 +120,38 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    protected void enableInputs() {
+    protected void enableInputs()
+    {
         super.enableInputs();
         submitButton.setClickable(true);
         skipButton.setClickable(true);
     }
 
     @Override
-    protected void disableInputs() {
+    protected void disableInputs()
+    {
         super.disableInputs();
         submitButton.setClickable(false);
         skipButton.setClickable(false);
     }
 
-    private void initLayout(final int rating) {
+    private void initLayout(final int rating)
+    {
         // setup different modal layouts according to rating
-        if (rating >= 4) {
-            serviceIconImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart));
+        if (rating >= 4)
+        {
+            serviceIconImage.setImageDrawable(
+                    ContextCompat.getDrawable(getContext(),
+                            R.drawable.ic_heart));
 
-            serviceIcon.setColorFilter(getResources().getColor(R.color.handy_love),
+            serviceIcon.setColorFilter(
+                    ContextCompat.getColor(getContext(), R.color.handy_love),
                     PorterDuff.Mode.SRC_ATOP);
 
             titleText.setText(getResources().getString(R.string.glad_you_enjoy));
 
-            if (rating == 4) {
+            if (rating == 4)
+            {
                 titleText.setPadding(titleText.getPaddingLeft(), titleText.getPaddingTop(),
                         titleText.getPaddingRight(), titleText.getPaddingBottom()
                                 + Utils.toDP(32, getActivity()));
@@ -138,9 +159,10 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
                 messageText.setVisibility(View.GONE);
                 submitButtonLayout.setVisibility(View.GONE);
             }
-            else {
+            else
+            {
                 messageText.setText(getResources().getString(R.string.good_vibes));
-                messageText.setTextColor(getResources().getColor(R.color.handy_text_black));
+                messageText.setTextColor(ContextCompat.getColor(getContext(), R.color.handy_text_black));
                 feedbackText.setMaxCharacters(140);
                 feedbackText.setMaxLines(3);
                 feedbackText.setVisibility(View.VISIBLE);
@@ -148,41 +170,48 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
                 skipButton.setVisibility(View.VISIBLE);
             }
         }
-        else {
+        else
+        {
             titleText.setText(getResources().getString(R.string.thanks_for_feedback));
             messageText.setText(getResources().getString(R.string.were_sorry_feedback));
             allowDialogDismissable();
         }
     }
 
-    private View.OnClickListener submitListener = new View.OnClickListener() {
+    private View.OnClickListener submitListener = new View.OnClickListener()
+    {
         @Override
-        public void onClick(final View v) {
+        public void onClick(final View v)
+        {
             final String positiveFeedback = feedbackText.getText().toString();
-            if (positiveFeedback.length() > 0) {
+            if (!Strings.isNullOrEmpty(positiveFeedback))
+            {
                 disableInputs();
                 submitProgress.setVisibility(View.VISIBLE);
                 submitButton.setText(null);
 
                 dataManager.submitProRatingDetails(booking, positiveFeedback,
-                        new DataManager.Callback<Void>() {
-                    @Override
-                    public void onSuccess(final Void response) {
-                        if (!allowCallbacks) return;
-                        dismiss();
-                    }
+                        new DataManager.Callback<Void>()
+                        {
+                            @Override
+                            public void onSuccess(final Void response)
+                            {
+                                if (!allowCallbacks) { return; }
+                                dismiss();
+                            }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error) {
-                        if (!allowCallbacks) return;
-                        submitProgress.setVisibility(View.GONE);
-                        submitButton.setText(R.string.send);
-                        enableInputs();
-                        dataManagerErrorHandler.handleError(getActivity(), error);
-                    }
-                });
+                            @Override
+                            public void onError(DataManager.DataManagerError error)
+                            {
+                                if (!allowCallbacks) { return; }
+                                submitProgress.setVisibility(View.GONE);
+                                submitButton.setText(R.string.send);
+                                enableInputs();
+                                dataManagerErrorHandler.handleError(getActivity(), error);
+                            }
+                        });
             }
-            else dismiss();
+            else { dismiss(); }
         }
     };
 
