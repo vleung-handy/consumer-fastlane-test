@@ -360,7 +360,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (event.getBookingWrapper().getRecurringBookings() != null &&
                 !event.getBookingWrapper().getRecurringBookings().isEmpty())
         {
-            //FIXME: Howard is going to make a new endpoint for editing recurring sequence, that will allow changing frequency when there is no booking generated.
             mRecurringBookings = event.getBookingWrapper().getRecurringBookings();
             mActivePlanCount = mRecurringBookings.size();
         }
@@ -416,28 +415,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             {
                 //if we're showing the map, disable this pull to refresh thing.
                 mSwipeRefreshLayout.setEnabled(false);
-            }
-            else
-            {
-
-                //FIXME: make scrollview work with swipe to refresh.
-
-//                mScrollView.setOnScrollChangeListener(new RecyclerView.OnScrollListener()
-//                {
-//                    @Override
-//                    public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
-//                    {
-//                        super.onScrolled(recyclerView, dx, dy);
-//                        if (!recyclerView.canScrollVertically(-1))
-//                        {
-//                            mSwipeRefreshLayout.setEnabled(true);
-//                        }
-//                        else
-//                        {
-//                            mSwipeRefreshLayout.setEnabled(false);
-//                        }
-//                    }
-//                });
             }
         }
     }

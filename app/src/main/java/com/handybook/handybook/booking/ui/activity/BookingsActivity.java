@@ -22,7 +22,7 @@ public final class BookingsActivity extends MenuDrawerActivity
     protected final Fragment createFragment() {
 
         Configuration config = mConfigurationManager.getPersistentConfiguration();
-        if (config != null && config.isActiveBookingEnabled())
+        if (config != null && config.isUpcomingAndPastBookingsEnabled())
         {
             return UpcomingBookingsFragment.newInstance();
         }
