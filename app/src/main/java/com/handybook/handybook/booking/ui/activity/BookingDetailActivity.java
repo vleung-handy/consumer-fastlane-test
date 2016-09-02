@@ -1,6 +1,5 @@
 package com.handybook.handybook.booking.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -38,14 +37,5 @@ public final class BookingDetailActivity extends MenuDrawerActivity
     {
         super.onCreate(savedInstanceState);
         disableDrawer = true;
-    }
-
-    //Always return to mybookings page even if you came from somewhere else
-    @Override
-    public void onBackPressed()
-    {
-        final Intent intent = new Intent(getApplicationContext(), BookingsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
     }
 }
