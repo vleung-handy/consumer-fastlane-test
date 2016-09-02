@@ -43,6 +43,7 @@
                 android:textColor="@color/handy_text_gray_2"
                 android:padding="@dimen/default_padding_half"
                 style="@style/TextView.XSmall"
+                android:visibility="gone"
                 />
 
             <ImageView
@@ -54,6 +55,13 @@
 
             <com.handybook.handybook.ui.view.MapPlaceholderView
                 android:id="@+id/map_place_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
+
+            <com.handybook.handybook.ui.view.MissingLocationView
+                android:id="@+id/missing_location_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"

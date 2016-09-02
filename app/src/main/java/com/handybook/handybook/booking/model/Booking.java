@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.R;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class Booking implements Parcelable
     @SerializedName("instructions")
     private Instructions mInstructions;
     @SerializedName("active_booking_status")
-    private ActiveBookingStatus mActiveBookingStatus;
+    private LocationStatus mActiveBookingLocationStatus;
 
     public String getLockboxCode()
     {
@@ -149,9 +150,9 @@ public class Booking implements Parcelable
         return mRecurringId != null && !mRecurringId.isEmpty() && !"0".equals(mRecurringId);
     }
 
-    public ActiveBookingStatus getActiveBookingStatus()
+    public LocationStatus getActiveBookingLocationStatus()
     {
-        return mActiveBookingStatus;
+        return mActiveBookingLocationStatus;
     }
 
     public BookingService getService()
@@ -424,7 +425,7 @@ public class Booking implements Parcelable
         mStartDate = new Date(in.readLong());
         mAddress = in.readParcelable(Address.class.getClassLoader());
         mProvider = (Provider) in.readSerializable();
-        mActiveBookingStatus = in.readParcelable(ActiveBookingStatus.class.getClassLoader());
+        mActiveBookingLocationStatus = (LocationStatus) in.readSerializable();
         mService = in.readParcelable(BookingService.class.getClassLoader());
 
         mPaymentInfo = new ArrayList<LineItem>();
@@ -478,7 +479,7 @@ public class Booking implements Parcelable
         out.writeLong(mStartDate.getTime());
         out.writeParcelable(mAddress, 0);
         out.writeSerializable(mProvider);
-        out.writeParcelable(mActiveBookingStatus, 0);
+        out.writeSerializable(mActiveBookingLocationStatus);
         out.writeParcelable(mService, 0);
         out.writeTypedList(mPaymentInfo);
         out.writeTypedList(mExtrasInfo);
@@ -886,10 +887,13 @@ public class Booking implements Parcelable
     }
 
 
-    public static class ActiveBookingStatus implements Parcelable
+    public static class LocationStatus implements Serializable
     {
         @SerializedName("map_enabled")
         private boolean mMapEnabled;
+
+        @SerializedName("provider_location_visible")
+        private boolean mProviderLocationVisible;
 
         @SerializedName("booking")
         private Location mBookingLocation;
@@ -902,6 +906,11 @@ public class Booking implements Parcelable
             return mMapEnabled;
         }
 
+        public boolean isProviderLocationVisible()
+        {
+            return mProviderLocationVisible;
+        }
+
         public Location getBookingLocation()
         {
             return mBookingLocation;
@@ -911,48 +920,10 @@ public class Booking implements Parcelable
         {
             return mProviderLocation;
         }
-
-        private ActiveBookingStatus(final Parcel in)
-        {
-            final boolean[] booleanArray = new boolean[1];
-            in.readBooleanArray(booleanArray);
-            mMapEnabled = booleanArray[0];
-            mBookingLocation = in.readParcelable(Location.class.getClassLoader());
-            mProviderLocation = in.readParcelable(Location.class.getClassLoader());
-
-        }
-
-        @Override
-        public final void writeToParcel(final Parcel out, final int flags)
-        {
-            out.writeBooleanArray(new boolean[]{mMapEnabled});
-            out.writeParcelable(mBookingLocation, 0);
-            out.writeParcelable(mProviderLocation, 0);
-        }
-
-        @Override
-        public final int describeContents()
-        {
-            return 0;
-        }
-
-        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-        {
-            public ActiveBookingStatus createFromParcel(final Parcel in)
-            {
-                return new ActiveBookingStatus(in);
-            }
-
-            public ActiveBookingStatus[] newArray(final int size)
-            {
-                return new ActiveBookingStatus[size];
-            }
-        };
-
     }
 
 
-    public static class Location implements Parcelable
+    public static class Location implements Serializable
     {
         //the server returns lat/long as strings
         @SerializedName("latitude")
@@ -963,17 +934,6 @@ public class Booking implements Parcelable
 
         @SerializedName("timestamp")
         private Date mTimeStamp;
-
-        private Location(final Parcel in)
-        {
-            final String[] stringArray = new String[2];
-            in.readStringArray(stringArray);
-            mLatitude = stringArray[0];
-            mLongitude = stringArray[1];
-
-            long tmpDate = in.readLong();
-            mTimeStamp = tmpDate == -1 ? null : new Date(tmpDate);
-        }
 
         public String getLatitude()
         {
@@ -989,34 +949,6 @@ public class Booking implements Parcelable
         {
             return mTimeStamp;
         }
-
-        @Override
-        public final void writeToParcel(final Parcel out, final int flags)
-        {
-            out.writeStringArray(new String[]{mLatitude, mLongitude});
-
-            //some locations don't report time stamps
-            out.writeLong(mTimeStamp != null ? mTimeStamp.getTime() : -1);
-        }
-
-        @Override
-        public final int describeContents()
-        {
-            return 0;
-        }
-
-        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-        {
-            public Location createFromParcel(final Parcel in)
-            {
-                return new Location(in);
-            }
-
-            public Location[] newArray(final int size)
-            {
-                return new Location[size];
-            }
-        };
     }
 
 }

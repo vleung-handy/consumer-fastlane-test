@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.util.IoUtils;
+import com.handybook.handybook.util.IOUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
 
     private void setupActiveBooking() throws Exception
     {
-        String json = IoUtils.getJsonString("active_booking.json");
+        String json = IOUtils.getJsonStringForTest("active_booking.json");
 
         Booking booking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
                 .create()
@@ -46,7 +46,7 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
 
     private void setupBookingNoProvider() throws Exception
     {
-        String json = IoUtils.getJsonString("active_booking_no_provider.json");
+        String json = IOUtils.getJsonStringForTest("active_booking_no_provider.json");
 
         Booking booking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
                 .create()

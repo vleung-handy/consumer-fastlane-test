@@ -189,7 +189,7 @@
     <string name="cancel">Cancel</string>
     <string name="image_content_description_icon_recurring">Recurring Icon</string>
     <string name="booking_card_recurring_footer_text">More bookings will be added later</string>
-    <string name="booking_card_row_time_and_duration">%1$s – %2$s (%3$s hours)</string>
+    <string name="booking_card_row_time_and_duration">%1$s – %2$s</string>
     <string name="no_booking_card_upcoming_text">You don\'t have any\nupcoming bookings</string>
     <string name="no_booking_card_past_text">You don\'t have any\npast bookings</string>
     <string name="snackbar_recurring_will_be_generated">Bookings are generated 28 days in advance.</string>
@@ -385,5 +385,8 @@
     <string name="no_bookings_text">Book a fix up, pick up, or clean up.</string>
     <string name="no_scheduled_bookings">No scheduled bookings</string>
     <string name="next_cleaning">Next cleaning:</string>
+    <string name="location_data_unavailable">Location Data Unavailable</string>
+    <string name="missing_booking_location">We\'re having trouble displaying your\naddress on the map.</string>
+    <string name="missing_provider_location">We can\'t locate your pro right\nnow, but you can try contacting\nthem directly for an update.</string>
 
 </resources>

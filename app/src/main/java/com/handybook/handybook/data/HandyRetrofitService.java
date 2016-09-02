@@ -320,6 +320,9 @@ public interface HandyRetrofitService
     @GET("/bookings/{booking_id}/geo_status")
     void getBookingGeoStatus(@Path("booking_id") String bookingId, HandyRetrofitCallback cb);
 
+    @GET("/bookings/{booking_id}/location_status")
+    void getLocationStatus(@Path("booking_id") String bookingId, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(

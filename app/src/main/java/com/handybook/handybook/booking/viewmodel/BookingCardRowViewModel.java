@@ -54,13 +54,10 @@ public class BookingCardRowViewModel
         final String end = DateTimeUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT,
                 mBooking.getBookingTimezone());
 
-        final String duration = TextUtils.formatDecimal(mBooking.getHours(), DURATION_FORMAT);
-
         return context.getString(
                 R.string.booking_card_row_time_and_duration,
                 start,
-                end,
-                duration
+                end
         );
     }
 
