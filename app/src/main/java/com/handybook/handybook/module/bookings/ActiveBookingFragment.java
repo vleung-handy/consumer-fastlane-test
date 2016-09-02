@@ -114,6 +114,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     private String mProviderName;
     private LatLng mProviderLatLng;
     private LatLng mAddressLatLng;
+    private boolean mFirstZoom = true;
     private Booking.LocationStatus mLocationStatus;
     private Handler mHandler;
     private Runnable mRunnable = new Runnable()
@@ -413,26 +414,30 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             mProviderLocationMarker.setPosition(mProviderLatLng);
         }
 
-        if (mAddressLatLng != null && mProviderLatLng != null)
+        if (mFirstZoom)
         {
-            //we bound the map view by the two locations if we actually have 2 locations
-            LatLngBounds bounds = builder.build();
-            //gives it some padding, so that the markers are not right at the edge of the screen.
-            int width = getResources().getDisplayMetrics().widthPixels;
-            int height = getResources().getDimensionPixelSize(R.dimen.active_booking_map_height);
-            int padding = getResources().getDimensionPixelOffset(R.dimen.default_padding_4x);
+            mFirstZoom = false;
+            if (mAddressLatLng != null && mProviderLatLng != null)
+            {
+                //we bound the map view by the two locations if we actually have 2 locations
+                LatLngBounds bounds = builder.build();
+                //gives it some padding, so that the markers are not right at the edge of the screen.
+                int width = getResources().getDisplayMetrics().widthPixels;
+                int height = getResources().getDimensionPixelSize(R.dimen.active_booking_map_height);
+                int padding = getResources().getDimensionPixelOffset(R.dimen.default_padding_4x);
 
-            //first zoom to enclose all the markers.
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-            mGoogleMap.moveCamera(cu);
-        }
-        else if (mAddressLatLng != null)
-        {
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mAddressLatLng, MAP_CLOSEUP_ZOOM_LEVEL));
-        }
-        else if (mProviderLatLng != null)
-        {
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mProviderLatLng, MAP_CLOSEUP_ZOOM_LEVEL));
+                //first zoom to enclose all the markers.
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+                mGoogleMap.moveCamera(cu);
+            }
+            else if (mAddressLatLng != null)
+            {
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mAddressLatLng, MAP_CLOSEUP_ZOOM_LEVEL));
+            }
+            else if (mProviderLatLng != null)
+            {
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mProviderLatLng, MAP_CLOSEUP_ZOOM_LEVEL));
+            }
         }
     }
 
