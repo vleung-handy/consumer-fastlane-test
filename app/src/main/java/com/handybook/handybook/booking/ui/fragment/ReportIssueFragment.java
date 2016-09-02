@@ -22,6 +22,7 @@ import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.view.ProMilestoneView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
@@ -89,6 +90,43 @@ public final class ReportIssueFragment extends InjectedFragment
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
     {
+        //sometimes, the job status may not be passed in. If not, then fetch it.
+        if (mJobStatus == null)
+        {
+            dataManager.getBookingMilestones(mBooking.getId(), new DataManager.Callback<JobStatus>()
+                    {
+                        @Override
+                        public void onSuccess(JobStatus status)
+                        {
+                            mJobStatus = status;
+                            initialize();
+                        }
+
+                        @Override
+                        public void onError(final DataManager.DataManagerError error)
+                        {
+                            if (!Strings.isNullOrEmpty(error.getMessage()))
+                            {
+                                showToast(error.getMessage());
+                            }
+                            else
+                            {
+                                showToast(R.string.an_error_has_occurred);
+                            }
+                            //still try to initialize, we'll do our best without the job statuses
+                            initialize();
+                        }
+                    }
+            );
+        }
+        else
+        {
+            initialize();
+        }
+    }
+
+    private void initialize()
+    {
         setHeader();
         setProMilestones();
         setDeepLinks();
@@ -110,6 +148,10 @@ public final class ReportIssueFragment extends InjectedFragment
 
     private void setProMilestones()
     {
+        if (mJobStatus == null)
+        {
+            return;
+        }
         JobStatus.Milestone[] milestones = mJobStatus.getMilestones();
         if (milestones != null)
         {
@@ -178,6 +220,10 @@ public final class ReportIssueFragment extends InjectedFragment
 
     private void setDeepLinks()
     {
+        if (mJobStatus == null)
+        {
+            return;
+        }
         JobStatus.DeepLinkWrapper[] deepLinkWrappers = mJobStatus.getDeepLinkWrappers();
         if (deepLinkWrappers == null) { return; }
 
@@ -231,15 +277,19 @@ public final class ReportIssueFragment extends InjectedFragment
     private String getLastMilestoneTitle()
     {
         String lastMilestoneTitle = "";
-        JobStatus.Milestone[] milestones = mJobStatus.getMilestones();
-        if (milestones != null && milestones.length > 0)
+        if (mJobStatus != null)
         {
-            JobStatus.Milestone milestone = milestones[milestones.length - 1];
-            if (!Strings.isNullOrEmpty(milestone.getTitle()))
+            JobStatus.Milestone[] milestones = mJobStatus.getMilestones();
+            if (milestones != null && milestones.length > 0)
             {
-                lastMilestoneTitle = milestone.getTitle();
+                JobStatus.Milestone milestone = milestones[milestones.length - 1];
+                if (!Strings.isNullOrEmpty(milestone.getTitle()))
+                {
+                    lastMilestoneTitle = milestone.getTitle();
+                }
             }
         }
+
         return lastMilestoneTitle;
     }
 

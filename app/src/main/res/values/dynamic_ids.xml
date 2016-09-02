@@ -8,6 +8,8 @@
           type="id"/>
     <item name="nav_menu_my_pro_team"
           type="id"/>
+    <item type="id"
+          name="nav_menu_history"/>
     <item name="nav_menu_payment"
           type="id"/>
     <item name="nav_menu_free_cleanings"

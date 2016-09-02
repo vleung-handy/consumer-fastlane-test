@@ -173,6 +173,7 @@ public class BaseApplication extends MultiDexApplication
         {
             prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
         }
+
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             @Override

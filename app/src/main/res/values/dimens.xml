@@ -18,6 +18,7 @@
     <dimen name="default_padding_quarter">4dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_padding_double">32dp</dimen>
+    <dimen name="default_padding_4x">64dp</dimen>
     <dimen name="default_padding_half">8dp</dimen>
     <dimen name="default_text_size">16sp</dimen>
     <dimen name="text_size_xsmall">12sp</dimen>
@@ -41,12 +42,14 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="short_divider_width">100dp</dimen>
 
+    <dimen name="green_status_dot">8dp</dimen>
     <dimen name="service_circle">92dp</dimen>
     <dimen name="service_circle_half">46dp</dimen>
     <dimen name="service_circle_top_margin">-46dp</dimen>
 
     <dimen name="rating_dialog_max_width">328dp</dimen>
 
+    <dimen name="low_elevation">2dp</dimen>
     <dimen name="med_elevation">4dp</dimen>
     <dimen name="checkbox_round_square">32dp</dimen>
 
@@ -54,6 +57,9 @@
     <dimen name="pro_team_margin">12dp</dimen>
     <dimen name="pro_team_star_width_height">16dp</dimen>
     <dimen name="pro_team_bookings_margin">5dp</dimen>
+
+    <dimen name="booking_list_item_height">80dp</dimen>
+    <dimen name="list_item_left_margin">40dp</dimen>
     <dimen name="pro_team_average_rating_star_margin">5dp</dimen>
 
     <!-- For ratings grid -->
@@ -73,4 +79,9 @@
     <!-- Referral -->
     <dimen name="referral_image_height">184dp</dimen>
     <dimen name="referral_image_width">248dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="active_booking_map_height">250dp</dimen>
 </resources>

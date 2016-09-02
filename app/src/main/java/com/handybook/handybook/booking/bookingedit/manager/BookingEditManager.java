@@ -137,6 +137,26 @@ public class BookingEditManager
     }
 
     @Subscribe
+    public void onRequestUpdateRecurringFrequency(BookingEditEvent.RequestUpdateRecurringFrequency event)
+    {
+        mDataManager.updateRecurringFrequency(event.recurringId, event.bookingEditFrequencyRequest,
+                new DataManager.Callback<Void>()
+                {
+                    @Override
+                    public void onSuccess(Void response)
+                    {
+                        mBus.post(new BookingEditEvent.ReceiveUpdateRecurringFrequencySuccess());
+                    }
+
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        mBus.post(new BookingEditEvent.ReceiveUpdateRecurringFrequencyError(error));
+                    }
+                });
+    }
+
+    @Subscribe
     public void onRequestEditFrequencyViewModel(BookingEditEvent.RequestGetEditFrequencyViewModel event)
     {
         mDataManager.getBookingPricesForFrequencies(event.bookingId,
@@ -150,6 +170,29 @@ public class BookingEditManager
                         mBus.post(new BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess(
                                 bookingEditFrequencyViewModel));
 
+                    }
+
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        mBus.post(new BookingEditEvent.ReceiveGetEditFrequencyViewModelError(error));
+                    }
+                });
+    }
+
+    @Subscribe
+    public void onRequestRecurringFrequencyViewModel(BookingEditEvent.RequestRecurringFrequencyViewModel event)
+    {
+        mDataManager.getRecurringFrequency(event.recurringId,
+                new DataManager.Callback<BookingEditFrequencyInfoResponse>()
+                {
+                    @Override
+                    public void onSuccess(BookingEditFrequencyInfoResponse response)
+                    {
+                        BookingEditFrequencyViewModel bookingEditFrequencyViewModel =
+                                BookingEditFrequencyViewModel.from(response);
+                        mBus.post(new BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess(
+                                bookingEditFrequencyViewModel));
                     }
 
                     @Override

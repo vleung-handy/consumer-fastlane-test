@@ -16,6 +16,7 @@ import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequenc
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.constant.ActivityResult;
@@ -30,10 +31,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * TODO: Eventually the paths where a BOOKING is passed in can be completely removed. Talk to Jia for
+ * more information about this refactor process.
+ */
 public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
     //TODO: need to consolidate all booking edit fragments with booking flow fragments that are used in booking creation
     private Booking mBooking;
+    private UserRecurringBooking mRecurringBooking;
     private BookingQuote mBookingQuote;
 
     @Bind(R.id.options_layout)
@@ -44,11 +50,12 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     private BookingEditFrequencyViewModel mBookingEditFrequencyViewModel;
     private BookingOptionsSelectView mOptionsView;
 
-    public static BookingEditFrequencyFragment newInstance(Booking booking)
+    public static BookingEditFrequencyFragment newInstance(Booking booking, UserRecurringBooking recurringBooking)
     {
         final BookingEditFrequencyFragment fragment = new BookingEditFrequencyFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
+        args.putSerializable(BundleKeys.RECURRING_BOOKING, recurringBooking);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,6 +65,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mRecurringBooking = (UserRecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_BOOKING);
+
         mBookingQuote = bookingManager.getCurrentQuote();
 
         if (bookingManager.getCurrentQuote() != null && bookingManager.getCurrentQuote().getRecurrenceOptions() != null)
@@ -76,7 +85,16 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         super.onResume();
         showUiBlockers();
-        bus.post(new BookingEditEvent.RequestGetEditFrequencyViewModel(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
+
+        if (mBooking != null)
+        {
+            bus.post(new BookingEditEvent.RequestGetEditFrequencyViewModel(Integer.parseInt(mBooking.getId()))); //TODO: investigate why ID is a string?
+        }
+        else if (mRecurringBooking != null)
+        {
+            bus.post(new BookingEditEvent.RequestRecurringFrequencyViewModel(mRecurringBooking.getId()));
+        }
+
     }
 
     @Override
@@ -111,9 +129,11 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         final int frequency = mBookingEditFrequencyViewModel.getFrequencyOptionValue(selectedIndex);
         bookingEditFrequencyRequest.setRecurringFrequency(frequency);
 
+        float hours = mBooking != null ? mBooking.getHours() : mRecurringBooking.getHours();
+
         if (mBookingQuote != null)
         {
-            float[] prices = mBookingQuote.getPricing(mBooking.getHours(), frequency);
+            float[] prices = mBookingQuote.getPricing(hours, frequency);
             if (prices != null && prices.length >= 2)
             {
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFrequencySubmittedLog(
@@ -122,16 +142,25 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         }
 
         //post the booking request object
-        bus.post(new BookingEditEvent.RequestEditBookingFrequency(
-                Integer.parseInt(mBooking.getId()),
-                bookingEditFrequencyRequest));
+        if (mBooking != null)
+        {
+            bus.post(new BookingEditEvent.RequestEditBookingFrequency(
+                    Integer.parseInt(mBooking.getId()),
+                    bookingEditFrequencyRequest));
+        }
+        else
+        {
+            bus.post(new BookingEditEvent.RequestUpdateRecurringFrequency(
+                    mRecurringBooking.getId(),
+                    bookingEditFrequencyRequest));
+        }
     }
 
     private void createOptionsView()
     {
         //create the options view
         BookingOption bookingOption = mBookingEditFrequencyViewModel.getBookingOptionFromBooking(
-                this.getActivity(), mBooking);
+                this.getActivity(), mBooking, mRecurringBooking);
         mOptionsView
                 = new BookingOptionsSelectView(getActivity(), bookingOption, null);
         mOptionsView.setCurrentIndex(mBookingEditFrequencyViewModel.getOptionIndexForFrequencyValue());
@@ -162,6 +191,17 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     @Subscribe
     public final void onReceiveUpdateBookingFrequencySuccess(BookingEditEvent.ReceiveEditBookingFrequencySuccess event)
     {
+        updateSuccess();
+    }
+
+    @Subscribe
+    public final void onReceiveUpdateRecurringFrequencySuccess(BookingEditEvent.ReceiveUpdateRecurringFrequencySuccess event)
+    {
+        updateSuccess();
+    }
+
+    private void updateSuccess()
+    {
         removeUiBlockers();
         showToast(R.string.updated_booking_frequency);
 
@@ -177,8 +217,26 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     }
 
     @Subscribe
+    public final void onReceiveUpdateRecurringFrequencyError(BookingEditEvent.ReceiveUpdateRecurringFrequencyError event)
+    {
+        onReceiveErrorEvent(event);
+        removeUiBlockers(); //allow user to try again
+    }
+
+    @Subscribe
     public final void onReceiveEditFrequencyViewModelSuccess(
             BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess event
+    )
+    {
+        mBookingEditFrequencyViewModel = event.bookingEditFrequencyViewModel;
+        createOptionsView();
+        removeUiBlockers();
+    }
+
+
+    @Subscribe
+    public final void onReceiveRecurringFrequencyViewModelSuccess(
+            BookingEditEvent.ReceiveRecurringFrequencyViewModelSuccess event
     )
     {
         mBookingEditFrequencyViewModel = event.bookingEditFrequencyViewModel;
@@ -194,4 +252,16 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
+
+
+    @Subscribe
+    public final void onReceiveRecurringFrequencyViewModelError(
+            BookingEditEvent.ReceiveRecurringFrequencyViewModelError event
+    )
+    {
+        onReceiveErrorEvent(event);
+        setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
+    }
+
+
 }

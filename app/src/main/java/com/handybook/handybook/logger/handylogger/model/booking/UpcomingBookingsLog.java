@@ -1,5 +1,6 @@
 package com.handybook.handybook.logger.handylogger.model.booking;
 
+import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 
@@ -32,4 +33,23 @@ public class UpcomingBookingsLog extends EventLog
             super(EVENT_TYPE);
         }
     }
+
+
+    /**
+     * Trigger: User taps to view booking details
+     */
+    public static class BookingDetailsTappedLog extends UpcomingBookingsLog
+    {
+        private static final String EVENT_TYPE = "booking_details_tapped";
+
+        @SerializedName("booking_id")
+        private String mBookingId;
+
+        public BookingDetailsTappedLog(final String bookingId)
+        {
+            super(EVENT_TYPE);
+            mBookingId = bookingId;
+        }
+    }
+
 }
