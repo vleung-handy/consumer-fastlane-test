@@ -14,6 +14,7 @@ import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.JobStatus;
+import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.UserManager;
@@ -44,8 +45,8 @@ public class HelpFragment extends InjectedFragment
 
     @Bind(R.id.native_help_center_layout)
     ViewGroup mNativeHelpCenterLayout;
-    @Bind(R.id.recent_booking_layout)
-    ViewGroup mRecentBookingLayout;
+    @Bind(R.id.recent_booking_actions_layout)
+    ViewGroup mRecentBookingActionsLayout;
     @Bind(R.id.fragment_referral_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.help_dynamic_layout)
@@ -54,6 +55,8 @@ public class HelpFragment extends InjectedFragment
     TextView mRecentBookingDateText;
     @Bind(R.id.recent_booking_time_text)
     TextView mRecentBookingTimeText;
+    @Bind(R.id.report_an_issue_layout)
+    ViewGroup mReportAnIssueLayout;
     @Bind(R.id.suggested_actions_layout)
     ViewGroup mSuggestedActionsLayout;
 
@@ -103,13 +106,17 @@ public class HelpFragment extends InjectedFragment
         bus.post(new HelpEvent.RequestHelpCenter());
     }
 
-    @OnClick(R.id.help_center_layout)
-    public void helpCenterOptionClicked()
+    @OnClick(R.id.recent_booking_layout)
+    public void recentBookingClicked()
     {
-        Bundle args = new Bundle();
-        args.putString(BundleKeys.HELP_CENTER_URL, mHelpCenterUrl);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                HelpWebViewFragment.newInstance(args)).addToBackStack(null).commit();
+        if (mBooking != null)
+        {
+            Intent intent = new Intent(getContext(), BookingDetailActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(BundleKeys.BOOKING, mBooking);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.report_an_issue_text)
@@ -148,6 +155,15 @@ public class HelpFragment extends InjectedFragment
         }
     }
 
+    @OnClick(R.id.help_center_layout)
+    public void helpCenterOptionClicked()
+    {
+        Bundle args = new Bundle();
+        args.putString(BundleKeys.HELP_CENTER_URL, mHelpCenterUrl);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                HelpWebViewFragment.newInstance(args)).addToBackStack(null).commit();
+    }
+
     @Subscribe
     public void onReceiveHelpCenterSuccess(HelpEvent.ReceiveHelpCenterSuccess event)
     {
@@ -179,10 +195,15 @@ public class HelpFragment extends InjectedFragment
                                         df.format(mBooking.getHours())));
                     }
                 }
+
+                if (!mBooking.isMilestonesEnabled())
+                {
+                    mReportAnIssueLayout.setVisibility(View.GONE);
+                }
             }
             else
             {
-                mRecentBookingLayout.setVisibility(View.GONE);
+                mRecentBookingActionsLayout.setVisibility(View.GONE);
             }
 
             ArrayList<HelpCenterResponse.Link> links = response.getLinks();

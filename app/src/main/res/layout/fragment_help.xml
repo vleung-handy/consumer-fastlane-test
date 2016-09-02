@@ -54,7 +54,7 @@
                 >
 
                 <LinearLayout
-                    android:id="@+id/recent_booking_layout"
+                    android:id="@+id/recent_booking_actions_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -76,6 +76,7 @@
                     <include layout="@layout/gray_horizontal_divider"/>
 
                     <LinearLayout
+                        android:id="@+id/recent_booking_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
@@ -124,17 +125,27 @@
 
                     <include layout="@layout/gray_horizontal_divider"/>
 
-                    <TextView
-                        android:id="@+id/report_an_issue_text"
-                        style="@style/TextView.Bold"
+                    <LinearLayout
+                        android:id="@+id/report_an_issue_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/default_padding"
-                        android:text="@string/report_an_issue"
-                        android:textColor="@color/handy_tertiary_gray"
-                        />
+                        android:orientation="vertical"
+                        >
 
-                    <include layout="@layout/gray_horizontal_divider"/>
+                        <TextView
+                            android:id="@+id/report_an_issue_text"
+                            style="@style/TextView.Bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/default_padding"
+                            android:text="@string/report_an_issue"
+                            android:textColor="@color/handy_tertiary_gray"
+                            />
+
+                        <include layout="@layout/gray_horizontal_divider"/>
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
