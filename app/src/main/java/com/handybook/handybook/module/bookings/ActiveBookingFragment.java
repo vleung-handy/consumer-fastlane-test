@@ -348,6 +348,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     private void setTimeStamp(Date timeStamp)
     {
+        if (!isAttached())
+        {
+            return;
+        }
         if (timeStamp != null)
         {
             String time = DateTimeUtils.getTime(timeStamp);
@@ -358,6 +362,11 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         {
             mTextLocationTime.setVisibility(View.GONE);
         }
+    }
+
+    private boolean isAttached()
+    {
+        return isAdded() && getActivity() != null;
     }
 
     private void periodicUpdate()
@@ -376,7 +385,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             public void onSuccess(final Booking.LocationStatus response)
             {
 
-                if (response != null && !isBadLocation(response.getProviderLocation()))
+                if (response != null && !isBadLocation(response.getProviderLocation()) && isAttached())
                 {
                     double lat = Double.parseDouble(response.getProviderLocation().getLatitude());
                     double lng = Double.parseDouble(response.getProviderLocation().getLongitude());
@@ -396,7 +405,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     private void adjustMapPositioning()
     {
-        if (mGoogleMap == null || !isAdded())
+        if (mGoogleMap == null || !isAttached())
         {
             return;
         }

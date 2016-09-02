@@ -13,8 +13,10 @@
         android:layout_height="wrap_content"
         app:optCardElevation="@dimen/low_elevation"
         app:optCardCornerRadius="@dimen/default_corner_radius"
-        app:contentPadding="@dimen/default_padding_double"
+        app:contentPadding="@dimen/active_booking_error_message_padding"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
         >
 
         <LinearLayout
@@ -33,14 +35,17 @@
                 android:textAllCaps="true"
                 style="@style/TextView.Bold"
                 android:gravity="center"
+                android:layout_gravity="center"
                 />
 
             <TextView
                 android:id="@+id/text_error_message"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="@string/missing_booking_location"
                 android:gravity="center"
+                android:layout_gravity="center"
+                android:maxLines="3"
                 android:layout_marginTop="@dimen/default_margin_half"
                 />
         </LinearLayout>
