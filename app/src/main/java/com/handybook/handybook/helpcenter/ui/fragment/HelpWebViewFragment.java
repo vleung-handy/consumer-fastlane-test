@@ -34,13 +34,30 @@ public class HelpWebViewFragment extends InjectedFragment
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.web_view)
     HandyWebView mWebView;
-    private String helpCenterUrl;
+    private String mHelpCenterUrl;
+    private String mId;
+    private String mLinkType;
 
     public static HelpWebViewFragment newInstance(final Bundle arguments)
     {
         final HelpWebViewFragment fragment = new HelpWebViewFragment();
         fragment.setArguments(arguments);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null && !args.isEmpty())
+        {
+            mHelpCenterUrl = getArguments().getString(BundleKeys.HELP_CENTER_URL);
+
+            // The following will be null if not provided
+            mId = getArguments().getString(BundleKeys.HELP_ID);
+            mLinkType = getArguments().getString(BundleKeys.HELP_LINK_TYPE);
+        }
     }
 
     @Nullable
@@ -90,17 +107,8 @@ public class HelpWebViewFragment extends InjectedFragment
     public void onResume()
     {
         super.onResume();
-        Bundle args = getArguments();
-        if (args != null && !args.isEmpty())
-        {
-            helpCenterUrl = getArguments().getString(BundleKeys.HELP_CENTER_URL);
-            if (!Strings.isNullOrEmpty(helpCenterUrl))
-            { loadURL(); }
-            else
-            {
-                requestConfiguration();
-            }
-        }
+        if (!Strings.isNullOrEmpty(mHelpCenterUrl))
+        { loadURL(); }
         else
         {
             requestConfiguration();
@@ -116,7 +124,7 @@ public class HelpWebViewFragment extends InjectedFragment
         final Configuration configuration = event.getConfiguration();
         if (configuration != null)
         {
-            helpCenterUrl = configuration.getHelpCenterUrl();
+            mHelpCenterUrl = configuration.getHelpCenterUrl();
             loadURL();
         }
     }
@@ -152,18 +160,12 @@ public class HelpWebViewFragment extends InjectedFragment
 
     private void loadURL()
     {
-        Bundle args = getArguments();
-        if (args != null && !args.isEmpty())
+        if (!Strings.isNullOrEmpty(mId) && !Strings.isNullOrEmpty(mLinkType))
         {
-            final String id = getArguments().getString(BundleKeys.HELP_ID);
-            final String linkType = getArguments().getString(BundleKeys.HELP_LINK_TYPE);
-            if (id != null && linkType != null)
-            {
-                helpCenterUrl = Uri.parse(helpCenterUrl).buildUpon()
-                        .appendQueryParameter(REDIRECT_TO, linkType + id)
-                        .build().toString();
-            }
+            mHelpCenterUrl = Uri.parse(mHelpCenterUrl).buildUpon()
+                    .appendQueryParameter(REDIRECT_TO, mLinkType + mId)
+                    .build().toString();
         }
-        mWebView.loadUrl(helpCenterUrl);
+        mWebView.loadUrl(mHelpCenterUrl);
     }
 }

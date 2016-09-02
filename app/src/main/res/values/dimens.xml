@@ -89,6 +89,7 @@
 
     <!-- Help Center -->
     <dimen name="recent_booking_image_width_height">50dp</dimen>
+    <dimen name="recent_booking_time_margin_top">2dp</dimen>
     <dimen name="suggested_actions_margin_top">24dp</dimen>
     <dimen name="help_center_image_width_height">20dp</dimen>
 </resources>

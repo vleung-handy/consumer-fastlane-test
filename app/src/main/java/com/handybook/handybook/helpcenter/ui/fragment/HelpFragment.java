@@ -26,6 +26,7 @@ import com.handybook.handybook.ui.view.HelpCenterActionItemView;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.squareup.otto.Subscribe;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -59,10 +60,12 @@ public class HelpFragment extends InjectedFragment
     private String mHelpCenterUrl;
     private Booking mBooking;
 
-    public static Fragment newInstance(Bundle arguments)
+    public static Fragment newInstance(@Nullable String helpCenterUrl)
     {
         final HelpFragment fragment = new HelpFragment();
-        fragment.setArguments(arguments);
+        Bundle args = new Bundle();
+        args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -160,10 +163,21 @@ public class HelpFragment extends InjectedFragment
                 {
                     mRecentBookingDateText.setText(
                             DateTimeUtils.DAY_MONTH_DATE_FORMATTER.format(bookingStartDate));
-                    mRecentBookingTimeText.setText(
-                            getString(R.string.dash_formatted,
-                                    DateTimeUtils.LOCAL_TIME_12_HOURS_FORMATTER.format(bookingStartDate),
-                                    mBooking.getHours()));
+
+                    String bookingTime = DateTimeUtils.LOCAL_TIME_12_HOURS_FORMATTER
+                            .format(bookingStartDate);
+                    if (!Strings.isNullOrEmpty(bookingTime))
+                    {
+                        /* Show one decimal digit for booking hours
+                         when required, Example: 3.0 -> 3, 2.5 - > 2.5 */
+                        DecimalFormat df = new DecimalFormat();
+                        df.setMinimumFractionDigits(0);
+                        df.setMaximumFractionDigits(1);
+                        mRecentBookingTimeText.setText(
+                                getString(R.string.help_booking_time_dash_formatted,
+                                        bookingTime.toLowerCase(),
+                                        df.format(mBooking.getHours())));
+                    }
                 }
             }
             else

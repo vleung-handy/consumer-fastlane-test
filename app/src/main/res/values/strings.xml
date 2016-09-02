@@ -392,6 +392,7 @@
 
     <!-- Help Center -->
     <string name="recent_booking">Recent Booking</string>
+    <string name="help_booking_time_dash_formatted">%1$s \u2013 %2$s hours</string>
     <string name="suggested_actions">Suggested Actions</string>
     <string name="need_more_help">Need More Help</string>
     <string name="help_center">Help Center</string>

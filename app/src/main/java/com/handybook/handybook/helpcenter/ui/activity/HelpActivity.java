@@ -91,18 +91,17 @@ public class HelpActivity extends MenuDrawerActivity
         if (mConfiguration != null)
         {
             String helpCenterUrl = mConfiguration.getHelpCenterUrl();
-            Bundle args = new Bundle();
-            if (!Strings.isNullOrEmpty(helpCenterUrl))
-            {
-                args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
-            }
-
             if (mConfiguration.isNativeHelpCenterEnabled())
             {
-                return HelpFragment.newInstance(args);
+                return HelpFragment.newInstance(helpCenterUrl);
             }
             else
             {
+                Bundle args = new Bundle();
+                if (!Strings.isNullOrEmpty(helpCenterUrl))
+                {
+                    args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
+                }
                 return HelpWebViewFragment.newInstance(args);
             }
         }
