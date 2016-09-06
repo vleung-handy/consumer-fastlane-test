@@ -56,6 +56,7 @@ public interface HandyRetrofitService
     @POST("/bookings/{id}/recurring_cancel_send_cancel_email")
     void sendCancelRecurringBookingEmail(
             @Path("id") int bookingRecurringId,
+            @Body String empty,
             HandyRetrofitCallback cb
     );
 
@@ -351,9 +352,10 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+    @FormUrlEncoded
     @PUT("/users/{user_id}/update_credit_card")
     void updatePaymentInfo(
-            @Path("user_id") String userId, @Query("stripe_token") String token,
+            @Path("user_id") String userId, @Field("stripe_token") String token,
             HandyRetrofitCallback cb
     );
 
@@ -382,11 +384,12 @@ public interface HandyRetrofitService
     );
 
     //Request a specific pro for a specific booking.
+    @FormUrlEncoded
     @POST("/bookings/{booking}/request_pro")
     void requestProForBooking(
             @Path("booking") int bookingId,
-            @Query("requested_pro") int requestedProId,
-            @Query("fail_on_conflict") boolean failOnConflict,
+            @Field("requested_pro") int requestedProId,
+            @Field("fail_on_conflict") boolean failOnConflict,
             HandyRetrofitCallback cb
     );
 
@@ -410,10 +413,11 @@ public interface HandyRetrofitService
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
     @POST("/referrals/prepare")
-    void requestPrepareReferrals(HandyRetrofitCallback cb);
+    void requestPrepareReferrals(@Body String empty, HandyRetrofitCallback cb);
 
+    @FormUrlEncoded
     @POST("/referrals/confirm")
-    void requestConfirmReferral(@Query("post_guid") String guid, HandyRetrofitCallback cb);
+    void requestConfirmReferral(@Field("post_guid") String guid, HandyRetrofitCallback cb);
 
     @GET("/referrals/claim_details")
     void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);
