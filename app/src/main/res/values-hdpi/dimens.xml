@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="active_booking_map_height">200dp</dimen>
+    <dimen name="active_booking_error_message_padding">16dp</dimen>
+</resources>
