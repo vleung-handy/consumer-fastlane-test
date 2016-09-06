@@ -104,7 +104,7 @@ public interface HandyRetrofitService
     );
 
     @POST("/quotes/{quote}/remove_coupon")
-    void removePromo(@Path("quote") int quoteId, HandyRetrofitCallback cb);
+    void removePromo(@Path("quote") int quoteId, @Body String empty, HandyRetrofitCallback cb);
 
     @POST("/quotes/{quote}/create_booking")
     void createBooking(
