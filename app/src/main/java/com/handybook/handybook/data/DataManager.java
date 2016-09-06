@@ -414,7 +414,7 @@ public class DataManager
 
     public void removePromo(final int quoteId, final Callback<BookingCoupon> cb)
     {
-        mService.removePromo(quoteId, new HandyRetrofitCallback(cb)
+        mService.removePromo(quoteId, "", new HandyRetrofitCallback(cb)
         {
             @Override
             protected void success(final JSONObject response)
