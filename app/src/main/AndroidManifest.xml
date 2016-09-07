@@ -220,6 +220,7 @@
                 android:value="com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity"
                 />
         </activity>
+
         <activity
             android:name=".ui.activity.BlockingActivity"
             android:noHistory="true"
@@ -310,9 +311,10 @@
             android:value="true"
             />
 
+        <!--For google maps-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAbigRaEkIHF8vyCE-8wuvANRwrhvzJn4w"
+            android:value="@string/google_api_key"
             />
 
         <!-- URBAN AIRSHIP -->
