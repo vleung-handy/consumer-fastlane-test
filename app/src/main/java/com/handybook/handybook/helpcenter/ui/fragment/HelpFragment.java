@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.common.base.Strings;
@@ -24,6 +25,7 @@ import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HelpCenterActionItemView;
+import com.handybook.handybook.util.BookingUtil;
 import com.handybook.handybook.util.DateTimeUtils;
 import com.squareup.otto.Subscribe;
 
@@ -51,6 +53,8 @@ public class HelpFragment extends InjectedFragment
     Toolbar mToolbar;
     @Bind(R.id.help_dynamic_layout)
     ViewGroup mHelpDynamicLayout;
+    @Bind(R.id.help_booking_image)
+    ImageView mHelpBookingImage;
     @Bind(R.id.recent_booking_date_text)
     TextView mRecentBookingDateText;
     @Bind(R.id.recent_booking_time_text)
@@ -200,6 +204,8 @@ public class HelpFragment extends InjectedFragment
                 {
                     mReportAnIssueLayout.setVisibility(View.GONE);
                 }
+                mHelpBookingImage.setImageResource(
+                        BookingUtil.getIconForService(mBooking, BookingUtil.IconType.GRAY));
             }
             else
             {

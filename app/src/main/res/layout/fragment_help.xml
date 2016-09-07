@@ -36,8 +36,8 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/handy_background_gray"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:background="@color/handy_bg"
         >
 
         <LinearLayout
@@ -73,23 +73,22 @@
                         android:text="@string/recent_booking"
                         />
 
-                    <include layout="@layout/gray_horizontal_divider"/>
-
                     <LinearLayout
                         android:id="@+id/recent_booking_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/help_center_cell_height"
                         android:background="@color/white"
                         android:orientation="horizontal"
                         android:padding="@dimen/default_padding"
                         >
 
                         <ImageView
+                            android:id="@+id/help_booking_image"
                             android:layout_width="@dimen/recent_booking_image_width_height"
                             android:layout_height="@dimen/recent_booking_image_width_height"
                             android:layout_gravity="center_vertical"
                             android:contentDescription="@string/clean"
-                            android:src="@drawable/ic_clean_gray"
+                            tools:src="@drawable/ic_clean_gray"
                             />
 
                         <LinearLayout
@@ -123,18 +122,18 @@
 
                     </LinearLayout>
 
-                    <include layout="@layout/gray_horizontal_divider"/>
-
                     <LinearLayout
                         android:id="@+id/report_an_issue_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/white"
                         android:orientation="vertical"
                         >
 
+                        <include layout="@layout/gray_horizontal_divider"/>
+
                         <TextView
                             android:id="@+id/report_an_issue_text"
-                            style="@style/TextView.Bold"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/default_padding"
@@ -142,7 +141,6 @@
                             android:textColor="@color/handy_tertiary_gray"
                             />
 
-                        <include layout="@layout/gray_horizontal_divider"/>
 
                     </LinearLayout>
 
@@ -166,8 +164,6 @@
                         android:layout_marginTop="@dimen/suggested_actions_margin_top"
                         android:text="@string/suggested_actions"
                         />
-
-                    <include layout="@layout/gray_horizontal_divider"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -199,12 +195,11 @@
                     android:text="@string/need_more_help"
                     />
 
-                <include layout="@layout/gray_horizontal_divider"/>
 
                 <LinearLayout
                     android:id="@+id/help_center_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/help_center_cell_height"
                     android:background="@color/white"
                     android:orientation="horizontal"
                     android:padding="@dimen/default_padding"
@@ -215,7 +210,7 @@
                         android:layout_height="@dimen/help_center_image_width_height"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/help_center_image"
-                        android:src="@drawable/menu_help"
+                        android:src="@drawable/ic_help_center"
                         />
 
                     <LinearLayout
@@ -225,12 +220,6 @@
                         android:layout_marginStart="@dimen/default_margin"
                         android:orientation="vertical"
                         >
-
-                        <include
-                            layout="@layout/element_horizontal_divider"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -252,8 +241,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-                <include layout="@layout/gray_horizontal_divider"/>
 
             </LinearLayout>
 

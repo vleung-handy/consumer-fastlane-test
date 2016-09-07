@@ -20,7 +20,7 @@ public class DateTimeUtils
             ("EEEE, MMM d");
     public final static DateFormat MONTH_AND_DAY_FORMATTER = new SimpleDateFormat("MMM d");
     public final static SimpleDateFormat LOCAL_TIME_12_HOURS_FORMATTER =
-            new SimpleDateFormat("hh:mm a", Locale.getDefault());
+            new SimpleDateFormat("hh:mma", Locale.getDefault());
 
     public final static SimpleDateFormat DAY_OF_WEEK_MONTH_DAY_FORMATTER =
             new SimpleDateFormat("EEEE, MMMM d", Locale.getDefault());

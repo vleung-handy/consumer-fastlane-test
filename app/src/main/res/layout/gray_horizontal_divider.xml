@@ -3,5 +3,5 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/gray_horizontal_divider_height"
-    android:background="@color/handy_dark_divider_line"
+    android:background="@color/handy_divider_line"
     />

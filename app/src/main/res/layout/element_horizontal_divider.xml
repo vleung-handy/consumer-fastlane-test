@@ -2,6 +2,6 @@
 <View
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/horizontal_divider_height"
-    android:background="?android:attr/listDivider"
+    android:layout_height="@dimen/horizontal_divider_height_thin"
+    android:background="@color/handy_divider_line"
     />

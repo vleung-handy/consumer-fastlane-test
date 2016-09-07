@@ -88,8 +88,9 @@
     <dimen name="active_booking_error_message_padding">16dp</dimen>
 
     <!-- Help Center -->
-    <dimen name="recent_booking_image_width_height">50dp</dimen>
+    <dimen name="recent_booking_image_width_height">32dp</dimen>
     <dimen name="recent_booking_time_margin_top">2dp</dimen>
     <dimen name="suggested_actions_margin_top">24dp</dimen>
     <dimen name="help_center_image_width_height">20dp</dimen>
+    <dimen name="help_center_cell_height">72dp</dimen>
 </resources>
