@@ -48,11 +48,15 @@ import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.SecurePreferences;
+import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.ui.RedemptionActivity;
 import com.handybook.handybook.module.referral.ui.RedemptionEmailSignUpFragment;
@@ -62,6 +66,7 @@ import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.module.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
+import com.handybook.handybook.ui.fragment.HelpCenterTest;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.squareup.otto.Bus;
@@ -126,7 +131,11 @@ import static org.mockito.Mockito.when;
         RedemptionEmailSignUpFragment.class,
         ReportIssueActivity.class,
         ReportIssueFragment.class,
-        UpcomingBookingsFragment.class
+        UpcomingBookingsFragment.class,
+        HelpActivity.class,
+        HelpFragment.class,
+        HelpWebViewFragment.class,
+        HelpCenterTest.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -275,5 +284,16 @@ public class TestApplicationModule
     final UrbanAirshipManager provideUrbanAirshipManager()
     {
         return mock(UrbanAirshipManager.class);
+    }
+
+    @Provides
+    @Singleton
+    final ConfigurationManager provideConfigurationManager(
+            final Bus bus,
+            final SharedPreferences sharedPreferences,
+            final DataManager dataManager
+    )
+    {
+        return spy(new ConfigurationManager(bus, sharedPreferences, dataManager));
     }
 }

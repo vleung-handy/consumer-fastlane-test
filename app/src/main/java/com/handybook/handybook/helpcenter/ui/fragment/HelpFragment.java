@@ -3,7 +3,6 @@ package com.handybook.handybook.helpcenter.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +66,7 @@ public class HelpFragment extends InjectedFragment
     private String mHelpCenterUrl;
     private Booking mBooking;
 
-    public static Fragment newInstance(@Nullable String helpCenterUrl)
+    public static HelpFragment newInstance(@Nullable String helpCenterUrl)
     {
         final HelpFragment fragment = new HelpFragment();
         Bundle args = new Bundle();
