@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.util.TextUtils;
 
@@ -70,7 +71,11 @@ public class ProMilestoneView extends FrameLayout
 
     public void setTitleText(CharSequence text) { mTitleText.setText(text); }
 
-    public void setBodyText(CharSequence text) { mBodyText.setText(text); }
+    public void setBodyText(String text)
+    {
+        mBodyText.setText(text);
+        mBodyText.setVisibility(Strings.isNullOrEmpty(text) ? GONE : VISIBLE);
+    }
 
     public void setTimeText(CharSequence text)
     {
