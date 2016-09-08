@@ -152,7 +152,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
             else
             {
                 String entryDescription = mSelectedOptionMachineNameToInputFieldMap.get(
-                        InputFormDefinition.InputFormField.SupportedMachineName.DESCRIPTION).getInput();
+                        InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS).getInput();
                 entryInformationTransaction.setGetInText(entryDescription);
                 //set info for non-lockbox options
             }
@@ -362,7 +362,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
             }
             else
             {
-                BasicInputTextView textView = mSelectedOptionMachineNameToInputFieldMap.get(InputFormDefinition.InputFormField.SupportedMachineName.DESCRIPTION);
+                BasicInputTextView textView = mSelectedOptionMachineNameToInputFieldMap.get(InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS);
                 textView.setText(booking.getExtraEntryInfo());
 
             }

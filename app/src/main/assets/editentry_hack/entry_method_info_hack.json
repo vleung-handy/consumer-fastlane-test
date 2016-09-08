@@ -9,7 +9,7 @@
       "input_form": {
         "input_fields": [
           {
-            "machine_name": "key_location",
+            "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
             "required": false,
             "num_lines": 1
@@ -30,7 +30,7 @@
             "num_lines": 1
           },
           {
-            "machine_name": "key_location",
+            "machine_name": "lockbox_location",
             "hint_text": "Describe lockbox location",
             "required": true,
             "num_lines": 2
@@ -45,7 +45,7 @@
       "input_form": {
         "input_fields": [
           {
-            "machine_name": "key_location",
+            "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
             "required": false,
             "num_lines": 1
@@ -60,7 +60,7 @@
       "input_form": {
         "input_fields": [
           {
-            "machine_name": "key_location",
+            "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
             "required": false,
             "num_lines": 1

@@ -267,7 +267,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                 else
                 {
                     String entryDescription = mSelectedOptionInputFormFields.get(
-                            InputFormDefinition.InputFormField.SupportedMachineName.DESCRIPTION).getInput();
+                            InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS).getInput();
                     //set info for non-lockbox options
                     bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
                             entryMethodOption.getMachineName(),
