@@ -47,7 +47,7 @@
           {
             "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
-            "required": false,
+            "required": true,
             "num_lines": 1
           }
         ]

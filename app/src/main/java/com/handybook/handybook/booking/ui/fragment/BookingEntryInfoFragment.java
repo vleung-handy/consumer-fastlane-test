@@ -121,7 +121,6 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         setupToolbar(mToolbar, getString(R.string.confirmation));
         ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
 
-        //TODO test
         EntryMethodsInfo entryMethodsInfo = (EntryMethodsInfo) getArguments()
                 .getSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO);
         if(entryMethodsInfo != null)
