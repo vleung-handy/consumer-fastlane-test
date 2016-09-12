@@ -25,9 +25,9 @@ import butterknife.OnClick;
 
 public final class BookingEditAddressFragment extends BookingFlowFragment
 {
-    @Bind(R.id.street_addr_text)
+    @Bind(R.id.text_street)
     StreetAddressInputTextView mStreetAddressInputTextView1;
-    @Bind(R.id.other_addr_text)
+    @Bind(R.id.text_other)
     EditText mStreetAddressInputTextView2;
     @Bind(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;

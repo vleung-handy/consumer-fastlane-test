@@ -54,6 +54,9 @@
     <string name="when_come">When would you like us to come?</string>
     <string name="request_pro">Request Pro</string>
     <string name="street_addr">Street Address</string>
+    <string name="street_addr_city">City</string>
+    <string name="street_addr_state">State</string>
+    <string name="street_addr_postal">Zip</string>
     <string name="apt_num">Apt #</string>
     <string name="complete_booking">Complete Booking</string>
     <string name="payment">Payment</string>
@@ -153,6 +156,7 @@
     <string name="help_center_subject">Subject: </string>
     <string name="try_again">Try Again</string>
     <string name="error_fetching_connectivity_issue">Oops! There was an error with your internet connection.</string>
+    <string name="error_connect_gps">Failed to connect to google play services.</string>
     <string name="ensure_fields_valid">Please ensure all fields are filled out correctly.</string>
     <string name="an_error_has_occurred">An error has occurred, please try again.</string>
     <string name="modal_blocking_title">Oh no! Your app\nis out of date.</string>
@@ -394,6 +398,7 @@
     <string name="location_data_unavailable">Location Data Unavailable</string>
     <string name="missing_booking_location">We\'re having trouble displaying your address on the map.</string>
     <string name="missing_provider_location">We can\'t locate your pro right now, but you can try contacting them directly for an update.</string>
+    <string name="google_api_endpoint">https://maps.googleapis.com/</string>
 
 
     <!-- Help Center -->

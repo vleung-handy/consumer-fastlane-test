@@ -286,6 +286,21 @@
         <item name="android:maxLength">200</item>
     </style>
 
+    <style name="EditText.StreetAddress.City">
+        <item name="android:hint">@string/street_addr_city</item>
+        <item name="android:maxLength">50</item>
+    </style>
+
+    <style name="EditText.StreetAddress.State">
+        <item name="android:hint">@string/street_addr_state</item>
+        <item name="android:maxLength">20</item>
+    </style>
+
+    <style name="EditText.StreetAddress.Postal">
+        <item name="android:hint">@string/street_addr_postal</item>
+        <item name="android:maxLength">20</item>
+    </style>
+
     <style name="EditText.OtherAddress">
         <item name="android:inputType">textPostalAddress</item>
         <item name="android:singleLine">true</item>

@@ -17,6 +17,7 @@ import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfileFragment;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
 import com.handybook.handybook.account.ui.UpdatePaymentFragment;
+import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -105,6 +106,7 @@ import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
+import com.handybook.handybook.data.GooglePlacesService;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.SecurePreferences;
@@ -337,6 +339,27 @@ public final class ApplicationModule
     final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(EnvironmentModifier environmentModifier)
     {
         return new HandyRetrofitEndpoint(mContext, environmentModifier);
+    }
+
+    @Provides
+    @Singleton
+    final GooglePlacesService providesGooglePlacesServices()
+    {
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(mContext.getString(R.string.google_api_endpoint))
+                .setClient(new OkClient(new OkHttpClient()))
+                .setConverter(new GsonConverter(new GsonBuilder().create()))
+                .setRequestInterceptor(new RequestInterceptor()
+                {
+                    @Override
+                    public void intercept(RequestFacade request)
+                    {
+                        request.addQueryParam("key", mContext.getString(R.string.google_api_key));
+                    }
+                })
+                .build();
+
+        return adapter.create(GooglePlacesService.class);
     }
 
     @Provides

@@ -80,10 +80,10 @@ public class BookingCreationTest
 
         //fill out address fields
         Address address = testUser.getAddress();
-        TextViewUtil.updateEditTextView(R.id.fullname_text, testUser.getFullName());
-        TextViewUtil.updateEditTextView(R.id.street_addr_text, address.getStreetAddress1());
-        TextViewUtil.updateEditTextView(R.id.other_addr_text, address.getStreetAddress2());
-        TextViewUtil.updateEditTextView(R.id.phone_text, testUser.getPhoneNumber());
+        TextViewUtil.updateEditTextView(R.id.text_fullname, testUser.getFullName());
+        TextViewUtil.updateEditTextView(R.id.text_street, address.getStreetAddress1());
+        TextViewUtil.updateEditTextView(R.id.text_other, address.getStreetAddress2());
+        TextViewUtil.updateEditTextView(R.id.text_phone, testUser.getPhoneNumber());
         clickNextButton();
 
         //fill out credit card fields
@@ -170,7 +170,7 @@ public class BookingCreationTest
         clickNextButton();
 
         //use previous address
-        ViewUtil.waitForViewVisible(R.id.street_addr_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(R.id.text_street, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         clickNextButton();
 
         //use previous credit card

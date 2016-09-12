@@ -400,6 +400,10 @@ public class User extends Observable
         private String mAddress1;
         @SerializedName("address2")
         private String mAddress2;
+        @SerializedName("city")
+        private String mCity;
+        @SerializedName("state")
+        private String mState;
 
         public final String getZip()
         {
@@ -414,6 +418,16 @@ public class User extends Observable
         public final String getAddress2()
         {
             return mAddress2;
+        }
+
+        public String getCity()
+        {
+            return mCity;
+        }
+
+        public String getState()
+        {
+            return mState;
         }
     }
 

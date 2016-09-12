@@ -58,11 +58,11 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldLaunchBookingPaymentActivity() throws Exception
     {
-        mFragment.fullNameText.setText("John Doe");
-        mFragment.streetAddrText.setText("123 Handy St");
-        mFragment.phoneText.setText("1111111111");
+        mFragment.mTextFullName.setText("John Doe");
+        mFragment.mTextStreet.setText("123 Handy St");
+        mFragment.mTextPhone.setText("1111111111");
 
-        mFragment.nextButton.performClick();
+        mFragment.mButtonNext.performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName(),

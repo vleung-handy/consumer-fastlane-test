@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg"
+    >
 
-    <Button
-        android:id="@+id/next_button"
-        android:text="@string/next"
-        style="@style/Button.Green" />
 
     <include layout="@layout/toolbar"
         />
@@ -16,11 +13,12 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/next_button"
         android:layout_below="@id/toolbar"
+        android:layout_above="@+id/button_next"
         >
 
         <RelativeLayout
+            android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -31,62 +29,105 @@
                 android:padding="@dimen/default_padding" />
 
             <com.handybook.handybook.ui.widget.FullNameInputTextView
-                android:id="@+id/fullname_text"
+                android:id="@+id/text_fullname"
                 android:layout_below="@id/info_header_layout"
-                style="@style/EditText.FullName" />
+                style="@style/EditText.FullName"
+                />
+
+            <LinearLayout
+                android:id="@+id/phone_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_fullname"
+                >
+
+                <TextView
+                    android:id="@+id/text_phone_prefix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/EditText.Last"
+                    />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="@color/cell_sep"
+                    />
+
+                <com.handybook.handybook.ui.widget.PhoneInputTextView
+                    android:id="@+id/text_phone"
+                    style="@style/EditText.Last.Phone"
+                    />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/addr_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@id/fullname_text">
+                android:layout_below="@id/phone_layout"
+                >
 
                 <com.handybook.handybook.ui.widget.StreetAddressInputTextView
-                    android:id="@+id/street_addr_text"
+                    android:id="@+id/text_street"
                     android:width="0dp"
                     android:layout_weight="2"
                     style="@style/EditText.StreetAddress" />
 
                 <EditText
-                    android:id="@+id/other_addr_text"
+                    android:id="@+id/text_other"
                     android:width="0dp"
                     android:layout_weight="3"
                     style="@style/EditText.OtherAddress" />
 
             </LinearLayout>
 
+
             <LinearLayout
-                android:id="@+id/phone_layout"
+                android:id="@+id/city_state_zip_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/addr_layout">
+                android:orientation="horizontal"
+                android:layout_below="@id/addr_layout"
+                >
 
-                <TextView
-                    android:id="@+id/phone_prefix_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/EditText.Last" />
+                <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+                    android:id="@+id/text_city"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    style="@style/EditText.StreetAddress.City"
+                    />
 
-                <View
-                    android:layout_width="1px"
-                    android:layout_height="match_parent"
-                    android:background="@color/cell_sep"/>
+                <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+                    android:id="@+id/text_state"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/EditText.StreetAddress.State"
+                    />
 
-                <com.handybook.handybook.ui.widget.PhoneInputTextView
-                    android:id="@+id/phone_text"
-                    style="@style/EditText.Last.Phone" />
+                <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+                    android:id="@+id/text_postal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    style="@style/EditText.StreetAddress.Postal"
+                    />
 
             </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/phone_layout"
+                android:layout_below="@id/city_state_zip_container"
                 android:layout_marginTop="@dimen/default_margin" />
 
         </RelativeLayout>
 
     </ScrollView>
 
+    <Button
+        android:id="@id/button_next"
+        android:text="@string/next"
+        style="@style/Button.Green"
+        />
 </RelativeLayout>

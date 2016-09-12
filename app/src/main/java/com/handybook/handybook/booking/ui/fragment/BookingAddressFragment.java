@@ -1,50 +1,83 @@
 package com.handybook.handybook.booking.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.data.GooglePlacesService;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.module.autocomplete.PlacePrediction;
+import com.handybook.handybook.module.autocomplete.PlacesAutoCompleteAdapter;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
+import com.handybook.handybook.util.PlayServicesUtils;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingAddressFragment extends BookingFlowFragment
+public final class BookingAddressFragment extends BookingFlowFragment implements GoogleApiClient.OnConnectionFailedListener
 {
-    private static final String STATE_FULLNAME_HIGHLIGHT = "FULLNAME_HIGHLIGHT";
-    private static final String STATE_ADDR1_HIGHLIGHT = "ADDR1_HIGHLIGHT";
-    private static final String STATE_PHONE_HIGHLIGHT = "PHONE_HIGHLIGHT";
+    @Bind(R.id.main_container)
+    View mMainContainer;
 
-    @Bind(R.id.next_button)
-    Button nextButton;
-    @Bind(R.id.fullname_text)
-    FullNameInputTextView fullNameText;
-    @Bind(R.id.street_addr_text)
-    StreetAddressInputTextView streetAddrText;
-    @Bind(R.id.other_addr_text)
-    EditText otherAddrText;
-    @Bind(R.id.phone_prefix_text)
-    TextView phonePrefixText;
-    @Bind(R.id.phone_text)
-    PhoneInputTextView phoneText;
+    @Bind(R.id.button_next)
+    Button mButtonNext;
+
+    @Bind(R.id.text_fullname)
+    FullNameInputTextView mTextFullName;
+
+    @Bind(R.id.text_street)
+    StreetAddressInputTextView mTextStreet;
+
+    @Bind(R.id.text_city)
+    StreetAddressInputTextView mTextCity;
+
+    @Bind(R.id.text_state)
+    StreetAddressInputTextView mTextState;
+
+    @Bind(R.id.text_postal)
+    StreetAddressInputTextView mTextPostal;
+
+    @Bind(R.id.text_other)
+    EditText mTextOther;
+
+    @Bind(R.id.text_phone_prefix)
+    TextView mTextPhonePrefix;
+
+    @Bind(R.id.text_phone)
+    PhoneInputTextView mTextPhone;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
+    @Inject
+    GooglePlacesService mPlacesService;
+
+    private GoogleApiClient mGoogleApiClient;
+    private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
 
     public static BookingAddressFragment newInstance()
     {
@@ -76,62 +109,72 @@ public final class BookingAddressFragment extends BookingFlowFragment
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
-            fullNameText.setText(user.getFirstName() + " " + user.getLastName());
-            phoneText.setCountryCode(user.getPhonePrefix());
-            phoneText.setText(user.getPhone());
-            phonePrefixText.setText(user.getPhonePrefix());
+            mTextFullName.setText(user.getFirstName() + " " + user.getLastName());
+            mTextPhone.setCountryCode(user.getPhonePrefix());
+            mTextPhone.setText(user.getPhone());
+            mTextPhonePrefix.setText(user.getPhonePrefix());
 
             final User.Address addr = user.getAddress();
             if (addr != null)
             {
-                streetAddrText.setText(addr.getAddress1());
-                otherAddrText.setText(addr.getAddress2());
+                mTextStreet.setText(addr.getAddress1());
+                mTextOther.setText(addr.getAddress2());
+                mTextCity.setText(addr.getCity());
+                mTextState.setText(addr.getState());
+                mTextPostal.setText(addr.getZip());
             }
         }
         else
         {
             final String prefix = bookingManager.getCurrentQuote().getPhonePrefix();
-            phoneText.setCountryCode(prefix);
-            phonePrefixText.setText(prefix);
+            mTextPhone.setCountryCode(prefix);
+            mTextPhonePrefix.setText(prefix);
         }
 
-        nextButton.setOnClickListener(nextClicked);
-        return view;
-    }
+        mButtonNext.setOnClickListener(nextClicked);
 
-    @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null)
+        //NOTE: If the user doesn't have the required version of google play services, we won't even bother
+        //asking them to update. Not worth the hassle.
+        if (PlayServicesUtils.hasPlayServices(getActivity()))
         {
-            if (savedInstanceState.getBoolean(STATE_FULLNAME_HIGHLIGHT))
-            {
-                fullNameText.highlight();
-            }
-            if (savedInstanceState.getBoolean(STATE_ADDR1_HIGHLIGHT))
-            {
-                streetAddrText.highlight();
-            }
-            if (savedInstanceState.getBoolean(STATE_PHONE_HIGHLIGHT)) { phoneText.highlight(); }
-        }
-    }
+            mGoogleApiClient = new GoogleApiClient
+                    .Builder(getActivity())
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .enableAutoManage(getActivity(), this)
+                    .build();
 
-    @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_FULLNAME_HIGHLIGHT, fullNameText.isHighlighted());
-        outState.putBoolean(STATE_ADDR1_HIGHLIGHT, streetAddrText.isHighlighted());
-        outState.putBoolean(STATE_PHONE_HIGHLIGHT, phoneText.isHighlighted());
+            mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.auto_complete_list_item, mPlacesService);
+            mTextStreet.setAdapter(mAutoCompleteAdapter);
+            mTextStreet.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    PlacePrediction prediction = mAutoCompleteAdapter.getPrediction(position);
+                    mTextStreet.setText(prediction.getAddress());
+                    mTextCity.setText(prediction.getCity());
+                    mTextState.setText(prediction.getState());
+
+                    mMainContainer.requestFocus();
+
+                    hideKeyboard();
+                }
+            });
+        }
+
+        return view;
     }
 
     private boolean validateFields()
     {
         boolean validate = true;
-        if (!fullNameText.validate()) { validate = false; }
-        if (!streetAddrText.validate()) { validate = false; }
-        if (!phoneText.validate()) { validate = false; }
+        if (!mTextFullName.validate()) { validate = false; }
+        if (!mTextStreet.validate()) { validate = false; }
+        if (!mTextPhone.validate()) { validate = false; }
+        if (!mTextCity.validate()) { validate = false; }
+        if (!mTextState.validate()) { validate = false; }
+        if (!mTextPostal.validate()) { validate = false; }
         return validate;
     }
 
@@ -145,15 +188,53 @@ public final class BookingAddressFragment extends BookingFlowFragment
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressSubmittedLog()));
 
                 final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-                transaction.setFirstName(fullNameText.getFirstName());
-                transaction.setLastName(fullNameText.getLastName());
-                transaction.setAddress1(streetAddrText.getAddress());
-                transaction.setAddress2(otherAddrText.getText().toString());
-                transaction.setPhone(phoneText.getPhoneNumber());
+                transaction.setFirstName(mTextFullName.getFirstName());
+                transaction.setLastName(mTextFullName.getLastName());
+                transaction.setAddress1(mTextStreet.getAddress());
+                transaction.setAddress2(mTextOther.getText().toString());
+                transaction.setPhone(mTextPhone.getPhoneNumber());
 
                 final Intent intent = new Intent(getActivity(), BookingPaymentActivity.class);
                 startActivity(intent);
             }
         }
     };
+
+
+    public void hideKeyboard()
+    {
+        if (getActivity() != null && getView() != null)
+        {
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        if (mGoogleApiClient != null && !mGoogleApiClient.isConnected())
+        {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected())
+        {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull final ConnectionResult connectionResult)
+    {
+        Crashlytics.logException(new RuntimeException(getString(R.string.error_connect_gps)));
+    }
 }
