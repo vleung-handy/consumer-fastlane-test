@@ -2,10 +2,14 @@ package com.handybook.handybook.helpcenter.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.google.common.base.Strings;
+import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public class HelpActivity extends MenuDrawerActivity
@@ -13,6 +17,7 @@ public class HelpActivity extends MenuDrawerActivity
 
     private static final String LINK_TYPE_ARTICLES = "/articles/";
     private static final String LINK_TYPE_SECTIONS = "/sections/";
+
 
     public enum DeepLink
     {
@@ -50,15 +55,59 @@ public class HelpActivity extends MenuDrawerActivity
         }
     }
 
+
     @Override
     protected Fragment createFragment()
     {
-        return HelpFragment.newInstance(getIntent().getExtras());
+        Bundle args = getIntent().getExtras();
+        if (args != null && !args.isEmpty())
+        {
+            if (!Strings.isNullOrEmpty(args.getString(BundleKeys.HELP_ID)) && !Strings.isNullOrEmpty(args.getString(BundleKeys.HELP_LINK_TYPE)))
+            {
+                return HelpWebViewFragment.newInstance(getIntent().getExtras());
+            }
+            else
+            { return launchHelpFragmentWithOptionalArgsIfEnabled(); }
+        }
+        else
+        {
+            return launchHelpFragmentWithOptionalArgsIfEnabled();
+        }
     }
 
     @Override
     protected String getNavItemTitle()
     {
-        return null;
+        return getString(R.string.help);
+    }
+
+    private Fragment launchHelpFragmentWithOptionalArgsIfEnabled()
+    {
+        if (mConfiguration == null)
+        {
+            mConfiguration = mConfigurationManager.getCachedConfiguration();
+        }
+
+        if (mConfiguration != null)
+        {
+            String helpCenterUrl = mConfiguration.getHelpCenterUrl();
+            if (mConfiguration.isNativeHelpCenterEnabled())
+            {
+                return HelpFragment.newInstance(helpCenterUrl);
+            }
+            else
+            {
+                Bundle args = new Bundle();
+                if (!Strings.isNullOrEmpty(helpCenterUrl))
+                {
+                    args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
+                }
+                return HelpWebViewFragment.newInstance(args);
+            }
+        }
+        else
+        {
+            return HelpWebViewFragment.newInstance(new Bundle());
+        }
     }
 }

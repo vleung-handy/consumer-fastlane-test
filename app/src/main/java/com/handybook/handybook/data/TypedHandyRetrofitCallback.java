@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.handybook.handybook.model.response.UserExistsResponse;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
@@ -90,6 +91,7 @@ class BookingMilestonesCallback extends TypedHandyRetrofitCallback<JobStatus>
     }
 }
 
+
 class BookingOptionsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingOptionsWrapper>
 {
     BookingOptionsWrapperHandyRetroFitCallback(DataManager.Callback callback)
@@ -98,6 +100,7 @@ class BookingOptionsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallb
     }
 }
 
+
 class AvailableEntryMethodsHandyRetroFitCallback extends TypedHandyRetrofitCallback<EntryMethodsInfo>
 {
     AvailableEntryMethodsHandyRetroFitCallback(DataManager.Callback callback)
@@ -105,6 +108,7 @@ class AvailableEntryMethodsHandyRetroFitCallback extends TypedHandyRetrofitCallb
         super(callback);
     }
 }
+
 
 class ProviderResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<Provider>
 {
@@ -226,6 +230,16 @@ class RedemptionDetailsResponseHandyRetrofitCallback
         extends TypedHandyRetrofitCallback<RedemptionDetailsResponse>
 {
     RedemptionDetailsResponseHandyRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class HelpCenterResponseHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<HelpCenterResponse>
+{
+    HelpCenterResponseHandyRetrofitCallback(final DataManager.Callback callback)
     {
         super(callback);
     }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/help_center_cell_height"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout android:id="@+id/help_center_action_layout"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/white"
+                  android:orientation="horizontal"
+                  android:padding="@dimen/default_padding"
+        >
+
+        <ImageView
+            android:id="@+id/help_action_image"
+            android:layout_width="@dimen/help_center_image_width_height"
+            android:layout_height="@dimen/help_center_image_width_height"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/help_center_image"
+            android:src="@drawable/menu_help"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/help_action_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/handy_text_black"
+                android:textSize="@dimen/default_text_size"
+                tools:text="Issues with a past booking"
+                />
+
+            <TextView
+                android:id="@+id/help_action_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_padding_quarter"
+                android:textColor="@color/handy_tertiary_gray"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Report late or early, or a missed booking"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/gray_horizontal_divider"/>
+
+</LinearLayout>

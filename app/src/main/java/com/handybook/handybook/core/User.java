@@ -339,8 +339,10 @@ public class User extends Observable
     static final class UserSerializer implements JsonSerializer<User>
     {
         @Override
-        public final JsonElement serialize(final User value, final Type type,
-                                           final JsonSerializationContext context)
+        public final JsonElement serialize(
+                final User value, final Type type,
+                final JsonSerializationContext context
+        )
         {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));

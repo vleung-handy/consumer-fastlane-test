@@ -28,8 +28,6 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpNativeActivity;
-import com.handybook.handybook.helpcenter.ui.activity.HelpWebViewActivity;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.module.referral.ui.RedemptionActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
@@ -78,8 +76,6 @@ public class ScreenName
         sScreenNames.put(ServicesActivity.class.getCanonicalName(), "Services");
         sScreenNames.put(HelpContactActivity.class.getCanonicalName(), "Help Contact");
         sScreenNames.put(HelpActivity.class.getCanonicalName(), "Help");
-        sScreenNames.put(HelpNativeActivity.class.getCanonicalName(), "Help (Native)");
-        sScreenNames.put(HelpWebViewActivity.class.getCanonicalName(), "Hlep (Web View)");
         sScreenNames.put(NotificationsActivity.class.getCanonicalName(), "Notifications");
         sScreenNames.put(RedemptionActivity.class.getCanonicalName(), "Redemption");
         sScreenNames.put(ReferralActivity.class.getCanonicalName(), "Referral");

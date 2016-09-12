@@ -389,4 +389,15 @@
     <string name="missing_booking_location">We\'re having trouble displaying your address on the map.</string>
     <string name="missing_provider_location">We can\'t locate your pro right now, but you can try contacting them directly for an update.</string>
 
+
+    <!-- Help Center -->
+    <string name="recent_booking">Recent Booking</string>
+    <string name="help_booking_time_dash_formatted">%1$s \u2013 %2$s hours</string>
+    <string name="suggested_actions">Suggested Actions</string>
+    <string name="need_more_help">Need More Help</string>
+    <string name="help_center">Help Center</string>
+    <string name="help_center_description">Browse all help topics, contact us</string>
+
+    <!-- Content description for ImageViews -->
+    <string name="help_center_image">Help Center Image</string>
 </resources>

@@ -107,9 +107,8 @@ public class ConfigurationManager
         edit.apply();
     }
 
-    // Do NOT make this public. I know what you're trying to do.
     @Nullable
-    private Configuration getCachedConfiguration()
+    public Configuration getCachedConfiguration()
     {
         return mConfigurationCache.getIfPresent(KEY_CONFIGURATION_CACHE);
     }

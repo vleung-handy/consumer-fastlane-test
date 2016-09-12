@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/native_help_center_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="invisible"
+    tools:context=".module.referral.ui.ReferralActivity"
+    tools:visibility="visible"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/fragment_referral_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/HandyTheme.AppBarOverlay"
+            android:title="@string/my_bookings"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:navigationIcon="@drawable/ic_menu"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+
+            />
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/handy_background_gray"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:id="@+id/help_dynamic_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:id="@+id/recent_booking_actions_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        style="@style/TextView.Bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/default_margin_half"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        android:layout_marginLeft="@dimen/default_margin"
+                        android:layout_marginRight="@dimen/default_margin"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:text="@string/recent_booking"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/recent_booking_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/help_center_cell_height"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/default_padding"
+                        >
+
+                        <ImageView
+                            android:id="@+id/help_booking_image"
+                            android:layout_width="@dimen/recent_booking_image_width_height"
+                            android:layout_height="@dimen/recent_booking_image_width_height"
+                            android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/clean"
+                            tools:src="@drawable/ic_clean_gray"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:paddingEnd="@dimen/default_padding"
+                            android:paddingLeft="@dimen/default_padding"
+                            android:paddingRight="@dimen/default_padding"
+                            android:paddingStart="@dimen/default_padding"
+                            >
+
+                            <TextView
+                                android:id="@+id/recent_booking_date_text"
+                                style="@style/TextView.Bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="Monday, Mar 8"
+                                />
+
+                            <TextView
+                                android:id="@+id/recent_booking_time_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/recent_booking_time_margin_top"
+                                tools:text="6:00pm \u2014 3 hours"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/report_an_issue_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        >
+
+                        <include layout="@layout/gray_horizontal_divider"/>
+
+                        <TextView
+                            android:id="@+id/report_an_issue_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/default_padding"
+                            android:text="@string/report_an_issue"
+                            android:textColor="@color/handy_tertiary_gray"
+                            />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/suggested_actions_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        style="@style/TextView.Bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/default_margin_half"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/suggested_actions_margin_top"
+                        android:text="@string/suggested_actions"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:divider="@drawable/divider_gray"
+                        android:orientation="vertical"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_3x"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    style="@style/TextView.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin_half"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/suggested_actions_margin_top"
+                    android:text="@string/need_more_help"
+                    />
+
+
+                <LinearLayout
+                    android:id="@+id/help_center_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/help_center_cell_height"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/default_padding"
+                    >
+
+                    <ImageView
+                        android:layout_width="@dimen/help_center_image_width_height"
+                        android:layout_height="@dimen/help_center_image_width_height"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/help_center_image"
+                        android:src="@drawable/ic_help_center"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/default_margin"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/help_center"
+                            android:textColor="@color/handy_text_black"
+                            android:textSize="@dimen/default_text_size"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/default_padding_quarter"
+                            android:text="@string/help_center_description"
+                            android:textColor="@color/handy_tertiary_gray"
+                            android:textSize="@dimen/text_size_small"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
