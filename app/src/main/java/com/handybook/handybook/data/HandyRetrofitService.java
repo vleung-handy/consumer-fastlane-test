@@ -200,6 +200,17 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+    /**
+     *
+     * @param bookingId
+     * @param cb
+     */
+    @GET("/bookings/{bookingId}/edit_entry_info")
+    void getEntryMethodsInfo(
+            @Path("bookingId") String bookingId,
+            HandyRetrofitCallback cb
+    );
+
     @POST("/bookings/{booking}/description_update")
         //points to same endpoint as update note to pro but that is because the endpoint currently does too much
     void updateBookingEntryInformation(

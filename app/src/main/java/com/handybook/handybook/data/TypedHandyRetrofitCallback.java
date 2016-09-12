@@ -15,7 +15,6 @@ import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.model.JobStatus;
-import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
@@ -65,15 +64,6 @@ public abstract class TypedHandyRetrofitCallback<T> extends HandyRetrofitCallbac
 
 
 //We need to trick the compiler into holding onto the generic type so we don't lose it to erasure
-class BookingHandyRetroFitCallback extends TypedHandyRetrofitCallback<Booking>
-{
-    BookingHandyRetroFitCallback(DataManager.Callback callback)
-    {
-        super(callback);
-    }
-}
-
-
 class ZipValidationRetroFitCallback extends TypedHandyRetrofitCallback<ZipValidationResponse>
 {
     ZipValidationRetroFitCallback(DataManager.Callback callback)
@@ -95,24 +85,6 @@ class BookingMilestonesCallback extends TypedHandyRetrofitCallback<JobStatus>
 class BookingOptionsWrapperHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingOptionsWrapper>
 {
     BookingOptionsWrapperHandyRetroFitCallback(DataManager.Callback callback)
-    {
-        super(callback);
-    }
-}
-
-
-class AvailableEntryMethodsHandyRetroFitCallback extends TypedHandyRetrofitCallback<EntryMethodsInfo>
-{
-    AvailableEntryMethodsHandyRetroFitCallback(DataManager.Callback callback)
-    {
-        super(callback);
-    }
-}
-
-
-class ProviderResponseHandyRetroFitCallback extends TypedHandyRetrofitCallback<Provider>
-{
-    ProviderResponseHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }
@@ -176,6 +148,14 @@ class EditExtrasInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<Boo
 class EditHoursInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<BookingEditHoursInfoResponse>
 {
     EditHoursInfoHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+class EntryMethodsInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<EntryMethodsInfo>
+{
+    EntryMethodsInfoHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }

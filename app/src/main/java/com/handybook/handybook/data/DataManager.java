@@ -28,6 +28,7 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
@@ -486,6 +487,17 @@ public class DataManager
         mService.getBookings(
                 onlyBookingValue,
                 new UserBookingsWrapperHandyRetroFitCallback(cb)
+        );
+    }
+
+    public final void getEntryMethodsInfo(
+            final String bookingId,
+            final Callback<EntryMethodsInfo> cb
+    )
+    {
+        mService.getEntryMethodsInfo(
+                bookingId,
+                new EntryMethodsInfoHandyRetroFitCallback(cb)
         );
     }
 

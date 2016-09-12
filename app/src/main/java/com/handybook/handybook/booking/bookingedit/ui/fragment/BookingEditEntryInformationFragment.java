@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
+import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingInstruction;
@@ -27,13 +29,15 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.booking.util.OptionListToAttributeArrayConverter;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,6 +63,9 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
+    @Inject
+    BookingEditManager mBookingEditManager;
 
     private boolean mEntryMethodsInitialized = false;
 
@@ -113,6 +120,35 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         initHeader();
 
         return view;
+    }
+
+    private void requestAvailableEntryMethodsInfo()
+    {
+        showUiBlockers();
+        mBookingEditManager.getEntryMethodsInfo(booking.getId(),
+                new DataManager.Callback<EntryMethodsInfo>(){
+
+                    @Override
+                    public void onSuccess(final EntryMethodsInfo response)
+                    {
+                        removeUiBlockers();
+                        initFromEntryMethodsInfo(response);
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        removeUiBlockers();
+                        showToast(R.string.default_error_string);
+                    }
+                });
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        requestAvailableEntryMethodsInfo();
     }
 
     @OnClick(R.id.next_button)
@@ -407,28 +443,5 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         }
         option.setLeftStripIndicatorVisible(getRecommendedArray(entryMethodOptions));
         return option;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if(!mEntryMethodsInitialized)
-        {
-            bus.post(new ConfigurationEvent.RequestConfiguration());
-        }
-    }
-
-    @Subscribe
-    public void onReceiveConfigurationSuccess(final ConfigurationEvent.ReceiveConfigurationSuccess event)
-    {
-        //todo if not initialized yet
-        if(!mEntryMethodsInitialized)
-        {
-            EntryMethodsInfo entryMethodsInfo =
-                    EntryMethodsInfo.getEntryMethodInfo_HACK(event.getConfiguration(), getContext());
-            initFromEntryMethodsInfo(entryMethodsInfo);
-            mEntryMethodsInitialized = true;
-        }
     }
 }
