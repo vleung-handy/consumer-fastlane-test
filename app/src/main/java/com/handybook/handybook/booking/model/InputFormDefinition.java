@@ -14,7 +14,7 @@ public class InputFormDefinition implements Serializable
 {
     //more fields may be added at this level, like title
 
-    @SerializedName("input_fields")
+    @SerializedName("input_form_fields")
     private List<InputFormField> mFieldDefinitions;
 
     public List<InputFormField> getFieldDefinitions()

@@ -130,6 +130,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         }
         else
         {
+            //something has gone horribly wrong
             Crashlytics.logException(new Exception("Entry methods info from bundle args is null"));
             Toast.makeText(getContext(), R.string.default_error_string, Toast.LENGTH_SHORT).show();
         }
@@ -207,6 +208,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
     private boolean validateFields()
     {
+        if(mSelectedOptionInputFormFields == null) return true;
         boolean areAllFieldsValid = true;
         for(String key : mSelectedOptionInputFormFields.keySet())
         {
@@ -243,30 +245,47 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             }
 
             int selectedOptionIndex = mOptionsView.getCurrentIndex();
-            EntryMethodOption entryMethodOption = mEntryMethodOptions.get(selectedOptionIndex);
-
-
-            if(mSelectedOptionInputFormFields != null)
+            boolean isValidOptionSelected = selectedOptionIndex >= 0 && selectedOptionIndex < mEntryMethodOptions.size();
+            //the options view returns -1 if no option was selected
+            if(isValidOptionSelected)
             {
-                if(BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
+                EntryMethodOption entryMethodOption = mEntryMethodOptions.get(selectedOptionIndex);
+
+                if (mSelectedOptionInputFormFields == null)
+                {
+                    //entry method has no input fields
+                    bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
+                            entryMethodOption.getMachineName(),
+                            null
+                    );
+                }
+                //TODO this is gross because the server currently
+                // does not accept the input form values as structured data
+                // and bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo needs to be redone
+                else if (BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
                         entryMethodOption.getMachineName()))
                 {
-                    String lockboxAccessCode = mSelectedOptionInputFormFields.get(
-                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE).getInput();
-                    String lockboxLocation = mSelectedOptionInputFormFields.get(
-                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION).getInput();
+                    BasicInputTextView lockboxAcessCodeInputField = mSelectedOptionInputFormFields.get(
+                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE);
+                    BasicInputTextView lockboxLocationInputField = mSelectedOptionInputFormFields.get(
+                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION);
+
+                    String lockboxAccessCode = lockboxAcessCodeInputField.getInput();
+                    String lockboxLocation = lockboxLocationInputField.getInput();
                     bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
                             entryMethodOption.getMachineName(),
                             lockboxAccessCode,
                             lockboxLocation //TODO not supporting structured data for now
 
                     );
-                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationSubmittedLog(lockboxAccessCode+"\n" + lockboxLocation)));
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationSubmittedLog(lockboxAccessCode + "\n" + lockboxLocation)));
                 }
                 else
                 {
-                    String entryDescription = mSelectedOptionInputFormFields.get(
-                            InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS).getInput();
+                    BasicInputTextView entryDescriptionInputField = mSelectedOptionInputFormFields.get(
+                            InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS);
+
+                    String entryDescription = entryDescriptionInputField.getInput();
                     //set info for non-lockbox options
                     bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
                             entryMethodOption.getMachineName(),
@@ -276,8 +295,9 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                     bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationSubmittedLog(entryDescription)));
                 }
 
-            }
 
+            }
+            //else - no option selected. allow user to proceed anyway (same as iOS behavior)
 
 
             final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);

@@ -7,7 +7,7 @@
       "title": "Doorman",
       "recommended": true,
       "input_form": {
-        "input_fields": [
+        "input_form_fields": [
           {
             "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
@@ -22,7 +22,7 @@
       "title": "Lockbox",
       "recommended": true,
       "input_form": {
-        "input_fields": [
+        "input_form_fields": [
           {
             "machine_name": "lockbox_code",
             "hint_text": "Enter access code",
@@ -43,7 +43,7 @@
       "title": "I'll hide the key",
       "recommended": false,
       "input_form": {
-        "input_fields": [
+        "input_form_fields": [
           {
             "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
@@ -58,7 +58,7 @@
       "title": "I'll be at home",
       "recommended": false,
       "input_form": {
-        "input_fields": [
+        "input_form_fields": [
           {
             "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
