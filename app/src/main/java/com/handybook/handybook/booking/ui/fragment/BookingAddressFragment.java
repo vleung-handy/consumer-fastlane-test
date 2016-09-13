@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
@@ -31,7 +30,6 @@ import com.handybook.handybook.module.autocomplete.PlacesAutoCompleteAdapter;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
-import com.handybook.handybook.util.PlayServicesUtils;
 
 import javax.inject.Inject;
 
@@ -76,7 +74,6 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
     @Inject
     GooglePlacesService mPlacesService;
 
-    private GoogleApiClient mGoogleApiClient;
     private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
 
     public static BookingAddressFragment newInstance()
@@ -133,35 +130,23 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
 
         mButtonNext.setOnClickListener(nextClicked);
 
-        //NOTE: If the user doesn't have the required version of google play services, we won't even bother
-        //asking them to update. Not worth the hassle.
-        if (PlayServicesUtils.hasPlayServices(getActivity()))
+        mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.auto_complete_list_item, mPlacesService);
+        mTextStreet.setAdapter(mAutoCompleteAdapter);
+        mTextStreet.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-            mGoogleApiClient = new GoogleApiClient
-                    .Builder(getActivity())
-                    .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
-                    .enableAutoManage(getActivity(), this)
-                    .build();
-
-            mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.auto_complete_list_item, mPlacesService);
-            mTextStreet.setAdapter(mAutoCompleteAdapter);
-            mTextStreet.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    PlacePrediction prediction = mAutoCompleteAdapter.getPrediction(position);
-                    mTextStreet.setText(prediction.getAddress());
-                    mTextCity.setText(prediction.getCity());
-                    mTextState.setText(prediction.getState());
+                PlacePrediction prediction = mAutoCompleteAdapter.getPrediction(position);
+                mTextStreet.setText(prediction.getAddress());
+                mTextCity.setText(prediction.getCity());
+                mTextState.setText(prediction.getState());
 
-                    mMainContainer.requestFocus();
+                mMainContainer.requestFocus();
 
-                    hideKeyboard();
-                }
-            });
-        }
+                hideKeyboard();
+            }
+        });
 
         return view;
     }
@@ -207,28 +192,6 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
         {
             InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-        }
-    }
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-
-        if (mGoogleApiClient != null && !mGoogleApiClient.isConnected())
-        {
-            mGoogleApiClient.connect();
-        }
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected())
-        {
-            mGoogleApiClient.disconnect();
         }
     }
 

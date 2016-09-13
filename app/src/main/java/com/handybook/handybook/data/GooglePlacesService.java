@@ -14,6 +14,6 @@ public interface GooglePlacesService
      *
      * @param input
      */
-    @GET("maps/api/place/autocomplete/json?types=address")
-    public PlacePredictionResponse getAddressPrediction(@Query("input") String input);
+    @GET("/maps/api/place/autocomplete/json?types=address")
+    PlacePredictionResponse getAddressPrediction(@Query("input") String input);
 }

@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.autocomplete;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -58,6 +59,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
             @Override
             protected FilterResults performFiltering(CharSequence constraint)
             {
+                Log.d(TAG, "performFiltering: start filtering");
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null)
                 {
@@ -68,6 +70,8 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
                     filterResults.values = mPredictionValues;
                     filterResults.count = mPredictionValues.size();
                 }
+
+                Log.d(TAG, "performFiltering: returning filters of size:" + filterResults.count);
 
                 return filterResults;
             }

@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Handy</string>
     <string name="home">Home</string>
+    <!--FIXME: Remove this and use something from Handy-->
+    <string name="jia_google_api_web_key">AIzaSyAHF9HgE7xMYv0oPExv9mNUxKnOTtfTOAc</string>
     <string name="make_a_booking">Make a Booking</string>
     <string name="help">Help</string>
     <string name="promotions">Promotions</string>
@@ -398,8 +400,6 @@
     <string name="location_data_unavailable">Location Data Unavailable</string>
     <string name="missing_booking_location">We\'re having trouble displaying your address on the map.</string>
     <string name="missing_provider_location">We can\'t locate your pro right now, but you can try contacting them directly for an update.</string>
-    <string name="google_api_endpoint">https://maps.googleapis.com/</string>
-
 
     <!-- Help Center -->
     <string name="recent_booking">Recent Booking</string>
@@ -445,4 +445,5 @@
     <string name="nav.invite_friends">Invite Friends</string>
 
     <string name="booking_details_pro_info_title">Your Pro</string>
+    <string name="google_api_endpoint">https://maps.googleapis.com/</string>
 </resources>

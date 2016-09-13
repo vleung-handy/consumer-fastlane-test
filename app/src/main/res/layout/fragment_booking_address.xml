@@ -73,6 +73,7 @@
                     android:id="@+id/text_street"
                     android:width="0dp"
                     android:layout_weight="2"
+                    android:dropDownWidth="match_parent"
                     style="@style/EditText.StreetAddress" />
 
                 <EditText

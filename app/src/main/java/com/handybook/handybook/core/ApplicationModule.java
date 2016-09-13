@@ -354,7 +354,7 @@ public final class ApplicationModule
                     @Override
                     public void intercept(RequestFacade request)
                     {
-                        request.addQueryParam("key", mContext.getString(R.string.google_api_key));
+                        request.addQueryParam("key", mContext.getString(R.string.jia_google_api_web_key));
                     }
                 })
                 .build();
