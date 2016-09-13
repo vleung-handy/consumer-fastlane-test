@@ -10,8 +10,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -86,6 +88,8 @@ public final class LoginFragment extends BookingFlowFragment
     TextView mWelcomeText;
     @Bind(R.id.menu_button_layout)
     ViewGroup mMenuButtonLayout;
+    @Bind(R.id.login_scroll_view)
+    ScrollView mLoginScrollView;
 
     public static LoginFragment newInstance(
             final boolean findUser, final String bookingUserName,
@@ -212,6 +216,16 @@ public final class LoginFragment extends BookingFlowFragment
                 toast.show();
             }
         });
+
+        mLoginScrollView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener()
+                {
+                    @Override
+                    public void onGlobalLayout()
+                    {
+                        mLoginScrollView.smoothScrollTo(0, mLoginScrollView.getBottom());
+                    }
+                });
 
         return view;
     }
