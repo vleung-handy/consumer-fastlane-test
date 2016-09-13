@@ -3,6 +3,7 @@ package com.handybook.handybook.ui.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
@@ -90,6 +91,7 @@ public final class LoginFragment extends BookingFlowFragment
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.login_scroll_view)
     ScrollView mLoginScrollView;
+    private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
     public static LoginFragment newInstance(
             final boolean findUser, final String bookingUserName,
@@ -217,15 +219,16 @@ public final class LoginFragment extends BookingFlowFragment
             }
         });
 
-        mLoginScrollView.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener()
-                {
-                    @Override
-                    public void onGlobalLayout()
-                    {
-                        mLoginScrollView.smoothScrollTo(0, mLoginScrollView.getBottom());
-                    }
-                });
+        mAutoScrollListener = new ViewTreeObserver.OnGlobalLayoutListener()
+        {
+            @Override
+            public void onGlobalLayout()
+            {
+                mLoginScrollView.smoothScrollTo(0, mLoginScrollView.getBottom());
+            }
+        };
+
+        mLoginScrollView.getViewTreeObserver().addOnGlobalLayoutListener(mAutoScrollListener);
 
         return view;
     }
@@ -266,6 +269,22 @@ public final class LoginFragment extends BookingFlowFragment
         super.onPause();
         //mUiHelper.onPause();
         mHandleFBSessionUpdates = false;
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+        {
+            mLoginScrollView.getViewTreeObserver()
+                    .removeOnGlobalLayoutListener(mAutoScrollListener);
+        }
+        else
+        {
+            mLoginScrollView.getViewTreeObserver()
+                    .removeGlobalOnLayoutListener(mAutoScrollListener);
+        }
+        super.onDestroyView();
     }
 
     @Override
