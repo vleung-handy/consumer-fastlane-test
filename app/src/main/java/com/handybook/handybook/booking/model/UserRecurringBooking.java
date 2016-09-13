@@ -24,7 +24,7 @@ public class UserRecurringBooking implements Serializable
     private Date mDateStart;
 
     @SerializedName("hours")
-    private int mHours;
+    private float mHours;
 
     @SerializedName("recurring_string_short")
     private String mRecurringStringShort;
@@ -54,7 +54,7 @@ public class UserRecurringBooking implements Serializable
         return mRecurringStringShort;
     }
 
-    public int getHours()
+    public float getHours()
     {
         return mHours;
     }
