@@ -14,7 +14,7 @@ public class InputFormDefinition implements Serializable
 {
     //more fields may be added at this level, like title
 
-    @SerializedName("field_definitions")
+    @SerializedName("input_form_fields")
     private List<InputFormField> mFieldDefinitions;
 
     public List<InputFormField> getFieldDefinitions()
@@ -24,11 +24,16 @@ public class InputFormDefinition implements Serializable
 
     public static class InputFormField implements Serializable
     {
+        /**
+         * eventually we will use these as keys when
+         * sending the input form values back to the server
+         * but we need backend to update first
+         */
         public static class SupportedMachineName
         {
             public static final String LOCKBOX_ACCESS_CODE = "lockbox_code";
             public static final String LOCKBOX_LOCATION = "lockbox_location";
-            public static final String DESCRIPTION = "description";
+            public static final String ADDITIONAL_INSTRUCTIONS = "additional_instructions";
         }
         @SerializedName("hint_text")
         private String mHintText;

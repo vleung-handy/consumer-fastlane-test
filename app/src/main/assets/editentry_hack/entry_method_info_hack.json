@@ -1,15 +1,15 @@
 {
   "instructions_text": "Let your pro in without being home:",
+  "default_option_machine_name": "doorman",
   "entry_method_options": [
     {
       "machine_name": "doorman",
-      "display_name": "Doorman",
+      "title": "Doorman",
       "recommended": true,
-      "default": true,
-      "input_form_definition": {
-        "field_definitions": [
+      "input_form": {
+        "input_form_fields": [
           {
-            "machine_name": "description",
+            "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
             "required": false,
             "num_lines": 1
@@ -19,10 +19,10 @@
     },
     {
       "machine_name": "lockbox",
-      "display_name": "Lockbox",
+      "title": "Lockbox",
       "recommended": true,
-      "input_form_definition": {
-        "field_definitions": [
+      "input_form": {
+        "input_form_fields": [
           {
             "machine_name": "lockbox_code",
             "hint_text": "Enter access code",
@@ -40,14 +40,14 @@
     },
     {
       "machine_name": "hide_key",
-      "display_name": "Hidden key",
+      "title": "I'll hide the key",
       "recommended": false,
-      "input_form_definition": {
-        "field_definitions": [
+      "input_form": {
+        "input_form_fields": [
           {
-            "machine_name": "description",
+            "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
-            "required": false,
+            "required": true,
             "num_lines": 1
           }
         ]
@@ -55,12 +55,12 @@
     },
     {
       "machine_name": "at_home",
-      "display_name": "No thanks, I’ll be home",
+      "title": "I'll be at home",
       "recommended": false,
-      "input_form_definition": {
-        "field_definitions": [
+      "input_form": {
+        "input_form_fields": [
           {
-            "machine_name": "description",
+            "machine_name": "additional_instructions",
             "hint_text": "Any entry instructions?",
             "required": false,
             "num_lines": 1

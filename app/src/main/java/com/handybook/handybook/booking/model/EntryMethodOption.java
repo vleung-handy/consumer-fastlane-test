@@ -25,7 +25,7 @@ public class EntryMethodOption implements Serializable, Option
     /**
      * the title text of this option
      */
-    @SerializedName("display_name")
+    @SerializedName("title")
     private String mTitleText;
 
     /**
@@ -34,7 +34,7 @@ public class EntryMethodOption implements Serializable, Option
     @SerializedName("subtitle")
     private String mSubtitleText;
 
-    @SerializedName("input_form_definition")
+    @SerializedName("input_form")
     private InputFormDefinition mInputFormDefinition;
 
     public InputFormDefinition getInputFormDefinition()
