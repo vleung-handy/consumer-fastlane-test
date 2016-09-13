@@ -59,6 +59,11 @@ public class EnvironmentModifier
         }
     }
 
+    public boolean isStaging()
+    {
+        return Environment.STAGING.equals(getEnvironment());
+    }
+
     public boolean isProduction()
     {
         return Environment.PRODUCTION.equals(getEnvironment());
