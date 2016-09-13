@@ -14,10 +14,12 @@ public class HandyRetrofitEndpoint implements Endpoint
 {
     private final EnvironmentModifier mEnvironmentModifier;
     private final String mApiEndpoint;
-    private final String mApiEndpointInternal;
+    private final String mApiEndpointInternalStaging;
+    private final String mApiEndpointInternalNonStaging;
     private final String mApiEndpointLocal;
     private final String mBaseUrl;
-    private final String mBaseUrlInternal;
+    private final String mBaseUrlInternalStaging;
+    private final String mBaseUrlInternalNonStaging;
     private final String mBaseUrlLocal;
 
     @Inject
@@ -26,10 +28,12 @@ public class HandyRetrofitEndpoint implements Endpoint
         mEnvironmentModifier = environmentModifier;
         final Properties config = PropertiesReader.getProperties(context, "config.properties");
         mApiEndpoint = config.getProperty("api_endpoint");
-        mApiEndpointInternal = config.getProperty("api_endpoint_internal");
+        mApiEndpointInternalStaging = config.getProperty("api_endpoint_internal_staging");
+        mApiEndpointInternalNonStaging = config.getProperty("api_endpoint_internal_nonstaging");
         mApiEndpointLocal = config.getProperty("api_endpoint_local");
         mBaseUrl = config.getProperty("base_url");
-        mBaseUrlInternal = config.getProperty("base_url_internal");
+        mBaseUrlInternalStaging = config.getProperty("base_url_internal_staging");
+        mBaseUrlInternalNonStaging = config.getProperty("base_url_internal_nonstaging");
         mBaseUrlLocal = config.getProperty("base_url_local");
     }
 
@@ -44,9 +48,13 @@ public class HandyRetrofitEndpoint implements Endpoint
         {
             return mApiEndpointLocal;
         }
+        else if(mEnvironmentModifier.isStaging())
+        {
+            return mApiEndpointInternalStaging;
+        }
         else
         {
-            return mApiEndpointInternal.replace("#", mEnvironmentModifier.getEnvironment());
+            return mApiEndpointInternalNonStaging.replace("#", mEnvironmentModifier.getEnvironment());
         }
     }
 
@@ -60,9 +68,13 @@ public class HandyRetrofitEndpoint implements Endpoint
         {
             return mBaseUrlLocal;
         }
+        else if(mEnvironmentModifier.isStaging())
+        {
+            return mBaseUrlInternalStaging;
+        }
         else
         {
-            return mBaseUrlInternal.replace("#", mEnvironmentModifier.getEnvironment());
+            return mBaseUrlInternalNonStaging.replace("#", mEnvironmentModifier.getEnvironment());
         }
     }
 
