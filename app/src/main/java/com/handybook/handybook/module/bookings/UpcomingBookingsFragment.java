@@ -39,6 +39,7 @@ import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.BookingListItem;
 import com.handybook.handybook.ui.view.ExpandableCleaningPlan;
 import com.handybook.handybook.ui.view.NoBookingsView;
+import com.handybook.handybook.ui.view.ShareBannerView;
 import com.handybook.handybook.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
@@ -90,11 +91,14 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Bind(R.id.expanable_cleaning_plan)
     ExpandableCleaningPlan mExpandableCleaningPlan;
 
+    @Bind(R.id.padding_view)
+    View mPaddingView;
+
     private List<Booking> mBookings;
     private List<UserRecurringBooking> mRecurringBookings;
     private int mActivePlanCount;
     private List<Service> mServices;
-
+    private ShareBannerView mShareBannerView;
     private boolean mServiceRequestCompleted = false;
     private boolean mBookingsRequestCompleted = false;
 
@@ -173,6 +177,22 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         {
             mMainContainer.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         }
+
+        mShareBannerView = new ShareBannerView(getActivity());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        int margin = getResources().getDimensionPixelSize(R.dimen.default_margin_quarter);
+        layoutParams.setMargins(0, margin, 0, margin);
+        mShareBannerView.setLayoutParams(layoutParams);
+        mShareBannerView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareBannerTappedLog()));
+                startActivity(new Intent(getActivity(), ReferralActivity.class));
+            }
+        });
+
         return view;
     }
 
@@ -232,8 +252,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (mBookings != null && !mBookings.isEmpty())
         {
             //active bookings, if any, are always at the top of the list.
-            int bookingsIndex = 0;
-            for (int x = bookingsIndex; x < mBookings.size(); x++)
+            int bookingsIndex = -1;
+            for (int x = 0; x < mBookings.size(); x++)
             {
                 Booking booking = mBookings.get(x);
                 if (booking.getActiveBookingLocationStatus() != null && booking.getActiveBookingLocationStatus().isMapEnabled())
@@ -244,10 +264,15 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                         ActiveBookingFragment frag = ActiveBookingFragment.newInstance(booking);
                         frag.setParentScrollView(mScrollView);
 
+                        mActiveBookingContainer.removeAllViews();
                         //important here to use booking id as TAG, so that there aren't conflicts with multiple active bookings.
                         getChildFragmentManager().beginTransaction()
                                 .add(R.id.active_booking_container, frag, booking.getId())
                                 .commit();
+
+                        //must executePendingTransactions now, otherwise the insertion of the share banner into this
+                        //container will have an unpredictable location (due to commit being async)
+                        getChildFragmentManager().executePendingTransactions();
                     }
 
                     mActiveBookingContainer.setVisibility(View.VISIBLE);
@@ -260,30 +285,34 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 }
             }
 
-            //the rest of the bookings that are not "active"
-            mBookingsContainer.removeAllViews();
-            for (int x = bookingsIndex; x < mBookings.size(); x++)
+            if (bookingsIndex > -1)
             {
-                final Booking booking = mBookings.get(x);
-                mBookingsContainer.addView(new BookingListItem(
-                        getActivity(),
-                        new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(final View v)
-                            {
-                                bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.BookingDetailsTappedLog(booking.getId())));
-                                final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
-                                Booking booking = ((BookingListItem) v).getBooking();
-                                intent.putExtra(BundleKeys.BOOKING, booking);
-                                getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
-                            }
-                        },
-                        booking
-                ));
+                //there was at least one booking that is not active.
 
-                //add divider
-                mBookingsContainer.addView(getActivity().getLayoutInflater().inflate(R.layout.layout_divider, mBookingsContainer, false));
+                mBookingsContainer.removeAllViews();
+                for (int x = bookingsIndex; x < mBookings.size(); x++)
+                {
+                    final Booking booking = mBookings.get(x);
+                    mBookingsContainer.addView(new BookingListItem(
+                            getActivity(),
+                            new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(final View v)
+                                {
+                                    bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.BookingDetailsTappedLog(booking.getId())));
+                                    final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
+                                    Booking booking = ((BookingListItem) v).getBooking();
+                                    intent.putExtra(BundleKeys.BOOKING, booking);
+                                    getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
+                                }
+                            },
+                            booking
+                    ));
+
+                    //add divider
+                    mBookingsContainer.addView(getActivity().getLayoutInflater().inflate(R.layout.layout_divider, mBookingsContainer, false));
+                }
             }
         }
     }
@@ -309,12 +338,14 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             }
 
             mNoBookingsView.setVisibility(View.VISIBLE);
+            mPaddingView.setVisibility(View.GONE);
         }
         else
         {
             //there are bookings
             mParentBookingsContainer.setVisibility(View.VISIBLE);
             mNoBookingsView.setVisibility(View.GONE);
+            mPaddingView.setVisibility(View.VISIBLE);
 
             //if the active bookings are showing, and there are inactive bookings, then show the "upcoming text"
             if (mActiveBookingContainer.getVisibility() == View.VISIBLE
@@ -415,6 +446,53 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             {
                 //if we're showing the map, disable this pull to refresh thing.
                 mSwipeRefreshLayout.setEnabled(false);
+            }
+
+            insertShareBannerView();
+        }
+    }
+
+    /**
+     * The logic for where to insert the share banner is as follows
+     * <p/>
+     * --If active booking is present
+     * --if there are no upcoming bookings then display right below active booking
+     * --if there are 1 or more active bookings, then display below the first upcoming booking
+     * --done
+     * --If there are no upcoming bookings (don't show anything)
+     * --done
+     * --If there are multiple bookings, then place below the 2nd upcoming booking
+     * --done
+     */
+    private void insertShareBannerView()
+    {
+        if (mActiveBookingContainer.getVisibility() == View.VISIBLE)
+        {
+            if (mBookingsContainer.getChildCount() > 0)
+            {
+                //at index 2, because 0 has first booking, and 1 is the divider
+                mBookingsContainer.addView(mShareBannerView, 2);
+            }
+            else if (mBookingsContainer.getChildCount() == 0)
+            {
+                mActiveBookingContainer.addView(mShareBannerView);
+            }
+        }
+        else
+        {
+            if (mBookingsContainer.getChildCount() >= 4)
+            {
+                //there are at least 2 upcoming bookings, insert after the 2nd booking
+                mBookingsContainer.addView(mShareBannerView, 4);
+            }
+            else if (mBookingsContainer.getChildCount() >= 2)
+            {
+                //there is only one upcoming booking, so insert it there.
+                mBookingsContainer.addView(mShareBannerView, 2);
+            }
+            else
+            {
+                //there are no active booking, and there are no upcoming bookings, so we don't do anything.
             }
         }
     }
