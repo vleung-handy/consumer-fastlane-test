@@ -1,10 +1,10 @@
 package com.handybook.handybook.core;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
@@ -49,7 +49,7 @@ import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
-public class BaseApplication extends Application
+public class BaseApplication extends MultiDexApplication
 {
     public static final String FLAVOR_PROD = "prod";
     public static final String FLAVOR_STAGE = "stage";
