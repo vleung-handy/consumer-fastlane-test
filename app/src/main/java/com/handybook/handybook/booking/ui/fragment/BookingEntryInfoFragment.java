@@ -339,7 +339,10 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     private void onInputFormFieldMappingError(String missingInputFormFieldMachineName,
                                               String entryMethodOptionMachineName)
     {
-        Crashlytics.logException(new Exception("Unable to find input form field with machine name: " + missingInputFormFieldMachineName + " for entry method " + entryMethodOptionMachineName + ". Incorrect machine name?"));
+        Crashlytics.logException(
+                new Exception("Unable to find input form field with machine name: "
+                        + missingInputFormFieldMachineName + " for entry method "
+                        + entryMethodOptionMachineName + ". Incorrect machine name?"));
         showToast(R.string.default_error_string);
     }
 

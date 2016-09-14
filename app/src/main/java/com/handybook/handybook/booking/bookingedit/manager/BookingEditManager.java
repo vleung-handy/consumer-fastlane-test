@@ -60,7 +60,7 @@ public class BookingEditManager
      * @param callback
      */
     public void getEntryMethodsInfo(@NonNull String mBookingId,
-                                    final DataManager.Callback<EntryMethodsInfo> callback)
+                                    @NonNull final DataManager.Callback<EntryMethodsInfo> callback)
     {
         mDataManager.getEntryMethodsInfo(mBookingId, callback);
     }
