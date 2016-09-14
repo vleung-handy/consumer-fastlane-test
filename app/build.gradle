@@ -175,7 +175,6 @@ dexcount {
     teamCityIntegration = false
     enableForInstantRun = false
     teamCitySlug = null
-    runOnEachAssemble = false
 }
 
 def computeVersionCode(versionName) {
