@@ -55,7 +55,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
     /**
      * map of input form machine name to input form fields
-     *
+     * <p/>
      * TODO refactor this stuff
      */
     private Map<String, BasicInputTextView> mSelectedOptionInputFormFields = new HashMap<>();
@@ -123,7 +123,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
         EntryMethodsInfo entryMethodsInfo = (EntryMethodsInfo) getArguments()
                 .getSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO);
-        if(entryMethodsInfo != null)
+        if (entryMethodsInfo != null)
         {
             initFromEntryMethodsInfo(entryMethodsInfo);
             mNextButton.setOnClickListener(nextClicked);
@@ -163,14 +163,15 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
     private void selectDefaultOption(
             @NonNull BookingOptionsSelectView optionsSelectView,
-            @NonNull EntryMethodsInfo entryMethodsInfo)
+            @NonNull EntryMethodsInfo entryMethodsInfo
+    )
     {
         String defaultOptionMachineName = entryMethodsInfo.getDefaultOptionMachineName();
-        if(defaultOptionMachineName == null) return;
+        if (defaultOptionMachineName == null) { return; }
         List<EntryMethodOption> entryMethodOptions = entryMethodsInfo.getEntryMethodOptions();
-        for(int i = 0; i<entryMethodOptions.size(); i++)
+        for (int i = 0; i < entryMethodOptions.size(); i++)
         {
-            if(defaultOptionMachineName.equals(entryMethodOptions.get(i).getMachineName()))
+            if (defaultOptionMachineName.equals(entryMethodOptions.get(i).getMachineName()))
             {
                 optionsSelectView.setCurrentIndex(i);
                 return;
@@ -208,12 +209,12 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
     private boolean validateFields()
     {
-        if(mSelectedOptionInputFormFields == null) return true;
+        if (mSelectedOptionInputFormFields == null) { return true; }
         boolean areAllFieldsValid = true;
-        for(String key : mSelectedOptionInputFormFields.keySet())
+        for (String key : mSelectedOptionInputFormFields.keySet())
         {
             BasicInputTextView inputTextView = mSelectedOptionInputFormFields.get(key);
-            if(!inputTextView.validate())
+            if (!inputTextView.validate())
             //this also updates the field UI depending on whether value is valid so can't just return
             {
                 areAllFieldsValid = false;
@@ -247,7 +248,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             int selectedOptionIndex = mOptionsView.getCurrentIndex();
             boolean isValidOptionSelected = selectedOptionIndex >= 0 && selectedOptionIndex < mEntryMethodOptions.size();
             //the options view returns -1 if no option was selected
-            if(isValidOptionSelected)
+            if (isValidOptionSelected)
             {
                 EntryMethodOption entryMethodOption = mEntryMethodOptions.get(selectedOptionIndex);
 
@@ -270,14 +271,14 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                     BasicInputTextView lockboxLocationInputField = mSelectedOptionInputFormFields.get(
                             InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION);
 
-                    if(lockboxAcessCodeInputField == null)
+                    if (lockboxAcessCodeInputField == null)
                     {
                         onInputFormFieldMappingError(
                                 InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE,
                                 entryMethodOption.getMachineName());
                         return;
                     }
-                    if(lockboxLocationInputField == null)
+                    if (lockboxLocationInputField == null)
                     {
                         onInputFormFieldMappingError(
                                 InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION,
@@ -299,7 +300,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                     BasicInputTextView entryDescriptionInputField = mSelectedOptionInputFormFields.get(
                             InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS);
 
-                    if(entryDescriptionInputField == null)
+                    if (entryDescriptionInputField == null)
                     {
                         onInputFormFieldMappingError(
                                 InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS,
@@ -320,7 +321,6 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             }
             //else - no option selected. allow user to proceed anyway (same as iOS behavior)
 
-
             final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
             intent.putExtra(
                     BookingFinalizeActivity.EXTRA_PAGE,
@@ -336,8 +336,10 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     };
 
 
-    private void onInputFormFieldMappingError(String missingInputFormFieldMachineName,
-                                              String entryMethodOptionMachineName)
+    private void onInputFormFieldMappingError(
+            String missingInputFormFieldMachineName,
+            String entryMethodOptionMachineName
+    )
     {
         Crashlytics.logException(
                 new Exception("Unable to find input form field with machine name: "
@@ -360,6 +362,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     /**
      * TODO pre-generate the views
      * updates the input form based on the selected entry method option
+     *
      * @param entryMethodOption
      */
     private void updateViewForSelectedEntryMethodOption(@NonNull EntryMethodOption entryMethodOption)
@@ -369,11 +372,11 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
         //update the input form
         InputFormDefinition inputFormDefinition = entryMethodOption.getInputFormDefinition();
-        if(inputFormDefinition == null) return;
+        if (inputFormDefinition == null) { return; }
 
         List<InputFormDefinition.InputFormField> inputFormFields =
                 inputFormDefinition.getFieldDefinitions();
-        for(InputFormDefinition.InputFormField inputFormField : inputFormFields)
+        for (InputFormDefinition.InputFormField inputFormField : inputFormFields)
         {
             BasicInputTextView inputTextView =
                     (BasicInputTextView) LayoutInflater.from(getContext()).inflate(R.layout.element_text_input_view, null);
@@ -381,7 +384,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.bottomMargin = (int) getResources().getDimension(R.dimen.default_margin_quarter);
 
-            if(inputFormField.isRequired())
+            if (inputFormField.isRequired())
             {
                 //TODO don't like using this input view's method but using it for now
                 inputTextView.setMinLength(1);
@@ -397,7 +400,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     private boolean[] getRecommendedArray(List<EntryMethodOption> entryMethodOptions)
     {
         boolean[] recommended = new boolean[entryMethodOptions.size()];
-        for(int i = 0; i<recommended.length; i++)
+        for (int i = 0; i < recommended.length; i++)
         {
             recommended[i] = entryMethodOptions.get(i).isRecommended();
         }
@@ -439,7 +442,8 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
     @NonNull
     private BookingOption getBookingOptionModel(
-            @NonNull List<EntryMethodOption> entryMethodOptions)
+            @NonNull List<EntryMethodOption> entryMethodOptions
+    )
     {
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
@@ -451,7 +455,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
         //UI for recommended options
         //TODO hacky, refactor asap
-        if(!entryMethodOptions.isEmpty())
+        if (!entryMethodOptions.isEmpty())
         {
             EntryMethodOption lastOption = entryMethodOptions.get(entryMethodOptions.size() - 1);
             if (BookingInstruction.InstructionType.EntryMethod.AT_HOME.equals(lastOption.getMachineName()))
