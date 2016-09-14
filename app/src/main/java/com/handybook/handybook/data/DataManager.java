@@ -79,7 +79,11 @@ public class DataManager
     private final PrefsManager mPrefsManager;
 
     @Inject
-    public DataManager(final HandyRetrofitService service, final HandyRetrofitEndpoint endpoint, final PrefsManager prefsManager)
+    public DataManager(
+            final HandyRetrofitService service,
+            final HandyRetrofitEndpoint endpoint,
+            final PrefsManager prefsManager
+    )
     {
         mService = service;
         mEndpoint = endpoint;
@@ -92,12 +96,9 @@ public class DataManager
     }
 
     /**
-     * If there is a cached version, return the cache, and updates the cache in the background.
-     * If there was a cached version, then cache update success will not be broadcasted.
-     * This is to prevent a client from having to deal with multiple broadcasts (cache, updates, etc).
-     *
-     * @param cache
-     * @param cb
+     * If there is a cached version, return the cache, and updates the cache in the background. If
+     * there was a cached version, then cache update success will not be broadcasted. This is to
+     * prevent a client from having to deal with multiple broadcasts (cache, updates, etc).
      */
     public final void getServices(
             final CacheResponse<List<Service>> cache,
@@ -178,7 +179,7 @@ public class DataManager
                                 service.setId(obj.optInt("id"));
 
                                 service.setUniq(obj.isNull("machine_name") ? null
-                                        : obj.optString("machine_name"));
+                                                        : obj.optString("machine_name"));
 
                                 service.setName(obj.isNull("name") ? null : obj.optString("name"));
                                 service.setOrder(obj.optInt("order", 0));
@@ -259,7 +260,8 @@ public class DataManager
                         cachedServicesJson,
                         new TypeToken<List<Service>>()
                         {
-                        }.getType());
+                        }.getType()
+                );
             }
             catch (Exception e)
             {
@@ -281,7 +283,8 @@ public class DataManager
     )
     {
         mService.getAvailableSplashPromo(userId, displayedPromos, acceptedPromos,
-                new AvailableSplashPromoRetrofitCallback(cb));
+                                         new AvailableSplashPromoRetrofitCallback(cb)
+        );
     }
 
     public void editBookingAddress(
@@ -290,7 +293,11 @@ public class DataManager
             final Callback<SuccessWrapper> cb
     )
     {
-        mService.editBookingAddress(bookingId, bookingEditAddressRequest, new SuccessHandyRetroFitCallback(cb));
+        mService.editBookingAddress(
+                bookingId,
+                bookingEditAddressRequest,
+                new SuccessHandyRetroFitCallback(cb)
+        );
     }
 
     public void sendCancelRecurringBookingEmail(
@@ -298,10 +305,17 @@ public class DataManager
     Callback<SuccessWrapper> cb
     )
     {
-        mService.sendCancelRecurringBookingEmail(bookingRecurringId, "", new SuccessHandyRetroFitCallback(cb));
+        mService.sendCancelRecurringBookingEmail(
+                bookingRecurringId,
+                "",
+                new SuccessHandyRetroFitCallback(cb)
+        );
     }
 
-    public void getEditBookingExtrasInfo(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
+    public void getEditBookingExtrasInfo(
+            final int bookingId,
+            final Callback<BookingEditExtrasInfoResponse> cb
+    )
     {
         mService.getEditExtrasInfo(bookingId, new EditExtrasInfoHandyRetroFitCallback(cb));
     }
@@ -312,7 +326,11 @@ public class DataManager
             final Callback<SuccessWrapper> cb
     )
     {
-        mService.editServiceExtras(bookingId, bookingEditExtrasRequest, new SuccessHandyRetroFitCallback(cb));
+        mService.editServiceExtras(
+                bookingId,
+                bookingEditExtrasRequest,
+                new SuccessHandyRetroFitCallback(cb)
+        );
     }
 
     public void editBookingHours(
@@ -321,7 +339,11 @@ public class DataManager
             final Callback<SuccessWrapper> cb
     )
     {
-        mService.editBookingHours(bookingId, bookingEditHoursRequest, new SuccessHandyRetroFitCallback(cb));
+        mService.editBookingHours(
+                bookingId,
+                bookingEditHoursRequest,
+                new SuccessHandyRetroFitCallback(cb)
+        );
     }
 
     public void getBlockedWrapper(
@@ -341,7 +363,8 @@ public class DataManager
                                 .fromJson(response.toString());
                         blockedWrapperCallback.onSuccess(blockedWrapper);
                     }
-                });
+                }
+        );
     }
 
     /**
@@ -354,7 +377,7 @@ public class DataManager
      *                id
      * @param cb      the callback used for returning data
      * @see <a href="https://dev.twitter.com/rest/public/timelines">Twitter's implementation</a>
-     * <p/>
+     * <p>
      */
     public void getNotifications(
             long userId,
@@ -379,7 +402,11 @@ public class DataManager
             final Callback<BookingOptionsWrapper> cb
     )
     {
-        mService.getQuoteOptions(serviceId, userId, new BookingOptionsWrapperHandyRetroFitCallback(cb));
+        mService.getQuoteOptions(
+                serviceId,
+                userId,
+                new BookingOptionsWrapperHandyRetroFitCallback(cb)
+        );
     }
 
     public void createQuote(final BookingRequest bookingRequest, final Callback<BookingQuote> cb)
@@ -415,14 +442,15 @@ public class DataManager
     )
     {
         mService.applyPromo(promoCode, quoteId, userId, email,
-                new HandyRetrofitCallback(cb)
-                {
-                    @Override
-                    protected void success(final JSONObject response)
-                    {
-                        cb.onSuccess(BookingQuote.fromJson(response.toString()));
-                    }
-                });
+                            new HandyRetrofitCallback(cb)
+                            {
+                                @Override
+                                protected void success(final JSONObject response)
+                                {
+                                    cb.onSuccess(BookingQuote.fromJson(response.toString()));
+                                }
+                            }
+        );
     }
 
     public void removePromo(final int quoteId, final Callback<BookingCoupon> cb)
@@ -442,14 +470,18 @@ public class DataManager
             final Callback<BookingCompleteTransaction> cb
     )
     {
-        mService.createBooking(bookingTransaction.getBookingId(), bookingTransaction, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(final JSONObject response)
-            {
-                cb.onSuccess(BookingCompleteTransaction.fromJson(response.toString()));
-            }
-        });
+        mService.createBooking(
+                bookingTransaction.getBookingId(),
+                bookingTransaction,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        cb.onSuccess(BookingCompleteTransaction.fromJson(response.toString()));
+                    }
+                }
+        );
     }
 
     public void validateBookingZip(
@@ -458,7 +490,8 @@ public class DataManager
     )
     {
         mService.validateBookingZip(serviceId, zipCode, userId, promoCode,
-                new ZipValidationRetroFitCallback(cb));
+                                    new ZipValidationRetroFitCallback(cb)
+        );
     }
 
     public void getBookingMilestones(final String bookingId, final Callback<JobStatus> cb)
@@ -527,8 +560,10 @@ public class DataManager
                 {
                     final JSONObject voucher = response.optJSONObject("voucher");
 
-                    final PromoCode code = new PromoCode(PromoCode.Type.VOUCHER,
-                            voucher.optString("code"));
+                    final PromoCode code = new PromoCode(
+                            PromoCode.Type.VOUCHER,
+                            voucher.optString("code")
+                    );
 
                     code.setServiceId(voucher.optInt("service_id"));
 
@@ -566,14 +601,18 @@ public class DataManager
             final Callback<Void> cb
     )
     {
-        mService.postLowRatingFeedback(feedback.getBookingId(), feedback, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(final JSONObject response)
-            {
-                cb.onSuccess(null);
-            }
-        });
+        mService.postLowRatingFeedback(
+                feedback.getBookingId(),
+                feedback,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        cb.onSuccess(null);
+                    }
+                }
+        );
     }
 
     public void addBookingPostInfo(
@@ -609,22 +648,23 @@ public class DataManager
     )
     {
         mService.rescheduleBooking(bookingId, date, rescheduleAll ? 1 : 0, userId,
-                new HandyRetrofitCallback(cb)
-                {
-                    @Override
-                    protected void success(final JSONObject response)
-                    {
-                        final String message = parseAlertMessage(response);
-                        BookingQuote quote = null;
+                                   new HandyRetrofitCallback(cb)
+                                   {
+                                       @Override
+                                       protected void success(final JSONObject response)
+                                       {
+                                           final String message = parseAlertMessage(response);
+                                           BookingQuote quote = null;
 
-                        if (response.optJSONArray("dynamic_options") != null)
-                        {
-                            quote = BookingQuote.fromJson(response.toString());
-                        }
+                                           if (response.optJSONArray("dynamic_options") != null)
+                                           {
+                                               quote = BookingQuote.fromJson(response.toString());
+                                           }
 
-                        cb.onSuccess(new Pair<>(message, quote));
-                    }
-                });
+                                           cb.onSuccess(new Pair<>(message, quote));
+                                       }
+                                   }
+        );
     }
 
     public void getPreCancelationInfo(
@@ -642,10 +682,12 @@ public class DataManager
 
                 final JSONArray array = response.optJSONArray("options");
                 final Gson gson = new Gson();
-                final List<String> options = gson.fromJson(array.toString(),
+                final List<String> options = gson.fromJson(
+                        array.toString(),
                         new TypeToken<List<String>>()
                         {
-                        }.getType());
+                        }.getType()
+                );
 
                 cb.onSuccess(new Pair<>(notice, options));
             }
@@ -699,14 +741,15 @@ public class DataManager
     )
     {
         mService.setLaundryDropOff(bookingId, date, hour, minute, type,
-                new HandyRetrofitCallback(cb)
-                {
-                    @Override
-                    protected void success(final JSONObject response)
-                    {
-                        cb.onSuccess(null);
-                    }
-                });
+                                   new HandyRetrofitCallback(cb)
+                                   {
+                                       @Override
+                                       protected void success(final JSONObject response)
+                                       {
+                                           cb.onSuccess(null);
+                                       }
+                                   }
+        );
     }
 
     public void getAddLaundryInfo(
@@ -719,7 +762,8 @@ public class DataManager
             @Override
             protected void success(final JSONObject response)
             {
-                final Booking booking = Booking.fromJson(response.optJSONObject("booking").toString());
+                final Booking booking = Booking.fromJson(response.optJSONObject("booking")
+                                                                 .toString());
                 booking.setId(Integer.toString(bookingId));
                 cb.onSuccess(booking);
             }
@@ -758,7 +802,8 @@ public class DataManager
                     {
                         cb.onSuccess(null);
                     }
-                });
+                }
+        );
     }
 
     public void tipPro(final int bookingId, final Integer tipAmount, final Callback<Void> cb)
@@ -795,7 +840,8 @@ public class DataManager
                             cb.onError(new DataManagerError(Type.SERVER));
                         }
                     }
-                });
+                }
+        );
     }
 
     public final void authUser(final String email, final String password, final Callback<User> cb)
@@ -824,7 +870,8 @@ public class DataManager
 
     public final void authFBUser(final CreateUserRequest createUserRequest, final Callback<User> cb)
     {
-        mService.createUserSessionFB(createUserRequest,
+        mService.createUserSessionFB(
+                createUserRequest,
                 new HandyRetrofitCallback(cb)
                 {
                     @Override
@@ -832,7 +879,8 @@ public class DataManager
                     {
                         handleCreateSessionResponse(response, cb);
                     }
-                });
+                }
+        );
     }
 
     public final void getUser(final String userId, final String authToken, final Callback<User> cb)
@@ -854,22 +902,34 @@ public class DataManager
 
     /**
      * @param updateUserRequest
-     * @param authToken         needed because the success callback sets this
-     *                          to the User object it creates.
-     *                          ideally, it should not be used this way.
+     * @param authToken         needed because the success callback sets this to the User object it
+     *                          creates. ideally, it should not be used this way.
      * @param cb
      */
-    public final void updateUser(final UpdateUserRequest updateUserRequest, final String authToken, final Callback<User> cb)
+    public final void updateUser(
+            final UpdateUserRequest updateUserRequest,
+            final String authToken,
+            final Callback<User> cb
+    )
     {
-        mService.updateUserInfo(updateUserRequest.getUserId(), updateUserRequest, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(JSONObject response)
-            {
-                //TODO: auth token should not be set this way!
-                handleUserResponse(updateUserRequest.getUserId(), authToken, response, cb);
-            }
-        });
+        mService.updateUserInfo(
+                updateUserRequest.getUserId(),
+                updateUserRequest,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(JSONObject response)
+                    {
+                        //TODO: auth token should not be set this way!
+                        handleUserResponse(
+                                updateUserRequest.getUserId(),
+                                authToken,
+                                response,
+                                cb
+                        );
+                    }
+                }
+        );
     }
 
     public void updatePayment(final String userId, final String token, final Callback<Void> cb)
@@ -893,7 +953,7 @@ public class DataManager
             {
                 final JSONArray array = response.optJSONArray("messages");
                 cb.onSuccess(array != null && array.length() > 0 ?
-                        array.isNull(0) ? null : array.optString(0) : null);
+                                     array.isNull(0) ? null : array.optString(0) : null);
             }
         });
     }
@@ -903,7 +963,10 @@ public class DataManager
             Callback<BookingRequestablePros> cb
     )
     {
-        mService.getRequestProInfo(bookingId, new BookingRequestableProsResponseHandyRetroFitCallback(cb));
+        mService.getRequestProInfo(
+                bookingId,
+                new BookingRequestableProsResponseHandyRetroFitCallback(cb)
+        );
     }
 
     public final void requestProForBooking(
@@ -912,12 +975,25 @@ public class DataManager
             Callback<BookingProRequestResponse> cb
     )
     {
-        mService.requestProForBooking(bookingId, requestedProId, true, new BookingProRequestResponseHandyRetroFitCallback(cb));
+        mService.requestProForBooking(
+                bookingId,
+                requestedProId,
+                true,
+                new BookingProRequestResponseHandyRetroFitCallback(cb)
+        );
     }
 
-    public final void getHelpInfo(final String nodeId, final String bookingId, final Callback<HelpNodeWrapper> cb)
+    public final void getHelpInfo(
+            final String nodeId,
+            final String bookingId,
+            final Callback<HelpNodeWrapper> cb
+    )
     {
-        mService.getHelpInfo(nodeId, bookingId, new HelpNodeWrapperResponseHandyRetroFitCallback(cb));
+        mService.getHelpInfo(
+                nodeId,
+                bookingId,
+                new HelpNodeWrapperResponseHandyRetroFitCallback(cb)
+        );
     }
 
     public final void getHelpBookingsInfo(
@@ -925,7 +1001,11 @@ public class DataManager
             final Callback<HelpNodeWrapper> cb
     )
     {
-        mService.getHelpBookingsInfo(nodeId, bookingId, new HelpNodeWrapperResponseHandyRetroFitCallback(cb));
+        mService.getHelpBookingsInfo(
+                nodeId,
+                bookingId,
+                new HelpNodeWrapperResponseHandyRetroFitCallback(cb)
+        );
     }
 
     public final void createHelpCase(TypedInput body, final Callback<Void> cb)
@@ -951,12 +1031,14 @@ public class DataManager
     }
 
     public void requestRedemptionDetails(
-            final String guid,
-            final Callback<RedemptionDetailsResponse> cb
+            @NonNull final String guid,
+            @NonNull Callback<RedemptionDetailsResponse> cb
     )
     {
-        mService.requestRedemptionDetails(guid,
-                new RedemptionDetailsResponseHandyRetrofitCallback(cb));
+        mService.requestRedemptionDetails(
+                guid,
+                new RedemptionDetailsResponseHandyRetrofitCallback(cb)
+        );
     }
 
     public void requestConfiguration(final Callback<Configuration> cb)
@@ -976,14 +1058,18 @@ public class DataManager
             final Callback<Void> cb
     )
     {
-        mService.updateBookingNoteToPro(bookingId, descriptionTransaction, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(final JSONObject response)
-            {
-                cb.onSuccess(null);
-            }
-        });
+        mService.updateBookingNoteToPro(
+                bookingId,
+                descriptionTransaction,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        cb.onSuccess(null);
+                    }
+                }
+        );
     }
 
     /**
@@ -992,14 +1078,26 @@ public class DataManager
      * @deprecated - use getLocationStatus instead.
      */
     @Deprecated
-    public void getBookingGeoStatus(final String bookingId, final Callback<BookingGeoStatus> callback)
+    public void getBookingGeoStatus(
+            final String bookingId,
+            final Callback<BookingGeoStatus> callback
+    )
     {
-        mService.getBookingGeoStatus(bookingId, new BookingGeoStatusHandyRetrofitCallback(callback));
+        mService.getBookingGeoStatus(
+                bookingId,
+                new BookingGeoStatusHandyRetrofitCallback(callback)
+        );
     }
 
-    public void getLocationStatus(final String bookingId, final Callback<Booking.LocationStatus> callback)
+    public void getLocationStatus(
+            final String bookingId,
+            final Callback<Booking.LocationStatus> callback
+    )
     {
-        mService.getLocationStatus(bookingId, new BookingLocationStatusHandyRetrofitCallback(callback));
+        mService.getLocationStatus(
+                bookingId,
+                new BookingLocationStatusHandyRetrofitCallback(callback)
+        );
     }
 
     public final void updateBookingEntryInformation(
@@ -1008,14 +1106,18 @@ public class DataManager
             final Callback<Void> cb
     )
     {
-        mService.updateBookingEntryInformation(bookingId, entryInformationTransaction, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(final JSONObject response)
-            {
-                cb.onSuccess(null);
-            }
-        });
+        mService.updateBookingEntryInformation(
+                bookingId,
+                entryInformationTransaction,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        cb.onSuccess(null);
+                    }
+                }
+        );
     }
 
     public final void updateBookingFrequency(
@@ -1024,14 +1126,18 @@ public class DataManager
             final Callback<Void> cb
     )
     {
-        mService.updateBookingFrequency(bookingId, bookingEditFrequencyRequest, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(final JSONObject response)
-            {
-                cb.onSuccess(null);
-            }
-        });
+        mService.updateBookingFrequency(
+                bookingId,
+                bookingEditFrequencyRequest,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        cb.onSuccess(null);
+                    }
+                }
+        );
     }
 
     public final void getBookingPricesForFrequencies(
@@ -1039,7 +1145,10 @@ public class DataManager
             final Callback<BookingEditFrequencyInfoResponse> cb
     )
     {
-        mService.getBookingPricesForFrequencies(bookingId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
+        mService.getBookingPricesForFrequencies(
+                bookingId,
+                new BookingPricesForFrequenciesHandyRetroFitCallback(cb)
+        );
     }
 
     public final void updateRecurringFrequency(
@@ -1048,15 +1157,19 @@ public class DataManager
             final Callback<Void> cb
     )
     {
-        mService.updateRecurringFrequency(recurringId, bookingEditFrequencyRequest, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(final JSONObject response)
-            {
-                cb.onSuccess(null);
+        mService.updateRecurringFrequency(
+                recurringId,
+                bookingEditFrequencyRequest,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        cb.onSuccess(null);
 
-            }
-        });
+                    }
+                }
+        );
     }
 
     public final void getRecurringFrequency(
@@ -1064,7 +1177,10 @@ public class DataManager
             final Callback<BookingEditFrequencyInfoResponse> cb
     )
     {
-        mService.getRecurringFrequency(recurringId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
+        mService.getRecurringFrequency(
+                recurringId,
+                new BookingPricesForFrequenciesHandyRetroFitCallback(cb)
+        );
     }
 
     public void finalizeBooking(
