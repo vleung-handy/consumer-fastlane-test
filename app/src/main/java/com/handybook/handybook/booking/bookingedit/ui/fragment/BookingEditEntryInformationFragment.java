@@ -275,22 +275,20 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         mOptionsView.hideTitle();
 
         //set default selected option
-        selectDefaultOption(mOptionsView, mEntryMethodOptions);
+        selectDefaultOption(mOptionsView, entryMethodsInfo);
 
         optionsLayout.addView(mOptionsView, 0);
     }
 
     private void selectDefaultOption(
             @NonNull BookingOptionsSelectView optionsSelectView,
-            @NonNull List<EntryMethodOption> entryMethodOptions
+            @NonNull EntryMethodsInfo entryMethodsInfo
     )
     {
-        int bookingEntryMethodId = booking.getEntryType();
-        String bookingEntryMethodMachineName =
-                EntryMethodOption.getEntryMethodMachineNameForGetInId(bookingEntryMethodId);
+        String bookingEntryMethodMachineName = entryMethodsInfo.getSelectedOptionMachineName();
 
         if (bookingEntryMethodMachineName == null) { return; }
-
+        List<EntryMethodOption> entryMethodOptions = entryMethodsInfo.getEntryMethodOptions();
         for (int i = 0; i < entryMethodOptions.size(); i++)
         {
             //select the entry method as in the booking

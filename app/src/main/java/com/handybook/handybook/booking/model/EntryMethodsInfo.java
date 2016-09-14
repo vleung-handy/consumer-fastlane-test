@@ -19,8 +19,13 @@ public class EntryMethodsInfo implements Serializable
     private String mInstructionText;
     @SerializedName("entry_method_options")
     private List<EntryMethodOption> mEntryMethodOptions;
-    @SerializedName("default_option_machine_name")
-    private String mDefaultOptionMachineName;
+
+    /**
+     * create booking flow: this is the default option
+     * edit flow: this is the option previously specified by the user
+     */
+    @SerializedName("selected_option_machine_name")
+    private String mSelectedOptionMachineName;
 
     /**
      * TODO for testing only, remove
@@ -49,8 +54,8 @@ public class EntryMethodsInfo implements Serializable
      * should be one of BookingInstruction.InstructionType.EntryMethod
      * @return
      */
-    public String getDefaultOptionMachineName()
+    public String getSelectedOptionMachineName()
     {
-        return mDefaultOptionMachineName;
+        return mSelectedOptionMachineName;
     }
 }

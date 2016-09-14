@@ -166,7 +166,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             @NonNull EntryMethodsInfo entryMethodsInfo
     )
     {
-        String defaultOptionMachineName = entryMethodsInfo.getDefaultOptionMachineName();
+        String defaultOptionMachineName = entryMethodsInfo.getSelectedOptionMachineName();
         if (defaultOptionMachineName == null) { return; }
         List<EntryMethodOption> entryMethodOptions = entryMethodsInfo.getEntryMethodOptions();
         for (int i = 0; i < entryMethodOptions.size(); i++)
