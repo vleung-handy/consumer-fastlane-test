@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
@@ -169,26 +170,54 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         entryInformationTransaction.setGetInId(getInId);
         entryInformationTransaction.setLockboxAccessCode("");
 
-        if(mSelectedOptionMachineNameToInputFieldMap != null)
+        if (mSelectedOptionMachineNameToInputFieldMap != null)
         {
-            if(BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
+            //TODO this is gross because the server currently
+            // does not accept the input form values as structured data
+            // and bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo needs to be redone
+            if (BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
                     selectedEntryMethodOption.getMachineName()))
             {
                 //TODO HACKY: getintext = lockbox location, lockbox_code = lockbox access code
 
-                String lockboxAccessCode = mSelectedOptionMachineNameToInputFieldMap.get(
-                        InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE).getInput();
-                String lockboxLocation = mSelectedOptionMachineNameToInputFieldMap.get(
-                        InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION).getInput();
+                BasicInputTextView lockboxAcessCodeInputField = mSelectedOptionMachineNameToInputFieldMap.get(
+                        InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE);
+                BasicInputTextView lockboxLocationInputField = mSelectedOptionMachineNameToInputFieldMap.get(
+                        InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION);
 
+                if(lockboxAcessCodeInputField == null)
+                {
+                    onInputFormFieldMappingError(
+                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE,
+                            selectedEntryMethodOption.getMachineName());
+                    return;
+                }
+                if(lockboxLocationInputField == null)
+                {
+                    onInputFormFieldMappingError(
+                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION,
+                            selectedEntryMethodOption.getMachineName());
+                    return;
+                }
+                String lockboxAccessCode = lockboxAcessCodeInputField.getInput();
+                String lockboxLocation = lockboxLocationInputField.getInput();
                 entryInformationTransaction.setGetInText(lockboxLocation);
                 entryInformationTransaction.setLockboxAccessCode(lockboxAccessCode);
                 //set lockbox info
             }
             else
             {
-                String entryDescription = mSelectedOptionMachineNameToInputFieldMap.get(
-                        InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS).getInput();
+                BasicInputTextView entryDescriptionInputField = mSelectedOptionMachineNameToInputFieldMap.get(
+                        InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS);
+
+                if(entryDescriptionInputField == null)
+                {
+                    onInputFormFieldMappingError(
+                            InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS,
+                            selectedEntryMethodOption.getMachineName());
+                    return;
+                }
+                String entryDescription = entryDescriptionInputField.getInput();
                 entryInformationTransaction.setGetInText(entryDescription);
                 //set info for non-lockbox options
             }
@@ -199,6 +228,13 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         progressDialog.show();
         int bookingId = Integer.parseInt(booking.getId());
         bus.post(new BookingEditEvent.RequestUpdateBookingEntryInformation(bookingId, entryInformationTransaction));
+    }
+
+    private void onInputFormFieldMappingError(String missingInputFormFieldMachineName,
+                                              String entryMethodOptionMachineName)
+    {
+        Crashlytics.logException(new Exception("Unable to find input form field with machine name: " + missingInputFormFieldMachineName + " for entry method " + entryMethodOptionMachineName + ". Incorrect machine name?"));
+        showToast(R.string.default_error_string);
     }
 
     private void initHeader()

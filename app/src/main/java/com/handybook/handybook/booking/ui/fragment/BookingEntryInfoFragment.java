@@ -270,6 +270,20 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                     BasicInputTextView lockboxLocationInputField = mSelectedOptionInputFormFields.get(
                             InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION);
 
+                    if(lockboxAcessCodeInputField == null)
+                    {
+                        onInputFormFieldMappingError(
+                                InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE,
+                                entryMethodOption.getMachineName());
+                        return;
+                    }
+                    if(lockboxLocationInputField == null)
+                    {
+                        onInputFormFieldMappingError(
+                                InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION,
+                                entryMethodOption.getMachineName());
+                        return;
+                    }
                     String lockboxAccessCode = lockboxAcessCodeInputField.getInput();
                     String lockboxLocation = lockboxLocationInputField.getInput();
                     bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
@@ -285,6 +299,13 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                     BasicInputTextView entryDescriptionInputField = mSelectedOptionInputFormFields.get(
                             InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS);
 
+                    if(entryDescriptionInputField == null)
+                    {
+                        onInputFormFieldMappingError(
+                                InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS,
+                                entryMethodOption.getMachineName());
+                        return;
+                    }
                     String entryDescription = entryDescriptionInputField.getInput();
                     //set info for non-lockbox options
                     bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
@@ -314,6 +335,13 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         }
     };
 
+
+    private void onInputFormFieldMappingError(String missingInputFormFieldMachineName,
+                                              String entryMethodOptionMachineName)
+    {
+        Crashlytics.logException(new Exception("Unable to find input form field with machine name: " + missingInputFormFieldMachineName + " for entry method " + entryMethodOptionMachineName + ". Incorrect machine name?"));
+        showToast(R.string.default_error_string);
+    }
 
     private void showBookings()
     {
