@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-package antistatic.spinnerwheel;
+package com.handybook.handybook.ui.view.antistaticspinnerwheel;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -35,6 +35,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
+
+import com.handybook.handybook.R;
 
 /**
  * Spinner wheel horizontal view.
@@ -267,8 +269,8 @@ public class WheelHorizontalView extends AbstractWheelView
         mItemsLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         // XXX: Locating bug
         mItemsLayout.measure(
-                MeasureSpec.makeMeasureSpec(getWidth() + getItemDimension(), MeasureSpec.UNSPECIFIED),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST));
+                View.MeasureSpec.makeMeasureSpec(getWidth() + getItemDimension(), View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(getHeight(), View.MeasureSpec.AT_MOST));
     }
 
     //XXX: Most likely, measurements of mItemsLayout or/and its children are done inconrrectly.
@@ -277,17 +279,17 @@ public class WheelHorizontalView extends AbstractWheelView
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
+        int heightMode = View.MeasureSpec.getMode(heightMeasureSpec);
+        int widthSize = View.MeasureSpec.getSize(widthMeasureSpec);
+        int heightSize = View.MeasureSpec.getSize(heightMeasureSpec);
 
         rebuildItems(); // rebuilding before measuring
 
         int height = calculateLayoutHeight(heightSize, heightMode);
 
         int width;
-        if (widthMode == MeasureSpec.EXACTLY)
+        if (widthMode == View.MeasureSpec.EXACTLY)
         {
             width = widthSize;
         }
@@ -298,7 +300,7 @@ public class WheelHorizontalView extends AbstractWheelView
                     getSuggestedMinimumWidth()
             );
 
-            if (widthMode == MeasureSpec.AT_MOST)
+            if (widthMode == View.MeasureSpec.AT_MOST)
             {
                 width = Math.min(width, widthSize);
             }
@@ -318,12 +320,12 @@ public class WheelHorizontalView extends AbstractWheelView
     {
         mItemsLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         mItemsLayout.measure(
-                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-                MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.UNSPECIFIED)
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(heightSize, View.MeasureSpec.UNSPECIFIED)
         );
         int height = mItemsLayout.getMeasuredHeight();
 
-        if (mode == MeasureSpec.EXACTLY)
+        if (mode == View.MeasureSpec.EXACTLY)
         {
             height = heightSize;
         }
@@ -334,7 +336,7 @@ public class WheelHorizontalView extends AbstractWheelView
             // Check against our minimum width
             height = Math.max(height, getSuggestedMinimumHeight());
 
-            if (mode == MeasureSpec.AT_MOST && heightSize < height)
+            if (mode == View.MeasureSpec.AT_MOST && heightSize < height)
             {
                 height = heightSize;
             }
@@ -342,8 +344,8 @@ public class WheelHorizontalView extends AbstractWheelView
         // forcing recalculating
         mItemsLayout.measure(
                 // MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-                MeasureSpec.makeMeasureSpec(400, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(height - 2 * mItemsPadding, MeasureSpec.EXACTLY)
+                View.MeasureSpec.makeMeasureSpec(400, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(height - 2 * mItemsPadding, View.MeasureSpec.EXACTLY)
         );
 
         return height;

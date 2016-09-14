@@ -9,10 +9,9 @@ import android.widget.RelativeLayout;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.ui.adapter.OptionsAdapter;
-
-import antistatic.spinnerwheel.AbstractWheel;
-import antistatic.spinnerwheel.OnWheelChangedListener;
-import antistatic.spinnerwheel.WheelHorizontalView;
+import com.handybook.handybook.ui.view.antistaticspinnerwheel.AbstractWheel;
+import com.handybook.handybook.ui.view.antistaticspinnerwheel.OnWheelChangedListener;
+import com.handybook.handybook.ui.view.antistaticspinnerwheel.WheelHorizontalView;
 
 public final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
     private WheelHorizontalView optionsSpinner;

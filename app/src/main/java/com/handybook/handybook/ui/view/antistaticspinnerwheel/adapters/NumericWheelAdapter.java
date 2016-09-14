@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-package antistatic.spinnerwheel.adapters;
+package com.handybook.handybook.ui.view.antistaticspinnerwheel.adapters;
 
 import android.content.Context;
 

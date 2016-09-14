@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-package antistatic.spinnerwheel;
+package com.handybook.handybook.ui.view.antistaticspinnerwheel;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -34,7 +34,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
-import antistatic.spinnerwheel.adapters.WheelViewAdapter;
+
+import com.handybook.handybook.R;
+import com.handybook.handybook.ui.view.antistaticspinnerwheel.adapters.WheelViewAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -270,7 +272,7 @@ public abstract class AbstractWheel extends View {
         }
 
         //required field that makes Parcelables from a Parcel
-        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }

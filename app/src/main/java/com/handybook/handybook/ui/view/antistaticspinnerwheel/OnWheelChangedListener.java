@@ -22,21 +22,20 @@
  * limitations under the License.
  */
 
-package antistatic.spinnerwheel;
+package com.handybook.handybook.ui.view.antistaticspinnerwheel;
 
 /**
- * Wheel scrolled listener interface.
+ * Wheel changed listener interface.
+ * <p>The onChanged() method is called whenever current spinnerwheel positions is changed:
+ * <li> New Wheel position is set
+ * <li> Wheel view is scrolled
  */
-public interface OnWheelScrollListener {
+public interface OnWheelChangedListener {
 	/**
-	 * Callback method to be invoked when scrolling started.
-	 * @param wheel the spinnerwheel view whose state has changed.
+	 * Callback method to be invoked when current item changed
+	 * @param wheel the spinnerwheel view whose state has changed
+	 * @param oldValue the old value of current item
+	 * @param newValue the new value of current item
 	 */
-	void onScrollingStarted(AbstractWheel wheel);
-	
-	/**
-	 * Callback method to be invoked when scrolling ended.
-	 * @param wheel the spinnerwheel view whose state has changed.
-	 */
-	void onScrollingFinished(AbstractWheel wheel);
+	void onChanged(AbstractWheel wheel, int oldValue, int newValue);
 }

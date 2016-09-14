@@ -22,20 +22,19 @@
  * limitations under the License.
  */
 
-package antistatic.spinnerwheel;
+package com.handybook.handybook.ui.view.antistaticspinnerwheel;
 
 /**
- * Wheel changed listener interface.
- * <p>The onChanged() method is called whenever current spinnerwheel positions is changed:
+ * Wheel clicked listener interface.
+ * <p>The onItemClicked() method is called whenever a spinnerwheel item is clicked
  * <li> New Wheel position is set
  * <li> Wheel view is scrolled
  */
-public interface OnWheelChangedListener {
-	/**
-	 * Callback method to be invoked when current item changed
-	 * @param wheel the spinnerwheel view whose state has changed
-	 * @param oldValue the old value of current item
-	 * @param newValue the new value of current item
-	 */
-	void onChanged(AbstractWheel wheel, int oldValue, int newValue);
+public interface OnWheelClickedListener {
+    /**
+     * Callback method to be invoked when current item clicked
+     * @param wheel the spinnerwheel view
+     * @param itemIndex the index of clicked item
+     */
+    void onItemClicked(AbstractWheel wheel, int itemIndex);
 }

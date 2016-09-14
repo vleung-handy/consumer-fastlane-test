@@ -22,13 +22,19 @@
  * limitations under the License.
  */
 
-package antistatic.spinnerwheel;
+package com.handybook.handybook.ui.view.antistaticspinnerwheel;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+
+import com.handybook.handybook.R;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 
@@ -90,12 +96,12 @@ public abstract class AbstractWheelView extends AbstractWheel {
     // the rest
 
     /**
-     * The {@link android.graphics.Paint} for drawing the selector.
+     * The {@link Paint} for drawing the selector.
      */
     protected Paint mSelectorWheelPaint;
 
     /**
-     * The {@link android.graphics.Paint} for drawing the separators.
+     * The {@link Paint} for drawing the separators.
      */
     protected Paint mSeparatorsPaint;
 

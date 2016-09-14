@@ -22,13 +22,13 @@
  * limitations under the License.
  */
 
-package antistatic.spinnerwheel;
-
-import java.util.LinkedList;
-import java.util.List;
+package com.handybook.handybook.ui.view.antistaticspinnerwheel;
 
 import android.view.View;
 import android.widget.LinearLayout;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Recycle stored spinnerwheel items to reuse.
