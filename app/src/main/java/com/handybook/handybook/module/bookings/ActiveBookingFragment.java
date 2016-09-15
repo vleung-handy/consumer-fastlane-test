@@ -158,13 +158,13 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
             mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
             mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, getActivity()));
-            mStartingSoonIndicator.setVisibility(View.VISIBLE);
+//            mStartingSoonIndicator.setVisibility(View.VISIBLE);
             mStartingSoonIndicatorDivider.setVisibility(View.VISIBLE);
         }
         else
         {
             mMapView.setVisibility(View.GONE);
-            mStartingSoonIndicator.setVisibility(View.GONE);
+//            mStartingSoonIndicator.setVisibility(View.GONE);
             mStartingSoonIndicatorDivider.setVisibility(View.GONE);
         }
 
