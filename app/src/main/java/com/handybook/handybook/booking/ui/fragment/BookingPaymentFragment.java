@@ -835,6 +835,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     {
         if (ValidationUtils.isNullOrEmpty(promoCode)) { return; }
 
+        bus.post(new LogEvent.AddLogEvent(
+                new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(promoCode)));
+
         final int bookingId = mCurrentTransaction.getBookingId();
         final User user = userManager.getCurrentUser();
         final String userId = user != null ? user.getId() : null;
@@ -846,6 +849,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     @Override
                     public void onSuccess(final BookingQuote bookingQuote)
                     {
+                        bus.post(new LogEvent.AddLogEvent(
+                                new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(
+                                        promoCode
+                                )));
                         handlePromoSuccess(bookingQuote, mCurrentTransaction, promoCode);
                     }
 

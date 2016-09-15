@@ -93,7 +93,8 @@ public class RedemptionFragment extends InjectedFragment
                 .beginTransaction()
                 .setCustomAnimations(
                         R.anim.slide_in_right, R.anim.slide_out_left,
-                        R.anim.slide_in_left, R.anim.slide_out_right)
+                        R.anim.slide_in_left, R.anim.slide_out_right
+                )
                 .replace(R.id.child_fragment_container, redemptionSignUpFragment)
                 .commit();
     }
@@ -172,7 +173,7 @@ public class RedemptionFragment extends InjectedFragment
     {
         final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         getActivity().finish();
     }
