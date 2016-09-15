@@ -244,7 +244,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private void setupForBooking(Booking booking)
     {
-        mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.INVISIBLE);
+        mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.GONE);
         mBookingDetailView.updateDisplay(booking, mServices);
         mBookingDetailView.updateReportIssueButton(mBooking, new View.OnClickListener()
         {

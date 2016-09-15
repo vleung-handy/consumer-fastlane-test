@@ -402,4 +402,5 @@
     <!-- Content description for ImageViews -->
     <string name="help_center_image">Help Center Image</string>
     <string name="share_banner_title_message">Get your next cleaning free</string>
+    <string name="cd.add_to_calendar">Add to calendar</string>
 </resources>
