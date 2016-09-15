@@ -1,5 +1,7 @@
 package com.handybook.handybook.logger.handylogger.model.user;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
@@ -8,27 +10,36 @@ public class CodeRedemptionLog extends EventLog
 {
     private static final String EVENT_CONTEXT = "code_redemption";
 
-    @SerializedName("coupon_code")
-    private String mCouponCode;
-
-    public CodeRedemptionLog(final String eventType, final String couponCode)
+    public CodeRedemptionLog(final String eventType)
     {
         super(eventType, EVENT_CONTEXT);
-        mCouponCode = couponCode;
     }
 
     public static class CodeRedemptionOpenedLog extends CodeRedemptionLog
     {
         private static final String EVENT_TYPE = "opened";
 
-        public CodeRedemptionOpenedLog(final String couponCode)
+        public CodeRedemptionOpenedLog()
         {
-            super(EVENT_TYPE, couponCode);
+            super(EVENT_TYPE);
         }
     }
 
 
-    public static class CodeRedemptionPromoSubmittedLog extends CodeRedemptionLog
+    public abstract static class CodeRedemptionCouponLog extends CodeRedemptionLog
+    {
+        @SerializedName("coupon_code")
+        private String mCouponCode;
+
+        public CodeRedemptionCouponLog(final String eventType, final String couponCode)
+        {
+            super(eventType);
+            mCouponCode = couponCode;
+        }
+    }
+
+
+    public static class CodeRedemptionPromoSubmittedLog extends CodeRedemptionCouponLog
     {
         private static final String EVENT_TYPE = "promo_submitted";
 
@@ -39,20 +50,28 @@ public class CodeRedemptionLog extends EventLog
     }
 
 
-    public static class CodeRedemptionPromoSuccessLog extends CodeRedemptionLog
+    public static class CodeRedemptionPromoSuccessLog extends CodeRedemptionCouponLog
     {
         private static final String EVENT_TYPE = "promo_success";
 
+        @SerializedName("voucher_code")
+        private String mVoucherCode;
+
         public CodeRedemptionPromoSuccessLog(
-                final String couponCode
+                final String couponCode,
+                @Nullable final String voucherCode
         )
         {
             super(EVENT_TYPE, couponCode);
+            if (voucherCode != null)
+            {
+                mVoucherCode = voucherCode;
+            }
         }
     }
 
 
-    public static class CodeRedemptionPromoErrorLog extends CodeRedemptionLog
+    public static class CodeRedemptionPromoErrorLog extends CodeRedemptionCouponLog
     {
         private static final String EVENT_TYPE = "promo_error";
 
