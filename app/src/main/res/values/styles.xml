@@ -3,7 +3,6 @@
 
     <style name="BaseTheme"
            parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="simpleAlertDialogStyle">@style/Theme.SimpleAlertDialog.Light</item>
         <item name="abstractWheelViewStyle">@style/abstractWheelViewStyle</item>
         <item name="vpiCirclePageIndicatorStyle">@style/CirclePageIndicatorStyle</item>
         <item name="colorPrimary">@color/handy_blue</item>
@@ -548,6 +547,9 @@
         <item name="android:freezesText">false</item>
         <item name="android:visibility">gone</item>
     </style>
+
+
+    <style name="TextAppearance"/>
 
     <style name="TextAppearance.TabText">
         <item name="android:gravity">center</item>
