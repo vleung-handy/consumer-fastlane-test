@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -12,8 +13,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
+import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingInstruction;
@@ -27,13 +30,15 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.booking.util.OptionListToAttributeArrayConverter;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,11 +65,14 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    @Inject
+    BookingEditManager mBookingEditManager;
+
     private boolean mEntryMethodsInitialized = false;
 
     /**
      * map of input form machine name to input form fields
-     *
+     * <p/>
      * TODO refactor this stuff
      */
     private Map<String, BasicInputTextView> mSelectedOptionMachineNameToInputFieldMap = new HashMap<>();
@@ -101,8 +109,10 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-            final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_booking_edit_entry_info, container, false);
@@ -115,6 +125,36 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         return view;
     }
 
+    private void requestAvailableEntryMethodsInfo()
+    {
+        showUiBlockers();
+        mBookingEditManager.getEntryMethodsInfo(booking.getId(),
+                new DataManager.Callback<EntryMethodsInfo>()
+                {
+
+                    @Override
+                    public void onSuccess(final EntryMethodsInfo response)
+                    {
+                        removeUiBlockers();
+                        initFromEntryMethodsInfo(response);
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        removeUiBlockers();
+                        showToast(R.string.default_error_string);
+                    }
+                });
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        requestAvailableEntryMethodsInfo();
+    }
+
     @OnClick(R.id.next_button)
     public void onNextButtonClicked()
     {
@@ -124,7 +164,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         }
 
         int selectedOptionIndex = mOptionsView.getCurrentIndex();
-        if(selectedOptionIndex < 0) return;
+        if (selectedOptionIndex < 0) { return; }
 
         //create the object to send to the server based on the selected entry method + input fields
         EntryMethodOption selectedEntryMethodOption = mEntryMethodOptions.get(selectedOptionIndex);
@@ -133,36 +173,75 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         entryInformationTransaction.setGetInId(getInId);
         entryInformationTransaction.setLockboxAccessCode("");
 
-        if(mSelectedOptionMachineNameToInputFieldMap != null)
+        if (mSelectedOptionMachineNameToInputFieldMap != null)
         {
-            if(BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
+            //TODO this is gross because the server currently
+            // does not accept the input form values as structured data
+            // and bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo needs to be redone
+            if (BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
                     selectedEntryMethodOption.getMachineName()))
             {
                 //TODO HACKY: getintext = lockbox location, lockbox_code = lockbox access code
 
-                String lockboxAccessCode = mSelectedOptionMachineNameToInputFieldMap.get(
-                        InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE).getInput();
-                String lockboxLocation = mSelectedOptionMachineNameToInputFieldMap.get(
-                        InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION).getInput();
+                BasicInputTextView lockboxAcessCodeInputField = mSelectedOptionMachineNameToInputFieldMap.get(
+                        InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE);
+                BasicInputTextView lockboxLocationInputField = mSelectedOptionMachineNameToInputFieldMap.get(
+                        InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION);
 
+                if (lockboxAcessCodeInputField == null)
+                {
+                    onInputFormFieldMappingError(
+                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_ACCESS_CODE,
+                            selectedEntryMethodOption.getMachineName());
+                    return;
+                }
+                if (lockboxLocationInputField == null)
+                {
+                    onInputFormFieldMappingError(
+                            InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION,
+                            selectedEntryMethodOption.getMachineName());
+                    return;
+                }
+                String lockboxAccessCode = lockboxAcessCodeInputField.getInput();
+                String lockboxLocation = lockboxLocationInputField.getInput();
                 entryInformationTransaction.setGetInText(lockboxLocation);
                 entryInformationTransaction.setLockboxAccessCode(lockboxAccessCode);
                 //set lockbox info
             }
             else
             {
-                String entryDescription = mSelectedOptionMachineNameToInputFieldMap.get(
-                        InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS).getInput();
+                BasicInputTextView entryDescriptionInputField = mSelectedOptionMachineNameToInputFieldMap.get(
+                        InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS);
+
+                if (entryDescriptionInputField == null)
+                {
+                    onInputFormFieldMappingError(
+                            InputFormDefinition.InputFormField.SupportedMachineName.ADDITIONAL_INSTRUCTIONS,
+                            selectedEntryMethodOption.getMachineName());
+                    return;
+                }
+                String entryDescription = entryDescriptionInputField.getInput();
                 entryInformationTransaction.setGetInText(entryDescription);
                 //set info for non-lockbox options
             }
         }
 
-
         disableInputs();
         progressDialog.show();
         int bookingId = Integer.parseInt(booking.getId());
         bus.post(new BookingEditEvent.RequestUpdateBookingEntryInformation(bookingId, entryInformationTransaction));
+    }
+
+    private void onInputFormFieldMappingError(
+            String missingInputFormFieldMachineName,
+            String entryMethodOptionMachineName
+    )
+    {
+        Crashlytics.logException(
+                new Exception("Unable to find input form field with machine name: "
+                        + missingInputFormFieldMachineName + " for entry method "
+                        + entryMethodOptionMachineName + ". Incorrect machine name?"));
+        showToast(R.string.default_error_string);
     }
 
     private void initHeader()
@@ -196,25 +275,24 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         mOptionsView.hideTitle();
 
         //set default selected option
-        selectDefaultOption(mOptionsView, mEntryMethodOptions);
+        selectDefaultOption(mOptionsView, entryMethodsInfo);
 
         optionsLayout.addView(mOptionsView, 0);
     }
 
     private void selectDefaultOption(
             @NonNull BookingOptionsSelectView optionsSelectView,
-            @NonNull List<EntryMethodOption> entryMethodOptions)
+            @NonNull EntryMethodsInfo entryMethodsInfo
+    )
     {
-        int bookingEntryMethodId = booking.getEntryType();
-        String bookingEntryMethodMachineName =
-                EntryMethodOption.getEntryMethodMachineNameForGetInId(bookingEntryMethodId);
+        String bookingEntryMethodMachineName = entryMethodsInfo.getSelectedOptionMachineName();
 
-        if(bookingEntryMethodMachineName == null) return;
-
-        for(int i = 0; i<entryMethodOptions.size(); i++)
+        if (bookingEntryMethodMachineName == null) { return; }
+        List<EntryMethodOption> entryMethodOptions = entryMethodsInfo.getEntryMethodOptions();
+        for (int i = 0; i < entryMethodOptions.size(); i++)
         {
             //select the entry method as in the booking
-            if(bookingEntryMethodMachineName.equals(entryMethodOptions.get(i).getMachineName()))
+            if (bookingEntryMethodMachineName.equals(entryMethodOptions.get(i).getMachineName()))
             {
                 optionsSelectView.setCurrentIndex(i);
                 return;
@@ -224,12 +302,12 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
 
     private boolean validateFields()
     {
-        if(mSelectedOptionMachineNameToInputFieldMap == null) return false;
+        if (mSelectedOptionMachineNameToInputFieldMap == null) { return false; }
         boolean areAllFieldsValid = true;
-        for(String key : mSelectedOptionMachineNameToInputFieldMap.keySet())
+        for (String key : mSelectedOptionMachineNameToInputFieldMap.keySet())
         {
             BasicInputTextView inputTextView = mSelectedOptionMachineNameToInputFieldMap.get(key);
-            if(!inputTextView.validate())
+            if (!inputTextView.validate())
             //this also updates the field UI depending on whether value is valid so can't just return
             {
                 areAllFieldsValid = false;
@@ -301,10 +379,11 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         };
     }
 
-
     //TODO pre-generate the views
+
     /**
      * updates the input form based on the selected entry method option
+     *
      * @param entryMethodOption
      */
     private void updateViewForSelectedEntryMethodOption(@NonNull EntryMethodOption entryMethodOption)
@@ -314,11 +393,11 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
 
         //update the input form
         InputFormDefinition inputFormDefinition = entryMethodOption.getInputFormDefinition();
-        if(inputFormDefinition == null) return;
+        if (inputFormDefinition == null) { return; }
 
         List<InputFormDefinition.InputFormField> inputFormFields =
                 inputFormDefinition.getFieldDefinitions();
-        for(InputFormDefinition.InputFormField inputFormField : inputFormFields)
+        for (InputFormDefinition.InputFormField inputFormField : inputFormFields)
         {
             BasicInputTextView inputTextView =
                     (BasicInputTextView) LayoutInflater.from(getContext()).inflate(R.layout.element_text_input_view, null);
@@ -326,7 +405,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.bottomMargin = (int) getResources().getDimension(R.dimen.default_margin_quarter);
 
-            if(inputFormField.isRequired())
+            if (inputFormField.isRequired())
             {
                 //TODO don't like using this input view's method but using it for now
                 inputTextView.setMinLength(1);
@@ -347,9 +426,9 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                 selectedEntryMethodOption.getMachineName());
 
         //if selection is equal to what it was before
-        if(selectedGetInId == booking.getEntryType())
+        if (selectedGetInId == booking.getEntryType())
         {
-            if(BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
+            if (BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(
                     selectedEntryMethodOption.getMachineName()))
             {
                 BasicInputTextView textView = mSelectedOptionMachineNameToInputFieldMap.get(InputFormDefinition.InputFormField.SupportedMachineName.LOCKBOX_LOCATION);
@@ -372,7 +451,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     private boolean[] getRecommendedArray(List<EntryMethodOption> entryMethodOptions)
     {
         boolean[] recommended = new boolean[entryMethodOptions.size()];
-        for(int i = 0; i<recommended.length; i++)
+        for (int i = 0; i < recommended.length; i++)
         {
             recommended[i] = entryMethodOptions.get(i).isRecommended();
         }
@@ -382,7 +461,8 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
 
     @NonNull
     private BookingOption getBookingOptionModel(
-            @NonNull List<EntryMethodOption> entryMethodOptions)
+            @NonNull List<EntryMethodOption> entryMethodOptions
+    )
     {
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
@@ -394,7 +474,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
 
         //UI for recommended options
         //TODO hacky, refactor asap
-        if(!entryMethodOptions.isEmpty())
+        if (!entryMethodOptions.isEmpty())
         {
             EntryMethodOption lastOption = entryMethodOptions.get(entryMethodOptions.size() - 1);
             if (BookingInstruction.InstructionType.EntryMethod.AT_HOME.equals(lastOption.getMachineName()))
@@ -407,28 +487,5 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         }
         option.setLeftStripIndicatorVisible(getRecommendedArray(entryMethodOptions));
         return option;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if(!mEntryMethodsInitialized)
-        {
-            bus.post(new ConfigurationEvent.RequestConfiguration());
-        }
-    }
-
-    @Subscribe
-    public void onReceiveConfigurationSuccess(final ConfigurationEvent.ReceiveConfigurationSuccess event)
-    {
-        //todo if not initialized yet
-        if(!mEntryMethodsInitialized)
-        {
-            EntryMethodsInfo entryMethodsInfo =
-                    EntryMethodsInfo.getEntryMethodInfo_HACK(event.getConfiguration(), getContext());
-            initFromEntryMethodsInfo(entryMethodsInfo);
-            mEntryMethodsInitialized = true;
-        }
     }
 }

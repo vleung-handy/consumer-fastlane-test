@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.bookingedit.manager;
 
+import android.support.annotation.NonNull;
+
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
@@ -7,6 +9,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoRes
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
+import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.data.DataManager;
 import com.squareup.otto.Bus;
@@ -49,6 +52,17 @@ public class BookingEditManager
                         mBus.post(new BookingEditEvent.ReceiveEditBookingAddressError(error));
                     }
                 });
+    }
+
+    /**
+     * gets the data required to render the edit entry methods screen
+     * @param mBookingId
+     * @param callback
+     */
+    public void getEntryMethodsInfo(@NonNull String mBookingId,
+                                    @NonNull final DataManager.Callback<EntryMethodsInfo> callback)
+    {
+        mDataManager.getEntryMethodsInfo(mBookingId, callback);
     }
 
     @Subscribe
