@@ -22,7 +22,7 @@
     <View
         android:id="@+id/pro_team_pro_card_divider_top"
         android:layout_width="match_parent"
-        android:layout_height="2px"
+        android:layout_height="@dimen/horizontal_divider_height"
         android:background="@color/light_grey"
         />
 
@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/default_margin_half"
+            android:layout_marginStart="@dimen/default_margin_half"
             android:background="@drawable/bg_checkbox_heart_red"
             android:button="@null"
             android:saveEnabled="true"
@@ -49,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/pro_team_margin"
             android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/pro_team_margin"
             android:layout_weight="1"
             android:orientation="vertical"

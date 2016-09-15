@@ -191,6 +191,12 @@ public class BookingManager implements Observer
                 });
     }
 
+    /**
+     * Use the onRequestBookings()
+     *
+     * @param event
+     */
+    @Deprecated
     @Subscribe
     public void onRequestBookingCardViewModels(
             @NonNull final HandyEvent.RequestEvent.BookingCardViewModelsEvent event
@@ -254,6 +260,35 @@ public class BookingManager implements Observer
                         new RuntimeException("Unrecognized booking list type: " + onlyBookingValue));
         }
         return models;
+    }
+
+
+    @Subscribe
+    public void onRequestBookings(final BookingEvent.RequestBookings event)
+    {
+        if (null != event.getOnlyBookingsValue())
+        {
+            mDataManager.getBookings(
+                    null,
+                    event.getOnlyBookingsValue(),
+                    new DataManager.Callback<UserBookingsWrapper>()
+                    {
+                        @Override
+                        public void onSuccess(final UserBookingsWrapper result)
+                        {
+                            mBus.post(new BookingEvent.ReceiveBookingsSuccess(
+                                    result,
+                                    event.getOnlyBookingsValue()
+                            ));
+                        }
+
+                        @Override
+                        public void onError(DataManager.DataManagerError error)
+                        {
+                            mBus.post(new BookingEvent.ReceiveBookingsError(error));
+                        }
+                    });
+        }
     }
 
     @Subscribe

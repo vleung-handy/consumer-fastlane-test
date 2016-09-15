@@ -78,11 +78,7 @@ public class BookingInstructionView extends FrameLayout
 
     private void notifyObserver()
     {
-        if (mOnStateChangedListener == null)
-        {
-            return;
-        }
-        else
+        if (mOnStateChangedListener != null)
         {
             mOnStateChangedListener.onStateChanged(mBookingInstruction);
         }

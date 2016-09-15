@@ -18,8 +18,6 @@ import com.facebook.login.LoginResult;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.manager.UserDataManager;
-import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.LeftIconButton;

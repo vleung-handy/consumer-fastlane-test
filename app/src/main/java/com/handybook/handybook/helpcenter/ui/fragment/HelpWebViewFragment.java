@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class HelpWebViewFragment extends InjectedFragment
         ButterKnife.bind(this, view);
 
         final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(getResources().getColor(R.color.white));
+        menuButton.setColor(ContextCompat.getColor(getContext(), R.color.white));
         mMenuButtonLayout.addView(menuButton);
 
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity())

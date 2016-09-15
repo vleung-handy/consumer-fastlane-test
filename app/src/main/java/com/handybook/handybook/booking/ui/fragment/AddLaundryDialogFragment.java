@@ -91,7 +91,6 @@ public class AddLaundryDialogFragment extends BaseDialogFragment
                 submitProgress.setVisibility(View.VISIBLE);
                 submitButton.setText(null);
 
-                final User user = userManager.getCurrentUser();
                 dataManager.addLaundry(Integer.parseInt(booking.getId()),
                         new DataManager.Callback<Void>() {
                     @Override

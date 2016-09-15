@@ -155,19 +155,34 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     /**
      * Must call this to refresh the layout
      */
+    @SuppressWarnings("deprecation")
     public void updateState()
     {
         if (isChecked())
         {
             mImage.setImageDrawable(mCheckedDrawable);
-            setBackgroundDrawable(mCheckedBgDrawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            {
+                setBackground(mCheckedBgDrawable);
+            }
+            else
+            {
+                setBackgroundDrawable(mCheckedBgDrawable);
+            }
             mText.setText(mCheckedText);
         }
         else
         {
             mImage.setImageDrawable(mUncheckedDrawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            {
+                setBackground(mUncheckedBgDrawable);
+            }
+            else
+            {
+                setBackgroundDrawable(mUncheckedBgDrawable);
+            }
             mText.setText(mUncheckedText);
-            setBackgroundDrawable(mUncheckedBgDrawable);
         }
     }
 

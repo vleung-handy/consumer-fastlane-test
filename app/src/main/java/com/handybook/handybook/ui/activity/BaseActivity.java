@@ -9,8 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.booking.model.Booking;
@@ -57,14 +55,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
     private static final String TAG = BaseActivity.class.getName();
     protected boolean allowCallbacks;
-    protected Toast mToast;
 
     @Inject
     protected UserManager mUserManager;
     @Inject
     DataManager mDataManager;
     @Inject
-    ConfigurationManager mConfigurationManager;
+    protected ConfigurationManager mConfigurationManager;
     @Inject
     DataManagerErrorHandler mDataManagerErrorHandler;
     @Inject
@@ -74,7 +71,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
 
     private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
-    private static long timeSinceLastLogSent = 0;
     private boolean mWasOpenBefore;
 
     //Public Properties
@@ -96,8 +92,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
         }
-        mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
-        mToast.setGravity(Gravity.CENTER, 0, 0);
     }
 
     @Override

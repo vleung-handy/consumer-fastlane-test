@@ -1,0 +1,69 @@
+{
+  "booking_status": 0,
+  "cancellation_threshold": "post_critical",
+  "is_in_progress": false,
+  "in_progress_status": null,
+  "service_id": 38,
+  "service_name": "Mount TV",
+  "service_machine": "mount_tv",
+  "service": {
+    "id": 38,
+    "machine_name": "mount_tv",
+    "name": "Mount TV",
+    "parent": {
+      "id": 2,
+      "machine_name": "handyman",
+      "name": "Handyman"
+    }
+  },
+  "id": 195370,
+  "address": {
+    "zipcode": "10011",
+    "address1": "33 W 19 Street",
+    "address2": "6",
+    "city": "New York",
+    "state": "NY",
+    "latitude": "40.7400054",
+    "longitude": "-73.9930771"
+  },
+  "price": 98,
+  "date_start": "2016-08-25T09:16:26-04:00",
+  "booking_timezone": "America/New_York",
+  "hours": 2,
+  "getintxt": null,
+  "msg_to_pro": null,
+  "provider": {
+    "phone": "+15572408027",
+    "first_name": "Marky",
+    "last_name": "Sildrey",
+    "id": 27685,
+    "status": 3
+  },
+  "can_leave_tip": true,
+  "num_providers": 1,
+  "description": "  There will be a TV mounted onto a brick or concrete wall Customer will help lift TV ",
+  "comments": null,
+  "user_id": 27680,
+  "recurring": 0,
+  "recurring_id": null,
+  "recurring_string_short": null,
+  "recurring_hours": null,
+  "available_pros": null,
+  "recurring_string": null,
+  "payment_hash": null,
+  "billed_status": "Paid  •••• 1111",
+  "extras_info": [],
+  "instructions": null,
+  "active_booking_status": {
+    "map_enabled": true,
+    "booking": {
+      "latitude": "40.7400054",
+      "longitude": "-73.9930771"
+    },
+    "provider": {
+      "latitude": "40.750905",
+      "longitude": "-74.000403",
+      "timestamp": "2016-08-25T09:16:33-04:00"
+    }
+  }
+}

@@ -11,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/entry_title"
-        android:layout_marginTop="@dimen/default_margin"
         android:layout_marginBottom="@dimen/default_margin"
-        tools:showIn="@layout/element_booking_section_payment">
+        android:layout_marginTop="@dimen/default_margin"
+        tools:showIn="@layout/element_booking_detail_section_payment"
+        >
 
         <LinearLayout
             android:id="@+id/pay_lines_section"
@@ -25,7 +26,8 @@
             android:layout_marginRight="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
             android:orientation="vertical"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,21 +37,24 @@
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <TextView
                 style="@style/TextView.Bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/total"/>
+                android:text="@string/total"
+                />
 
             <TextView
                 android:id="@+id/total_text"
                 style="@style/TextView.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="$0"/>
+                tools:text="$0"
+                />
 
         </LinearLayout>
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/handy_background_gray"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:contentInsetStart="0dp"
+        app:navigationIcon="@drawable/ic_menu"
+        android:title="@string/my_bookings"
+        android:elevation="@dimen/med_elevation"
+        >
+
+        <ImageButton
+            android:id="@+id/bookings_share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_share_icon"
+            android:padding="@dimen/default_padding"
+            android:src="@drawable/ic_nav_gift_white"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <include layout="@layout/layout_card_empty"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/history_swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <com.handybook.handybook.ui.view.EmptiableRecyclerView
+                android:id="@+id/history_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:listitem="@layout/layout_booking_list_item"
+                android:clipToPadding="false"
+                >
+            </com.handybook.handybook.ui.view.EmptiableRecyclerView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
+
+</LinearLayout>

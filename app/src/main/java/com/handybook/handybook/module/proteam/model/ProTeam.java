@@ -57,11 +57,10 @@ public class ProTeam implements Parcelable
     @Nullable
     public static String toJson(@Nullable final ProTeam proTeam)
     {
-        final String json = new GsonBuilder()
+        return new GsonBuilder()
                 .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                 .create()
                 .toJson(proTeam, ProTeam.class);
-        return json;
     }
 
     @Nullable
@@ -71,11 +70,10 @@ public class ProTeam implements Parcelable
         {
             return null;
         }
-        final ProTeam proTeam = new GsonBuilder()
+        return new GsonBuilder()
                 .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                 .create()
                 .fromJson(json, ProTeam.class);
-        return proTeam;
     }
 
 

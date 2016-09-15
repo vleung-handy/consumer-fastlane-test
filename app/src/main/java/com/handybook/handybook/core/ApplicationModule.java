@@ -1,7 +1,9 @@
 package com.handybook.handybook.core;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Base64;
 
@@ -107,6 +109,10 @@ import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.bookings.ActiveBookingFragment;
+import com.handybook.handybook.module.bookings.HistoryActivity;
+import com.handybook.handybook.module.bookings.HistoryFragment;
+import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.NotificationsModule;
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
@@ -140,6 +146,7 @@ import com.handybook.handybook.ui.fragment.ProfileFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.WebViewFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
+import com.squareup.okhttp.CertificatePinner;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 
@@ -160,6 +167,9 @@ import retrofit.converter.GsonConverter;
         LoginFragment.class,
         ProfileFragment.class,
         BookingsFragment.class,
+        UpcomingBookingsFragment.class,
+        HistoryFragment.class,
+        ActiveBookingFragment.class,
         BookingListFragment.class,
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,
@@ -182,6 +192,7 @@ import retrofit.converter.GsonConverter;
         MenuDrawerActivity.class,
         LoginActivity.class,
         BookingsActivity.class,
+        HistoryActivity.class,
         BookingRecurrenceActivity.class,
         BookingPaymentActivity.class,
         BookingOptionsActivity.class,
@@ -319,6 +330,17 @@ public final class ApplicationModule
     {
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        {
+            okHttpClient.setCertificatePinner(new CertificatePinner.Builder()
+                    .add(mConfigs.getProperty("hostname"),
+                            "sha1/tbHJQrYmt+5isj5s44sk794iYFc=",
+                            "sha1/SXxoaOSEzPC6BgGmxAt/EAcsajw=",
+                            "sha1/blhOM3W9V/bVQhsWAcLYwPU6n24=",
+                            "sha1/T5x9IXmcrQ7YuQxXnxoCmeeQ84c=")
+                    .build());
+        }
+
         final String username = mConfigs.getProperty("api_username");
         String password = mConfigs.getProperty("api_password_internal");
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
@@ -392,8 +414,7 @@ public final class ApplicationModule
             final PrefsManager prefsManager
     )
     {
-        final DataManager dataManager = new DataManager(service, endpoint, prefsManager);
-        return dataManager;
+        return new DataManager(service, endpoint, prefsManager);
     }
 
     @Provides
@@ -415,6 +436,13 @@ public final class ApplicationModule
     {
         return new SecurePreferences(mContext, null,
                 mConfigs.getProperty("secure_prefs_key"), true);
+    }
+
+    @Provides
+    @Singleton
+    final SharedPreferences provideSharedPrefs()
+    {
+        return PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
     @Provides
@@ -533,11 +561,11 @@ public final class ApplicationModule
     @Singleton
     final ConfigurationManager provideConfigurationManager(
             final Bus bus,
-            final PrefsManager prefsManager,
+            final SharedPreferences sharedPreferences,
             final DataManager dataManager
     )
     {
-        return new ConfigurationManager(bus, prefsManager, dataManager);
+        return new ConfigurationManager(bus, sharedPreferences, dataManager);
     }
 
     @Provides

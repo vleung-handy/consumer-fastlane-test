@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Build;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -12,6 +14,11 @@ import android.view.inputmethod.InputMethodManager;
 
 public final class UiUtils
 {
+    /**
+     * The amount of padding to extend the touch area of a view
+     */
+    public static final int SERVICE_ICON_TOUCH_PADDING = 200;
+
     public static void toggleKeyboard(Activity activity)
     {
         View currentFocus = activity.getCurrentFocus();
@@ -82,5 +89,45 @@ public final class UiUtils
         view.setVisibility(View.VISIBLE);
         anim.start();
 
+    }
+
+    public static void extendTouchArea(final View parentContainer, final View viewToExtend, final int padArea)
+    {
+        parentContainer.post(new Runnable()
+        {
+            // Post in the parent's message queue to make sure the parent
+            // lays out its children before you call getHitRect()
+            @Override
+            public void run()
+            {
+                // The bounds for the delegate view (an ImageButton
+                // in this example)
+                Rect delegateArea = new Rect();
+
+                // The hit rectangle for the ImageButton
+                viewToExtend.getHitRect(delegateArea);
+
+                // Extend the touch area of the ImageButton beyond its bounds
+                // on the right and bottom.
+                delegateArea.right += padArea;
+                delegateArea.bottom += padArea;
+                delegateArea.left -= padArea;
+                delegateArea.top -= padArea;
+
+                // Instantiate a TouchDelegate.
+                // "delegateArea" is the bounds in local coordinates of
+                // the containing view to be mapped to the delegate view.
+                // "myButton" is the child view that should receive motion
+                // events.
+                TouchDelegate touchDelegate = new TouchDelegate(delegateArea, viewToExtend);
+
+                // Sets the TouchDelegate on the parent view, such that touches
+                // within the touch delegate bounds are routed to the child.
+                if (View.class.isInstance(viewToExtend.getParent()))
+                {
+                    ((View) viewToExtend.getParent()).setTouchDelegate(touchDelegate);
+                }
+            }
+        });
     }
 }

@@ -69,7 +69,7 @@ public class BookingInstruction implements Parcelable
         mInstructionType = in.readString();
         mDescription = in.readString();
         mLockboxCode = in.readString();
-        mIsRequested = (in.readInt() == 0) ? false : true;
+        mIsRequested = in.readInt() != 0;
     }
 
     public static final Creator<BookingInstruction> CREATOR = new Creator<BookingInstruction>()
@@ -191,6 +191,7 @@ public class BookingInstruction implements Parcelable
         public static final String LOCKBOX_CODE = "lockbox_code";
     }
 
+
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
             MachineName.PREFERENCE,
@@ -203,6 +204,7 @@ public class BookingInstruction implements Parcelable
     {
     }
 
+
     public static final class InstructionType
     {
         public static final String KITCHEN = "kitchen";
@@ -210,6 +212,7 @@ public class BookingInstruction implements Parcelable
         public static final String BATHROOM = "bathroom";
         public static final String FLOORS = "floors";
         public static final String GENERAL = "general";
+
 
         public static final class EntryMethod
         {
@@ -219,6 +222,7 @@ public class BookingInstruction implements Parcelable
             public static final String LOCKBOX = "lockbox";
         }
     }
+
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -236,6 +240,7 @@ public class BookingInstruction implements Parcelable
     public @interface BookingInstructionType
     {
     }
+
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({

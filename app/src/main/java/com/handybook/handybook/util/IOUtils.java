@@ -9,6 +9,21 @@ import java.io.InputStreamReader;
 
 public class IOUtils
 {
+    public static String getJsonStringForTest(String filename) throws Exception
+    {
+        InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null)
+        {
+            sb.append(line).append("\n");
+        }
+        reader.close();
+        return sb.toString();
+    }
+
     public static String loadJSONFromAsset(Context context, String filename) throws IOException
     {
         InputStream is = context.getAssets().open(filename);

@@ -14,8 +14,6 @@
     <dimen name="default_margin_double">32dp</dimen>
     <dimen name="default_margin_3x">48dp</dimen>
     <dimen name="default_margin_4x">64dp</dimen>
-    <dimen name="default_margin_5x">80dp</dimen>
-    <dimen name="default_margin_6x">96dp</dimen>
     <dimen name="default_padding_eighth">2dp</dimen>
     <dimen name="default_padding_quarter">4dp</dimen>
     <dimen name="default_padding">16dp</dimen>
@@ -31,7 +29,6 @@
     <dimen name="text_size_xxlarge">32sp</dimen>
     <dimen name="text_size_hero">24sp</dimen>
     <dimen name="options_wheel_padding">0dp</dimen>
-    <dimen name="inner_textfield_padding">12dp</dimen>
     <dimen name="round_button_radius">5dp</dimen>
     <dimen name="round_button_stroke">1dp</dimen>
     <dimen name="icon_padding">2dp</dimen>
@@ -44,31 +41,30 @@
     <dimen name="default_button_height">48dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="short_divider_width">100dp</dimen>
-    <dimen name="menu_header_height">160dp</dimen>
 
+    <dimen name="green_status_dot">8dp</dimen>
     <dimen name="service_circle">92dp</dimen>
     <dimen name="service_circle_half">46dp</dimen>
     <dimen name="service_circle_top_margin">-46dp</dimen>
 
-    <dimen name="rating_text_margin">40dp</dimen>
     <dimen name="rating_dialog_max_width">328dp</dimen>
 
-    <dimen name="med_elevation">4dp</dimen>
     <dimen name="low_elevation">2dp</dimen>
-    <dimen name="high_elevation">8dp</dimen>
+    <dimen name="med_elevation">4dp</dimen>
     <dimen name="checkbox_round_square">32dp</dimen>
 
     <!-- Pro Team -->
     <dimen name="pro_team_margin">12dp</dimen>
     <dimen name="pro_team_star_width_height">16dp</dimen>
-    <dimen name="pro_team_star_margin">3dp</dimen>
     <dimen name="pro_team_bookings_margin">5dp</dimen>
+
+    <dimen name="booking_list_item_height">80dp</dimen>
+    <dimen name="list_item_left_margin">40dp</dimen>
     <dimen name="pro_team_average_rating_star_margin">5dp</dimen>
 
     <!-- For ratings grid -->
     <dimen name="grid_image_width">80dp</dimen>
     <!-- This is (8 + 80 + 8) * 3 to account for the padding on the gird item layout-->
-    <dimen name="grid_width">288dp</dimen>
     <dimen name="entry_text_top_margin">40dp</dimen>
 
     <dimen name="remove_pro_dialog_text_view_height">48dp</dimen>
@@ -83,4 +79,10 @@
     <!-- Referral -->
     <dimen name="referral_image_height">184dp</dimen>
     <dimen name="referral_image_width">248dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="active_booking_map_height">200dp</dimen>
+    <dimen name="active_booking_error_message_padding">16dp</dimen>
 </resources>

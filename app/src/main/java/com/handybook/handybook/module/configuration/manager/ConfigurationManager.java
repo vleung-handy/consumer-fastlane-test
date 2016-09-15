@@ -1,11 +1,13 @@
 package com.handybook.handybook.module.configuration.manager;
 
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.manager.PrefsManager;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.squareup.otto.Bus;
@@ -19,23 +21,21 @@ public class ConfigurationManager
 {
 
     private final Bus mBus;
-    private PrefsManager mPrefsManager;
+    private SharedPreferences mSharedPreferences;
     private final DataManager mDataManager;
     private static final String KEY_CONFIGURATION_CACHE = "configuration";
-
-    private final String TAG = ConfigurationManager.class.getName();
 
     private Cache<String, Configuration> mConfigurationCache;
 
     @Inject
     public ConfigurationManager(
             final Bus bus,
-            final PrefsManager prefsManager,
+            final SharedPreferences sharedPreferences,
             final DataManager dataManager
     )
     {
         mBus = bus;
-        mPrefsManager = prefsManager;
+        mSharedPreferences = sharedPreferences;
         mDataManager = dataManager;
         mBus.register(this);
 
@@ -60,8 +60,8 @@ public class ConfigurationManager
                 @Override
                 public void onSuccess(final Configuration configuration)
                 {
-                    setCachedConfiguration(configuration);
                     mBus.post(new ConfigurationEvent.ReceiveConfigurationSuccess(configuration));
+                    setCachedConfiguration(configuration);
                 }
 
                 @Override
@@ -99,6 +99,12 @@ public class ConfigurationManager
     private void setCachedConfiguration(final Configuration configuration)
     {
         mConfigurationCache.put(KEY_CONFIGURATION_CACHE, configuration);
+
+        //also put this in the prefs manager, because sometimes we might need access to this before
+        //the onResume state.
+        final SharedPreferences.Editor edit = mSharedPreferences.edit();
+        edit.putString(PrefsKey.CONFIGURATION.getKey(), configuration.toJson());
+        edit.apply();
     }
 
     // Do NOT make this public. I know what you're trying to do.
@@ -106,5 +112,28 @@ public class ConfigurationManager
     private Configuration getCachedConfiguration()
     {
         return mConfigurationCache.getIfPresent(KEY_CONFIGURATION_CACHE);
+    }
+
+    /**
+     * Returns a cached configuration if we have one, otherwise we try looking on disk
+     *
+     * @return
+     */
+    @Nullable
+    public Configuration getPersistentConfiguration()
+    {
+        Configuration rval = getCachedConfiguration();
+
+        if (rval == null)
+        {
+            String json = mSharedPreferences.getString(PrefsKey.CONFIGURATION.getKey(), null);
+
+            if (!TextUtils.isEmpty(json))
+            {
+                rval = Configuration.fromJson(json);
+            }
+        }
+
+        return rval;
     }
 }

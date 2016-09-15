@@ -155,7 +155,6 @@ public class FinalizeBookingRequestPayload extends Observable
             if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.LOCKBOX_CODE))
             {
                 lockboxCodePosition = i;
-                continue;
             }
         }
         if (entryMethodPosition >= 0)
@@ -241,7 +240,6 @@ public class FinalizeBookingRequestPayload extends Observable
             if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.KEY_LOCATION))
             {
                 keyLocationPosition = i;
-                continue;
             }
         }
         if (entryMethodPosition >= 0)

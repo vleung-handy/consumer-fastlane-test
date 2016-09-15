@@ -306,10 +306,6 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
     private boolean shouldSwapWithViewAbove(final float y)
     {
         View neighborAbove = getNeighbor(mViewBeingDragged, ABOVE);
-        if (neighborAbove == null)
-        {
-            return false;
-        }
         return neighborAbove != null && y < neighborAbove.getY() + neighborAbove.getHeight() / 2;
     }
 

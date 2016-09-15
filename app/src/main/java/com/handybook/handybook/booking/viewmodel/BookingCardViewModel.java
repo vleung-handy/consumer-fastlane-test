@@ -88,8 +88,7 @@ public class BookingCardViewModel
 
     public BookingCardRowViewModel.List getBookingCardRowViewModels()
     {
-        BookingCardRowViewModel.List bcrvms = BookingCardRowViewModel.List.from(getBookings());
-        return bcrvms;
+        return BookingCardRowViewModel.List.from(getBookings());
     }
 
     private void addBooking(@NonNull final Booking booking)

@@ -56,6 +56,7 @@ public interface HandyRetrofitService
     @POST("/bookings/{id}/recurring_cancel_send_cancel_email")
     void sendCancelRecurringBookingEmail(
             @Path("id") int bookingRecurringId,
+            @Body String empty,
             HandyRetrofitCallback cb
     );
 
@@ -103,7 +104,7 @@ public interface HandyRetrofitService
     );
 
     @POST("/quotes/{quote}/remove_coupon")
-    void removePromo(@Path("quote") int quoteId, HandyRetrofitCallback cb);
+    void removePromo(@Path("quote") int quoteId, @Body String empty, HandyRetrofitCallback cb);
 
     @POST("/quotes/{quote}/create_booking")
     void createBooking(
@@ -221,6 +222,13 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+
+    /**
+     * @param bookingId
+     * @param bookingEditFrequencyRequest
+     * @param cb
+     * @deprecated Use /recurring_bookings/{recurring_id}/edit_frequency instead.
+     */
     @POST("/bookings/{booking}/edit_frequency")
     void updateBookingFrequency(
             @Path("booking") int bookingId,
@@ -228,9 +236,29 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+
+    /**
+     *
+     * @param bookingId
+     * @param cb
+     * @deprecated use /recurring_bookings/{recurring_id}/edit_frequency instead
+     */
     @GET("/bookings/{booking}/edit_frequency")
     void getBookingPricesForFrequencies(
             @Path("booking") int bookingId,
+            HandyRetrofitCallback cb
+    );
+
+    @POST("/recurring_bookings/{recurring_id}/edit_frequency")
+    void updateRecurringFrequency(
+            @Path("recurring_id") String recurringId,
+            @Body BookingEditFrequencyRequest bookingEditFrequencyRequest,
+            HandyRetrofitCallback cb
+    );
+
+    @GET("/recurring_bookings/{recurring_id}/edit_frequency")
+    void getRecurringFrequency(
+            @Path("recurring_id") String recurringId,
             HandyRetrofitCallback cb
     );
 
@@ -290,6 +318,12 @@ public interface HandyRetrofitService
     @GET("/recurring_bookings")
     void getRecurringBookings(HandyRetrofitCallback cb);
 
+    @GET("/bookings/{booking_id}/geo_status")
+    void getBookingGeoStatus(@Path("booking_id") String bookingId, HandyRetrofitCallback cb);
+
+    @GET("/bookings/{booking_id}/location_status")
+    void getLocationStatus(@Path("booking_id") String bookingId, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/user_sessions")
     void createUserSession(
@@ -318,9 +352,10 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+    @FormUrlEncoded
     @PUT("/users/{user_id}/update_credit_card")
     void updatePaymentInfo(
-            @Path("user_id") String userId, @Query("stripe_token") String token,
+            @Path("user_id") String userId, @Field("stripe_token") String token,
             HandyRetrofitCallback cb
     );
 
@@ -349,11 +384,12 @@ public interface HandyRetrofitService
     );
 
     //Request a specific pro for a specific booking.
+    @FormUrlEncoded
     @POST("/bookings/{booking}/request_pro")
     void requestProForBooking(
             @Path("booking") int bookingId,
-            @Query("requested_pro") int requestedProId,
-            @Query("fail_on_conflict") boolean failOnConflict,
+            @Field("requested_pro") int requestedProId,
+            @Field("fail_on_conflict") boolean failOnConflict,
             HandyRetrofitCallback cb
     );
 
@@ -377,10 +413,11 @@ public interface HandyRetrofitService
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
     @POST("/referrals/prepare")
-    void requestPrepareReferrals(HandyRetrofitCallback cb);
+    void requestPrepareReferrals(@Body String empty, HandyRetrofitCallback cb);
 
+    @FormUrlEncoded
     @POST("/referrals/confirm")
-    void requestConfirmReferral(@Query("post_guid") String guid, HandyRetrofitCallback cb);
+    void requestConfirmReferral(@Field("post_guid") String guid, HandyRetrofitCallback cb);
 
     @GET("/referrals/claim_details")
     void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);

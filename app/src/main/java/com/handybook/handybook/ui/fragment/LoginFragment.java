@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -169,7 +170,7 @@ public final class LoginFragment extends BookingFlowFragment
             }
             else
             {
-                mWelcomeText.setText(String.format(getString(R.string.welcome_back), mBookingUserName));
+                mWelcomeText.setText(getString(R.string.welcome_back, mBookingUserName));
                 mWelcomeText.setVisibility(View.VISIBLE);
             }
             mBookingRequest.setEmail(mBookingUserEmail);
@@ -177,7 +178,7 @@ public final class LoginFragment extends BookingFlowFragment
         else
         {
             final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-            menuButton.setColor(getResources().getColor(R.color.white));
+            menuButton.setColor(ContextCompat.getColor(getContext(), R.color.white));
             mMenuButtonLayout.addView(menuButton);
         }
 

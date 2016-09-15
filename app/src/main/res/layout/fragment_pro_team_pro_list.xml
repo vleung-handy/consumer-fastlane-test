@@ -9,9 +9,9 @@
         android:id="@+id/pro_team_pro_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="64dp"
         android:clipToPadding="false"
-        tools:listitem="@layout/layout_pro_team_pro_card"
+        android:paddingBottom="64dp"
+        tools:listitem="@layout/layout_pro_team_pro_card_v2"
         />
 
     <include layout="@layout/layout_pro_team_empty"/>

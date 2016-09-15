@@ -41,7 +41,7 @@
     {
       "machine_name": "hide_key",
       "display_name": "Hidden key",
-      "recommended": true,
+      "recommended": false,
       "input_form_definition": {
         "field_definitions": [
           {

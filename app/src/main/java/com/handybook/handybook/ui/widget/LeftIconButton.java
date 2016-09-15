@@ -3,6 +3,7 @@ package com.handybook.handybook.ui.widget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -51,7 +52,7 @@ public class LeftIconButton extends FrameLayout
         LayoutInflater.from(getContext()).inflate(R.layout.element_left_icon_button, this);
         ButterKnife.bind(this);
         mLabel.setText(textId);
-        mIcon.setImageDrawable(getResources().getDrawable(iconId));
+        mIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), iconId));
         mIcon.setBackgroundResource(iconBackgroundId);
     }
 }

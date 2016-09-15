@@ -23,6 +23,9 @@ public class Configuration
     @SerializedName("lockbox_entry_method_enabled")
     private boolean mLockboxEntryMethodEnabled;
 
+    @SerializedName("upcoming_and_past_bookings_enabled")
+    private boolean mUpcomingAndPastBookingsEnabled;
+
     public boolean isLockboxEntryMethodEnabled()
     {
         return mLockboxEntryMethodEnabled;
@@ -46,6 +49,11 @@ public class Configuration
     public boolean isShowRescheduleFlowOnCancel()
     {
         return mShowRescheduleFlowOnCancel;
+    }
+
+    public boolean isUpcomingAndPastBookingsEnabled()
+    {
+        return mUpcomingAndPastBookingsEnabled;
     }
 
     public boolean isMyProTeamEnabled()

@@ -311,6 +311,12 @@
             android:value="true"
             />
 
+        <!--For google maps-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_api_key"
+            />
+
         <!-- URBAN AIRSHIP -->
 
 
@@ -434,6 +440,10 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".module.bookings.HistoryActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

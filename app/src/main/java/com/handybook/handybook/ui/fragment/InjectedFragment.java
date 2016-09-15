@@ -31,17 +31,23 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public class InjectedFragment extends android.support.v4.app.Fragment {
+public class InjectedFragment extends android.support.v4.app.Fragment
+{
     protected boolean allowCallbacks;
     protected ProgressDialog progressDialog; //TODO: we should take this out of this class
     protected Toast toast;
 
     //UPGRADE: Move away from direct calls to these and go through the bus
-    @Inject protected BookingManager bookingManager;
-    @Inject protected UserManager userManager;
-    @Inject protected DataManager dataManager;
-    @Inject protected DataManagerErrorHandler dataManagerErrorHandler;
-    @Inject protected NavigationManager navigationManager;
+    @Inject
+    protected BookingManager bookingManager;
+    @Inject
+    protected UserManager userManager;
+    @Inject
+    protected DataManager dataManager;
+    @Inject
+    protected DataManagerErrorHandler dataManagerErrorHandler;
+    @Inject
+    protected NavigationManager navigationManager;
     @Inject
     protected ConfigurationManager configurationManager;
 
@@ -52,9 +58,10 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
 
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        ((BaseApplication)getActivity().getApplication()).inject(this);
+        ((BaseApplication) getActivity().getApplication()).inject(this);
 
         toast = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -92,19 +99,22 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     }
 
     @Override
-    public void onDestroyView() {
+    public void onDestroyView()
+    {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
         allowCallbacks = true;
     }
 
     @Override
-    public void onStop() {
+    public void onStop()
+    {
         super.onStop();
         allowCallbacks = false;
     }
@@ -162,16 +172,9 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
 
         Bundle suppliedArguments = this.getArguments();
 
-        if(suppliedArguments == null)
+        if (suppliedArguments == null)
         {
-            if(requiredArguments().size() == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return requiredArguments().size() == 0;
         }
 
         List<String> requiredArguments = requiredArguments();
@@ -196,7 +199,8 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
             {
                 throw new Exception(errorDetails);
             }
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Crashlytics.logException(e);
         }

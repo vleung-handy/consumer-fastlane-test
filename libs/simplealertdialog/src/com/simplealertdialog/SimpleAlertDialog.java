@@ -61,7 +61,8 @@ import android.widget.TextView;
  *
  * @author Soichiro Kashima
  */
-public class SimpleAlertDialog extends Dialog {
+public class SimpleAlertDialog extends Dialog
+{
 
     /**
      * Listener for click events of dialog buttons.<br/>
@@ -70,7 +71,8 @@ public class SimpleAlertDialog extends Dialog {
      * {@linkplain com.simplealertdialog.SimpleAlertDialog} will
      * automatically call back.
      */
-    public static interface OnClickListener {
+    public interface OnClickListener
+    {
         /**
          * Called when the positive button is clicked.<br/>
          * Note that all of the click events from the {@linkplain com.simplealertdialog.SimpleAlertDialog}
@@ -81,8 +83,11 @@ public class SimpleAlertDialog extends Dialog {
          * @param requestCode Request code set to distinguish dialogs
          * @param view        View of the dialog
          */
-        void onDialogPositiveButtonClicked(final SimpleAlertDialog dialog, final int requestCode,
-                                           final View view);
+        void onDialogPositiveButtonClicked(
+                final SimpleAlertDialog dialog,
+                final int requestCode,
+                final View view
+        );
 
         /**
          * Called when the negative button is clicked.<br/>
@@ -94,9 +99,13 @@ public class SimpleAlertDialog extends Dialog {
          * @param requestCode Request code set to distinguish dialogs
          * @param view        View of the dialog
          */
-        void onDialogNegativeButtonClicked(final SimpleAlertDialog dialog, final int requestCode,
-                                           final View view);
+        void onDialogNegativeButtonClicked(
+                final SimpleAlertDialog dialog,
+                final int requestCode,
+                final View view
+        );
     }
+
 
     /**
      * Listener for click events of dialog buttons.<br/>
@@ -105,7 +114,8 @@ public class SimpleAlertDialog extends Dialog {
      * {@linkplain com.simplealertdialog.SimpleAlertDialog} will
      * automatically call back.
      */
-    public static interface OnNeutralButtonClickListener {
+    public interface OnNeutralButtonClickListener
+    {
         /**
          * Called when the neutral button is clicked.<br/>
          * Note that all of the click events from the {@linkplain com.simplealertdialog.SimpleAlertDialog}
@@ -116,9 +126,13 @@ public class SimpleAlertDialog extends Dialog {
          * @param requestCode Request code set to distinguish dialogs
          * @param view        View of the dialog
          */
-        void onDialogNeutralButtonClicked(final SimpleAlertDialog dialog, final int requestCode,
-                                           final View view);
+        void onDialogNeutralButtonClicked(
+                final SimpleAlertDialog dialog,
+                final int requestCode,
+                final View view
+        );
     }
+
 
     /**
      * Listener for cancel events of dialog.<br/>
@@ -127,7 +141,8 @@ public class SimpleAlertDialog extends Dialog {
      * {@linkplain com.simplealertdialog.SimpleAlertDialog} will
      * automatically call back.
      */
-    public static interface OnCancelListener {
+    public interface OnCancelListener
+    {
         /**
          * Called when the dialog is canceled.<br/>
          * Note that all of the cancel events from the {@linkplain com.simplealertdialog.SimpleAlertDialog}
@@ -141,6 +156,7 @@ public class SimpleAlertDialog extends Dialog {
         void onDialogCancel(final SimpleAlertDialog dialog, final int requestCode, final View view);
     }
 
+
     /**
      * Listener for item click events of dialog.<br/>
      * There is no {@code setListener()} method to make these callbacks to be called.<br/>
@@ -149,7 +165,8 @@ public class SimpleAlertDialog extends Dialog {
      * {@linkplain com.simplealertdialog.SimpleAlertDialog} will
      * automatically call back.<br/>
      */
-    public static interface OnItemClickListener {
+    public interface OnItemClickListener
+    {
         /**
          * Called when the negative button is clicked.<br/>
          * Note that all of the click events from the {@linkplain com.simplealertdialog.SimpleAlertDialog}
@@ -160,9 +177,13 @@ public class SimpleAlertDialog extends Dialog {
          * @param requestCode Request code set to distinguish dialogs
          * @param which       Selected item index that begins from 0
          */
-        void onItemClick(final SimpleAlertDialog dialog,
-                         final int requestCode, final int which);
+        void onItemClick(
+                final SimpleAlertDialog dialog,
+                final int requestCode,
+                final int which
+        );
     }
+
 
     /**
      * Providing the custom view of the dialog.<br/>
@@ -172,7 +193,8 @@ public class SimpleAlertDialog extends Dialog {
      * {@linkplain com.simplealertdialog.SimpleAlertDialog} will
      * automatically call back.
      */
-    public static interface ViewProvider {
+    public interface ViewProvider
+    {
         /**
          * Called when the dialog is created to show custom view.<br/>
          * Note that all of the view creation events from the
@@ -186,6 +208,7 @@ public class SimpleAlertDialog extends Dialog {
         View onCreateView(final SimpleAlertDialog dialog, final int requestCode);
     }
 
+
     /**
      * Providing the custom {@code ListAdapter} of the dialog.<br/>
      * Use {@code setUseAdapter()} to indicate that the dialog has a custom adapter.<br/>
@@ -194,7 +217,8 @@ public class SimpleAlertDialog extends Dialog {
      * {@linkplain com.simplealertdialog.SimpleAlertDialog} will
      * automatically call back.
      */
-    public static interface ListProvider {
+    public interface ListProvider
+    {
         /**
          * Called when the dialog is created to show custom list.<br/>
          * Note that all of the list creation events from the
@@ -219,9 +243,13 @@ public class SimpleAlertDialog extends Dialog {
          * @param requestCode Request code set to distinguish dialogs
          * @param position    Position of the list items (from 0)
          */
-        void onListItemClick(final SimpleAlertDialog dialog, final int requestCode,
-                             final int position);
+        void onListItemClick(
+                final SimpleAlertDialog dialog,
+                final int requestCode,
+                final int position
+        );
     }
+
 
     /**
      * Providing the custom {@code SingleChoice} list of the dialog.<br/>
@@ -232,7 +260,8 @@ public class SimpleAlertDialog extends Dialog {
      * {@linkplain com.simplealertdialog.SimpleAlertDialog} will
      * automatically call back.
      */
-    public static interface SingleChoiceArrayItemProvider {
+    public interface SingleChoiceArrayItemProvider
+    {
         /**
          * Called when the single choice items are created.<br/>
          * Note that all of the creation events of the single choice items from the
@@ -244,8 +273,10 @@ public class SimpleAlertDialog extends Dialog {
          * @param requestCode Request code set to distinguish dialogs
          * @return Char sequences of the single choice items
          */
-        CharSequence[] onCreateSingleChoiceArray(final SimpleAlertDialog dialog,
-                                                 final int requestCode);
+        CharSequence[] onCreateSingleChoiceArray(
+                final SimpleAlertDialog dialog,
+                final int requestCode
+        );
 
         /**
          * Called when the item in the custom single choice items is clicked.<br/>
@@ -258,19 +289,25 @@ public class SimpleAlertDialog extends Dialog {
          * @param requestCode Request code set to distinguish dialogs
          * @param position    Position of the list items (from 0)
          */
-        void onSingleChoiceArrayItemClick(final SimpleAlertDialog dialog, final int requestCode,
-                                          final int position);
+        void onSingleChoiceArrayItemClick(
+                final SimpleAlertDialog dialog, final int requestCode,
+                final int position
+        );
     }
 
-    private class IconListItem {
+
+    private class IconListItem
+    {
         public int iconResId;
         public CharSequence text;
 
-        public IconListItem(final int iconResId, CharSequence text) {
+        public IconListItem(final int iconResId, CharSequence text)
+        {
             this.iconResId = iconResId;
             this.text = text;
         }
     }
+
 
     static final String ARG_THEME_RES_ID = "argThemeResId";
     static final String ARG_TITLE = "argTitle";
@@ -333,7 +370,8 @@ public class SimpleAlertDialog extends Dialog {
      * @param context    Dialog owner context
      * @param themeResId Dialog theme resource ID
      */
-    public SimpleAlertDialog(Context context, int themeResId) {
+    public SimpleAlertDialog(Context context, int themeResId)
+    {
         super(context, themeResId);
         obtainStyles();
     }
@@ -344,13 +382,16 @@ public class SimpleAlertDialog extends Dialog {
      *
      * @param context Dialog owner context
      */
-    public SimpleAlertDialog(Context context) {
+    public SimpleAlertDialog(Context context)
+    {
         super(context);
         obtainStyles();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
         setContentView(R.layout.sad__dialog_simple);
@@ -363,30 +404,45 @@ public class SimpleAlertDialog extends Dialog {
         setBackground(R.id.body, mBackgroundBottom);
 
         // Title
-        if (TextUtils.isEmpty(mTitle)) {
+        if (TextUtils.isEmpty(mTitle))
+        {
             findViewById(R.id.header).setVisibility(View.GONE);
             findViewById(R.id.bar_wrapper).setVisibility(View.GONE);
             findViewById(R.id.title).setVisibility(View.GONE);
             findViewById(R.id.icon).setVisibility(View.GONE);
             setBackground(R.id.body, mBackgroundFull);
-        } else {
+        }
+        else
+        {
             ((TextView) findViewById(R.id.title)).setText(mTitle);
-            if (mTitleTextStyle != 0) {
-                ((TextView) findViewById(R.id.title)).setTextAppearance(getContext(),
-                        mTitleTextStyle);
+            if (mTitleTextStyle != 0)
+            {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                {
+                    ((TextView) findViewById(R.id.title)).setTextAppearance(mTitleTextStyle);
+                }
+                else
+                {
+                    ((TextView) findViewById(R.id.title)).setTextAppearance(getContext(),
+                            mTitleTextStyle);
+                }
             }
-            if (mIcon > 0) {
+            if (mIcon > 0)
+            {
                 ((ImageView) findViewById(R.id.icon)).setImageResource(mIcon);
                 findViewById(R.id.title).setPadding(
                         findViewById(R.id.title).getPaddingLeft() / 2,
                         findViewById(R.id.title).getPaddingTop(),
                         findViewById(R.id.title).getPaddingRight(),
                         findViewById(R.id.title).getPaddingBottom());
-            } else {
+            }
+            else
+            {
                 findViewById(R.id.icon).setVisibility(View.GONE);
             }
             setBackground(R.id.bar, mTitleSeparatorBackground);
-            if (mTitleSeparatorHeight == 0) {
+            if (mTitleSeparatorHeight == 0)
+            {
                 mTitleSeparatorHeight = getContext().getResources().getDimensionPixelSize(
                         R.dimen.sad__dialog_title_separator_height);
             }
@@ -403,209 +459,275 @@ public class SimpleAlertDialog extends Dialog {
         }
 
         // Message
-        if (TextUtils.isEmpty(mMessage)) {
+        if (TextUtils.isEmpty(mMessage))
+        {
             findViewById(R.id.message).setVisibility(View.GONE);
-        } else {
+        }
+        else
+        {
             ((TextView) findViewById(R.id.message)).setText(mMessage);
-            if (mMessageTextStyle != 0) {
+            if (mMessageTextStyle != 0)
+            {
                 ((TextView) findViewById(R.id.message)).setTextAppearance(getContext(),
                         mMessageTextStyle);
             }
         }
 
         // Custom View
-        if (mView != null) {
+        if (mView != null)
+        {
             LinearLayout group = (LinearLayout) findViewById(R.id.view);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     getMatchParent(),
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             group.addView(mView, lp);
-        } else {
+        }
+        else
+        {
             findViewById(R.id.view).setVisibility(View.GONE);
         }
 
         // Custom Adapter
-        if (mAdapter != null) {
+        if (mAdapter != null)
+        {
             ListView list = (ListView) findViewById(R.id.list);
             list.setAdapter(mAdapter);
-            if (mSingleChoice) {
+            if (mSingleChoice)
+            {
                 list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             }
-            if (mSingleChoice && 0 <= mCheckedItem && mCheckedItem < mAdapter.getCount()) {
+            if (mSingleChoice && 0 <= mCheckedItem && mCheckedItem < mAdapter.getCount())
+            {
                 list.setItemChecked(mCheckedItem, true);
                 list.setSelectionFromTop(mCheckedItem, 0);
             }
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (mListItemListener != null) {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    if (mListItemListener != null)
+                    {
                         mListItemListener.onItemClick(parent, view, position, id);
                     }
                     dismiss();
                 }
             });
-        } else {
+        }
+        else
+        {
             findViewById(R.id.list).setVisibility(View.GONE);
         }
 
         // Positive Button
         boolean hasPositiveButton = false;
-        if (mPositiveButtonText != null) {
+        if (mPositiveButtonText != null)
+        {
             hasPositiveButton = true;
             ((TextView) findViewById(R.id.button_positive_label)).setText(mPositiveButtonText);
-            if (mButtonTextStyle != 0) {
+            if (mButtonTextStyle != 0)
+            {
                 ((TextView) findViewById(R.id.button_positive_label)).setTextAppearance(
                         getContext(), mButtonTextStyle);
             }
         }
-        if (mPositiveButtonListener != null) {
+        if (mPositiveButtonListener != null)
+        {
             hasPositiveButton = true;
-            findViewById(R.id.button_positive).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.button_positive).setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(final View v) {
-                    if (mPositiveButtonListener != null) {
+                public void onClick(final View v)
+                {
+                    if (mPositiveButtonListener != null)
+                    {
                         mPositiveButtonListener.onClick(SimpleAlertDialog.this, 0);
                     }
                     dismiss();
                 }
             });
         }
-        if (!hasPositiveButton) {
+        if (!hasPositiveButton)
+        {
             findViewById(R.id.button_positive).setVisibility(View.GONE);
         }
 
         // Neutral Button
         boolean hasNeutralButton = false;
-        if (mNeutralButtonText != null) {
+        if (mNeutralButtonText != null)
+        {
             hasNeutralButton = true;
             ((TextView) findViewById(R.id.button_neutral_label)).setText(mNeutralButtonText);
-            if (mButtonTextStyle != 0) {
+            if (mButtonTextStyle != 0)
+            {
                 ((TextView) findViewById(R.id.button_neutral_label)).setTextAppearance(
                         getContext(), mButtonTextStyle);
             }
         }
-        if (mNeutralButtonListener != null) {
+        if (mNeutralButtonListener != null)
+        {
             hasNeutralButton = true;
-            findViewById(R.id.button_neutral).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.button_neutral).setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(final View v) {
-                    if (mNeutralButtonListener != null) {
+                public void onClick(final View v)
+                {
+                    if (mNeutralButtonListener != null)
+                    {
                         mNeutralButtonListener.onClick(SimpleAlertDialog.this, 0);
                     }
                     dismiss();
                 }
             });
         }
-        if (!hasNeutralButton) {
+        if (!hasNeutralButton)
+        {
             findViewById(R.id.button_neutral).setVisibility(View.GONE);
         }
 
         // Negative Button
         boolean hasNegativeButton = false;
-        if (mNegativeButtonText != null) {
+        if (mNegativeButtonText != null)
+        {
             hasNegativeButton = true;
             ((TextView) findViewById(R.id.button_negative_label)).setText(mNegativeButtonText);
-            if (mButtonTextStyle != 0) {
+            if (mButtonTextStyle != 0)
+            {
                 ((TextView) findViewById(R.id.button_negative_label)).setTextAppearance(
                         getContext(), mButtonTextStyle);
             }
         }
-        if (mNegativeButtonListener != null) {
+        if (mNegativeButtonListener != null)
+        {
             hasNegativeButton = true;
-            findViewById(R.id.button_negative).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.button_negative).setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(final View v) {
-                    if (mNegativeButtonListener != null) {
+                public void onClick(final View v)
+                {
+                    if (mNegativeButtonListener != null)
+                    {
                         mNegativeButtonListener.onClick(SimpleAlertDialog.this, 1);
                     }
                     dismiss();
                 }
             });
         }
-        if (!hasNegativeButton) {
+        if (!hasNegativeButton)
+        {
             findViewById(R.id.button_negative).setVisibility(View.GONE);
         }
 
-        if (!hasPositiveButton && !hasNegativeButton) {
+        if (!hasPositiveButton && !hasNegativeButton)
+        {
             findViewById(R.id.button_divider_top).setVisibility(View.GONE);
             findViewById(R.id.button_divider).setVisibility(View.GONE);
-        } else if (!hasPositiveButton || !hasNegativeButton) {
+        }
+        else if (!hasPositiveButton || !hasNegativeButton)
+        {
             findViewById(R.id.button_divider).setVisibility(View.GONE);
             setBackground(R.id.button_divider_top, mButtonTopDividerBackground);
-        } else {
+        }
+        else
+        {
             setBackground(R.id.button_divider_top, mButtonTopDividerBackground);
             setBackground(R.id.button_divider, mButtonVerticalDividerBackground);
         }
-        if (hasNeutralButton) {
+        if (hasNeutralButton)
+        {
             setBackground(R.id.button_divider_neutral, mButtonVerticalDividerBackground);
-        } else {
+        }
+        else
+        {
             findViewById(R.id.button_divider_neutral).setVisibility(View.GONE);
         }
     }
 
-    public void setMessage(final CharSequence message) {
-        if (message == null) {
+    public void setMessage(final CharSequence message)
+    {
+        if (message == null)
+        {
             return;
         }
         mMessage = message;
     }
 
-    public void setMessage(final int resId) {
+    public void setMessage(final int resId)
+    {
         setMessage(getContext().getText(resId));
     }
 
     @Override
-    public void setTitle(final CharSequence title) {
-        if (title == null) {
+    public void setTitle(final CharSequence title)
+    {
+        if (title == null)
+        {
             return;
         }
         mTitle = title;
     }
 
     @Override
-    public void setTitle(final int resId) {
+    public void setTitle(final int resId)
+    {
         setTitle(getContext().getText(resId));
     }
 
-    public void setIcon(final int resId) {
-        if (resId <= 0) {
+    public void setIcon(final int resId)
+    {
+        if (resId <= 0)
+        {
             return;
         }
         mIcon = resId;
     }
 
-    public void setView(final View view) {
-        if (view == null) {
+    public void setView(final View view)
+    {
+        if (view == null)
+        {
             return;
         }
         mView = view;
     }
 
-    public View getView() {
+    public View getView()
+    {
         return mView;
     }
 
-    public void setItems(final CharSequence[] items,
-                         final AdapterView.OnItemClickListener listener) {
+    public void setItems(
+            final CharSequence[] items,
+            final AdapterView.OnItemClickListener listener
+    )
+    {
         mAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_list_item_1, items);
         mListItemListener = listener;
     }
 
-    public void setItems(final CharSequence[] items,
-                         final int[] iconResIds,
-                         final AdapterView.OnItemClickListener listener) {
-        if (iconResIds == null || items == null) {
+    public void setItems(
+            final CharSequence[] items,
+            final int[] iconResIds,
+            final AdapterView.OnItemClickListener listener
+    )
+    {
+        if (iconResIds == null || items == null)
+        {
             return;
         }
         final IconListItem[] iconListItems = new IconListItem[Math.min(iconResIds.length, items.length)];
-        for (int i = 0; i < iconResIds.length && i < items.length; i++) {
+        for (int i = 0; i < iconResIds.length && i < items.length; i++)
+        {
             iconListItems[i] = new IconListItem(iconResIds[i], items[i]);
         }
-        mAdapter = new ArrayAdapter<IconListItem>(getContext(), android.R.layout.simple_list_item_1, iconListItems) {
+        mAdapter = new ArrayAdapter<IconListItem>(getContext(), android.R.layout.simple_list_item_1, iconListItems)
+        {
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent)
+            {
                 View view = super.getView(position, convertView, parent);
-                if (view != null) {
+                if (view != null)
+                {
                     TextView tv = (TextView) view.findViewById(android.R.id.text1);
                     tv.setText(iconListItems[position].text);
                     tv.setCompoundDrawablesWithIntrinsicBounds(iconListItems[position].iconResId, 0, 0, 0);
@@ -618,35 +740,49 @@ public class SimpleAlertDialog extends Dialog {
         mListItemListener = listener;
     }
 
-    public void setAdapter(final ListAdapter adapter,
-                           final AdapterView.OnItemClickListener listener) {
-        if (adapter == null) {
+    public void setAdapter(
+            final ListAdapter adapter,
+            final AdapterView.OnItemClickListener listener
+    )
+    {
+        if (adapter == null)
+        {
             return;
         }
         mAdapter = adapter;
         mListItemListener = listener;
     }
 
-    public void setSingleChoiceItems(final CharSequence[] items, final int checkedItem,
-                                     final AdapterView.OnItemClickListener listener) {
-        if (items == null) {
+    public void setSingleChoiceItems(
+            final CharSequence[] items, final int checkedItem,
+            final AdapterView.OnItemClickListener listener
+    )
+    {
+        if (items == null)
+        {
             return;
         }
         mAdapter = new ArrayAdapter<CharSequence>(getContext(),
-                android.R.layout.simple_list_item_single_choice, items) {
+                android.R.layout.simple_list_item_single_choice, items)
+        {
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent)
+            {
                 View view = super.getView(position, convertView, parent);
-                if (view != null) {
+                if (view != null)
+                {
                     CheckedTextView c = (CheckedTextView) view.findViewById(android.R.id.text1);
-                    if (mListChoiceIndicatorSingle != 0) {
+                    if (mListChoiceIndicatorSingle != 0)
+                    {
                         c.setCheckMarkDrawable(mListChoiceIndicatorSingle);
                     }
-                    if (mListItemTextStyle != 0) {
+                    if (mListItemTextStyle != 0)
+                    {
                         c.setTextAppearance(getContext(), mListItemTextStyle);
                     }
                     setBackground(c, mListSelectorBackground);
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+                    {
                         Resources res = getContext().getResources();
                         c.setPadding(
                                 res.getDimensionPixelSize(R.dimen.sad__simple_list_item_padding_left),
@@ -663,49 +799,71 @@ public class SimpleAlertDialog extends Dialog {
         mListItemListener = listener;
     }
 
-    public void setPositiveButton(final CharSequence text,
-                                  final DialogInterface.OnClickListener listener) {
-        if (text == null) {
+    public void setPositiveButton(
+            final CharSequence text,
+            final DialogInterface.OnClickListener listener
+    )
+    {
+        if (text == null)
+        {
             return;
         }
         mPositiveButtonText = text;
         mPositiveButtonListener = listener;
     }
 
-    public void setPositiveButton(final int resId,
-                                  final DialogInterface.OnClickListener listener) {
+    public void setPositiveButton(
+            final int resId,
+            final DialogInterface.OnClickListener listener
+    )
+    {
         setPositiveButton(getContext().getText(resId), listener);
     }
 
-    public void setNeutralButton(final CharSequence text,
-                                  final DialogInterface.OnClickListener listener) {
-        if (text == null) {
+    public void setNeutralButton(
+            final CharSequence text,
+            final DialogInterface.OnClickListener listener
+    )
+    {
+        if (text == null)
+        {
             return;
         }
         mNeutralButtonText = text;
         mNeutralButtonListener = listener;
     }
 
-    public void setNeutralButton(final int resId,
-                                  final DialogInterface.OnClickListener listener) {
+    public void setNeutralButton(
+            final int resId,
+            final DialogInterface.OnClickListener listener
+    )
+    {
         setNeutralButton(getContext().getText(resId), listener);
     }
 
-    public void setNegativeButton(final CharSequence text,
-                                  final DialogInterface.OnClickListener listener) {
-        if (text == null) {
+    public void setNegativeButton(
+            final CharSequence text,
+            final DialogInterface.OnClickListener listener
+    )
+    {
+        if (text == null)
+        {
             return;
         }
         mNegativeButtonText = text;
         mNegativeButtonListener = listener;
     }
 
-    public void setNegativeButton(final int resId,
-                                  final DialogInterface.OnClickListener listener) {
+    public void setNegativeButton(
+            final int resId,
+            final DialogInterface.OnClickListener listener
+    )
+    {
         setNegativeButton(getContext().getText(resId), listener);
     }
 
-    private void obtainStyles() {
+    private void obtainStyles()
+    {
         TypedArray a = getContext().getTheme().obtainStyledAttributes(null,
                 R.styleable.SimpleAlertDialogStyle, R.attr.simpleAlertDialogStyle,
                 R.style.Theme_SimpleAlertDialog);
@@ -740,8 +898,10 @@ public class SimpleAlertDialog extends Dialog {
         a.recycle();
     }
 
-    private void setBackground(final int resId, final Drawable d) {
-        if (resId == 0 || d == null) {
+    private void setBackground(final int resId, final Drawable d)
+    {
+        if (resId == 0 || d == null)
+        {
             return;
         }
         View view = findViewById(resId);
@@ -750,22 +910,31 @@ public class SimpleAlertDialog extends Dialog {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @SuppressWarnings("deprecation")
-    private void setBackground(final View view, final Drawable d) {
-        if (view == null || d == null) {
+    private void setBackground(final View view, final Drawable d)
+    {
+        if (view == null || d == null)
+        {
             return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+        {
             view.setBackground(d.getConstantState().newDrawable());
-        } else {
+        }
+        else
+        {
             view.setBackgroundDrawable(d.getConstantState().newDrawable());
         }
     }
 
     @SuppressWarnings("deprecation")
-    private int getMatchParent() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ECLAIR_MR1) {
+    private int getMatchParent()
+    {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ECLAIR_MR1)
+        {
             return ViewGroup.LayoutParams.FILL_PARENT;
-        } else {
+        }
+        else
+        {
             return ViewGroup.LayoutParams.MATCH_PARENT;
         }
     }
@@ -778,7 +947,8 @@ public class SimpleAlertDialog extends Dialog {
      * @param <T> Type of the {@code SimpleAlertDialog} fragment
      * @param <F> Type of the basic {@code Fragment}
      */
-    public static abstract class Builder<T, F> {
+    public static abstract class Builder<T, F>
+    {
 
         private int mThemeResId;
         private CharSequence mTitle;
@@ -810,7 +980,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param resId Theme(style) resource ID
          * @return Builder itself
          */
-        public Builder<T, F> setTheme(final int resId) {
+        public Builder<T, F> setTheme(final int resId)
+        {
             mThemeResId = resId;
             return this;
         }
@@ -821,7 +992,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param title Title char sequence or string
          * @return Builder itself
          */
-        public Builder<T, F> setTitle(final CharSequence title) {
+        public Builder<T, F> setTitle(final CharSequence title)
+        {
             mTitle = title;
             return this;
         }
@@ -832,7 +1004,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param resId Title string resource ID
          * @return Builder itself
          */
-        public Builder<T, F> setTitle(final int resId) {
+        public Builder<T, F> setTitle(final int resId)
+        {
             mTitleResId = resId;
             return this;
         }
@@ -843,7 +1016,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param resId Icon drawable resource ID
          * @return Builder itself
          */
-        public Builder<T, F> setIcon(final int resId) {
+        public Builder<T, F> setIcon(final int resId)
+        {
             mIcon = resId;
             return this;
         }
@@ -854,7 +1028,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param message Message char sequence or string
          * @return Builder itself
          */
-        public Builder<T, F> setMessage(final CharSequence message) {
+        public Builder<T, F> setMessage(final CharSequence message)
+        {
             mMessage = message;
             return this;
         }
@@ -865,7 +1040,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param resId Message string resource ID
          * @return Builder itself
          */
-        public Builder<T, F> setMessage(final int resId) {
+        public Builder<T, F> setMessage(final int resId)
+        {
             mMessageResId = resId;
             return this;
         }
@@ -877,7 +1053,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param positiveButton Char sequence or string of the positive button
          * @return Builder itself
          */
-        public Builder<T, F> setPositiveButton(final CharSequence positiveButton) {
+        public Builder<T, F> setPositiveButton(final CharSequence positiveButton)
+        {
             mPositiveButton = positiveButton;
             return this;
         }
@@ -889,7 +1066,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param resId String resource ID of the positive button
          * @return Builder itself
          */
-        public Builder<T, F> setPositiveButton(final int resId) {
+        public Builder<T, F> setPositiveButton(final int resId)
+        {
             mPositiveButtonResId = resId;
             return this;
         }
@@ -901,7 +1079,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param neutralButton Char sequence or string of the neutral button
          * @return Builder itself
          */
-        public Builder<T, F> setNeutralButton(final CharSequence neutralButton) {
+        public Builder<T, F> setNeutralButton(final CharSequence neutralButton)
+        {
             mNeutralButton = neutralButton;
             return this;
         }
@@ -913,7 +1092,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param resId String resource ID of the neutral button
          * @return Builder itself
          */
-        public Builder<T, F> setNeutralButton(final int resId) {
+        public Builder<T, F> setNeutralButton(final int resId)
+        {
             mNeutralButtonResId = resId;
             return this;
         }
@@ -925,7 +1105,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param negativeButton Char sequence or string of the negative button
          * @return Builder itself
          */
-        public Builder<T, F> setNegativeButton(final CharSequence negativeButton) {
+        public Builder<T, F> setNegativeButton(final CharSequence negativeButton)
+        {
             mNegativeButton = negativeButton;
             return this;
         }
@@ -937,7 +1118,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param resId String resource ID of the negative button
          * @return Builder itself
          */
-        public Builder<T, F> setNegativeButton(final int resId) {
+        public Builder<T, F> setNegativeButton(final int resId)
+        {
             mNegativeButtonResId = resId;
             return this;
         }
@@ -950,7 +1132,8 @@ public class SimpleAlertDialog extends Dialog {
          * @return Builder itself
          */
         @TargetApi(Build.VERSION_CODES.ECLAIR)
-        public Builder<T, F> setItems(final CharSequence[] items) {
+        public Builder<T, F> setItems(final CharSequence[] items)
+        {
             mItems = items;
             return this;
         }
@@ -962,7 +1145,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param resId Char sequence array resource ID for items
          * @return Builder itself
          */
-        public Builder<T, F> setItems(final int resId) {
+        public Builder<T, F> setItems(final int resId)
+        {
             mItemsResId = resId;
             return this;
         }
@@ -976,7 +1160,8 @@ public class SimpleAlertDialog extends Dialog {
          * @return Builder itself
          */
         @TargetApi(Build.VERSION_CODES.ECLAIR)
-        public Builder<T, F> setItems(final CharSequence[] items, final int[] icons) {
+        public Builder<T, F> setItems(final CharSequence[] items, final int[] icons)
+        {
             mItems = items;
             mIcons = icons;
             return this;
@@ -990,7 +1175,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param icons Icon resource ID array
          * @return Builder itself
          */
-        public Builder<T, F> setItems(final int resId, final int[] icons) {
+        public Builder<T, F> setItems(final int resId, final int[] icons)
+        {
             mItemsResId = resId;
             mIcons = icons;
             return this;
@@ -1004,7 +1190,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param requestCode Request code
          * @return Builder itself
          */
-        public Builder<T, F> setRequestCode(final int requestCode) {
+        public Builder<T, F> setRequestCode(final int requestCode)
+        {
             mRequestCode = requestCode;
             return this;
         }
@@ -1018,7 +1205,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param cancelable {@code true} if the dialog is cancelable
          * @return Builder itself
          */
-        public Builder<T, F> setCancelable(final boolean cancelable) {
+        public Builder<T, F> setCancelable(final boolean cancelable)
+        {
             mCancelable = cancelable;
             return this;
         }
@@ -1030,7 +1218,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param canceledOnTouchOutside {@code true} if the dialog should be canceled on touch outside
          * @return Builder itself
          */
-        public Builder<T, F> setCanceledOnTouchOutside(final boolean canceledOnTouchOutside) {
+        public Builder<T, F> setCanceledOnTouchOutside(final boolean canceledOnTouchOutside)
+        {
             mCanceledOnTouchOutside = canceledOnTouchOutside;
             return this;
         }
@@ -1043,7 +1232,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param checkedItem Position of the checked item
          * @return Builder itself
          */
-        public Builder<T, F> setSingleChoiceCheckedItem(final int checkedItem) {
+        public Builder<T, F> setSingleChoiceCheckedItem(final int checkedItem)
+        {
             mSingleChoiceCheckedItem = checkedItem;
             return this;
         }
@@ -1055,7 +1245,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param initialText initial value of the {@code EditText}
          * @return Builder itself
          */
-        public Builder<T, F> setEditText(final CharSequence initialText) {
+        public Builder<T, F> setEditText(final CharSequence initialText)
+        {
             mEditTextInitialText = initialText;
             mEditTextInputType = InputType.TYPE_CLASS_TEXT;
             return this;
@@ -1068,7 +1259,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param inputType   input types of the {@code EditText} defined in {@linkplain android.text.InputType}
          * @return Builder itself
          */
-        public Builder<T, F> setEditText(final CharSequence initialText, final int inputType) {
+        public Builder<T, F> setEditText(final CharSequence initialText, final int inputType)
+        {
             mEditTextInitialText = initialText;
             mEditTextInputType = inputType;
             return this;
@@ -1081,7 +1273,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param useView {@code true} if you provide a custom view for this dialog
          * @return Builder itself
          */
-        public Builder<T, F> setUseView(final boolean useView) {
+        public Builder<T, F> setUseView(final boolean useView)
+        {
             mUseView = useView;
             return this;
         }
@@ -1093,7 +1286,8 @@ public class SimpleAlertDialog extends Dialog {
          * @param useAdapter {@code true} if you provide a custom adapter for this dialog
          * @return Builder itself
          */
-        public Builder<T, F> setUseAdapter(final boolean useAdapter) {
+        public Builder<T, F> setUseAdapter(final boolean useAdapter)
+        {
             mUseAdapter = useAdapter;
             return this;
         }
@@ -1105,55 +1299,79 @@ public class SimpleAlertDialog extends Dialog {
          * @return Created arguments bundle
          */
         @TargetApi(Build.VERSION_CODES.FROYO)
-        public Bundle createArguments() {
+        public Bundle createArguments()
+        {
             Bundle args = new Bundle();
-            if (mThemeResId > 0) {
+            if (mThemeResId > 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_THEME_RES_ID, mThemeResId);
             }
-            if (mTitle != null) {
+            if (mTitle != null)
+            {
                 args.putCharSequence(SimpleAlertDialog.ARG_TITLE, mTitle);
-            } else if (mTitleResId > 0) {
+            }
+            else if (mTitleResId > 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_TITLE_RES_ID, mTitleResId);
             }
-            if (mIcon > 0) {
+            if (mIcon > 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_ICON, mIcon);
             }
-            if (mMessage != null) {
+            if (mMessage != null)
+            {
                 args.putCharSequence(SimpleAlertDialog.ARG_MESSAGE, mMessage);
-            } else if (mMessageResId > 0) {
+            }
+            else if (mMessageResId > 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_MESSAGE_RES_ID, mMessageResId);
             }
-            if (mPositiveButton != null) {
+            if (mPositiveButton != null)
+            {
                 args.putCharSequence(SimpleAlertDialog.ARG_POSITIVE_BUTTON, mPositiveButton);
-            } else if (mPositiveButtonResId > 0) {
+            }
+            else if (mPositiveButtonResId > 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_POSITIVE_BUTTON_RES_ID, mPositiveButtonResId);
             }
-            if (mNeutralButton != null) {
+            if (mNeutralButton != null)
+            {
                 args.putCharSequence(SimpleAlertDialog.ARG_NEUTRAL_BUTTON, mNeutralButton);
-            } else if (mNeutralButtonResId > 0) {
+            }
+            else if (mNeutralButtonResId > 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_NEUTRAL_BUTTON_RES_ID, mNeutralButtonResId);
             }
-            if (mNegativeButton != null) {
+            if (mNegativeButton != null)
+            {
                 args.putCharSequence(SimpleAlertDialog.ARG_NEGATIVE_BUTTON, mNegativeButton);
-            } else if (mNegativeButtonResId > 0) {
+            }
+            else if (mNegativeButtonResId > 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_NEGATIVE_BUTTON_RES_ID, mNegativeButtonResId);
             }
-            if (mItems != null && Build.VERSION_CODES.ECLAIR <= Build.VERSION.SDK_INT) {
+            if (mItems != null && Build.VERSION_CODES.ECLAIR <= Build.VERSION.SDK_INT)
+            {
                 args.putCharSequenceArray(SimpleAlertDialog.ARG_ITEMS, mItems);
-            } else if (mItemsResId > 0) {
+            }
+            else if (mItemsResId > 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_ITEMS_RES_ID, mItemsResId);
             }
-            if (mIcons != null) {
+            if (mIcons != null)
+            {
                 args.putIntArray(SimpleAlertDialog.ARG_ICONS, mIcons);
             }
             args.putBoolean(SimpleAlertDialog.ARG_CANCELABLE, mCancelable);
             args.putBoolean(SimpleAlertDialog.ARG_CANCELED_ON_TOUCH_OUTSIDE,
                     mCanceledOnTouchOutside);
-            if (mSingleChoiceCheckedItem >= 0) {
+            if (mSingleChoiceCheckedItem >= 0)
+            {
                 args.putInt(SimpleAlertDialog.ARG_SINGLE_CHOICE_CHECKED_ITEM,
                         mSingleChoiceCheckedItem);
             }
-            if (mEditTextInitialText != null || 0 < mEditTextInputType) {
+            if (mEditTextInitialText != null || 0 < mEditTextInputType)
+            {
                 args.putCharSequence(SimpleAlertDialog.ARG_EDIT_TEXT_INITIAL_TEXT, mEditTextInitialText);
                 args.putInt(SimpleAlertDialog.ARG_EDIT_TEXT_INPUT_TYPE, mEditTextInputType);
             }

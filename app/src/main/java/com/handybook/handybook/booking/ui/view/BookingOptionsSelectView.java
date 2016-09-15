@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.view;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -40,28 +41,33 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
     private int mOptionEntryLayoutResourceId = R.layout.view_booking_select_option;
 
-    public BookingOptionsSelectView(final Context context, int optionEntryLayoutResourceId, final
-                                    BookingOption option,
-                                    final OnUpdatedListener updateListener)
+    public BookingOptionsSelectView(
+            final Context context,
+            int optionEntryLayoutResourceId,
+            final BookingOption option,
+            final OnUpdatedListener updateListener
+    )
     {
         super(context, R.layout.view_booking_options_select, option, updateListener);
         mOptionEntryLayoutResourceId = optionEntryLayoutResourceId;
         init(context);
     }
 
-    public BookingOptionsSelectView(final Context context, final BookingOption option,
-                                    final OnUpdatedListener updateListener)
+    public BookingOptionsSelectView(
+            final Context context, final BookingOption option,
+            final OnUpdatedListener updateListener
+    )
     {
         super(context, R.layout.view_booking_options_select, option, updateListener);
         init(context);
     }
 
-    BookingOptionsSelectView(final Context context, final AttributeSet attrs)
+    public BookingOptionsSelectView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    BookingOptionsSelectView(final Context context, final AttributeSet attrs, final int defStyle)
+    public BookingOptionsSelectView(final Context context, final AttributeSet attrs, final int defStyle)
     {
         super(context, attrs, defStyle);
     }
@@ -104,6 +110,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         textView.setVisibility(VISIBLE);
     }
 
+    @SuppressWarnings("deprecation")
     private void init(final Context context)
     {
         final String type = option.getType();
@@ -130,7 +137,6 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         optionsHidden = option.getOptionsHidden();
         optionsLeftStripIndicatorVisible = option.getLeftStripIndicatorVisible();
         checkMap = new HashMap<>();
-
 
         int optionDefaultValue = 0;
 
@@ -179,7 +185,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 showTextView((TextView) optionView.findViewById(R.id.booking_select_option_super_text), optionsSuperText[i]);
             }
 
-            if(shouldShowLeftStripIndicator(optionsLeftStripIndicatorVisible, i))
+            if (shouldShowLeftStripIndicator(optionsLeftStripIndicatorVisible, i))
             {
                 optionView.findViewById(R.id.booking_select_option_left_strip_indicator).setVisibility(VISIBLE);
             }
@@ -355,11 +361,13 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         //because the filter will be retained throughout the app
         //TODO: need a better to determine and ensure checkbox drawable is mutable so we can apply filters to it
         //TODO: should we always use Drawable.mutate() on the checkbox drawables?
-        if(box.getBackground() instanceof FramedIconDrawable)
+        if (box.getBackground() instanceof FramedIconDrawable)
         {
-            if(isChecked)
+            if (isChecked)
             {
-                ((FramedIconDrawable) box.getBackground()).setColor(getResources().getColor(R.color.handy_blue));
+                ((FramedIconDrawable) box.getBackground()).setColor(
+                        ContextCompat.getColor(getContext(),
+                                R.color.handy_blue));
             }
             else
             {

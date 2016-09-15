@@ -2,6 +2,7 @@ package com.handybook.handybook.ui.widget;
 
 import android.app.Activity;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.handybook.handybook.R;
@@ -25,7 +26,7 @@ public class HandySnackbar
     {
         final View view = getView(activity);
         final Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
-        int color = activity.getResources().getColor(getColorForType(type));
+        int color = ContextCompat.getColor(activity, getColorForType(type));
         snackbar.getView().setBackgroundColor(color);
         snackbar.show();
     }

@@ -40,7 +40,10 @@ import butterknife.OnClick;
  * A simple {@link InjectedFragment} subclass.
  * Use the {@link BookingsFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * use module/bookings/BookingsFragment
  */
+@Deprecated
 public class BookingsFragment extends InjectedFragment
 {
     @Bind(R.id.pager)

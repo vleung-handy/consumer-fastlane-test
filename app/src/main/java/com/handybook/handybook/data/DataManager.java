@@ -20,6 +20,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProT
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
+import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingProRequestResponse;
@@ -296,7 +297,7 @@ public class DataManager
     Callback<SuccessWrapper> cb
     )
     {
-        mService.sendCancelRecurringBookingEmail(bookingRecurringId, new SuccessHandyRetroFitCallback(cb));
+        mService.sendCancelRecurringBookingEmail(bookingRecurringId, "", new SuccessHandyRetroFitCallback(cb));
     }
 
     public void getEditBookingExtrasInfo(final int bookingId, final Callback<BookingEditExtrasInfoResponse> cb)
@@ -413,7 +414,7 @@ public class DataManager
 
     public void removePromo(final int quoteId, final Callback<BookingCoupon> cb)
     {
-        mService.removePromo(quoteId, new HandyRetrofitCallback(cb)
+        mService.removePromo(quoteId, "", new HandyRetrofitCallback(cb)
         {
             @Override
             protected void success(final JSONObject response)
@@ -928,7 +929,7 @@ public class DataManager
 
     public void requestPrepareReferrals(final Callback<ReferralResponse> cb)
     {
-        mService.requestPrepareReferrals(new ReferralResponseHandyRetrofitCallback(cb));
+        mService.requestPrepareReferrals("", new ReferralResponseHandyRetrofitCallback(cb));
     }
 
     public void requestConfirmReferral(final String guid, final Callback<Void> cb)
@@ -972,6 +973,22 @@ public class DataManager
         });
     }
 
+    /**
+     * @param bookingId
+     * @param callback
+     * @deprecated - use getLocationStatus instead.
+     */
+    @Deprecated
+    public void getBookingGeoStatus(final String bookingId, final Callback<BookingGeoStatus> callback)
+    {
+        mService.getBookingGeoStatus(bookingId, new BookingGeoStatusHandyRetrofitCallback(callback));
+    }
+
+    public void getLocationStatus(final String bookingId, final Callback<Booking.LocationStatus> callback)
+    {
+        mService.getLocationStatus(bookingId, new BookingLocationStatusHandyRetrofitCallback(callback));
+    }
+
     public final void updateBookingEntryInformation(
             int bookingId,
             BookingUpdateEntryInformationTransaction entryInformationTransaction,
@@ -1010,6 +1027,31 @@ public class DataManager
     )
     {
         mService.getBookingPricesForFrequencies(bookingId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
+    }
+
+    public final void updateRecurringFrequency(
+            final String recurringId,
+            final BookingEditFrequencyRequest bookingEditFrequencyRequest,
+            final Callback<Void> cb
+    )
+    {
+        mService.updateRecurringFrequency(recurringId, bookingEditFrequencyRequest, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            protected void success(final JSONObject response)
+            {
+                cb.onSuccess(null);
+
+            }
+        });
+    }
+
+    public final void getRecurringFrequency(
+            final String recurringId,
+            final Callback<BookingEditFrequencyInfoResponse> cb
+    )
+    {
+        mService.getRecurringFrequency(recurringId, new BookingPricesForFrequenciesHandyRetroFitCallback(cb));
     }
 
     public void finalizeBooking(
