@@ -12,4 +12,9 @@ public class StringUtils
         }
         return returnValue;
     }
+
+    public static String replaceWithEmptyIfNull(String input)
+    {
+        return input == null ? "" : input;
+    }
 }

@@ -210,6 +210,7 @@ public class BookingFunnelLog extends EventLog
         }
     }
 
+
     public static class BookingQuoteRequestSuccess extends BookingFunnelLog
     {
         private static final String EVENT_TYPE = "quote_request_success";
@@ -219,6 +220,7 @@ public class BookingFunnelLog extends EventLog
             super(EVENT_TYPE);
         }
     }
+
 
     public static class BookingQuoteRequestError extends BookingFunnelLog
     {
@@ -234,6 +236,7 @@ public class BookingFunnelLog extends EventLog
         }
     }
 
+
     public static class BookingQuotePageShown extends BookingFunnelLog
     {
         private static final String EVENT_TYPE = "quote_page_shown";
@@ -243,6 +246,7 @@ public class BookingFunnelLog extends EventLog
             super(EVENT_TYPE);
         }
     }
+
 
     public static class BookingFrequencyShownLog extends BookingFunnelLog
     {
@@ -546,6 +550,42 @@ public class BookingFunnelLog extends EventLog
         public BookingPasswordDismissedLog()
         {
             super(EVENT_TYPE);
+        }
+    }
+
+    // Referrals
+
+    public abstract static class ReferralBookingFunnelLog extends BookingFunnelLog
+    {
+        @SerializedName("coupon_code")
+        private String mCouponCode;
+
+        public ReferralBookingFunnelLog(final String eventType, final String couponCode)
+        {
+            super(eventType);
+            mCouponCode = couponCode;
+        }
+    }
+
+
+    public static class ReferralBookingFunnelCodeEnteredLog extends ReferralBookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "code_entered";
+
+        public ReferralBookingFunnelCodeEnteredLog(final String couponCode)
+        {
+            super(EVENT_TYPE, couponCode);
+        }
+    }
+
+
+    public static class ReferralBookingFunnelCodeAppliedLog extends ReferralBookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "code_applied";
+
+        public ReferralBookingFunnelCodeAppliedLog(final String couponCode)
+        {
+            super(EVENT_TYPE, couponCode);
         }
     }
 }

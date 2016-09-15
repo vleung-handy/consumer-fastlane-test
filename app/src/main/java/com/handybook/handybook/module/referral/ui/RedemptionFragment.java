@@ -12,6 +12,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
@@ -48,6 +50,12 @@ public class RedemptionFragment extends InjectedFragment
             Crashlytics.logException(new InvalidObjectException("Referral GUID is null or empty."));
             navigateToHomeScreen();
         }
+        if(mReferralGuid != null)
+        {
+            bus.post(new LogEvent.AddLogEvent(new CodeRedemptionLog.CodeRedemptionOpenedLog(
+                    mReferralGuid
+            )));
+        }
     }
 
     @Nullable
@@ -70,6 +78,7 @@ public class RedemptionFragment extends InjectedFragment
     {
         showUiBlockers();
         bus.post(new ReferralsEvent.RequestRedemptionDetails(mReferralGuid));
+        bus.post(new CodeRedemptionLog.CodeRedemptionPromoSubmittedLog(mReferralGuid));
     }
 
     @Subscribe
@@ -89,6 +98,8 @@ public class RedemptionFragment extends InjectedFragment
                 RedemptionSignUpFragment.newInstance(
                         mReferralGuid, senderFirstName, receiverCouponAmountFormatted);
 
+        bus.post(new CodeRedemptionLog.CodeRedemptionPromoSuccessLog(mReferralGuid));
+
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(
@@ -103,6 +114,8 @@ public class RedemptionFragment extends InjectedFragment
             final ReferralsEvent.ReceiveRedemptionDetailsError event
     )
     {
+        bus.post(new CodeRedemptionLog.CodeRedemptionPromoErrorLog(mReferralGuid));
+
         showErrorDialog(event.error.getMessage(), new DialogCallback()
         {
             @Override
