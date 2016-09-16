@@ -180,7 +180,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
         mShareBannerView = new ShareBannerView(getActivity());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        int margin = getResources().getDimensionPixelSize(R.dimen.default_margin_quarter);
+        int margin = getResources().getDimensionPixelSize(R.dimen.default_margin_half);
         layoutParams.setMargins(0, margin, 0, margin);
         mShareBannerView.setLayoutParams(layoutParams);
         mShareBannerView.setOnClickListener(new View.OnClickListener()
@@ -480,6 +480,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         }
         else
         {
+            //child count 4 means 2 bookings (2 booking view, 2 dividers)
             if (mBookingsContainer.getChildCount() >= 4)
             {
                 //there are at least 2 upcoming bookings, insert after the 2nd booking
@@ -488,6 +489,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             else if (mBookingsContainer.getChildCount() >= 2)
             {
                 //there is only one upcoming booking, so insert it there.
+                //at index 2 will go below the first booking & divider
                 mBookingsContainer.addView(mShareBannerView, 2);
             }
             else
