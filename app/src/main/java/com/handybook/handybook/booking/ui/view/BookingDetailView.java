@@ -61,7 +61,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
     public void updateDisplay(final Booking booking, List<Service> serviceList)
     {
         navText.setText(booking.getServiceName());
-        bookingText.setText(getContext().getString(R.string.booking_number) + booking.getId());
+        bookingText.setText(getContext().getString(R.string.booking_number, booking.getId()));
         updateDateTimeInfoText(booking);
         updateFrequencySectionDisplay(booking);
         updateServiceIcon(booking, serviceList);

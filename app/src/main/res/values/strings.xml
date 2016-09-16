@@ -179,7 +179,7 @@
     <string name="blank_string"></string>
     <string name="call">Call</string>
     <string name="text">Text</string>
-    <string name="booking_number">Booking #</string>
+    <string name="booking_number">Booking #%s</string>
     <string name="error_no_intent_handler_found">No application found to handle the requested action</string>
     <string name="no_information">No information</string>
     <string name="image_content_description_handy_logo">Handy Icon</string>
