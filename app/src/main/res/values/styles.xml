@@ -17,6 +17,10 @@
     <style name="HandyTheme"
            parent="BaseTheme"></style>
 
+    <style name="StartupTheme" parent="HandyTheme">
+        <item name="android:windowBackground">@drawable/backgroundsplash</item>
+    </style>
+
     <style name="HandyTheme.AppBarOverlay">
         <item name="android:background">?colorPrimary</item>
         <item name="android:textColorPrimary">@color/handy_white</item>
