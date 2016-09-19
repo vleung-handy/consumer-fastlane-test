@@ -60,11 +60,8 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     private static final float MAP_CLOSEUP_ZOOM_LEVEL = 16;
     private static final float ANCHOR_MID_POINT = 0.5f;
 
-    @Bind(R.id.text_start_soon_indicator)
-    View mStartingSoonIndicator;
-
-    @Bind(R.id.start_soon_indicator_divider)
-    View mStartingSoonIndicatorDivider;
+    @Bind(R.id.map_divider)
+    View mMapDivider;
 
     @Bind(R.id.text_provider_name)
     TextView mTextProviderName;
@@ -158,14 +155,12 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
             mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
             mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, getActivity()));
-//            mStartingSoonIndicator.setVisibility(View.VISIBLE);
-            mStartingSoonIndicatorDivider.setVisibility(View.VISIBLE);
+            mMapDivider.setVisibility(View.VISIBLE);
         }
         else
         {
             mMapView.setVisibility(View.GONE);
-//            mStartingSoonIndicator.setVisibility(View.GONE);
-            mStartingSoonIndicatorDivider.setVisibility(View.GONE);
+            mMapDivider.setVisibility(View.GONE);
         }
 
         if (mBooking.isMilestonesEnabled())

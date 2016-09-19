@@ -71,7 +71,7 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         assertEquals(mActiveFragment.mTextProviderName.getText().toString(), "Marky S.");
         assertEquals(mActiveFragment.mTextCall.getVisibility(), View.VISIBLE);
         assertEquals(mActiveFragment.mTextText.getVisibility(), View.VISIBLE);
-        assertEquals(mActiveFragment.mStartingSoonIndicatorDivider.getVisibility(), View.VISIBLE);
+        assertEquals(mActiveFragment.mMapDivider.getVisibility(), View.VISIBLE);
     }
 
 

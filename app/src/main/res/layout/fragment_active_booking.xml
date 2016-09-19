@@ -67,23 +67,8 @@
                 android:visibility="gone"
                 />
         </FrameLayout>
-
-
-        <TextView
-            android:id="@+id/text_start_soon_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/green_dot"
-            android:drawablePadding="@dimen/default_padding_half"
-            android:padding="@dimen/default_padding"
-            android:text="Your booking starts soon"
-            android:visibility="gone"
-            tools:visibility="visible"
-            style="@style/TextView.Small"
-            />
-
         <View
-            android:id="@+id/start_soon_indicator_divider"
+            android:id="@+id/map_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/handy_divider_line"
