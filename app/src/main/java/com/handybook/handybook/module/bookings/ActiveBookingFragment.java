@@ -365,38 +365,43 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
         //if there is a timestamp, show it.
         Date timeStamp = locationStatus.getProviderLocation().getTimeStamp();
-        if (timeStamp != null)
-        {
-            String time = DateTimeUtils.getTime(timeStamp);
-            mTextLocationTime.setText(getResources().getString(R.string.pro_location_time_formatted, time));
-            mTextLocationTime.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            mTextLocationTime.setVisibility(View.GONE);
-        }
-
-        //if there is a booking status, show it.
         String title = locationStatus.getMilestone() != null ? locationStatus.getMilestone()
                                                                              .getTitle() : null;
-        if (!TextUtils.isEmpty(title))
-        {
-            mTextMilestoneStatus.setText(title);
-            mTextMilestoneStatus.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            mTextMilestoneStatus.setVisibility(View.GONE);
-        }
+
 
         //if there are no statuses, and no time, then hide the entire container.
-        if (!TextUtils.isEmpty(title) && timeStamp != null)
+        if (TextUtils.isEmpty(title) && timeStamp == null)
         {
-            mLocationStatusContainer.setVisibility(View.VISIBLE);
+            mLocationStatusContainer.setVisibility(View.GONE);
         }
         else
         {
-            mLocationStatusContainer.setVisibility(View.GONE);
+            mLocationStatusContainer.setVisibility(View.VISIBLE);
+            if (timeStamp != null)
+            {
+                String time = DateTimeUtils.getTime(timeStamp);
+                mTextLocationTime.setText(getResources().getString(
+                        R.string.pro_location_time_formatted,
+                        time
+                ));
+                mTextLocationTime.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mTextLocationTime.setVisibility(View.GONE);
+            }
+
+            //if there is a booking status, show it.
+
+            if (!TextUtils.isEmpty(title))
+            {
+                mTextMilestoneStatus.setText(title);
+                mTextMilestoneStatus.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mTextMilestoneStatus.setVisibility(View.GONE);
+            }
         }
     }
 
