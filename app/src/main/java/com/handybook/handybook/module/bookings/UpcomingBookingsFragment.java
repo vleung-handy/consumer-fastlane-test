@@ -179,10 +179,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         }
 
         mShareBannerView = new ShareBannerView(getActivity());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        int margin = getResources().getDimensionPixelSize(R.dimen.default_margin_half);
-        layoutParams.setMargins(0, margin, 0, margin);
-        mShareBannerView.setLayoutParams(layoutParams);
         mShareBannerView.setOnClickListener(new View.OnClickListener()
         {
             @Override
