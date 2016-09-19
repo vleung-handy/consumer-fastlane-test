@@ -1,5 +1,6 @@
 package com.handybook.handybook.core;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -309,8 +310,18 @@ public class User extends Observable
 
     public static User fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, User.class);
+        try
+        {
+            return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+                                    .fromJson(json, User.class);
+        }
+        catch (Exception e)
+        {
+            Crashlytics.logException(
+                    new RuntimeException("Unable to deserialize:" + json + ":" + e.getMessage(), e)
+            );
+            return null;
+        }
     }
 
     static ExclusionStrategy getExclusionStrategy()

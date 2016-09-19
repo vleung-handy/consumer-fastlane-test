@@ -27,6 +27,12 @@
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
+    <style name="Toolbar.SubtitleText"
+           parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">@dimen/text_size_xsmall</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <!-- This style allows us to keep the Light.NoActionBar theme while having a white hamburger menu-->
     <style name="DrawerArrowStyle"
            parent="Widget.AppCompat.DrawerArrowToggle">

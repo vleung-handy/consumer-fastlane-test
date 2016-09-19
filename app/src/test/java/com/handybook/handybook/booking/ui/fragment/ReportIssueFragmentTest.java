@@ -50,7 +50,9 @@ public class ReportIssueFragmentTest extends RobolectricGradleTestWrapper
         SupportFragmentTestUtil.startFragment(fragment, AppCompatActivity.class);
 
         assertEquals(fragment.getString(R.string.help),
-                ((AppCompatActivity) fragment.getActivity()).getSupportActionBar().getTitle());
+                     ((AppCompatActivity) fragment.getActivity()).getSupportActionBar().getTitle());
+        assertEquals(fragment.getString(R.string.booking_number, mBooking.getId()),
+                     ((AppCompatActivity) fragment.getActivity()).getSupportActionBar().getSubtitle());
         assertNotNull(fragment.getView().findViewById(R.id.report_issue_date));
         assertNotNull(fragment.getView().findViewById(R.id.report_issue_time));
         TextView providerText = (TextView) fragment.getView().findViewById(R.id.report_issue_provider);
