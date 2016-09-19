@@ -19,6 +19,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 import butterknife.Bind;
@@ -54,6 +56,13 @@ public final class PromosFragment extends BookingFlowFragment
     public static PromosFragment newInstance()
     {
         return new PromosFragment();
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        bus.post(new LogEvent.AddLogEvent(new CodeRedemptionLog.CodeRedemptionOpenedLog()));
     }
 
     @Override
@@ -96,7 +105,8 @@ public final class PromosFragment extends BookingFlowFragment
             @Override
             public void afterTextChanged(final Editable s)
             {
-                mPromoTextClearImage.setVisibility(s.toString().isEmpty() ? View.GONE : View.VISIBLE);
+                mPromoTextClearImage.setVisibility(s.toString()
+                                                    .isEmpty() ? View.GONE : View.VISIBLE);
             }
         });
         if (mPromoCoupon != null)
@@ -147,20 +157,28 @@ public final class PromosFragment extends BookingFlowFragment
             disableInputs();
             progressDialog.show();
 
+            bus.post(new CodeRedemptionLog.CodeRedemptionPromoSubmittedLog(promoCode));
             dataManager.getPreBookingPromo(promoCode, new DataManager.Callback<PromoCode>()
             {
                 @Override
                 public void onSuccess(final PromoCode code)
                 {
                     if (!allowCallbacks) { return; }
+
                     progressDialog.dismiss();
                     enableInputs();
                     if (code.getType() == PromoCode.Type.VOUCHER)
                     {
+                        bus.post(new CodeRedemptionLog.CodeRedemptionPromoSuccessLog(
+                                promoCode, code.getUniq()));
+
                         startBookingFlow(code.getServiceId(), code.getUniq(), code);
                     }
                     else if (code.getType() == PromoCode.Type.COUPON)
                     {
+                        bus.post(new CodeRedemptionLog.CodeRedemptionPromoSuccessLog(
+                                promoCode, null));
+
                         bookingManager.setPromoTabCoupon(code.getCode());
                         ((MenuDrawerActivity) getActivity()).navigateToActivity(
                                 ServiceCategoriesActivity.class, R.id.nav_menu_home);
@@ -171,6 +189,9 @@ public final class PromosFragment extends BookingFlowFragment
                 public void onError(final DataManager.DataManagerError error)
                 {
                     if (!allowCallbacks) { return; }
+
+                    bus.post(new CodeRedemptionLog.CodeRedemptionPromoErrorLog(promoCode));
+
                     progressDialog.dismiss();
                     enableInputs();
                     dataManagerErrorHandler.handleError(getActivity(), error);
@@ -193,7 +214,7 @@ public final class PromosFragment extends BookingFlowFragment
                 Snackbar.LENGTH_LONG
         );
         final TextView snackText = (TextView) snackbar.getView()
-                .findViewById(android.support.design.R.id.snackbar_text);
+                                                      .findViewById(android.support.design.R.id.snackbar_text);
         snackText.setTextColor(Color.WHITE);
         snackbar.setAction(R.string.undo, new View.OnClickListener()
         {
@@ -205,9 +226,10 @@ public final class PromosFragment extends BookingFlowFragment
                 Snackbar undoSnackbar = Snackbar.make(
                         getView(),
                         R.string.snackbar_promo_code_restored,
-                        Snackbar.LENGTH_SHORT);
+                        Snackbar.LENGTH_SHORT
+                );
                 final TextView undoSnackText = (TextView) undoSnackbar.getView()
-                        .findViewById(android.support.design.R.id.snackbar_text);
+                                                                      .findViewById(android.support.design.R.id.snackbar_text);
                 undoSnackText.setTextColor(Color.WHITE);
                 undoSnackbar.show();
             }

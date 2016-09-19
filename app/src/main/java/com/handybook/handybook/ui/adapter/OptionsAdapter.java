@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.handybook.handybook.ui.view.antistaticspinnerwheel.adapters.ArrayWheelAdapter;
 import com.handybook.handybook.util.Utils;
 
-import antistatic.spinnerwheel.adapters.ArrayWheelAdapter;
-
-public final class OptionsAdapter<T> extends ArrayWheelAdapter<T> {
+public final class OptionsAdapter<T> extends ArrayWheelAdapter<T>
+{
     private static final int PADDING = 32;
 
     private int maxWidth;

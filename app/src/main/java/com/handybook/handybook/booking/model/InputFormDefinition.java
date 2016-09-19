@@ -33,7 +33,7 @@ public class InputFormDefinition implements Serializable
         {
             public static final String LOCKBOX_ACCESS_CODE = "lockbox_code";
             public static final String LOCKBOX_LOCATION = "lockbox_location";
-            public static final String ADDITIONAL_INSTRUCTIONS = "additional_instructions";
+            public static final String ADDITIONAL_INSTRUCTIONS = "key_location"; //needs this key name for backwards compatibility
         }
         @SerializedName("hint_text")
         private String mHintText;

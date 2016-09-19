@@ -11,13 +11,14 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
+import com.handybook.handybook.logger.handylogger.model.user.PostRatingShareModalLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.util.StringUtils;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.Utils;
 
@@ -86,9 +87,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
             emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
-            mBus.post(new LogEvent.AddLogEvent(
-                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_EMAIL,
-                            emailReferralInfo.getGuid())));
+            sendShareButtonTappedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
         }
         else
         {
@@ -108,9 +107,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
                     smsReferralInfo
             );
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
-            mBus.post(new LogEvent.AddLogEvent(
-                    new ReferralLog.ShareButtonTapped(ReferralChannels.CHANNEL_SMS,
-                            smsReferralInfo.getGuid())));
+            sendShareButtonTappedLog(smsReferralInfo.getGuid(), ReferralChannels.CHANNEL_SMS);
         }
         else
         {
@@ -151,5 +148,21 @@ public class ReferralDialogFragment extends BaseDialogFragment
             }
         }
         Utils.safeLaunchIntent(intent, getActivity());
+    }
+
+    private void sendShareButtonTappedLog(final String guid, final String referralMedium)
+    {
+        if (mReferralDescriptor != null)
+        {
+            String couponCode = StringUtils.replaceWithEmptyIfNull(
+                    mReferralDescriptor.getCouponCode());
+            String identifier = StringUtils.replaceWithEmptyIfNull(guid);
+
+            mBus.post(new LogEvent.AddLogEvent(
+                    new PostRatingShareModalLog.PostRatingShareButtonTappedLog(
+                            referralMedium, identifier,
+                            couponCode, mReferralDescriptor.getSenderCreditAmount(),
+                            mReferralDescriptor.getReceiverCouponAmount())));
+        }
     }
 }

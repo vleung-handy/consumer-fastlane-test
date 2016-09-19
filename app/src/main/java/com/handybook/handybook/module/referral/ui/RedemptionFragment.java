@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
@@ -17,6 +18,8 @@ import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
+
+import java.io.InvalidObjectException;
 
 import butterknife.ButterKnife;
 
@@ -40,6 +43,11 @@ public class RedemptionFragment extends InjectedFragment
     {
         super.onCreate(savedInstanceState);
         mReferralGuid = getArguments().getString(KEY_REFERRAL_GUID);
+        if (mReferralGuid == null || mReferralGuid.isEmpty())
+        {
+            Crashlytics.logException(new InvalidObjectException("Referral GUID is null or empty."));
+            navigateToHomeScreen();
+        }
     }
 
     @Nullable
@@ -85,7 +93,8 @@ public class RedemptionFragment extends InjectedFragment
                 .beginTransaction()
                 .setCustomAnimations(
                         R.anim.slide_in_right, R.anim.slide_out_left,
-                        R.anim.slide_in_left, R.anim.slide_out_right)
+                        R.anim.slide_in_left, R.anim.slide_out_right
+                )
                 .replace(R.id.child_fragment_container, redemptionSignUpFragment)
                 .commit();
     }
@@ -164,7 +173,7 @@ public class RedemptionFragment extends InjectedFragment
     {
         final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         getActivity().finish();
     }

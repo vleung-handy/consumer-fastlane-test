@@ -1,5 +1,6 @@
 package com.handybook.handybook.data;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -49,8 +50,8 @@ public interface HandyRetrofitService
     );
 
     /**
-     * @param bookingRecurringId Booking.recurringId, which is the id
-     *                           associated with a recurring series
+     * @param bookingRecurringId Booking.recurringId, which is the id associated with a recurring
+     *                           series
      * @param cb                 callback
      */
     @POST("/bookings/{id}/recurring_cancel_send_cancel_email")
@@ -115,8 +116,11 @@ public interface HandyRetrofitService
 
     @GET("/bookings/zipcode_validation")
     void validateBookingZip(
-            @Query("service_id") int serviceId, @Query("zipcode") String zipCode,
-            @Query("user_id") String userId, @Query("entered_code") String promoCode, HandyRetrofitCallback cb
+            @Query("service_id") int serviceId,
+            @Query("zipcode") String zipCode,
+            @Query("user_id") String userId,
+            @Query("entered_code") String promoCode,
+            HandyRetrofitCallback cb
     );
 
     @GET("/bookings/{id}/milestones")
@@ -200,6 +204,17 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+    /**
+     *
+     * @param bookingId
+     * @param cb
+     */
+    @GET("/bookings/{bookingId}/edit_entry_info")
+    void getEntryMethodsInfo(
+            @Path("bookingId") String bookingId,
+            HandyRetrofitCallback cb
+    );
+
     @POST("/bookings/{booking}/description_update")
         //points to same endpoint as update note to pro but that is because the endpoint currently does too much
     void updateBookingEntryInformation(
@@ -238,7 +253,6 @@ public interface HandyRetrofitService
 
 
     /**
-     *
      * @param bookingId
      * @param cb
      * @deprecated use /recurring_bookings/{recurring_id}/edit_frequency instead
@@ -286,7 +300,9 @@ public interface HandyRetrofitService
     @FormUrlEncoded
     @POST("/bookings/{booking}/cancel")
     void cancelBooking(
-            @Path("booking") String bookingId, @Field("user_id") String userId, HandyRetrofitCallback cb
+            @Path("booking") String bookingId,
+            @Field("user_id") String userId,
+            HandyRetrofitCallback cb
     );
 
     @GET("/bookings/{booking}/schedule_laundry")
@@ -420,7 +436,10 @@ public interface HandyRetrofitService
     void requestConfirmReferral(@Field("post_guid") String guid, HandyRetrofitCallback cb);
 
     @GET("/referrals/claim_details")
-    void requestRedemptionDetails(@Query("post_guid") String guid, HandyRetrofitCallback cb);
+    void requestRedemptionDetails(
+            @NonNull @Query("post_guid") String guid,
+            @NonNull HandyRetrofitCallback cb
+    );
 
     @GET("/users/{user}/provider_preferences")
     void requestProTeam(
