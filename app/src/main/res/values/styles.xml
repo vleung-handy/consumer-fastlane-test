@@ -40,6 +40,7 @@
 
     <style name="NavigationDrawerStyle">
         <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="HandyTheme.PopupOverlay">
