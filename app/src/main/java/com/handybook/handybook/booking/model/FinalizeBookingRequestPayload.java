@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 
 /**
@@ -86,31 +88,9 @@ public class FinalizeBookingRequestPayload extends Observable
         notifyObservers();
     }
 
-    /**
-     * TODO TEMP HACK - mostly a dupe of the other setEntryInfo method
-     * @param entryMethodInstructionType
-     * @param lockboxCode
-     * @param lockboxLocation
-     */
-    public void setEntryInfo(
-            @BookingInstruction.EntryMethodType String entryMethodInstructionType,
-            final String lockboxCode, final String lockboxLocation)
+    public void setEntryInfo(@BookingInstruction.EntryMethodType String entryMethodInstructionType,
+                                  Map<String, String> inputFormValues)
     {
-        /*{
-            "id": 5, #optional if machine_name included
-            "machine_name": "entry_method", #optional if id included
-            "instruction_type": "at_home"
-        },
-        {
-            "id": 3, #optional if machine_name included
-            "machine_name": "key_location", #optional if id included
-            "description": "I'll be home so just ring the buzzer!"
-        }*/
-        if (mBookingInstructions == null)
-        {
-            mBookingInstructions = new ArrayList<>();
-        }
-
         BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
                 null,
                 BookingInstruction.MachineName.ENTRY_METHOD,
@@ -119,82 +99,6 @@ public class FinalizeBookingRequestPayload extends Observable
                 null,
                 null
         );
-
-        BookingInstruction lockboxCodeInstruction = new BookingInstruction(
-                null,
-                BookingInstruction.MachineName.LOCKBOX_CODE,
-                null,
-                null,
-                lockboxCode,
-                null
-        );
-
-        BookingInstruction lockboxLocationInstruction = new BookingInstruction(
-                null,
-                BookingInstruction.MachineName.KEY_LOCATION,
-                null,
-                null,
-                lockboxLocation,
-                null
-        );
-        // Find it and if it exists update it, or create the new one.
-        int entryMethodPosition = -1, keyLocationPosition = -1, lockboxCodePosition = -1;
-        for (int i = 0; i < mBookingInstructions.size(); i++)
-        {
-            BookingInstruction eBookingInstruction = mBookingInstructions.get(i);
-            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.ENTRY_METHOD))
-            {
-                entryMethodPosition = i;
-                continue;
-            }
-            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.KEY_LOCATION))
-            {
-                keyLocationPosition = i;
-                continue;
-            }
-            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.LOCKBOX_CODE))
-            {
-                lockboxCodePosition = i;
-            }
-        }
-        if (entryMethodPosition >= 0)
-        {
-            mBookingInstructions.get(entryMethodPosition).setInstructionType(
-                    entryInfoTypeInstruction.getInstructionType()
-            );
-        }
-        else
-        {
-            mBookingInstructions.add(entryInfoTypeInstruction);
-        }
-
-        if (lockboxCodePosition >= 0)//set lockbox code
-        {
-            mBookingInstructions.get(lockboxCodePosition).setDescription(
-                    lockboxCodeInstruction.getDescription()
-            );
-        }
-        else
-        {
-            mBookingInstructions.add(lockboxCodeInstruction);
-        }
-
-        if (keyLocationPosition >= 0)//TODO HACK - USING AS LOCKBOX LOCATION
-        {
-            mBookingInstructions.get(keyLocationPosition).setDescription(
-                    lockboxLocationInstruction.getDescription()
-            );
-        }
-        else
-        {
-            mBookingInstructions.add(lockboxLocationInstruction);
-        }
-        triggerObservers();
-    }
-    public void setEntryInfo(
-            @BookingInstruction.EntryMethodType String entryMethodInstructionType,
-                             final String getInText)
-    {
 
         /*{
             "id": 5, #optional if machine_name included
@@ -210,58 +114,46 @@ public class FinalizeBookingRequestPayload extends Observable
         {
             mBookingInstructions = new ArrayList<>();
         }
+        Map<String, BookingInstruction> bookingInstructionMap = new HashMap<>();//TODO rename
+        bookingInstructionMap.put(BookingInstruction.MachineName.ENTRY_METHOD, entryInfoTypeInstruction);
+        if (inputFormValues != null)
+        {
+            for (String inputFormFieldMachineName : inputFormValues.keySet())
+            {
+                BookingInstruction entryInfoMessageInstruction = new BookingInstruction(
+                        null,
+                        inputFormFieldMachineName,
+                        null,
+                        null,
+                        inputFormValues.get(inputFormFieldMachineName),
+                        null
+                );
+                bookingInstructionMap.put(inputFormFieldMachineName, entryInfoMessageInstruction);
+            }
+        }
 
-        BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
-                null,
-                BookingInstruction.MachineName.ENTRY_METHOD,
-                null,
-                entryMethodInstructionType,
-                null,
-                null
-        );
-        BookingInstruction entryInfoMessageInstruction = new BookingInstruction(
-                null,
-                BookingInstruction.MachineName.KEY_LOCATION,
-                null,
-                null,
-                getInText,
-                null
-        );
-        // Find it and if it exists update it, or create the new one.
-        int entryMethodPosition = -1, keyLocationPosition = -1;
-        for (int i = 0; i < mBookingInstructions.size(); i++)
+        //check if these instructions are already present. if so, update and remove from list to be added
+        for(BookingInstruction bookingInstruction : mBookingInstructions)
         {
-            BookingInstruction eBookingInstruction = mBookingInstructions.get(i);
-            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.ENTRY_METHOD))
+            String machineName = bookingInstruction.getMachineName();
+            BookingInstruction bookingInstructionCandidate = bookingInstructionMap.get(machineName);
+            if(bookingInstructionCandidate != null)
             {
-                entryMethodPosition = i;
-                continue;
-            }
-            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.KEY_LOCATION))
-            {
-                keyLocationPosition = i;
+                //update it and remove from map
+                if(BookingInstruction.MachineName.ENTRY_METHOD.equals(machineName))
+                {
+                    bookingInstruction.setInstructionType(bookingInstructionCandidate.getInstructionType());
+                }
+                else
+                {
+                    bookingInstruction.setDescription(bookingInstructionCandidate.getDescription());
+                }
+                bookingInstructionMap.remove(machineName);
             }
         }
-        if (entryMethodPosition >= 0)
-        {
-            mBookingInstructions.get(entryMethodPosition).setInstructionType(
-                    entryInfoTypeInstruction.getInstructionType()
-            );
-        }
-        else
-        {
-            mBookingInstructions.add(entryInfoTypeInstruction);
-        }
-        if (keyLocationPosition >= 0)//TODO HACK - USING AS LOCKBOX LOCATION
-        {
-            mBookingInstructions.get(keyLocationPosition).setDescription(
-                    entryInfoMessageInstruction.getDescription()
-            );
-        }
-        else
-        {
-            mBookingInstructions.add(entryInfoMessageInstruction);
-        }
+
+        //add the ones that weren't found
+        mBookingInstructions.addAll(bookingInstructionMap.values());
         triggerObservers();
     }
 

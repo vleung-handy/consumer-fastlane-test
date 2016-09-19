@@ -5,7 +5,6 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressReque
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
@@ -45,40 +44,6 @@ public abstract class BookingEditEvent
     public static class ReceiveUpdateBookingNoteToProError extends HandyEvent.ReceiveErrorEvent
     {
         public ReceiveUpdateBookingNoteToProError(DataManager.DataManagerError error)
-        {
-            this.error = error;
-        }
-    }
-
-
-    //Update the entry information for a booking
-    public static class RequestUpdateBookingEntryInformation extends HandyEvent.RequestEvent
-    {
-        public int bookingId;
-        public BookingUpdateEntryInformationTransaction entryInformationTransaction;
-
-        public RequestUpdateBookingEntryInformation(int bookingId, BookingUpdateEntryInformationTransaction entryInformationTransaction)
-        {
-            this.bookingId = bookingId;
-            this.entryInformationTransaction = entryInformationTransaction;
-        }
-    }
-
-
-    //
-    public static class ReceiveUpdateBookingEntryInformationSuccess extends HandyEvent.ReceiveSuccessEvent
-    {
-        public ReceiveUpdateBookingEntryInformationSuccess()
-        {
-
-        }
-    }
-
-
-    //
-    public static class ReceiveUpdateBookingEntryInformationError extends HandyEvent.ReceiveErrorEvent
-    {
-        public ReceiveUpdateBookingEntryInformationError(DataManager.DataManagerError error)
         {
             this.error = error;
         }

@@ -9,13 +9,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationTransaction;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
@@ -1113,8 +1113,8 @@ public class DataManager
     }
 
     public final void updateBookingEntryInformation(
-            int bookingId,
-            BookingUpdateEntryInformationTransaction entryInformationTransaction,
+            String bookingId,
+            BookingEditEntryInformationTransaction entryInformationTransaction,
             final Callback<Void> cb
     )
     {

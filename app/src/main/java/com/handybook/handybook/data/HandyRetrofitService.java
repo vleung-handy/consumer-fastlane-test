@@ -6,10 +6,10 @@ import android.support.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationTransaction;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingUpdateEntryInformationTransaction;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingRequest;
@@ -215,11 +215,15 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
-    @POST("/bookings/{booking}/description_update")
-        //points to same endpoint as update note to pro but that is because the endpoint currently does too much
+    /**
+     * @param bookingId
+     * @param bookingEditEntryInformationTransaction
+     * @param cb
+     */
+    @POST("/bookings/{booking}/entry_info")
     void updateBookingEntryInformation(
-            @Path("booking") int bookingId,
-            @Body BookingUpdateEntryInformationTransaction entryInformationTransaction,
+            @Path("booking") String bookingId,
+            @Body BookingEditEntryInformationTransaction bookingEditEntryInformationTransaction,
             HandyRetrofitCallback cb
     );
 
