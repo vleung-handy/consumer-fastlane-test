@@ -12,6 +12,7 @@
         android:elevation="@dimen/med_elevation"
         android:theme="@style/HandyTheme.AppBarOverlay"
         app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
         app:contentInsetStart="0dp"
         app:navigationIcon="@drawable/ic_back"
         />

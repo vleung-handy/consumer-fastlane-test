@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +85,8 @@ public final class ReportIssueFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_report_issue, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.help));
+        //Add the booking id to the subtitle
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.booking_number, mBooking.getId()));
         return view;
     }
 
