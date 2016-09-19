@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -52,6 +53,9 @@ import butterknife.OnClick;
  * It holds the map, plots the location of both the provider and the destination.
  * It pings the server for updated provider location information periodically.
  * Also shows the provider's name, and allows calling/texting to the provider.
+ *
+ *
+ * FIXME: JIA: figure out the location status stuff overlapping the google maps logo.
  */
 public class ActiveBookingFragment extends InjectedFragment implements OnMapReadyCallback
 {
@@ -96,8 +100,14 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Bind(R.id.transparent_image)
     ImageView mTransparentImage;
 
+    @Bind(R.id.location_status_container)
+    LinearLayout mLocationStatusContainer;
+
     @Bind(R.id.text_pro_location_time)
     TextView mTextLocationTime;
+
+    @Bind(R.id.text_milestone_status)
+    TextView mTextMilestoneStatus;
 
     @Bind(R.id.map_place_holder)
     MapPlaceholderView mMapPlaceHolderView;
@@ -331,7 +341,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                         mHandler = new Handler();
                         periodicUpdate();
                     }
-                    setTimeStamp(mBooking.getActiveBookingLocationStatus().getProviderLocation().getTimeStamp());
+                    updateLocationStatus(mBooking.getActiveBookingLocationStatus());
                 }
             }
 
@@ -341,12 +351,20 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
     }
 
-    private void setTimeStamp(Date timeStamp)
+    /**
+     * Updates the UI with the "milestone" information
+     *
+     * @param locationStatus
+     */
+    private void updateLocationStatus(Booking.LocationStatus locationStatus)
     {
         if (!isAttached())
         {
             return;
         }
+
+        //if there is a timestamp, show it.
+        Date timeStamp = locationStatus.getProviderLocation().getTimeStamp();
         if (timeStamp != null)
         {
             String time = DateTimeUtils.getTime(timeStamp);
@@ -356,6 +374,29 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         else
         {
             mTextLocationTime.setVisibility(View.GONE);
+        }
+
+        //if there is a booking status, show it.
+        String title = locationStatus.getMilestone() != null ? locationStatus.getMilestone()
+                                                                             .getTitle() : null;
+        if (!TextUtils.isEmpty(title))
+        {
+            mTextMilestoneStatus.setText(title);
+            mTextMilestoneStatus.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mTextMilestoneStatus.setVisibility(View.GONE);
+        }
+
+        //if there are no statuses, and no time, then hide the entire container.
+        if (!TextUtils.isEmpty(title) && timeStamp != null)
+        {
+            mLocationStatusContainer.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mLocationStatusContainer.setVisibility(View.GONE);
         }
     }
 
@@ -386,7 +427,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     double lng = Double.parseDouble(response.getProviderLocation().getLongitude());
                     mProviderLatLng = new LatLng(lat, lng);
                     adjustMapPositioning();
-                    setTimeStamp(response.getProviderLocation().getTimeStamp());
+                    updateLocationStatus(response);
                 }
             }
 
