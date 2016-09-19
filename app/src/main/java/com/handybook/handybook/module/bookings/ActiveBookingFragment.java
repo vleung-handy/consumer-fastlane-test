@@ -327,7 +327,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                                     .position(mProviderLatLng)
                                     .title(mProviderName)
                                     .anchor(ANCHOR_MID_POINT, ANCHOR_MID_POINT)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_pro_pin))
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_pro_active_pin))
                     );
 
                     if (mHandler == null)
