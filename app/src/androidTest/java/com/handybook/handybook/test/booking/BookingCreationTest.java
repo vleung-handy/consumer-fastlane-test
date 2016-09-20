@@ -1,11 +1,11 @@
 package com.handybook.handybook.test.booking;
 
 import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.test.LauncherActivityTestRule;
 import com.handybook.handybook.test.data.TestUsers;
 import com.handybook.handybook.test.model.Address;
 import com.handybook.handybook.test.model.TestUser;
@@ -28,8 +28,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class BookingCreationTest
 {
     @Rule
-    public ActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new ActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
+            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
     /**
      * assumes no one is logged in
@@ -43,7 +43,7 @@ public class BookingCreationTest
         AppInteractionUtil.logOutAndPassOnboarding();
 
         //wait for network call to return with service list
-        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        AppInteractionUtil.waitForServiceCategoriesPage();
 
         //create a home cleaning - assuming that is at position 0
         //(don't know how to cleanly query nested item)
@@ -122,11 +122,8 @@ public class BookingCreationTest
     {
         TestUser testUser = TestUsers.EXISTING_USER_BOOKING_CREATION;
         AppInteractionUtil.logOutAndPassOnboarding();
-
         AppInteractionUtil.logIn(testUser);
-
-        //wait for network call to return with service list
-        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        AppInteractionUtil.waitForServiceCategoriesPage();
 
         //create a home cleaning - assuming that is at position 0
         //(don't know how to cleanly query nested item)

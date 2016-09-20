@@ -104,8 +104,12 @@ public class ViewUtil
                 .build();
     }
 
+    //TODO consolidate with similar methods
     public static void waitForToastMessageVisibility(
-            int toastStringResourceId, Activity activity, final long maxWaitingTimeMs
+            int toastStringResourceId,
+            boolean visible,
+            Activity activity,
+            final long maxWaitingTimeMs
     )
     {
         ViewInteraction viewInteraction = onView(withText(toastStringResourceId))
@@ -114,7 +118,7 @@ public class ViewUtil
         final long endTime = startTime + maxWaitingTimeMs;
         while (System.currentTimeMillis() < endTime)
         {
-            if (isViewDisplayed(viewInteraction))
+            if (visible == isViewDisplayed(viewInteraction))
             {
                 return;
             }

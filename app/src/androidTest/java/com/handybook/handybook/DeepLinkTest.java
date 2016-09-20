@@ -2,9 +2,9 @@ package com.handybook.handybook;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.test.rule.ActivityTestRule;
 
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.test.LauncherActivityTestRule;
 import com.handybook.handybook.test.data.TestUsers;
 import com.handybook.handybook.test.model.TestUser;
 import com.handybook.handybook.test.util.AppInteractionUtil;
@@ -19,8 +19,8 @@ import java.io.IOException;
 public class DeepLinkTest
 {
     @Rule
-    public ActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new ActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
+            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
     private static final TestUser TEST_USER = TestUsers.LOGIN;
 
@@ -29,6 +29,7 @@ public class DeepLinkTest
     {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
+        AppInteractionUtil.waitForServiceCategoriesPage();
 
         ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
 
@@ -43,16 +44,23 @@ public class DeepLinkTest
         uri = Uri.parse("handy://account");
         deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
         mActivityRule.getActivity().startActivity(deepLinkIntent);
+        ViewUtil.waitForViewVisible(R.id.profile_scroll_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         ViewUtil.matchToolbarTitle(R.string.account);
 
         uri = Uri.parse("handy://pro_team");
         deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
         mActivityRule.getActivity().startActivity(deepLinkIntent);
+        ViewUtil.waitForViewVisible(
+                R.id.pro_team_coordinator_layout,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
         ViewUtil.matchToolbarTitle(R.string.my_pro_team);
 
         uri = Uri.parse("handy://share");
         deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
         mActivityRule.getActivity().startActivity(deepLinkIntent);
+        ViewUtil.waitForViewVisible(R.id.fragment_referral_content, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         ViewUtil.matchToolbarTitle(R.string.free_cleanings);
     }
+
 }

@@ -1,10 +1,10 @@
 package com.handybook.handybook.test.booking;
 
 import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.rule.ActivityTestRule;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.test.LauncherActivityTestRule;
 import com.handybook.handybook.test.data.TestUsers;
 import com.handybook.handybook.test.model.TestUser;
 import com.handybook.handybook.test.util.AppInteractionUtil;
@@ -26,8 +26,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class BookingCancelRecurringTest
 {
     @Rule
-    public ActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new ActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
+            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
     private static final TestUser TEST_USER = TestUsers.CANCEL_RECURRING_USER;
 
@@ -36,12 +36,13 @@ public class BookingCancelRecurringTest
     {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
-
-        //wait for network call to return with service list
-        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        AppInteractionUtil.waitForServiceCategoriesPage();
 
         //Go to My Bookings
         DrawerActions.openDrawer(R.id.drawer_layout);
+
+        //need to wait for the nav link because it doesn't appear immediately
+        ViewUtil.waitForTextVisible(R.string.my_bookings, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.my_bookings)).perform(click());
 
         // Tap on the first booking
