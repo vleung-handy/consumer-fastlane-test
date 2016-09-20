@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.EntryMethodOption;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
@@ -28,20 +27,23 @@ import butterknife.ButterKnife;
 /**
  * view for the EntryMethodsInfo model
  */
-public final class EntryMethodInputView extends LinearLayout
+public final class EntryMethodsInfoView extends LinearLayout
 {
-    @Bind(R.id.booking_entry_info_options_layout)
+    @Bind(R.id.booking_entry_methods_info_options_layout)
     LinearLayout mEntryInfoOptionsLayout;
-    @Bind(R.id.booking_entry_info_instructions)
+    @Bind(R.id.booking_entry_methods_info_instructions)
     TextView mEntryInfoInstructions;
-    @Bind(R.id.booking_entry_info_input_form_layout)
+    @Bind(R.id.booking_entry_methods_info_input_form_layout)
     LinearLayout mEntryInfoInputFormLayout;
 
-
-    private Map<String, BasicInputTextView> mSelectedOptionInputFieldMachineNameToViewMap = new HashMap<>();
+    /**
+     * this is a map because it's used to generate the selected entry method input form values map
+     * and there's no way to store the input form field machine name in the input text view widget
+     */
+    private final Map<String, BasicInputTextView> mSelectedOptionInputFieldMachineNameToViewMap = new HashMap<>();
     private List<EntryMethodOption> mEntryMethodOptions;
     private BookingOptionsSelectView mOptionsView;
-    private BookingOptionsView.OnUpdatedListener mOptionUpdatedListener = new BookingOptionsView.OnUpdatedListener()
+    private final BookingOptionsView.OnUpdatedListener mOptionUpdatedListener = new BookingOptionsView.OnUpdatedListener()
     {
         @Override
         public void onUpdate(final BookingOptionsView view)
@@ -73,19 +75,19 @@ public final class EntryMethodInputView extends LinearLayout
         }
     };
 
-    public EntryMethodInputView(final Context context)
+    public EntryMethodsInfoView(final Context context)
     {
         super(context);
         init();
     }
 
-    public EntryMethodInputView(final Context context, final AttributeSet attrs)
+    public EntryMethodsInfoView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
         init();
     }
 
-    public EntryMethodInputView(final Context context, final AttributeSet attrs, final int defStyle)
+    public EntryMethodsInfoView(final Context context, final AttributeSet attrs, final int defStyle)
     {
         super(context, attrs, defStyle);
         init();
@@ -93,7 +95,7 @@ public final class EntryMethodInputView extends LinearLayout
 
     private void init()
     {
-        inflate(getContext(), R.layout.element_booking_entry_info, this);
+        inflate(getContext(), R.layout.element_booking_entry_methods_info, this);
         ButterKnife.bind(this);
     }
 
@@ -141,12 +143,14 @@ public final class EntryMethodInputView extends LinearLayout
     }
 
     /**
-     * @return a map of input form machine names to their values
+     * @return a map of the selected entry method input form machine names to their values
      */
-    @Nullable
-    public Map<String, String> getInputFormValues()
+    @NonNull
+    public Map<String, String> getSelectedEntryMethodInputFormValues()
     {
-        if (mSelectedOptionInputFieldMachineNameToViewMap == null) { return null; }
+        /*
+        mSelectedOptionInputFieldMachineNameToViewMap is never null
+         */
         Map<String, String> inputFormValues = new HashMap<>();
         for (String s : mSelectedOptionInputFieldMachineNameToViewMap.keySet())
         {
@@ -170,8 +174,9 @@ public final class EntryMethodInputView extends LinearLayout
 
     public boolean validateFields()
     {
-        //options don't necessarily have input fields
-        if (mSelectedOptionInputFieldMachineNameToViewMap == null) { return true; }
+        /*
+        mSelectedOptionInputFieldMachineNameToViewMap is never null
+         */
         boolean areAllFieldsValid = true;
         for (String key : mSelectedOptionInputFieldMachineNameToViewMap.keySet())
         {
@@ -201,30 +206,46 @@ public final class EntryMethodInputView extends LinearLayout
         //for some reason the model expects string but parses this into an int
 
         //UI for recommended options
-        //TODO hacky, refactor asap
-        if (!entryMethodOptions.isEmpty())
-        {
-            EntryMethodOption lastOption = entryMethodOptions.get(entryMethodOptions.size() - 1);
-            if (BookingInstruction.InstructionType.EntryMethod.AT_HOME.equals(lastOption.getMachineName()))
-            {
-                //set "Recommended" as the super text for the first option
-                String[] superTextArray = new String[entryMethodOptions.size()];
-                superTextArray[0] = getResources().getString(R.string.recommended);
-                option.setOptionsSuperText(superTextArray);
-            }
-        }
-        option.setLeftStripIndicatorVisible(getRecommendedArray(entryMethodOptions));
+        option.setOptionsSuperText(getBookingOptionsSuperTextArray(entryMethodOptions));
+        option.setLeftStripIndicatorVisible(getBookingOptionsRecommendedArray(entryMethodOptions));
         return option;
     }
 
-    private boolean[] getRecommendedArray(List<EntryMethodOption> entryMethodOptions)
+    /**
+     * used to help create the booking option model
+     *
+     * @param entryMethodOptions
+     * @return
+     */
+    private boolean[] getBookingOptionsRecommendedArray(@NonNull List<EntryMethodOption> entryMethodOptions)
     {
-        boolean[] recommended = new boolean[entryMethodOptions.size()];
-        for (int i = 0; i < recommended.length; i++)
+        boolean[] recommendedArray = new boolean[entryMethodOptions.size()];
+        for (int i = 0; i < recommendedArray.length; i++)
         {
-            recommended[i] = entryMethodOptions.get(i).isRecommended();
+            recommendedArray[i] = entryMethodOptions.get(i).isRecommended();
         }
-        return recommended;
+        return recommendedArray;
+    }
+
+    /**
+     * used to help create the booking option model
+     *
+     * @param entryMethodOptions
+     * @return
+     */
+    private String[] getBookingOptionsSuperTextArray(@NonNull List<EntryMethodOption> entryMethodOptions)
+    {
+        //make first recommended option display "Recommended" above it
+        String[] superTextArray = new String[entryMethodOptions.size()];
+        for (int i = 0; i < entryMethodOptions.size(); i++)
+        {
+            if (entryMethodOptions.get(i).isRecommended())
+            {
+                superTextArray[i] = getResources().getString(R.string.recommended);
+                break;
+            }
+        }
+        return superTextArray;
     }
 
     /**
@@ -232,7 +253,9 @@ public final class EntryMethodInputView extends LinearLayout
      *
      * @param entryMethodOption
      */
-    private void updateViewForSelectedEntryMethodOption(@NonNull EntryMethodOption entryMethodOption)
+    private void updateViewForSelectedEntryMethodOption(
+            @NonNull EntryMethodOption entryMethodOption
+    )
     {
         mEntryInfoInputFormLayout.removeAllViews();
         mSelectedOptionInputFieldMachineNameToViewMap.clear();

@@ -17,7 +17,7 @@ import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
-import com.handybook.handybook.booking.ui.view.EntryMethodInputView;
+import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingConfirmationLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
@@ -29,9 +29,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * TODO TEMPORARILY SUPER HACKY, REFACTOR ASAP
- */
 public final class BookingEntryInfoFragment extends BookingFlowFragment
         implements BaseActivity.OnBackPressedListener
 {
@@ -48,7 +45,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     Button mNextButton;
 
     @Bind(R.id.entry_method_input_view)
-    EntryMethodInputView mEntryMethodInputView;
+    EntryMethodsInfoView mEntryMethodsInfoView;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -92,7 +89,6 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                                                container,
                                                false
                                        );
-
         ButterKnife.bind(this, view);
 
         //we don't allow the user to go back to the previous screen.
@@ -104,7 +100,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                 .getSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO);
         if (entryMethodsInfo != null)
         {
-            mEntryMethodInputView.updateViewForModel(entryMethodsInfo, getContext());
+            mEntryMethodsInfoView.updateViewForModel(entryMethodsInfo, getContext());
             mNextButton.setOnClickListener(nextClicked);
         }
         else
@@ -156,7 +152,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         @Override
         public void onClick(final View view)
         {
-            if (!mEntryMethodInputView.validateFields() ||
+            if (!mEntryMethodsInfoView.validateFields() ||
                     bookingManager.getCurrentTransaction() == null)
                     /*
                     hot fix to prevent NPE caused by rapid multi-click
@@ -166,36 +162,19 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                 return;
             }
 
-            Map<String, String> inputFormValues = mEntryMethodInputView.getInputFormValues();
-            EntryMethodOption selectedEntryMethodOption = mEntryMethodInputView.getSelectedEntryMethodOption();
+            Map<String, String> selectedEntryMethodInputFormValues = mEntryMethodsInfoView.getSelectedEntryMethodInputFormValues();
+            EntryMethodOption selectedEntryMethodOption = mEntryMethodsInfoView.getSelectedEntryMethodOption();
             if (selectedEntryMethodOption != null)
             {
                 bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
                         selectedEntryMethodOption.getMachineName(),
-                        inputFormValues
+                        selectedEntryMethodInputFormValues
 
                 );
 
-                //log this
-                if (inputFormValues != null && !inputFormValues.isEmpty())
-                {
-                    String accessInformationString = null;
-                    for (String s : inputFormValues.values())
-                    {
-                        if (accessInformationString == null)
-                        {
-                            accessInformationString = s;
-                        }
-                        else
-                        {
-                            accessInformationString = accessInformationString + "\n" + s;
-                        }
-                    }
-                    //TODO this log schema needs to be redone to accept structured form data
-                    bus.post(new LogEvent.AddLogEvent(
-                            new BookingFunnelLog.BookingAccessInformationSubmittedLog(
-                                    accessInformationString)));
-                }
+                bus.post(new LogEvent.AddLogEvent(
+                        new BookingFunnelLog.BookingAccessInformationSubmittedLog(
+                                selectedEntryMethodOption.getMachineName())));
             }
 
             //else - no option selected. allow user to proceed anyway (same as iOS behavior)

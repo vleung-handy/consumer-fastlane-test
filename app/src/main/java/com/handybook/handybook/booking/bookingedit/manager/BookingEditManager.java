@@ -3,7 +3,7 @@ package com.handybook.handybook.booking.bookingedit.manager;
 import android.support.annotation.NonNull;
 
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
@@ -66,17 +66,15 @@ public class BookingEditManager
         mDataManager.getEntryMethodsInfo(mBookingId, callback);
     }
 
-    /**
-     *
-     * @param mBookingId
-     * @param bookingEditEntryInformationTransaction
-     * @param callback
-     */
     public void updateEntryMethodsInfo(@NonNull String mBookingId,
-                                       @NonNull BookingEditEntryInformationTransaction bookingEditEntryInformationTransaction,
+                                       @NonNull BookingEditEntryInformationRequest bookingEditEntryInformationRequest,
                                        @NonNull final DataManager.Callback<Void> callback)
     {
-        mDataManager.updateBookingEntryInformation(mBookingId, bookingEditEntryInformationTransaction, callback);
+        mDataManager.updateBookingEntryInformation(
+                mBookingId,
+                bookingEditEntryInformationRequest,
+                callback
+        );
     }
 
     @Subscribe

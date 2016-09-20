@@ -31,7 +31,7 @@
             android:paddingTop="@dimen/default_margin"
             >
 
-            <com.handybook.handybook.booking.ui.view.EntryMethodInputView
+            <com.handybook.handybook.booking.ui.view.EntryMethodsInfoView
                 android:id="@+id/entry_method_input_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

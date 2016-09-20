@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -88,14 +90,23 @@ public class FinalizeBookingRequestPayload extends Observable
         notifyObservers();
     }
 
-    public void setEntryInfo(@BookingInstruction.EntryMethodType String entryMethodInstructionType,
-                                  Map<String, String> inputFormValues)
+    /**
+     * adds to or modifies the booking instructions list based on the given user-specified entry
+     * info
+     *
+     * @param selectedEntryMethodMachineName
+     * @param selectedEntryMethodInputFormValues
+     */
+    public void setEntryInfo(
+            @BookingInstruction.EntryMethodType String selectedEntryMethodMachineName,
+            @NonNull Map<String, String> selectedEntryMethodInputFormValues
+    )
     {
         BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
                 null,
                 BookingInstruction.MachineName.ENTRY_METHOD,
                 null,
-                entryMethodInstructionType,
+                selectedEntryMethodMachineName,
                 null,
                 null
         );
@@ -114,46 +125,67 @@ public class FinalizeBookingRequestPayload extends Observable
         {
             mBookingInstructions = new ArrayList<>();
         }
-        Map<String, BookingInstruction> bookingInstructionMap = new HashMap<>();//TODO rename
-        bookingInstructionMap.put(BookingInstruction.MachineName.ENTRY_METHOD, entryInfoTypeInstruction);
-        if (inputFormValues != null)
+        /*
+        a map of booking instruction machine name -> booking instruction object
+        (candidates to add to global booking instructions list)
+        using a map instead of list so we can easily check if these are present
+        in the current booking instructions
+         */
+        Map<String, BookingInstruction> entryInfoBookingInstructionsMap = new HashMap<>();//TODO rename
+        entryInfoBookingInstructionsMap.put(
+                BookingInstruction.MachineName.ENTRY_METHOD,
+                entryInfoTypeInstruction
+        );
+
+        //create booking instructions from the selected entry method input form values
+        for (String inputFormFieldMachineName : selectedEntryMethodInputFormValues.keySet())
         {
-            for (String inputFormFieldMachineName : inputFormValues.keySet())
-            {
-                BookingInstruction entryInfoMessageInstruction = new BookingInstruction(
-                        null,
-                        inputFormFieldMachineName,
-                        null,
-                        null,
-                        inputFormValues.get(inputFormFieldMachineName),
-                        null
-                );
-                bookingInstructionMap.put(inputFormFieldMachineName, entryInfoMessageInstruction);
-            }
+            BookingInstruction entryInfoMessageInstruction = new BookingInstruction(
+                    null,
+                    inputFormFieldMachineName,
+                    null,
+                    null,
+                    selectedEntryMethodInputFormValues.get(inputFormFieldMachineName),
+                    null
+            );
+            entryInfoBookingInstructionsMap.put(
+                    inputFormFieldMachineName,
+                    entryInfoMessageInstruction
+            );
         }
 
-        //check if these instructions are already present. if so, update and remove from list to be added
+        /*
+        check if these instructions are already present in the global booking instructions list.
+        if so, update and remove from list to be added
+         */
         for(BookingInstruction bookingInstruction : mBookingInstructions)
         {
-            String machineName = bookingInstruction.getMachineName();
-            BookingInstruction bookingInstructionCandidate = bookingInstructionMap.get(machineName);
-            if(bookingInstructionCandidate != null)
+            String bookingInstructionMachineName = bookingInstruction.getMachineName();
+            BookingInstruction entryMethodBookingInstruction =
+                    entryInfoBookingInstructionsMap.get(bookingInstructionMachineName);
+            if (entryMethodBookingInstruction != null) //global booking instructions list already has this entry method booking instruction
             {
-                //update it and remove from map
-                if(BookingInstruction.MachineName.ENTRY_METHOD.equals(machineName))
+                /*
+                update the booking instruction in the global list with the entry method info,
+                and remove from the entry methods to be added later to the global list
+                 */
+                if (BookingInstruction.MachineName.ENTRY_METHOD.equals(bookingInstructionMachineName))
                 {
-                    bookingInstruction.setInstructionType(bookingInstructionCandidate.getInstructionType());
+                    /*
+                    booking instructions has weird structure so have to do this
+                     */
+                    bookingInstruction.setInstructionType(entryMethodBookingInstruction.getInstructionType());
                 }
                 else
                 {
-                    bookingInstruction.setDescription(bookingInstructionCandidate.getDescription());
+                    bookingInstruction.setDescription(entryMethodBookingInstruction.getDescription());
                 }
-                bookingInstructionMap.remove(machineName);
+                entryInfoBookingInstructionsMap.remove(bookingInstructionMachineName);
             }
         }
 
-        //add the ones that weren't found
-        mBookingInstructions.addAll(bookingInstructionMap.values());
+        //add the entry info instructions that were not already in the global booking instructions list
+        mBookingInstructions.addAll(entryInfoBookingInstructionsMap.values());
         triggerObservers();
     }
 

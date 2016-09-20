@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -11,13 +12,13 @@ import android.widget.Button;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.EntryMethodOption;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
-import com.handybook.handybook.booking.ui.view.EntryMethodInputView;
+import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
@@ -39,7 +40,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     Button nextButton;
 
     @Bind(R.id.entry_method_input_view)
-    EntryMethodInputView mEntryMethodInputView;
+    EntryMethodsInfoView mEntryMethodsInfoView;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -82,11 +83,16 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         return view;
     }
 
-    private void requestAvailableEntryMethodsInfo()
+    /**
+     * requests for the available entry methods info for the booking associated with the given id
+     * <p/>
+     * updates the view on callback success
+     */
+    private void requestAvailableEntryMethodsInfo(String bookingId)
     {
         showUiBlockers();
         mBookingEditManager.getEntryMethodsInfo(
-                booking.getId(),
+                bookingId,
                 new DataManager.Callback<EntryMethodsInfo>()
                 {
 
@@ -94,7 +100,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                     public void onSuccess(final EntryMethodsInfo response)
                     {
                         removeUiBlockers();
-                        mEntryMethodInputView.updateViewForModel(response, getContext());
+                        mEntryMethodsInfoView.updateViewForModel(response, getContext());
                     }
 
                     @Override
@@ -111,40 +117,48 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        requestAvailableEntryMethodsInfo();
+        requestAvailableEntryMethodsInfo(booking.getId());
     }
 
     @OnClick(R.id.next_button)
     public void onNextButtonClicked()
     {
-        if (!mEntryMethodInputView.validateFields())
+        if (!mEntryMethodsInfoView.validateFields())
         {
             return;
         }
 
         //create the object to send to the server based on the selected entry method + input fields
-        EntryMethodOption selectedEntryMethodOption = mEntryMethodInputView.getSelectedEntryMethodOption();
+        EntryMethodOption selectedEntryMethodOption = mEntryMethodsInfoView.getSelectedEntryMethodOption();
 
         if (selectedEntryMethodOption == null) { return; }
+
+        //create the request object
         List<BookingInstruction> bookingInstructions = getBookingInstructionsListFromInput(
                 selectedEntryMethodOption.getMachineName(),
-                mEntryMethodInputView.getInputFormValues()
+                mEntryMethodsInfoView.getSelectedEntryMethodInputFormValues()
         );
-        BookingEditEntryInformationTransaction editEntryInformationTransaction =
-                new BookingEditEntryInformationTransaction(bookingInstructions, true);
+        BookingEditEntryInformationRequest editEntryInformationTransaction =
+                new BookingEditEntryInformationRequest(bookingInstructions, true);
 
         requestUpdateEntryMethodsInfo(booking.getId(), editEntryInformationTransaction);
     }
 
+    /**
+     * request to update the entry methods info of the booking associated with the given id
+     *
+     * @param bookingId
+     * @param editEntryInformationRequest
+     */
     private void requestUpdateEntryMethodsInfo(
             String bookingId,
-            BookingEditEntryInformationTransaction editEntryInformationTransaction
+            BookingEditEntryInformationRequest editEntryInformationRequest
     )
     {
         showUiBlockers();
         mBookingEditManager.updateEntryMethodsInfo(
                 bookingId,
-                editEntryInformationTransaction,
+                editEntryInformationRequest,
                 new DataManager.Callback<Void>()
                 {
                     @Override
@@ -168,16 +182,17 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     }
 
     /**
-     * converts the input form values map and selected entry method type to a booking instructions
-     * list
+     * creates a booking instructions list from the given
+     * selected entry method input form values
+     * and selected entry method machine name
      *
      * @param selectedEntryMethodMachineName
-     * @param inputFormValues
+     * @param selectedEntryMethodInputFormValues
      * @return
      */
     private List<BookingInstruction> getBookingInstructionsListFromInput(
             @BookingInstruction.EntryMethodType String selectedEntryMethodMachineName,
-            Map<String, String> inputFormValues
+            @NonNull Map<String, String> selectedEntryMethodInputFormValues
     )
     {
         BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
@@ -191,20 +206,18 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         List<BookingInstruction> bookingInstructionList = new ArrayList<>();
         bookingInstructionList.add(entryInfoTypeInstruction);
 
-        if (inputFormValues != null)
+        //create booking instructions from the selected entry method input form values
+        for (String inputFormFieldMachineName : selectedEntryMethodInputFormValues.keySet())
         {
-            for (String inputFormFieldMachineName : inputFormValues.keySet())
-            {
-                BookingInstruction entryInfoInstruction = new BookingInstruction(
-                        null,
-                        inputFormFieldMachineName,
-                        null,
-                        null,
-                        inputFormValues.get(inputFormFieldMachineName),
-                        null
-                );
-                bookingInstructionList.add(entryInfoInstruction);
-            }
+            BookingInstruction entryInfoInstruction = new BookingInstruction(
+                    null,
+                    inputFormFieldMachineName,
+                    null,
+                    null,
+                    selectedEntryMethodInputFormValues.get(inputFormFieldMachineName),
+                    null
+            );
+            bookingInstructionList.add(entryInfoInstruction);
         }
 
         return bookingInstructionList;

@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
@@ -1114,13 +1114,13 @@ public class DataManager
 
     public final void updateBookingEntryInformation(
             String bookingId,
-            BookingEditEntryInformationTransaction entryInformationTransaction,
+            BookingEditEntryInformationRequest editEntryInformationRequest,
             final Callback<Void> cb
     )
     {
         mService.updateBookingEntryInformation(
                 bookingId,
-                entryInformationTransaction,
+                editEntryInformationRequest,
                 new HandyRetrofitCallback(cb)
                 {
                     @Override

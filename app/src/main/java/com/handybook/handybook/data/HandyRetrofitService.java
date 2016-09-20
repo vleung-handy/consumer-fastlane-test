@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationTransaction;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
@@ -217,13 +217,13 @@ public interface HandyRetrofitService
 
     /**
      * @param bookingId
-     * @param bookingEditEntryInformationTransaction
+     * @param bookingEditEntryInformationRequest
      * @param cb
      */
     @POST("/bookings/{booking}/entry_info")
     void updateBookingEntryInformation(
             @Path("booking") String bookingId,
-            @Body BookingEditEntryInformationTransaction bookingEditEntryInformationTransaction,
+            @Body BookingEditEntryInformationRequest bookingEditEntryInformationRequest,
             HandyRetrofitCallback cb
     );
 
