@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.bookingedit.manager;
 import android.support.annotation.NonNull;
 
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
@@ -65,6 +66,17 @@ public class BookingEditManager
         mDataManager.getEntryMethodsInfo(mBookingId, callback);
     }
 
+    public void updateEntryMethodsInfo(@NonNull String mBookingId,
+                                       @NonNull BookingEditEntryInformationRequest bookingEditEntryInformationRequest,
+                                       @NonNull final DataManager.Callback<Void> callback)
+    {
+        mDataManager.updateBookingEntryInformation(
+                mBookingId,
+                bookingEditEntryInformationRequest,
+                callback
+        );
+    }
+
     @Subscribe
     public void onRequestEditHoursInfoViewModel(BookingEditEvent.RequestEditHoursInfoViewModel event)
     {
@@ -104,27 +116,6 @@ public class BookingEditManager
                     public void onError(DataManager.DataManagerError error)
                     {
                         mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProError(error));
-                    }
-                });
-    }
-
-    @Subscribe
-    public void onRequestUpdateBookingEntryInformation(
-            BookingEditEvent.RequestUpdateBookingEntryInformation event)
-    {
-        mDataManager.updateBookingEntryInformation(event.bookingId, event.entryInformationTransaction,
-                new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(final Void response)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveUpdateBookingEntryInformationSuccess());
-                    }
-
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveUpdateBookingEntryInformationError(error));
                     }
                 });
     }

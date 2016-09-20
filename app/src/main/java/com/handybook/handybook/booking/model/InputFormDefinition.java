@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * model from server that defines an input form
- *
+ * <p/>
  * see {@link EntryMethodOption}
  */
 public class InputFormDefinition implements Serializable
@@ -24,17 +24,9 @@ public class InputFormDefinition implements Serializable
 
     public static class InputFormField implements Serializable
     {
-        /**
-         * eventually we will use these as keys when
-         * sending the input form values back to the server
-         * but we need backend to update first
-         */
-        public static class SupportedMachineName
-        {
-            public static final String LOCKBOX_ACCESS_CODE = "lockbox_code";
-            public static final String LOCKBOX_LOCATION = "lockbox_location";
-            public static final String ADDITIONAL_INSTRUCTIONS = "key_location"; //needs this key name for backwards compatibility
-        }
+        @SerializedName("title")
+        private String mTitle;
+
         @SerializedName("hint_text")
         private String mHintText;
 
@@ -59,10 +51,20 @@ public class InputFormDefinition implements Serializable
         private String mValidationPattern;
 
         /**
+         * the value of this field
+         */
+        @SerializedName("value")
+        private String mValue;
+        /**
          * whether input is required for this field
          */
         @SerializedName("required")
         private boolean mRequired;
+
+        public String getTitle()
+        {
+            return mTitle;
+        }
 
         public boolean isRequired()
         {
@@ -82,6 +84,11 @@ public class InputFormDefinition implements Serializable
         public int getNumLines()
         {
             return mNumLines == null ? 1 : mNumLines;
+        }
+
+        public String getValue()
+        {
+            return mValue;
         }
     }
 }

@@ -64,6 +64,8 @@ public class Booking implements Parcelable
     private String mExtraEntryInfo; //additional information i.e. where user will hide the key
     @SerializedName("lockbox_code")
     private String mLockboxCode; //ugly because hack
+    @SerializedName("entry_option")
+    private EntryMethodOption mEntryMethodOption;
     @SerializedName("msg_to_pro")
     private String mProNote;
     @SerializedName("laundry_status")
@@ -96,6 +98,11 @@ public class Booking implements Parcelable
     public String getLockboxCode()
     {
         return mLockboxCode;
+    }
+
+    public EntryMethodOption getEntryMethodOption()
+    {
+        return mEntryMethodOption;
     }
 
     public boolean canEditExtras()
@@ -445,7 +452,7 @@ public class Booking implements Parcelable
 
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
 
-
+        mEntryMethodOption = (EntryMethodOption) in.readSerializable();
     }
 
     public static Booking fromJson(final String json)
@@ -492,6 +499,7 @@ public class Booking implements Parcelable
                         mMilestonesEnabled,
                 });
         out.writeParcelable(mInstructions, 0);
+        out.writeSerializable(mEntryMethodOption);
     }
 
     @Override

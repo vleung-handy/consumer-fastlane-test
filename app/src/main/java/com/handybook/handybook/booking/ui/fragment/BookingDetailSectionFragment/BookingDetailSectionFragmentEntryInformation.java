@@ -2,12 +2,13 @@ package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment
 
 import android.content.Intent;
 import android.text.Html;
+import android.text.TextUtils;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.EntryMethodOption;
+import com.handybook.handybook.booking.model.InputFormDefinition;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
@@ -39,26 +40,37 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
-        final String entryInfo = booking.getEntryInfo();
-        if (entryInfo != null)
+        final EntryMethodOption entryMethodOption = booking.getEntryMethodOption();
+        if (entryMethodOption != null)
         {
-            String extraEntryInfo = booking.getExtraEntryInfo(); //TODO doubling as lockbox location for hack
-            int entryMethodTypeId = booking.getEntryType();
-            String entryMethodMachineName =
-                    EntryMethodOption.getEntryMethodMachineNameForGetInId(entryMethodTypeId);
-
-            if(BookingInstruction.InstructionType.EntryMethod.LOCKBOX.equals(entryMethodMachineName))
+            String bodyText = "";
+            boolean shouldTitleBeBold = false;
+            if (entryMethodOption.getInputFormDefinition() != null
+                    && entryMethodOption.getInputFormDefinition().getFieldDefinitions() != null)
             {
-                //TODO hack, refactor later
-                String htmlText = "<b>" + entryInfo + "</b><br>Location: " + extraEntryInfo + "<br>Access code: " + booking.getLockboxCode();
-                getSectionView().getEntryText().setText(Html.fromHtml(htmlText));
+                for (InputFormDefinition.InputFormField inputFormField :
+                        entryMethodOption.getInputFormDefinition().getFieldDefinitions())
+                {
+                    if (!TextUtils.isEmpty(inputFormField.getValue()))
+                    {
+                        bodyText = bodyText + "<br>"
+                                + inputFormField.getTitle() + ": "
+                                + inputFormField.getValue();
+                        shouldTitleBeBold = true;
+                        //title should be bold if any additional instructions will be displayed
+                    }
+                }
+            }
+            String titleText;
+            if (shouldTitleBeBold)
+            {
+                titleText = "<b>" + entryMethodOption.getTitleText() + "</b>";
             }
             else
             {
-                //not lockbox
-                String entryInfoFormatted = entryInfo + " " + (extraEntryInfo != null ? extraEntryInfo : "");
-                getSectionView().getEntryText().setText(entryInfoFormatted);
+                titleText = entryMethodOption.getTitleText();
             }
+            getSectionView().getEntryText().setText(Html.fromHtml(titleText + bodyText));
         }
         else
         {

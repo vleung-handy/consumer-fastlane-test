@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--this is used by both the create booking and edit flow-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/booking_entry_methods_info_instructions"
+        style="@style/TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:freezesText="false"
+        android:gravity="center"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        tools:text="Let your pro in without waiting at home:"
+        />
+
+    <LinearLayout
+        android:id="@+id/booking_entry_methods_info_options_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:background="@color/white"
+        android:orientation="vertical"
+        />
+
+    <LinearLayout
+        android:id="@+id/booking_entry_methods_info_input_form_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:background="@color/transparent"
+        android:orientation="vertical"
+        />
+
+</LinearLayout>
+

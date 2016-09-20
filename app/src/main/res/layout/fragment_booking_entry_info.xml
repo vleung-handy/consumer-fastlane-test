@@ -42,36 +42,10 @@
                 android:text="@string/payment_confirmed"
                 />
 
-            <TextView
-                android:id="@+id/fragment_booking_entry_info_instructions_text"
-                style="@style/TextView"
+            <com.handybook.handybook.booking.ui.view.EntryMethodsInfoView
+                android:id="@+id/entry_method_input_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin_half"
-                android:freezesText="false"
-                android:gravity="center"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin"
-                tools:text="Let your pro in without waiting at home:"
-                />
-
-            <LinearLayout
-                android:id="@+id/options_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:background="@color/white"
-                android:orientation="vertical"
-                />
-
-            <LinearLayout
-                android:id="@+id/fragment_booking_entry_info_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:background="@color/transparent"
-                android:orientation="vertical"
                 />
 
         </LinearLayout>
