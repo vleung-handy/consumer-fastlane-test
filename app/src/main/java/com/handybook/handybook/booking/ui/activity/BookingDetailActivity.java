@@ -15,14 +15,16 @@ public final class BookingDetailActivity extends MenuDrawerActivity
     protected final Fragment createFragment()
     {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
+        final boolean isFromBookingFlow = getIntent()
+                .getBooleanExtra(BundleKeys.IS_FROM_BOOKING_FLOW, false);
         if (booking != null)
         {
-            return BookingDetailFragment.newInstance(booking);
+            return BookingDetailFragment.newInstance(booking, isFromBookingFlow);
         }
         else
         {
             final String bookingId = getIntent().getStringExtra(BundleKeys.BOOKING_ID);
-            return BookingDetailFragment.newInstance(bookingId);
+            return BookingDetailFragment.newInstance(bookingId, isFromBookingFlow);
         }
     }
 

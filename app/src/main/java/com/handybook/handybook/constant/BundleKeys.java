@@ -48,4 +48,6 @@ public class BundleKeys
     public static final String HELP_CENTER_URL = "help_center_url";
     public static final String ACTIVITY = "activity";
     public static final String PRERATE_PRO_INFO = "prerate_pro_info";
+
+    public static final String IS_FROM_BOOKING_FLOW = "is_from_booking_flow";
 }

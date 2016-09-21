@@ -27,6 +27,16 @@ import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentBookingActions;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentEntryInformation;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentExtras;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentLaundry;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
@@ -136,6 +146,16 @@ import static org.mockito.Mockito.when;
         HelpFragment.class,
         HelpWebViewFragment.class,
         HelpCenterTest.class,
+        BookingDetailFragment.class,
+        BookingDetailFragmentTest.class,
+        BookingDetailSectionFragmentProInformation.class,
+        BookingDetailSectionFragmentLaundry.class,
+        BookingDetailSectionFragmentEntryInformation.class,
+        BookingDetailSectionFragmentPreferences.class,
+        BookingDetailSectionFragmentExtras.class,
+        BookingDetailSectionFragmentAddress.class,
+        BookingDetailSectionFragmentBookingActions.class,
+        BookingDetailSectionFragmentPayment.class,
 }, library = true)
 public class TestApplicationModule
 {

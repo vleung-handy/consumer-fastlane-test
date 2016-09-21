@@ -246,6 +246,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
                     public void onSuccess(final Booking booking)
                     {
                         final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
+                        intent.putExtra(BundleKeys.IS_FROM_BOOKING_FLOW, true);
                         intent.putExtra(BundleKeys.BOOKING, booking);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
