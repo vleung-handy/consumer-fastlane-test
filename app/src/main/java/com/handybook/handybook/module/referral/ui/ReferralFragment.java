@@ -106,7 +106,7 @@ public class ReferralFragment extends InjectedFragment
     {
         showUiBlockers();
         mReferralContent.setVisibility(View.GONE);
-        bus.post(new ReferralsEvent.RequestPrepareReferrals(false));
+        bus.post(new ReferralsEvent.RequestPrepareReferrals(false, null));
     }
 
     @Override

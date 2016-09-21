@@ -10,15 +10,22 @@ public abstract class ReferralsEvent
     public static class RequestPrepareReferrals extends HandyEvent.RequestEvent
     {
         private boolean mIsForDialog;
+        private String mEventContext;
 
-        public RequestPrepareReferrals(final boolean isForDialog)
+        public RequestPrepareReferrals(final boolean isForDialog, final String eventContext)
         {
             mIsForDialog = isForDialog;
+            mEventContext = eventContext;
         }
 
         public boolean isForDialog()
         {
             return mIsForDialog;
+        }
+
+        public String getEventContext()
+        {
+            return mEventContext;
         }
     }
 
@@ -27,12 +34,15 @@ public abstract class ReferralsEvent
     {
         private final ReferralResponse mReferralResponse;
         private boolean mIsForDialog;
+        private String mEventContext;
 
         public ReceivePrepareReferralsSuccess(final ReferralResponse referralResponse,
-                                              final boolean isForDialog)
+                                              final boolean isForDialog,
+                                              final String eventContext)
         {
             mReferralResponse = referralResponse;
             mIsForDialog = isForDialog;
+            mEventContext = eventContext;
         }
 
         public ReferralResponse getReferralResponse()
@@ -43,6 +53,11 @@ public abstract class ReferralsEvent
         public boolean isForDialog()
         {
             return mIsForDialog;
+        }
+
+        public String getEventContext()
+        {
+            return mEventContext;
         }
     }
 

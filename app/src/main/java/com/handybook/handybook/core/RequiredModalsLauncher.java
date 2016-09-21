@@ -7,5 +7,5 @@ public interface RequiredModalsLauncher //TODO: rename + move to better package
 {
     void showSplashPromo(SplashPromo splashPromo);
     void showBlockingScreen();
-    void showReferralDialog(ReferralResponse referralResponse);
+    void showReferralDialog(ReferralResponse referralResponse, String eventContext);
 }

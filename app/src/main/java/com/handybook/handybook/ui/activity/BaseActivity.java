@@ -164,12 +164,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     @Override
-    public void showReferralDialog(final ReferralResponse referralResponse)
+    public void showReferralDialog(final ReferralResponse referralResponse,
+                                   final String eventContext)
     {
         if (getSupportFragmentManager().findFragmentByTag(ReferralDialogFragment.TAG) == null)
         {
             final ReferralDialogFragment dialogFragment =
-                    ReferralDialogFragment.newInstance(referralResponse.getReferralDescriptor());
+                    ReferralDialogFragment.newInstance(referralResponse.getReferralDescriptor(),
+                                                       eventContext);
             FragmentUtils.safeLaunchDialogFragment(dialogFragment, this,
                     ReferralDialogFragment.TAG);
         }

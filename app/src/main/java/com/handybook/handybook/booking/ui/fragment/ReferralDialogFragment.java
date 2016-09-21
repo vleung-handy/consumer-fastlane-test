@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.user.PostRatingShareModalLog;
+import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
@@ -37,12 +38,15 @@ public class ReferralDialogFragment extends BaseDialogFragment
     private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{"handy-referrals@handy.com"};
     private ReferralChannels mReferralChannels;
     private ReferralDescriptor mReferralDescriptor;
+    private String mReferralContext;
 
-    public static ReferralDialogFragment newInstance(final ReferralDescriptor referralDescriptor)
+    public static ReferralDialogFragment newInstance(final ReferralDescriptor referralDescriptor,
+                                                     final String referralContext)
     {
         final ReferralDialogFragment dialogFragment = new ReferralDialogFragment();
         final Bundle arguments = new Bundle();
         arguments.putSerializable(REFERRAL_DESCRIPTOR, referralDescriptor);
+        arguments.putString(BundleKeys.REFERRAL_CONTEXT, referralContext);
         dialogFragment.setArguments(arguments);
         return dialogFragment;
     }
@@ -55,6 +59,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
                 .getSerializable(REFERRAL_DESCRIPTOR);
         mReferralChannels = mReferralDescriptor
                 .getReferralChannelsForSource(ReferralDescriptor.SOURCE_HIGH_RATING_MODAL);
+        mReferralContext = getArguments().getString(BundleKeys.REFERRAL_CONTEXT);
     }
 
     @Override
@@ -159,8 +164,8 @@ public class ReferralDialogFragment extends BaseDialogFragment
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
 
             mBus.post(new LogEvent.AddLogEvent(
-                    new PostRatingShareModalLog.PostRatingShareButtonTappedLog(
-                            referralMedium, identifier,
+                    new ShareModalLog.ShareButtonTappedLog(
+                            mReferralContext, referralMedium, identifier,
                             couponCode, mReferralDescriptor.getSenderCreditAmount(),
                             mReferralDescriptor.getReceiverCouponAmount())));
         }

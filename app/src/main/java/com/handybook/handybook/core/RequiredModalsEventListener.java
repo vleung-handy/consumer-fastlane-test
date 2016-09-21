@@ -30,7 +30,8 @@ public class RequiredModalsEventListener //TODO: rename + move to better package
     {
         if (event.isForDialog())
         {
-            mRequiredModalsLauncher.showReferralDialog(event.getReferralResponse());
+            mRequiredModalsLauncher.showReferralDialog(event.getReferralResponse(),
+                                                       event.getEventContext());
         }
     }
 

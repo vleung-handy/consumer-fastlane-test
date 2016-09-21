@@ -38,6 +38,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
@@ -150,7 +151,10 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
         if (mIsFromBookingFlow)
         {
-            bus.post(new ReferralsEvent.RequestPrepareReferrals(true));
+            bus.post(new ReferralsEvent.RequestPrepareReferrals(
+                    true,
+                    ShareModalLog.EVENT_CONTEXT_POST_BOOKING
+            ));
         }
     }
 
