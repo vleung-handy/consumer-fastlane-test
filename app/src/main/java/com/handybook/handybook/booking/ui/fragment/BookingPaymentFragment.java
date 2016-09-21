@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -66,9 +67,13 @@ import com.handybook.handybook.ui.widget.FreezableInputTextView;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.ValidationUtils;
 import com.handybook.handybook.util.WalletUtils;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -867,8 +872,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     private void completeBooking()
     {
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSubmittedLog()));
-
         setReferrerToken();
+        final MixpanelAPI mixpanel = MixpanelAPI.getInstance(
+                getContext(),
+                "f322d61eb1ba3f1b53518f2c78cab2c3"
+        );
         dataManager.createBooking(mCurrentTransaction,
                 new DataManager.Callback<BookingCompleteTransaction>()
                 {
@@ -876,6 +884,18 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     public void onSuccess(final BookingCompleteTransaction trans)
                     {
                         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())));
+                        // Mixpanel to test where we lose our own events
+                        try
+                        {
+                            JSONObject props = new JSONObject();
+                            props.put("transaction_id", trans.getId());
+                            mixpanel.track("booking_completed", props);
+                        }
+                        catch (JSONException e)
+                        {
+                            Crashlytics.logException(new JSONException(
+                                    "Unable to add properties to Mixpanel JSONObject"));
+                        }
 
                         //UPGRADE: Should we use this trans or ask the manager for current trans? So much inconsistency....
                         if (!allowCallbacks) { return; }
