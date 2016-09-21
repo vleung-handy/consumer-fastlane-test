@@ -9,8 +9,6 @@ import com.handybook.handybook.R;
 
 import butterknife.ButterKnife;
 
-/**
- */
 public class ShareBannerView extends FrameLayout
 {
     public ShareBannerView(final Context context)

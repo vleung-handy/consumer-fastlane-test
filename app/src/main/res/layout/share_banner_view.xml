@@ -11,10 +11,10 @@
     >
 
     <TextView
-        android:id="@+id/text_share_message"
+        android:id="@+id/share_banner_title_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/share_message"
+        android:text="@string/share_banner_title_message"
         style="@style/TextView.Medium"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
@@ -23,7 +23,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/img__referral_gift"
+        android:src="@drawable/img_referral_gift"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
