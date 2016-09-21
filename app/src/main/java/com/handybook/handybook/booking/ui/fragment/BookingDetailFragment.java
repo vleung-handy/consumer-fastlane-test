@@ -40,6 +40,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
@@ -61,6 +62,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     private Booking mBooking;
     private Configuration mConfiguration;
     private String mBookingId;
+    private boolean mIsFromBookingFlow;
     private boolean mBookingUpdated;
 
     private RescheduleType mRescheduleType;
@@ -72,20 +74,24 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private ArrayList<Service> mServices;
 
-    public static BookingDetailFragment newInstance(final Booking booking)
+    public static BookingDetailFragment newInstance(final Booking booking,
+                                                    final boolean isFromBookingFlow)
     {
         final BookingDetailFragment fragment = new BookingDetailFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
+        args.putBoolean(BundleKeys.IS_FROM_BOOKING_FLOW, isFromBookingFlow);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static BookingDetailFragment newInstance(final String bookingId)
+    public static BookingDetailFragment newInstance(final String bookingId,
+                                                    final boolean isFromBookingFlow)
     {
         final BookingDetailFragment fragment = new BookingDetailFragment();
         final Bundle args = new Bundle();
         args.putString(BundleKeys.BOOKING_ID, bookingId);
+        args.putBoolean(BundleKeys.IS_FROM_BOOKING_FLOW, isFromBookingFlow);
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,6 +102,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mBookingId = getArguments().getString(BundleKeys.BOOKING_ID);
+        mIsFromBookingFlow = getArguments().getBoolean(BundleKeys.IS_FROM_BOOKING_FLOW, false);
 
         if (savedInstanceState != null)
         {
@@ -140,6 +147,11 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         }
 
         bus.post(new ConfigurationEvent.RequestConfiguration());
+
+        if (mIsFromBookingFlow)
+        {
+            bus.post(new ReferralsEvent.RequestPrepareReferrals(true));
+        }
     }
 
     @Override
