@@ -23,6 +23,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
@@ -106,7 +107,8 @@ public class ReferralFragment extends InjectedFragment
     {
         showUiBlockers();
         mReferralContent.setVisibility(View.GONE);
-        bus.post(new ReferralsEvent.RequestPrepareReferrals(false, null));
+        bus.post(new ReferralsEvent.RequestPrepareReferrals(false,
+                                                            ReferralsManager.Source.REFERRAL_PAGE));
     }
 
     @Override

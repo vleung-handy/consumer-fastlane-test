@@ -6,9 +6,6 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 public class ShareModalLog extends EventLog
 {
-    public static final String EVENT_CONTEXT_POST_RATING = "post_rating_share_modal";
-    public static final String EVENT_CONTEXT_POST_BOOKING = "post_booking_share_modal";
-
     @SerializedName("referral_medium")
     private String mReferralMedium;
     @SerializedName("referral_identifier")
@@ -34,12 +31,12 @@ public class ShareModalLog extends EventLog
         mReceiverOfferAmount = receiverOfferAmount;
     }
 
-    public static class ShareButtonTappedLog extends ShareModalLog
+    public static class PostBookingShareButtonTappedLog extends ShareModalLog
     {
+        public static final String EVENT_CONTEXT = "post_booking_share_modal";
         private static final String EVENT_TYPE = "share_button_tapped";
 
-        public ShareButtonTappedLog(
-                final String eventContext,
+        public PostBookingShareButtonTappedLog(
                 final String referralMedium,
                 final String referralIdentifier,
                 final String couponCode,
@@ -47,8 +44,26 @@ public class ShareModalLog extends EventLog
                 final int receiverOfferAmount
         )
         {
-            super(EVENT_TYPE, eventContext, referralMedium, referralIdentifier, couponCode,
+            super(EVENT_TYPE, EVENT_CONTEXT, referralMedium, referralIdentifier, couponCode,
                     senderOfferAmount, receiverOfferAmount);
+        }
+    }
+
+    public static class PostRatingShareButtonTappedLog extends ShareModalLog
+    {
+        public static final String EVENT_CONTEXT = "post_rating_share_modal";
+        private static final String EVENT_TYPE = "share_button_tapped";
+
+        public PostRatingShareButtonTappedLog(
+                final String referralMedium,
+                final String referralIdentifier,
+                final String couponCode,
+                final int senderOfferAmount,
+                final int receiverOfferAmount
+        )
+        {
+            super(EVENT_TYPE, EVENT_CONTEXT, referralMedium, referralIdentifier, couponCode,
+                  senderOfferAmount, receiverOfferAmount);
         }
     }
 }

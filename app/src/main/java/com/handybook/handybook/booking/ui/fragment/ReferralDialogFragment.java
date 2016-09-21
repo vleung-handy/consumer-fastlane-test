@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
@@ -29,6 +31,8 @@ import butterknife.OnClick;
 
 public class ReferralDialogFragment extends BaseDialogFragment
 {
+
+
     public static final String TAG = ReferralDialogFragment.class.getSimpleName();
 
     @Bind(R.id.dialog_referral_subtitle)
@@ -38,15 +42,17 @@ public class ReferralDialogFragment extends BaseDialogFragment
     private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{"handy-referrals@handy.com"};
     private ReferralChannels mReferralChannels;
     private ReferralDescriptor mReferralDescriptor;
-    private String mReferralContext;
+    private ReferralsManager.Source mSource;
 
-    public static ReferralDialogFragment newInstance(final ReferralDescriptor referralDescriptor,
-                                                     final String referralContext)
+    public static ReferralDialogFragment newInstance(
+            final ReferralDescriptor referralDescriptor,
+            @NonNull final ReferralsManager.Source source
+    )
     {
         final ReferralDialogFragment dialogFragment = new ReferralDialogFragment();
         final Bundle arguments = new Bundle();
         arguments.putSerializable(REFERRAL_DESCRIPTOR, referralDescriptor);
-        arguments.putString(BundleKeys.REFERRAL_CONTEXT, referralContext);
+        arguments.putString(BundleKeys.REFERRAL_CONTEXT, source.name());
         dialogFragment.setArguments(arguments);
         return dialogFragment;
     }
@@ -59,11 +65,22 @@ public class ReferralDialogFragment extends BaseDialogFragment
                 .getSerializable(REFERRAL_DESCRIPTOR);
         mReferralChannels = mReferralDescriptor
                 .getReferralChannelsForSource(ReferralDescriptor.SOURCE_HIGH_RATING_MODAL);
-        mReferralContext = getArguments().getString(BundleKeys.REFERRAL_CONTEXT);
+        final String sourceString = getArguments().getString(BundleKeys.REFERRAL_CONTEXT);
+        try
+        {
+            mSource = ReferralsManager.Source.valueOf(sourceString);
+        }
+        catch (IllegalArgumentException | NullPointerException ignored)
+        {
+        }
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.dialog_referral, container, true);
@@ -135,7 +152,8 @@ public class ReferralDialogFragment extends BaseDialogFragment
                 null
         );
         mSubtitle.setText(getString(R.string.referral_dialog_subtitle_formatted,
-                formattedReceiverCouponAmount, formattedSenderCreditAmount));
+                                    formattedReceiverCouponAmount, formattedSenderCreditAmount
+        ));
     }
 
 
@@ -157,17 +175,33 @@ public class ReferralDialogFragment extends BaseDialogFragment
 
     private void sendShareButtonTappedLog(final String guid, final String referralMedium)
     {
-        if (mReferralDescriptor != null)
+        if (mReferralDescriptor != null && mSource != null)
         {
             String couponCode = StringUtils.replaceWithEmptyIfNull(
                     mReferralDescriptor.getCouponCode());
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
 
-            mBus.post(new LogEvent.AddLogEvent(
-                    new ShareModalLog.ShareButtonTappedLog(
-                            mReferralContext, referralMedium, identifier,
-                            couponCode, mReferralDescriptor.getSenderCreditAmount(),
-                            mReferralDescriptor.getReceiverCouponAmount())));
+            switch (mSource)
+            {
+                case POST_BOOKING:
+                    mBus.post(new LogEvent.AddLogEvent(
+                            new ShareModalLog.PostBookingShareButtonTappedLog(
+                                    referralMedium, identifier,
+                                    couponCode, mReferralDescriptor.getSenderCreditAmount(),
+                                    mReferralDescriptor.getReceiverCouponAmount()
+                            )));
+                    break;
+                case POST_RATING:
+                    mBus.post(new LogEvent.AddLogEvent(
+                            new ShareModalLog.PostRatingShareButtonTappedLog(
+                                    referralMedium, identifier,
+                                    couponCode, mReferralDescriptor.getSenderCreditAmount(),
+                                    mReferralDescriptor.getReceiverCouponAmount()
+                            )));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

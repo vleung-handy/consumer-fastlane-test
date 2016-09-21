@@ -1,7 +1,10 @@
 package com.handybook.handybook.module.referral.event;
 
+import android.support.annotation.NonNull;
+
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 
@@ -10,12 +13,12 @@ public abstract class ReferralsEvent
     public static class RequestPrepareReferrals extends HandyEvent.RequestEvent
     {
         private boolean mIsForDialog;
-        private String mEventContext;
+        private ReferralsManager.Source mSource;
 
-        public RequestPrepareReferrals(final boolean isForDialog, final String eventContext)
+        public RequestPrepareReferrals(final boolean isForDialog, @NonNull final ReferralsManager.Source source)
         {
             mIsForDialog = isForDialog;
-            mEventContext = eventContext;
+            mSource = source;
         }
 
         public boolean isForDialog()
@@ -23,9 +26,9 @@ public abstract class ReferralsEvent
             return mIsForDialog;
         }
 
-        public String getEventContext()
+        public ReferralsManager.Source getSource()
         {
-            return mEventContext;
+            return mSource;
         }
     }
 
@@ -34,15 +37,15 @@ public abstract class ReferralsEvent
     {
         private final ReferralResponse mReferralResponse;
         private boolean mIsForDialog;
-        private String mEventContext;
+        private ReferralsManager.Source mSource;
 
         public ReceivePrepareReferralsSuccess(final ReferralResponse referralResponse,
                                               final boolean isForDialog,
-                                              final String eventContext)
+                                              @NonNull final ReferralsManager.Source source)
         {
             mReferralResponse = referralResponse;
             mIsForDialog = isForDialog;
-            mEventContext = eventContext;
+            mSource = source;
         }
 
         public ReferralResponse getReferralResponse()
@@ -55,9 +58,9 @@ public abstract class ReferralsEvent
             return mIsForDialog;
         }
 
-        public String getEventContext()
+        public ReferralsManager.Source getSource()
         {
-            return mEventContext;
+            return mSource;
         }
     }
 

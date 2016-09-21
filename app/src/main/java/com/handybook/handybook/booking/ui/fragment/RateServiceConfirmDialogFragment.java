@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.LimitedEditText;
 import com.handybook.handybook.util.Utils;
@@ -222,7 +222,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
         super.dismiss();
         mBus.post(new ReferralsEvent.RequestPrepareReferrals(
                 true,
-                ShareModalLog.EVENT_CONTEXT_POST_RATING
+                ReferralsManager.Source.POST_RATING
         ));
     }
 }

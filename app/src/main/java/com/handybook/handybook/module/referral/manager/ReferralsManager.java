@@ -11,6 +11,11 @@ import javax.inject.Inject;
 
 public class ReferralsManager
 {
+    public enum Source
+    {
+        POST_BOOKING, POST_RATING, REFERRAL_PAGE
+    }
+
     private final Bus mBus;
     private final DataManager mDataManager;
 
@@ -31,7 +36,7 @@ public class ReferralsManager
             public void onSuccess(final ReferralResponse response)
             {
                 mBus.post(new ReferralsEvent.ReceivePrepareReferralsSuccess(
-                        response, event.isForDialog(), event.getEventContext()));
+                        response, event.isForDialog(), event.getSource()));
             }
 
             @Override
