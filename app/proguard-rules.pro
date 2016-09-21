@@ -154,3 +154,7 @@
     static ** CREATOR;
 }
 -keep class com.google.android.gms.ads.identifier.AdvertisingIdClient { public *; }
+
+
+# Mixpanel
+-dontwarn com.mixpanel.**
