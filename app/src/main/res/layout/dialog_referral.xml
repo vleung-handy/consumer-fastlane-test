@@ -33,7 +33,7 @@
                 android:layout_marginBottom="@dimen/default_margin_half"
                 android:layout_marginTop="@dimen/default_margin_3x"
                 android:gravity="center_horizontal"
-                android:text="@string/referral_title"
+                android:text="@string/referral_dialog_title"
                 />
 
             <TextView
