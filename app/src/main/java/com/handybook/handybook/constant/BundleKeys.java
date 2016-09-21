@@ -50,5 +50,5 @@ public class BundleKeys
     public static final String PRERATE_PRO_INFO = "prerate_pro_info";
 
     public static final String IS_FROM_BOOKING_FLOW = "is_from_booking_flow";
-    public static final String REFERRAL_CONTEXT = "referral_context";
+    public static final String REFERRAL_PAGE_SOURCE = "referral_page_source";
 }

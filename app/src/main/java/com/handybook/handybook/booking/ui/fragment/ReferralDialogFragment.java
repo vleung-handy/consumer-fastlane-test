@@ -52,7 +52,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
         final ReferralDialogFragment dialogFragment = new ReferralDialogFragment();
         final Bundle arguments = new Bundle();
         arguments.putSerializable(REFERRAL_DESCRIPTOR, referralDescriptor);
-        arguments.putSerializable(BundleKeys.REFERRAL_CONTEXT, source);
+        arguments.putSerializable(BundleKeys.REFERRAL_PAGE_SOURCE, source);
         dialogFragment.setArguments(arguments);
         return dialogFragment;
     }
@@ -66,7 +66,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
         mReferralChannels = mReferralDescriptor
                 .getReferralChannelsForSource(ReferralDescriptor.SOURCE_HIGH_RATING_MODAL);
         mSource = (ReferralsManager.Source) getArguments()
-                .getSerializable(BundleKeys.REFERRAL_CONTEXT);
+                .getSerializable(BundleKeys.REFERRAL_PAGE_SOURCE);
     }
 
     @Override
