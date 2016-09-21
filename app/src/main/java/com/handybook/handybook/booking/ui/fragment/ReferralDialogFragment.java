@@ -52,7 +52,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
         final ReferralDialogFragment dialogFragment = new ReferralDialogFragment();
         final Bundle arguments = new Bundle();
         arguments.putSerializable(REFERRAL_DESCRIPTOR, referralDescriptor);
-        arguments.putString(BundleKeys.REFERRAL_CONTEXT, source.name());
+        arguments.putSerializable(BundleKeys.REFERRAL_CONTEXT, source);
         dialogFragment.setArguments(arguments);
         return dialogFragment;
     }
@@ -65,14 +65,8 @@ public class ReferralDialogFragment extends BaseDialogFragment
                 .getSerializable(REFERRAL_DESCRIPTOR);
         mReferralChannels = mReferralDescriptor
                 .getReferralChannelsForSource(ReferralDescriptor.SOURCE_HIGH_RATING_MODAL);
-        final String sourceString = getArguments().getString(BundleKeys.REFERRAL_CONTEXT);
-        try
-        {
-            mSource = ReferralsManager.Source.valueOf(sourceString);
-        }
-        catch (IllegalArgumentException | NullPointerException ignored)
-        {
-        }
+        mSource = (ReferralsManager.Source) getArguments()
+                .getSerializable(BundleKeys.REFERRAL_CONTEXT);
     }
 
     @Override
