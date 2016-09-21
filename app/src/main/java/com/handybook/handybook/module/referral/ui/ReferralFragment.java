@@ -107,8 +107,10 @@ public class ReferralFragment extends InjectedFragment
     {
         showUiBlockers();
         mReferralContent.setVisibility(View.GONE);
-        bus.post(new ReferralsEvent.RequestPrepareReferrals(false,
-                                                            ReferralsManager.Source.REFERRAL_PAGE));
+        bus.post(new ReferralsEvent.RequestPrepareReferrals(
+                false,
+                ReferralsManager.Source.REFERRAL_PAGE
+        ));
     }
 
     @Override
@@ -189,7 +191,8 @@ public class ReferralFragment extends InjectedFragment
         mShareUrl.setText(sharingLink);
         mTitle.setText(getString(R.string.referral_title));
         mSubtitle.setText(getString(R.string.referral_subtitle_formatted,
-                formattedSenderCreditAmount, formattedReceiverCouponAmount));
+                                    formattedSenderCreditAmount, formattedReceiverCouponAmount
+        ));
     }
 
     @Subscribe
@@ -310,9 +313,12 @@ public class ReferralFragment extends InjectedFragment
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
 
             mBus.post(new LogEvent.AddLogEvent(
-                    new NativeShareLog.NativeShareButtonTapped(referralMedium, identifier,
-                            couponCode, mReferralDescriptor.getSenderCreditAmount(),
-                            mReferralDescriptor.getReceiverCouponAmount())));
+                    new NativeShareLog.NativeShareButtonTapped(referralMedium,
+                                                               identifier,
+                                                               couponCode,
+                                                               mReferralDescriptor.getSenderCreditAmount(),
+                                                               mReferralDescriptor.getReceiverCouponAmount()
+                    )));
         }
     }
 }

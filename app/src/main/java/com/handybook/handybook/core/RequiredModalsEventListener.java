@@ -8,6 +8,7 @@ import com.squareup.otto.Subscribe;
 public class RequiredModalsEventListener //TODO: rename + move to better package
 {
     private RequiredModalsLauncher mRequiredModalsLauncher;
+
     public RequiredModalsEventListener(RequiredModalsLauncher requiredModalsLauncher)
     {
         mRequiredModalsLauncher = requiredModalsLauncher;
@@ -30,8 +31,10 @@ public class RequiredModalsEventListener //TODO: rename + move to better package
     {
         if (event.isForDialog())
         {
-            mRequiredModalsLauncher.showReferralDialog(event.getReferralResponse(),
-                                                       event.getSource());
+            mRequiredModalsLauncher.showReferralDialog(
+                    event.getReferralResponse(),
+                    event.getSource()
+            );
         }
     }
 

@@ -15,7 +15,10 @@ public abstract class ReferralsEvent
         private boolean mIsForDialog;
         private ReferralsManager.Source mSource;
 
-        public RequestPrepareReferrals(final boolean isForDialog, @NonNull final ReferralsManager.Source source)
+        public RequestPrepareReferrals(
+                final boolean isForDialog,
+                @NonNull final ReferralsManager.Source source
+        )
         {
             mIsForDialog = isForDialog;
             mSource = source;
@@ -39,9 +42,11 @@ public abstract class ReferralsEvent
         private boolean mIsForDialog;
         private ReferralsManager.Source mSource;
 
-        public ReceivePrepareReferralsSuccess(final ReferralResponse referralResponse,
-                                              final boolean isForDialog,
-                                              @NonNull final ReferralsManager.Source source)
+        public ReceivePrepareReferralsSuccess(
+                final ReferralResponse referralResponse,
+                final boolean isForDialog,
+                @NonNull final ReferralsManager.Source source
+        )
         {
             mReferralResponse = referralResponse;
             mIsForDialog = isForDialog;

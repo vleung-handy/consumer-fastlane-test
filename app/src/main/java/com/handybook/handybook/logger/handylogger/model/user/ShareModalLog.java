@@ -45,9 +45,11 @@ public class ShareModalLog extends EventLog
         )
         {
             super(EVENT_TYPE, EVENT_CONTEXT, referralMedium, referralIdentifier, couponCode,
-                    senderOfferAmount, receiverOfferAmount);
+                  senderOfferAmount, receiverOfferAmount
+            );
         }
     }
+
 
     public static class PostRatingShareButtonTappedLog extends ShareModalLog
     {
@@ -63,7 +65,8 @@ public class ShareModalLog extends EventLog
         )
         {
             super(EVENT_TYPE, EVENT_CONTEXT, referralMedium, referralIdentifier, couponCode,
-                  senderOfferAmount, receiverOfferAmount);
+                  senderOfferAmount, receiverOfferAmount
+            );
         }
     }
 }
