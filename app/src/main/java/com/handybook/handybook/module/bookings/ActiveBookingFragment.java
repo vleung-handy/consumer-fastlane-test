@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -49,18 +50,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * This fragment contains only the information regarding one active booking.
- * It holds the map, plots the location of both the provider and the destination.
- * It pings the server for updated provider location information periodically.
- * Also shows the provider's name, and allows calling/texting to the provider.
- *
- *
- * FIXME: JIA: figure out the location status stuff overlapping the google maps logo.
+ * This fragment contains only the information regarding one active booking. It holds the map, plots
+ * the location of both the provider and the destination. It pings the server for updated provider
+ * location information periodically. Also shows the provider's name, and allows calling/texting to
+ * the provider.
  */
 public class ActiveBookingFragment extends InjectedFragment implements OnMapReadyCallback
 {
     private static final String KEY_BOOKING = "booking";
     private static final int GEO_STATUS_PING_INTERVAL_MS = 10000;  //ping for geo status every 10 seconds
+    private static final int PRO_LOCATION_ACTIVE_THRESHOLD_MS = 300000;  //5 minutes. Past this means stale
     private static final float MAP_CLOSEUP_ZOOM_LEVEL = 16;
     private static final float ANCHOR_MID_POINT = 0.5f;
 
@@ -117,12 +116,18 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     private GoogleMap mGoogleMap;
     private Booking mBooking;
+    private Marker mBookingLocationMarker;
     private Marker mProviderLocationMarker;
     private String mProviderName;
-    private LatLng mProviderLatLng;
-    private LatLng mAddressLatLng;
     private boolean mFirstZoom = true;
     private Booking.LocationStatus mLocationStatus;
+    private BitmapDescriptor mHouseIcon;
+    private BitmapDescriptor mCompletedIcon;
+    private BitmapDescriptor mCleanerArrivedIcon;
+    private BitmapDescriptor mOtherServiceArrivedIcon;
+    private BitmapDescriptor mActiveProIcon;
+    private BitmapDescriptor mInactiveProIcon;
+
     private Handler mHandler;
     private Runnable mRunnable = new Runnable()
     {
@@ -147,7 +152,11 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState
+    )
     {
         View view = inflater.inflate(R.layout.fragment_active_booking, container, false);
         ButterKnife.bind(this, view);
@@ -190,7 +199,9 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
      */
     private void toggleProviderSection()
     {
-        if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider().getFullName().trim()))
+        if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider()
+                                                                         .getFullName()
+                                                                         .trim()))
         {
             mProfileContainer.setVisibility(View.VISIBLE);
             mProfileContainerDivider.setVisibility(View.VISIBLE);
@@ -271,19 +282,33 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
     }
 
+    /**
+     * Initialize the different map icons we are going to use for swapping when location status
+     * changes
+     */
+    private void initializeIcons()
+    {
+        mHouseIcon = BitmapDescriptorFactory.fromResource(R.drawable.img_house_pin);
+        mCompletedIcon = BitmapDescriptorFactory.fromResource(R.drawable.img_completed_pin);
+        mActiveProIcon = BitmapDescriptorFactory.fromResource(R.drawable.img_pro_active_pin);
+        mInactiveProIcon = BitmapDescriptorFactory.fromResource(R.drawable.img_pro_inactive_pin);
+        mCleanerArrivedIcon = BitmapDescriptorFactory.fromResource(R.drawable.img_cleaner_pin);
+        mOtherServiceArrivedIcon = BitmapDescriptorFactory.fromResource(R.drawable.img_handyman_pin);
+    }
 
     /**
-     * This is tricky. We have to handle the display of both the pro location and the booking location
-     *
-     * If there are no booking location, show error view
-     * If prolocation should be shown, but there isn't any, then show error view
-     * if prolocation should not be shown, then don't attempt to show pro location
-     *
+     * This is tricky. We have to handle the display of both the pro location and the booking
+     * location
+     * <p/>
+     * If there are no booking location, show error view If prolocation should be shown, but there
+     * isn't any, then show error view if prolocation should not be shown, then don't attempt to
+     * show pro location
+     * <p/>
      * if there are booking location and prolocation should be shown, and there is pro location,
      * then plot all parties on the map.
-     *
-     * Whenever we plot provider location, we also want to setup periodic update of the pro's location
-     *
+     * <p/>
+     * Whenever we plot provider location, we also want to setup periodic update of the pro's
+     * location
      */
     private void updateMap()
     {
@@ -300,15 +325,22 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             }
             else
             {
-                mAddressLatLng = new LatLng(
+                if (mHouseIcon == null)
+                {
+                    initializeIcons();
+                }
+                LatLng addressLatLng = new LatLng(
                         Double.valueOf(mLocationStatus.getBookingLocation().getLatitude()),
                         Double.valueOf(mLocationStatus.getBookingLocation().getLongitude())
                 );
 
-                mGoogleMap.addMarker(new MarkerOptions()
-                        .position(mAddressLatLng)
-                        .anchor(ANCHOR_MID_POINT, ANCHOR_MID_POINT)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_house_pin)));
+                mBookingLocationMarker = mGoogleMap.addMarker(new MarkerOptions()
+                                                                      .position(addressLatLng)
+                                                                      .anchor(
+                                                                              ANCHOR_MID_POINT,
+                                                                              ANCHOR_MID_POINT
+                                                                      )
+                                                                      .icon(mHouseIcon));
             }
 
             //we first check whether the provider location should even be shown
@@ -322,25 +354,25 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                 }
                 else
                 {
-                    mProviderLatLng = new LatLng(
+                    LatLng providerLatLng = new LatLng(
                             Double.valueOf(mLocationStatus.getProviderLocation().getLatitude()),
                             Double.valueOf(mLocationStatus.getProviderLocation().getLongitude())
                     );
 
+                    if (mActiveProIcon == null)
+                    {
+                        initializeIcons();
+                    }
+
                     mProviderLocationMarker = mGoogleMap.addMarker(
                             new MarkerOptions()
-                                    .position(mProviderLatLng)
+                                    .position(providerLatLng)
                                     .title(mProviderName)
                                     .anchor(ANCHOR_MID_POINT, ANCHOR_MID_POINT)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_pro_active_pin))
+                                    .icon(mActiveProIcon)
                     );
 
-                    if (mHandler == null)
-                    {
-                        //start the handler to ping for location change every time
-                        mHandler = new Handler();
-                        periodicUpdate();
-                    }
+                    startPeriodicUpdate();
                     updateLocationStatus(mBooking.getActiveBookingLocationStatus());
                 }
             }
@@ -351,8 +383,21 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
     }
 
+    private void startPeriodicUpdate()
+    {
+        //only do this if the handler is null. If it's not null, then there is probably a periodic update already running
+        if (mHandler == null)
+        {
+            //start the handler to ping for location change every time
+            mHandler = new Handler();
+            periodicUpdate();
+        }
+
+    }
+
     /**
-     * Updates the UI with the "milestone" information
+     * Updates the UI with the "milestone" information. It will show the booking status {starting
+     * soon, pro's on their way, completed, etc.}
      *
      * @param locationStatus
      */
@@ -367,7 +412,6 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         Date timeStamp = locationStatus.getProviderLocation().getTimeStamp();
         String title = locationStatus.getMilestone() != null ? locationStatus.getMilestone()
                                                                              .getTitle() : null;
-
 
         //if there are no statuses, and no time, then hide the entire container.
         if (TextUtils.isEmpty(title) && timeStamp == null)
@@ -420,30 +464,109 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     private void requestLocationStatus()
     {
-        dataManager.getLocationStatus(mBooking.getId(), new DataManager.Callback<Booking.LocationStatus>()
-        {
-            @Override
-            public void onSuccess(final Booking.LocationStatus response)
-            {
-
-                if (response != null && !isBadLocation(response.getProviderLocation()) && isAttached())
+        dataManager.getLocationStatus(
+                mBooking.getId(),
+                new DataManager.Callback<Booking.LocationStatus>()
                 {
-                    double lat = Double.parseDouble(response.getProviderLocation().getLatitude());
-                    double lng = Double.parseDouble(response.getProviderLocation().getLongitude());
-                    mProviderLatLng = new LatLng(lat, lng);
-                    adjustMapPositioning();
-                    updateLocationStatus(response);
-                }
-            }
+                    @Override
+                    public void onSuccess(final Booking.LocationStatus response)
+                    {
+                        mLocationStatus = response;
+                        if (response != null && !isBadLocation(response.getProviderLocation()) && isAttached())
+                        {
+                            adjustMapPositioning();
+                            updateLocationStatus(response);
+                        }
+                    }
 
-            @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
-                //don't worry about it.
-            }
-        });
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        //don't worry about it.
+                    }
+                }
+        );
     }
 
+    /**
+     * This will update the booking and/or provider location icons based on the milestone states {on
+     * my way, arrived, completed, etc.}
+     */
+    private void updateLocationIcons()
+    {
+        if (mLocationStatus.getMilestone() != null)
+        {
+            Booking.MilestoneState state = mLocationStatus.getMilestone().getState();
+            switch (state)
+            {
+                //these are states that doesn't necessarily impact the state of the markers, so we exit.
+                case UNAVAILABLE:
+                case BEHIND_SCHEDULE:
+                case PRO_LATE:
+                case PRO_NO_SHOW:
+                case PRO_ARRIVED_LATE:
+                    mBookingLocationMarker.setIcon(mHouseIcon);
+                    showAppropriateProviderMarker();
+                    break;
+                case STARTS_SOON:
+                    mProviderLocationMarker.setVisible(false);
+                    mBookingLocationMarker.setIcon(mHouseIcon);
+                    break;
+                case ARRIVED:
+                    mProviderLocationMarker.setVisible(false);
+                    if (mBooking.getServiceMachineName().contains(Booking.SERVICE_CLEANING))
+                    {
+                        // this is a cleaning
+                        mBookingLocationMarker.setIcon(mCleanerArrivedIcon);
+                    }
+                    else
+                    {
+                        mBookingLocationMarker.setIcon(mOtherServiceArrivedIcon);
+                    }
+                    break;
+                case COMPLETED:
+                    mProviderLocationMarker.setVisible(false);
+                    mBookingLocationMarker.setIcon(mCompletedIcon);
+                    break;
+                case ON_MY_WAY:
+                    mBookingLocationMarker.setIcon(mHouseIcon);
+                    showAppropriateProviderMarker();
+                    break;
+            }
+        }
+    }
+
+    /**
+     * This switches between the active and inactive provider markers, depending on the ellapsed
+     * time.
+     */
+    private void showAppropriateProviderMarker()
+    {
+
+        if (!isBadLocation(mLocationStatus.getProviderLocation()))
+        {
+            mProviderLocationMarker.setVisible(true);
+            Date timeStamp = mLocationStatus.getProviderLocation().getTimeStamp();
+            if (timeStamp != null &&
+                    System.currentTimeMillis() - timeStamp.getTime() < PRO_LOCATION_ACTIVE_THRESHOLD_MS)
+            {
+                //not yet stale
+                mProviderLocationMarker.setIcon(mActiveProIcon);
+            }
+            else
+            {
+                mProviderLocationMarker.setIcon(mInactiveProIcon);
+            }
+        }
+        else
+        {
+            mProviderLocationMarker.setVisible(false);
+        }
+    }
+
+    /**
+     * This is where all the positioning of the marker is done.
+     */
     private void adjustMapPositioning()
     {
         if (mGoogleMap == null || !isAttached())
@@ -451,23 +574,37 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             return;
         }
 
+        updateLocationIcons();
+
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        if (mAddressLatLng != null)
+        LatLng addressLatLng = null;
+        if (!isBadLocation(mLocationStatus.getBookingLocation()))
         {
-            builder.include(mAddressLatLng);
+            addressLatLng = new LatLng(
+                    Double.valueOf(mLocationStatus.getBookingLocation().getLatitude()),
+                    Double.valueOf(mLocationStatus.getBookingLocation().getLongitude())
+            );
+
+            builder.include(addressLatLng);
         }
 
-        if (mProviderLatLng != null)
+        LatLng providerLatLng = null;
+        if (!isBadLocation(mLocationStatus.getProviderLocation()))
         {
-            builder.include(mProviderLatLng);
-            mProviderLocationMarker.setPosition(mProviderLatLng);
+            providerLatLng = new LatLng(
+                    Double.valueOf(mLocationStatus.getProviderLocation().getLatitude()),
+                    Double.valueOf(mLocationStatus.getProviderLocation().getLongitude())
+            );
+
+            builder.include(providerLatLng);
+            mProviderLocationMarker.setPosition(providerLatLng);
         }
 
         if (mFirstZoom)
         {
             mFirstZoom = false;
-            if (mAddressLatLng != null && mProviderLatLng != null)
+            if (addressLatLng != null && providerLatLng != null)
             {
                 //we bound the map view by the two locations if we actually have 2 locations
                 LatLngBounds bounds = builder.build();
@@ -477,16 +614,27 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                 int padding = getResources().getDimensionPixelOffset(R.dimen.default_padding_4x);
 
                 //first zoom to enclose all the markers.
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(
+                        bounds,
+                        width,
+                        height,
+                        padding
+                );
                 mGoogleMap.moveCamera(cu);
             }
-            else if (mAddressLatLng != null)
+            else if (addressLatLng != null)
             {
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mAddressLatLng, MAP_CLOSEUP_ZOOM_LEVEL));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                        addressLatLng,
+                        MAP_CLOSEUP_ZOOM_LEVEL
+                ));
             }
-            else if (mProviderLatLng != null)
+            else if (providerLatLng != null)
             {
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mProviderLatLng, MAP_CLOSEUP_ZOOM_LEVEL));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                        providerLatLng,
+                        MAP_CLOSEUP_ZOOM_LEVEL
+                ));
             }
         }
     }
@@ -511,13 +659,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         if (mGoogleMap == null)
         {
             mGoogleMap = googleMap;
-
-            if (this.getActivity() != null)
-            {
-                // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
-                MapsInitializer.initialize(this.getActivity());
-                updateMap();
-            }
+            initializeMap();
         }
     }
 
@@ -525,9 +667,12 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     public void onAttach(final Context context)
     {
         super.onAttach(context);
+        initializeMap();
+    }
 
-        if (mGoogleMap != null)
-        {
+    private void initializeMap()
+    {
+        if (mGoogleMap != null && getActivity() != null && isMapBeingShown()) {
             // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
             MapsInitializer.initialize(this.getActivity());
             updateMap();
@@ -591,6 +736,13 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         if (isMapBeingShown())
         {
             mMapView.onResume();
+
+            if (mGoogleMap != null)
+            {
+                //resume the periodic update of the location status
+                startPeriodicUpdate();
+            }
+
         }
         super.onResume();
     }
