@@ -3,7 +3,8 @@
 
     <item android:drawable="@color/white"/>
 
-    <item>
+    <!-- Padding of 50dp on bottom is set to give the illusion the logo is centered for devices that have on screen navigation-->
+    <item android:bottom="50dp">
         <bitmap
             android:gravity="center"
             android:src="@drawable/ic_logo_onboard"
