@@ -41,6 +41,7 @@ import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
@@ -74,8 +75,10 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private ArrayList<Service> mServices;
 
-    public static BookingDetailFragment newInstance(final Booking booking,
-                                                    final boolean isFromBookingFlow)
+    public static BookingDetailFragment newInstance(
+            final Booking booking,
+            final boolean isFromBookingFlow
+    )
     {
         final BookingDetailFragment fragment = new BookingDetailFragment();
         final Bundle args = new Bundle();
@@ -85,8 +88,10 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         return fragment;
     }
 
-    public static BookingDetailFragment newInstance(final String bookingId,
-                                                    final boolean isFromBookingFlow)
+    public static BookingDetailFragment newInstance(
+            final String bookingId,
+            final boolean isFromBookingFlow
+    )
     {
         final BookingDetailFragment fragment = new BookingDetailFragment();
         final Bundle args = new Bundle();
@@ -150,7 +155,10 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
         if (mIsFromBookingFlow)
         {
-            bus.post(new ReferralsEvent.RequestPrepareReferrals(true));
+            bus.post(new ReferralsEvent.RequestPrepareReferrals(
+                    true,
+                    ReferralsManager.Source.POST_BOOKING
+            ));
         }
     }
 
@@ -243,16 +251,27 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             @Override
             public void onClick(final View v)
             {
-                dataManager.getBookingMilestones(mBooking.getId(), new DataManager.Callback<JobStatus>()
+                dataManager.getBookingMilestones(
+                        mBooking.getId(),
+                        new DataManager.Callback<JobStatus>()
                         {
                             @Override
                             public void onSuccess(JobStatus status)
                             {
-                                Intent intent = new Intent(getContext(), ReportIssueActivity.class);
-                                intent.putExtra(BundleKeys.BOOKING, mBooking);
-                                intent.putExtra(BundleKeys.PRO_JOB_STATUS, status);
+                                Intent intent = new Intent(
+                                        getContext(),
+                                        ReportIssueActivity.class
+                                );
+                                intent.putExtra(
+                                        BundleKeys.BOOKING,
+                                        mBooking
+                                );
+                                intent.putExtra(
+                                        BundleKeys.PRO_JOB_STATUS,
+                                        status
+                                );
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
-                                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }
 

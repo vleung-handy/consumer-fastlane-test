@@ -16,6 +16,7 @@ import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.LimitedEditText;
 import com.handybook.handybook.util.Utils;
@@ -50,7 +51,10 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     @Bind(R.id.submit_button_layout)
     View submitButtonLayout;
 
-    public static RateServiceConfirmDialogFragment newInstance(final int bookingId, final int rating)
+    public static RateServiceConfirmDialogFragment newInstance(
+            final int bookingId,
+            final int rating
+    )
     {
         final RateServiceConfirmDialogFragment rateServiceConfirmDialogFragment
                 = new RateServiceConfirmDialogFragment();
@@ -141,20 +145,24 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
         if (rating >= 4)
         {
             serviceIconImage.setImageDrawable(
-                    ContextCompat.getDrawable(getContext(),
-                            R.drawable.ic_heart));
+                    ContextCompat.getDrawable(
+                            getContext(),
+                            R.drawable.ic_heart
+                    ));
 
             serviceIcon.setColorFilter(
                     ContextCompat.getColor(getContext(), R.color.handy_love),
-                    PorterDuff.Mode.SRC_ATOP);
+                    PorterDuff.Mode.SRC_ATOP
+            );
 
             titleText.setText(getResources().getString(R.string.glad_you_enjoy));
 
             if (rating == 4)
             {
                 titleText.setPadding(titleText.getPaddingLeft(), titleText.getPaddingTop(),
-                        titleText.getPaddingRight(), titleText.getPaddingBottom()
-                                + Utils.toDP(32, getActivity()));
+                                     titleText.getPaddingRight(), titleText.getPaddingBottom()
+                                             + Utils.toDP(32, getActivity())
+                );
 
                 messageText.setVisibility(View.GONE);
                 submitButtonLayout.setVisibility(View.GONE);
@@ -162,7 +170,10 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
             else
             {
                 messageText.setText(getResources().getString(R.string.good_vibes));
-                messageText.setTextColor(ContextCompat.getColor(getContext(), R.color.handy_text_black));
+                messageText.setTextColor(ContextCompat.getColor(
+                        getContext(),
+                        R.color.handy_text_black
+                ));
                 feedbackText.setMaxCharacters(140);
                 feedbackText.setMaxLines(3);
                 feedbackText.setVisibility(View.VISIBLE);
@@ -191,25 +202,28 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
                 submitButton.setText(null);
 
                 dataManager.submitProRatingDetails(booking, positiveFeedback,
-                        new DataManager.Callback<Void>()
-                        {
-                            @Override
-                            public void onSuccess(final Void response)
-                            {
-                                if (!allowCallbacks) { return; }
-                                dismiss();
-                            }
+                                                   new DataManager.Callback<Void>()
+                                                   {
+                                                       @Override
+                                                       public void onSuccess(final Void response)
+                                                       {
+                                                           if (!allowCallbacks) { return; }
+                                                           dismiss();
+                                                       }
 
-                            @Override
-                            public void onError(DataManager.DataManagerError error)
-                            {
-                                if (!allowCallbacks) { return; }
-                                submitProgress.setVisibility(View.GONE);
-                                submitButton.setText(R.string.send);
-                                enableInputs();
-                                dataManagerErrorHandler.handleError(getActivity(), error);
-                            }
-                        });
+                                                       @Override
+                                                       public void onError(DataManager.DataManagerError error)
+                                                       {
+                                                           if (!allowCallbacks) { return; }
+                                                           submitProgress.setVisibility(View.GONE);
+                                                           submitButton.setText(R.string.send);
+                                                           enableInputs();
+                                                           dataManagerErrorHandler.handleError(getActivity(),
+                                                                                               error
+                                                           );
+                                                       }
+                                                   }
+                );
             }
             else { dismiss(); }
         }
@@ -219,6 +233,9 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     public void dismiss()
     {
         super.dismiss();
-        mBus.post(new ReferralsEvent.RequestPrepareReferrals(true));
+        mBus.post(new ReferralsEvent.RequestPrepareReferrals(
+                true,
+                ReferralsManager.Source.POST_RATING
+        ));
     }
 }

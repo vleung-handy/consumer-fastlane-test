@@ -38,6 +38,7 @@ import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
 import com.handybook.handybook.util.FragmentUtils;
 import com.squareup.otto.Bus;
@@ -159,19 +160,30 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         {
             SplashPromoDialogFragment splashPromoDialogFragment =
                     SplashPromoDialogFragment.newInstance(splashPromo);
-            FragmentUtils.safeLaunchDialogFragment(splashPromoDialogFragment, this, SplashPromoDialogFragment.class.getSimpleName());
+            FragmentUtils.safeLaunchDialogFragment(
+                    splashPromoDialogFragment,
+                    this,
+                    SplashPromoDialogFragment.class.getSimpleName()
+            );
         }
     }
 
     @Override
-    public void showReferralDialog(final ReferralResponse referralResponse)
+    public void showReferralDialog(
+            final ReferralResponse referralResponse,
+            final ReferralsManager.Source source
+    )
     {
         if (getSupportFragmentManager().findFragmentByTag(ReferralDialogFragment.TAG) == null)
         {
             final ReferralDialogFragment dialogFragment =
-                    ReferralDialogFragment.newInstance(referralResponse.getReferralDescriptor());
+                    ReferralDialogFragment.newInstance(
+                            referralResponse.getReferralDescriptor(),
+                            source
+                    );
             FragmentUtils.safeLaunchDialogFragment(dialogFragment, this,
-                    ReferralDialogFragment.TAG);
+                                                   ReferralDialogFragment.TAG
+            );
         }
     }
 
@@ -247,12 +259,19 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 user.getDefaultTipAmounts();
 
         RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
-                .newInstance(bookingId, proName, -1, localizedMonetaryAmounts, user.getCurrencyChar());
+                .newInstance(
+                        bookingId,
+                        proName,
+                        -1,
+                        localizedMonetaryAmounts,
+                        user.getCurrencyChar()
+                );
 
         FragmentUtils.safeLaunchDialogFragment(
                 rateServiceDialogFragment,
                 BaseActivity.this,
-                RateServiceDialogFragment.class.getSimpleName());
+                RateServiceDialogFragment.class.getSimpleName()
+        );
     }
 
     private void showLaundryInfoModal(final int bookingId)
@@ -270,7 +289,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 FragmentUtils.safeLaunchDialogFragment(
                         LaundryInfoDialogFragment.newInstance(booking),
                         BaseActivity.this,
-                        LaundryInfoDialogFragment.class.getSimpleName());
+                        LaundryInfoDialogFragment.class.getSimpleName()
+                );
 
             }
 
@@ -283,7 +303,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
 
     private void showLaundryDropOffModal(final int bookingId)
     {
-        mDataManager.getLaundryScheduleInfo(bookingId,
+        mDataManager.getLaundryScheduleInfo(
+                bookingId,
                 new DataManager.Callback<LaundryDropInfo>()
                 {
                     @Override
@@ -297,14 +318,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                         FragmentUtils.safeLaunchDialogFragment(
                                 LaundryDropOffDialogFragment.newInstance(bookingId, info),
                                 BaseActivity.this,
-                                LaundryDropOffDialogFragment.class.getSimpleName());
+                                LaundryDropOffDialogFragment.class.getSimpleName()
+                        );
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
                     }
-                });
+                }
+        );
     }
 
     @Override

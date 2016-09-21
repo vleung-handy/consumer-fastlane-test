@@ -23,6 +23,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
@@ -106,7 +107,10 @@ public class ReferralFragment extends InjectedFragment
     {
         showUiBlockers();
         mReferralContent.setVisibility(View.GONE);
-        bus.post(new ReferralsEvent.RequestPrepareReferrals(false));
+        bus.post(new ReferralsEvent.RequestPrepareReferrals(
+                false,
+                ReferralsManager.Source.REFERRAL_PAGE
+        ));
     }
 
     @Override
@@ -187,7 +191,8 @@ public class ReferralFragment extends InjectedFragment
         mShareUrl.setText(sharingLink);
         mTitle.setText(getString(R.string.referral_title));
         mSubtitle.setText(getString(R.string.referral_subtitle_formatted,
-                formattedSenderCreditAmount, formattedReceiverCouponAmount));
+                                    formattedSenderCreditAmount, formattedReceiverCouponAmount
+        ));
     }
 
     @Subscribe
@@ -308,9 +313,12 @@ public class ReferralFragment extends InjectedFragment
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
 
             mBus.post(new LogEvent.AddLogEvent(
-                    new NativeShareLog.NativeShareButtonTapped(referralMedium, identifier,
-                            couponCode, mReferralDescriptor.getSenderCreditAmount(),
-                            mReferralDescriptor.getReceiverCouponAmount())));
+                    new NativeShareLog.NativeShareButtonTapped(referralMedium,
+                                                               identifier,
+                                                               couponCode,
+                                                               mReferralDescriptor.getSenderCreditAmount(),
+                                                               mReferralDescriptor.getReceiverCouponAmount()
+                    )));
         }
     }
 }

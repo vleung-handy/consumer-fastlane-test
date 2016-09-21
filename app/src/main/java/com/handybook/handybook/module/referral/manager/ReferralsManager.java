@@ -11,6 +11,12 @@ import javax.inject.Inject;
 
 public class ReferralsManager
 {
+    public enum Source
+    {
+        POST_BOOKING, POST_RATING, REFERRAL_PAGE
+    }
+
+
     private final Bus mBus;
     private final DataManager mDataManager;
 
@@ -30,7 +36,8 @@ public class ReferralsManager
             @Override
             public void onSuccess(final ReferralResponse response)
             {
-                mBus.post(new ReferralsEvent.ReceivePrepareReferralsSuccess(response, event.isForDialog()));
+                mBus.post(new ReferralsEvent.ReceivePrepareReferralsSuccess(
+                        response, event.isForDialog(), event.getSource()));
             }
 
             @Override
@@ -61,7 +68,8 @@ public class ReferralsManager
     @Subscribe
     public void onRequestRedemptionDetails(final ReferralsEvent.RequestRedemptionDetails event)
     {
-        mDataManager.requestRedemptionDetails(event.getGuid(),
+        mDataManager.requestRedemptionDetails(
+                event.getGuid(),
                 new DataManager.Callback<RedemptionDetailsResponse>()
                 {
                     @Override
@@ -76,6 +84,7 @@ public class ReferralsManager
                     {
                         mBus.post(new ReferralsEvent.ReceiveRedemptionDetailsError(error));
                     }
-                });
+                }
+        );
     }
 }
