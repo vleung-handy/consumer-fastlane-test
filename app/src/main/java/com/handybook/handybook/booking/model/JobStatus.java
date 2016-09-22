@@ -39,8 +39,6 @@ public class JobStatus implements Serializable
 
     public static class Milestone implements Serializable
     {
-        private static final String TAG = "Milestone";
-
         public static final String NORMAL = "normal";
         public static final String WARNING = "warning";
         public static final String ERROR = "error";
@@ -103,16 +101,12 @@ public class JobStatus implements Serializable
             switch (mStatus)
             {
                 case Milestone.NORMAL:
-                    Log.d(TAG, "getStatusDrawableId: circle green drawable");
                     return isFill ? R.drawable.circle_green : R.drawable.circle_green_stroke;
                 case Milestone.WARNING:
-                    Log.d(TAG, "getStatusDrawableId: circle yellow drawable");
                     return isFill ? R.drawable.circle_yellow : R.drawable.circle_yellow_stroke;
                 case Milestone.ERROR:
-                    Log.d(TAG, "getStatusDrawableId: circle red drawable");
                     return isFill ? R.drawable.circle_red : R.drawable.circle_red_stroke;
                 case Milestone.INVALID:
-                    Log.d(TAG, "getStatusDrawableId: circle grey drawable");
                     return isFill ? R.drawable.circle_grey : R.drawable.circle_grey_stroke;
                 default:
                     return R.drawable.circle_grey_stroke_light;
