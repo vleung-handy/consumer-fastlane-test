@@ -65,10 +65,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     private static final float MAP_CLOSEUP_ZOOM_LEVEL = 16;
     private static final float ANCHOR_MID_POINT = 0.5f;
 
-    @Bind(R.id.map_divider)
+    @Bind(R.id.active_booking_map_divider)
     View mMapDivider;
 
-    @Bind(R.id.text_provider_name)
+    @Bind(R.id.active_booking_provider_name)
     TextView mTextProviderName;
 
     @Bind(R.id.text_booking_title)
@@ -77,40 +77,40 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Bind(R.id.text_booking_subtitle)
     TextView mTextBookingSubtitle;
 
-    @Bind(R.id.profile_container)
+    @Bind(R.id.active_booking_profile_container)
     View mProfileContainer;
 
-    @Bind(R.id.profile_container_divider)
+    @Bind(R.id.active_booking_profile_container_divider)
     View mProfileContainerDivider;
 
-    @Bind(R.id.text_call)
+    @Bind(R.id.active_booking_call)
     TextView mTextCall;
 
-    @Bind(R.id.text_text)
+    @Bind(R.id.active_booking_text)
     TextView mTextText;
 
     @Bind(R.id.booking_item_container)
     View mBookingItemContainer;
 
-    @Bind(R.id.report_an_issue_container)
+    @Bind(R.id.active_booking_report_an_issue_container)
     View mReportIssueContainer;
 
-    @Bind(R.id.map_view)
+    @Bind(R.id.active_booking_map_view)
     MapView mMapView;
 
-    @Bind(R.id.transparent_image)
+    @Bind(R.id.active_booking_transparent_image)
     ImageView mTransparentImage;
 
-    @Bind(R.id.text_pro_location_time)
+    @Bind(R.id.active_booking_pro_location_time)
     TextView mTextLocationTime;
 
-    @Bind(R.id.text_milestone_status)
+    @Bind(R.id.active_booking_milestone_status)
     TextView mTextMilestoneStatus;
 
-    @Bind(R.id.map_place_holder)
+    @Bind(R.id.active_booking_map_place_holder)
     MapPlaceholderView mMapPlaceHolderView;
 
-    @Bind(R.id.missing_location_view)
+    @Bind(R.id.active_booking_missing_location_view)
     MissingLocationView mMissingLocationView;
 
     private GoogleMap mGoogleMap;
@@ -677,7 +677,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
     }
 
-    @OnClick(R.id.profile_container)
+    @OnClick(R.id.active_booking_profile_container)
     public void profileClicked()
     {
         gotoBookingDetails();
@@ -689,7 +689,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         gotoBookingDetails();
     }
 
-    @OnClick(R.id.text_call)
+    @OnClick(R.id.active_booking_call)
     public void callClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
@@ -697,7 +697,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         BookingUtil.callPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
     }
 
-    @OnClick(R.id.text_text)
+    @OnClick(R.id.active_booking_text)
     public void textClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
@@ -705,7 +705,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
     }
 
-    @OnClick(R.id.button_report_issue)
+    @OnClick(R.id.active_booking_report_issue)
     public void reportIssueClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.ReportIssueTappedLog(mBooking.getId())));
