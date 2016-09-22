@@ -1,7 +1,5 @@
 package com.handybook.handybook.test.booking;
 
-import android.support.test.espresso.contrib.DrawerActions;
-
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.test.LauncherActivityTestRule;
@@ -38,7 +36,7 @@ public class CancelBookingTest
         AppInteractionUtil.waitForServiceCategoriesPage();
 
         //Go to My Bookings
-        DrawerActions.openDrawer(R.id.drawer_layout);
+        AppInteractionUtil.openDrawer();
 
         //the "my bookings" nav seems to be added async
         ViewUtil.waitForTextVisible(R.string.my_bookings, ViewUtil.LONG_MAX_WAIT_TIME_MS);
