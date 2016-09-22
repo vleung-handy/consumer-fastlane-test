@@ -883,13 +883,15 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     @Override
                     public void onSuccess(final BookingCompleteTransaction trans)
                     {
-                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())));
+                        bus.post(new LogEvent.AddLogEvent(
+                                new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())
+                        ));
                         // Mixpanel to test where we lose our own events
                         try
                         {
                             JSONObject props = new JSONObject();
                             props.put("transaction_id", trans.getId());
-                            mixpanel.track("booking_completed", props);
+                            mixpanel.track("booking_made", props);
                         }
                         catch (JSONException e)
                         {
@@ -897,7 +899,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                                     "Unable to add properties to Mixpanel JSONObject"));
                         }
 
-                        //UPGRADE: Should we use this trans or ask the manager for current trans? So much inconsistency....
+                        //UPGRADE: Should we use this trans or ask the manager for current trans?
+                        // So much inconsistency....
                         if (!allowCallbacks) { return; }
 
                         mCurrentTransaction.setBookingId(trans.getId());
