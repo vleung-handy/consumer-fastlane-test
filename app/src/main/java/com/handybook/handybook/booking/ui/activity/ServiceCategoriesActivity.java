@@ -11,7 +11,7 @@ import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.deeplink.DeepLinkParams;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.usebutton.sdk.Button;
 
@@ -20,16 +20,16 @@ import javax.inject.Inject;
 public final class ServiceCategoriesActivity extends MenuDrawerActivity
 {
     @Inject
-    PrefsManager mPrefsManager;
+    SecurePreferencesManager mSecurePreferencesManager;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (mPrefsManager.getBoolean(PrefsKey.APP_FIRST_LAUNCH, true))
+        if (mSecurePreferencesManager.getBoolean(PrefsKey.APP_FIRST_LAUNCH, true))
         {
             mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(true, true)));
-            mPrefsManager.setBoolean(PrefsKey.APP_FIRST_LAUNCH, false);
+            mSecurePreferencesManager.setBoolean(PrefsKey.APP_FIRST_LAUNCH, false);
         }
         else
         {

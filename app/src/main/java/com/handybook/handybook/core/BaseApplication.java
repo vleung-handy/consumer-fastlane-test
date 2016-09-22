@@ -23,7 +23,7 @@ import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.manager.AppBlockManager;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
@@ -79,7 +79,7 @@ public class BaseApplication extends MultiDexApplication
     @Inject
     HelpContactManager helpContactManager;
     @Inject
-    PrefsManager prefsManager;
+    SecurePreferencesManager mSecurePreferencesManager;
     @Inject
     AppBlockManager appBlockManager;
     @Inject
@@ -169,9 +169,9 @@ public class BaseApplication extends MultiDexApplication
         {
             NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal")).start(this);
         }
-        if (prefsManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
+        if (mSecurePreferencesManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
         {
-            prefsManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
+            mSecurePreferencesManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
         }
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()

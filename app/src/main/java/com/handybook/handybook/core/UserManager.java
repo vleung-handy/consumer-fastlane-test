@@ -7,7 +7,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.urbanairship.UAirship;
@@ -23,13 +23,17 @@ public class UserManager implements Observer
     private Context mContext;
     private Bus mBus;
     private User mUser;
-    private PrefsManager mPrefsManager;
+    private SecurePreferencesManager mSecurePreferencesManager;
 
     @Inject
-    UserManager(final Context context, final Bus bus, final PrefsManager prefsManager)
+    UserManager(
+            final Context context,
+            final Bus bus,
+            final SecurePreferencesManager securePreferencesManager
+    )
     {
         mContext = context;
-        mPrefsManager = prefsManager;
+        mSecurePreferencesManager = securePreferencesManager;
         mBus = bus;
         mBus.register(this);
     }
@@ -48,7 +52,7 @@ public class UserManager implements Observer
         }
         else
         {
-            if ((mUser = User.fromJson(mPrefsManager.getString(PrefsKey.USER))) != null)
+            if ((mUser = User.fromJson(mSecurePreferencesManager.getString(PrefsKey.USER))) != null)
             {
                 mUser.addObserver(this);
             }
@@ -66,7 +70,7 @@ public class UserManager implements Observer
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
         {
             mUser = null;
-            mPrefsManager.removeValue(PrefsKey.USER);
+            mSecurePreferencesManager.removeValue(PrefsKey.USER);
             Button.getButton(mContext).logout();
             Crashlytics.setUserEmail(null);
             mBus.post(new UserLoggedInEvent(false));
@@ -76,7 +80,7 @@ public class UserManager implements Observer
         mUser = newUser;
         mUser.addObserver(this);
 
-        mPrefsManager.setString(PrefsKey.USER, mUser.toJson());
+        mSecurePreferencesManager.setString(PrefsKey.USER, mUser.toJson());
 
         UAirship.shared().getPushManager().setAlias(mUser.getId());
         Button.getButton(mContext).setUserIdentifier(mUser.getId());

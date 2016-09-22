@@ -2,9 +2,7 @@ package com.handybook.handybook.ui.fragment;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -17,8 +15,12 @@ import android.widget.Button;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
+import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +44,9 @@ public final class OnboardFragment extends BookingFlowFragment
     @Bind(R.id.indicator)
     CirclePageIndicator indicator;
 
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
+
     public static OnboardFragment newInstance()
     {
         return new OnboardFragment();
@@ -59,17 +64,12 @@ public final class OnboardFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final SharedPreferences.Editor edit = prefs.edit();
-
         startButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
             {
-                edit.putBoolean("APP_ONBOARD_SHOWN", true);
-                edit.apply();
-
+                mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
                 getActivity().finish();
             }
         });
@@ -79,8 +79,7 @@ public final class OnboardFragment extends BookingFlowFragment
             @Override
             public void onClick(final View v)
             {
-                edit.putBoolean("APP_ONBOARD_SHOWN", true);
-                edit.apply();
+                mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
 
                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK

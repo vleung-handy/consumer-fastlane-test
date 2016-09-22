@@ -1,8 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +11,9 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.util.TextUtils;
 
@@ -30,7 +30,10 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment
 
     private Booking booking;
 
-    @Inject DataManager dataManager;
+    @Inject
+    DataManager dataManager;
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
 
     @Bind(R.id.submit_button)
     Button submitButton;
@@ -94,10 +97,6 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment
     @Override
     public void onStart() {
         super.onStart();
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final SharedPreferences.Editor edit = prefs.edit();
-        edit.putBoolean("APP_LAUNDRY_INFO_SHOWN", true);
-        edit.apply();
+        mDefaultPreferencesManager.setBoolean(PrefsKey.APP_LAUNDRY_INFO_SHOWN, true);
     }
 }

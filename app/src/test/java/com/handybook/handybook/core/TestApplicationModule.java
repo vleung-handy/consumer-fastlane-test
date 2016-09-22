@@ -2,7 +2,6 @@ package com.handybook.handybook.core;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
@@ -57,12 +56,12 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
-import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.manager.AppBlockManager;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
@@ -208,10 +207,10 @@ public class TestApplicationModule
     final DataManager provideDataManager(
             final HandyRetrofitService service,
             final HandyRetrofitEndpoint endpoint,
-            final PrefsManager prefsManager
+            final SecurePreferencesManager securePreferencesManager
     )
     {
-        return spy(new TestDataManager(service, endpoint, prefsManager));
+        return spy(new TestDataManager(service, endpoint, securePreferencesManager));
     }
 
     @Provides
@@ -258,24 +257,16 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
-    final PrefsManager providePrefsManager()
+    final SecurePreferencesManager provideSecurePreferencesManager()
     {
-        return mock(PrefsManager.class);
+        return mock(SecurePreferencesManager.class);
     }
 
     @Provides
     @Singleton
-    final SecurePreferences provideSecurePreferences()
+    final DefaultPreferencesManager provideDefaultPreferencesManager()
     {
-        return mock(SecurePreferences.class);
-    }
-
-
-    @Provides
-    @Singleton
-    final SharedPreferences provideSharedPrefs()
-    {
-        return mock(SharedPreferences.class);
+        return mock(DefaultPreferencesManager.class);
     }
 
     @Provides
@@ -310,10 +301,10 @@ public class TestApplicationModule
     @Singleton
     final ConfigurationManager provideConfigurationManager(
             final Bus bus,
-            final SharedPreferences sharedPreferences,
+            final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
     )
     {
-        return spy(new ConfigurationManager(bus, sharedPreferences, dataManager));
+        return spy(new ConfigurationManager(bus, defaultPreferencesManager, dataManager));
     }
 }

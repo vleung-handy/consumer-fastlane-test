@@ -1,6 +1,5 @@
 package com.handybook.handybook.module.configuration.manager;
 
-import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -8,6 +7,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.squareup.otto.Bus;
@@ -21,8 +21,8 @@ public class ConfigurationManager
 {
 
     private final Bus mBus;
-    private SharedPreferences mSharedPreferences;
     private final DataManager mDataManager;
+    private final DefaultPreferencesManager mDefaultPreferencesManager;
     private static final String KEY_CONFIGURATION_CACHE = "configuration";
 
     private Cache<String, Configuration> mConfigurationCache;
@@ -30,12 +30,12 @@ public class ConfigurationManager
     @Inject
     public ConfigurationManager(
             final Bus bus,
-            final SharedPreferences sharedPreferences,
+            final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
     )
     {
         mBus = bus;
-        mSharedPreferences = sharedPreferences;
+        mDefaultPreferencesManager = defaultPreferencesManager;
         mDataManager = dataManager;
         mBus.register(this);
 
@@ -102,9 +102,7 @@ public class ConfigurationManager
 
         //also put this in the prefs manager, because sometimes we might need access to this before
         //the onResume state.
-        final SharedPreferences.Editor edit = mSharedPreferences.edit();
-        edit.putString(PrefsKey.CONFIGURATION.getKey(), configuration.toJson());
-        edit.apply();
+        mDefaultPreferencesManager.setString(PrefsKey.CONFIGURATION, configuration.toJson());
     }
 
     @Nullable
@@ -125,7 +123,7 @@ public class ConfigurationManager
 
         if (rval == null)
         {
-            String json = mSharedPreferences.getString(PrefsKey.CONFIGURATION.getKey(), null);
+            String json = mDefaultPreferencesManager.getString(PrefsKey.CONFIGURATION, null);
 
             if (!TextUtils.isEmpty(json))
             {
