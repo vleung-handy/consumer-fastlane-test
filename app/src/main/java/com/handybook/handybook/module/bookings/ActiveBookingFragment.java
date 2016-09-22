@@ -400,7 +400,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
      *
      * @param locationStatus
      */
-    private void updateLocationStatus(Booking.LocationStatus locationStatus)
+    protected void updateLocationStatus(Booking.LocationStatus locationStatus)
     {
         if (!isAttached())
         {

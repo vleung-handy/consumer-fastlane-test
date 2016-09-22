@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.google.gson.GsonBuilder;
+import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
@@ -11,12 +12,13 @@ import com.handybook.handybook.util.IOUtils;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowDrawable;
 import org.robolectric.shadows.ShadowIntent;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static org.junit.Assert.assertEquals;
+import static org.robolectric.Shadows.shadowOf;
 
 /**
  * A test for ActiveBookingFragment
@@ -25,6 +27,7 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
 {
     private ActiveBookingFragment mActiveFragment;
     private ActiveBookingFragment mNoProviderFragment;
+    Booking mActiveBooking;
 
     @Before
     public void setUp() throws Exception
@@ -37,11 +40,11 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
     {
         String json = IOUtils.getJsonStringForTest("active_booking.json");
 
-        Booking booking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                .create()
-                .fromJson(json, Booking.class);
+        mActiveBooking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+                                          .create()
+                                          .fromJson(json, Booking.class);
 
-        mActiveFragment = ActiveBookingFragment.newInstance(booking);
+        mActiveFragment = ActiveBookingFragment.newInstance(mActiveBooking);
     }
 
     private void setupBookingNoProvider() throws Exception
@@ -104,16 +107,16 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         SupportFragmentTestUtil.startFragment(mActiveFragment);
 
         mActiveFragment.mBookingItemContainer.performClick();
-        ShadowActivity shadowActivity = Shadows.shadowOf(mActiveFragment.getActivity());
+        ShadowActivity shadowActivity = shadowOf(mActiveFragment.getActivity());
         Intent startedIntent = shadowActivity.getNextStartedActivity();
-        ShadowIntent shadowIntent = Shadows.shadowOf(startedIntent);
+        ShadowIntent shadowIntent = shadowOf(startedIntent);
         assertEquals(BookingDetailActivity.class.getName(), shadowIntent.getIntentClass().getName());
 
         //when the provider cell is clicked it should also launch the bookings activity
         mActiveFragment.mProfileContainer.performClick();
-        shadowActivity = Shadows.shadowOf(mActiveFragment.getActivity());
+        shadowActivity = shadowOf(mActiveFragment.getActivity());
         startedIntent = shadowActivity.getNextStartedActivity();
-        shadowIntent = Shadows.shadowOf(startedIntent);
+        shadowIntent = shadowOf(startedIntent);
         assertEquals(BookingDetailActivity.class.getName(), shadowIntent.getIntentClass().getName());
     }
 
@@ -128,4 +131,34 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         assertEquals("Thursday, August 25", mActiveFragment.mTextBookingTitle.getText().toString());
         assertEquals("9:16am – 11:16am", mActiveFragment.mTextBookingSubtitle.getText().toString());
     }
+
+    /**
+     * Test the status display, in this case, pro never arrived.
+     */
+    @Test
+    public void testMilestoneStatusText()
+    {
+        SupportFragmentTestUtil.startFragment(mActiveFragment);
+
+        mActiveFragment.updateLocationStatus(mActiveBooking.getActiveBookingLocationStatus());
+        assertEquals(
+                "Your pro never arrived",
+                mActiveFragment.mTextMilestoneStatus.getText().toString()
+        );
+    }
+
+    /**
+     * Test the status icon, in this case it should be the red drawable.
+     */
+    @Test
+    public void testMilestoneStatusIcon()
+    {
+        SupportFragmentTestUtil.startFragment(mActiveFragment);
+
+        mActiveFragment.updateLocationStatus(mActiveBooking.getActiveBookingLocationStatus());
+        ShadowDrawable shadowDrawable = shadowOf(mActiveFragment.mTextMilestoneStatus.getCompoundDrawables()[0]);
+        assertEquals(R.drawable.circle_red, shadowDrawable.getCreatedFromResId());
+    }
+
+
 }
