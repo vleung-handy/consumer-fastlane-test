@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -45,7 +46,6 @@ import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
-import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
@@ -66,9 +66,13 @@ import com.handybook.handybook.ui.widget.FreezableInputTextView;
 import com.handybook.handybook.util.TextUtils;
 import com.handybook.handybook.util.ValidationUtils;
 import com.handybook.handybook.util.WalletUtils;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -127,7 +131,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    private BookingRequest mCurrentRequest;
     private BookingQuote mCurrentQuote;
     private BookingTransaction mCurrentTransaction;
 
@@ -234,7 +237,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         .setTheme(WalletConstants.THEME_LIGHT)
                         .build())
                 .build();
-        mCurrentRequest = bookingManager.getCurrentRequest();
         mCurrentQuote = bookingManager.getCurrentQuote();
         mCurrentTransaction = bookingManager.getCurrentTransaction();
 
@@ -867,17 +869,36 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     private void completeBooking()
     {
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSubmittedLog()));
-
         setReferrerToken();
+        final MixpanelAPI mixpanel = MixpanelAPI.getInstance(
+                getContext(),
+                "f322d61eb1ba3f1b53518f2c78cab2c3"
+        );
         dataManager.createBooking(mCurrentTransaction,
                 new DataManager.Callback<BookingCompleteTransaction>()
                 {
                     @Override
                     public void onSuccess(final BookingCompleteTransaction trans)
                     {
-                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())));
+                        bus.post(new LogEvent.AddLogEvent(
+                                new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())
+                        ));
+                        // Mixpanel to test where we lose our own events
+                        try
+                        {
+                            JSONObject props = new JSONObject();
+                            props.put("package_name", getContext().getPackageName());
+                            props.put("transaction_id", trans.getId());
+                            mixpanel.track("booking_made", props);
+                        }
+                        catch (JSONException e)
+                        {
+                            Crashlytics.logException(new JSONException(
+                                    "Unable to add properties to Mixpanel JSONObject"));
+                        }
 
-                        //UPGRADE: Should we use this trans or ask the manager for current trans? So much inconsistency....
+                        //UPGRADE: Should we use this trans or ask the manager for current trans?
+                        // So much inconsistency....
                         if (!allowCallbacks) { return; }
 
                         mCurrentTransaction.setBookingId(trans.getId());
@@ -974,17 +995,14 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     };
 
     /**
-     * This is a new method that handles the updated API that returns the whole quote not subset
-     *
-     * @param newQuote    the updated quote
-     * @param transaction
-     * @param promo
+     * This is a new method that handles the updated API that returns the whole quote not a subset
+     * Api Endpooint: /v3/quotes/{1245}/set_coupon
      */
     private void handlePromoSuccess(
             final BookingQuote newQuote,
             final BookingTransaction transaction,
             final String promo
-    )//.. on /v3/quotes/{1245}/set_coupon
+    )
     {
         if (!allowCallbacks) { return; }
         mCurrentQuote.setPriceTable(newQuote.getPriceTable());
