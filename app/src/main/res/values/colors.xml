@@ -18,7 +18,7 @@
     <color name="handy_dark_grey">#5c5c5c</color>
     <color name="disabled">#e5eaec</color>
     <color name="nav_bg">#1d1d1d</color>
-    <color name="btn_white_transparent">#CCFFFFFF</color>
+    <color name="white_trans_80">#CCFFFFFF</color>
     <color name="white_trans">#7Effffff</color>
     <color name="white_trans_80">#CCffffff</color>
     <color name="white_pressed">#e0e0e0</color>
