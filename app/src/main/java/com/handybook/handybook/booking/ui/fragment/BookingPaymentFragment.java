@@ -887,6 +887,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         try
                         {
                             JSONObject props = new JSONObject();
+                            props.put("package_name", getContext().getPackageName());
                             props.put("transaction_id", trans.getId());
                             mixpanel.track("booking_made", props);
                         }
