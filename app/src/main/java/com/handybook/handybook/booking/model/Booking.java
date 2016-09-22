@@ -910,7 +910,7 @@ public class Booking implements Parcelable
         private Location mProviderLocation;
 
         @SerializedName("milestone")
-        private Milestone mMilestone;
+        private JobStatus.Milestone mMilestone;
 
         public boolean isMapEnabled()
         {
@@ -932,53 +932,10 @@ public class Booking implements Parcelable
             return mProviderLocation;
         }
 
-        public Milestone getMilestone()
+        public JobStatus.Milestone getMilestone()
         {
             return mMilestone;
         }
-    }
-
-
-    public static class Milestone implements Serializable
-    {
-
-        @SerializedName("state")
-        private MilestoneState mState;
-
-        @SerializedName("title")
-        private String mTitle;
-
-        @SerializedName("body")
-        private String mBody;
-
-        public MilestoneState getState()
-        {
-            return mState;
-        }
-
-        public String getTitle()
-        {
-            return mTitle;
-        }
-
-        public String getBody()
-        {
-            return mBody;
-        }
-    }
-
-
-    public enum MilestoneState
-    {
-        @SerializedName("starts_soon")STARTS_SOON,
-        @SerializedName("arrived")ARRIVED,
-        @SerializedName("on_my_way")ON_MY_WAY,
-        @SerializedName("unavailable")UNAVAILABLE,
-        @SerializedName("behind_schedule")BEHIND_SCHEDULE,
-        @SerializedName("pro_late")PRO_LATE,
-        @SerializedName("pro_no_show")PRO_NO_SHOW,
-        @SerializedName("completed")COMPLETED,
-        @SerializedName("pro_arrived_late")PRO_ARRIVED_LATE
     }
 
     public static class Location implements Serializable

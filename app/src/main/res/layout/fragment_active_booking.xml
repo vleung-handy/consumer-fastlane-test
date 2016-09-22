@@ -67,6 +67,20 @@
                 android:visibility="gone"
                 />
         </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/text_milestone_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/default_padding_half"
+            android:padding="@dimen/default_padding"
+            android:text="Your booking starts soon"
+            android:visibility="gone"
+            tools:visibility="visible"
+            style="@style/TextView.Small"
+            />
+
         <View
             android:id="@+id/map_divider"
             android:layout_width="match_parent"

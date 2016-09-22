@@ -2,16 +2,17 @@ package com.handybook.handybook.module.bookings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.ActivityResult;
@@ -98,9 +100,6 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     @Bind(R.id.transparent_image)
     ImageView mTransparentImage;
-
-    @Bind(R.id.location_status_container)
-    LinearLayout mLocationStatusContainer;
 
     @Bind(R.id.text_pro_location_time)
     TextView mTextLocationTime;
@@ -409,43 +408,42 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
 
         //if there is a timestamp, show it.
-        Date timeStamp = locationStatus.getProviderLocation().getTimeStamp();
         String title = locationStatus.getMilestone() != null ? locationStatus.getMilestone()
                                                                              .getTitle() : null;
 
-        //if there are no statuses, and no time, then hide the entire container.
-        if (TextUtils.isEmpty(title) && timeStamp == null)
+        if (locationStatus.getProviderLocation().getTimeStamp() != null)
         {
-            mLocationStatusContainer.setVisibility(View.GONE);
+            String time = DateTimeUtils.getTime(locationStatus.getProviderLocation()
+                                                              .getTimeStamp());
+            mTextLocationTime.setText(getResources().getString(
+                    R.string.pro_location_time_formatted,
+                    time
+            ));
+            mTextLocationTime.setVisibility(View.VISIBLE);
         }
         else
         {
-            mLocationStatusContainer.setVisibility(View.VISIBLE);
-            if (timeStamp != null)
-            {
-                String time = DateTimeUtils.getTime(timeStamp);
-                mTextLocationTime.setText(getResources().getString(
-                        R.string.pro_location_time_formatted,
-                        time
-                ));
-                mTextLocationTime.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                mTextLocationTime.setVisibility(View.GONE);
-            }
+            mTextLocationTime.setVisibility(View.GONE);
+        }
 
-            //if there is a booking status, show it.
+        //if there is a booking status, show it.
 
-            if (!TextUtils.isEmpty(title))
-            {
-                mTextMilestoneStatus.setText(title);
-                mTextMilestoneStatus.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                mTextMilestoneStatus.setVisibility(View.GONE);
-            }
+        if (!TextUtils.isEmpty(title))
+        {
+            mTextMilestoneStatus.setText(title);
+            mTextMilestoneStatus.setVisibility(View.VISIBLE);
+
+            Drawable drawable = ContextCompat.getDrawable(getActivity(),
+                                                          locationStatus.getMilestone()
+                                                                        .getStatusDrawableId(true)
+            );
+            int dimension = getResources().getDimensionPixelSize(R.dimen.status_dot_dimension);
+            drawable.setBounds(0, 0, dimension, dimension);
+            mTextMilestoneStatus.setCompoundDrawables(drawable, null, null, null);
+        }
+        else
+        {
+            mTextMilestoneStatus.setVisibility(View.GONE);
         }
     }
 
@@ -496,23 +494,23 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     {
         if (mLocationStatus.getMilestone() != null)
         {
-            Booking.MilestoneState state = mLocationStatus.getMilestone().getState();
+            String state = mLocationStatus.getMilestone().getState();
             switch (state)
             {
                 //these are states that doesn't necessarily impact the state of the markers, so we exit.
-                case UNAVAILABLE:
-                case BEHIND_SCHEDULE:
-                case PRO_LATE:
-                case PRO_NO_SHOW:
-                case PRO_ARRIVED_LATE:
+                case JobStatus.Milestone.UNAVAILABLE:
+                case JobStatus.Milestone.BEHIND_SCHEDULE:
+                case JobStatus.Milestone.PRO_LATE:
+                case JobStatus.Milestone.PRO_NO_SHOW:
+                case JobStatus.Milestone.PRO_ARRIVED_LATE:
                     mBookingLocationMarker.setIcon(mHouseIcon);
                     showAppropriateProviderMarker();
                     break;
-                case STARTS_SOON:
+                case JobStatus.Milestone.STARTS_SOON:
                     mProviderLocationMarker.setVisible(false);
                     mBookingLocationMarker.setIcon(mHouseIcon);
                     break;
-                case ARRIVED:
+                case JobStatus.Milestone.ARRIVED:
                     mProviderLocationMarker.setVisible(false);
                     if (mBooking.getServiceMachineName().contains(Booking.SERVICE_CLEANING))
                     {
@@ -524,11 +522,11 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                         mBookingLocationMarker.setIcon(mOtherServiceArrivedIcon);
                     }
                     break;
-                case COMPLETED:
+                case JobStatus.Milestone.COMPLETED:
                     mProviderLocationMarker.setVisible(false);
                     mBookingLocationMarker.setIcon(mCompletedIcon);
                     break;
-                case ON_MY_WAY:
+                case JobStatus.Milestone.ON_MY_WAY:
                     mBookingLocationMarker.setIcon(mHouseIcon);
                     showAppropriateProviderMarker();
                     break;
