@@ -46,7 +46,6 @@ import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
-import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
@@ -132,7 +131,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    private BookingRequest mCurrentRequest;
     private BookingQuote mCurrentQuote;
     private BookingTransaction mCurrentTransaction;
 
@@ -239,7 +237,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         .setTheme(WalletConstants.THEME_LIGHT)
                         .build())
                 .build();
-        mCurrentRequest = bookingManager.getCurrentRequest();
         mCurrentQuote = bookingManager.getCurrentQuote();
         mCurrentTransaction = bookingManager.getCurrentTransaction();
 
@@ -997,17 +994,14 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     };
 
     /**
-     * This is a new method that handles the updated API that returns the whole quote not subset
-     *
-     * @param newQuote    the updated quote
-     * @param transaction
-     * @param promo
+     * This is a new method that handles the updated API that returns the whole quote not a subset
+     * Api Endpooint: /v3/quotes/{1245}/set_coupon
      */
     private void handlePromoSuccess(
             final BookingQuote newQuote,
             final BookingTransaction transaction,
             final String promo
-    )//.. on /v3/quotes/{1245}/set_coupon
+    )
     {
         if (!allowCallbacks) { return; }
         mCurrentQuote.setPriceTable(newQuote.getPriceTable());
