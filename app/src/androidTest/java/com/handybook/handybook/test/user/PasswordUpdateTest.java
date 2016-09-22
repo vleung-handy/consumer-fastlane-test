@@ -2,10 +2,10 @@ package com.handybook.handybook.test.user;
 
 
 import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.rule.ActivityTestRule;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.test.LauncherActivityTestRule;
 import com.handybook.handybook.test.data.TestUsers;
 import com.handybook.handybook.test.model.TestUser;
 import com.handybook.handybook.test.util.AppInteractionUtil;
@@ -26,8 +26,8 @@ public class PasswordUpdateTest
     private static final String NEW_PASSWORD = "newpassword";
 
     @Rule
-    public ActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new ActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
+            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
 
     @Test
@@ -35,13 +35,12 @@ public class PasswordUpdateTest
     {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
-
-        //wait for network call to return with service list
-        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        AppInteractionUtil.waitForServiceCategoriesPage();
 
         //Go to My Account - assuming that is at position 5
         //(don't know how to cleanly query nested item)
         DrawerActions.openDrawer(R.id.drawer_layout);
+        ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.account)).perform(click());
 
         // Change password
@@ -49,8 +48,19 @@ public class PasswordUpdateTest
         TextViewUtil.updateEditTextView(R.id.profile_old_password_text, TEST_USER.getPassword());
         TextViewUtil.updateEditTextView(R.id.profile_new_password_text, NEW_PASSWORD);
         onView(withId(R.id.profile_update_button)).perform(click());
-        ViewUtil.waitForViewVisible(R.id.profile_old_password_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        ViewUtil.waitForToastMessageVisibility(R.string.info_updated, mActivityRule.getActivity(), ViewUtil.LONG_MAX_WAIT_TIME_MS);
+
+        ViewUtil.waitForToastMessageVisibility(
+                R.string.info_updated,
+                true,
+                mActivityRule.getActivity(),
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
+        ViewUtil.waitForToastMessageVisibility(
+                R.string.info_updated,
+                false,
+                mActivityRule.getActivity(),
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
 
         // Confirm that login with the new password works
         AppInteractionUtil.logOutAndPassOnboarding();
@@ -58,6 +68,6 @@ public class PasswordUpdateTest
         AppInteractionUtil.logIn(TEST_USER);
 
         // If services page is visible, then login worked
-        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        AppInteractionUtil.waitForServiceCategoriesPage();
     }
 }

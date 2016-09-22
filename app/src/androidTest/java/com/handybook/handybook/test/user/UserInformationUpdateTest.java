@@ -1,10 +1,10 @@
 package com.handybook.handybook.test.user;
 
 import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.rule.ActivityTestRule;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.test.LauncherActivityTestRule;
 import com.handybook.handybook.test.data.TestUsers;
 import com.handybook.handybook.test.model.TestUser;
 import com.handybook.handybook.test.util.AppInteractionUtil;
@@ -30,21 +30,20 @@ public class UserInformationUpdateTest
     private static final String NEW_PHONE_FORMATTED = "(901) 334-5567";
 
     @Rule
-    public ActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new ActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
+            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
     @Test
     public void testUpdateInformation()
     {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
-
-        //wait for network call to return with service list
-        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        AppInteractionUtil.waitForServiceCategoriesPage();
 
         //Go to My Account - assuming that is at position 5
         //(don't know how to cleanly query nested item)
         DrawerActions.openDrawer(R.id.drawer_layout);
+        ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.account)).perform(click());
 
         // Change name, email, phone number and click update
@@ -54,12 +53,30 @@ public class UserInformationUpdateTest
         TextViewUtil.updateEditTextView(R.id.profile_phone_text, NEW_PHONE);
         onView(withId(R.id.profile_update_button)).perform(click());
 
+        ViewUtil.waitForToastMessageVisibility(
+                R.string.info_updated,
+                true,
+                mActivityRule.getActivity(),
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
+        ViewUtil.waitForToastMessageVisibility(
+                R.string.info_updated,
+                false,
+                mActivityRule.getActivity(),
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
+
         // Go somewhere else(Make a Booking, in this case) and come back to profile screen
         ViewUtil.waitForViewVisible(R.id.profile_fullname_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+
         DrawerActions.openDrawer(R.id.drawer_layout);
+        ViewUtil.waitForTextVisible(R.string.make_a_booking, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.make_a_booking)).perform(click());
+
+        //TODO it actually is stuck on the "my bookings" page which is not "recycler_view"
         ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         DrawerActions.openDrawer(R.id.drawer_layout);
+        ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.account)).perform(click());
 
         // Confirm that the changes were persisted
