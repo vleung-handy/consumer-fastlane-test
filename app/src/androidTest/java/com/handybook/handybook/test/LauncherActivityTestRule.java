@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
-//TODO test only, see if we actually need this
 public class LauncherActivityTestRule<T extends Activity> extends ActivityTestRule<T>
 {
-
     public LauncherActivityTestRule(final Class<T> activityClass)
     {
         super(activityClass);
