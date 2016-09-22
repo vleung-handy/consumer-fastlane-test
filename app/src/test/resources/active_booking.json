@@ -60,10 +60,24 @@
       "latitude": "40.7400054",
       "longitude": "-73.9930771"
     },
+    "provider_location_visible": true,
     "provider": {
-      "latitude": "40.750905",
-      "longitude": "-74.000403",
-      "timestamp": "2016-08-25T09:16:33-04:00"
+      "latitude": "40.755879",
+      "longitude": "-73.996642",
+      "timestamp": "2016-09-22T11:45:38-04:00"
+    },
+    "milestone": {
+      "window": [
+        "2016-09-22T13:24:34Z",
+        "2016-09-23T01:39:34Z"
+      ],
+      "state": "pro_no_show",
+      "status": "error",
+      "title": "Your pro never arrived",
+      "body": "We're sorry they kept you waiting. Reschedule for free or get in touch with our team below.",
+      "action": {
+        "type": "call_sms_contact"
+      }
     }
   }
 }

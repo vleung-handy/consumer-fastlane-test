@@ -909,6 +909,9 @@ public class Booking implements Parcelable
         @SerializedName("provider")
         private Location mProviderLocation;
 
+        @SerializedName("milestone")
+        private JobStatus.Milestone mMilestone;
+
         public boolean isMapEnabled()
         {
             return mMapEnabled;
@@ -928,8 +931,12 @@ public class Booking implements Parcelable
         {
             return mProviderLocation;
         }
-    }
 
+        public JobStatus.Milestone getMilestone()
+        {
+            return mMilestone;
+        }
+    }
 
     public static class Location implements Serializable
     {

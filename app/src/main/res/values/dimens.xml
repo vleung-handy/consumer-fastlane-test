@@ -43,7 +43,7 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="short_divider_width">100dp</dimen>
 
-    <dimen name="green_status_dot">8dp</dimen>
+    <dimen name="status_dot_dimension">8dp</dimen>
     <dimen name="service_circle">92dp</dimen>
     <dimen name="service_circle_half">46dp</dimen>
     <dimen name="service_circle_top_margin">-46dp</dimen>

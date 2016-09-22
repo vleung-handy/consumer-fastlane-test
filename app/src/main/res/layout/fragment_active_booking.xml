@@ -17,13 +17,13 @@
         >
 
         <FrameLayout
-            android:id="@+id/map_container"
+            android:id="@+id/active_booking_map_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/active_booking_map_height"
             >
 
             <com.google.android.gms.maps.MapView
-                android:id="@+id/map_view"
+                android:id="@+id/active_booking_map_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
@@ -32,14 +32,14 @@
                 />
 
             <TextView
-                android:id="@+id/text_pro_location_time"
+                android:id="@+id/active_booking_pro_location_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
                 android:layout_marginRight="@dimen/default_margin_half"
                 android:layout_marginBottom="@dimen/default_margin_half"
                 tools:text="@string/pro_location_time_formatted"
-                android:background="@color/white_trans_80"
+                android:background="@drawable/rounded_border_transparent"
                 android:textColor="@color/handy_text_gray_2"
                 android:padding="@dimen/default_padding_half"
                 style="@style/TextView.XSmall"
@@ -47,21 +47,21 @@
                 />
 
             <ImageView
-                android:id="@+id/transparent_image"
+                android:id="@+id/active_booking_transparent_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@color/transparent"
                 />
 
             <com.handybook.handybook.ui.view.MapPlaceholderView
-                android:id="@+id/map_place_holder"
+                android:id="@+id/active_booking_map_place_holder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 />
 
             <com.handybook.handybook.ui.view.MissingLocationView
-                android:id="@+id/missing_location_view"
+                android:id="@+id/active_booking_missing_location_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
@@ -70,20 +70,19 @@
 
 
         <TextView
-            android:id="@+id/text_start_soon_indicator"
+            android:id="@+id/active_booking_milestone_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/green_dot"
             android:drawablePadding="@dimen/default_padding_half"
             android:padding="@dimen/default_padding"
             android:text="Your booking starts soon"
             android:visibility="gone"
             tools:visibility="visible"
-            style="@style/TextView.Small"
+            style="@style/TextView"
             />
 
         <View
-            android:id="@+id/start_soon_indicator_divider"
+            android:id="@+id/active_booking_map_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/handy_divider_line"
@@ -91,7 +90,7 @@
 
         <!--Profile card-->
         <RelativeLayout
-            android:id="@+id/profile_container"
+            android:id="@+id/active_booking_profile_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -117,7 +116,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/text_provider_name"
+                    android:id="@+id/active_booking_provider_name"
                     style="@style/TextView.Large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,7 +126,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/text_text"
+                android:id="@+id/active_booking_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -144,12 +143,12 @@
                 />
 
             <TextView
-                android:id="@+id/text_call"
+                android:id="@+id/active_booking_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/default_margin_double"
-                android:layout_toLeftOf="@id/text_text"
+                android:layout_toLeftOf="@id/active_booking_text"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:drawableLeft="@drawable/ic_call_grey"
@@ -163,7 +162,7 @@
         </RelativeLayout>
 
         <View
-            android:id="@+id/profile_container_divider"
+            android:id="@+id/active_booking_profile_container_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="@dimen/default_margin"
@@ -174,7 +173,7 @@
         <include layout="@layout/layout_booking_list_item"/>
 
         <FrameLayout
-            android:id="@+id/report_an_issue_container"
+            android:id="@+id/active_booking_report_an_issue_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -186,7 +185,7 @@
                 />
 
             <Button
-                android:id="@+id/button_report_issue"
+                android:id="@+id/active_booking_report_issue"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
