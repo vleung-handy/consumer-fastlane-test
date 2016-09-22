@@ -15,7 +15,7 @@ public class UpcomingBookingsLog extends EventLog
 
     public static class UpcomingBookingsShareButtonPressedLog extends UpcomingBookingsLog
     {
-        private static final String EVENT_TYPE = "share_button_pressed";
+        private static final String EVENT_TYPE = "share_button_tapped";
 
         public UpcomingBookingsShareButtonPressedLog()
         {
@@ -23,6 +23,16 @@ public class UpcomingBookingsLog extends EventLog
         }
     }
 
+
+    public static class UpcomingBookingsShareBannerTappedLog extends UpcomingBookingsLog
+    {
+        private static final String EVENT_TYPE = "share_banner_tapped";
+
+        public UpcomingBookingsShareBannerTappedLog()
+        {
+            super(EVENT_TYPE);
+        }
+    }
 
     public static class AddBookingPressedLog extends UpcomingBookingsLog
     {

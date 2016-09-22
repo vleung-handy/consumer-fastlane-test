@@ -87,6 +87,7 @@
                         android:visibility="gone"
                         />
 
+                    <!--This is where the upcoming bookings go-->
                     <LinearLayout
                         android:id="@+id/parent_bookings_container"
                         android:layout_width="match_parent"
@@ -124,6 +125,14 @@
                         android:visibility="gone"
                         android:gravity="center"
                         android:background="@color/white"
+                        />
+
+                    <!--This view is an empty view to make room at the bottom of the layout, only in
+                        the case when the NoBookingsView is not showing-->
+                    <View
+                        android:id="@+id/upcoming_bookings_padding_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/booking_list_item_height"
                         />
                 </LinearLayout>
             </ScrollView>

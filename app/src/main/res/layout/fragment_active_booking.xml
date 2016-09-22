@@ -39,7 +39,7 @@
                 android:layout_marginRight="@dimen/default_margin_half"
                 android:layout_marginBottom="@dimen/default_margin_half"
                 tools:text="@string/pro_location_time_formatted"
-                android:background="@color/btn_white_transparent"
+                android:background="@color/white_trans_80"
                 android:textColor="@color/handy_text_gray_2"
                 android:padding="@dimen/default_padding_half"
                 style="@style/TextView.XSmall"

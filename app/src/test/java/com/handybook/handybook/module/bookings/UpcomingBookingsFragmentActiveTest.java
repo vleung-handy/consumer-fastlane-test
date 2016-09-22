@@ -45,7 +45,8 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
     @Test
     public void testUpcomingBookingsSection()
     {
-        testUpcomingBookingsContainingBookings(mUpcomingBookingsFragment, 6);
+        //6 bookings + one share banner
+        testUpcomingBookingsContainingBookings(mUpcomingBookingsFragment, 7);
     }
 
     /**
