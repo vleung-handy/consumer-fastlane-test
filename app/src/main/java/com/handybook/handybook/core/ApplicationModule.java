@@ -7,6 +7,11 @@ import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.account.ui.AccountFragment;
+import com.handybook.handybook.account.ui.ContactFragment;
+import com.handybook.handybook.account.ui.ProfileActivity;
+import com.handybook.handybook.account.ui.ProfileFragment;
+import com.handybook.handybook.account.ui.ProfilePasswordFragment;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -132,7 +137,6 @@ import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
-import com.handybook.handybook.ui.activity.ProfileActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.activity.WebViewActivity;
@@ -141,7 +145,6 @@ import com.handybook.handybook.ui.fragment.LoginFragment;
 import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
-import com.handybook.handybook.ui.fragment.ProfileFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
@@ -275,6 +278,9 @@ import retrofit.converter.GsonConverter;
         ReportIssueFragment.class,
         WebViewActivity.class,
         WebViewFragment.class,
+        AccountFragment.class,
+        ContactFragment.class,
+        ProfilePasswordFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

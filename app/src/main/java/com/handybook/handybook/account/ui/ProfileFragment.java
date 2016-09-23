@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.account.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,14 +21,14 @@ import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivit
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.ThinIconButton;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
-import com.handybook.handybook.library.ui.view.ThinIconButton;
-import com.handybook.handybook.library.util.TextUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

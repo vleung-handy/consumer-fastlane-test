@@ -3,6 +3,7 @@ package com.handybook.handybook.core;
 
 import android.app.Activity;
 
+import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
@@ -36,7 +37,6 @@ import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
-import com.handybook.handybook.ui.activity.ProfileActivity;
 import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 

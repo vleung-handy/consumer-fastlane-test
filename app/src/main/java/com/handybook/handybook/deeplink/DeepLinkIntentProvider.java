@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.airbnb.deeplinkdispatch.DeepLink;
+import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
@@ -16,7 +17,6 @@ import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
-import com.handybook.handybook.ui.activity.ProfileActivity;
 
 import javax.inject.Inject;
 

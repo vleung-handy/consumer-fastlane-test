@@ -24,6 +24,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -52,7 +53,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
 {
     private static final String TAG = MenuDrawerActivity.class.getName();
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
-    protected static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
+    public static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
 
     @Bind(R.id.drawer_layout)
     protected DrawerLayout mDrawerLayout;
@@ -371,9 +372,11 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         {
             mDrawerLayout.closeDrawers();
         }
-        else if (isTaskRoot() && !(this instanceof ServiceCategoriesActivity))
+        else if (isTaskRoot() && !(this instanceof ServiceCategoriesActivity)
+                && getSupportFragmentManager().getBackStackEntryCount() == 0)
         {
-            //if backpress results in exiting the app AND this is not the home page, then bring back to the home page first
+            //if back press results in exiting the app AND this is not the home page
+            // AND there is no fragment in the backstack, then bring back to the home page first
             navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
         }
         else

@@ -7,18 +7,18 @@ import android.net.Uri;
 import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.booking.ui.activity.BookingsActivity;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
-import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
-import com.handybook.handybook.ui.activity.ProfileActivity;
-import com.handybook.handybook.booking.ui.activity.PromosActivity;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.ui.widget.CTANavigationData;
 
 import java.util.ArrayList;
@@ -222,11 +222,7 @@ public final class NavigationManager
 
     private Boolean validateUrl(String webUrl)
     {
-        if (webUrl == null || webUrl.isEmpty())
-        {
-            return false;
-        }
-        return true;
+        return !(webUrl == null || webUrl.isEmpty());
     }
 
     ///////
@@ -244,11 +240,7 @@ public final class NavigationManager
 
     private Boolean validateDeepLink(String deepLinkId)
     {
-        if (deepLinkId == null || deepLinkId.isEmpty())
-        {
-            return false;
-        }
-        return true;
+        return !(deepLinkId == null || deepLinkId.isEmpty());
     }
 
     private void navigateToDeepLink(String deepLinkId, Map<String, String> params)
