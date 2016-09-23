@@ -19,7 +19,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment
     private String[] options;
 
     @Inject
-    PrefsManager mPrefsManager;
+    SecurePreferencesManager mSecurePreferencesManager;
     @Bind(R.id.options_layout)
     LinearLayout mOptionsLayout;
     @Bind(R.id.next_button)
@@ -87,7 +87,7 @@ public final class BookingExtrasFragment extends BookingFlowFragment
 
         optionsView.hideTitle();
 
-        final String selected = mPrefsManager.getString(
+        final String selected = mSecurePreferencesManager.getString(
                 PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION
         );
         if (selected != null)
@@ -149,7 +149,10 @@ public final class BookingExtrasFragment extends BookingFlowFragment
             }
 
             //TODO integrate put call into booking manager like promo tab coupon
-            mPrefsManager.setString(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION, selected);
+            mSecurePreferencesManager.setString(
+                    PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION,
+                    selected
+            );
             mBookingTransaction.setExtraHours(extraHours);
             mBookingTransaction.setExtraCleaningText(extraText.length() > 0 ? extraText : null);
         }

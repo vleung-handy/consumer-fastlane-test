@@ -15,7 +15,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.model.Event;
 import com.handybook.handybook.logger.handylogger.model.EventLogBundle;
 import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -34,18 +34,18 @@ public class EventLogManager
     private static List<Event> sLogs = new ArrayList<>();
     private final Bus mBus;
     private final DataManager mDataManager;
-    private final PrefsManager mPrefsManager;
+    private final SecurePreferencesManager mSecurePreferencesManager;
 
     @Inject
     public EventLogManager(
             final Bus bus, final DataManager dataManager,
-            final PrefsManager prefsManager
+            final SecurePreferencesManager securePreferencesManager
     )
     {
         mBus = bus;
         mBus.register(this);
         mDataManager = dataManager;
-        mPrefsManager = prefsManager;
+        mSecurePreferencesManager = securePreferencesManager;
     }
 
     @Subscribe
@@ -115,7 +115,7 @@ public class EventLogManager
 
     private List<String> loadSavedEventBundles()
     {
-        String json = mPrefsManager.getString(PrefsKey.EVENT_LOG_BUNDLES, "");
+        String json = mSecurePreferencesManager.getString(PrefsKey.EVENT_LOG_BUNDLES, "");
         String[] bundles = null;
         try
         {
@@ -138,13 +138,13 @@ public class EventLogManager
     private void saveToPreference(List<String> eventLogBundles)
     {
         String json = GSON.toJson(eventLogBundles);
-        mPrefsManager.setString(PrefsKey.EVENT_LOG_BUNDLES, json);
+        mSecurePreferencesManager.setString(PrefsKey.EVENT_LOG_BUNDLES, json);
     }
 
     private int getUserId()
     {
         User user;
-        if ((user = User.fromJson(mPrefsManager.getString(PrefsKey.USER))) != null)
+        if ((user = User.fromJson(mSecurePreferencesManager.getString(PrefsKey.USER))) != null)
         {
             try
             {

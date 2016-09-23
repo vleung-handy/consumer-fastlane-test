@@ -10,16 +10,21 @@ import com.handybook.handybook.data.SecurePreferences;
 import javax.inject.Inject;
 
 /**
+ * TODO we should move away from SecurePreferences
+ * because decrypt/encrypt throwing exceptions
+ * and it is not that secure since the secret key is
+ * in the config.properties file in plain text
+ *
  * Manager that handles CRUD operations on SharedPreferences
  * <p>
  * (SharedPreferences is currently a SecurePreferences instance.)
  */
-public class PrefsManager
+public class SecurePreferencesManager
 {
     private final SecurePreferences mSecurePreferences;
 
     @Inject
-    public PrefsManager(final SecurePreferences prefs)
+    public SecurePreferencesManager(final SecurePreferences prefs)
     {
         mSecurePreferences = prefs;
     }
@@ -196,5 +201,10 @@ public class PrefsManager
         {
             mSecurePreferences.removeValue(key);
         }
+    }
+
+    public void clearAll()
+    {
+        mSecurePreferences.clear();
     }
 }

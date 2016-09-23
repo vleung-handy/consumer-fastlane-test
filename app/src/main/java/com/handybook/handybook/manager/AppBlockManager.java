@@ -18,18 +18,18 @@ public class AppBlockManager
     private static final long MIN_BLOCK_CHECK_DELAY_MILLIS = 30 * 1000; // no more than every 30s
 
     private Context appContext;
-    private PrefsManager prefsManager;
+    private SecurePreferencesManager mSecurePreferencesManager;
     private DataManager dataManager;
     private Bus bus;
 
     public AppBlockManager(
             final Bus bus,
             final DataManager dataManager,
-            final PrefsManager prefsManager
+            final SecurePreferencesManager securePreferencesManager
     )
     {
         this.bus = bus;
-        this.prefsManager = prefsManager;
+        this.mSecurePreferencesManager = securePreferencesManager;
         this.dataManager = dataManager;
         this.bus.register(this);
     }
@@ -53,12 +53,15 @@ public class AppBlockManager
 
     private boolean isAppBlocked()
     {
-        return prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
+        return mSecurePreferencesManager.getBoolean(PrefsKey.APP_BLOCKED, false);
     }
 
     private boolean shouldUpdateBlockingStateFromApi()
     {
-        final long lastCheckMillis = prefsManager.getLong(PrefsKey.APP_BLOCKED_LAST_CHECK, 0);
+        final long lastCheckMillis = mSecurePreferencesManager.getLong(
+                PrefsKey.APP_BLOCKED_LAST_CHECK,
+                0
+        );
         return System.currentTimeMillis() - lastCheckMillis > MIN_BLOCK_CHECK_DELAY_MILLIS;
     }
 
@@ -111,9 +114,15 @@ public class AppBlockManager
 
     private void updateAppBlockedSharedPreference(final boolean isBlocked)
     {
-        final boolean wasBlocked = prefsManager.getBoolean(PrefsKey.APP_BLOCKED, false);
-        prefsManager.setLong(PrefsKey.APP_BLOCKED_LAST_CHECK, System.currentTimeMillis());
-        prefsManager.setBoolean(PrefsKey.APP_BLOCKED, isBlocked);
+        final boolean wasBlocked = mSecurePreferencesManager.getBoolean(
+                PrefsKey.APP_BLOCKED,
+                false
+        );
+        mSecurePreferencesManager.setLong(
+                PrefsKey.APP_BLOCKED_LAST_CHECK,
+                System.currentTimeMillis()
+        );
+        mSecurePreferencesManager.setBoolean(PrefsKey.APP_BLOCKED, isBlocked);
         if (!wasBlocked && isBlocked)
         {// We're starting to block
             bus.post(new HandyEvent.StartBlockingAppEvent());

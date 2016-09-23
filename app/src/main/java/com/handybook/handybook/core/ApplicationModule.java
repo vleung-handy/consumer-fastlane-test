@@ -1,9 +1,7 @@
 package com.handybook.handybook.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Base64;
 
@@ -105,7 +103,8 @@ import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.helpcenter.HelpModule;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.manager.AppBlockManager;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
@@ -304,9 +303,14 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final EnvironmentModifier provideEnvironmentModifier(Bus bus, PrefsManager prefsManager)
+    final EnvironmentModifier provideEnvironmentModifier(
+            Bus bus,
+            DefaultPreferencesManager defaultPreferencesManager
+    )
     {
-        EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus, prefsManager);
+        EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus,
+                                                                          defaultPreferencesManager
+        );
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
             environmentModifier.setEnvironment(EnvironmentModifier.Environment.PRODUCTION);
@@ -411,10 +415,10 @@ public final class ApplicationModule
     final DataManager provideDataManager(
             final HandyRetrofitService service,
             final HandyRetrofitEndpoint endpoint,
-            final PrefsManager prefsManager
+            final SecurePreferencesManager securePreferencesManager
     )
     {
-        return new DataManager(service, endpoint, prefsManager);
+        return new DataManager(service, endpoint, securePreferencesManager);
     }
 
     @Provides
@@ -440,20 +444,13 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final SharedPreferences provideSharedPrefs()
-    {
-        return PreferenceManager.getDefaultSharedPreferences(mContext);
-    }
-
-    @Provides
-    @Singleton
     final BookingManager provideBookingManager(
             final Bus bus,
-            final PrefsManager prefsManager,
+            final SecurePreferencesManager securePreferencesManager,
             final DataManager dataManager
     )
     {
-        return new BookingManager(bus, prefsManager, dataManager);
+        return new BookingManager(bus, securePreferencesManager, dataManager);
     }
 
     @Provides
@@ -470,10 +467,10 @@ public final class ApplicationModule
     @Singleton
     final UserManager provideUserManager(
             final Bus bus,
-            final PrefsManager prefsManager
+            final SecurePreferencesManager securePreferencesManager
     )
     {
-        return new UserManager(mContext, bus, prefsManager);
+        return new UserManager(mContext, bus, securePreferencesManager);
     }
 
     @Provides
@@ -495,6 +492,13 @@ public final class ApplicationModule
     )
     {
         return new ServicesManager(dataManager, bus);
+    }
+
+    @Provides
+    @Singleton
+    final DefaultPreferencesManager provideDefaultPreferencesManager()
+    {
+        return new DefaultPreferencesManager(mContext);
     }
 
     @Provides
@@ -522,10 +526,10 @@ public final class ApplicationModule
     final AppBlockManager provideAppBlockManager(
             final Bus bus,
             final DataManager dataManager,
-            final PrefsManager prefsManager
+            final SecurePreferencesManager securePreferencesManager
     )
     {
-        return new AppBlockManager(bus, dataManager, prefsManager);
+        return new AppBlockManager(bus, dataManager, securePreferencesManager);
     }
 
     @Provides
@@ -561,11 +565,11 @@ public final class ApplicationModule
     @Singleton
     final ConfigurationManager provideConfigurationManager(
             final Bus bus,
-            final SharedPreferences sharedPreferences,
+            final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
     )
     {
-        return new ConfigurationManager(bus, sharedPreferences, dataManager);
+        return new ConfigurationManager(bus, defaultPreferencesManager, dataManager);
     }
 
     @Provides
@@ -573,10 +577,10 @@ public final class ApplicationModule
     final EventLogManager provideLogEventsManager(
             final Bus bus,
             final DataManager dataManager,
-            final PrefsManager prefsManager
+            final SecurePreferencesManager securePreferencesManager
     )
     {
-        return new EventLogManager(bus, dataManager, prefsManager);
+        return new EventLogManager(bus, dataManager, securePreferencesManager);
     }
 
     @Provides

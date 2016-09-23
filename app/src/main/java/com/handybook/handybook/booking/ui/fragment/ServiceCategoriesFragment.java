@@ -1,11 +1,9 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
@@ -31,10 +29,12 @@ import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.squareup.otto.Bus;
@@ -88,6 +88,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @Inject
     public Bus bus;
 
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
+
     public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
     {
         ServiceCategoriesFragment fragment = new ServiceCategoriesFragment();
@@ -110,10 +113,11 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageShownLog()));
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
         final User user = userManager.getCurrentUser();
-        if (!prefs.getBoolean("APP_ONBOARD_SHOWN", false) && user == null)
+        if (!mDefaultPreferencesManager.getBoolean(
+                PrefsKey.APP_ONBOARD_SHOWN,
+                false
+        ) && user == null)
         {
             final Intent intent = new Intent(getActivity(), OnboardActivity.class);
             startActivity(intent);
