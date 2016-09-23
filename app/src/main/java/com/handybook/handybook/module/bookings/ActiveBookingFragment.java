@@ -24,6 +24,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -324,6 +325,21 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             }
             else
             {
+
+                mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener()
+                {
+                    @Override
+                    public void onCameraChange(final CameraPosition cameraPosition)
+                    {
+                        if (cameraPosition.zoom > MAP_CLOSEUP_ZOOM_LEVEL)
+                        {
+                            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(
+                                    MAP_CLOSEUP_ZOOM_LEVEL));
+                        }
+                    }
+                });
+
+
                 if (mHouseIcon == null)
                 {
                     initializeIcons();
@@ -507,11 +523,17 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     showAppropriateProviderMarker();
                     break;
                 case JobStatus.Milestone.STARTS_SOON:
-                    mProviderLocationMarker.setVisible(false);
+                    if (mProviderLocationMarker != null)
+                    {
+                        mProviderLocationMarker.setVisible(false);
+                    }
                     mBookingLocationMarker.setIcon(mHouseIcon);
                     break;
                 case JobStatus.Milestone.ARRIVED:
-                    mProviderLocationMarker.setVisible(false);
+                    if (mProviderLocationMarker != null)
+                    {
+                        mProviderLocationMarker.setVisible(false);
+                    }
                     if (mBooking.getServiceMachineName().contains(Booking.SERVICE_CLEANING))
                     {
                         // this is a cleaning
@@ -523,7 +545,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     }
                     break;
                 case JobStatus.Milestone.COMPLETED:
-                    mProviderLocationMarker.setVisible(false);
+                    if (mProviderLocationMarker != null)
+                    {
+                        mProviderLocationMarker.setVisible(false);
+                    }
                     mBookingLocationMarker.setIcon(mCompletedIcon);
                     break;
                 case JobStatus.Milestone.ON_MY_WAY:
@@ -540,6 +565,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
      */
     private void showAppropriateProviderMarker()
     {
+        if (mProviderLocationMarker == null)
+        {
+            return;
+        }
 
         if (!isBadLocation(mLocationStatus.getProviderLocation()))
         {
