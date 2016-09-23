@@ -507,11 +507,17 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     showAppropriateProviderMarker();
                     break;
                 case JobStatus.Milestone.STARTS_SOON:
-                    mProviderLocationMarker.setVisible(false);
+                    if (mProviderLocationMarker != null)
+                    {
+                        mProviderLocationMarker.setVisible(false);
+                    }
                     mBookingLocationMarker.setIcon(mHouseIcon);
                     break;
                 case JobStatus.Milestone.ARRIVED:
-                    mProviderLocationMarker.setVisible(false);
+                    if (mProviderLocationMarker != null)
+                    {
+                        mProviderLocationMarker.setVisible(false);
+                    }
                     if (mBooking.getServiceMachineName().contains(Booking.SERVICE_CLEANING))
                     {
                         // this is a cleaning
@@ -523,7 +529,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     }
                     break;
                 case JobStatus.Milestone.COMPLETED:
-                    mProviderLocationMarker.setVisible(false);
+                    if (mProviderLocationMarker != null)
+                    {
+                        mProviderLocationMarker.setVisible(false);
+                    }
                     mBookingLocationMarker.setIcon(mCompletedIcon);
                     break;
                 case JobStatus.Milestone.ON_MY_WAY:
@@ -540,6 +549,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
      */
     private void showAppropriateProviderMarker()
     {
+        if (mProviderLocationMarker == null)
+        {
+            return;
+        }
 
         if (!isBadLocation(mLocationStatus.getProviderLocation()))
         {
