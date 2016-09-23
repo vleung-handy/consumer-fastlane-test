@@ -15,9 +15,10 @@
     </style>
 
     <style name="HandyTheme"
-           parent="BaseTheme"></style>
+           parent="BaseTheme"/>
 
-    <style name="StartupTheme" parent="HandyTheme">
+    <style name="StartupTheme"
+           parent="HandyTheme">
         <item name="android:windowBackground">@drawable/backgroundsplash</item>
     </style>
 
@@ -698,7 +699,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="HandyNotification.Container"></style>
+    <style name="HandyNotification.Container"/>
 
     <style name="HandyNotification.Container.LinearLayout">
         <item name="android:layout_height">wrap_content</item>

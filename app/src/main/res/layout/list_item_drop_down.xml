@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:layout_gravity="center"
-        android:singleLine="true"
-        android:text="Item"
+        android:maxLines="1"
+        android:text="@string/item"
         style="@style/TextView.Small" />
 
 </FrameLayout>

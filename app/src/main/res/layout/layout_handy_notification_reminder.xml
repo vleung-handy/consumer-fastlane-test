@@ -2,9 +2,9 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/notification_root"
-    style="@style/HandyNotification.Root">
+    style="@style/HandyNotification.Root"
+    >
 
     <LinearLayout
         android:id="@+id/notification_container"

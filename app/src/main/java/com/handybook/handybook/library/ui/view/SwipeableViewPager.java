@@ -72,14 +72,7 @@ public class SwipeableViewPager extends ViewPager
     public boolean onInterceptTouchEvent(MotionEvent event)
     {
         // Never allow swiping to switch between pages
-        if (!mSwipeable)
-        {
-            return false;
-        }
-        else
-        {
-            return super.onInterceptTouchEvent(event);
-        }
+        return mSwipeable && super.onInterceptTouchEvent(event);
 
     }
 
@@ -87,13 +80,6 @@ public class SwipeableViewPager extends ViewPager
     public boolean onTouchEvent(MotionEvent event)
     {
         // Never allow swiping to switch between pages
-        if (!mSwipeable)
-        {
-            return false;
-        }
-        else
-        {
-            return super.onTouchEvent(event);
-        }
+        return mSwipeable && super.onTouchEvent(event);
     }
 }

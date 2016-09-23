@@ -17,22 +17,19 @@ import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HelpCenterActionItemView;
 import com.handybook.handybook.util.BookingUtil;
-import com.handybook.handybook.library.util.DateTimeUtils;
 import com.squareup.otto.Subscribe;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,9 +38,6 @@ import butterknife.OnClick;
 
 public class HelpFragment extends InjectedFragment
 {
-    @Inject
-    UserManager mUserManager;
-
     @Bind(R.id.native_help_center_layout)
     ViewGroup mNativeHelpCenterLayout;
     @Bind(R.id.recent_booking_actions_layout)

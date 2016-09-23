@@ -166,17 +166,20 @@ public class BookingCardViewModel
                 case TYPE_PAST:
                     final List pastList = from(bookings, true);
                     // Reverse because we want them displayed in reverse
-                    Collections.sort(pastList.mBookingCardViewModels,
-                            BookingCardViewModel.COMPARATOR_DATE_REVERSE);
+                    Collections.sort(
+                            pastList.mBookingCardViewModels,
+                            BookingCardViewModel.COMPARATOR_DATE_REVERSE
+                    );
                     pastList.setType(type);
                     return pastList;
                 case TYPE_UPCOMING:
                     final List upcomingList = from(bookings);
                     upcomingList.setType(type);
                     return upcomingList;
-                default:
-                    return new List();
+                case TYPE_MIXED:
+                    break;
             }
+            return new List();
         }
 
         public static List from(

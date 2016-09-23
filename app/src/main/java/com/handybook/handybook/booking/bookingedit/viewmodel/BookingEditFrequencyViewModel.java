@@ -19,25 +19,30 @@ public class BookingEditFrequencyViewModel
     //allowing edit frequency only for recurring bookings
 
     private BookingEditFrequencyViewModel(
-            @NonNull final BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse)
+            @NonNull final BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse
+    )
     {
         mEditFrequencyInfoResponse = bookingEditFrequencyInfoResponse;
     }
 
     public static BookingEditFrequencyViewModel from(
-            @NonNull final BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse)
+            @NonNull final BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse
+    )
     {
         return new BookingEditFrequencyViewModel(bookingEditFrequencyInfoResponse);
     }
 
     /**
-     *
      * @param context
      * @param booking
      * @param recurringBooking
      * @return A BookingOption object that models the booking options view
      */
-    public BookingOption getBookingOptionFromBooking(final Context context, final Booking booking, final UserRecurringBooking recurringBooking)
+    public BookingOption getBookingOptionFromBooking(
+            final Context context,
+            final Booking booking,
+            final UserRecurringBooking recurringBooking
+    )
     {
         //TODO: mostly duplicated from checkout flow fragment, should reconsider redesigning the options logic
         final BookingOption option = new BookingOption();
@@ -48,9 +53,10 @@ public class BookingEditFrequencyViewModel
         String optionsSubText[] = new String[mFrequencyOptionsArray.length];
 
         int indexForFreq = getOptionIndexForFrequencyValue();
-        if(indexForFreq >= 0)
+        if (indexForFreq >= 0)
         {
-            optionsSubText[indexForFreq] = context.getResources().getString(R.string.current);//highlight the current selected option
+            optionsSubText[indexForFreq] = context.getResources()
+                                                  .getString(R.string.current);//highlight the current selected option
         }
         option.setOptionsSubText(optionsSubText);
         option.setOptionsRightTitleText(getFormattedPricesForFrequencyArray());
@@ -58,7 +64,8 @@ public class BookingEditFrequencyViewModel
         String[] optionsRightSubText = new String[mFrequencyOptionsArray.length];
         String rightSubText = context.getResources().getString(
                 R.string.booking_options_right_sub_text,
-                getServiceShortNameFromBooking(context, booking, recurringBooking));
+                getServiceShortNameFromBooking(context, booking, recurringBooking)
+        );
 
         //set all the right sub texts to the service short name
         for (int i = 0; i < optionsRightSubText.length; i++)
@@ -70,7 +77,9 @@ public class BookingEditFrequencyViewModel
     }
 
     /**
-     * gets the service short name from the given booking, to be displayed on the right hand side of the option entry
+     * gets the service short name from the given booking, to be displayed on the right hand side of
+     * the option entry
+     *
      * @param context
      * @param booking
      * @param recurringBooking
@@ -106,8 +115,8 @@ public class BookingEditFrequencyViewModel
     }
 
     /**
-     *
-     * @return An array of formatted strings that represent frequencies, to be displayed as the main options text
+     * @return An array of formatted strings that represent frequencies, to be displayed as the main
+     * options text
      */
     private String[] getFormattedPricesForFrequencyArray()
     {
@@ -122,7 +131,6 @@ public class BookingEditFrequencyViewModel
     }
 
     /**
-     *
      * @param recurrenceCode
      * @return The new booking price for a given booking frequency
      */
@@ -136,14 +144,15 @@ public class BookingEditFrequencyViewModel
                 return mEditFrequencyInfoResponse.getBimonthlyPriceFormatted();
             case BookingRecurrence.MONTHLY:
                 return mEditFrequencyInfoResponse.getMonthlyPriceFormatted();
+            case BookingRecurrence.ONE_TIME:
             default:
                 return null;
         }
     }
 
     /**
-     *
-     * @return the index of the options array entry that reflects the current frequency of the booking series. used to select a default option
+     * @return the index of the options array entry that reflects the current frequency of the
+     * booking series. used to select a default option
      */
     public int getOptionIndexForFrequencyValue()
     {
@@ -162,18 +171,20 @@ public class BookingEditFrequencyViewModel
     private String[] getDisplayStringsArray(final Context context)
     {
         String[] displayStrings = new String[mFrequencyOptionsArray.length];
-        for(int i = 0; i<mFrequencyOptionsArray.length; i++)
+        for (int i = 0; i < mFrequencyOptionsArray.length; i++)
         {
-            int recurrenceCode = mFrequencyOptionsArray[i];
+            @BookingRecurrenceCode final int recurrenceCode = mFrequencyOptionsArray[i];
             displayStrings[i] = getDisplayStringForBookingFrequency(context, recurrenceCode);
         }
         return displayStrings;
     }
 
-    private String getDisplayStringForBookingFrequency(final Context context,
-                                                       @BookingRecurrenceCode final int recurrenceCode)
+    private String getDisplayStringForBookingFrequency(
+            final Context context,
+            @BookingRecurrenceCode final int recurrenceCode
+    )
     {
-        switch(recurrenceCode)
+        switch (recurrenceCode)
         {
             case BookingRecurrence.WEEKLY:
                 return context.getResources().getString(R.string.every_week);
@@ -181,13 +192,13 @@ public class BookingEditFrequencyViewModel
                 return context.getResources().getString(R.string.every_two_weeks);
             case BookingRecurrence.MONTHLY:
                 return context.getResources().getString(R.string.every_four_weeks);
+            case BookingRecurrence.ONE_TIME:
             default:
                 return null;
         }
     }
 
     /**
-     *
      * @param index
      * @return The frequency value for a given option index
      */

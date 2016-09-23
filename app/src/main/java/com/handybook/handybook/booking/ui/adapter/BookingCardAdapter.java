@@ -40,7 +40,7 @@ public class BookingCardAdapter extends RecyclerView.Adapter<BookingCardHolder>
     public BookingCardHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         final View itemView = LayoutInflater.from(mContext)
-                .inflate(R.layout.layout_card_booking, null);
+                .inflate(R.layout.layout_card_booking, parent, false);
         return new BookingCardHolder(itemView);
     }
 

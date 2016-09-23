@@ -25,7 +25,7 @@
     </RadioGroup>
 
     <LinearLayout
-        android:gravity="right"
+        android:gravity="end"
         android:id="@+id/custom_tip_amount_wrapper"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
@@ -47,7 +47,7 @@
             android:background="@drawable/rounded_border_input"
             android:id="@+id/custom_tip_amount"
             android:inputType="number"
-            android:layout_gravity="right|bottom"
+            android:layout_gravity="end|bottom"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:padding="@dimen/default_padding_half"

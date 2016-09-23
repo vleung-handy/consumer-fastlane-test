@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.helpcenter.helpcontact.ui.view.HelpContactView;
@@ -164,6 +165,7 @@ public final class HelpContactFragment extends InjectedFragment
             salesforceWrapper.put(SALESFORCE_DATA_WRAPPER_KEY, new JSONObject(contactFormInfo));
         } catch (Exception e)
         {
+            Crashlytics.logException(e);
         }
 
         TypedInput body;

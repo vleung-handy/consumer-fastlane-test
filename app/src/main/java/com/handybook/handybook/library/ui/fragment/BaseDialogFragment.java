@@ -42,8 +42,11 @@ public class BaseDialogFragment extends InjectedDialogFragment
     {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        getDialog().getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (getDialog().getWindow() != null)
+        {
+            getDialog().getWindow().setBackgroundDrawable(
+                    new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
 
         updateDialogState();
 
@@ -113,7 +116,8 @@ public class BaseDialogFragment extends InjectedDialogFragment
 
     protected void handleRequestError(HandyEvent.ReceiveErrorEvent error)
     {
-        Crashlytics.logException(new RuntimeException(error.getClass().getName() + ":" + error.error.getMessage()));
+        Crashlytics.logException(new RuntimeException(error.getClass().getName() + ":" + error.error
+                .getMessage()));
         if (error.error.getType() == DataManager.Type.NETWORK)
         {
             showToast(R.string.error_fetching_connectivity_issue);

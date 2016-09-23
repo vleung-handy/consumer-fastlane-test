@@ -131,7 +131,7 @@ public class SecurePreferences
     {
         if (value == null)
         {
-            preferences.edit().remove(toKey(key)).commit();
+            preferences.edit().remove(toKey(key)).apply();
         }
         else
         {
@@ -146,7 +146,7 @@ public class SecurePreferences
 
     public void removeValue(String key)
     {
-        preferences.edit().remove(toKey(key)).commit();
+        preferences.edit().remove(toKey(key)).apply();
     }
 
     public String getString(String key) throws SecurePreferencesException
@@ -161,7 +161,7 @@ public class SecurePreferences
 
     public void clear()
     {
-        preferences.edit().clear().commit();
+        preferences.edit().clear().apply();
     }
 
     private String toKey(String key)
@@ -180,7 +180,7 @@ public class SecurePreferences
     {
         String secureValueEncoded = encrypt(value, writer);
 
-        preferences.edit().putString(key, secureValueEncoded).commit();
+        preferences.edit().putString(key, secureValueEncoded).apply();
     }
 
     protected String encrypt(String value, Cipher writer) throws SecurePreferencesException
@@ -194,8 +194,7 @@ public class SecurePreferences
         {
             throw new SecurePreferencesException(e);
         }
-        String secureValueEncoded = Base64.encodeToString(secureValue, Base64.NO_WRAP);
-        return secureValueEncoded;
+        return Base64.encodeToString(secureValue, Base64.NO_WRAP);
     }
 
     protected String decrypt(String securedEncodedValue)

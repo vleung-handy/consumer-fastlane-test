@@ -100,7 +100,7 @@
                     android:id="@+id/tv_edit_booking_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center"
+                    android:layout_gravity="end|center"
                     android:text="@string/edit"
                     android:textAllCaps="true"
                     android:textColor="@color/handy_blue"
