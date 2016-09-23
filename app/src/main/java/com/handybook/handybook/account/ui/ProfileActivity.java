@@ -1,10 +1,10 @@
-package com.handybook.handybook.ui.activity;
+package com.handybook.handybook.account.ui;
 
 
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.fragment.ProfileFragment;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public final class ProfileActivity extends MenuDrawerActivity
 {

@@ -24,6 +24,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
+import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
