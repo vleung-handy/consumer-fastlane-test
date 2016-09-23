@@ -24,6 +24,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -324,6 +325,21 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             }
             else
             {
+
+                mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener()
+                {
+                    @Override
+                    public void onCameraChange(final CameraPosition cameraPosition)
+                    {
+                        if (cameraPosition.zoom > MAP_CLOSEUP_ZOOM_LEVEL)
+                        {
+                            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(
+                                    MAP_CLOSEUP_ZOOM_LEVEL));
+                        }
+                    }
+                });
+
+
                 if (mHouseIcon == null)
                 {
                     initializeIcons();
