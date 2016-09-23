@@ -403,4 +403,28 @@
     <string name="help_center_image">Help Center Image</string>
     <string name="share_banner_title_message">Get your next cleaning free</string>
     <string name="cd.add_to_calendar">Add to calendar</string>
+
+    <!-- New Account Screen -->
+    <string name="account.credits">Credits</string>
+    <string name="account.applied_auto">Applied automatically</string>
+    <string name="account.personal_info">Personal information</string>
+    <string name="account.contact_info">Contact Info</string>
+    <string name="account.contact_info_description">Update your name, email, and phone number</string>
+    <string name="account.password_description">Reset your credentials</string>
+    <string name="account.payment_method">Payment Method</string>
+    <string name="account.payment_method_description">Update your credit card</string>
+    <string name="account.plans">Plans</string>
+    <string name="account.active_plans">Active Plans</string>
+    <string name="account.active_plans_formatted">Active Plans: %1$s</string>
+    <string name="account.manage_your_plans">Manage your plans</string>
+    <string name="account.edit_your_plan">Edit your plan</string>
+    <string name="account.your_plan">Your plan</string>
+    <string name="account.cancel_plan">Cancel Plan</string>
+    <string name="account.next_cleaning">Next cleaning</string>
+    <string name="account.promo_code_description">Apply a discount</string>
+    <string name="account.sign_out">Sign out</string>
+    <string name="account.update_information">Update Information</string>
+    <string name="account.select_plan">Select a Plan</string>
+    <string name="account.update_password">Update Password</string>
+
 </resources>

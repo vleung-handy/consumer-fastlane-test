@@ -11,6 +11,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.event.UserEvent;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -162,6 +163,28 @@ public class UserDataManager
                 });
     }
 
+    @Subscribe
+    public void onRequestUserProfileUpdate(final UserEvent.RequestUserPasswordUpdate event)
+    {
+        mDataManager.updateUser(
+                event.getUpdateUserRequest(),
+                event.getAuthToken(),
+                new DataManager.Callback<User>()
+                {
+                    @Override
+                    public void onSuccess(final User response)
+                    {
+                        mBus.post(new UserEvent.ReceiveUserPasswordUpdateSuccess(response));
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        mBus.post(new UserEvent.ReceiveUserPasswordUpdateError(error));
+                    }
+                }
+        );
+    }
 
     private void authFacebookUser(
             final JSONObject user,

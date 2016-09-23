@@ -1,9 +1,12 @@
 package com.handybook.handybook.library.util;
 
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 
 import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.R;
 
 /**
  * utility class for fragments
@@ -11,17 +14,18 @@ import com.crashlytics.android.Crashlytics;
 public class FragmentUtils
 {
     /**
-     * wrapper method for launching dialog fragments
-     * to prevent crash due to IllegalStateException
-     * due to this fragment transaction being performed in an asynchronous
-     * callback that might be called after onSaveInstanceState()
+     * wrapper method for launching dialog fragments to prevent crash due to IllegalStateException
+     * due to this fragment transaction being performed in an asynchronous callback that might be
+     * called after onSaveInstanceState()
+     *
      * @param dialogFragment
      * @param activity
      * @param tag
      * @return true if the DialogFragment was successfully launched
      */
     public static boolean safeLaunchDialogFragment(
-            DialogFragment dialogFragment, FragmentActivity activity, String tag)
+            DialogFragment dialogFragment, FragmentActivity activity, String tag
+    )
     {
         try
         {
@@ -33,5 +37,21 @@ public class FragmentUtils
             Crashlytics.logException(e);
         }
         return false;
+    }
+
+    public static void switchToFragment(
+            Fragment currentFragment, Fragment newFragment, boolean addToBackStack
+    )
+    {
+        FragmentTransaction transaction = currentFragment.getFragmentManager().beginTransaction();
+
+        if (addToBackStack)
+        {
+            transaction.replace(R.id.fragment_container, newFragment).addToBackStack(null).commit();
+        }
+        else
+        {
+            transaction.replace(R.id.fragment_container, newFragment).commit();
+        }
     }
 }

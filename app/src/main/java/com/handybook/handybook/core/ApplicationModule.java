@@ -7,8 +7,11 @@ import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.account.ui.AccountFragment;
+import com.handybook.handybook.account.ui.ContactFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfileFragment;
+import com.handybook.handybook.account.ui.ProfilePasswordFragment;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -275,6 +278,9 @@ import retrofit.converter.GsonConverter;
         ReportIssueFragment.class,
         WebViewActivity.class,
         WebViewFragment.class,
+        AccountFragment.class,
+        ContactFragment.class,
+        ProfilePasswordFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
