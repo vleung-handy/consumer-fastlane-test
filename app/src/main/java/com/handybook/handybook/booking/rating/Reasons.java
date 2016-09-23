@@ -1,6 +1,6 @@
 package com.handybook.handybook.booking.rating;
 
-import com.handybook.handybook.util.StringUtils;
+import com.handybook.handybook.library.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

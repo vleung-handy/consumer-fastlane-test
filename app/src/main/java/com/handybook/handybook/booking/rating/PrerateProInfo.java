@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.util.DateTimeUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.io.Serializable;
 import java.util.Map;

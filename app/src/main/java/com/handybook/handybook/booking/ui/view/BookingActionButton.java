@@ -8,8 +8,8 @@ import android.widget.Button;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.booking.constant.BookingActionButtonType;
-import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.Utils;
 
 public class BookingActionButton extends Button
 {

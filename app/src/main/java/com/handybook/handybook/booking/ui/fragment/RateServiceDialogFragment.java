@@ -29,9 +29,9 @@ import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.ui.widget.HandySnackbar;
-import com.handybook.handybook.util.FragmentUtils;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.ui.view.HandySnackbar;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

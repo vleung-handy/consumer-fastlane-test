@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

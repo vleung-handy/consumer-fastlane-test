@@ -5,9 +5,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.ui.view.InputTextField;
+import com.handybook.handybook.library.util.TextUtils;
 
-public final class PhoneInputTextView extends InputTextField {
+public final class PhoneInputTextView extends InputTextField
+{
     private String countryCode;
 
     public PhoneInputTextView(final Context context) {
@@ -25,7 +27,7 @@ public final class PhoneInputTextView extends InputTextField {
         init();
     }
 
-    void init() {
+    protected void init() {
         super.init();
         this.addTextChangedListener(new TextWatcher() {
             @Override

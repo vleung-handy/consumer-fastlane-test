@@ -17,8 +17,8 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;

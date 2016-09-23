@@ -40,7 +40,7 @@ import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
-import com.handybook.handybook.util.FragmentUtils;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.squareup.otto.Bus;
 import com.yozio.android.Yozio;
 

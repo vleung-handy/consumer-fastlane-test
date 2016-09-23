@@ -109,7 +109,7 @@
                 android:hint="@string/new_password"
                 />
 
-            <com.handybook.handybook.ui.widget.ThinIconButton
+            <com.handybook.handybook.library.ui.view.ThinIconButton
                 android:id="@+id/profile_cancel_cleaning_plan_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

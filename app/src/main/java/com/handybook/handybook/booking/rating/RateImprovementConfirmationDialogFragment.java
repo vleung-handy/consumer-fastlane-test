@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

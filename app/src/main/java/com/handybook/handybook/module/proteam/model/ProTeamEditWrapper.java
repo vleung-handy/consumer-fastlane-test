@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.util.DateTimeUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;

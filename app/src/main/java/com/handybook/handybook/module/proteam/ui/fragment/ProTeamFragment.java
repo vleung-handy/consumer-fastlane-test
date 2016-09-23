@@ -34,9 +34,9 @@ import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.Utils;
 import com.squareup.otto.Subscribe;
 
 import java.security.InvalidParameterException;

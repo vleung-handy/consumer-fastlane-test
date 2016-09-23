@@ -29,11 +29,11 @@ import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.util.StringUtils;
-import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.Utils;
-import com.handybook.handybook.util.ValidationUtils;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.library.util.ValidationUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

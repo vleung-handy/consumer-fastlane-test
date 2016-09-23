@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
-import com.handybook.handybook.util.IOUtils;
+import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Before;
 import org.junit.Test;

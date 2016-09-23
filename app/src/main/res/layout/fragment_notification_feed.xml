@@ -67,7 +67,7 @@
                 >
 
 
-                <com.handybook.handybook.ui.view.EmptiableRecyclerView
+                <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
                     android:id="@+id/notifications_feed_rv"
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"

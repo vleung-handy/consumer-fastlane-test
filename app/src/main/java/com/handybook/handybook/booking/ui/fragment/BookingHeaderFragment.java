@@ -11,8 +11,8 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.util.DateTimeUtils;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.Date;
 import java.util.Observable;

@@ -30,7 +30,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.ui.view.GroovedTimePicker;
-import com.handybook.handybook.util.DateTimeUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

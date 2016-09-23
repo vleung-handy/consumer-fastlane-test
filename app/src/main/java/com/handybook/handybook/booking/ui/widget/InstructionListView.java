@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.Instructions;
+import com.handybook.handybook.library.ui.view.DragAndDropVerticalLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;

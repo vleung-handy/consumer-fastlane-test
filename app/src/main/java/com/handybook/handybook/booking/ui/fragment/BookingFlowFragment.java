@@ -28,9 +28,9 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLo
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.ui.activity.LoginActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Date;

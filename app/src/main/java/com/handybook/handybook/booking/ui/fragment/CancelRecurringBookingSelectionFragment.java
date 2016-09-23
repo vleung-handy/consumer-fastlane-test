@@ -18,7 +18,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataSynchronizer;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;

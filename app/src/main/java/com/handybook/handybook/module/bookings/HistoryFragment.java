@@ -26,8 +26,8 @@ import com.handybook.handybook.logger.handylogger.model.booking.PastBookingsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.view.EmptiableRecyclerView;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
 import com.squareup.otto.Subscribe;
 

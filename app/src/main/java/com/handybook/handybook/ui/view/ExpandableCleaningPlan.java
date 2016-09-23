@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.util.BookingUtil;
-import com.handybook.handybook.util.StringUtils;
-import com.handybook.handybook.util.UiUtils;
+import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.library.util.UiUtils;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.handybook.handybook.data;
 
 import android.content.Context;
 
-import com.handybook.handybook.ui.widget.InputTextField;
+import com.handybook.handybook.library.ui.view.InputTextField;
 
 import java.util.Map;
 

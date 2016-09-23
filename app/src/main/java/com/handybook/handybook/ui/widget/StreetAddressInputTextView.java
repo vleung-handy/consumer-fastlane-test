@@ -3,7 +3,10 @@ package com.handybook.handybook.ui.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public final class StreetAddressInputTextView extends InputTextField {
+import com.handybook.handybook.library.ui.view.InputTextField;
+
+public final class StreetAddressInputTextView extends InputTextField
+{
 
     public StreetAddressInputTextView(final Context context) {
         super(context);

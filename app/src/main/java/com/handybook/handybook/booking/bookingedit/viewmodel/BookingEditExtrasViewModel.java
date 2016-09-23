@@ -10,8 +10,8 @@ import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.model.OptionPrice;
 import com.handybook.handybook.booking.model.PriceInfo;
-import com.handybook.handybook.util.MathUtils;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.MathUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

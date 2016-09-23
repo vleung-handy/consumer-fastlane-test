@@ -17,9 +17,9 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.ui.widget.LimitedEditText;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.ui.view.LimitedEditText;
+import com.handybook.handybook.library.util.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

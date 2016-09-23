@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.view.InjectedRelativeLayout;
+import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 
 import butterknife.Bind;
 

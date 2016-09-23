@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.fragment.WebViewFragment;
+import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 
 public class WebViewActivity extends MenuDrawerActivity
 {

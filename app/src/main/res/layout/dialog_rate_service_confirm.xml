@@ -36,7 +36,7 @@
             android:text="Message"
             />
 
-        <com.handybook.handybook.ui.widget.LimitedEditText
+        <com.handybook.handybook.library.ui.view.LimitedEditText
             android:id="@+id/feedback_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
              android:layout_height="match_parent"
     >
 
-    <com.handybook.handybook.ui.view.EmptiableRecyclerView
+    <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
         android:id="@+id/pro_team_pro_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

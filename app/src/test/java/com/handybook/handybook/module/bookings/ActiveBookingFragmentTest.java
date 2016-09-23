@@ -8,7 +8,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.util.IOUtils;
+import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Before;
 import org.junit.Test;

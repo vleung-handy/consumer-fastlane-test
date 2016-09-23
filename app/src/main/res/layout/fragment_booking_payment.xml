@@ -129,7 +129,7 @@
                 android:visibility="gone"
                 >
 
-                <com.handybook.handybook.ui.widget.FreezableInputTextView
+                <com.handybook.handybook.library.ui.view.FreezableInputTextView
                     android:id="@+id/promo_text"
                     style="@style/EditText.Last.PromoCodeOpt"
                     android:layout_width="0dp"

@@ -14,7 +14,7 @@
         android:id="@+id/simple_container"
         />
 
-    <com.handybook.handybook.booking.ui.view.SwipeableViewPager
+    <com.handybook.handybook.library.ui.view.SwipeableViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

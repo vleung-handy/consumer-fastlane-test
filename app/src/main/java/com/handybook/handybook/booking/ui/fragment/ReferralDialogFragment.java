@@ -20,10 +20,10 @@ import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.util.StringUtils;
-import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

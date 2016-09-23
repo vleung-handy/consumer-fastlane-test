@@ -1,6 +1,7 @@
 package com.handybook.handybook.util;
 
 import com.handybook.handybook.core.CreditCard;
+import com.handybook.handybook.library.util.TextUtils;
 
 import org.junit.Test;
 

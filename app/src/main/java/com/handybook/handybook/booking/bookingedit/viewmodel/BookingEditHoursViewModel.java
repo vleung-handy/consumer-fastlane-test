@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.booking.model.PriceInfo;
-import com.handybook.handybook.util.MathUtils;
-import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.ValidationUtils;
+import com.handybook.handybook.library.util.MathUtils;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.ValidationUtils;
 
 import java.util.Arrays;
 import java.util.Comparator;

@@ -16,8 +16,8 @@ import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.util.DateTimeUtils;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Date;

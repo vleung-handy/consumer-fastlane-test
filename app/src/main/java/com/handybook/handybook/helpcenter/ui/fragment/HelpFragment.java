@@ -22,10 +22,10 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HelpCenterActionItemView;
 import com.handybook.handybook.util.BookingUtil;
-import com.handybook.handybook.util.DateTimeUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.squareup.otto.Subscribe;
 
 import java.text.DecimalFormat;

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-public final class PasswordInputTextView extends InputTextField {
+import com.handybook.handybook.library.ui.view.InputTextField;
+
+public final class PasswordInputTextView extends InputTextField
+{
 
     public PasswordInputTextView(final Context context) {
         super(context);
@@ -21,7 +24,7 @@ public final class PasswordInputTextView extends InputTextField {
         init();
     }
 
-    void init() {
+    protected void init() {
         super.init();
         this.setTypeface(Typeface.DEFAULT);
     }

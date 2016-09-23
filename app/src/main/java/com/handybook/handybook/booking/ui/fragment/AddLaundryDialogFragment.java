@@ -13,10 +13,9 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.Calendar;
 

@@ -47,7 +47,7 @@
         android:orientation="vertical"
         >
 
-        <com.handybook.handybook.ui.widget.LeftIconButton
+        <com.handybook.handybook.library.ui.view.LeftIconButton
             android:id="@+id/facebook_register_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:background="@drawable/button_facebook_round"
             />
 
-        <com.handybook.handybook.ui.widget.LeftIconButton
+        <com.handybook.handybook.library.ui.view.LeftIconButton
             android:id="@+id/email_register_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

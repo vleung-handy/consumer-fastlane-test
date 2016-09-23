@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.util.DateTimeUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.List;
 

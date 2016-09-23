@@ -7,7 +7,8 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 
 import com.handybook.handybook.core.CreditCard;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.ui.view.FreezableInputTextView;
+import com.handybook.handybook.library.util.TextUtils;
 import com.stripe.android.model.Card;
 
 public final class CreditCardNumberInputTextView extends FreezableInputTextView

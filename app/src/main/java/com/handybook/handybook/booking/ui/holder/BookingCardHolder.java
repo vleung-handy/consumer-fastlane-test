@@ -21,7 +21,7 @@ import com.handybook.handybook.booking.viewmodel.BookingCardRowViewModel;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.widget.HandySnackbar;
+import com.handybook.handybook.library.ui.view.HandySnackbar;
 
 import java.util.ArrayList;
 

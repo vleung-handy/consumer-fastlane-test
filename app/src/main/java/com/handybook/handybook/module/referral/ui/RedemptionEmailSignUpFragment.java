@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.LoginActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
-import com.handybook.handybook.util.UiUtils;
+import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

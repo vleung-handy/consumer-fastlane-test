@@ -53,7 +53,7 @@
         android:paddingBottom="26dp"
         android:visibility="invisible">
 
-        <com.handybook.handybook.ui.view.HandyWebView
+        <com.handybook.handybook.library.ui.view.HandyWebView
             android:id="@+id/help_webview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

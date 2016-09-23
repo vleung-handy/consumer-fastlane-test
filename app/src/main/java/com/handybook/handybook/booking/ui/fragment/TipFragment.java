@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

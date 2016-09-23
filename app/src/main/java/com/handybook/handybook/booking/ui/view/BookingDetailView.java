@@ -10,9 +10,9 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.ui.view.InjectedRelativeLayout;
-import com.handybook.handybook.util.DateTimeUtils;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.Calendar;
 import java.util.Date;

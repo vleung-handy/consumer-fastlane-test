@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

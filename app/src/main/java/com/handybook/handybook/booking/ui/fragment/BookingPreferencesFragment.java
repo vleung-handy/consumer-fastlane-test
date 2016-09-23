@@ -23,7 +23,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.ui.widget.BasicInputTextView;
+import com.handybook.handybook.library.ui.view.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

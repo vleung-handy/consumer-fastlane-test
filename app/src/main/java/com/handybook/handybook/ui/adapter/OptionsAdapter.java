@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handybook.handybook.ui.view.antistaticspinnerwheel.adapters.ArrayWheelAdapter;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.Utils;
 
 public final class OptionsAdapter<T> extends ArrayWheelAdapter<T>
 {

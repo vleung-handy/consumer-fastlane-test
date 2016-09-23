@@ -15,7 +15,7 @@ import com.handybook.handybook.booking.model.EntryMethodOption;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.model.InputFormDefinition;
 import com.handybook.handybook.booking.util.OptionListToAttributeArrayConverter;
-import com.handybook.handybook.ui.widget.BasicInputTextView;
+import com.handybook.handybook.library.ui.view.BasicInputTextView;
 
 import java.util.HashMap;
 import java.util.List;

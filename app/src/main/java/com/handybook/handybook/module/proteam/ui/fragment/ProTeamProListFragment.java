@@ -19,8 +19,8 @@ import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.view.EmptiableRecyclerView;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

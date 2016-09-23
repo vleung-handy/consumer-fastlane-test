@@ -27,9 +27,9 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.util.DateTimeUtils;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.Utils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

@@ -17,10 +17,10 @@ import android.view.ViewGroup;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.ui.view.SwipeableViewPager;
+import com.handybook.handybook.library.ui.view.SwipeableViewPager;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.util.FragmentUtils;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
