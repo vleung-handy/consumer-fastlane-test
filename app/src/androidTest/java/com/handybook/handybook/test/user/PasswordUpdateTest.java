@@ -1,8 +1,6 @@
 package com.handybook.handybook.test.user;
 
 
-import android.support.test.espresso.contrib.DrawerActions;
-
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.test.LauncherActivityTestRule;
@@ -39,7 +37,7 @@ public class PasswordUpdateTest
 
         //Go to My Account - assuming that is at position 5
         //(don't know how to cleanly query nested item)
-        DrawerActions.openDrawer(R.id.drawer_layout);
+        AppInteractionUtil.openDrawer();
         ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.account)).perform(click());
 

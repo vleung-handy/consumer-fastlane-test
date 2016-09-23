@@ -1,7 +1,5 @@
 package com.handybook.handybook.test.booking;
 
-import android.support.test.espresso.contrib.DrawerActions;
-
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.test.LauncherActivityTestRule;
@@ -39,21 +37,26 @@ public class BookingCancelRecurringTest
         AppInteractionUtil.waitForServiceCategoriesPage();
 
         //Go to My Bookings
-        DrawerActions.openDrawer(R.id.drawer_layout);
+        AppInteractionUtil.openDrawer();
 
         //need to wait for the nav link because it doesn't appear immediately
         ViewUtil.waitForTextVisible(R.string.my_bookings, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.my_bookings)).perform(click());
 
         // Tap on the first booking
-        ViewUtil.waitForViewVisible(R.id.ll_booking_card_booking_row_container,
-                ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(
+                R.id.ll_booking_card_booking_row_container,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
         onView(withId(R.id.tv_card_booking_row_title)).check(matches(isDisplayed())); // Check if booking row is there
         onView(ViewUtil.nthChildOf(withId(R.id.ll_booking_card_booking_row_container), 0))
                 .perform(click());
 
         // Click on cancel booking
-        ViewUtil.waitForViewInScrollViewVisible(R.id.action_button_cancel_booking, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewInScrollViewVisible(
+                R.id.action_button_cancel_booking,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
         onView(withId(R.id.action_button_cancel_booking)).perform(scrollTo()).perform(click());
 
         // Select the first reason and click cancel booking

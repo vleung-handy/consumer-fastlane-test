@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.test.LauncherActivityTestRule;
+import com.handybook.handybook.test.ViewMatchers;
 import com.handybook.handybook.test.data.TestUsers;
 import com.handybook.handybook.test.model.Address;
 import com.handybook.handybook.test.model.TestUser;
@@ -22,6 +23,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.contrib.PickerActions.setTime;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 //note that animations should be disabled on the device running these tests
 @RunWith(AndroidJUnit4.class)
@@ -104,8 +106,10 @@ public class BookingCreationTest
         clickNextButton();
 
         //enter password
-        TextViewUtil.updateEditTextView(R.id.password_text,
-                testUser.getPassword());
+        TextViewUtil.updateEditTextView(
+                R.id.password_text,
+                testUser.getPassword()
+        );
         clickNextButton();
 
         //wait for booking details page
@@ -148,7 +152,21 @@ public class BookingCreationTest
         ViewUtil.waitForTextVisible(R.string.how_often, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         clickNextButton();
 
-        //use default extras
+        //use default extras, check for peak pricing
+        if (ViewUtil.isViewDisplayed(withText(R.string.peak_price_info)))
+        {
+            // Skip it if possible
+            if (ViewUtil.isViewDisplayed(withId(R.id.skip_button)))
+            {
+                onView(withId(R.id.skip_button)).perform(click());
+            }
+            else
+            {
+                // Click on first time on the next day
+                onView(withId(R.id.arrow_right)).perform(click());
+                ViewMatchers.childAtIndex(withId(R.id.time_text), 0);
+            }
+        }
         clickNextButton();
 
         //use previous address

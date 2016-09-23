@@ -3,6 +3,8 @@ package com.handybook.handybook.test.util;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.PerformException;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,6 +24,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -31,7 +34,7 @@ import static org.hamcrest.Matchers.not;
 /**
  * utility class containing non-app-specific methods to check for certain view states
  */
-public class ViewUtil
+public final class ViewUtil
 {
     private static final long VIEW_STATE_QUERY_INTERVAL_MS = 50;
     public static final long LONG_MAX_WAIT_TIME_MS = 10000;
@@ -70,15 +73,16 @@ public class ViewUtil
     public static void checkToastDisplayed(int toastStringResourceId, Activity activity)
     {
         onView(withText(toastStringResourceId)).
-                inRoot(withDecorView(not(activity.getWindow().getDecorView()))).
-                check(matches(isDisplayed()));
+                                                       inRoot(withDecorView(not(activity.getWindow()
+                                                                                        .getDecorView())))
+                                               .
+                                                       check(matches(isDisplayed()));
     }
 
     /**
      * waits for the view with the given id to be a given visibility
      * <p/>
-     * TODO: cleaner way to do this?
-     * TODO: add better error logging
+     * TODO: cleaner way to do this? TODO: add better error logging
      */
     public static void waitForViewVisibility(
             @NonNull Matcher<View> viewMatcher,
@@ -95,7 +99,7 @@ public class ViewUtil
                 return;
             }
 
-            sleep(VIEW_STATE_QUERY_INTERVAL_MS);
+            waitFor(VIEW_STATE_QUERY_INTERVAL_MS);
         }
         throw new PerformException.Builder()
                 .withActionDescription("wait for view visibility " + visible)
@@ -123,7 +127,7 @@ public class ViewUtil
                 return;
             }
 
-            sleep(VIEW_STATE_QUERY_INTERVAL_MS);
+            waitFor(VIEW_STATE_QUERY_INTERVAL_MS);
         }
         throw new PerformException.Builder()
                 .withActionDescription("wait for toast message visibility ")
@@ -147,7 +151,7 @@ public class ViewUtil
                 return;
             }
 
-            sleep(VIEW_STATE_QUERY_INTERVAL_MS);
+            waitFor(VIEW_STATE_QUERY_INTERVAL_MS);
         }
         throw new PerformException.Builder()
                 .withActionDescription("wait for view visibility " + visible)
@@ -216,7 +220,10 @@ public class ViewUtil
         }
     }
 
-    public static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition)
+    public static Matcher<View> nthChildOf(
+            final Matcher<View> parentMatcher,
+            final int childPosition
+    )
     {
         return new TypeSafeMatcher<View>()
         {
@@ -266,15 +273,30 @@ public class ViewUtil
         };
     }
 
-    private static void sleep(final long timeMs)
+    /**
+     * Perform action of waiting for a specific time.
+     */
+    public static ViewAction waitFor(final long millis)
     {
-        try
+        return new ViewAction()
         {
-            Thread.sleep(timeMs);
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
+            @Override
+            public Matcher<View> getConstraints()
+            {
+                return isRoot();
+            }
+
+            @Override
+            public String getDescription()
+            {
+                return "wait for a specific time: " + millis + " millis.";
+            }
+
+            @Override
+            public void perform(final UiController uiController, final View view)
+            {
+                uiController.loopMainThreadForAtLeast(millis);
+            }
+        };
     }
 }

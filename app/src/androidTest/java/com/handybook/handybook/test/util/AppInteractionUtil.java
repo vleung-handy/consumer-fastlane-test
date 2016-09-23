@@ -14,15 +14,22 @@ public class AppInteractionUtil
 {
     /**
      * logs out if necessary and passes the onboarding screen if necessary
-     *
+     * <p>
      * need to do this because device data isn't cleared after each test run
-     *
+     * <p>
      * TODO: bypass login for non-login tests like in portal
      */
     public static void logOutAndPassOnboarding()
     {
         //log out if necessary
         //open nav drawer to log out if necessary
+
+        // Skip 'share the love' if it shows up
+        if (ViewUtil.isViewDisplayed(withText(R.string.referral_dialog_title)))
+        {
+            onView(withId(R.id.dialog_referral_close_button)).perform(click());
+        }
+
         if (!ViewUtil.isViewDisplayed(R.id.login_button))
         /**
          don't want to open and close drawer in onboarding activity
@@ -34,7 +41,7 @@ public class AppInteractionUtil
          */
         {
 
-            DrawerActions.openDrawer(R.id.drawer_layout);
+            openDrawer();
 
             //log out
             if (ViewUtil.isViewDisplayed(withText(R.string.log_out)))
@@ -50,11 +57,11 @@ public class AppInteractionUtil
             else
             {
                 //close the drawer
-                DrawerActions.closeDrawer(R.id.drawer_layout);
+                closeDrawer();
             }
         }
 
-        if(ViewUtil.isViewDisplayed(R.id.start_button))
+        if (ViewUtil.isViewDisplayed(R.id.start_button))
         {
             onView(withId(R.id.start_button)).perform(click());
         }
@@ -62,11 +69,12 @@ public class AppInteractionUtil
 
     /**
      * TODO: bypass login for non-login tests like in portal
+     *
      * @param testUser
      */
     public static void logIn(TestUser testUser)
     {
-        DrawerActions.openDrawer(R.id.drawer_layout);
+        openDrawer();
         onView(withText(R.string.log_in)).perform(click());
         TextViewUtil.updateEditTextView(R.id.email_text, testUser.getEmail());
         TextViewUtil.updateEditTextView(R.id.password_text, testUser.getPassword());
@@ -77,5 +85,23 @@ public class AppInteractionUtil
     {
         //would rather wait for service recyclerview but it's flaky
         ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+    }
+
+    /**
+     * Open drawer
+     */
+    public static void openDrawer()
+    {
+        ViewUtil.waitForViewVisible(R.id.drawer_layout, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+    }
+
+    /**
+     * Close drawer
+     */
+    public static void closeDrawer()
+    {
+        ViewUtil.waitForViewVisible(R.id.drawer_layout, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.close());
     }
 }
