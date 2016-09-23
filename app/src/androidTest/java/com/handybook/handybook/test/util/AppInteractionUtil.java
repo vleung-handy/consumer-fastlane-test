@@ -23,6 +23,13 @@ public class AppInteractionUtil
     {
         //log out if necessary
         //open nav drawer to log out if necessary
+
+        // Skip 'share the love' if it shows up
+        if (ViewUtil.isViewDisplayed(withText(R.string.referral_dialog_title)))
+        {
+            onView(withId(R.id.dialog_referral_close_button)).perform(click());
+        }
+
         if (!ViewUtil.isViewDisplayed(R.id.login_button))
         /**
          don't want to open and close drawer in onboarding activity
