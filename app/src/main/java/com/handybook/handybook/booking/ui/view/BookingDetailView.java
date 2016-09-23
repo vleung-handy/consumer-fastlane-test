@@ -1,12 +1,17 @@
 package com.handybook.handybook.booking.ui.view;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.provider.CalendarContract;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
@@ -19,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 // TODO: Continue chopping this class up into fragments so all the elements in BookingDetailFragment
 // are BookingDetailSectionFragments
@@ -38,33 +44,72 @@ public final class BookingDetailView extends InjectedRelativeLayout
     TextView bookingText;
     @Bind(R.id.nav_text)
     TextView navText;
+    @Bind(R.id.add_to_calendar_image)
+    ImageView mAddToCalendarImage;
     @Bind(R.id.booking_report_issue_button)
     Button mReportIssueButton;
     @Bind(R.id.back_button)
     public ImageButton backButton;
 
+    private static final String HANDY_BOOKING = "Handy Booking";
+    private Context mContext;
+    private Booking mBooking;
+
     public BookingDetailView(final Context context)
     {
         super(context);
+        init(context);
     }
 
     public BookingDetailView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
+        init(context);
     }
 
     public BookingDetailView(final Context context, final AttributeSet attrs, final int defStyle)
     {
         super(context, attrs, defStyle);
+        init(context);
     }
 
     public void updateDisplay(final Booking booking, List<Service> serviceList)
     {
+        mBooking = booking;
         navText.setText(booking.getServiceName());
         bookingText.setText(getContext().getString(R.string.booking_number, booking.getId()));
         updateDateTimeInfoText(booking);
         updateFrequencySectionDisplay(booking);
         updateServiceIcon(booking, serviceList);
+    }
+
+    @OnClick(R.id.add_to_calendar_image)
+    public void addToCalendarClicked()
+    {
+        if (mBooking != null && mBooking.getAddress() != null &&
+                mBooking.getStartDate() != null && mBooking.getEndDate() != null)
+        {
+            try
+            {
+                Intent intent = new Intent(Intent.ACTION_INSERT);
+                intent.setType("vnd.android.cursor.item/event");
+                intent.putExtra(
+                        CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                        mBooking.getStartDate().getTime()
+                );
+                intent.putExtra(
+                        CalendarContract.EXTRA_EVENT_END_TIME,
+                        mBooking.getEndDate().getTime()
+                );
+                intent.putExtra(CalendarContract.Events.TITLE, HANDY_BOOKING);
+                mContext.startActivity(intent);
+            }
+            catch (ActivityNotFoundException e)
+            {
+                mAddToCalendarImage.setVisibility(GONE);
+                Crashlytics.logException(e);
+            }
+        }
     }
 
     public void updateServiceIcon(final Booking booking, List<Service> serviceList)
@@ -93,19 +138,39 @@ public final class BookingDetailView extends InjectedRelativeLayout
         endDate.add(Calendar.MINUTE, minutes);
 
         //we want to display the time using the booking location's time zone
-        timeText.setText(DateTimeUtils.formatDate(startDate, "h:mm aaa – ", booking.getBookingTimezone())
-                + DateTimeUtils.formatDate(endDate.getTime(), "h:mm aaa (", booking.getBookingTimezone())
-                + TextUtils.formatDecimal(hours, "#.#") + " "
-                + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours)) + ")");
+        timeText.setText(DateTimeUtils.formatDate(
+                startDate,
+                "h:mm aaa – ",
+                booking.getBookingTimezone()
+        )
+                                 + DateTimeUtils.formatDate(
+                endDate.getTime(),
+                "h:mm aaa (",
+                booking.getBookingTimezone()
+        )
+                                 + TextUtils.formatDecimal(hours, "#.#") + " "
+                                 + getResources().getQuantityString(
+                R.plurals.hour,
+                (int) Math.ceil(hours)
+        ) + ")");
 
         dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
-                booking.getBookingTimezone()));
+                                                  booking.getBookingTimezone()
+        ));
     }
 
-    public void updateReportIssueButton(final Booking booking, final OnClickListener onClickListener)
+    public void updateReportIssueButton(
+            final Booking booking,
+            final OnClickListener onClickListener
+    )
     {
         mReportIssueButton.setVisibility(booking.isMilestonesEnabled() ? VISIBLE : GONE);
         mReportIssueButton.setOnClickListener(onClickListener);
+    }
+
+    private void init(Context context)
+    {
+        mContext = context;
     }
 
     private void updateFrequencySectionDisplay(final Booking booking)

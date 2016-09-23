@@ -44,22 +44,42 @@
             tools:text="#123456798"
             />
 
-        <TextView
-            android:id="@+id/nav_help"
-            style="@style/TextView.XSmall.Bold"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/default_margin_half"
-            android:clickable="true"
-            android:padding="@dimen/default_padding_half"
-            android:text="@string/nav_help"
-            android:textAllCaps="true"
-            android:textColor="@color/handy_white"
-            android:visibility="gone"
-            tools:visibility="visible"
-            />
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:id="@+id/add_to_calendar_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/default_margin_half"
+                android:contentDescription="@string/cd.add_to_calendar"
+                android:src="@drawable/ic_add_to_calendar"
+                />
+
+            <TextView
+                android:id="@+id/nav_help"
+                style="@style/TextView.XSmall.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/default_margin_half"
+                android:clickable="true"
+                android:padding="@dimen/default_padding_half"
+                android:text="@string/nav_help"
+                android:textAllCaps="true"
+                android:textColor="@color/handy_white"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+        </LinearLayout>
 
     </RelativeLayout>
 
