@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.ui.widget.FramedIconDrawable;
+import com.handybook.handybook.library.ui.view.FramedIconDrawable;
 
 import java.util.Arrays;
 import java.util.HashMap;

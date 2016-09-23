@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.widget.InputTextField;
+import com.handybook.handybook.library.ui.view.InputTextField;
 
 import java.util.Map;
 

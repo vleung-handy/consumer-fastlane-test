@@ -62,7 +62,7 @@ import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
-import com.handybook.handybook.ui.widget.FreezableInputTextView;
+import com.handybook.handybook.library.ui.view.FreezableInputTextView;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.util.WalletUtils;

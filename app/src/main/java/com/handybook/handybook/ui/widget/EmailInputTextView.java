@@ -3,7 +3,10 @@ package com.handybook.handybook.ui.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public final class EmailInputTextView extends InputTextField {
+import com.handybook.handybook.library.ui.view.InputTextField;
+
+public final class EmailInputTextView extends InputTextField
+{
 
     public EmailInputTextView(final Context context) {
         super(context);

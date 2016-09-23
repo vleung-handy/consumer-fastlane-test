@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.handybook.handybook.ui.widget.BasicInputTextView
+<com.handybook.handybook.library.ui.view.BasicInputTextView
     android:id="@+id/keys_text"
     style="@style/EditText.Last"
     xmlns:android="http://schemas.android.com/apk/res/android"

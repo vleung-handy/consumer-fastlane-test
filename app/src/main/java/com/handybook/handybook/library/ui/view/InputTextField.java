@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.widget;
+package com.handybook.handybook.library.ui.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -34,7 +34,7 @@ public abstract class InputTextField extends EditText
         init();
     }
 
-    void init()
+    protected void init()
     {
         this.addTextChangedListener(new TextWatcher()
         {
@@ -82,7 +82,7 @@ public abstract class InputTextField extends EditText
         return isHighlighted;
     }
 
-    abstract boolean validate();
+    protected abstract boolean validate();
 
     public String getString()
     {

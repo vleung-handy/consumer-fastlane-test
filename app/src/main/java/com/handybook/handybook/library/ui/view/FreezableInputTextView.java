@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.widget;
+package com.handybook.handybook.library.ui.view;
 
 import android.content.Context;
 import android.text.InputType;
@@ -23,7 +23,7 @@ public class FreezableInputTextView extends InputTextField {
         init();
     }
 
-    void init() {
+    protected void init() {
         super.init();
         defaultInputType = this.getInputType();
     }
@@ -42,7 +42,7 @@ public class FreezableInputTextView extends InputTextField {
         }
     }
 
-    boolean validate() {
+    protected boolean validate() {
         return true;
     }
 }

@@ -42,7 +42,7 @@
                 android:text="@string/booking_edit_preferences_subtitle"
                 />
 
-            <com.handybook.handybook.ui.widget.BasicInputTextView
+            <com.handybook.handybook.library.ui.view.BasicInputTextView
                 android:id="@+id/edit_preferences_note_to_pro"
                 style="@style/EditText.Last"
                 android:layout_width="match_parent"

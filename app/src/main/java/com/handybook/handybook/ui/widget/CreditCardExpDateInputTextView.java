@@ -7,10 +7,12 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 
 import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.library.ui.view.InputTextField;
 import com.handybook.handybook.library.util.TextUtils;
 import com.stripe.android.model.Card;
 
-public final class CreditCardExpDateInputTextView extends InputTextField {
+public final class CreditCardExpDateInputTextView extends InputTextField
+{
 
     public CreditCardExpDateInputTextView(final Context context) {
         super(context);
@@ -51,7 +53,7 @@ public final class CreditCardExpDateInputTextView extends InputTextField {
         setText(expMonthString + "/" + expYearString);
     }
 
-    void init() {
+    protected void init() {
         super.init();
 
         InputFilter[] filterArray = new InputFilter[]{ new InputFilter.LengthFilter(5)};

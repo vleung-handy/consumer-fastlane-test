@@ -27,7 +27,7 @@ import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
-import com.handybook.handybook.ui.widget.ThinIconButton;
+import com.handybook.handybook.library.ui.view.ThinIconButton;
 import com.handybook.handybook.library.util.TextUtils;
 
 import butterknife.Bind;
