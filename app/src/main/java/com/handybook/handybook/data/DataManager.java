@@ -45,7 +45,7 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.HelpCenterResponse;
@@ -77,18 +77,18 @@ public class DataManager
 
     private final HandyRetrofitService mService;
     private final HandyRetrofitEndpoint mEndpoint;
-    private final PrefsManager mPrefsManager;
+    private final SecurePreferencesManager mSecurePreferencesManager;
 
     @Inject
     public DataManager(
             final HandyRetrofitService service,
             final HandyRetrofitEndpoint endpoint,
-            final PrefsManager prefsManager
+            final SecurePreferencesManager securePreferencesManager
     )
     {
         mService = service;
         mEndpoint = endpoint;
-        mPrefsManager = prefsManager;
+        mSecurePreferencesManager = securePreferencesManager;
     }
 
     public String getBaseUrl()
@@ -234,7 +234,7 @@ public class DataManager
                         });
 
                         //updates the cache with fresh version of services
-                        mPrefsManager.setString(PrefsKey.CACHED_SERVICES, new Gson()
+                        mSecurePreferencesManager.setString(PrefsKey.CACHED_SERVICES, new Gson()
                                 .toJsonTree(servicesMenu).getAsJsonArray().toString());
 
                         //we only notify of error if there is not already a cached version returned.
@@ -251,7 +251,7 @@ public class DataManager
     @Nullable
     public List<Service> getCachedServices()
     {
-        String cachedServicesJson = mPrefsManager.getString(PrefsKey.CACHED_SERVICES);
+        String cachedServicesJson = mSecurePreferencesManager.getString(PrefsKey.CACHED_SERVICES);
         List<Service> cachedServices = null;
         if (cachedServicesJson != null)
         {

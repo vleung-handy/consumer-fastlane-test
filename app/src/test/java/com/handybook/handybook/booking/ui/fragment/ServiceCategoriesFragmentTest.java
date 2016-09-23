@@ -1,8 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.common.collect.Lists;
@@ -12,10 +10,12 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -46,6 +46,8 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
 
     @Inject
     UserManager mUserManager;
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
 
     TestBaseApplication mTestBaseApplication;
 
@@ -65,9 +67,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
 
         when(mMockService.getUniq()).thenReturn("service");
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
-                ShadowApplication.getInstance().getApplicationContext());
-        sharedPreferences.edit().putBoolean("APP_ONBOARD_SHOWN", true).apply();
+        mDefaultPreferencesManager.setBoolean(PrefsKey.APP_LAUNDRY_INFO_SHOWN, true);
     }
 
     /**

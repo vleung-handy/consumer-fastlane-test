@@ -8,7 +8,7 @@ import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.structures.SerializableHashSet;
@@ -27,7 +27,7 @@ public class SplashNotificationManager
 
     private final UserManager mUserManager;
     private final DataManager mDataManager;
-    private final PrefsManager mPrefsManager;
+    private final SecurePreferencesManager mSecurePreferencesManager;
     private final Bus mBus;
 
     //every 30 minutes
@@ -39,13 +39,13 @@ public class SplashNotificationManager
     public SplashNotificationManager(
             final UserManager userManager,
             final DataManager dataManager,
-            final PrefsManager prefsManager,
+            final SecurePreferencesManager securePreferencesManager,
             final Bus bus
     )
     {
         mUserManager = userManager;
         mDataManager = dataManager;
-        mPrefsManager = prefsManager;
+        mSecurePreferencesManager = securePreferencesManager;
         mBus = bus;
         mBus.register(this);
     }
@@ -107,9 +107,10 @@ public class SplashNotificationManager
             return;
         }
 
-        SerializableHashSet splashPromoHashSet = SerializableHashSet.fromJson(mPrefsManager.getString(prefsKey));
+        SerializableHashSet splashPromoHashSet = SerializableHashSet.fromJson(
+                mSecurePreferencesManager.getString(prefsKey));
         splashPromoHashSet.add(splashPromo.getId());
-        mPrefsManager.setString(prefsKey, splashPromoHashSet.toJson());
+        mSecurePreferencesManager.setString(prefsKey, splashPromoHashSet.toJson());
     }
 
     //making these handled as events in case we make this a network call
@@ -135,7 +136,7 @@ public class SplashNotificationManager
     private @NonNull String[] getDisplayedSplashPromosArray()
     {
         return SerializableHashSet
-                .fromJson(mPrefsManager.getString(PrefsKey.DISPLAYED_SPLASH_PROMOS))
+                .fromJson(mSecurePreferencesManager.getString(PrefsKey.DISPLAYED_SPLASH_PROMOS))
                 .toArray();
     }
 
@@ -147,7 +148,7 @@ public class SplashNotificationManager
     private @NonNull String[] getAcceptedSplashPromosArray()
     {
         return SerializableHashSet
-                .fromJson(mPrefsManager.getString(PrefsKey.ACCEPTED_SPLASH_PROMOS))
+                .fromJson(mSecurePreferencesManager.getString(PrefsKey.ACCEPTED_SPLASH_PROMOS))
                 .toArray();
 
     }

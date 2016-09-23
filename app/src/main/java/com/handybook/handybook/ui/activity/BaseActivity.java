@@ -2,10 +2,8 @@ package com.handybook.handybook.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +22,7 @@ import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.RequiredModalsEventListener;
@@ -35,6 +34,7 @@ import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
@@ -53,12 +53,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class BaseActivity extends AppCompatActivity implements RequiredModalsLauncher
 {
     private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
-    private static final String KEY_APP_LAUNDRY_INFO_SHOWN = "APP_LAUNDRY_INFO_SHOWN";
     private static final String TAG = BaseActivity.class.getName();
     protected boolean allowCallbacks;
 
     @Inject
     protected UserManager mUserManager;
+    @Inject
+    protected DefaultPreferencesManager mDefaultPreferencesManager;
     @Inject
     DataManager mDataManager;
     @Inject
@@ -228,9 +229,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                 final int laundryBookingId = user.getLaundryBookingId();
                 final int addLaundryBookingId = user.getAddLaundryBookingId();
                 final String proName = user.getBookingRatePro();
-                final SharedPreferences prefs = PreferenceManager
-                        .getDefaultSharedPreferences(BaseActivity.this);
-                if (addLaundryBookingId > 0 && !prefs.getBoolean(KEY_APP_LAUNDRY_INFO_SHOWN, false))
+                if (addLaundryBookingId > 0 &&
+                        !mDefaultPreferencesManager.getBoolean(
+                                PrefsKey.APP_LAUNDRY_INFO_SHOWN,
+                                false
+                        ))
                 {
                     showLaundryInfoModal(addLaundryBookingId);
                 }

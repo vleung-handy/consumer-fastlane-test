@@ -6,7 +6,7 @@ import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.PropertiesReader;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
@@ -22,20 +22,27 @@ public class EnvironmentModifier
 
 
     private final Bus mBus;
-    private final PrefsManager mPrefsManager;
+    private final DefaultPreferencesManager mDefaultPreferencesManager;
 
-    public EnvironmentModifier(Context context, Bus bus, PrefsManager prefsManager)
+    public EnvironmentModifier(
+            Context context,
+            Bus bus,
+            DefaultPreferencesManager defaultPreferencesManager
+    )
     {
         mBus = bus;
-        mPrefsManager = prefsManager;
+        mDefaultPreferencesManager = defaultPreferencesManager;
 
         try
         {
             Properties properties = PropertiesReader.getProperties(context, "override.properties");
             String environment = properties.getProperty("environment", Environment.STAGING);
-            environment = prefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, environment); // whatever is stored in prefs is higher priority
+            environment = mDefaultPreferencesManager.getString(
+                    PrefsKey.ENVIRONMENT_PREFIX,
+                    environment
+            ); // whatever is stored in prefs is higher priority
 
-            prefsManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
+            mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -47,7 +54,10 @@ public class EnvironmentModifier
         String defaultEnvironment = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
                 Environment.PRODUCTION : Environment.STAGING;
 
-        String response = mPrefsManager.getString(PrefsKey.ENVIRONMENT_PREFIX, defaultEnvironment);
+        String response = mDefaultPreferencesManager.getString(
+                PrefsKey.ENVIRONMENT_PREFIX,
+                defaultEnvironment
+        );
 
         if (android.text.TextUtils.isEmpty(response))
         {
@@ -77,7 +87,7 @@ public class EnvironmentModifier
     public void setEnvironment(String environment)
     {
         String previousEnvironment = getEnvironment();
-        mPrefsManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
+        mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
 
         mBus.post(new EnvironmentUpdatedEvent(environment, previousEnvironment));
     }

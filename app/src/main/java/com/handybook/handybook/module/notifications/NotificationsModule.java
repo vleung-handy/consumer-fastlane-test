@@ -2,7 +2,7 @@ package com.handybook.handybook.module.notifications;
 
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.module.notifications.feed.ui.fragment.NotificationFeedFragment;
@@ -30,11 +30,16 @@ public final class NotificationsModule
     final SplashNotificationManager provideSplashNotificationManager(
             final UserManager userManager,
             final DataManager dataManager,
-            final PrefsManager prefsManager,
+            final SecurePreferencesManager securePreferencesManager,
             final Bus bus
     )
     {
-        return new SplashNotificationManager(userManager, dataManager, prefsManager, bus);
+        return new SplashNotificationManager(
+                userManager,
+                dataManager,
+                securePreferencesManager,
+                bus
+        );
     }
 
     @Provides

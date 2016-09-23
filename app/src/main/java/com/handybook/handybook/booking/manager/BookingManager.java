@@ -28,7 +28,7 @@ import com.handybook.handybook.event.BookingFlowClearedEvent;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
-import com.handybook.handybook.manager.PrefsManager;
+import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -43,7 +43,7 @@ import javax.inject.Inject;
 //TODO: Add caching like we do for portal, navigating back and forth from my bookings page is painfully slow right now
 public class BookingManager implements Observer
 {
-    private final PrefsManager mPrefsManager;
+    private final SecurePreferencesManager mSecurePreferencesManager;
     private final DataManager mDataManager;
     private final Bus mBus;
     private BookingRequest mBookingRequest;
@@ -54,9 +54,13 @@ public class BookingManager implements Observer
     private ProTeam mCurrentProTeam;
 
     @Inject
-    public BookingManager(final Bus bus, final PrefsManager prefsManager, final DataManager dataManager)
+    public BookingManager(
+            final Bus bus,
+            final SecurePreferencesManager securePreferencesManager,
+            final DataManager dataManager
+    )
     {
-        mPrefsManager = prefsManager;
+        mSecurePreferencesManager = securePreferencesManager;
         mDataManager = dataManager;
         mBus = bus;
         mBus.register(this);
@@ -364,7 +368,7 @@ public class BookingManager implements Observer
         }
         else
         {
-            String json = mPrefsManager.getString(PrefsKey.BOOKING_REQUEST);
+            String json = mSecurePreferencesManager.getString(PrefsKey.BOOKING_REQUEST);
             if (TextUtils.isEmpty(json))
             {
                 Crashlytics.log("getCurrentRequest: booking request JSON is :" + json);
@@ -388,14 +392,14 @@ public class BookingManager implements Observer
         {
             Crashlytics.log("setCurrentRequest: setting booking request = null");
             mBookingRequest = null;
-            mPrefsManager.removeValue(PrefsKey.BOOKING_REQUEST);
+            mSecurePreferencesManager.removeValue(PrefsKey.BOOKING_REQUEST);
             return;
         }
 
         mBookingRequest = newRequest;
         mBookingRequest.addObserver(this);
 
-        mPrefsManager.setString(PrefsKey.BOOKING_REQUEST, mBookingRequest.toJson());
+        mSecurePreferencesManager.setString(PrefsKey.BOOKING_REQUEST, mBookingRequest.toJson());
     }
 
     public BookingQuote getCurrentQuote()
@@ -407,7 +411,7 @@ public class BookingManager implements Observer
         else
         {
             if ((mBookingQuote = BookingQuote
-                    .fromJson(mPrefsManager.getString(PrefsKey.BOOKING_QUOTE))) != null)
+                    .fromJson(mSecurePreferencesManager.getString(PrefsKey.BOOKING_QUOTE))) != null)
             {
                 mBookingQuote.addObserver(this);
             }
@@ -425,13 +429,13 @@ public class BookingManager implements Observer
         if (newQuote == null)
         {
             mBookingQuote = null;
-            mPrefsManager.removeValue(PrefsKey.BOOKING_QUOTE);
+            mSecurePreferencesManager.removeValue(PrefsKey.BOOKING_QUOTE);
             return;
         }
 
         mBookingQuote = newQuote;
         mBookingQuote.addObserver(this);
-        mPrefsManager.setString(PrefsKey.BOOKING_QUOTE, mBookingQuote.toJson());
+        mSecurePreferencesManager.setString(PrefsKey.BOOKING_QUOTE, mBookingQuote.toJson());
     }
 
     public BookingTransaction getCurrentTransaction()
@@ -442,7 +446,7 @@ public class BookingManager implements Observer
         }
         else
         {
-            final String transactionJson = mPrefsManager.getString(PrefsKey.BOOKING_TRANSACTION);
+            final String transactionJson = mSecurePreferencesManager.getString(PrefsKey.BOOKING_TRANSACTION);
             Crashlytics.log("Transaction JSON is " + transactionJson);
             if (transactionJson == null)
             {
@@ -472,13 +476,16 @@ public class BookingManager implements Observer
         {
             Crashlytics.log("BookingManager: Setting current transaction to null!");
             mBookingTransaction = null;
-            mPrefsManager.removeValue(PrefsKey.BOOKING_TRANSACTION);
+            mSecurePreferencesManager.removeValue(PrefsKey.BOOKING_TRANSACTION);
             return;
         }
 
         mBookingTransaction = newTransaction;
         mBookingTransaction.addObserver(this);
-        mPrefsManager.setString(PrefsKey.BOOKING_TRANSACTION, mBookingTransaction.toJson());
+        mSecurePreferencesManager.setString(
+                PrefsKey.BOOKING_TRANSACTION,
+                mBookingTransaction.toJson()
+        );
     }
 
     public BookingPostInfo getCurrentPostInfo()
@@ -490,7 +497,7 @@ public class BookingManager implements Observer
         else
         {
             if ((mBookingPostInfo = BookingPostInfo
-                    .fromJson(mPrefsManager.getString(PrefsKey.BOOKING_POST))) != null)
+                    .fromJson(mSecurePreferencesManager.getString(PrefsKey.BOOKING_POST))) != null)
             {
                 mBookingPostInfo.addObserver(this);
             }
@@ -508,13 +515,13 @@ public class BookingManager implements Observer
         if (newInfo == null)
         {
             mBookingPostInfo = null;
-            mPrefsManager.removeValue(PrefsKey.BOOKING_POST);
+            mSecurePreferencesManager.removeValue(PrefsKey.BOOKING_POST);
             return;
         }
 
         mBookingPostInfo = newInfo;
         mBookingPostInfo.addObserver(this);
-        mPrefsManager.setString(PrefsKey.BOOKING_POST, mBookingPostInfo.toJson());
+        mSecurePreferencesManager.setString(PrefsKey.BOOKING_POST, mBookingPostInfo.toJson());
     }
 
     public FinalizeBookingRequestPayload getCurrentFinalizeBookingPayload()
@@ -526,7 +533,7 @@ public class BookingManager implements Observer
         else
         {
             mFinalizeBookingRequestPayload = FinalizeBookingRequestPayload.fromJson(
-                    mPrefsManager.getString(PrefsKey.BOOKING_FINALIZE_PAYLOAD)
+                    mSecurePreferencesManager.getString(PrefsKey.BOOKING_FINALIZE_PAYLOAD)
             );
             if (mFinalizeBookingRequestPayload != null)
             {
@@ -545,24 +552,27 @@ public class BookingManager implements Observer
         if (payload == null)
         {
             mFinalizeBookingRequestPayload = null;
-            mPrefsManager.removeValue(PrefsKey.BOOKING_FINALIZE_PAYLOAD);
+            mSecurePreferencesManager.removeValue(PrefsKey.BOOKING_FINALIZE_PAYLOAD);
         }
         else
         {
             mFinalizeBookingRequestPayload = payload;
-            mPrefsManager.setString(PrefsKey.BOOKING_FINALIZE_PAYLOAD, mFinalizeBookingRequestPayload.toJson());
+            mSecurePreferencesManager.setString(
+                    PrefsKey.BOOKING_FINALIZE_PAYLOAD,
+                    mFinalizeBookingRequestPayload.toJson()
+            );
         }
     }
 
     public void setPromoTabCoupon(final String code)
     {
-        mPrefsManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
+        mSecurePreferencesManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
     }
 
     @Nullable
     public String getPromoTabCoupon()
     {
-        return mPrefsManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
+        return mSecurePreferencesManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
     }
 
     @Nullable
@@ -570,7 +580,7 @@ public class BookingManager implements Observer
     {
         if (mCurrentProTeam == null)
         {
-            mCurrentProTeam = ProTeam.fromJson(mPrefsManager.getString(PrefsKey.BOOKING_PRO_TEAM));
+            mCurrentProTeam = ProTeam.fromJson(mSecurePreferencesManager.getString(PrefsKey.BOOKING_PRO_TEAM));
         }
         return mCurrentProTeam;
     }
@@ -580,10 +590,10 @@ public class BookingManager implements Observer
         if (proTeam == null)
         {
             mCurrentProTeam = null;
-            mPrefsManager.removeValue(PrefsKey.BOOKING_PRO_TEAM);
+            mSecurePreferencesManager.removeValue(PrefsKey.BOOKING_PRO_TEAM);
             return;
         }
-        mPrefsManager.setString(PrefsKey.BOOKING_PRO_TEAM, ProTeam.toJson(proTeam));
+        mSecurePreferencesManager.setString(PrefsKey.BOOKING_PRO_TEAM, ProTeam.toJson(proTeam));
     }
 
     @Override
@@ -624,13 +634,13 @@ public class BookingManager implements Observer
         setCurrentPostInfo(null);
         setCurrentFinalizeBookingRequestPayload(null);
         setCurrentProTeam(null);
-        mPrefsManager.removeValue(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION);
+        mSecurePreferencesManager.removeValue(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION);
         mBus.post(new BookingFlowClearedEvent());
     }
 
     public void clearAll()
     {
-        mPrefsManager.removeValue(PrefsKey.BOOKING_PROMO_TAB_COUPON);
+        mSecurePreferencesManager.removeValue(PrefsKey.BOOKING_PROMO_TAB_COUPON);
         clear();
     }
 
