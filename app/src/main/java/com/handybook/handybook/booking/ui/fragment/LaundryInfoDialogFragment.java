@@ -14,8 +14,8 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.regex.Pattern;
 

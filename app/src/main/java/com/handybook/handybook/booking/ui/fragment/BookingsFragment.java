@@ -24,9 +24,9 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
-import com.handybook.handybook.util.UiUtils;
+import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

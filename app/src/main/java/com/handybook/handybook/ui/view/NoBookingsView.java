@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.util.BookingUtil;
-import com.handybook.handybook.util.DateTimeUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.Collections;
 import java.util.Comparator;

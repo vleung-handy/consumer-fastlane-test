@@ -1,4 +1,4 @@
-package com.handybook.handybook.booking.ui.widget;
+package com.handybook.handybook.library.ui.view;
 
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;

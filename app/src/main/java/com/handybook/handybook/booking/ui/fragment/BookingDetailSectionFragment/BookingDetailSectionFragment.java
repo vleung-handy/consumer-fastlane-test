@@ -11,10 +11,10 @@ import com.handybook.handybook.booking.constant.BookingActionButtonType;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.booking.ui.view.BookingActionButton;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionView;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.Utils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

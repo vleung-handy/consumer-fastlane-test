@@ -7,7 +7,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 
 import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.TextUtils;
 import com.stripe.android.model.Card;
 
 public final class CreditCardExpDateInputTextView extends InputTextField {

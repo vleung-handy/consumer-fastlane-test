@@ -22,8 +22,8 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.ui.widget.LabelValueView;
-import com.handybook.handybook.util.UiUtils;
+import com.handybook.handybook.library.ui.view.LabelValueView;
+import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Subscribe;
 

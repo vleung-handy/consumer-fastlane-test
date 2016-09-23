@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.library.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -9,7 +9,7 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.ui.widget.ProgressDialog;
+import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;

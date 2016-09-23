@@ -3,7 +3,7 @@ package com.handybook.handybook.booking.model;
 
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.util.StringUtils;
+import com.handybook.handybook.library.util.StringUtils;
 
 import java.io.Serializable;
 

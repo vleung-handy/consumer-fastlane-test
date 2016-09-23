@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.widget;
+package com.handybook.handybook.library.ui.view;
 
 import android.app.Activity;
 import android.os.Handler;

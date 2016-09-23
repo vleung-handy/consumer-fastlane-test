@@ -9,8 +9,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.util.DateTimeUtils;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.lang.reflect.Type;
 import java.util.Date;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.handybook.handybook.ui.widget.LabelValueView
+<com.handybook.handybook.library.ui.view.LabelValueView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,4 +22,4 @@
         android:textColor="@color/handy_text_black"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"/>
-</com.handybook.handybook.ui.widget.LabelValueView>
+</com.handybook.handybook.library.ui.view.LabelValueView>

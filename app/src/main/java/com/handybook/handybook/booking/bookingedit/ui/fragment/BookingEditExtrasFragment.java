@@ -22,7 +22,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.widget.LabelValueView;
+import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashSet;

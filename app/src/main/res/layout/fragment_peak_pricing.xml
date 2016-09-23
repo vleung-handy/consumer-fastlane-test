@@ -81,7 +81,7 @@
 
             </RelativeLayout>
 
-            <com.handybook.handybook.ui.widget.ViewPager
+            <com.handybook.handybook.library.ui.view.ViewPager
                 android:id="@+id/pager"
                 android:layout_below="@id/date_layout"
                 android:layout_width="match_parent"

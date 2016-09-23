@@ -13,7 +13,7 @@ import android.support.annotation.Nullable;
 
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
-import com.handybook.handybook.util.ValidationUtils;
+import com.handybook.handybook.library.util.ValidationUtils;
 
 import java.util.List;
 

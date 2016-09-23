@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

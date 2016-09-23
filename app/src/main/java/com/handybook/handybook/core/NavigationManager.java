@@ -11,7 +11,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.PropertiesReader;
+import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;

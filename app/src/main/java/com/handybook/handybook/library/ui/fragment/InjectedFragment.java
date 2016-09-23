@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.library.ui.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -20,8 +20,8 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.ui.widget.ProgressDialog;
-import com.handybook.handybook.util.ValidationUtils;
+import com.handybook.handybook.library.ui.view.ProgressDialog;
+import com.handybook.handybook.library.util.ValidationUtils;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;

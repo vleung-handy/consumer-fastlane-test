@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.Utils;
 
 public class PushActionHandler
 {

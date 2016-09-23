@@ -3,6 +3,7 @@ package com.handybook.handybook.data;
 import android.content.Context;
 
 import com.handybook.handybook.core.EnvironmentModifier;
+import com.handybook.handybook.library.util.PropertiesReader;
 
 import java.util.Properties;
 

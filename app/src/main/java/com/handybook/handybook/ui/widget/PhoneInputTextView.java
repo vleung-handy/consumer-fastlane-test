@@ -5,7 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 public final class PhoneInputTextView extends InputTextField {
     private String countryCode;

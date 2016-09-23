@@ -1,4 +1,4 @@
-package com.handybook.handybook.booking.ui.view;
+package com.handybook.handybook.library.ui.view;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

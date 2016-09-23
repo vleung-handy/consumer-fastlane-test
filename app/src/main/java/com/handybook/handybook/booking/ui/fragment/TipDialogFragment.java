@@ -13,7 +13,7 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.ui.widget.HandySnackbar;
 import com.squareup.otto.Subscribe;
 

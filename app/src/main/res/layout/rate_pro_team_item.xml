@@ -16,7 +16,7 @@
         tools:text="@string/rate_dialog_pro_match_title_add"
         />
 
-    <com.handybook.handybook.ui.view.ImageToggleButton
+    <com.handybook.handybook.library.ui.view.ImageToggleButton
         android:id="@+id/toggle_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_toggle_button_height"

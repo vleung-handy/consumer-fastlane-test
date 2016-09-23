@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.Utils;
 
 /**
  * Copied over from the provider app

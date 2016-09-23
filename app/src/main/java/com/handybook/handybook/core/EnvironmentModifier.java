@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.data.PropertiesReader;
+import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.squareup.otto.Bus;

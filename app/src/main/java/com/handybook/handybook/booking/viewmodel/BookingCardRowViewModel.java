@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.util.DateTimeUtils;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;

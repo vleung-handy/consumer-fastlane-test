@@ -9,7 +9,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 /**
  * Customized TabLayout from support library that sets the typeface

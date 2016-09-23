@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.library.ui.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import android.webkit.WebView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.HandyWebViewClient;
-import com.handybook.handybook.ui.view.HandyWebView;
+import com.handybook.handybook.library.ui.view.HandyWebView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

@@ -7,7 +7,7 @@
              android:background="@color/transparent"
     >
 
-    <com.handybook.handybook.booking.ui.view.SwipeableViewPager
+    <com.handybook.handybook.library.ui.view.SwipeableViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

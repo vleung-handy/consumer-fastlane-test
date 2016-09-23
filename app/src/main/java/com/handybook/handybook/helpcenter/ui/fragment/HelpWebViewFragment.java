@@ -18,8 +18,8 @@ import com.handybook.handybook.core.HandyWebViewClient;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.view.HandyWebView;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.squareup.otto.Subscribe;
 

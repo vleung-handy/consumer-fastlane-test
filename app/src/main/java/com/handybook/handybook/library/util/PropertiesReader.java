@@ -1,4 +1,4 @@
-package com.handybook.handybook.data;
+package com.handybook.handybook.library.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;

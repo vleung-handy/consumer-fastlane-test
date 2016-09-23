@@ -24,7 +24,7 @@
         tools:visibility="visible"
         />
 
-    <com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout
+    <com.handybook.handybook.library.ui.view.DragAndDropVerticalLinearLayout
         android:id="@+id/preferences_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +50,6 @@
             app:prefsText="Do the things French people do."
             app:prefsTitle="Le Test Due"
             />
-    </com.handybook.handybook.booking.ui.widget.DragAndDropVerticalLinearLayout>
+    </com.handybook.handybook.library.ui.view.DragAndDropVerticalLinearLayout>
 
 </LinearLayout>

@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.util.DateTimeUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.Date;
 import java.util.Locale;

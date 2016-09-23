@@ -13,7 +13,7 @@
         android:text="@string/cancel_recurring_booking_title"
         />
 
-    <com.handybook.handybook.ui.view.HandyWebView
+    <com.handybook.handybook.library.ui.view.HandyWebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

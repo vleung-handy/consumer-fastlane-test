@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.view.HandyWebView;
+import com.handybook.handybook.library.ui.fragment.InjectedDialogFragment;
+import com.handybook.handybook.library.ui.view.HandyWebView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

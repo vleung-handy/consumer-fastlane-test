@@ -12,7 +12,7 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.util.IOUtils;
+import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Ignore;
 import org.robolectric.Shadows;

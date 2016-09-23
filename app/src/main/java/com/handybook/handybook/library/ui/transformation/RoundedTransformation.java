@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.transformation;
+package com.handybook.handybook.library.ui.transformation;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

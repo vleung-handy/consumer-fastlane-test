@@ -1,4 +1,4 @@
-package com.handybook.handybook.util;
+package com.handybook.handybook.library.util;
 
 import java.util.Map;
 

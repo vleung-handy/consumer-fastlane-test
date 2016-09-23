@@ -14,9 +14,9 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.util.TextUtils;
-import com.handybook.handybook.util.ValidationUtils;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
 
 import java.io.InvalidObjectException;

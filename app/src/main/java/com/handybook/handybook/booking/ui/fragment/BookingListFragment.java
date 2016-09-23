@@ -17,8 +17,8 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.adapter.BookingCardAdapter;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.view.EmptiableRecyclerView;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

@@ -19,8 +19,8 @@ import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.ui.activity.LoginActivity;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.widget.LeftIconButton;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.LeftIconButton;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

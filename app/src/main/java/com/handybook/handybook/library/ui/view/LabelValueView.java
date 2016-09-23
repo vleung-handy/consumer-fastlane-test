@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.widget;
+package com.handybook.handybook.library.ui.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.view.InjectedLinearLayout;
 
 import butterknife.Bind;
 

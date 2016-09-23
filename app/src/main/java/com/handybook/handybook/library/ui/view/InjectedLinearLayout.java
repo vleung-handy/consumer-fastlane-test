@@ -1,26 +1,27 @@
-package com.handybook.handybook.ui.view;
+package com.handybook.handybook.library.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import butterknife.ButterKnife;
 
-public class InjectedRelativeLayout extends RelativeLayout
+public class InjectedLinearLayout extends LinearLayout
 {
-    public InjectedRelativeLayout(final Context context)
+    //TODO: can we consolidate this with InjectedRelativeLayout?
+    public InjectedLinearLayout(final Context context)
     {
         super(context);
     }
 
-    public InjectedRelativeLayout(final Context context, final AttributeSet attrs)
+    public InjectedLinearLayout(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public InjectedRelativeLayout(final Context context, final AttributeSet attrs, final int defStyle)
+    public InjectedLinearLayout(final Context context, final AttributeSet attrs, final int defStyle)
     {
         super(context, attrs, defStyle);
     }

@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.library.ui.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

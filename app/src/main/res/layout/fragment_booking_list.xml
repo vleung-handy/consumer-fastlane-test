@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         >
 
-        <com.handybook.handybook.ui.view.EmptiableRecyclerView
+        <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
             android:id="@+id/fragment_booking_list_booking_card_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,7 +26,7 @@
             tools:listitem="@layout/layout_card_booking"
             android:clipToPadding="false"
             >
-        </com.handybook.handybook.ui.view.EmptiableRecyclerView>
+        </com.handybook.handybook.library.ui.view.EmptiableRecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

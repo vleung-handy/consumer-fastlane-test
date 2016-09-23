@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.util.Utils;
+import com.handybook.handybook.library.util.Utils;
 
 public final class MenuButton extends ImageButton
 {

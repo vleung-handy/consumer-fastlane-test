@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.view.InjectedLinearLayout;
+import com.handybook.handybook.library.ui.view.InjectedLinearLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;

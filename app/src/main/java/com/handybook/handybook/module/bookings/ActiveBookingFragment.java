@@ -38,12 +38,12 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.MapPlaceholderView;
 import com.handybook.handybook.ui.view.MissingLocationView;
 import com.handybook.handybook.util.BookingUtil;
-import com.handybook.handybook.util.DateTimeUtils;
-import com.handybook.handybook.util.PlayServicesUtils;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.PlayServicesUtils;
 
 import java.util.Date;
 

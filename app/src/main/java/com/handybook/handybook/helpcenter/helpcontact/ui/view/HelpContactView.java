@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNode;
-import com.handybook.handybook.ui.view.InjectedRelativeLayout;
+import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.ui.widget.BasicInputTextView;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FirstNameInputTextView;

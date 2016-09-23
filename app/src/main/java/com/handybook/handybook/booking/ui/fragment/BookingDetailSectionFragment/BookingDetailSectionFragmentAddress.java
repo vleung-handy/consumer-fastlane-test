@@ -8,7 +8,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFragment
 {

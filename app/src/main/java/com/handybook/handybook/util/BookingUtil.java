@@ -12,6 +12,9 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingService;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserRecurringBooking;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.Utils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -169,7 +172,7 @@ public class BookingUtil
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
         final String start = DateTimeUtils.formatDate(booking.getStartDate(),
-                SUBTITLE_DATE_FORMAT, booking.getBookingTimezone()).toLowerCase();
+                                                      SUBTITLE_DATE_FORMAT, booking.getBookingTimezone()).toLowerCase();
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(booking.getStartDate());
