@@ -106,7 +106,6 @@ import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
-import com.handybook.handybook.data.GooglePlacesService;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.data.SecurePreferences;
@@ -121,6 +120,7 @@ import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.autocomplete.AddressAutoCompleteManager;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.bookings.HistoryFragment;
@@ -343,27 +343,6 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final GooglePlacesService providesGooglePlacesServices()
-    {
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(mContext.getString(R.string.google_api_endpoint))
-                .setClient(new OkClient(new OkHttpClient()))
-                .setConverter(new GsonConverter(new GsonBuilder().create()))
-                .setRequestInterceptor(new RequestInterceptor()
-                {
-                    @Override
-                    public void intercept(RequestFacade request)
-                    {
-                        request.addQueryParam("key", mContext.getString(R.string.jia_google_api_web_key));
-                    }
-                })
-                .build();
-
-        return adapter.create(GooglePlacesService.class);
-    }
-
-    @Provides
-    @Singleton
     final HandyRetrofitService provideHandyService(
             final HandyRetrofitEndpoint endpoint,
             final UserManager userManager
@@ -558,6 +537,16 @@ public final class ApplicationModule
     )
     {
         return new BookingManager(bus, securePreferencesManager, dataManager);
+    }
+
+    @Provides
+    @Singleton
+    final AddressAutoCompleteManager provideAddressAutoCompleteManager(
+            final Bus bus,
+            final HandyRetrofitService service
+    )
+    {
+        return new AddressAutoCompleteManager(bus, service);
     }
 
     @Provides

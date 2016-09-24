@@ -22,10 +22,10 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.GooglePlacesService;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.module.autocomplete.PlacePrediction;
+import com.handybook.handybook.module.autocomplete.AddressAutoCompleteManager;
+import com.handybook.handybook.module.autocomplete.AddressPrediction;
 import com.handybook.handybook.module.autocomplete.PlacesAutoCompleteAdapter;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
@@ -72,7 +72,7 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
     Toolbar mToolbar;
 
     @Inject
-    GooglePlacesService mPlacesService;
+    AddressAutoCompleteManager mDataManager;
 
     private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
 
@@ -130,15 +130,15 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
 
         mButtonNext.setOnClickListener(nextClicked);
 
-        mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.auto_complete_list_item, mPlacesService);
+        mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.auto_complete_list_item, mDataManager);
         mTextStreet.setAdapter(mAutoCompleteAdapter);
         mTextStreet.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                PlacePrediction prediction = mAutoCompleteAdapter.getPrediction(position);
-                mTextStreet.setText(prediction.getAddress());
+                AddressPrediction prediction = mAutoCompleteAdapter.getPrediction(position);
+                mTextStreet.setText(prediction.getStreetAddress());
                 mTextCity.setText(prediction.getCity());
                 mTextState.setText(prediction.getState());
 

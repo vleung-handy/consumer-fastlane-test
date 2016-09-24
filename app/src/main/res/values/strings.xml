@@ -2,8 +2,6 @@
 <resources>
     <string name="app_name">Handy</string>
     <string name="home">Home</string>
-    <!--FIXME: Remove this and use something from Handy-->
-    <string name="jia_google_api_web_key">AIzaSyAHF9HgE7xMYv0oPExv9mNUxKnOTtfTOAc</string>
     <string name="make_a_booking">Make a Booking</string>
     <string name="help">Help</string>
     <string name="promotions">Promotions</string>

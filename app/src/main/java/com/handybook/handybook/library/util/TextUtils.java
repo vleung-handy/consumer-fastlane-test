@@ -29,6 +29,15 @@ public final class TextUtils
         public static final String CIRCULAR_MEDIUM = "CircularStd-Medium.otf";
     }
 
+    /**
+     * Return true if there is nothing meaningful in the string (null, empty string, string with
+     * white spaces)
+     * @param text
+     * @return
+     */
+    public static boolean isBlank(final String text) {
+        return android.text.TextUtils.isEmpty(text) || text.trim().length() == 0;
+    }
 
     private static final Hashtable<String, Typeface> cache = new Hashtable<>();
 

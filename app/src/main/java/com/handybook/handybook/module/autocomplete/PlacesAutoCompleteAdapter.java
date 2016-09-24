@@ -6,8 +6,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.handybook.handybook.data.GooglePlacesService;
-
 import java.util.List;
 
 /**
@@ -17,20 +15,20 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
     private static final String TAG = PlacesAutoCompleteAdapter.class.getName();
 
     List<String> mPredictionValues;
-    List<PlacePrediction> mPredictions;
+    List<AddressPrediction> mPredictions;
 
     Context mContext;
     int mResource;
 
-    GooglePlacesService mPlaceService;
+    AddressAutoCompleteManager mDataManager;
 
-    public PlacesAutoCompleteAdapter(Context context, int resource, GooglePlacesService placesService)
+    public PlacesAutoCompleteAdapter(final Context context, final int resource, final AddressAutoCompleteManager dataManager)
     {
         super(context, resource);
 
         mContext = context;
         mResource = resource;
-        mPlaceService = placesService;
+        mDataManager = dataManager;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
         return mPredictionValues.get(position);
     }
 
-    public PlacePrediction getPrediction(int position)
+    public AddressPrediction getPrediction(int position)
     {
         return mPredictions.get(position);
     }
@@ -63,10 +61,9 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null)
                 {
-                    PlacePredictionResponse response = mPlaceService.getAddressPrediction(constraint.toString());
-                    response.filter();
+                    AddressPredictionResponse response = mDataManager.getAddressPrediction(constraint.toString());
                     mPredictions = response.predictions;
-                    mPredictionValues = response.getDescriptions();
+                    mPredictionValues = response.getFullAddresses();
                     filterResults.values = mPredictionValues;
                     filterResults.count = mPredictionValues.size();
                 }

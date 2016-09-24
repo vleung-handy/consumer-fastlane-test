@@ -18,6 +18,7 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.module.autocomplete.AddressPredictionResponse;
 import com.handybook.handybook.module.proteam.model.ProTeamEditWrapper;
 
 import java.util.Date;
@@ -55,6 +56,9 @@ public interface HandyRetrofitService
             @Body EditAddressRequest editAddressRequest,
             HandyRetrofitCallback cb
     );
+
+    @GET("/autocomplete_address")
+    AddressPredictionResponse getAddressPrediction(@Query("q") String word);
 
     /**
      * @param bookingRecurringId Booking.recurringId, which is the id associated with a recurring
