@@ -39,11 +39,12 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.module.chat.LayerConversationActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -119,6 +120,12 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
             mServices = (ArrayList<Service>) savedInstanceState.getSerializable(STATE_SERVICES);
         }
+    }
+
+    @OnClick(R.id.image_chat)
+    public void chatClicked() {
+        Intent intent = new Intent(getActivity(), LayerConversationActivity.class);
+        startActivity(intent);
     }
 
     @Override
