@@ -377,7 +377,8 @@
     <string name="cd_share_icon">Open Share Screen</string>
 
     <!-- Content Description for ImageViews -->
-    <string name="pro_team_star">Star</string>
+    <string name="cd.pro_team_star">Star</string>
+    <string name="cd.free_cleanings_gift">Gift</string>
 
     <!--For Active Booking-->
     <string name="your_next_booking">Your Next Booking</string>
