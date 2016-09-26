@@ -431,4 +431,7 @@
     <string name="account.update_password">Update Password</string>
     <string name="account.update_plan_address">Update booking plan address</string>
 
+    <!-- Nav Drawer -->
+    <string name="nav.get_free_cleanings">Get free cleanings!</string>
+    <string name="nav.invite_friends">Invite Friends</string>
 </resources>

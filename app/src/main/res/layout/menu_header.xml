@@ -1,19 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:paddingTop="@dimen/default_padding_double"
+<!-- Padding top required for the following to put it under status bar(24dp from AOSP)
+   https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/res/res/values/dimens.xml) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/handy_blue"
+              android:orientation="vertical"
+              android:paddingTop="@dimen/default_padding_medium"
     >
     <!-- We want a little button/text to show the current version/environment of the handy app -->
     <Button
         android:id="@+id/env_button"
         style="@style/Button.White"
-        android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@color/transparent"
+        android:paddingTop="@dimen/default_padding_double"
         android:text="@string/env_format"
         android:textSize="@dimen/default_text_size"
         />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/free_cleanings_nav_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin_half"
+        android:background="@color/handy_blue"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/nav.gift_icon_width_height"
+            android:layout_height="@dimen/nav.gift_icon_width_height"
+            android:layout_margin="@dimen/default_margin"
+            android:src="@drawable/ic_gift"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/nav.free_cleanings_invite_margin"
+            android:layout_marginTop="@dimen/nav.free_cleanings_invite_margin"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav.get_free_cleanings"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large"
+                />
+
+            <TextView
+                style="@style/TextView.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_quarter"
+                android:text="@string/nav.invite_friends"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_xsmall"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
