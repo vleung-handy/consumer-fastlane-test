@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:id="@+id/addr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+            android:id="@+id/text_street"
+            android:width="0dp"
+            android:layout_weight="2"
+            android:dropDownWidth="match_parent"
+            style="@style/EditText.StreetAddress"
+            />
+
+        <EditText
+            android:id="@+id/text_other"
+            android:width="0dp"
+            android:layout_weight="3"
+            style="@style/EditText.OtherAddress"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/city_state_zip_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+            android:id="@+id/text_city"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            style="@style/EditText.StreetAddress.City"
+            />
+
+        <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+            android:id="@+id/text_state"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/EditText.StreetAddress.State"
+            />
+
+        <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+            android:id="@+id/text_postal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:enabled="false"
+            style="@style/EditText.StreetAddress.Postal"
+            />
+
+    </LinearLayout>
+</LinearLayout>

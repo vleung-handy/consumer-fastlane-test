@@ -1,6 +1,5 @@
 package com.handybook.handybook.booking.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,10 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -24,14 +20,9 @@ import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.module.autocomplete.AddressAutoCompleteManager;
-import com.handybook.handybook.module.autocomplete.AddressPrediction;
-import com.handybook.handybook.module.autocomplete.PlacesAutoCompleteAdapter;
+import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
-import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,21 +38,6 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
     @Bind(R.id.text_fullname)
     FullNameInputTextView mTextFullName;
 
-    @Bind(R.id.text_street)
-    StreetAddressInputTextView mTextStreet;
-
-    @Bind(R.id.text_city)
-    StreetAddressInputTextView mTextCity;
-
-    @Bind(R.id.text_state)
-    StreetAddressInputTextView mTextState;
-
-    @Bind(R.id.text_postal)
-    StreetAddressInputTextView mTextPostal;
-
-    @Bind(R.id.text_other)
-    EditText mTextOther;
-
     @Bind(R.id.text_phone_prefix)
     TextView mTextPhonePrefix;
 
@@ -71,10 +47,8 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Inject
-    AddressAutoCompleteManager mDataManager;
+    AutoCompleteAddressFragment mAutoCompleteFragment;
 
-    private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
 
     public static BookingAddressFragment newInstance()
     {
@@ -103,6 +77,9 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();
 
+        mAutoCompleteFragment = (AutoCompleteAddressFragment)
+                getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
@@ -112,13 +89,10 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
             mTextPhonePrefix.setText(user.getPhonePrefix());
 
             final User.Address addr = user.getAddress();
-            if (addr != null)
+            if (addr != null && mAutoCompleteFragment != null)
             {
-                mTextStreet.setText(addr.getAddress1());
-                mTextOther.setText(addr.getAddress2());
-                mTextCity.setText(addr.getCity());
-                mTextState.setText(addr.getState());
-                mTextPostal.setText(addr.getZip());
+                //FIXME: JIA: verify that this bindable
+                mAutoCompleteFragment.bindAddress(addr);
             }
         }
         else
@@ -130,36 +104,16 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
 
         mButtonNext.setOnClickListener(nextClicked);
 
-        mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.auto_complete_list_item, mDataManager);
-        mTextStreet.setAdapter(mAutoCompleteAdapter);
-        mTextStreet.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                AddressPrediction prediction = mAutoCompleteAdapter.getPrediction(position);
-                mTextStreet.setText(prediction.getStreetAddress());
-                mTextCity.setText(prediction.getCity());
-                mTextState.setText(prediction.getState());
-
-                mMainContainer.requestFocus();
-
-                hideKeyboard();
-            }
-        });
-
         return view;
     }
 
     private boolean validateFields()
     {
-        boolean validate = true;
+        boolean validate = mAutoCompleteFragment.validateFields();
+
         if (!mTextFullName.validate()) { validate = false; }
-        if (!mTextStreet.validate()) { validate = false; }
         if (!mTextPhone.validate()) { validate = false; }
-        if (!mTextCity.validate()) { validate = false; }
-        if (!mTextState.validate()) { validate = false; }
-        if (!mTextPostal.validate()) { validate = false; }
+
         return validate;
     }
 
@@ -175,25 +129,19 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
                 final BookingTransaction transaction = bookingManager.getCurrentTransaction();
                 transaction.setFirstName(mTextFullName.getFirstName());
                 transaction.setLastName(mTextFullName.getLastName());
-                transaction.setAddress1(mTextStreet.getAddress());
-                transaction.setAddress2(mTextOther.getText().toString());
                 transaction.setPhone(mTextPhone.getPhoneNumber());
+
+                if (mAutoCompleteFragment != null)
+                {
+                    transaction.setAddress1(mAutoCompleteFragment.textStreet.getAddress());
+                    transaction.setAddress2(mAutoCompleteFragment.textOther.getText().toString());
+                }
 
                 final Intent intent = new Intent(getActivity(), BookingPaymentActivity.class);
                 startActivity(intent);
             }
         }
     };
-
-
-    public void hideKeyboard()
-    {
-        if (getActivity() != null && getView() != null)
-        {
-            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-        }
-    }
 
     @Override
     public void onConnectionFailed(@NonNull final ConnectionResult connectionResult)

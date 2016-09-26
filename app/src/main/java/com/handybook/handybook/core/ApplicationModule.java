@@ -121,6 +121,7 @@ import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.autocomplete.AddressAutoCompleteManager;
+import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.bookings.HistoryFragment;
@@ -178,6 +179,7 @@ import retrofit.converter.GsonConverter;
         UpcomingBookingsFragment.class,
         HistoryFragment.class,
         ActiveBookingFragment.class,
+        AutoCompleteAddressFragment.class,
         BookingListFragment.class,
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,

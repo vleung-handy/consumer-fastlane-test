@@ -14,6 +14,7 @@ public class AddressPredictionResponse implements Serializable
     @SerializedName("results")
     public ArrayList<AddressPrediction> predictions;
 
+    //FIXME: JIA: make sure to use this to filter out ZIP
     public void filter(String zipToFilter)
     {
         if (TextUtils.isBlank(zipToFilter)) {
