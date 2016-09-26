@@ -8,18 +8,6 @@
               android:orientation="vertical"
               android:paddingTop="@dimen/default_padding_medium"
     >
-    <!-- We want a little button/text to show the current version/environment of the handy app -->
-    <Button
-        android:id="@+id/env_button"
-        style="@style/Button.White"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/transparent"
-        android:paddingTop="@dimen/default_padding_double"
-        android:text="@string/env_format"
-        android:textSize="@dimen/default_text_size"
-        />
 
     <LinearLayout
         android:id="@+id/free_cleanings_nav_header"
@@ -67,5 +55,18 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <!-- We want a little button/text to show the current version/environment of the handy app -->
+    <Button
+        android:id="@+id/env_button"
+        style="@style/Button.White"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:paddingTop="@dimen/default_padding_double"
+        android:text="@string/env_format"
+        android:textSize="@dimen/default_text_size"
+        />
 
 </LinearLayout>
