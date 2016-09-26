@@ -56,7 +56,7 @@ public class DeepLinkIntentProvider
     {
         Intent intent = new Intent(context, ServiceCategoriesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;
     }
 
@@ -65,7 +65,7 @@ public class DeepLinkIntentProvider
         Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(BundleKeys.ACTIVITY, destinationClass.getName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;
     }
 

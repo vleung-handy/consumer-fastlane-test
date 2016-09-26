@@ -35,7 +35,7 @@
                 android:id="@+id/active_booking_pro_location_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
+                android:layout_gravity="bottom|end"
                 android:layout_marginRight="@dimen/default_margin_half"
                 android:layout_marginBottom="@dimen/default_margin_half"
                 tools:text="@string/pro_location_time_formatted"
@@ -194,7 +194,7 @@
                 android:textColor="@color/handy_tertiary_gray"
                 android:textSize="@dimen/text_size_medium"
                 android:paddingLeft="@dimen/default_padding"
-                android:gravity="left|center_vertical"
+                android:gravity="start|center_vertical"
                 />
         </FrameLayout>
     </LinearLayout>

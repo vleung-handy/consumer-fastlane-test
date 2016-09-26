@@ -76,36 +76,6 @@ public class ProTeam implements Parcelable
                 .fromJson(json, ProTeam.class);
     }
 
-
-    public boolean hasAvailableProsInCategory(@Nullable final ProTeamCategoryType proTeamCategoryType)
-    {
-        if (proTeamCategoryType == null)
-        {
-            return false;
-        }
-        final ProTeamCategory category;
-        switch (proTeamCategoryType) // Which category are we dealing with?
-        {
-            case CLEANING:
-                category = mCleaning;
-                break;
-            case HANDYMEN:
-                category = mHandymen;
-                break;
-            default:
-                category = null;
-        }
-        if (category == null)
-        {
-            return false;
-        }
-        if (category.getIndifferent() == null)
-        {
-            return false;
-        }
-        return !category.getIndifferent().isEmpty();
-    }
-
     public int getCount(
             @NonNull final ProTeamCategoryType proTeamCategoryType,
             ProviderMatchPreference preference
@@ -238,6 +208,4 @@ public class ProTeam implements Parcelable
             return true;
         }
     }
-
-
 }

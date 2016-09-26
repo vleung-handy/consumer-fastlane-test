@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rel_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/cell_booking">
+<RelativeLayout android:id="@+id/rel_layout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cell_booking"
+    >
 
-    <TextView android:id="@+id/title_text"
+    <TextView
+        android:id="@+id/title_text"
+        style="@style/TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:freezesText="false"
+        android:gravity="center"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:gravity="center"
-        android:text="Title"
-        android:freezesText="false"
-        style="@style/TextView" />
+        android:text="@string/title"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_text"
+        android:animateLayoutChanges="true"
         android:orientation="vertical"
-        android:animateLayoutChanges="true">
+        >
 
         <LinearLayout
             android:id="@+id/options_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            />
 
-        <TextView android:id="@+id/info_text"
+        <TextView
+            android:id="@+id/info_text"
+            style="@style/TextView.BookingOptionInfo"
             android:layout_marginBottom="16dp"
             android:text="Info"
-            style="@style/TextView.BookingOptionInfo" />
+            />
 
 
-        <TextView android:id="@+id/warning_text"
+        <TextView
+            android:id="@+id/warning_text"
+            style="@style/TextView.BookingOptionInfo"
             android:layout_marginBottom="16dp"
             android:text="Warning"
-            style="@style/TextView.BookingOptionInfo" />
+            />
 
     </LinearLayout>
 

@@ -183,12 +183,11 @@ public class BookingUtil
         final String end = DateTimeUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT,
                 booking.getBookingTimezone()).toLowerCase();
 
-        final String subtitle = context.getString(
+        return context.getString(
                 R.string.booking_card_row_time_and_duration,
                 start,
                 end
         );
-        return subtitle;
     }
 
     /**

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
@@ -25,7 +26,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingCancelOptionsFragment extends BookingFlowFragment {
+public final class BookingCancelOptionsFragment extends BookingFlowFragment
+{
     public static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
     public static final String EXTRA_NOTICE = "com.handy.handy.EXTRA_NOTICE";
     public static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -43,9 +45,12 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
     @Bind(R.id.notice_text)
     TextView noticeText;
 
-    public static BookingCancelOptionsFragment newInstance(final String notice,
-                                                           final ArrayList<String> options,
-                                                           final Booking booking) {
+    public static BookingCancelOptionsFragment newInstance(
+            final String notice,
+            final ArrayList<String> options,
+            final Booking booking
+    )
+    {
         final BookingCancelOptionsFragment fragment = new BookingCancelOptionsFragment();
         final Bundle args = new Bundle();
 
@@ -58,7 +63,8 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState) {
+    public final void onCreate(final Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         notice = getArguments().getString(EXTRA_NOTICE);
         optionsList = getArguments().getStringArrayList(EXTRA_OPTIONS);
@@ -66,10 +72,17 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
+    {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_cancel_options, container, false);
+                                       .inflate(
+                                               R.layout.fragment_booking_cancel_options,
+                                               container,
+                                               false
+                                       );
 
         ButterKnife.bind(this, view);
 
@@ -78,13 +91,17 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
         options.setOptions(optionsList.toArray(new String[optionsList.size()]));
         options.setDefaultValue(Integer.toString(optionIndex));
 
-        final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(getActivity(),
-                options, optionUpdated);
+        final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
+                getActivity(),
+                options,
+                optionUpdated
+        );
 
         optionsView.hideTitle();
         optionsLayout.addView(optionsView, 0);
 
-        if (notice != null && notice.length() > 0) {
+        if (notice != null && notice.length() > 0)
+        {
             noticeText.setText(notice);
             noticeText.setVisibility(View.VISIBLE);
         }
@@ -95,87 +112,116 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment {
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState) {
+    public final void onSaveInstanceState(final Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_OPTION_INDEX, optionIndex);
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated
-            = new BookingOptionsView.OnUpdatedListener() {
+            = new BookingOptionsView.OnUpdatedListener()
+    {
         @Override
-        public void onUpdate(final BookingOptionsView view) {
+        public void onUpdate(final BookingOptionsView view)
+        {
             optionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
         }
 
         @Override
-        public void onShowChildren(final BookingOptionsView view,
-                                   final String[] items) {
+        public void onShowChildren(
+                final BookingOptionsView view,
+                final String[] items
+        )
+        {
         }
 
         @Override
-        public void onHideChildren(final BookingOptionsView view,
-                                   final String[] items) {
+        public void onHideChildren(
+                final BookingOptionsView view,
+                final String[] items
+        )
+        {
         }
     };
 
-    private View.OnClickListener cancelClicked = new View.OnClickListener() {
+    private View.OnClickListener cancelClicked = new View.OnClickListener()
+    {
         @Override
-        public void onClick(final View v) {
+        public void onClick(final View v)
+        {
             disableInputs();
             progressDialog.show();
 
             final User user = userManager.getCurrentUser();
 
             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                    BookingDetailsLog.EventType.SUBMITTED,
-                    booking.getId()))
+                             BookingDetailsLog.EventType.SUBMITTED,
+                             booking.getId()
+                     ))
             );
 
-            dataManager.cancelBooking(
-                    booking.getId(),
-                    optionIndex,
-                    user.getId(),
-                    new DataManager.Callback<String>() {
-                @Override
-                public void onSuccess(final String message) {
-                    bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                            BookingDetailsLog.EventType.SUCCESS,
-                            booking.getId()
-                    )));
+            if (user != null)
+            {
+                dataManager.cancelBooking(
+                        booking.getId(),
+                        optionIndex,
+                        user.getId(),
+                        new DataManager.Callback<String>()
+                        {
+                            @Override
+                            public void onSuccess(final String message)
+                            {
+                                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                                        BookingDetailsLog.EventType.SUCCESS,
+                                        booking.getId()
+                                )));
 
-                    if (!allowCallbacks)
-                    {
-                        return;
-                    }
-                    enableInputs();
-                    progressDialog.dismiss();
+                                if (!allowCallbacks)
+                                {
+                                    return;
+                                }
+                                enableInputs();
+                                progressDialog.dismiss();
 
-                    if (message != null && !message.isEmpty()) {
-                        toast.setText(message);
-                        toast.show();
-                    }
+                                if (message != null && !message.isEmpty())
+                                {
+                                    toast.setText(message);
+                                    toast.show();
+                                }
 
-                    getActivity().setResult(ActivityResult.BOOKING_CANCELED, new Intent());
-                    getActivity().finish();
-                }
+                                getActivity().setResult(
+                                        ActivityResult.BOOKING_CANCELED,
+                                        new Intent()
+                                );
+                                getActivity().finish();
+                            }
 
-                @Override
-                public void onError(final DataManager.DataManagerError error) {
-                    bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                            BookingDetailsLog.EventType.ERROR,
-                            booking.getId()))
-                    );
+                            @Override
+                            public void onError(final DataManager.DataManagerError error)
+                            {
+                                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                                                 BookingDetailsLog.EventType.ERROR,
+                                                 booking.getId()
+                                         ))
+                                );
 
-                    if (!allowCallbacks)
-                    {
-                        return;
-                    }
+                                if (!allowCallbacks)
+                                {
+                                    return;
+                                }
 
-                    enableInputs();
-                    progressDialog.dismiss();
-                    dataManagerErrorHandler.handleError(getActivity(), error);
-                }
-            });
+                                enableInputs();
+                                progressDialog.dismiss();
+                                dataManagerErrorHandler.handleError(getActivity(), error);
+                            }
+                        }
+                );
+            }
+            else
+            {
+                Crashlytics.logException(new NullPointerException("User is null"));
+                showToast(R.string.default_error_string);
+            }
         }
     };
 }

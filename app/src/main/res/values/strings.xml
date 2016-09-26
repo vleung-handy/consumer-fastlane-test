@@ -126,16 +126,17 @@
     <string name="job_details">Job Details</string>
     <string name="total">Total</string>
     <string name="what_need_help_with">What do you need \nhelp with?</string>
-    <string name="what_can_help_with">What can we help with?</string>
-    <string name="i_still_need_help">I Still Need Help</string>
     <string name="need_help_question">Need help?</string>
     <string name="contact_us">Contact Us</string>
     <string name="send_message">Send Message</string>
     <string name="contact_form_hint">Tell us how we can help</string>
-    <string name="please_login">Please log in</string>
     <string name="back">Back</string>
     <string name="contact_received">Message sent! \nWe\'ll follow up shortly.</string>
-
+    <string name="label">Label</string>
+    <string name="option">Option</string>
+    <string name="item">Item</string>
+    <string name="amount">Amount</string>
+    <string name="title">Title</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>
@@ -171,7 +172,6 @@
     <string name="email_receipt">Email Receipt</string>
     <string name="updated_preferences">Preferences updated</string>
     <string name="updated_entry_information">Entry information updated</string>
-    <string name="pro_entry_information">How will your professional get in?</string>
     <string name="pro_assignment_pending">Assignment pending</string>
     <string name="booking_detail_pro_assignment_pending_title">You\'re all set!</string>
     <string name="booking_detail_pro_assignment_pending_text">Prefer working with specific pros?</string>
@@ -208,9 +208,9 @@
     <string name="dash_formatted">%1$s \u2013 %2$s</string>
 
     <!--shared between booking edit screens-->
-    <string name="booking_edit_num_hours_formatted">(%1$s hours)</string>
-    <string name="booking_edit_base_hours_formatted">Base time (%1$s hours)</string>
-    <string name="booking_edit_added_hours_formatted">Added time (%1$s hours)</string>
+    <string name="booking_edit_num_hours_formatted">(%1$f hours)</string>
+    <string name="booking_edit_base_hours_formatted">Base time (%1$f hours)</string>
+    <string name="booking_edit_added_hours_formatted">Added time (%1$f hours)</string>
     <string name="booking_edit_extra_hours_formatted">Extras (%1$s hours)</string>
     <string name="booking_edit_positive_price_formatted">+%1$s</string>
     <string name="booking_edit_pro_assignment_warning">If your pro is unable to commit to your edit, another pro will be assigned.</string>
@@ -378,7 +378,6 @@
     <string name="pro_team_star">Star</string>
 
     <!--For Active Booking-->
-    <string name="unable_to_edit_plan">Unable to edit this plan at this time. Please try again later.</string>
     <string name="your_next_booking">Your Next Booking</string>
     <string name="pro_location_time_formatted">recorded at %s</string>
     <string name="upcoming_bookings">Upcoming Bookings</string>
@@ -403,6 +402,8 @@
     <string name="help_center_image">Help Center Image</string>
     <string name="share_banner_title_message">Get your next cleaning free</string>
     <string name="cd.add_to_calendar">Add to calendar</string>
+    <string name="cd.logo">logo</string>
+    <string name="cd.icon">icon</string>
 
     <!-- New Account Screen -->
     <string name="account.credits">Credits</string>

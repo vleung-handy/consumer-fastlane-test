@@ -7,7 +7,7 @@
                 android:paddingBottom="@dimen/default_padding_half"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
     >
 
     <TextView
