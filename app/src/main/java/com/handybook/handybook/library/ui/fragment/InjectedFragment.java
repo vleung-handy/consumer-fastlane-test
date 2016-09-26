@@ -163,7 +163,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     //Each fragment if it requires arguments from the bundles should override this list
     protected List<String> requiredArguments()
     {
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
     protected boolean validateRequiredArguments()

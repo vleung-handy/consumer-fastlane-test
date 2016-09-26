@@ -2,23 +2,21 @@ package com.handybook.handybook.core;
 
 import dagger.ObjectGraph;
 
-public class TestBaseApplication extends BaseApplication {
+public class TestBaseApplication extends BaseApplication
+{
 
     public boolean mIsNewlyLaunched;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
-    protected void createObjectGraph() {
+    protected void createObjectGraph()
+    {
         graph = ObjectGraph.create(new TestApplicationModule(this.getApplicationContext()));
         graph.inject(this);
     }
 
     @Override
-    public void updateUser() {
+    public void updateUser()
+    {
     }
 
     @Override

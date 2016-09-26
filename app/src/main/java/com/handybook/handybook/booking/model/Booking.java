@@ -162,6 +162,7 @@ public class Booking implements Parcelable
         return mActiveBookingLocationStatus;
     }
 
+    @NonNull
     public BookingService getService()
     {
         return mService;
@@ -435,10 +436,10 @@ public class Booking implements Parcelable
         mActiveBookingLocationStatus = (LocationStatus) in.readSerializable();
         mService = in.readParcelable(BookingService.class.getClassLoader());
 
-        mPaymentInfo = new ArrayList<LineItem>();
+        mPaymentInfo = new ArrayList<>();
         in.readTypedList(mPaymentInfo, LineItem.CREATOR);
 
-        mExtrasInfo = new ArrayList<ExtraInfo>();
+        mExtrasInfo = new ArrayList<>();
         in.readTypedList(mExtrasInfo, ExtraInfo.CREATOR);
 
         final boolean[] booleanData = new boolean[5];

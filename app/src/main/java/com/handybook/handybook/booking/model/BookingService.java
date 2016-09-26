@@ -44,6 +44,7 @@ public class BookingService implements Parcelable
         return mMachineName;
     }
 
+    @NonNull
     public BookingService getParent()
     {
         return mParent;
