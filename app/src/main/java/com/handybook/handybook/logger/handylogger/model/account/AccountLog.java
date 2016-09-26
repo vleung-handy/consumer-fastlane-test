@@ -16,6 +16,12 @@ public class AccountLog extends EventLog
         super(eventType, EVENT_CONTEXT);
     }
 
+    /**
+     * Always log when this page is shown.
+     * 1. When you come back from background
+     * 2. When you come to Page shows the first time
+     * 3. When you click away from page, but now you hit back and page is shown again
+     */
     public static class Shown extends AccountLog
     {
         private static final String EVENT_TYPE = "shown";

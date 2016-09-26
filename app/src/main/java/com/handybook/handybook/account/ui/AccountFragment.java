@@ -24,6 +24,9 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
@@ -123,27 +126,44 @@ public class AccountFragment extends InjectedFragment
         });
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //Always log when this page is shown.
+        // 1. When you come back from background
+        // 2. When you come to fragment first time
+        // 3. When you click away from page, but now you hit back and page is shown again
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.Shown()));
+    }
+
     @OnClick(R.id.contact_info_layout)
     public void contactClicked()
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.EditProfileTapped()));
         FragmentUtils.switchToFragment(this, new ContactFragment(), true);
     }
 
     @OnClick(R.id.password_layout)
     public void passwordClicked()
     {
+
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPasswordTapped()));
         FragmentUtils.switchToFragment(this, ProfilePasswordFragment.newInstance(), true);
     }
 
     @OnClick(R.id.payment_method_layout)
     public void paymentClicked()
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPaymentTapped()));
         FragmentUtils.switchToFragment(this, UpdatePaymentFragment.newInstance(), true);
     }
 
     @OnClick(R.id.active_plans_layout)
     public void activePlansClicked()
     {
+        //TODO Sammy: Need the plan count. How to get?
+        //bus.post(new LogEvent.AddLogEvent(new AccountLog.PlanManagementTapped()));
         FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
     }
 
@@ -156,12 +176,14 @@ public class AccountFragment extends InjectedFragment
     @OnClick(R.id.sign_out_button)
     public void signOutClicked()
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutTapped()));
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext())
                 .setMessage(R.string.want_to_log_out)
                 .setPositiveButton(R.string.log_out, new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutConfirmed()));
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
                         //log out of Facebook also
@@ -172,6 +194,7 @@ public class AccountFragment extends InjectedFragment
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutCancelled()));
                         //do nothing if it's canceled
                     }
                 });
