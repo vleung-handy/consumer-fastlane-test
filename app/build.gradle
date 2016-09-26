@@ -86,6 +86,11 @@ ext {
     firebaseVersion = '9.6.1'
 }
 
+
+repositories {
+    maven { url "https://raw.githubusercontent.com/layerhq/releases-android/master/releases/" }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/nineoldandroids-2.2.0.jar')
@@ -115,7 +120,9 @@ dependencies {
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     }
 
-    // Android Support Library
+    compile project(':layer-atlas')
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:support-v4:$supportLibraryVersion"
     compile "com.android.support:support-annotations:$supportLibraryVersion"
@@ -165,6 +172,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    compile 'com.layer.sdk:layer-sdk:0.21.3'
 
     apt 'com.airbnb:deeplinkdispatch-processor:1.5.0'
 
