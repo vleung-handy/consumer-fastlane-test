@@ -1,6 +1,9 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,8 +17,7 @@ import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.constants.SourcePage;
-import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
@@ -39,9 +41,10 @@ public class BookingDetailSectionFragmentProInformation extends
     @Override
     protected int getEntryTitleTextResourceId(Booking booking)
     {
-        return R.string.professional;
+        return R.string.booking_details_pro_info_title;
     }
 
+    //TODO take a closer look at this. how will this work with "manage pro team"
     @Override
     protected int getEntryActionTextResourceId(Booking booking)
     {
@@ -82,11 +85,98 @@ public class BookingDetailSectionFragmentProInformation extends
         }
     }
 
+    /**
+     * hides all the views inside the section view
+     *
+     * except for the action buttons because that is tied to the super class and don't want to touch that
+     * <p>
+     * TODO how do the action buttons get handled?
+     */
+    private void hideAllViews()
+    {
+        getSectionView().setLegacyNoProViewVisible(false);
+        getSectionView().setAssignedProNameTextVisible(false);
+        getSectionView().setAssignedProTeamMatchIndicatorVisible(false);
+        getSectionView().getEntryActionText().setVisibility(View.GONE);
+        getSectionView().getEntryText().setVisibility(View.GONE);
+        getSectionView().getEntryTitle().setVisibility(View.GONE);
+    }
+
+    private void updateAndShowEntryText(@NonNull Booking.ProviderAssignmentInfo providerAssignmentInfo)
+    {
+        if (providerAssignmentInfo.getMainText() == null
+                && providerAssignmentInfo.getSubText() == null) { return; }
+
+        String htmlString = "";
+        if (providerAssignmentInfo.getMainText() != null)
+        {
+            htmlString += "<b>" + providerAssignmentInfo.getMainText() + "</b> ";
+        }
+        htmlString += providerAssignmentInfo.getSubText();
+
+        getSectionView().getEntryText().setText(Html.fromHtml(htmlString));
+        getSectionView().getEntryText().setVisibility(View.VISIBLE);
+    }
+
+    //tODO cleanup
+    private void showAssignedProviderInfo(
+            String providerName,
+            @Nullable Booking.ProviderAssignmentInfo providerAssignmentInfo
+    )
+    {
+        getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
+        getSectionView().setAssignedProNameText(providerName);
+        getSectionView().setAssignedProNameTextVisible(true);
+
+        if (providerAssignmentInfo != null)
+        {
+            if (mConfiguration != null
+                    && mConfiguration.isMyProTeamEnabled()
+                    && providerAssignmentInfo.isProTeamMatch())
+            {
+                getSectionView().setAssignedProTeamMatchIndicatorVisible(true);
+            }
+            updateAndShowEntryText(providerAssignmentInfo);
+        }
+    }
+
+    //TODO cleanup
+    private void showPendingProviderInfo(@Nullable Booking.ProviderAssignmentInfo providerAssignmentInfo)
+    {
+        boolean proTeamEnabled = mConfiguration != null && mConfiguration.isMyProTeamEnabled();
+        //no assigned pro, so don't show the assigned pro layout
+        if (providerAssignmentInfo != null)
+        {
+            getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
+            updateAndShowEntryText(providerAssignmentInfo);
+
+            //TODO investigate how action text is used
+            if (proTeamEnabled)
+            {
+                getSectionView().getEntryActionText().setVisibility(View.VISIBLE);
+                getSectionView().getEntryActionText().setText(getString(R.string.manage_pro_team));
+            }
+        }
+        else if (proTeamEnabled)
+        {
+            //fallback view for when there's no provider assignment info object
+            getSectionView().setLegacyNoProViewVisible(true);
+        }
+        else
+        {
+            //fallback view for when no provider assignment object and pro teams not enabled
+            getSectionView().getEntryText().setVisibility(View.VISIBLE);
+            getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
+            getSectionView().getEntryText().setText(R.string.pro_assignment_pending);
+        }
+    }
 
     @Override
     public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
+
+        hideAllViews();
 
         final Provider pro = booking.getProvider();
         if (userCanLeaveTip(booking))
@@ -96,26 +186,14 @@ public class BookingDetailSectionFragmentProInformation extends
 
         if (booking.hasAssignedProvider())
         {
-            getSectionView().getEntryText().setText(pro.getFirstNameAndLastInitial());
-            getSectionView().getEntryText().setVisibility(View.VISIBLE);
-            getSectionView().noProView.setVisibility(View.GONE);
+            showAssignedProviderInfo(
+                    pro.getFirstNameAndLastInitial(),
+                    booking.getProviderAssignmentInfo()
+            );
         }
         else
         {
-            //If the pro team stuff is enabled, show that, otherwise, fall back to showing
-            //just the text
-            if (mConfiguration != null && mConfiguration.isMyProTeamEnabled())
-            {
-                getSectionView().getEntryText().setVisibility(View.GONE);
-                getSectionView().getEntryTitle().setVisibility(View.GONE);
-                getSectionView().noProView.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                getSectionView().getEntryText().setVisibility(View.VISIBLE);
-                getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
-                getSectionView().getEntryText().setText(R.string.pro_assignment_pending);
-            }
+            showPendingProviderInfo(booking.getProviderAssignmentInfo());
         }
     }
 
@@ -123,13 +201,12 @@ public class BookingDetailSectionFragmentProInformation extends
     protected void setupClickListeners(final Booking booking)
     {
         view.getEntryActionText().setOnClickListener(actionClicked);
-        getSectionView().buttonProTeam.setOnClickListener(new View.OnClickListener()
+        getSectionView().setLegacyNoProViewProTeamButtonClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
             {
-                bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.OpenTapped(SourcePage.BOOKING_DETAILS)));
-                startActivity(new Intent(getActivity(), ProTeamActivity.class));
+                onManageProTeamButtonClicked();
             }
         });
     }
@@ -137,12 +214,24 @@ public class BookingDetailSectionFragmentProInformation extends
     @Override
     protected void onActionClick()
     {
-        TipDialogFragment tipDialogFragment = TipDialogFragment.newInstance(
-                Integer.parseInt(booking.getId()),
-                booking.getProvider().getFirstName());
-        tipDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+        //TODO this is super disgusting as we have no way of knowing which action button is actually clicked. redo this and its associates
+        if (userCanLeaveTip(booking))
+        {
+            TipDialogFragment tipDialogFragment = TipDialogFragment.newInstance(
+                    Integer.parseInt(booking.getId()),
+                    booking.getProvider().getFirstName());
+            tipDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+        }
+        else if (mConfiguration != null && mConfiguration.isMyProTeamEnabled() && !booking.hasAssignedProvider())
+        {
+            onManageProTeamButtonClicked();
+        }
     }
 
+    /*
+    TODO this is risky - could receive this event from another instance B of this fragment A
+    when A's entry action is NOT "leave a tip"
+     */
     @Subscribe
     public void onReceiveTipProSuccess(BookingEvent.ReceiveTipProSuccess event)
     {
@@ -180,6 +269,7 @@ public class BookingDetailSectionFragmentProInformation extends
         return actionButtonTypes;
     }
 
+    //TODO this is confusing, too many layers, should refactor
     @Override
     protected ViewGroup getParentForActionButtonType(String actionButtonType)
     {
@@ -193,6 +283,7 @@ public class BookingDetailSectionFragmentProInformation extends
         return null;
     }
 
+    //TODO this is confusing, too many layers, should refactor
     @Override
     protected View.OnClickListener getOnClickListenerForAction(String actionButtonType)
     {
@@ -211,6 +302,13 @@ public class BookingDetailSectionFragmentProInformation extends
         final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
                 userManager.getCurrentUser().getDefaultTipAmounts();
         return booking.canLeaveTip() && defaultTipAmounts != null && !defaultTipAmounts.isEmpty();
+    }
+
+    private void onManageProTeamButtonClicked()
+    {
+        //start pro team activity
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ProTeamOpenTapped()));
+        startActivity(new Intent(getActivity(), ProTeamActivity.class));
     }
 
     private View.OnClickListener contactPhoneClicked = new View.OnClickListener()

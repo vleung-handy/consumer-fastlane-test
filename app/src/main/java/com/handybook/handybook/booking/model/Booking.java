@@ -94,6 +94,14 @@ public class Booking implements Parcelable
     private Instructions mInstructions;
     @SerializedName("active_booking_status")
     private LocationStatus mActiveBookingLocationStatus;
+    @SerializedName("provider_assignment_state")
+    private ProviderAssignmentInfo mProviderAssignmentInfo;
+
+    public ProviderAssignmentInfo getProviderAssignmentInfo()
+    {
+        return new ProviderAssignmentInfo(); //TODO revert, test only
+//        return mProviderAssignmentInfo;
+    }
 
     public String getLockboxCode()
     {
@@ -284,7 +292,6 @@ public class Booking implements Parcelable
     {
 
     }
-
 
     public final static class ExtrasMachineName
     {
@@ -556,6 +563,73 @@ public class Booking implements Parcelable
             Crashlytics.logException(nfe);
         }
         return longValue;
+    }
+
+    public static class ProviderAssignmentInfo implements Parcelable
+    {
+        public ProviderAssignmentInfo()//TODO revert, TEST ONLY
+        {
+            mMainText = "Requesting members of your pro team.";
+            mSubText = "We'll let you know when a pro accepts your request";
+            mProTeamMatch = true;
+        }
+        @SerializedName("title")
+        private String mMainText;
+        @SerializedName("subtitle")
+        private String mSubText;
+        @SerializedName("pro_team_match")
+        private boolean mProTeamMatch;
+
+        public boolean isProTeamMatch()
+        {
+            return mProTeamMatch;
+        }
+
+        public String getMainText()
+        {
+            return mMainText;
+        }
+
+        public String getSubText()
+        {
+            return mSubText;
+        }
+
+        protected ProviderAssignmentInfo(Parcel in)
+        {
+            mMainText = in.readString();
+            mSubText = in.readString();
+            mProTeamMatch = in.readByte() == 1;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags)
+        {
+            dest.writeString(mMainText);
+            dest.writeString(mSubText);
+            dest.writeByte((byte) (mProTeamMatch ? 1 : 0));
+        }
+
+        @Override
+        public int describeContents()
+        {
+            return 0;
+        }
+
+        public static final Creator<ProviderAssignmentInfo> CREATOR = new Creator<ProviderAssignmentInfo>()
+        {
+            @Override
+            public ProviderAssignmentInfo createFromParcel(Parcel in)
+            {
+                return new ProviderAssignmentInfo(in);
+            }
+
+            @Override
+            public ProviderAssignmentInfo[] newArray(int size)
+            {
+                return new ProviderAssignmentInfo[size];
+            }
+        };
     }
 
     public static class Address implements Parcelable

@@ -435,4 +435,6 @@
     <!-- Nav Drawer -->
     <string name="nav.get_free_cleanings">Get free cleanings!</string>
     <string name="nav.invite_friends">Invite Friends</string>
+
+    <string name="booking_details_pro_info_title">Your Pro</string>
 </resources>

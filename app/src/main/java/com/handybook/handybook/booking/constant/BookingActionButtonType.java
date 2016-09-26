@@ -11,15 +11,22 @@ public enum BookingActionButtonType
     CANCEL(BookingAction.ACTION_CANCEL, R.string.cancel_booking,
             BookingActionButtonStyle.GREY, R.id.action_button_cancel_booking),
     CONTACT_PHONE(BookingAction.ACTION_CONTACT_PHONE, R.string.call,
-            BookingActionButtonStyle.CONTACT, R.id.action_button_contact_phone),
+                  BookingActionButtonStyle.CONTACT,
+                  R.drawable.ic_call_blue,
+                  R.id.action_button_contact_phone
+    ),
     CONTACT_TEXT(BookingAction.ACTION_CONTACT_TEXT, R.string.text,
-            BookingActionButtonStyle.CONTACT, R.id.action_button_contact_text),
+                 BookingActionButtonStyle.CONTACT,
+                 R.drawable.ic_text_blue,
+                 R.id.action_button_contact_text
+    ),
     ;
 
     private String actionName; //TODO: Enum this?
     private int displayNameId;
     private BookingActionButtonStyle style;
     private int accessibilityId;
+    private int mLeftDrawableResourceId;
 
     BookingActionButtonType(String actionName, int displayNameId, BookingActionButtonStyle style, int accessibilityId)
     {
@@ -27,6 +34,17 @@ public enum BookingActionButtonType
         this.displayNameId = displayNameId;
         this.style = style;
         this.accessibilityId = accessibilityId;
+    }
+
+    BookingActionButtonType(String actionName, int displayNameId, BookingActionButtonStyle style, int leftDrawableResourceId, int accessibilityId)
+    {
+        this(actionName, displayNameId, style, accessibilityId);
+        mLeftDrawableResourceId = leftDrawableResourceId;
+    }
+
+    public int getLeftDrawableResourceId()
+    {
+        return mLeftDrawableResourceId;
     }
 
     public int getBackgroundDrawableId()
