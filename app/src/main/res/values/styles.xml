@@ -770,4 +770,20 @@
     </style>
 
     <string name="name">Name</string>
+    <!--20sp-->
+    <style name="ChatHeaderStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/handy_text_gray</item>
+    </style>
+
+    <!--16sp-->
+    <style name="ChatTextStyle" parent="TextAppearance.AppCompat.Subhead">
+    </style>
+
+    <!--12sp-->
+    <style name="ChatStatusStyle" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">@color/handy_text_gray</item>
+        <item name="android:textSize">10sp</item>
+    </style>
 </resources>
