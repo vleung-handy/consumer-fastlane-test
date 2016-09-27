@@ -353,7 +353,7 @@ public class ProTeamFragment extends InjectedFragment implements
     public void onProCheckboxStateChanged(
             @NonNull final ProTeamCategoryType proTeamCategoryType,
             @NonNull final ProTeamPro proTeamPro,
-            @NonNull final boolean isChecked
+            final boolean isChecked
     )
     {
         if (isChecked)
