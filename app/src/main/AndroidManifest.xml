@@ -471,6 +471,11 @@
         </activity>
         <activity android:name=".module.chat.LayerLoginActivity">
         </activity>
+        <activity
+            android:name=".module.chat.builtin.MessagesListActivity"
+            android:theme="@style/HandyTheme"
+            >
+        </activity>
     </application>
 
 </manifest>

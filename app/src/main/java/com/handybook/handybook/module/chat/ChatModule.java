@@ -3,9 +3,13 @@ package com.handybook.handybook.module.chat;
 import android.app.Application;
 import android.util.Log;
 
+import com.handybook.handybook.module.chat.builtin.BaseActivity;
+import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
 import com.layer.atlas.messagetypes.text.TextCellFactory;
 import com.layer.atlas.messagetypes.threepartimage.ThreePartImageUtils;
+import com.layer.atlas.util.picasso.requesthandlers.MessagePartRequestHandler;
 import com.layer.sdk.LayerClient;
+import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 
@@ -21,7 +25,9 @@ import dagger.Provides;
         injects = {
                 LayerChatActivity.class,
                 LayerConversationActivity.class,
-                LayerLoginActivity.class
+                LayerLoginActivity.class,
+                BaseActivity.class,
+                MessagesListActivity.class
         })
 public final class ChatModule
 {
@@ -80,5 +86,14 @@ public final class ChatModule
     @Provides @Singleton
     public LayerHelper providesLayerHelper(LayerClient layerClient, AuthenticationProvider authProvider) {
         return new LayerHelper(layerClient, authProvider, LAYER_APP_ID);
+    }
+
+    @Provides
+    @Singleton
+    public Picasso providesPicasso(LayerClient layerClient)
+    {
+        return new Picasso.Builder(mApplication)
+                .addRequestHandler(new MessagePartRequestHandler(layerClient))
+                .build();
     }
 }

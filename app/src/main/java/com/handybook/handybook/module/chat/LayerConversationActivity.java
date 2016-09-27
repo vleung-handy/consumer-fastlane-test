@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
 import com.layer.sdk.LayerClient;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.query.Predicate;
@@ -26,6 +27,7 @@ public class LayerConversationActivity extends LayerBaseActivity implements Recy
 {
 
     private static final String TAG = LayerConversationActivity.class.getName();
+    private static final int MESSAGE_SYNC_AMOUNT = 20;
 
     @Inject
     LayerClient mLayerClient;
@@ -198,8 +200,14 @@ public class LayerConversationActivity extends LayerBaseActivity implements Recy
     private void addConversationToList(Conversation conversation)
     {
 
+        if (conversation.getHistoricSyncStatus() == Conversation.HistoricSyncStatus.MORE_AVAILABLE)
+        {
+            conversation.syncMoreHistoricMessages(MESSAGE_SYNC_AMOUNT);
+        }
+
+
         //instead of adding to the view, immediately redirect to the chat screen. There should only be one conversation going on
-        Intent intent = new Intent(LayerConversationActivity.this, LayerChatActivity.class);
+        Intent intent = new Intent(LayerConversationActivity.this, MessagesListActivity.class);
         intent.putExtra("conversation_id", conversation.getId());
         startActivity(intent);
 
