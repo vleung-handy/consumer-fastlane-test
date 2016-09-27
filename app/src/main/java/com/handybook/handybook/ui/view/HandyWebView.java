@@ -3,11 +3,9 @@ package com.handybook.handybook.ui.view;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -91,11 +89,6 @@ public class HandyWebView extends WebView //TODO: refactor class name
 
     private void init()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            //Pre-lollipop devices accept third party cookies by default
-            CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);
-        }
         setWebViewClient(new WebViewClient()
         {
             @Override
