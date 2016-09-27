@@ -5,6 +5,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.handybook.handybook.account.model.RecurringPlanWrapper;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
@@ -156,6 +157,15 @@ class EditHoursInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<Book
 class EntryMethodsInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<EntryMethodsInfo>
 {
     EntryMethodsInfoHandyRetroFitCallback(DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class RecurringPlanHandyRetroFitCallback extends TypedHandyRetrofitCallback<RecurringPlanWrapper>
+{
+    RecurringPlanHandyRetroFitCallback(DataManager.Callback callback)
     {
         super(callback);
     }

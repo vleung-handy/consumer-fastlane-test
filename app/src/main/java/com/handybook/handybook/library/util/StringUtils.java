@@ -1,5 +1,9 @@
 package com.handybook.handybook.library.util;
 
+import android.content.Context;
+
+import com.handybook.handybook.R;
+
 public class StringUtils
 {
     public static String capitalizeFirstCharacter(String s)
@@ -16,5 +20,20 @@ public class StringUtils
     public static String replaceWithEmptyIfNull(String input)
     {
         return input == null ? "" : input;
+    }
+
+    public static String getFrequencyText(Context context, int frequency)
+    {
+        switch (frequency)
+        {
+            case 1:
+                return context.getString(R.string.every_week);
+            case 2:
+                return context.getString(R.string.every_two_weeks);
+            case 4:
+                return context.getString(R.string.every_four_weeks);
+            default:
+                return "";
+        }
     }
 }

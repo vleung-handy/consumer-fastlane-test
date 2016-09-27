@@ -8,7 +8,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.account.model.RecurringPlanWrapper;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyReq
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingCoupon;
@@ -290,14 +291,27 @@ public class DataManager
 
     public void editBookingAddress(
             final int bookingId,
-            final BookingEditAddressRequest bookingEditAddressRequest,
+            final EditAddressRequest editAddressRequest,
             final Callback<SuccessWrapper> cb
     )
     {
         mService.editBookingAddress(
                 bookingId,
-                bookingEditAddressRequest,
+                editAddressRequest,
                 new SuccessHandyRetroFitCallback(cb)
+        );
+    }
+
+    public void editBookingPlanAddress(
+            final int planId,
+            final EditAddressRequest editAddressRequest,
+            final Callback<RecurringPlanWrapper> cb
+    )
+    {
+        mService.editBookingPlanAddress(
+                planId,
+                editAddressRequest,
+                new RecurringPlanHandyRetroFitCallback(cb)
         );
     }
 

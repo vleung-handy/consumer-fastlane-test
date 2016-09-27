@@ -18,11 +18,13 @@ public class RecurringBooking implements Serializable
     @SerializedName("next_booking_date")
     private Date mNextBookingDate;
     @SerializedName("address")
-    private String mAddress;
+    private String mFullAddress;
     @SerializedName("frequency")
     private String mFrequency;
     @SerializedName("cancel_url")
     private String mCancelUrl;
+    @SerializedName("address_components")
+    private Booking.Address mAddress;
 
     public int getId()
     {
@@ -49,9 +51,9 @@ public class RecurringBooking implements Serializable
         return mNextBookingDate;
     }
 
-    public String getAddress()
+    public String getFullAddress()
     {
-        return mAddress;
+        return mFullAddress;
     }
 
     public String getFrequency()
@@ -63,4 +65,10 @@ public class RecurringBooking implements Serializable
     {
         return mCancelUrl;
     }
+
+    public Booking.Address getAddress() { return mAddress; }
+
+    public void setFrequency(final String frequency) { mFrequency = frequency; }
+
+    public void setAddress(final Booking.Address address) { mAddress = address; }
 }

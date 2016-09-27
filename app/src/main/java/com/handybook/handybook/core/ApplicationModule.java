@@ -9,6 +9,10 @@ import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.account.ui.ContactFragment;
+import com.handybook.handybook.account.ui.EditPlanAddressFragment;
+import com.handybook.handybook.account.ui.EditPlanFragment;
+import com.handybook.handybook.account.ui.EditPlanFrequencyFragment;
+import com.handybook.handybook.account.ui.PlansFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfileFragment;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
@@ -281,7 +285,10 @@ import retrofit.converter.GsonConverter;
         AccountFragment.class,
         ContactFragment.class,
         ProfilePasswordFragment.class,
-        AccountFragment.class,
+        PlansFragment.class,
+        EditPlanFragment.class,
+        EditPlanAddressFragment.class,
+        EditPlanFrequencyFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

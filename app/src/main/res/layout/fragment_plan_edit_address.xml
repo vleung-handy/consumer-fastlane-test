@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/handy_bg"
+              android:orientation="vertical"
+    >
+
+    <include layout="@layout/toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/default_padding"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <com.handybook.handybook.ui.widget.StreetAddressInputTextView
+                    android:id="@+id/plan_address_street_addr_text"
+                    style="@style/EditText.StreetAddress"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:width="0dp"
+                    />
+
+                <EditText
+                    android:id="@+id/plan_address_apt_addr_text"
+                    style="@style/EditText.OtherAddress"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:width="0dp"
+                    />
+
+            </LinearLayout>
+
+            <com.handybook.handybook.ui.widget.ZipCodeInputTextView
+                android:id="@+id/plan_address_zip_text"
+                style="@style/EditText.Last.ZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/plan_address_update_button"
+            style="@style/Button.Green"
+            android:layout_alignParentBottom="true"
+            android:text="@string/update"
+            android:textAllCaps="false"
+            />
+    </RelativeLayout>
+</LinearLayout>

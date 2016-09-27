@@ -5,12 +5,12 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
@@ -45,7 +45,14 @@ public interface HandyRetrofitService
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(
             @Path("id") int bookingId,
-            @Body BookingEditAddressRequest bookingEditAddressRequest,
+            @Body EditAddressRequest editAddressRequest,
+            HandyRetrofitCallback cb
+    );
+
+    @POST("/recurring_bookings/{id}/update_address")
+    void editBookingPlanAddress(
+            @Path("id") int planId,
+            @Body EditAddressRequest editAddressRequest,
             HandyRetrofitCallback cb
     );
 

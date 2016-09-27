@@ -5,11 +5,14 @@ public class BundleKeys
     public static final String BOOKING = "booking";
     public static final String BOOKING_ID = "booking_id";
     public static final String RECURRING_BOOKING = "recurring_booking";
+    public static final String RECURRING_PLAN = "recurring_plan";
+    public static final String RECURRING_PLANS = "recurring_plans";
     public static final String BOOKING_DATE = "booking_date";
     public static final String BOOKING_SOURCE = "booking_source";
     public static final String BOOKING_PHONE = "booking_phone";
     public static final String CONFIGURATION = "configuration";
     public static final String TARGET_URL = "target_url";
+    public static final String TITLE = "title";
     public static final String BOOKING_STATUS = "booking_status";
     public static final String DATE_EPOCH_TIME = "date_epoch_time";
     public static final String HELP_NODE = "help_node";

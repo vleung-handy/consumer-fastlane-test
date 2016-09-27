@@ -206,6 +206,9 @@
     <!-- Tools -->
     <string name="dash_formatted">%1$s \u2013 %2$s</string>
 
+    <!-- Single Word -->
+    <string name="frequency">Frequency</string>
+
     <!--shared between booking edit screens-->
     <string name="booking_edit_num_hours_formatted">(%1$f hours)</string>
     <string name="booking_edit_base_hours_formatted">Base time (%1$f hours)</string>
@@ -426,5 +429,6 @@
     <string name="account.update_information">Update Information</string>
     <string name="account.select_plan">Select a Plan</string>
     <string name="account.update_password">Update Password</string>
+    <string name="account.update_plan_address">Update booking plan address</string>
 
 </resources>

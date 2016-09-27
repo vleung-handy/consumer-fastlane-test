@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
+import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
@@ -54,8 +54,10 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = inflater
                 .inflate(R.layout.fragment_edit_booking_address, container, false);
@@ -75,14 +77,16 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
 
     private void sendEditAddressRequest()
     {
-        BookingEditAddressRequest bookingEditAddressRequest = new BookingEditAddressRequest(
+        EditAddressRequest editAddressRequest = new EditAddressRequest(
                 mStreetAddressInputTextView1.getAddress(),
                 mStreetAddressInputTextView2.getText().toString(),
                 mZipCodeInputTextView.getZipCode()
         );
         showUiBlockers();
-        bus.post(new BookingEditEvent.RequestEditBookingAddress(Integer.parseInt(mBooking.getId()),
-                bookingEditAddressRequest));
+        bus.post(new BookingEditEvent.RequestEditBookingAddress(
+                Integer.parseInt(mBooking.getId()),
+                editAddressRequest
+        ));
     }
 
     private boolean validateFields()
