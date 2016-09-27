@@ -175,7 +175,7 @@ public final class ViewUtil
     {
         try
         {
-            onView(viewMatcher).check(matches(isDisplayed()));
+            onView(viewMatcher).perform(scrollTo()).check(matches(isDisplayed()));
             return true;
         }
         catch (Throwable e)
