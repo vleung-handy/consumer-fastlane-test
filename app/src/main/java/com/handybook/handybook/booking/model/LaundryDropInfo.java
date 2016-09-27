@@ -163,13 +163,13 @@ public final class LaundryDropInfo implements Parcelable {
         }
 
         private DropTimes(final Parcel in) {
-            monday = new ArrayList<DropTime>();
-            tuesday = new ArrayList<DropTime>();
-            wednesday = new ArrayList<DropTime>();
-            thursday = new ArrayList<DropTime>();
-            friday = new ArrayList<DropTime>();
-            saturday = new ArrayList<DropTime>();
-            sunday = new ArrayList<DropTime>();
+            monday = new ArrayList<>();
+            tuesday = new ArrayList<>();
+            wednesday = new ArrayList<>();
+            thursday = new ArrayList<>();
+            friday = new ArrayList<>();
+            saturday = new ArrayList<>();
+            sunday = new ArrayList<>();
 
             in.readTypedList(monday, DropTime.CREATOR);
             in.readTypedList(tuesday, DropTime.CREATOR);

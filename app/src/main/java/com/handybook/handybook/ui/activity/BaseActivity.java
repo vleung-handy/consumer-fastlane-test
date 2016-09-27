@@ -139,12 +139,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-    }
-
-    @Override
     public void showBlockingScreen()
     {
         Intent launchBlockingActivity = new Intent(this, BlockingActivity.class);

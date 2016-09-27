@@ -63,7 +63,10 @@
                     />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.SplashActivity">
+        <activity
+            android:name=".ui.activity.SplashActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -92,10 +95,12 @@
             />
         <activity
             android:name=".booking.ui.activity.BookingLocationActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             />
         <activity
             android:name=".account.ui.ProfileActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
             />
         <activity
@@ -133,6 +138,7 @@
             />
         <activity
             android:name=".booking.ui.activity.BookingPaymentActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
             />
         <activity
@@ -168,14 +174,26 @@
             android:name=".booking.ui.activity.BookingCancelOptionsActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".booking.ui.activity.PeakPricingActivity"/>
-        <activity android:name=".booking.ui.activity.PromosActivity"/>
+        <activity
+            android:name=".booking.ui.activity.PeakPricingActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".booking.ui.activity.PromosActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.activity.OnboardActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".helpcenter.ui.activity.HelpActivity"/>
-        <activity android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"/>
+        <activity
+            android:name=".helpcenter.ui.activity.HelpActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".booking.bookingedit.ui.activity.BookingEditPreferencesActivity"
             android:screenOrientation="portrait"
@@ -206,9 +224,9 @@
             />
         <activity
             android:name=".module.proteam.ui.activity.ProTeamActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_pro_team"
             android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/HandyTheme"
             >
             <meta-data
@@ -219,6 +237,7 @@
 
         <activity
             android:name=".ui.activity.BlockingActivity"
+            android:screenOrientation="portrait"
             android:noHistory="true"
             />
         <!-- Required by the DeepLinkDispatch library -->

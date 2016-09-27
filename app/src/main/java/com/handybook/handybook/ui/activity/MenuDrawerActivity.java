@@ -38,6 +38,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
@@ -46,7 +47,6 @@ import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
-import com.handybook.handybook.ui.view.HandyWebView;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
