@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 import butterknife.Bind;
@@ -75,9 +76,16 @@ public final class PromosFragment extends BookingFlowFragment
                 .getLayoutInflater().inflate(R.layout.fragment_promos, container, false);
         ButterKnife.bind(this, view);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_menu);
         setupToolbar(mToolbar, getString(R.string.promotions));
-        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+
+        //Check the configuration if this feature is enabled or not
+        //If it's not display hamburger icon, otherwise back button
+        Configuration config = ((MenuDrawerActivity) getActivity()).getConfiguration();
+        if (config == null || !config.isNewAccountEnabled())
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
 
         mPromoCoupon = bookingManager.getPromoTabCoupon();
         mPromoText.addTextChangedListener(new TextWatcher()
