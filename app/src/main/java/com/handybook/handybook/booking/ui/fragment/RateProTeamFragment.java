@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.library.ui.view.SwipeableViewPager;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.library.ui.view.ImageToggleButton;
+import com.handybook.handybook.library.ui.view.SwipeableViewPager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.library.ui.view.ImageToggleButton;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
@@ -85,10 +85,10 @@ public class RateProTeamFragment extends Fragment
     @BindString(R.string.rate_dialog_pro_match_remove)
     String mButtonTextRemovePro;
 
-    @BindDrawable(R.drawable.ic_rating_pro_heart_active)
+    @BindDrawable(R.drawable.ic_checkbox_heart_checked)
     Drawable mActiveAddDrawable;
 
-    @BindDrawable(R.drawable.ic_rating_pro_heart_inactive)
+    @BindDrawable(R.drawable.ic_checkbox_heart_unchecked)
     Drawable mInactiveAddDrawable;
 
     @BindDrawable(R.drawable.ic_rating_pro_ban_active)
@@ -117,7 +117,11 @@ public class RateProTeamFragment extends Fragment
      */
     private ImageToggleButton mCurrentClickedToggleButton;
 
-    public static RateProTeamFragment newInstance(int rating, String proName, ProviderMatchPreference matchPreference)
+    public static RateProTeamFragment newInstance(
+            int rating,
+            String proName,
+            ProviderMatchPreference matchPreference
+    )
     {
         final RateProTeamFragment fragment = new RateProTeamFragment();
         final Bundle args = new Bundle();
@@ -137,20 +141,28 @@ public class RateProTeamFragment extends Fragment
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState
+    )
     {
         View v = inflater.inflate(R.layout.fragment_rate_pro_team, container, false);
         ButterKnife.bind(this, v);
 
         if (getArguments() != null)
         {
-            mInitialMatchPreference = (ProviderMatchPreference) getArguments().getSerializable(KEY_MATCH_PREFERENCE);
+            mInitialMatchPreference = (ProviderMatchPreference) getArguments().getSerializable(
+                    KEY_MATCH_PREFERENCE);
         }
 
         mRating = getArguments().getInt(KEY_RATING_VALUE);
         mProName = getArguments().getString(KEY_PRO_NAME);
 
-        mButtonTextBlockPro = getResources().getString(R.string.rate_dialog_pro_match_block_formatted, mProName);
+        mButtonTextBlockPro = getResources().getString(
+                R.string.rate_dialog_pro_match_block_formatted,
+                mProName
+        );
 
         mToggleButton.setListener(new View.OnClickListener()
         {
@@ -180,9 +192,9 @@ public class RateProTeamFragment extends Fragment
     }
 
     /**
-     * This updates the layout with a new rating, and then sets up the layouts accordingly.
-     * AFAIK, mRating is initialized to -1. Don't trust this comment verbatim, as the initialization
-     * code can be changed without ever updating these comments.
+     * This updates the layout with a new rating, and then sets up the layouts accordingly. AFAIK,
+     * mRating is initialized to -1. Don't trust this comment verbatim, as the initialization code
+     * can be changed without ever updating these comments.
      *
      * @param rating
      */
@@ -208,8 +220,8 @@ public class RateProTeamFragment extends Fragment
     }
 
     /**
-     * If a rating is 3 stars or lower, then it's considered low
-     * If a rating is 4 stars or higher, it's considered high.
+     * If a rating is 3 stars or lower, then it's considered low If a rating is 4 stars or higher,
+     * it's considered high.
      * <p/>
      * Remember ratings are 0-indexed
      *
@@ -262,8 +274,8 @@ public class RateProTeamFragment extends Fragment
     }
 
     /**
-     * This updates the layout to say the things specifically for the case where we want to block this
-     * pro.
+     * This updates the layout to say the things specifically for the case where we want to block
+     * this pro.
      */
     private void resetSimpleViewForBlockPro()
     {
@@ -346,8 +358,8 @@ public class RateProTeamFragment extends Fragment
     }
 
     /**
-     * This is the method that should be called to retrieve the user's final decision on what
-     * he's selected through the possible combinations of buttons
+     * This is the method that should be called to retrieve the user's final decision on what he's
+     * selected through the possible combinations of buttons
      *
      * @return
      */
@@ -391,7 +403,7 @@ public class RateProTeamFragment extends Fragment
                 else
                 {
                     Crashlytics.logException(new RuntimeException("This is not supposed to " +
-                            "happen, no tag set for toggle button"));
+                                                                          "happen, no tag set for toggle button"));
                 }
             }
         }
@@ -401,7 +413,8 @@ public class RateProTeamFragment extends Fragment
     }
 
     /**
-     * As of today, a pro is considered already on the team if the match preference says "preferred"
+     * As of today, a pro is considered already on the team if the match preference says
+     * "preferred"
      *
      * @return
      */
@@ -423,8 +436,8 @@ public class RateProTeamFragment extends Fragment
     }
 
     /**
-     * The adapter that powers the view pager. Page one will show "remove" pro functionality.
-     * Page 2 is for "block" pro
+     * The adapter that powers the view pager. Page one will show "remove" pro functionality. Page 2
+     * is for "block" pro
      */
     public class ProTeamPagerAdapter extends PagerAdapter
     {
@@ -432,7 +445,11 @@ public class RateProTeamFragment extends Fragment
         public Object instantiateItem(ViewGroup parent, int position)
         {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.rate_pro_team_item, parent, false);
+            ViewGroup layout = (ViewGroup) inflater.inflate(
+                    R.layout.rate_pro_team_item,
+                    parent,
+                    false
+            );
 
             TextView textView = (TextView) layout.findViewById(R.id.rate_dialog_pro_match_header_txt);
             ImageToggleButton button = (ImageToggleButton) layout.findViewById(R.id.toggle_button);
@@ -449,8 +466,10 @@ public class RateProTeamFragment extends Fragment
 
                         //the user just clicked on the "remove" button
                         mBus.post(new LogEvent.AddLogEvent(
-                                new RatingDialogLog.ProTeam.OptionTapped(true, RatingDialogLog.ProTeam.OptionType.REMOVE)));
-
+                                new RatingDialogLog.ProTeam.OptionTapped(
+                                        true,
+                                        RatingDialogLog.ProTeam.OptionType.REMOVE
+                                )));
 
                         //this sends the user to hte page that will show BLOCK
                         mBus.post(new LogEvent.AddLogEvent(new RatingDialogLog.ProTeam.OptionPresented(
@@ -476,7 +495,8 @@ public class RateProTeamFragment extends Fragment
                         mBus.post(new LogEvent.AddLogEvent(
                                 new RatingDialogLog.ProTeam.OptionTapped(
                                         mCurrentClickedToggleButton.isChecked(),
-                                        RatingDialogLog.ProTeam.OptionType.BLOCK)));
+                                        RatingDialogLog.ProTeam.OptionType.BLOCK
+                                )));
                     }
                 });
                 resetViewForBlockPro(button, textView);

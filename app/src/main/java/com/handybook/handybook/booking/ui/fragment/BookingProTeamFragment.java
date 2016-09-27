@@ -278,7 +278,7 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
     public void onProCheckboxStateChanged(
             @NonNull final ProTeamCategoryType proTeamCategoryType,
             @NonNull final ProTeamPro proTeamPro,
-            @NonNull final boolean isChecked
+            final boolean isChecked
     )
     {
         if (isChecked)
