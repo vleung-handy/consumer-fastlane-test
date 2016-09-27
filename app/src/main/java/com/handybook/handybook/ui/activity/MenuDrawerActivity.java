@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.WebStorage;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -343,6 +344,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                             {
                                 mConfigurationManager.invalidateCache();
                                 mUserManager.setCurrentUser(null);
+                                WebStorage.getInstance().deleteAllData();
                                 new HandyWebView(getApplicationContext()).clearCache(true);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
                                 {
