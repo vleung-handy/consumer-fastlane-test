@@ -4,6 +4,11 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.login.LoginManager;
+import com.handybook.handybook.account.ui.AccountFragment;
+import com.handybook.handybook.account.ui.ContactFragment;
+import com.handybook.handybook.account.ui.ProfileActivity;
+import com.handybook.handybook.account.ui.ProfileFragment;
+import com.handybook.handybook.account.ui.ProfilePasswordFragment;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
@@ -78,6 +83,7 @@ import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.HelpCenterTest;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
+import com.handybook.handybook.user.AccountFragmentTest;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
@@ -155,6 +161,12 @@ import static org.mockito.Mockito.when;
         BookingDetailSectionFragmentAddress.class,
         BookingDetailSectionFragmentBookingActions.class,
         BookingDetailSectionFragmentPayment.class,
+        ContactFragment.class,
+        ProfileActivity.class,
+        AccountFragment.class,
+        AccountFragmentTest.class,
+        ProfilePasswordFragment.class,
+        ProfileFragment.class,
 }, library = true)
 public class TestApplicationModule
 {

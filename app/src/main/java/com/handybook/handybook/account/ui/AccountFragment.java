@@ -52,6 +52,11 @@ public class AccountFragment extends InjectedFragment
     private User mUser;
     private ArrayList<RecurringBooking> mPlans;
 
+    public static AccountFragment newInstance()
+    {
+        return new AccountFragment();
+    }
+
     @Override
     public final void onCreate(final Bundle savedInstanceState)
     {

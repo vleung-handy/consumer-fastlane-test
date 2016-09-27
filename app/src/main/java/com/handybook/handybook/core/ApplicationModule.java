@@ -102,10 +102,11 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.data.HandyRetrofitService;
-import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.data.SecurePreferences;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.helpcenter.HelpModule;
+import com.handybook.handybook.library.ui.fragment.WebViewFragment;
+import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
@@ -146,7 +147,6 @@ import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
-import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.squareup.okhttp.CertificatePinner;
 import com.squareup.okhttp.OkHttpClient;
@@ -281,6 +281,7 @@ import retrofit.converter.GsonConverter;
         AccountFragment.class,
         ContactFragment.class,
         ProfilePasswordFragment.class,
+        AccountFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
@@ -343,12 +344,14 @@ public final class ApplicationModule
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
             okHttpClient.setCertificatePinner(new CertificatePinner.Builder()
-                    .add(mConfigs.getProperty("hostname"),
-                            "sha1/tbHJQrYmt+5isj5s44sk794iYFc=",
-                            "sha1/SXxoaOSEzPC6BgGmxAt/EAcsajw=",
-                            "sha1/blhOM3W9V/bVQhsWAcLYwPU6n24=",
-                            "sha1/T5x9IXmcrQ7YuQxXnxoCmeeQ84c=")
-                    .build());
+                                                      .add(
+                                                              mConfigs.getProperty("hostname"),
+                                                              "sha1/tbHJQrYmt+5isj5s44sk794iYFc=",
+                                                              "sha1/SXxoaOSEzPC6BgGmxAt/EAcsajw=",
+                                                              "sha1/blhOM3W9V/bVQhsWAcLYwPU6n24=",
+                                                              "sha1/T5x9IXmcrQ7YuQxXnxoCmeeQ84c="
+                                                      )
+                                                      .build());
         }
 
         final String username = mConfigs.getProperty("api_username");
@@ -359,55 +362,118 @@ public final class ApplicationModule
         }
         final String pwd = password;
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint)
-                .setRequestInterceptor(new RequestInterceptor()
-                {
-                    final String auth = "Basic " + Base64.encodeToString((username + ":" + pwd)
-                            .getBytes(), Base64.NO_WRAP);
+                                                                 .setRequestInterceptor(new RequestInterceptor()
+                                                                 {
+                                                                     final String auth = "Basic " + Base64
+                                                                             .encodeToString(
+                                                                                     (username + ":" + pwd)
+                                                                                             .getBytes(),
+                                                                                     Base64.NO_WRAP
+                                                                             );
 
-                    @Override
-                    public void intercept(RequestFacade request)
-                    {
-                        request.addHeader("Authorization", auth);
-                        request.addHeader("Accept", "application/json");
-                        request.addQueryParam("client", "android");
-                        request.addQueryParam("app_version", BuildConfig.VERSION_NAME);
-                        request.addQueryParam(
-                                "app_version_code",
-                                String.valueOf(BuildConfig.VERSION_CODE)
-                        );
-                        request.addQueryParam("api_sub_version", "6.0");
-                        request.addQueryParam("app_device_id", getDeviceId());
-                        request.addQueryParam("app_device_model", getDeviceName());
-                        request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
-                        final User user = userManager.getCurrentUser();
-                        if (user != null)
-                        {
-                            request.addQueryParam("app_user_id", user.getId());
-                            String authToken = user.getAuthToken();
-                            if (authToken != null)
-                            {
-                                request.addHeader("X-Auth-Token", authToken);
-                            }
-                        }
-                    }
-                })
-                .setConverter(new GsonConverter(new GsonBuilder()
-                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                        .setExclusionStrategies(BookingRequest.getExclusionStrategy())
-                        .registerTypeAdapter(BookingRequest.class,
-                                new BookingRequest.BookingRequestSerializer())
-                        .setExclusionStrategies(BookingQuote.getExclusionStrategy())
-                        .registerTypeAdapter(BookingQuote.class,
-                                new BookingQuote.BookingQuoteSerializer())
-                        .setExclusionStrategies(BookingPostInfo.getExclusionStrategy())
-                        .registerTypeAdapter(BookingPostInfo.class,
-                                new BookingPostInfo.BookingPostInfoSerializer())
-                        .setExclusionStrategies(BookingTransaction.getExclusionStrategy())
-                        .registerTypeAdapter(BookingTransaction.class,
-                                new BookingTransaction.BookingTransactionSerializer())
-                        .setExclusionStrategies(User.getExclusionStrategy())
-                        .registerTypeAdapter(User.class, new User.UserSerializer())
-                        .create())).setClient(new OkClient(okHttpClient)).build();
+                                                                     @Override
+                                                                     public void intercept(
+                                                                             RequestFacade request
+                                                                     )
+                                                                     {
+                                                                         request.addHeader(
+                                                                                 "Authorization",
+                                                                                 auth
+                                                                         );
+                                                                         request.addHeader(
+                                                                                 "Accept",
+                                                                                 "application/json"
+                                                                         );
+                                                                         request.addQueryParam(
+                                                                                 "client",
+                                                                                 "android"
+                                                                         );
+                                                                         request.addQueryParam(
+                                                                                 "app_version",
+                                                                                 BuildConfig.VERSION_NAME
+                                                                         );
+                                                                         request.addQueryParam(
+                                                                                 "app_version_code",
+                                                                                 String.valueOf(
+                                                                                         BuildConfig.VERSION_CODE)
+                                                                         );
+                                                                         request.addQueryParam(
+                                                                                 "api_sub_version",
+                                                                                 "6.0"
+                                                                         );
+                                                                         request.addQueryParam(
+                                                                                 "app_device_id",
+                                                                                 getDeviceId()
+                                                                         );
+                                                                         request.addQueryParam(
+                                                                                 "app_device_model",
+                                                                                 getDeviceName()
+                                                                         );
+                                                                         request.addQueryParam(
+                                                                                 "app_device_os",
+                                                                                 Build.VERSION.RELEASE
+                                                                         );
+                                                                         final User user = userManager
+                                                                                 .getCurrentUser();
+                                                                         if (user != null)
+                                                                         {
+                                                                             request.addQueryParam(
+                                                                                     "app_user_id",
+                                                                                     user.getId()
+                                                                             );
+                                                                             String authToken = user
+                                                                                     .getAuthToken();
+                                                                             if (authToken != null)
+                                                                             {
+                                                                                 request.addHeader(
+                                                                                         "X-Auth-Token",
+                                                                                         authToken
+                                                                                 );
+                                                                             }
+                                                                         }
+                                                                     }
+                                                                 })
+                                                                 .setConverter(new GsonConverter(new GsonBuilder()
+                                                                                                         .setDateFormat(
+                                                                                                                 "yyyy-MM-dd'T'HH:mm:ssZ")
+                                                                                                         .setExclusionStrategies(
+                                                                                                                 BookingRequest
+                                                                                                                         .getExclusionStrategy())
+                                                                                                         .registerTypeAdapter(
+                                                                                                                 BookingRequest.class,
+                                                                                                                 new BookingRequest.BookingRequestSerializer()
+                                                                                                         )
+                                                                                                         .setExclusionStrategies(
+                                                                                                                 BookingQuote
+                                                                                                                         .getExclusionStrategy())
+                                                                                                         .registerTypeAdapter(
+                                                                                                                 BookingQuote.class,
+                                                                                                                 new BookingQuote.BookingQuoteSerializer()
+                                                                                                         )
+                                                                                                         .setExclusionStrategies(
+                                                                                                                 BookingPostInfo
+                                                                                                                         .getExclusionStrategy())
+                                                                                                         .registerTypeAdapter(
+                                                                                                                 BookingPostInfo.class,
+                                                                                                                 new BookingPostInfo.BookingPostInfoSerializer()
+                                                                                                         )
+                                                                                                         .setExclusionStrategies(
+                                                                                                                 BookingTransaction
+                                                                                                                         .getExclusionStrategy())
+                                                                                                         .registerTypeAdapter(
+                                                                                                                 BookingTransaction.class,
+                                                                                                                 new BookingTransaction.BookingTransactionSerializer()
+                                                                                                         )
+                                                                                                         .setExclusionStrategies(
+                                                                                                                 User.getExclusionStrategy())
+                                                                                                         .registerTypeAdapter(
+                                                                                                                 User.class,
+                                                                                                                 new User.UserSerializer()
+                                                                                                         )
+                                                                                                         .create()))
+                                                                 .setClient(new OkClient(
+                                                                         okHttpClient))
+                                                                 .build();
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
         {
@@ -445,7 +511,8 @@ public final class ApplicationModule
     final SecurePreferences providePrefs()
     {
         return new SecurePreferences(mContext, null,
-                mConfigs.getProperty("secure_prefs_key"), true);
+                                     mConfigs.getProperty("secure_prefs_key"), true
+        );
     }
 
     @Provides
@@ -524,7 +591,12 @@ public final class ApplicationModule
             final DataManagerErrorHandler dataManagerErrorHandler
     )
     {
-        return new NavigationManager(this.mContext, userManager, dataManager, dataManagerErrorHandler);
+        return new NavigationManager(
+                this.mContext,
+                userManager,
+                dataManager,
+                dataManagerErrorHandler
+        );
     }
 
     @Provides
