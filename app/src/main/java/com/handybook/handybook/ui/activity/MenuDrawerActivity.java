@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -42,6 +45,7 @@ import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
+import com.handybook.handybook.ui.view.HandyWebView;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
@@ -288,9 +292,6 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
 
     /**
      * Item selected from the navigation drawer
-     *
-     * @param menuItem
-     * @return
      */
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem)
@@ -342,6 +343,23 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                             {
                                 mConfigurationManager.invalidateCache();
                                 mUserManager.setCurrentUser(null);
+                                new HandyWebView(getApplicationContext()).clearCache(true);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
+                                {
+                                    CookieManager.getInstance().removeAllCookies(null);
+                                    CookieManager.getInstance().flush();
+                                }
+                                else
+                                {
+                                    CookieSyncManager cookieSyncMngr = CookieSyncManager
+                                            .createInstance(getApplication());
+                                    cookieSyncMngr.startSync();
+                                    CookieManager cookieManager = CookieManager.getInstance();
+                                    cookieManager.removeAllCookie();
+                                    cookieManager.removeSessionCookie();
+                                    cookieSyncMngr.stopSync();
+                                    cookieSyncMngr.sync();
+                                }
                                 //log out of Facebook also
                                 LoginManager.getInstance().logOut();
                             }
