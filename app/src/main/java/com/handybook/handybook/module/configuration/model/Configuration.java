@@ -58,6 +58,11 @@ public class Configuration
         return mNativeHelpCenterEnabled;
     }
 
+    //TODO sammy update this when we have theconfiguration value
+    public boolean isNewAccountEnabled() {
+        return false;
+    }
+
     public String toJson()
     {
         return new GsonBuilder().setDateFormat(DATE_FORMAT).create()

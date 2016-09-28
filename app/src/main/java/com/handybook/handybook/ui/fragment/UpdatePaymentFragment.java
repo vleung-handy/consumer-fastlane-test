@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,6 +26,8 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
@@ -41,8 +45,8 @@ import io.card.payment.CardIOActivity;
 
 public class UpdatePaymentFragment extends InjectedFragment
 {
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.credit_card_text)
     CreditCardNumberInputTextView mCreditCardText;
     @Bind(R.id.exp_text)
@@ -59,8 +63,6 @@ public class UpdatePaymentFragment extends InjectedFragment
     ViewGroup mCardExtrasLayout;
     @Bind(R.id.cancel_button)
     View mCancelButton;
-    @Bind(R.id.nav_text)
-    TextView mNavText;
     @Bind(R.id.lock_icon)
     ImageView mLockIcon;
     @Bind(R.id.scan_card_button)
@@ -120,7 +122,7 @@ public class UpdatePaymentFragment extends InjectedFragment
     @OnClick(R.id.change_button)
     public void unfreezeCardInput()
     {
-        mNavText.setText(R.string.edit_payment);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.edit_payment);
         mCreditCardText.setDisabled(false, getString(R.string.credit_card_num));
         mCardExtrasLayout.setVisibility(View.VISIBLE);
         mUpdateButton.setVisibility(View.VISIBLE);
@@ -141,7 +143,7 @@ public class UpdatePaymentFragment extends InjectedFragment
     private void freezeCardInput(String brand, String last4)
     {
         mCreditCardText.setDisabled(true, getString(R.string.formatted_last4, last4));
-        mNavText.setText(R.string.payment);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.payment);
         mCreditCardText.setText(R.string.blank_string);
         mExpText.setText(R.string.blank_string);
         mCvcText.setText(R.string.blank_string);
@@ -227,9 +229,15 @@ public class UpdatePaymentFragment extends InjectedFragment
         mView = inflater.inflate(R.layout.fragment_update_payment, container, false);
         ButterKnife.bind(this, mView);
 
-        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(ContextCompat.getColor(getContext(), R.color.white));
-        mMenuButtonLayout.addView(menuButton);
+        setupToolbar(mToolbar, getString(R.string.payment));
+        //Check the configuration if this feature is enabled or not
+        //If it's not display hamburger icon, otherwise back button
+        Configuration config = ((MenuDrawerActivity) getActivity()).getConfiguration();
+        if (config == null || !config.isNewAccountEnabled())
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
 
         final User currentUser = userManager.getCurrentUser();
         final User.CreditCard creditCard = currentUser.getCreditCard();

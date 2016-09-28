@@ -2,7 +2,9 @@ package com.handybook.handybook.ui.fragment;
 
 import android.view.View;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
+import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
@@ -57,7 +59,8 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     {
         when(mMockUser.getCreditCard()).thenReturn(null);
 
-        SupportFragmentTestUtil.startFragment(mFragment);
+        //Activity is needed to be passed because the Fragment needs access to BaseActivity info
+        SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
 
         assertThat(mFragment.mChangeButton.getVisibility(), equalTo(View.GONE));
         assertThat(mFragment.mCreditCardText.getVisibility(), equalTo(View.VISIBLE));
@@ -71,7 +74,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
         when(mMockUser.getCreditCard()).thenReturn(mMockCreditCard);
         when(mMockCreditCard.getLast4()).thenReturn("1234");
 
-        SupportFragmentTestUtil.startFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
 
         assertThat(mFragment.mChangeButton.getVisibility(), equalTo(View.VISIBLE));
         assertThat(mFragment.mCreditCardText.getHint().toString(), equalTo("•••• 1234"));
@@ -92,7 +95,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
         when(mMockUser.getCreditCard()).thenReturn(mMockCreditCard);
         when(mMockCreditCard.getLast4()).thenReturn("1234");
 
-        SupportFragmentTestUtil.startFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
         mFragment.mChangeButton.performClick();
         mFragment.mCreditCardText.setText(TEST_CREDIT_CARD_NUMBER);
 
@@ -108,7 +111,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldRequestStripeTokenWithDataFromFields() throws Exception
     {
-        SupportFragmentTestUtil.startFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
 
         mFragment.mCreditCardText.setText(TEST_CREDIT_CARD_NUMBER);
         mFragment.mExpText.setText("01/30");
@@ -130,7 +133,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldRequestUpdatePaymentInfoAfterObtainingStripeToken() throws Exception
     {
-        SupportFragmentTestUtil.startFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
 
         StripeEvent.ReceiveCreateTokenSuccess event =
                 new StripeEvent.ReceiveCreateTokenSuccess(mMockToken);
@@ -147,7 +150,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldDisplayNewPaymentInfoAfterSuccessfulUpdate() throws Exception
     {
-        SupportFragmentTestUtil.startFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
         mFragment.mCreditCardText.setText(TEST_CREDIT_CARD_NUMBER);
         mFragment.mCreditCardIcon = spy(mFragment.mCreditCardIcon);
 

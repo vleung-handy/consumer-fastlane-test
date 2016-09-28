@@ -53,6 +53,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
+import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
@@ -167,6 +168,7 @@ import static org.mockito.Mockito.when;
         AccountFragmentTest.class,
         ProfilePasswordFragment.class,
         ProfileFragment.class,
+        PromosFragment.class,
 }, library = true)
 public class TestApplicationModule
 {

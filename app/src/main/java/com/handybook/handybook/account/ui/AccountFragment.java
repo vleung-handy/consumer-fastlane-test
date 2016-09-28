@@ -17,6 +17,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
@@ -26,6 +27,7 @@ import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 
 import java.util.ArrayList;
 
@@ -133,9 +135,7 @@ public class AccountFragment extends InjectedFragment
     @OnClick(R.id.payment_method_layout)
     public void paymentClicked()
     {
-        final Intent intent = new Intent(getActivity(), UpdatePaymentActivity.class);
-        intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_SELECTED_MENU_ITEM, R.id.nav_menu_payment);
-        startActivity(intent);
+        FragmentUtils.switchToFragment(this, UpdatePaymentFragment.newInstance(), true);
     }
 
     @OnClick(R.id.active_plans_layout)
@@ -147,9 +147,7 @@ public class AccountFragment extends InjectedFragment
     @OnClick(R.id.promo_code_layout)
     public void promoClicked()
     {
-        final Intent intent = new Intent(getActivity(), PromosActivity.class);
-        intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_SELECTED_MENU_ITEM, R.id.nav_menu_promotions);
-        startActivity(intent);
+        FragmentUtils.switchToFragment(this, PromosFragment.newInstance(), true);
     }
 
     @OnClick(R.id.sign_out_button)
