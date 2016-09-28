@@ -126,6 +126,7 @@ import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.bookings.HistoryFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
+import com.handybook.handybook.module.chat.ChatModule;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.NotificationsModule;
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
@@ -302,6 +303,7 @@ import retrofit.converter.GsonConverter;
         includes = {
                 HelpModule.class,
                 NotificationsModule.class,
+                ChatModule.class
                 //FIXME add more
         }
 )
@@ -721,6 +723,12 @@ public final class ApplicationModule
         return new ProTeamManager(bus, service, userDataManager);
     }
 
+    @Provides
+    @Singleton
+    public Context provideApplicationContext()
+    {
+        return mContext;
+    }
 
     private String getDeviceId()
     {

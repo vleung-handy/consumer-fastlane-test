@@ -29,7 +29,6 @@ import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
-import com.handybook.handybook.module.chat.ChatModule;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
@@ -268,7 +267,7 @@ public class BaseApplication extends MultiDexApplication
 
     protected void createObjectGraph()
     {
-        graph = ObjectGraph.create(new ApplicationModule(this), new ChatModule(this));
+        graph = ObjectGraph.create(new ApplicationModule(this));
         inject(this);
     }
 

@@ -31,6 +31,7 @@ import com.layer.sdk.messaging.LayerObject;
 public class MessagesListActivity extends BaseActivity
 {
     private static final int MESSAGE_SYNC_AMOUNT = 20;
+    private static final String TAG = MessagesListActivity.class.getName();
 
     private UiState mState;
     private Conversation mConversation;
@@ -180,7 +181,10 @@ public class MessagesListActivity extends BaseActivity
     protected void onDestroy()
     {
         super.onDestroy();
-        mMessagesList.onDestroy();
+        if (mMessagesList != null)
+        {
+            mMessagesList.onDestroy();
+        }
     }
 
     public void setTitle(boolean useConversation)

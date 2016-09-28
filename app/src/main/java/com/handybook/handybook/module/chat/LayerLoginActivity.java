@@ -3,6 +3,7 @@ package com.handybook.handybook.module.chat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -83,7 +85,15 @@ public class LayerLoginActivity extends LayerBaseActivity {
                                           public void onSuccess(AuthenticationProvider provider, String userId) {
                                               progressDialog.dismiss();
                                               Log.d(TAG, "Successfully authenticated as `" + name + "` with userId `" + userId + "`");
-                                              Intent intent = new Intent(LayerLoginActivity.this, LayerConversationActivity.class);
+                                              Intent intent = new Intent(
+                                                      LayerLoginActivity.this,
+                                                      MessagesListActivity.class
+                                              );
+                                              intent.putExtra(
+                                                      PushNotificationReceiver.LAYER_CONVERSATION_KEY,
+                                                      Uri.parse(
+                                                              "layer:///conversations/636a2014-dbd2-4e4e-a430-4131b18d56a9")
+                                              );
                                               intent.putExtra("user", name);
                                               startActivity(intent);
                                               finish();
