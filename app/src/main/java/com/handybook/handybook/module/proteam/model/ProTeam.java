@@ -14,7 +14,8 @@ import java.util.List;
 
 public class ProTeam implements Parcelable
 {
-
+    @SerializedName("pro_images_enabled")
+    private boolean isProImagesEnabled;
     @SerializedName(ProTeamCategoryType.Constants.CLEANING)
     private ProTeamCategory mCleaning;
     @SerializedName(ProTeamCategoryType.Constants.HANDYMEN)
@@ -110,6 +111,11 @@ public class ProTeam implements Parcelable
     public boolean isEmpty()
     {
         return mCleaning.isEmpty() && mHandymen.isEmpty();
+    }
+
+    public boolean isProImagesEnabled()
+    {
+        return isProImagesEnabled;
     }
 
 

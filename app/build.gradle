@@ -136,6 +136,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'io.card:android-sdk:5.3.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.stripe:stripe-android:1.0.4'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'com.google.guava:guava:19.0'
