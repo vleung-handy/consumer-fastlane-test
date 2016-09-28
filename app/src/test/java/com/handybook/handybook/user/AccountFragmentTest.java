@@ -12,10 +12,12 @@ import com.handybook.handybook.account.ui.ContactFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
+import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -85,21 +87,13 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldLaunchCorrectActivityWhenPaymentClicked() throws Exception
     {
-        ProfileActivity initialActivity = (ProfileActivity) mFragment.getActivity();
-        ShadowActivity shadowActivity = (ShadowActivity) ShadowExtractor.extract(
-                mFragment.getActivity()
-        );
-        assertNotNull(initialActivity);
-
         assertNotNull(mFragment.getView());
         View view = mFragment.getView().findViewById(R.id.payment_method_layout);
         assertNotNull(view);
         view.performClick();
-
-        assertEquals(
-                new Intent(initialActivity, UpdatePaymentActivity.class).getComponent(),
-                shadowActivity.peekNextStartedActivity().getComponent()
-        );
+        assertTrue(mFragment.getActivity().getSupportFragmentManager()
+                            .findFragmentById(R.id.fragment_container) instanceof
+                           UpdatePaymentFragment);
     }
 
     @Test
@@ -111,21 +105,13 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldLaunchCorrectActivityWhenPromoClicked() throws Exception
     {
-        ProfileActivity initialActivity = (ProfileActivity) mFragment.getActivity();
-        ShadowActivity shadowActivity = (ShadowActivity) ShadowExtractor.extract(
-                mFragment.getActivity()
-        );
-        assertNotNull(initialActivity);
-
         assertNotNull(mFragment.getView());
         View view = mFragment.getView().findViewById(R.id.promo_code_layout);
         assertNotNull(view);
         view.performClick();
-
-        assertEquals(
-                new Intent(initialActivity, PromosActivity.class).getComponent(),
-                shadowActivity.peekNextStartedActivity().getComponent()
-        );
+        assertTrue(mFragment.getActivity().getSupportFragmentManager()
+                            .findFragmentById(R.id.fragment_container) instanceof
+                           PromosFragment);
     }
 
     @Test
