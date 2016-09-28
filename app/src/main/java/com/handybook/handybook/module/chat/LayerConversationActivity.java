@@ -23,6 +23,9 @@ import javax.inject.Named;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * TODO: JIA: potentially don't need this class. Look into removing it
+ */
 public class LayerConversationActivity extends LayerBaseActivity implements RecyclerViewController.Callback
 {
 
@@ -208,7 +211,7 @@ public class LayerConversationActivity extends LayerBaseActivity implements Recy
 
         //instead of adding to the view, immediately redirect to the chat screen. There should only be one conversation going on
         Intent intent = new Intent(LayerConversationActivity.this, MessagesListActivity.class);
-        intent.putExtra("conversation_id", conversation.getId());
+        intent.putExtra(PushNotificationReceiver.LAYER_CONVERSATION_KEY, conversation.getId());
         startActivity(intent);
 
 //        TextView tv = new TextView(this);

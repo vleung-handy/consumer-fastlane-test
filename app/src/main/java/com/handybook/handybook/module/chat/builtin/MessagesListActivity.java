@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.chat.LayerLoginActivity;
+import com.handybook.handybook.module.chat.PushNotificationReceiver;
 import com.layer.atlas.AtlasHistoricMessagesFetchLayout;
 import com.layer.atlas.AtlasMessageComposer;
 import com.layer.atlas.AtlasMessagesRecyclerView;
@@ -85,7 +86,6 @@ public class MessagesListActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
 
-        mAddressBar = ((Toolbar) findViewById(R.id.toolbar));
 
         if (mLayerAuthProvider.routeLogin(mLayerClient, mLayerAppId))
         {
@@ -95,6 +95,7 @@ public class MessagesListActivity extends BaseActivity
             return;
         }
 
+        mAddressBar = ((Toolbar) findViewById(R.id.toolbar));
         mHistoricFetchLayout = ((AtlasHistoricMessagesFetchLayout) findViewById(R.id.historic_sync_layout))
                 .init(getLayerClient())
                 .setHistoricMessagesPerFetch(MESSAGE_SYNC_AMOUNT);
@@ -141,10 +142,38 @@ public class MessagesListActivity extends BaseActivity
                 });
 
         // Get or create Conversation from Intent extras
-        Conversation conversation = null;
-        Uri conversationId = getIntent().getParcelableExtra("conversation_id");
-        conversation = getLayerClient().getConversation(conversationId);
-        setConversation(conversation, conversation != null);
+        Conversation conversation;
+        Intent intent = getIntent();
+        if (intent != null)
+        {
+            if (intent.hasExtra(PushNotificationReceiver.LAYER_CONVERSATION_KEY))
+            {
+                Uri conversationId = intent.getParcelableExtra(PushNotificationReceiver.LAYER_CONVERSATION_KEY);
+                conversation = getLayerClient().getConversation(conversationId);
+                setConversation(conversation, conversation != null);
+            }
+        }
+        else
+        {
+            throw new RuntimeException("This should never happen");
+        }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        // Clear any notifications for this conversation
+        PushNotificationReceiver.getNotifications(this).clear(mConversation);
+        super.onResume();
+        setTitle(mConversation != null);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        // Update the notification position to the latest seen
+        PushNotificationReceiver.getNotifications(this).clear(mConversation);
+        super.onPause();
     }
 
     @Override

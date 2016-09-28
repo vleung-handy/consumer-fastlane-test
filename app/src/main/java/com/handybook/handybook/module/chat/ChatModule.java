@@ -27,7 +27,9 @@ import dagger.Provides;
                 LayerConversationActivity.class,
                 LayerLoginActivity.class,
                 BaseActivity.class,
-                MessagesListActivity.class
+                MessagesListActivity.class,
+                PushNotificationReceiver.class,
+                PushNotificationReceiver.Notifications.class
         })
 public final class ChatModule
 {
@@ -35,7 +37,12 @@ public final class ChatModule
     private static final String TAG = ChatModule.class.getName();
 
     private Application mApplication;
+
+    //JIA's project number
     private static final String LAYER_APP_ID = "layer:///apps/staging/6178a72e-4e8d-11e6-aca9-940102005074";
+
+    //JIA's GCM number
+    private static final String GCM_SENDER_ID = "606008763304";
 
     public ChatModule(Application application) {
         mApplication = application;
@@ -53,6 +60,14 @@ public final class ChatModule
         return LAYER_APP_ID;
     }
 
+    @Provides
+    @Singleton
+    @Named("layerGcmId")
+    public String getLayerGcmId()
+    {
+        return GCM_SENDER_ID;
+    }
+
     @Provides @Singleton
     public LayerClient providesLayerClient(AuthenticationProvider authProvider) {
         LayerClient.Options options = new LayerClient.Options()
@@ -66,6 +81,7 @@ public final class ChatModule
                             ThreePartImageUtils.MIME_TYPE_INFO,
                             ThreePartImageUtils.MIME_TYPE_PREVIEW));
 
+        options.googleCloudMessagingSenderId(GCM_SENDER_ID);
         LayerClient client = LayerClient.newInstance(mApplication, LAYER_APP_ID, options);
 
         if (client != null) {
