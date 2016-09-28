@@ -89,6 +89,7 @@ import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragmentTe
 import com.handybook.handybook.module.autocomplete.PlacesService;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
+import com.handybook.handybook.module.chat.ChatModule;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.ui.RedemptionActivity;

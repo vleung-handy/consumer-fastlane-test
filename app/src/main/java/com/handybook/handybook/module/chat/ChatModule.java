@@ -24,8 +24,6 @@ import dagger.Provides;
         library = true,
         complete = false,
         injects = {
-                LayerChatActivity.class,
-                LayerConversationActivity.class,
                 LayerLoginActivity.class,
                 BaseActivity.class,
                 MessagesListActivity.class,
