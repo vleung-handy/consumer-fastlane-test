@@ -2,7 +2,6 @@ package com.handybook.handybook.account.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +76,7 @@ public class PlansFragment extends InjectedFragment
             View view = LayoutInflater.from(getContext()).inflate(
                     R.layout.layout_cleaning_plan_item, mPlansLayout, false);
             view.setTag(plan);
-            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            view.setBackgroundResource(R.drawable.background_list_entry);
             view.findViewById(R.id.button_edit).setVisibility(View.GONE);
             TextView title = (TextView) view.findViewById(R.id.text_plan_title);
             TextView subTitle = (TextView) view.findViewById(R.id.text_plan_subtitle);

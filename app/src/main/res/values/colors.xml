@@ -66,4 +66,6 @@
     <color name="android_pay_black_trans">#e6333333</color>
     <color name="handy_black_trans">#bf000000</color>
     <color name="divider_gray">#e2e2e2</color>
+    <color name="cell_disabled">#F0F0F0</color>
+
 </resources>

@@ -56,7 +56,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/credits_text"
+                    android:id="@+id/account_credits_text"
                     style="@style/TextView.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -88,9 +88,10 @@
                 />
 
             <LinearLayout
-                android:id="@+id/contact_info_layout"
+                android:id="@+id/account_contact_info_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_list_entry"
                 android:orientation="vertical"
                 android:padding="@dimen/default_padding"
                 >
@@ -113,9 +114,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/password_layout"
+                android:id="@+id/account_password_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_list_entry"
                 android:orientation="vertical"
                 android:padding="@dimen/default_padding"
                 >
@@ -138,9 +140,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/payment_method_layout"
+                android:id="@+id/account_payment_method_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_list_entry"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/account.medium_padding"
                 android:paddingEnd="@dimen/default_padding"
@@ -168,9 +171,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/promo_code_layout"
+                android:id="@+id/account_promo_code_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_list_entry"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/account.medium_padding"
                 android:paddingEnd="@dimen/default_padding"
@@ -215,15 +219,16 @@
                 />
 
             <LinearLayout
-                android:id="@+id/active_plans_layout"
+                android:id="@+id/account_active_plans_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_list_entry"
                 android:orientation="vertical"
                 android:padding="@dimen/default_padding"
                 >
 
                 <TextView
-                    android:id="@+id/active_plans_text"
+                    android:id="@+id/account_active_plans_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Active Plans: 2"
@@ -243,9 +248,10 @@
             <include layout="@layout/element_gray_horizontal_divider"/>
 
             <TextView
-                android:id="@+id/sign_out_button"
+                android:id="@+id/account_sign_out_button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/account.sign_out_height"
+                android:background="@drawable/background_list_entry"
                 android:paddingBottom="@dimen/account.medium_padding"
                 android:paddingEnd="@dimen/default_padding"
                 android:paddingLeft="@dimen/default_padding"
