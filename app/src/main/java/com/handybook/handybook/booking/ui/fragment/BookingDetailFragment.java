@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -80,9 +81,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
     private static final String STATE_SERVICES = "STATE_SERVICES";
-
-    //    TODO: JIA: remove this hard code
-    private static final String CONVERSATION_ID = "layer:///conversations/636a2014-dbd2-4e4e-a430-4131b18d56a9";
 
     private Booking mBooking;
     private Configuration mConfiguration;
@@ -163,7 +161,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         Intent intent = new Intent(getActivity(), MessagesListActivity.class);
         intent.putExtra(
                 PushNotificationReceiver.LAYER_CONVERSATION_KEY,
-                Uri.parse(CONVERSATION_ID)
+                Uri.parse(mBooking.getConversationId())
         );
         startActivity(intent);
     }
@@ -174,7 +172,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     private void syncConversation()
     {
         Log.d(TAG, "syncConversation() called");
-        Conversation conversation = mLayerClient.getConversation(Uri.parse(CONVERSATION_ID));
+        Conversation conversation = mLayerClient.getConversation(Uri.parse(mBooking.getConversationId()));
 
         if (conversation != null)
         {
@@ -440,6 +438,16 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private void initLayer()
     {
+        if (mConfiguration == null
+                || !mConfiguration.isInAppChatEnabled()
+                || mBooking == null
+                || TextUtils.isEmpty(mBooking.getConversationId())
+                )
+        {
+            //don't init layer if the configuration isn't back, or the booking isn't ready
+            return;
+        }
+
         if ((mLayerClient != null) && mLayerClient.isAuthenticated())
         {
             Log.d(TAG, "initLayer: Already logged in");
@@ -590,6 +598,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         if (event != null)
         {
             mConfiguration = event.getConfiguration();
+            initLayer();
         }
     }
 

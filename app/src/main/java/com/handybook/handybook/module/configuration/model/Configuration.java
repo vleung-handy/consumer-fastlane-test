@@ -21,6 +21,13 @@ public class Configuration implements Serializable
     private boolean mNativeHelpCenterEnabled;
     @SerializedName("address_auto_complete_enabled")
     private boolean mAddressAutoCompleteEnabled;
+
+    //    TODO: FIXME: JIA: make sure this respects the true config param value that is coming back from the server
+    private boolean mInAppChatEnabled = true;
+
+    @SerializedName("upcoming_and_past_bookings_enabled")
+    private boolean mUpcomingAndPastBookingsEnabled;
+
     @SerializedName("pro_team_facebook_login_enabled")
     private boolean mProTeamFacebookLoginEnabled;
     @SerializedName("appsee_analytics_enabled")
@@ -65,6 +72,11 @@ public class Configuration implements Serializable
         return mAddressAutoCompleteEnabled;
     }
 
+    public boolean isInAppChatEnabled()
+    {
+        return mInAppChatEnabled;
+    }
+    
     public String toJson()
     {
         return new GsonBuilder().setDateFormat(DATE_FORMAT).create().toJson(this);
