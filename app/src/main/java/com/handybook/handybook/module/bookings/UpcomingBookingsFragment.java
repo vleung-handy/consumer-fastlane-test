@@ -17,6 +17,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -498,6 +499,16 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
      */
     private void insertShareBannerView()
     {
+        ViewParent shareBannerViewParent = mShareBannerView.getParent();
+        if (shareBannerViewParent != null && shareBannerViewParent instanceof ViewGroup)
+        {
+            ((ViewGroup) shareBannerViewParent).removeView(mShareBannerView);
+            /*
+            prevents java.lang.IllegalStateException:
+            The specified child already has a parent.
+            You must call removeView() on the child's parent first.
+             */
+        }
         if (mActiveBookingContainer.getVisibility() == View.VISIBLE)
         {
             if (mBookingsContainer.getChildCount() > 0)
