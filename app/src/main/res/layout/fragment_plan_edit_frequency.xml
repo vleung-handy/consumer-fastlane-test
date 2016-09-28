@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/default_padding"
+            >
+
+            <TextView
+                style="@style/TextView.CenteredHeader"
+                android:text="@string/how_often_should_come"
+                />
+
+            <com.handybook.handybook.account.ui.FrequencySelectionsView
+                android:id="@+id/plan_frequency_options_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:background="@color/white"
+                android:divider="@drawable/divider_gray"
+                android:orientation="vertical"
+                android:showDividers="middle"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/plan_frequency_update_button"
+            style="@style/Button.Green"
+            android:layout_alignParentBottom="true"
+            android:text="@string/update"
+            android:textAllCaps="false"
+            />
+    </RelativeLayout>
+</LinearLayout>

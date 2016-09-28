@@ -27,8 +27,14 @@ public class WebViewFragment extends InjectedFragment
 
     public static WebViewFragment newInstance(@NonNull final String uri)
     {
+        return newInstance(uri, "");
+    }
+
+    public static WebViewFragment newInstance(@NonNull String uri, @NonNull String title)
+    {
         Bundle args = new Bundle();
         args.putString(BundleKeys.TARGET_URL, uri);
+        args.putString(BundleKeys.TITLE, title);
         WebViewFragment fragment = new WebViewFragment();
         fragment.setArguments(args);
         return fragment;
@@ -42,11 +48,15 @@ public class WebViewFragment extends InjectedFragment
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = inflater.inflate(R.layout.fragment_web_view, container, false);
         ButterKnife.bind(this, view);
-        setupToolbar(mToolbar, "");
+        setupToolbar(mToolbar, getArguments().getString(BundleKeys.TITLE));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -58,7 +68,7 @@ public class WebViewFragment extends InjectedFragment
                 }
                 else
                 {
-                    getActivity().finish();
+                    getActivity().onBackPressed();
                 }
             }
         });

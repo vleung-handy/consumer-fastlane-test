@@ -35,8 +35,8 @@ public class BookingEditManager
     public void onRequestEditBookingAddress(BookingEditEvent.RequestEditBookingAddress event)
     {
         mDataManager.editBookingAddress(event.bookingId,
-                event.bookingEditAddressRequest,
-                new DataManager.Callback<SuccessWrapper>()
+                                        event.mEditAddressRequest,
+                                        new DataManager.Callback<SuccessWrapper>()
                 {
                     @Override
                     public void onSuccess(SuccessWrapper response)
@@ -253,7 +253,7 @@ public class BookingEditManager
                     }
                 });
     }
-    
+
     @Subscribe
     public void onRequestEditBookingExtrasViewModel(
             final BookingEditEvent.RequestEditBookingExtrasViewModel event)

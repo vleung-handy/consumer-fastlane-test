@@ -685,6 +685,12 @@ public class Booking implements Parcelable
                 return new Address[size];
             }
         };
+
+        @Override
+        public String toString()
+        {
+            return address1 + " " + address2 + "\n" + city + " " + state + " " + zip;
+        }
     }
 
 

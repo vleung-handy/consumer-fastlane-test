@@ -1,11 +1,11 @@
 package com.handybook.handybook.booking.bookingedit;
 
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditAddressRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
+import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
@@ -310,12 +310,13 @@ public abstract class BookingEditEvent
     public static class RequestEditBookingAddress extends HandyEvent.RequestEvent
     {
         public final int bookingId;
-        public final BookingEditAddressRequest bookingEditAddressRequest;
+        public final EditAddressRequest mEditAddressRequest;
         public RequestEditBookingAddress(final int bookingId,
-                                         final BookingEditAddressRequest bookingEditAddressRequest)
+                                         final EditAddressRequest editAddressRequest
+        )
         {
             this.bookingId = bookingId;
-            this.bookingEditAddressRequest = bookingEditAddressRequest;
+            this.mEditAddressRequest = editAddressRequest;
         }
     }
 

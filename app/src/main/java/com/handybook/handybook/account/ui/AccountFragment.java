@@ -50,6 +50,8 @@ public class AccountFragment extends InjectedFragment
     TextView mCreditsText;
     @Bind(R.id.active_plans_text)
     TextView mActivePlansText;
+    @Bind(R.id.active_plans_layout)
+    ViewGroup mActivePlansLayout;
 
     private User mUser;
     private ArrayList<RecurringBooking> mPlans;
@@ -109,6 +111,7 @@ public class AccountFragment extends InjectedFragment
                 mPlans = new ArrayList<>(response.getRecurringBookings());
                 mActivePlansText.setText(getString(
                         R.string.account_active_plans_formatted, mPlans.size()));
+                mActivePlansLayout.setEnabled(mPlans.size() != 0);
             }
 
             @Override
@@ -141,7 +144,7 @@ public class AccountFragment extends InjectedFragment
     @OnClick(R.id.active_plans_layout)
     public void activePlansClicked()
     {
-//        FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
+        FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
     }
 
     @OnClick(R.id.promo_code_layout)
