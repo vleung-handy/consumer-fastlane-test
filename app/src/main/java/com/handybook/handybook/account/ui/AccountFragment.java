@@ -162,8 +162,7 @@ public class AccountFragment extends InjectedFragment
     @OnClick(R.id.active_plans_layout)
     public void activePlansClicked()
     {
-        //TODO Sammy: Need the plan count. How to get?
-        //bus.post(new LogEvent.AddLogEvent(new AccountLog.PlanManagementTapped()));
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.PlanManagementTapped(mPlans.size())));
         FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
     }
 
