@@ -3,7 +3,7 @@ package com.handybook.handybook.ui.activity;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
+import com.handybook.handybook.account.ui.UpdatePaymentFragment;
 
 public class UpdatePaymentActivity extends MenuDrawerActivity
 {

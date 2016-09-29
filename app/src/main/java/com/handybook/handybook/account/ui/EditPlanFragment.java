@@ -16,6 +16,8 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.FragmentUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.account.EditPlanLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,11 +71,15 @@ public class EditPlanFragment extends InjectedFragment
     {
         super.onResume();
         setupDisplay();
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.Shown(mPlan.getId())));
     }
 
     @OnClick(R.id.edit_plan_frequency)
     public void editFrequency()
     {
+        // TODO: Need to modify backend so that RecurringBooking contains frequency number
+        // bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditFrequencyTapped(mPlan.getId(), mPlan.getFrequency())));
+
         EditPlanFrequencyFragment fragment = EditPlanFrequencyFragment.newInstance(mPlan);
         FragmentUtils.switchToFragment(this, fragment, true);
     }
@@ -81,6 +87,7 @@ public class EditPlanFragment extends InjectedFragment
     @OnClick(R.id.edit_plan_address)
     public void editAddress()
     {
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditAddressTapped(mPlan.getId())));
         EditPlanAddressFragment fragment = EditPlanAddressFragment.newInstance(mPlan);
         FragmentUtils.switchToFragment(this, fragment, true);
     }
@@ -88,6 +95,7 @@ public class EditPlanFragment extends InjectedFragment
     @OnClick(R.id.edit_plan_cancel)
     public void cancelPlan()
     {
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.CancelPlanTapped(mPlan.getId())));
         WebViewFragment fragment = WebViewFragment
                 .newInstance(mPlan.getCancelUrl(), getString(R.string.account_cancel_plan));
         FragmentUtils.switchToFragment(this, fragment, true);

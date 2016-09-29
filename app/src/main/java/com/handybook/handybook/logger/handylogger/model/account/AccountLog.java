@@ -66,6 +66,17 @@ public class AccountLog extends EventLog
     }
 
 
+    public static class ApplyPromoTapped extends AccountLog
+    {
+        private static final String EVENT_TYPE = "apply_promo_tapped";
+
+        public ApplyPromoTapped()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
     public static class PlanManagementTapped extends AccountLog
     {
         private static final String EVENT_TYPE = "plan_management_tapped";
@@ -109,6 +120,144 @@ public class AccountLog extends EventLog
         private static final String EVENT_TYPE = "logout_cancelled";
 
         public LogoutCancelled()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+    // Contact Info Logs
+
+
+    public static class ContactInfoShown extends AccountLog
+    {
+        private static final String EVENT_TYPE = "contact_info_shown";
+
+        public ContactInfoShown()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class ContactInfoUpdateTapped extends AccountLog
+    {
+        private static final String EVENT_TYPE = "contact_info_update_tapped";
+
+        public ContactInfoUpdateTapped()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class ContactInfoUpdateSuccess extends AccountLog
+    {
+        private static final String EVENT_TYPE = "contact_info_update_success";
+
+        public ContactInfoUpdateSuccess()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class ContactInfoUpdateError extends AccountLog
+    {
+        private static final String EVENT_TYPE = "contact_info_update_error";
+
+        public ContactInfoUpdateError()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+    // Update Password Logs
+
+
+    public static class UpdatePasswordShown extends AccountLog
+    {
+        private static final String EVENT_TYPE = "update_password_shown";
+
+        public UpdatePasswordShown()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class UpdatePasswordTapped extends AccountLog
+    {
+        private static final String EVENT_TYPE = "update_password_update_tapped";
+
+        public UpdatePasswordTapped()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class UpdatePasswordSuccess extends AccountLog
+    {
+        private static final String EVENT_TYPE = "update_password_update_success";
+
+        public UpdatePasswordSuccess()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class UpdatePasswordError extends AccountLog
+    {
+        private static final String EVENT_TYPE = "update_password_update_error";
+
+        public UpdatePasswordError()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+    // Edit Payment Methods Logs
+
+
+    public static class PaymentMethodShown extends AccountLog
+    {
+        private static final String EVENT_TYPE = "edit_payment_shown";
+
+        public PaymentMethodShown()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class PaymentMethodUpdateTapped extends AccountLog
+    {
+        private static final String EVENT_TYPE = "edit_payment_update_tapped";
+
+        public PaymentMethodUpdateTapped()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class PaymentMethodUpdateSuccess extends AccountLog
+    {
+        private static final String EVENT_TYPE = "edit_payment_change_success";
+
+        public PaymentMethodUpdateSuccess()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class PaymentMethodUpdateError extends AccountLog
+    {
+        private static final String EVENT_TYPE = "edit_payment_change_error";
+
+        public PaymentMethodUpdateError()
         {
             super(EVENT_TYPE);
         }

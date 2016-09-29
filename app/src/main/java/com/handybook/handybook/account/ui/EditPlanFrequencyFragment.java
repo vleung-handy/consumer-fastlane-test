@@ -14,6 +14,8 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.account.EditPlanFrequencyLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,6 +65,10 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
     public void onResume()
     {
         super.onResume();
+
+        bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog
+                .Shown(mPlan.getId(), mFrequencyInfo.getCurrentFrequency())));
+
         showUiBlockers();
 
         dataManager.getRecurringFrequency(
@@ -109,6 +115,11 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
     @OnClick(R.id.plan_frequency_update_button)
     public void updateFrequency()
     {
+        bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Submitted(
+                mPlan.getId(),
+                mFrequencyInfo.getCurrentFrequency(),
+                mFrequencySelectionsView.getCurrentlySelectedFrequency()
+        )));
         showUiBlockers();
         BookingEditFrequencyRequest editFrequencyRequest = new BookingEditFrequencyRequest();
         editFrequencyRequest.setRecurringFrequency(mFrequencySelectionsView.getCurrentlySelectedFrequency());
@@ -120,12 +131,22 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
                     @Override
                     public void onSuccess(final Void response)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Success(
+                                mPlan.getId(),
+                                mFrequencyInfo.getCurrentFrequency(),
+                                mFrequencySelectionsView.getCurrentlySelectedFrequency()
+                        )));
                         updateSuccess();
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Error(
+                                mPlan.getId(),
+                                mFrequencyInfo.getCurrentFrequency(),
+                                mFrequencySelectionsView.getCurrentlySelectedFrequency()
+                        )));
                         updateError(error);
                     }
                 }

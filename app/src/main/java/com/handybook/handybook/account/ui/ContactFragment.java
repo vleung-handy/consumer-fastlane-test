@@ -13,6 +13,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
@@ -64,6 +66,14 @@ public class ContactFragment extends InjectedFragment
         updateDisplay();
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoShown()));
+
+    }
+
     private void updateDisplay()
     {
         mFullNameText.setText(mUser.getFullName());
@@ -74,6 +84,8 @@ public class ContactFragment extends InjectedFragment
     @OnClick(R.id.contact_update_button)
     public void updateContact()
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateTapped()));
+
         if (validateFields())
         {
             disableInputs();
@@ -94,7 +106,7 @@ public class ContactFragment extends InjectedFragment
                         @Override
                         public void onSuccess(final User user)
                         {
-                            if (!allowCallbacks) { return; }
+                            bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateSuccess()));
 
                             userManager.setCurrentUser(user);
                             mUser = userManager.getCurrentUser();
@@ -110,6 +122,8 @@ public class ContactFragment extends InjectedFragment
                         @Override
                         public void onError(final DataManager.DataManagerError error)
                         {
+                            bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateError()));
+
                             progressDialog.dismiss();
                             dataManagerErrorHandler.handleError(
                                     getActivity(),

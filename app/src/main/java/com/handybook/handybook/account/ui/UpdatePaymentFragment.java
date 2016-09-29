@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.account.ui;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -26,14 +26,15 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.ui.widget.CreditCardNumberInputTextView;
-import com.handybook.handybook.ui.widget.MenuButton;
-import com.handybook.handybook.library.util.Utils;
 import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
@@ -114,6 +115,14 @@ public class UpdatePaymentFragment extends InjectedFragment
         }
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.PaymentMethodShown()));
+
+    }
+
     public static UpdatePaymentFragment newInstance()
     {
         return new UpdatePaymentFragment();
@@ -161,6 +170,8 @@ public class UpdatePaymentFragment extends InjectedFragment
     @OnClick(R.id.update_button)
     public void updatePayment()
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.PaymentMethodUpdateTapped()));
+
         if (areFieldsValid())
         {
             disableInputs();
@@ -200,6 +211,8 @@ public class UpdatePaymentFragment extends InjectedFragment
     @Subscribe
     public void onReceiveUpdatePaymentSuccess(HandyEvent.ReceiveUpdatePaymentSuccess event)
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.PaymentMethodUpdateSuccess()));
+
         progressDialog.dismiss();
         ((BaseApplication) getActivity().getApplication()).updateUser();
         final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
@@ -215,6 +228,8 @@ public class UpdatePaymentFragment extends InjectedFragment
     @Subscribe
     public void onReceiveUpdatePaymentError(HandyEvent.ReceiveUpdatePaymentError event)
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.PaymentMethodUpdateError()));
+
         progressDialog.dismiss();
         showToast(R.string.default_error_string);
     }

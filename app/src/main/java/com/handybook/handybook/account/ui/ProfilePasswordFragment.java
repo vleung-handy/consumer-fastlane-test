@@ -18,6 +18,8 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserEvent;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
 import com.squareup.otto.Subscribe;
@@ -110,6 +112,14 @@ public class ProfilePasswordFragment extends InjectedFragment
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordShown()));
+
+    }
+
+    @Override
     public void onStop()
     {
         super.onStop();
@@ -160,6 +170,8 @@ public class ProfilePasswordFragment extends InjectedFragment
     @Override
     public void onClick(final View v)
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordTapped()));
+
         if (validateFields())
         {
             disableInputs();
@@ -189,12 +201,14 @@ public class ProfilePasswordFragment extends InjectedFragment
             UserEvent.ReceiveUserPasswordUpdateSuccess event
     )
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordSuccess()));
         userSuccessCallback();
     }
 
     @Subscribe
     public void onReceiveUserPasswordUpdateError(UserEvent.ReceiveUserPasswordUpdateError event)
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordError()));
         userErrorCallback(event);
     }
 
