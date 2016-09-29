@@ -617,7 +617,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
         }
 
         LatLng providerLatLng = null;
-        if (!isBadLocation(mLocationStatus.getProviderLocation()))
+        if (!isBadLocation(mLocationStatus.getProviderLocation()) && mProviderLocationMarker != null)
         {
             providerLatLng = new LatLng(
                     Double.valueOf(mLocationStatus.getProviderLocation().getLatitude()),
