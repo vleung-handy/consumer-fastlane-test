@@ -2,7 +2,6 @@ package com.handybook.handybook.account.ui;
 
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +15,6 @@ import com.facebook.login.LoginManager;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
-import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -26,7 +24,6 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 
 import java.util.ArrayList;
@@ -46,11 +43,11 @@ public class AccountFragment extends InjectedFragment
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.credits_text)
+    @Bind(R.id.account_credits_text)
     TextView mCreditsText;
-    @Bind(R.id.active_plans_text)
+    @Bind(R.id.account_active_plans_text)
     TextView mActivePlansText;
-    @Bind(R.id.active_plans_layout)
+    @Bind(R.id.account_active_plans_layout)
     ViewGroup mActivePlansLayout;
 
     private User mUser;
@@ -123,37 +120,37 @@ public class AccountFragment extends InjectedFragment
         });
     }
 
-    @OnClick(R.id.contact_info_layout)
+    @OnClick(R.id.account_contact_info_layout)
     public void contactClicked()
     {
         FragmentUtils.switchToFragment(this, new ContactFragment(), true);
     }
 
-    @OnClick(R.id.password_layout)
+    @OnClick(R.id.account_password_layout)
     public void passwordClicked()
     {
         FragmentUtils.switchToFragment(this, ProfilePasswordFragment.newInstance(), true);
     }
 
-    @OnClick(R.id.payment_method_layout)
+    @OnClick(R.id.account_payment_method_layout)
     public void paymentClicked()
     {
         FragmentUtils.switchToFragment(this, UpdatePaymentFragment.newInstance(), true);
     }
 
-    @OnClick(R.id.active_plans_layout)
+    @OnClick(R.id.account_active_plans_layout)
     public void activePlansClicked()
     {
         FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
     }
 
-    @OnClick(R.id.promo_code_layout)
+    @OnClick(R.id.account_promo_code_layout)
     public void promoClicked()
     {
         FragmentUtils.switchToFragment(this, PromosFragment.newInstance(), true);
     }
 
-    @OnClick(R.id.sign_out_button)
+    @OnClick(R.id.account_sign_out_button)
     public void signOutClicked()
     {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext())
