@@ -135,7 +135,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
                         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Success(
                                 mPlan.getId(),
                                 mFrequencyInfo.getCurrentFrequency(),
-                                mFrequencySelectionsView.getCurrentlySelectedFrequency()
+                                mPlan.getFrequencyValue()
                         )));
                         updateSuccess();
                     }
@@ -160,6 +160,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         showToast(R.string.updated_booking_frequency);
         mPlan.setFrequency(StringUtils.getFrequencyText(
                 getContext(), mFrequencySelectionsView.getCurrentlySelectedFrequency()));
+        mPlan.setFrequencyValue(mFrequencySelectionsView.getCurrentlySelectedFrequency());
         getFragmentManager().popBackStack();
     }
 
