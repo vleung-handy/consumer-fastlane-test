@@ -66,6 +66,17 @@ public class AccountLog extends EventLog
     }
 
 
+    public static class ApplyPromoTapped extends AccountLog
+    {
+        private static final String EVENT_TYPE = "apply_promo_tapped";
+
+        public ApplyPromoTapped()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+
     public static class PlanManagementTapped extends AccountLog
     {
         private static final String EVENT_TYPE = "plan_management_tapped";

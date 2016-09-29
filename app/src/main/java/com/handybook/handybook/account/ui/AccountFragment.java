@@ -164,6 +164,7 @@ public class AccountFragment extends InjectedFragment
     @OnClick(R.id.account_promo_code_layout)
     public void promoClicked()
     {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.ApplyPromoTapped()));
         FragmentUtils.switchToFragment(this, PromosFragment.newInstance(), true);
     }
 
