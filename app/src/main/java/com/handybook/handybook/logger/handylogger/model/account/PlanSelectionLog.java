@@ -23,11 +23,11 @@ public class PlanSelectionLog extends EventLog
         @SerializedName("recurring_booking_ids")
         private final int[] mRecurringBookingIds;
 
-        public Shown(int[] recurringBookingIDs)
+        public Shown(int[] recurringBookingIds)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingIds = recurringBookingIDs;
+            mRecurringBookingIds = recurringBookingIds;
         }
     }
 
@@ -38,11 +38,11 @@ public class PlanSelectionLog extends EventLog
         @SerializedName("recurring_booking_id")
         private final int mRecurringBookingId;
 
-        public PlanTapped(int recurringBookingID)
+        public PlanTapped(int recurringBookingId)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
         }
     }
 }

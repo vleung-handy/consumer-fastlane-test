@@ -25,11 +25,11 @@ public class EditPlanFrequencyLog extends EventLog
         @SerializedName("old_frequency")
         private final int mOldFrequency;
 
-        public Shown(int recurringBookingID, int oldFrequency)
+        public Shown(int recurringBookingId, int oldFrequency)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
             mOldFrequency = oldFrequency;
         }
     }
@@ -46,11 +46,11 @@ public class EditPlanFrequencyLog extends EventLog
         @SerializedName("new_frequency")
         private final int mNewFrequency;
 
-        public Submitted(int recurringBookingID, int oldFrequency, int newFrequency)
+        public Submitted(int recurringBookingId, int oldFrequency, int newFrequency)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
             mOldFrequency = oldFrequency;
             mNewFrequency = newFrequency;
         }
@@ -68,11 +68,11 @@ public class EditPlanFrequencyLog extends EventLog
         @SerializedName("new_frequency")
         private final int mNewFrequency;
 
-        public Success(int recurringBookingID, int oldFrequency, int newFrequency)
+        public Success(int recurringBookingId, int oldFrequency, int newFrequency)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
             mOldFrequency = oldFrequency;
             mNewFrequency = newFrequency;
         }
@@ -89,11 +89,11 @@ public class EditPlanFrequencyLog extends EventLog
         @SerializedName("new_frequency")
         private final int mNewFrequency;
 
-        public Error(int recurringBookingID, int oldFrequency, int newFrequency)
+        public Error(int recurringBookingId, int oldFrequency, int newFrequency)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
             mOldFrequency = oldFrequency;
             mNewFrequency = newFrequency;
         }

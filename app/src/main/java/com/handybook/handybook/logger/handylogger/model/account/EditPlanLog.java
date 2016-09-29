@@ -23,11 +23,11 @@ public class EditPlanLog extends EventLog
         @SerializedName("recurring_booking_id")
         private final int mRecurringBookingId;
 
-        public Shown(int recurringBookingID)
+        public Shown(int recurringBookingId)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
         }
     }
 
@@ -41,11 +41,11 @@ public class EditPlanLog extends EventLog
         @SerializedName("frequency")
         private final int mFrequency;
 
-        public EditFrequencyTapped(int recurringBookingID, int frequency)
+        public EditFrequencyTapped(int recurringBookingId, int frequency)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
             mFrequency = frequency;
         }
     }
@@ -58,11 +58,11 @@ public class EditPlanLog extends EventLog
         @SerializedName("recurring_booking_id")
         private final int mRecurringBookingId;
 
-        public EditAddressTapped(int recurringBookingID)
+        public EditAddressTapped(int recurringBookingId)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
         }
     }
 
@@ -74,11 +74,11 @@ public class EditPlanLog extends EventLog
         @SerializedName("recurring_booking_id")
         private final int mRecurringBookingId;
 
-        public CancelPlanTapped(int recurringBookingID)
+        public CancelPlanTapped(int recurringBookingId)
         {
             super(EVENT_TYPE);
 
-            mRecurringBookingId = recurringBookingID;
+            mRecurringBookingId = recurringBookingId;
         }
     }
 }
