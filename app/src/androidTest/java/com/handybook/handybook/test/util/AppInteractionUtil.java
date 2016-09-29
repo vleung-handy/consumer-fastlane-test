@@ -7,7 +7,6 @@ import com.handybook.handybook.test.model.TestUser;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -48,7 +47,7 @@ public class AppInteractionUtil
             if (ViewUtil.isViewDisplayed(withText(R.string.log_out)))
             {
                 //press the log out button in the nav drawer
-                onView(withText(R.string.log_out)).perform(scrollTo(), click());
+                onView(withText(R.string.log_out)).perform(click());
 
                 //press the log out button in the confirmation dialog
                 onView(withText(R.string.log_out)).perform(click());
